@@ -10,6 +10,7 @@ use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
+use Pim\Component\Catalog\Factory\FamilyFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +38,9 @@ class FamilyController
 
     /** @var FamilySearchableRepository */
     protected $familySearchableRepo;
+
+    /** @var FamilyFactory */
+    protected $familyFactory;
 
     /** @var FamilyUpdater */
     protected $updater;
@@ -73,6 +77,7 @@ class FamilyController
      * @param RemoverInterface           $remover
      * @param ValidatorInterface         $validator
      * @param SecurityFacade             $securityFacade
+     * @param FamilyFactory              $familyFactory
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -82,7 +87,8 @@ class FamilyController
         SaverInterface $saver,
         RemoverInterface $remover,
         ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        FamilyFactory $familyFactory
     ) {
         $this->familyRepository = $familyRepository;
         $this->normalizer = $normalizer;
@@ -92,6 +98,7 @@ class FamilyController
         $this->remover = $remover;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
+        $this->familyFactory = $familyFactory;
     }
 
     /**
@@ -248,5 +255,34 @@ class FamilyController
                 'internal_api'
             )
         );
+    }
+
+    /**
+     * Creates family
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $family = $this->familyFactory->create();
+        $this->updater->update($family, $request->get('family'));
+
+        $violations = $this->validator->validate($family);
+        if (0 === $violations->count()) {
+            $this->saver->save($family);
+
+            return new JsonResponse($this->normalizer->normalize(
+                $family,
+                'internal_api'
+            ));
+        }
+
+        $errors = [
+            'values' => $this->normalizer->normalize($violations, 'internal_api', ['family' => $family])
+        ];
+
+        return new JsonResponse($errors, 400);
     }
 }

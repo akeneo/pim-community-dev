@@ -22,3 +22,4 @@ extensions:
            iconName:  plus
            title:     pim_enrich.index.family.create_btn
            url:       pim_enrich_family_create
+           modalForm: pim-family-create-modal
