@@ -79,15 +79,8 @@
 {% endspaceless %}
 {% endmacro %}
 
+{# @note meta parameter is unused #}
 {% macro page_header(title, buttons, titleButtons, meta, right, backButton, state, image) %}
-    <div style="display: none;">
-        <div class="AknTitleContainer-metaLine">
-            <div class="AknTitleContainer-meta">
-                {{ meta }}
-            </div>
-        </div>
-    </div>
-
     <header class="AknTitleContainer navigation">
         <div class="AknTitleContainer-imageContainer">{% block image %}{{ image }}{% endblock image %}</div>
         <div class="AknTitleContainer-mainContainer">

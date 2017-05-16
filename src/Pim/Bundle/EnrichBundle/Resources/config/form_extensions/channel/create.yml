@@ -41,24 +41,6 @@ extensions:
         config:
             entity: pim_enrich.entity.channel.title
 
-    pim-channel-create-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-channel-create-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.channel.meta.created
-            labelBy: pim_enrich.entity.channel.meta.created_by
-
-    pim-channel-create-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-channel-create-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.channel.meta.updated
-            labelBy: pim_enrich.entity.channel.meta.updated_by
-
     pim-channel-create-form-properties:
         module: pim/common/tab/properties
         parent: pim-channel-create-form-form-tabs

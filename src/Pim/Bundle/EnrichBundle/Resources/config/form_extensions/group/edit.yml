@@ -59,24 +59,6 @@ extensions:
         config:
             entity: pim_enrich.entity.group.title
 
-    pim-group-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-group-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.group.meta.created
-            labelBy: pim_enrich.entity.group.meta.created_by
-
-    pim-group-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-group-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.group.meta.updated
-            labelBy: pim_enrich.entity.group.meta.updated_by
-
     pim-group-edit-form-product-count:
         module: pim/group-edit-form/meta/product-count
         parent: pim-group-edit-form
