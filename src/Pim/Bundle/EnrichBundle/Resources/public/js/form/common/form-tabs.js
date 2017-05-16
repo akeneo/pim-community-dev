@@ -19,7 +19,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
 
-            className: 'AknTabContainer tabbable tabs-top',
+            className: 'tabbable tabs-top',
 
             tabs: [],
 

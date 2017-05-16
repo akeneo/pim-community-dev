@@ -1,13 +1,15 @@
 "use strict";
 
 define([
+        'oro/translator',
         'backbone',
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',
-        'oro/template/system/config'
+        'pim/template/form/index/index'
     ],
     function(
+        __,
         Backbone,
         mediator,
         BaseForm,
@@ -49,7 +51,9 @@ define([
 
                 this.getRoot().trigger('oro_config:form:render:before');
 
-                this.$el.html(this.template({}));
+                this.$el.html(this.template({
+                    title: __('oro_config.form.config.title')
+                }));
 
                 this.renderExtensions();
 

@@ -3,44 +3,28 @@
 .AknTitleContainer {
   @avatarSize: 58px;
 
-  background: lighten(@AknGrey, 30%);
-  padding: 15px 20px 10px 20px;
+  margin-bottom: 40px;
   display: flex;
+
+  &-imageContainer {
+  }
+
+  &-mainContainer {
+    flex-grow: 1;
+    display: flex;
+  }
+
+  &-breadcrumbs:not(:empty) {
+    padding-bottom: 10px;
+  }
 
   &--condensed {
     padding-top: 5px;
     padding-bottom: 5px;
   }
 
-  &-backContainer {
-    display: flex;
-  }
-
-  &-contentContainer {
-    flex-grow: 1;
-  }
-
-  &-mainLine {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  &-metaLine {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
-  }
-
-  &-titleContainer {
-    display: flex;
-    flex-grow: 1;
-  }
-
   &-title {
-    color: @AknPurple;
+    color: @AknLightPurple;
     font-size: @AknTitleFontSize;
     height: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
@@ -58,62 +42,6 @@
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
-  }
-
-  &-rightButton {
-    margin-left: 10px;
-  }
-
-  &-titleButtons {
-    margin-left: 10px;
-    display: flex;
-    order: 10;
-    align-items: center;
-  }
-
-  &-meta {
-    font-size: @AknFontSizeSmall;
-    color: @AknLightFontColor;
-    flex-wrap: wrap;
-    line-height: 23px;
-    flex-grow: 1;
-  }
-
-  &-metaItem:not(:first-child):not(:empty):before {
-    content: ' | ';
-  }
-
-  &-metaLink {
-    cursor: pointer;
-
-    &:hover {
-      color: darken(@AknLightFontColor, 10%);
-    }
-  }
-
-  &-state {
-    order: 10;
-    align-self: flex-end;
-    flex-grow: 1;
-    text-align: right;
-  }
-
-  &-backLink {
-    min-height: @AknDefaultButtonSize;
-    width: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
-    background: darken(@AknLightGray, 5%);
-    height: ~"calc(100% - 4px)";
-    text-align: center;
-    margin-right: 10px;
-    border-radius: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      background: darken(@AknLightGray, 15%);
-    }
   }
 
   &-avatar {

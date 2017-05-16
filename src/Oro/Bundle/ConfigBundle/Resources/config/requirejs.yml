@@ -19,6 +19,5 @@ config:
 
 
         # Templates
-        oro/template/system/group/localization: oroconfig/js/templates/system/group/localization.html
-        oro/template/system/group/notification: oroconfig/js/templates/system/group/notification.html
-        oro/template/system/config:             oroconfig/js/templates/system/config.html
+        oro/template/system/tab/localization: oroconfig/js/templates/system/tab/localization.html
+        oro/template/system/tab/notification: oroconfig/js/templates/system/tab/notification.html
