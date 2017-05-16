@@ -9,17 +9,26 @@ const mkdirp = require('mkdirp')
 const deepMerge = require('merge-objects')
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const pathOverrides = require('./frontend/path-overrides')
-const requireConfigPaths = require('./web/js/require-config')
+const requireConfigPaths = require(path.resolve('web/js/require-config'))
+
+console.log('Start compile with webpack from', __dirname)
 
 const getRelativePaths = (absolutePaths) => {
     let replacedPaths = {}
+    let exportPaths = {}
 
     for (let absolutePath in absolutePaths) {
         const pathValue = absolutePaths[absolutePath]
-        replacedPaths[pathValue] = pathValue.replace(__dirname + '/src', '.')
+        const currentPath = path.resolve('./')
+        // do it without symlink resolution
+        const replacedPath = path.relative(currentPath, pathValue)
+        replacedPaths[pathValue] = replacedPath
+        console.log(pathValue)
+        exportPaths[absolutePath] = replacedPath
     }
 
-    return replacedPaths
+
+    return { replacedPaths, exportPaths }
 }
 
 const getAbsolutePaths = (relativePaths, configPath) => {
@@ -48,7 +57,9 @@ const getRequireConfig = (requirePaths) => {
             const absolutePaths = getAbsolutePaths(bundlePaths, requirePath)
             modulePaths = deepMerge(modulePaths, absolutePaths)
             config = deepMerge(config, bundleConfig)
-        } catch (e) { }
+        } catch (e) {
+            // console.log('###', requirePath)
+         }
     })
 
     return {
@@ -60,25 +71,35 @@ const getRequireConfig = (requirePaths) => {
 const requireConfig = getRequireConfig(requireConfigPaths)
 const importedPaths = requireConfig.modulePaths
 const generalConfig = requireConfig.config
-const overrides = _.mapValues(pathOverrides, override => path.resolve(override))
+const overrides = _.mapValues(pathOverrides, override => path.resolve(__dirname, override))
 const importPaths = Object.assign(importedPaths, overrides, {
-  backbone: require.resolve('backbone')
+  backbone: require.resolve('backbone'),
+
+  // Generated
+  routes: path.resolve('web/js/routes'),
+  general: path.resolve('web/dist/general'),
+  paths: path.resolve('web/dist/paths'),
+  'relative-paths': path.resolve('web/dist/relative-paths'),
+  'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router')
 })
 
 const exportModule = (dest, contents) => {
   fs.writeFileSync(`web/dist/${dest}`, `module.exports = ${contents}`, 'utf8')
 }
 
+const relativePaths = getRelativePaths(importPaths)
+
 mkdirp('web/dist', function () {
     exportModule('general.js', JSON.stringify(generalConfig))
     exportModule('paths.js', JSON.stringify(importPaths))
+    exportModule('relative-paths.js', JSON.stringify(relativePaths.exportPaths))
 })
 
 module.exports = {
     target: 'web',
-    entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js',
+    entry: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js'),
     output: {
-        path: path.resolve(__dirname, './web/dist/'),
+        path: path.resolve('./web/dist/'),
         publicPath: 'dist/',
         filename: 'app.min.js',
         chunkFilename: '[name].bundle.js',
@@ -93,7 +114,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: [{
-                    loader: path.resolve('./config-loader'),
+                    loader: path.resolve(__dirname, './config-loader'),
                     options: { }
                 }]
             },
@@ -153,9 +174,9 @@ module.exports = {
             'require.specified': 'require.resolve'
         }),
         new ContextReplacementPlugin(
-          /src/,
-          path.resolve(__dirname, './src'),
-          getRelativePaths(importPaths)
+          /.\/dynamic/,
+          path.resolve('./'),
+          relativePaths.replacedPaths
         )
     ]
 }
