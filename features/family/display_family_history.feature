@@ -8,8 +8,8 @@ Feature: Display the family history
     Given the "default" catalog configuration
     And I am logged in as "Peter"
     And the following attribute group:
-      | code    | label-en_US | group | type             |
-      | general | General     | other | pim_catalog_text |
+      | code    | label-en_US |
+      | general | General     |
     And the following attributes:
       | label-en_US | group   | type             | code        |
       | Description | General | pim_catalog_text | description |
