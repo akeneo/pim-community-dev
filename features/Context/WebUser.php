@@ -298,6 +298,7 @@ class WebUser extends RawMinkContext
     public function iSwitchTheLocaleTo($locale)
     {
         $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
+        $this->wait();
     }
 
     /**

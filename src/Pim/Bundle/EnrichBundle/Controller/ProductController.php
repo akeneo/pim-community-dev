@@ -125,9 +125,9 @@ class ProductController
      * @AclAncestor("pim_enrich_product_index")
      * @Template
      *
-     * @return Response
+     * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         $this->seqEditManager->removeByUser($this->tokenStorage->getToken()->getUser());
 
@@ -153,14 +153,13 @@ class ProductController
     /**
      * Toggle product status (enabled/disabled)
      *
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @return Response
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
-    public function toggleStatusAction(Request $request, $id)
+    public function toggleStatusAction($id)
     {
         $product = $this->findProductOr404($id);
 

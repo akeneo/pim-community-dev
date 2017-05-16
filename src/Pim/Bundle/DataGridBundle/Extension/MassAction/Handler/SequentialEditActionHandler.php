@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
@@ -18,14 +21,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SequentialEditActionHandler implements MassActionHandlerInterface
 {
-    /**
-     * @var HydratorInterface
-     */
+    /** @var HydratorInterface */
     protected $hydrator;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
@@ -45,19 +44,42 @@ class SequentialEditActionHandler implements MassActionHandlerInterface
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
-        // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
         $this->eventDispatcher->dispatch(MassActionEvents::SEQUENTIAL_EDIT_PRE_HANDLER, $massActionEvent);
 
         $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($this->hydrator);
 
-        $results = $datasource->getResults();
+        $results = $this->getResultsFromDatasource($datasource);
 
-        // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, $results);
         $this->eventDispatcher->dispatch(MassActionEvents::SEQUENTIAL_EDIT_POST_HANDLER, $massActionEvent);
 
         return $results;
+    }
+
+    /**
+     * @param DatasourceInterface $datasource
+     *
+     * @return array
+     */
+    public function getResultsFromDatasource(DatasourceInterface $datasource)
+    {
+        $results = $datasource->getResults();
+
+        if (!isset($results['data'])) {
+            throw new \LogicException('Datasource results must contain at least one result, none given.');
+        }
+
+        $productIds = [];
+        foreach ($results['data'] as $result) {
+            if (!$result instanceof ResultRecordInterface) {
+                throw InvalidObjectException::objectExpected($result, ResultRecordInterface::class);
+            }
+
+            $productIds[] = $result->getValue('id');
+        }
+
+        return $productIds;
     }
 }
