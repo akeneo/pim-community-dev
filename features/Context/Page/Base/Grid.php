@@ -957,7 +957,17 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $this->clickOnDropdownSelector('All');
+        $selector = $this->getDropdownSelector();
+        $this->spin(function () use ($selector) {
+            $selector->find('css', '.AknSeveralActionsButton-mainAction')->click();
+            foreach ($this->findAll('css', '.select-row-cell input') as $input) {
+                if (!$input->isChecked()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, 'Can not select all entities on the grid');
     }
 
     /**

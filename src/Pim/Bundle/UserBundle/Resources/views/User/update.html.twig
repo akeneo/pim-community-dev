@@ -50,7 +50,7 @@
 
 {% block page_container %}
 {% block content %}
-
+<div class="AknDefault-mainContent">
     {{ form_start(form, {
         'action': formAction,
         'attr': {
@@ -91,18 +91,21 @@
             {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, meta, null, back, elements.updated(form.vars.id)) }}
+        {% set image %}
+            {% set imagePath = form.vars.value.imagePath %}
+            <img class="AknTitleContainer-image" src="{{ imagePath ? imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+        {% endset %}
 
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
-            <div class="AknTabContainer-content tab-content oro-tab-form">
-                {{ elements.form_errors(form) }}
+        {{ elements.page_header(title, buttons, null, meta, null, back, elements.updated(form.vars.id), image) }}
 
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
-            </div>
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+        <div class="AknTabContainer-content tab-content oro-tab-form">
+            {{ elements.form_errors(form) }}
+
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
     {{ form_end(form) }}
-
+</div>
 {% endblock %}
 {% endblock %}

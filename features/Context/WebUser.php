@@ -207,11 +207,11 @@ class WebUser extends RawMinkContext
             }
 
             if (!$not) {
-                return !$found;
-            } else {
                 return $found;
+            } else {
+                return !$found;
             }
-        }, sprintf('Expected to %ssee the "" column tab', $not, $tabName));
+        }, sprintf('Expected to %ssee the "%s" column tab', $not, $tabName));
     }
 
     /**

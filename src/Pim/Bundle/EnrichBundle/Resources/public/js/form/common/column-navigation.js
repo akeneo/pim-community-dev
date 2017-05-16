@@ -55,7 +55,7 @@ define(
                 this.$el
                     .empty()
                     .html(this.template({
-                        tabs: this.tabs,
+                        tabs: this.getTabs(),
                         currentTab: this.getCurrentTabOrDefault(),
                         title: __('pim_enrich.entity.product.navigation')
                     }));
@@ -94,9 +94,18 @@ define(
              * If there is no selected tab, returns the first available tab.
              */
             getCurrentTabOrDefault: function () {
-                var result = _.findWhere(this.tabs, {code: this.currentTab});
+                var result = _.findWhere(this.getTabs(), {code: this.currentTab});
 
                 return (undefined !== result) ? result.code : _.first(_.pluck(this.tabs, 'code'));
+            },
+
+            /**
+             * Returns the list of visible tabs
+             */
+            getTabs: function () {
+                return _.filter(this.tabs, function (tab) {
+                    return !_.isFunction(tab.isVisible) || tab.isVisible();
+                });
             }
         });
     }

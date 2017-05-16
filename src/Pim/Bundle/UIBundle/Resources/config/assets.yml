@@ -68,7 +68,6 @@ css:
         - bundles/pimui/less/components/Badge.less
         - bundles/pimui/less/components/Bell.less
         - bundles/pimui/less/components/Breadcrumb.less
-        - bundles/pimui/less/components/BreadcrumbContainer.less
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Column.less
         - bundles/pimui/less/components/ColumnConfigurator.less

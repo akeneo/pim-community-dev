@@ -5,6 +5,7 @@ namespace Context;
 use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -741,7 +742,11 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldNotSeeDefaultAvatar()
     {
-        $this->assertSession()->elementAttributeNotContains('css', '.AknTitleContainer-avatar', 'src', 'user-info.png');
+        $this->spin(function () {
+            $image = $this->getCurrentPage()->find('css', '.AknTitleContainer-image');
+
+            return null !== $image && false === strpos($image->getAttribute('src'), 'user-info.png');
+        }, 'Avatar image not found or not default one');
     }
 
     /**

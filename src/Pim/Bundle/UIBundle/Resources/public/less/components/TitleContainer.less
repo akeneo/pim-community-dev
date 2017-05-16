@@ -1,12 +1,20 @@
 @import '../base/variables';
 
 .AknTitleContainer {
-  @avatarSize: 58px;
+  @imageSize: 100px;
 
   margin-bottom: 40px;
   display: flex;
 
-  &-imageContainer {
+  &-imageContainer:not(:empty) {
+    width: @imageSize;
+    height: @imageSize;
+    margin-right: 20px;
+  }
+
+  &-image {
+    width: @imageSize;
+    height: @imageSize;
   }
 
   &-mainContainer {
@@ -37,12 +45,6 @@
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
-  }
-
-  &-avatar {
-    height: @avatarSize;
-    width: @avatarSize;
-    margin-right: 10px;
   }
 
   &--hidden {

@@ -70,7 +70,7 @@
 {% set entityId = form.vars.value.id %}
 
 {% block content %}
-
+<div class="AknDefault-mainContent">
     {{ form_start(form, {
         'action': entityId ? path('oro_user_role_update', { 'id': entityId }) : path('oro_user_role_create'),
         'attr': {
@@ -105,7 +105,6 @@
         {% endfor %}
         {% set tabs = tabs|merge(['Users']) %}
 
-        <div class="AknTabContainer">
             {{ elements.form_navbar(tabs, '') }}
             <div class="tab-content oro-tab-form">
 
@@ -218,7 +217,6 @@
                     {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
                     {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
                 </div>
-            </div>
         </div>
 
     {{ form_end(form) }}
@@ -273,4 +271,5 @@
             }
         );
     </script>
+</div>
 {% endblock %}
