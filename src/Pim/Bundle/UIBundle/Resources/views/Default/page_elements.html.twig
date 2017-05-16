@@ -53,15 +53,6 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro backLink(url, title) %}
-{% spaceless %}
-    {% set title = title|default('btn.to grid') %}
-    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="#{{ url }}">
-        <i class="icon-chevron-left"></i>
-    </a>
-{% endspaceless %}
-{% endmacro %}
-
 {% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}
@@ -90,11 +81,6 @@
 
 {% macro page_header(title, buttons, titleButtons, meta, right, backButton, state) %}
     <div style="display: none;">
-        <div class="AknTitleContainer-backContainer" data-drop-zone="back">
-            {% if backButton is not empty %}
-                {{ backButton }}
-            {% endif %}
-        </div>
         <div class="AknTitleContainer-metaLine">
             <div class="AknTitleContainer-meta">
                 {{ meta }}

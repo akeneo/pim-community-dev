@@ -762,7 +762,6 @@ config:
         pim/form/common/attributes/attribute-group-selector: pimenrich/js/form/common/attributes/attribute-group-selector
         pim/form/common/save:                                pimenrich/js/form/common/save
         pim/form/common/delete:                              pimenrich/js/form/common/delete
-        pim/form/common/back-to-grid:                        pimenrich/js/form/common/back-to-grid
         pim/form/common/form-tabs:                           pimenrich/js/form/common/form-tabs
         pim/form/common/column-tabs:                         pimenrich/js/form/common/column-tabs
         pim/form/common/column-navigation:                   pimenrich/js/form/common/column-navigation
@@ -837,7 +836,6 @@ config:
         pim/template/form/properties/translation:                 pimenrich/templates/form/properties/translation.html
         pim/template/form/properties/general:                     pimenrich/templates/form/properties/general.html
         pim/template/form/properties/input:                       pimenrich/templates/form/properties/input.html
-        pim/template/form/back-to-grid:                           pimenrich/templates/form/back-to-grid.html
         pim/template/form/form-tabs:                              pimenrich/templates/form/form-tabs.html
         pim/template/form/state:                                  pimenrich/templates/form/state.html
         pim/template/form/meta:                                   pimenrich/templates/form/meta.html

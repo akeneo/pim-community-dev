@@ -77,15 +77,6 @@ extensions:
         targetZone: meta
         position: 100
 
-    pim-job-instance-yml-base-export-edit-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-job-instance-yml-base-export-edit
-        targetZone: back
-        aclResourceId: pim_importexport_export_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_export_profile_index
-
     pim-job-instance-yml-base-export-edit-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-job-instance-yml-base-export-edit

@@ -82,10 +82,6 @@
 
         {% set title = entityId ? 'role.edit'|trans ~ ' - ' ~ form.vars.value.label : 'role.create'|trans %}
 
-        {% set titleButtons %}
-            {{ elements.backLink(path('oro_user_role_index')) }}
-        {% endset %}
-
         {% set buttons %}
             {% if entityId %}
                 {{ elements.deleteLink(

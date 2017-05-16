@@ -19,15 +19,6 @@ extensions:
         targetZone: title
         position: 110
 
-    pim-channel-create-form-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-channel-create-form
-        targetZone: back
-        aclResourceId: pim_enrich_channel_index
-        position: 80
-        config:
-            backUrl: pim_enrich_channel_index
-
     pim-channel-create-form-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-channel-create-form

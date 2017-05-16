@@ -2,14 +2,6 @@ extensions:
     pim-job-execution-form:
         module: pim/form/common/edit-form
 
-    pim-job-execution-form-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-job-execution-form
-        targetZone: back
-        position: 80
-        config:
-            backUrl: pim_importexport_export_profile_index
-
     pim-job-execution-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-job-execution-form

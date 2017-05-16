@@ -18,10 +18,6 @@
 
         {% set title = form.vars.value.id ? 'attribute.edit'|trans ~ ' - ' ~ form.vars.value.label : 'attribute.create'|trans %}
 
-        {% set titleButtons %}
-            {{ elements.backLink(path('pim_enrich_attribute_index')) }}
-        {% endset %}
-
         {% set buttons %}
             {% if form.vars.value.id and form.type.vars.value != 'pim_catalog_identifier' %}
                 {{ elements.deleteLink(
