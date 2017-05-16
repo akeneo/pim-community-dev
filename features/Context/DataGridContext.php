@@ -294,7 +294,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $node = $this->datagrid->getColumnNode($column, $row);
 
         if ('**empty**' === $titleExpectation) {
-            if (null !== $node->find('css', 'img')) {
+            $thumbnailPath = '/media/show/undefined/thumbnail_small';
+            $undefinedThumbnail = $node->find('css', 'img');
+
+            if (null === $undefinedThumbnail || $thumbnailPath !== $undefinedThumbnail->getAttribute('src')) {
                 throw $this->createExpectationException(
                     sprintf('Expecting column "%s" to be empty, but one image found.', $column)
                 );
