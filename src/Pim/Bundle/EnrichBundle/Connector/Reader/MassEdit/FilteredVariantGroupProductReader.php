@@ -146,18 +146,22 @@ class FilteredVariantGroupProductReader extends ProductReader
         $acceptedIds = array_diff($acceptedIds, $excludedIds);
 
         if (0 === count($acceptedIds)) {
-            return [[
-                'field'    => 'id',
-                'operator' => Operators::IN_LIST,
-                'value'    => ['']
-            ]];
+            return [
+                [
+                    'field'    => 'id',
+                    'operator' => Operators::IN_LIST,
+                    'value'    => ['']
+                ]
+            ];
         }
 
-        return [[
-            'field'    => 'id',
-            'operator' => Operators::IN_LIST,
-            'value'    => $acceptedIds
-        ]];
+        return [
+            [
+                'field'    => 'id',
+                'operator' => Operators::IN_LIST,
+                'value'    => $acceptedIds
+            ]
+        ];
     }
 
     /**
@@ -253,7 +257,12 @@ class FilteredVariantGroupProductReader extends ProductReader
             }
         }
 
-        return $excludedIds;
+        return array_map(
+            function ($id) {
+                return (string)$id;
+            },
+            $excludedIds
+        );
     }
 
     /**
@@ -268,11 +277,15 @@ class FilteredVariantGroupProductReader extends ProductReader
     {
         $excludedIds = $this->getExcludedProductIds($productAttributeAxis);
         if (!empty($excludedIds)) {
-            $cursor = $this->getProductsCursor([[
-                'field'    => 'id',
-                'operator' => Operators::IN_LIST,
-                'value'    => $excludedIds
-            ]]);
+            $cursor = $this->getProductsCursor(
+                [
+                    [
+                        'field'    => 'id',
+                        'operator' => Operators::IN_LIST,
+                        'value'    => $excludedIds
+                    ]
+                ]
+            );
             $paginator = $this->paginatorFactory->createPaginator($cursor);
 
             foreach ($paginator as $productsPage) {
@@ -315,14 +328,14 @@ class FilteredVariantGroupProductReader extends ProductReader
 
         $eligibleProductIds = [];
         foreach ($eligibleProducts as $eligibleProduct) {
-            $eligibleProductIds = $eligibleProduct->getId();
+            $eligibleProductIds[] = $eligibleProduct->getId();
         }
 
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
                 if (in_array($product->getId(), $eligibleProductIds)) {
                     $keyCombination = $this->generateAxisCombinationKey($product, $axisAttributeCodes);
-                    $acceptedIds[] = $product->getId();
+                    $acceptedIds[] = (string)$product->getId();
                     $productAttributeAxis = $this->fillDuplicateCombinationsArray(
                         $product,
                         $productAttributeAxis,
