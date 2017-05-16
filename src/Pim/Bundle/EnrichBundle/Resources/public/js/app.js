@@ -17,7 +17,6 @@ define(
         'pim/init-translator',
         'oro/init-layout',
         'pimuser/js/init-signin',
-        'pim/router',
         'config',
         'pim/page-title',
         'pim/template/app',
@@ -33,7 +32,6 @@ define(
         initTranslator,
         initLayout,
         initSignin,
-        router,
         moduleConfig,
         pageTitle,
         template,
@@ -68,10 +66,6 @@ define(
 
                         init();
 
-                        if (!Backbone.History.started) {
-                            Backbone.history.start();
-                        }
-
                         pageTitle.set('Akeneo PIM')
 
                         return BaseForm.prototype.configure.apply(this, arguments);
@@ -83,6 +77,10 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({}));
+
+                if (!Backbone.History.started) {
+                    Backbone.history.start();
+                }
 
                 return BaseForm.prototype.render.apply(this, arguments);
             }
