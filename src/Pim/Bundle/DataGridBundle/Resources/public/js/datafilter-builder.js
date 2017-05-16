@@ -71,7 +71,6 @@ function($, _, tools,  mediator, FiltersManager) {
     return {
         init: function () {
             initialized = false;
-
             mediator.once('datagrid_collection_set_after', initHandler);
             mediator.once('hash_navigation_request:start', function() {
                 if (!initialized) {
