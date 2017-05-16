@@ -61,7 +61,6 @@ config:
         jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
         bootstrap:                     pimui/lib/bootstrap/js/bootstrap
         underscore:                    pimui/lib/underscore/underscore
-        backbone:                      pimui/lib/backbone/backbone
         backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
         oro/app:                       pimui/js/app
         oro/error:                     pimui/js/error

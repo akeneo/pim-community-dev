@@ -61,13 +61,17 @@ const requireConfig = getRequireConfig(requireConfigPaths)
 const importedPaths = requireConfig.modulePaths
 const generalConfig = requireConfig.config
 const overrides = _.mapValues(pathOverrides, override => path.resolve(override))
-const importPaths = Object.assign(importedPaths, overrides)
+const importPaths = Object.assign(importedPaths, overrides, {
+  backbone: require.resolve('backbone')
+})
 
+const exportModule = (dest, contents) => {
+  fs.writeFileSync(`web/dist/${dest}`, `module.exports = ${contents}`, 'utf8')
+}
 
 mkdirp('web/dist', function () {
-    fs.writeFileSync('web/dist/general.js', `module.exports = ${JSON.stringify(generalConfig)}`, 'utf8')
-
-    fs.writeFileSync('web/dist/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
+    exportModule('general.js', JSON.stringify(generalConfig))
+    exportModule('paths.js', JSON.stringify(importPaths))
 })
 
 module.exports = {
@@ -101,7 +105,7 @@ module.exports = {
                 }]
             },
             {
-                test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/backbone/backbone.js'),
+                test: require.resolve('backbone'),
                 use: 'imports-loader?this=>window'
             },
             {

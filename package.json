@@ -4,9 +4,10 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "devDependencies": {
+    "backbone": "0.9.10",
     "bundle-loader": "^0.5.5",
     "cheerio": "^0.22.0",
-    "codemirror": "^5.25.2",
+    "codemirror": "5.25.2",
     "eslint": "^3.19.0",
     "exports-loader": "^0.6.4",
     "expose-loader": "^0.7.3",
