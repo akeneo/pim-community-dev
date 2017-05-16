@@ -5,6 +5,7 @@
 - PIM-6394: Fix email validation when creating a user in order to be less restrictive
 - GITHUB-6161: Fix JobInstance class hardcoded in `Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute`
 - GITHUB-6151: Fix Mongo TimestampableSubscriber to properly update the CreatedAt date of a product
+- PIM-6254: Fix pagination on the API when filters are applied
 
 # 1.7.4 (2017-05-10)
 
