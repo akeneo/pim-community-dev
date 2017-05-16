@@ -66,24 +66,25 @@ class FamilyController
      */
     public function createAction()
     {
-        $family = $this->familyFactory->create();
-
-        if ($this->familyHandler->process($family)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
-
-            $response = [
-                'status' => 1,
-                'url'    => $this->router->generate(
-                    'pim_enrich_family_edit',
-                    ['code' => $family->getCode()]
-                )
-            ];
-
-            return new Response(json_encode($response));
-        }
-
-        return [
-            'form' => $this->familyForm->createView()
-        ];
+        //TODO => TO REMOVE!
+//        $family = $this->familyFactory->create();
+//
+//        if ($this->familyHandler->process($family)) {
+//            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
+//
+//            $response = [
+//                'status' => 1,
+//                'url'    => $this->router->generate(
+//                    'pim_enrich_family_edit',
+//                    ['code' => $family->getCode()]
+//                )
+//            ];
+//
+//            return new Response(json_encode($response));
+//        }
+//
+//        return [
+//            'form' => $this->familyForm->createView()
+//        ];
     }
 }

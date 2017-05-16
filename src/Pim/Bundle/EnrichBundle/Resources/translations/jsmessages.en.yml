@@ -151,6 +151,11 @@ pim_enrich:
         info:
             update_failed: Update failed
             update_successful: Successfully updated
+        create_popin:
+             code: Code
+             labels:
+                 save: Save
+                 cancel: Cancel
         product:
             title: product
             btn:
@@ -290,6 +295,8 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+            create_popin:
+                title: Create a new family
         attribute_label:
             pim_catalog_identifier:           Identifier
             pim_catalog_text:                 Text

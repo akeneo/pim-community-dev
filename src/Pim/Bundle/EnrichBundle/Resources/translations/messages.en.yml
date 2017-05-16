@@ -839,7 +839,6 @@ pane.accordion:
 # Popin titles
 popin.create:
     association_type.title: Create a new association type
-    family.title: Create a new family
     group.title: Create a new group
     group_type.title: Create a new group type
     product.title: Create a new product
