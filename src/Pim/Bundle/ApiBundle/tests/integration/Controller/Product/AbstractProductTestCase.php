@@ -5,6 +5,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -27,6 +28,8 @@ abstract class AbstractProductTestCase extends ApiTestCase
     /**
      * @param string $identifier
      * @param array  $data
+     *
+     * @return ProductInterface
      */
     protected function createProduct($identifier, array $data = [])
     {
@@ -35,6 +38,8 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         $this->get('akeneo_elasticsearch.client')->refreshIndex();
+
+        return $product;
     }
 
     /**
