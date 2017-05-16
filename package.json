@@ -5,13 +5,32 @@
   "homepage": "http://www.akeneo.com",
   "private": true,
   "devDependencies": {
+    "backbone": "0.9.10",
+    "bundle-loader": "^0.5.5",
+    "cheerio": "^0.22.0",
+    "codemirror": "5.25.2",
     "eslint": "^3.19.0",
+    "exports-loader": "^0.6.4",
+    "expose-loader": "^0.7.3",
+    "glob": "^7.1.1",
     "grunt": "~0.4.5",
     "grunt-contrib-jasmine": "~1.0.0",
     "grunt-eslint": "^19.0.0",
     "grunt-recess": "~1.0.1",
     "grunt-template-jasmine-requirejs": "~0.2.3",
-    "time-grunt": "~1.1.0"
+    "html-loader": "^0.4.5",
+    "imports-loader": "^0.7.1",
+    "jquery": "^1.11.0",
+    "loader-utils": "^1.1.0",
+    "lodash": "^4.17.4",
+    "path-replace-loader": "^1.0.0",
+    "raw-loader": "^0.5.1",
+    "summernote": "0.6.5",
+    "text-loader": "0.0.1",
+    "time-grunt": "~1.1.0",
+    "twig": "^1.10.4",
+    "webpack": "^2.4.1",
+    "yamljs": "^0.2.10"
   },
   "scripts": {
     "test": "grunt test"
