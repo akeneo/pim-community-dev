@@ -32,7 +32,7 @@
                                         FetcherRegistry.getFetcher('family').fetch(code, {
                                             cached: false,
                                             generateMissing: true,
-                                            no_filters: true,
+                                            apply_filters: false,
                                         }).then(function (family) {
                                             var label = _.escape(
                                                 i18n.getLabel(

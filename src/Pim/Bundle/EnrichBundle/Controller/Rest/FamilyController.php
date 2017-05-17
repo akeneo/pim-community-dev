@@ -132,7 +132,7 @@ class FamilyController
     public function getAction(Request $request, $identifier)
     {
         $family = $this->familyRepository->findOneByIdentifier($identifier);
-        $noFilters = $request->query->getBoolean('no_filters');
+        $applyFilters = $request->query->getBoolean('apply_filters', true);
 
         if (null === $family) {
             throw new NotFoundHttpException(sprintf('Family with code "%s" not found', $identifier));
@@ -142,7 +142,7 @@ class FamilyController
             $this->normalizer->normalize(
                 $family,
                 'internal_api',
-                ['no_filters' => $noFilters]
+                ['apply_filters' => $applyFilters]
             )
         );
     }

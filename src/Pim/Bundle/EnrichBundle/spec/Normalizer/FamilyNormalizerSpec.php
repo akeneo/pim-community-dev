@@ -86,9 +86,9 @@ class FamilyNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $familyNormalizer->normalize($family, 'standard', [])->willReturn($normalizedFamily);
+        $familyNormalizer->normalize($family, 'standard', ['apply_filters' => false])->willReturn($normalizedFamily);
 
-        $familyNormalizer->normalize($family, 'standard', [])->shouldBeCalled();
+        $familyNormalizer->normalize($family, 'standard', ['apply_filters' => false])->shouldBeCalled();
 
         $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $price]);
         $attributeRepository->findBy(['code' => ['name', 'price']])->willReturn([$name, $price]);
@@ -112,7 +112,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $versionManager->getOldestLogEntry($family)->shouldBeCalled();
         $versionManager->getNewestLogEntry($family)->shouldBeCalled();
 
-        $this->normalize($family, null, ['no_filters' => true])->shouldReturn(
+        $this->normalize($family, null, ['apply_filters' => false])->shouldReturn(
             [
                 'code'                   => 'tshirts',
                 'attributes'             => [
