@@ -17,6 +17,7 @@
 - PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 - PIM-6274: Successfully validate products with a custom validation on identifier
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
+- GITHUB-5949: Fix the deletion of a job instance (import/export) from the job edit page, cheers @BatsaxIV !
 
 ## BC breaks
 
