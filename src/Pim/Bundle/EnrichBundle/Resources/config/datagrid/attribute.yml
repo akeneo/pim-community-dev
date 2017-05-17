@@ -28,7 +28,7 @@ datagrid:
                 type: url
                 route: pim_enrich_attribute_edit
                 params:
-                    - id
+                    - code
             delete_link:
                 type: url
                 route: pim_enrich_attribute_remove

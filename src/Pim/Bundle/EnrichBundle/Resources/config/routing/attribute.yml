@@ -12,10 +12,9 @@ pim_enrich_attribute_create:
     defaults: { _controller: pim_enrich.controller.attribute:createAction }
 
 pim_enrich_attribute_edit:
-    path: /{id}/edit
-    defaults: { _controller: pim_enrich.controller.attribute:editAction }
+    path: /{code}/edit
     requirements:
-        id: \d+
+        code: '[a-zA-Z0-9_]+'
 
 pim_enrich_attribute_sort:
     path: /sort

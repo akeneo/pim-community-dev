@@ -222,10 +222,10 @@ config:
                     config:
                         entity: association-type
                 pim_enrich_attribute_create:
-                    module: pim/controller/form
+                    module: pim/controller/attribute
                     aclResourceId: pim_enrich_attribute_create
                 pim_enrich_attribute_edit:
-                    module: pim/controller/form
+                    module: pim/controller/attribute
                     aclResourceId: pim_enrich_attribute_edit
                 pim_enrich_attributegroup_create:
                     module: pim/controller/attribute-group/create
@@ -240,10 +240,10 @@ config:
                     aclResourceId: pim_enrich_attributegroup_edit
                 pim_enrich_categorytree_create:
                     module: pim/controller/form
-                    aclResourceId:  pim_enrich_product_category_create
+                    aclResourceId: pim_enrich_product_category_create
                 pim_enrich_categorytree_edit:
                     module: pim/controller/form
-                    aclResourceId:  pim_enrich_product_category_edit
+                    aclResourceId: pim_enrich_product_category_edit
                 pim_enrich_categorytree_index:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_product_category_list
@@ -502,6 +502,7 @@ config:
         pim/controller/user:                   pimenrich/js/controller/user
         pim/controller/attribute-group/edit:   pimenrich/js/controller/attribute-group/edit
         pim/controller/attribute-group/create: pimenrich/js/controller/attribute-group/create
+		pim/controller/attribute:              pimenrich/js/controller/attribute
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
@@ -592,6 +593,7 @@ config:
         # Channel
         pim/channel-edit-form/delete:                           pimenrich/js/channel/form/delete
         pim/channel-edit-form/save:                             pimenrich/js/channel/form/save
+        pim/channel-edit-form/properties/general:               pimenrich/js/channel/form/properties/general
         pim/channel-edit-form/properties/general/currencies:    pimenrich/js/channel/form/properties/general/currencies
         pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
         pim/channel-edit-form/properties/general/category-tree: pimenrich/js/channel/form/properties/general/category-tree
@@ -877,6 +879,7 @@ config:
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html
         pim/template/form/attribute-group/list:          pimenrich/templates/attribute-group/list.html
 
+        pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
         pim/template/channel/tab/properties/general/locales:        pimenrich/templates/channel/tab/properties/general/locales.html
         pim/template/channel/tab/properties/general/category-tree:  pimenrich/templates/channel/tab/properties/general/category-tree.html
