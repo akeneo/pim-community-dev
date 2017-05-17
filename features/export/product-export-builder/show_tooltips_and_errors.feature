@@ -25,7 +25,7 @@ Feature: Show tooltips and validation errors on export builder
     And I should see the tooltip "Select the products to export by their status. Ex: Export products whatsoever their status."
     And I should see the tooltip "Select the products to export by their completeness."
     And I should see the tooltip "Use the product categories in the tree (defined by the channel above) to select the products to export"
-    And I should see the tooltip "Identifiers of products you want to export separated by commas, spaces or line breaks"
+    And I should see the tooltip "Use the product identifiers to export separated by commas, spaces or line breaks"
 
   Scenario: Succefully show error messages on export builder
     Given I am logged in as "Julia"
