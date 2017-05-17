@@ -5,7 +5,6 @@ parameters:
 
     # Enrich
     pimee_security.event_subscriber.enrich.disable_product_value_form.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\DisableProductValueFieldSubscriber
-    pimee_security.event_subscriber.enrich.product.class:                    PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\ProductSubscriber
     pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
     pimee_security.event_subscriber.enrich.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber
     pimee_security.event_subscriber.enrich.add_default_user_group.class:     PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber
@@ -38,14 +37,6 @@ services:
         class: '%pimee_security.event_subscriber.enrich.disable_product_value_form.class%'
         arguments:
             - '@security.authorization_checker'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_security.event_subscriber.enrich.product:
-        class: '%pimee_security.event_subscriber.enrich.product.class%'
-        arguments:
-            - '@security.authorization_checker'
-            - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }
 
