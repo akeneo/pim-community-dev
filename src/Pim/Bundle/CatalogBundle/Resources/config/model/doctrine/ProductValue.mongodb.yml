@@ -1,5 +1,11 @@
 Pim\Component\Catalog\Model\ProductValue:
     type: embeddedDocument
+    indexes:
+        optionIds:
+            options:
+                background: true
+            keys:
+                optionIds: 1
     fields:
         id:
             id: true

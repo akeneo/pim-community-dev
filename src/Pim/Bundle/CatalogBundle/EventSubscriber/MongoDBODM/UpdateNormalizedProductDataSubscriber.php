@@ -79,7 +79,10 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $this->executeQueries();
+        if ($this->hasScheduledQueries()) {
+            $this->executeQueries();
+            $this->purgeScheduledQueries();
+        }
     }
 
     /**
@@ -166,5 +169,23 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
             $collection->update($query, $compObject, $options);
         }
+    }
+
+    /**
+     * Determine if there are scheduled queries
+     *
+     * @return bool
+     */
+    protected function hasScheduledQueries()
+    {
+        return !empty($this->scheduledQueries);
+    }
+
+    /**
+     * Purge scheduled queries
+     */
+    protected function purgeScheduledQueries()
+    {
+        $this->scheduledQueries = [];
     }
 }
