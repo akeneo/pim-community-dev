@@ -1,0 +1,5 @@
+extensions:
+    pim-attribute-edit-form-metric:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/attribute/metric
