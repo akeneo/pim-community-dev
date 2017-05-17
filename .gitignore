@@ -30,3 +30,8 @@ web/dist
 web/dist/app.min.js
 web/dist/paths.js
 web/dist/general.js
+npm-debug.log
+
+web/dist/0.bundle.js
+
+web/dist/paths.js

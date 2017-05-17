@@ -58,11 +58,21 @@ stage("Checkout") {
             unstash "project_files"
 
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-            sh "app/console oro:requirejs:generate-config"
             sh "app/console assets:install"
+            sh "app/console pim:installer:dump-require-paths"
 
             stash "project_files_full"
         }
+
+        docker.image('node').inside {
+            unstash "project_files"
+
+            sh "npm install --verbose"
+            sh "npm run webpack"
+
+            stash "project_files_full"
+        }
+
         deleteDir()
     }
 }
