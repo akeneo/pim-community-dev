@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.8.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-webpack",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
@@ -54,7 +54,7 @@
         {
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-community-dev.git",
-            "branch": "master"
+            "branch": "webpack"
         }
     ],
     "scripts": {
