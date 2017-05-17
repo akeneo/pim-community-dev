@@ -21,21 +21,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getChoicesByType(GroupTypeInterface $type)
-    {
-        $groups = $this->getGroupsByType($type);
-
-        $choices = [];
-        foreach ($groups as $group) {
-            $choices[$group->getId()] = $group->getCode();
-        }
-
-        return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countVariantGroupAxis(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('g');
@@ -49,142 +34,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->setParameter('attribute', $attribute)
             ->getQuery()
             ->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countVariantGroups()
-    {
-        $qb = $this->createQueryBuilder('g');
-
-        return $qb->innerJoin('g.type', 'type')
-            ->select('count(g.id)')
-            ->where($qb->expr()->eq('type.variant', ':variant'))
-            ->setParameter(':variant', true)
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllGroupsExceptVariant()
-    {
-        $qb = $this->createQueryBuilder('grp');
-        $qb->innerJoin('grp.type', 'type')
-            ->where($qb->expr()->eq('type.variant', ':variant'))
-            ->setParameter(':variant', false);
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllVariantGroups()
-    {
-        return $this->getAllVariantGroupsQB()->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroupsByIds(array $variantGroupIds, $whereIn = true)
-    {
-        $qb = $this->createQueryBuilder('g');
-
-        if ($whereIn) {
-            $qb = $qb->where($qb->expr()->in('g.id', ':ids'));
-        } else {
-            $qb = $qb->where($qb->expr()->notIn('g.id', ':ids'));
-        }
-
-        return $qb->setParameter(':ids', $variantGroupIds)
-            ->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllVariantGroupIds()
-    {
-        $variantGroupIds = $this->getAllVariantGroupsQB()
-            ->select('g.id')
-            ->getQuery()
-            ->execute(null, AbstractQuery::HYDRATE_ARRAY);
-
-        $variantGroupIds = array_map('current', $variantGroupIds);
-
-        return $variantGroupIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroupsByAttributeIds(array $attributeIds)
-    {
-        $qb = $this->getAllVariantGroupsQB();
-        $variantGroups = $qb->innerJoin('g.axisAttributes', 'attributes')
-            ->getQuery()->execute();
-
-        // This block should be in the DQL query, but hard to do.
-        $groupsWithAttributes = array_filter(
-            $variantGroups,
-            function ($variantGroup) use ($attributeIds) {
-                $groupAttributeIds = $variantGroup->getAttributeIds();
-                $commonAttributes = array_intersect($groupAttributeIds, $attributeIds);
-
-                return count($commonAttributes) === count($groupAttributeIds);
-            }
-        );
-
-        return $groupsWithAttributes;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroupByProductTemplate(ProductTemplateInterface $productTemplate)
-    {
-        $qb = $this->createQueryBuilder('g');
-
-        $qb->innerJoin('g.productTemplate', 'pt')
-            ->where($qb->expr()->eq('pt', ':productTemplate'))
-            ->setParameter(':productTemplate', $productTemplate->getId());
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createAssociationDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('g');
-
-        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
-        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
-
-        $isCheckecExpr =
-            'CASE WHEN (g.id IN (:associatedIds) OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
-            'THEN true ELSE false END';
-
-        $isAssociatedExpr = 'CASE WHEN g.id IN (:associatedIds) THEN true ELSE false END';
-
-        $qb
-            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
-            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
-            ->addSelect('translation.label')
-            ->addSelect($isCheckecExpr.' AS is_checked')
-            ->addSelect($isAssociatedExpr.' AS is_associated');
-
-        $qb
-            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :dataLocale')
-            ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :dataLocale');
-
-        return $qb;
     }
 
     /**
@@ -231,57 +80,55 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    protected function getAlias()
+    public function getAllGroupsExceptVariant()
     {
-        return 'ProductGroup';
+        $qb = $this->createQueryBuilder('grp');
+        $qb->innerJoin('grp.type', 'type')
+            ->where($qb->expr()->eq('type.variant', ':variant'))
+            ->setParameter(':variant', false);
+
+        return $qb->getQuery()->execute();
     }
 
     /**
-     * Get ordered groups query builder
-     *
-     * @param GroupTypeInterface $type
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
-    protected function getGroupsByTypeQB(GroupTypeInterface $type)
+    public function getAllVariantGroups()
     {
-        $alias = $this->getAlias();
-
-        return $this->createQueryBuilder($alias)
-            ->where($alias.'.type = :groupType')
-            ->addOrderBy($alias.'.code', 'ASC')
-            ->setParameter('groupType', $type);
+        return $this->getAllVariantGroupsQB()->getQuery()->execute();
     }
 
     /**
-     * Get all variant groups query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
-    protected function getAllVariantGroupsQB()
+    public function createAssociationDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('g');
 
-        return $qb->innerJoin('g.type', 'type')
-            ->where($qb->expr()->eq('type.variant', ':variant'))
-            ->setParameter(':variant', true);
-    }
+        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
+        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
 
-    /**
-     * Get ordered groups by type
-     *
-     * @param GroupTypeInterface $type
-     *
-     * @return array
-     */
-    protected function getGroupsByType(GroupTypeInterface $type)
-    {
-        return $this
-            ->getGroupsByTypeQB($type)
-            ->getQuery()
-            ->getResult();
+        $isCheckecExpr =
+            'CASE WHEN (g.id IN (:associatedIds) OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
+            'THEN true ELSE false END';
+
+        $isAssociatedExpr = 'CASE WHEN g.id IN (:associatedIds) THEN true ELSE false END';
+
+        $qb
+            ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
+            ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
+            ->addSelect('translation.label')
+            ->addSelect($isCheckecExpr.' AS is_checked')
+            ->addSelect($isAssociatedExpr.' AS is_associated');
+
+        $qb
+            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :dataLocale')
+            ->leftJoin('g.type', 'typ')
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :dataLocale');
+
+        return $qb;
     }
 
     /**
@@ -310,6 +157,20 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         }
 
         return $this->hasAttributeInProductTemplate($ids, $attributeCode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariantGroupByProductTemplate(ProductTemplateInterface $productTemplate)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $qb->innerJoin('g.productTemplate', 'pt')
+            ->where($qb->expr()->eq('pt', ':productTemplate'))
+            ->setParameter(':productTemplate', $productTemplate->getId());
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -366,5 +227,44 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         }
 
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAlias()
+    {
+        return 'ProductGroup';
+    }
+
+    /**
+     * Get ordered groups query builder
+     *
+     * @param GroupTypeInterface $type
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getGroupsByTypeQB(GroupTypeInterface $type)
+    {
+        $alias = $this->getAlias();
+
+        return $this->createQueryBuilder($alias)
+            ->where($alias.'.type = :groupType')
+            ->addOrderBy($alias.'.code', 'ASC')
+            ->setParameter('groupType', $type);
+    }
+
+    /**
+     * Get all variant groups query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getAllVariantGroupsQB()
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb->innerJoin('g.type', 'type')
+            ->where($qb->expr()->eq('type.variant', ':variant'))
+            ->setParameter(':variant', true);
     }
 }
