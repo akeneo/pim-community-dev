@@ -2,7 +2,7 @@ define(['underscore', 'backbone',
 // 'oro/navigation/dotmenu/view',
 'pim/router'],
 function(_, Backbone,
-    // DotmenuView, 
+    // DotmenuView,
     router) {
     // 'use strict';
     //
