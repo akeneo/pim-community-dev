@@ -16,7 +16,6 @@
 - PIM-6377: Fix potential notice in price property formatter
 - PIM-6387: Fix HTTP code returned when the token is invalid or expired
 - PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
-- PIM-6314: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
 - PIM-6381: Fix `Delete` button is visible on channel create screen
 - PIM-6398: Fix Summernote (WYSIWYG) style (backport GITHUB-6101 into 1.7)
 - PIM-6402: Clean attribute properties according to new validation rules during migration
