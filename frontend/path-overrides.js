@@ -11,5 +11,5 @@ module.exports = {
     'CodeMirror': 'node_modules/codemirror/lib/codemirror',
     'jquery-setup': 'src/Pim/Bundle/UIBundle/Resources/public/js/jquery-setup.js',
     'require-context': 'frontend/require-context',
-     config: 'frontend/module-config',
+     config: 'frontend/module-config'
 }

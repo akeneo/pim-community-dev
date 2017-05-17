@@ -123,6 +123,14 @@ module.exports = {
                 ]
             }, {
                 test: require.resolve('backbone'),
+                use: [
+                    {
+                        loader: 'expose-loader',
+                        options: 'Backbone'
+                    }
+                ]
+            }, {
+                test: require.resolve('backbone'),
                 use: 'imports-loader?this=>window'
             }, {
                 test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/jquery/jquery-1.10.2'),
