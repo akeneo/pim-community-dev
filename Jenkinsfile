@@ -61,7 +61,7 @@ stage("Checkout") {
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "app/console assets:install"
-                sh "app/console oro:requirejs:generate-config"
+                sh "app/console pim:installer:dump-require-paths"
 
                 stash "pim_community_dev_full"
             }

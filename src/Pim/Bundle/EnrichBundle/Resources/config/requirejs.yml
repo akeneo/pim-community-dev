@@ -581,7 +581,7 @@ config:
         pim/channel-edit-form/properties/general/currencies:    pimenrich/js/channel/form/properties/general/currencies
         pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
         pim/channel-edit-form/properties/conversion-unit:       pimenrich/js/channel/form/properties/conversion-unit
-        pim/channel-edit-form/properties/general/category-tree: pimenrich/js/channel/form/properties/general/category-tree.js 
+        pim/channel-edit-form/properties/general/category-tree: pimenrich/js/channel/form/properties/general/category-tree.js
 
         # Family
         pim/family-edit-form/delete:                                        pimenrich/js/family/form/delete
