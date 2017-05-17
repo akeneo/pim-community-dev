@@ -9,7 +9,7 @@ services:
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pimee_workflow_published_product'
 
-    pim_catalog.factory.published_product_bounded_cursor:
+    pimee_workflow.factory.published_product_bounded_cursor:
         class: '%akeneo_elasticsearch.cursor.bounded_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client'
@@ -17,4 +17,4 @@ services:
             - '%pimee_workflow.entity.published_product.class%'
             - '%akeneo_elasticsearch.cursor.bounded_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
-            - 'pim_catalog_published_product'
+            - 'pimee_workflow_published_product'
