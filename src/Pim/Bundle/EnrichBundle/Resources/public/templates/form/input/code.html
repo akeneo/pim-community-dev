@@ -1,11 +1,11 @@
 <div class="AknFieldContainer" data-code="identifier">
     <div class="AknFieldContainer-header">
-        <label title="<%- label %>" class="AknFieldContainer-label control-label required truncate">
+        <label title="<%- label %>" class="AknFieldContainer-label control-label required truncate" for="_code">
             <%- label %> <em><%- requiredLabel %></em>
         </label>
     </div>
-    <div class="AknFieldContainer-inputContainer">
-        <input type="text" class="AknTextField" value="<%- value %>"/>
+    <div class="AknFieldContainer-inputContainer field-input">
+        <input type="text" class="AknTextField" value="<%- value %>" id="_code" name="code"/>
     </div>
     <div class="AknFieldContainer-footer AknFieldContainer-validationErrors validation-errors">
         <% _.each(errors, function (error) { %>
