@@ -337,6 +337,7 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
+            attributes_selected: "{{ itemsCount }} attribut(s) sélectionné(s)"
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
         categories:
@@ -577,6 +578,7 @@ pim_enrich:
             title: Sélection d'attributs
         attributes_selector:
           attribute_group: Groupes d'attributs
+          attributes: "Rechercher dans les {{ itemsCount }} attributs"
           selected: "Attributs sélectionnés"
           clear: Réinitialiser
           all_group: Tous les groupes

@@ -17,38 +17,36 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_localizable_price',
-                'type'                => AttributeTypes::PRICE_COLLECTION,
-                'localizable'         => true,
-                'scopable'            => true,
-                'decimals_allowed'    => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_localizable_price',
+            'type'                => AttributeTypes::PRICE_COLLECTION,
+            'localizable'         => true,
+            'scopable'            => true,
+            'decimals_allowed'    => true
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_localizable_price' => [
-                        ['data' => [['amount' => '-5.00', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => [['amount' => '14', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => [['amount' => '100', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_localizable_price' => [
+                    ['data' => [['amount' => '-5.00', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => [['amount' => '14', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => [['amount' => '100', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                ],
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_localizable_price' => [
-                        ['data' => [['amount' => '-5.00', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => [['amount' => '10', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => [['amount' => '75', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                        ['data' => [['amount' => '75', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_localizable_price' => [
+                    ['data' => [['amount' => '-5.00', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => [['amount' => '10', 'currency' => 'USD']], 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => [['amount' => '75', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => [['amount' => '75', 'currency' => 'USD']], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

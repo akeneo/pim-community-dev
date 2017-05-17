@@ -16,35 +16,33 @@ class OptionFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttributeOption([
-               'attribute' => 'a_simple_select',
-               'code'      => 'orange'
-            ]);
+        $this->createAttributeOption([
+           'attribute' => 'a_simple_select',
+           'code'      => 'orange'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_simple_select',
-                'code'      => 'black'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_simple_select',
+            'code'      => 'black'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_simple_select' => [
-                        ['data' => 'orange', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_simple_select' => [
+                    ['data' => 'orange', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_simple_select' => [
-                        ['data' => 'black', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_simple_select' => [
+                    ['data' => 'black', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorIn()

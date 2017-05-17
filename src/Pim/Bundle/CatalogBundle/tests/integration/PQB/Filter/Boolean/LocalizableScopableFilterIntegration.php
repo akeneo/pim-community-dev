@@ -17,35 +17,33 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_yes_no',
-                'type'                => AttributeTypes::BOOLEAN,
-                'localizable'         => true,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_yes_no',
+            'type'                => AttributeTypes::BOOLEAN,
+            'localizable'         => true,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_yes_no' => [
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_yes_no' => [
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_yes_no' => [
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_yes_no' => [
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce']
                 ]
-            ]);
-        }
+            ]
+        ]);
     }
 
     public function testOperatorEquals()

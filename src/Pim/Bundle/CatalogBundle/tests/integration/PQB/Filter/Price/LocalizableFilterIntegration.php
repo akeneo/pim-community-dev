@@ -17,34 +17,32 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_price',
-                'type'                => AttributeTypes::PRICE_COLLECTION,
-                'localizable'         => true,
-                'scopable'            => false
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_price',
+            'type'                => AttributeTypes::PRICE_COLLECTION,
+            'localizable'         => true,
+            'scopable'            => false
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_price' => [
-                        ['data' => [['amount' => 20, 'currency' => 'EUR']], 'locale' => 'en_US', 'scope' => null],
-                        ['data' => [['amount' => 21, 'currency' => 'EUR']], 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_price' => [
+                    ['data' => [['amount' => 20, 'currency' => 'EUR']], 'locale' => 'en_US', 'scope' => null],
+                    ['data' => [['amount' => 21, 'currency' => 'EUR']], 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_price' => [
-                        ['data' => [['amount' => 10, 'currency' => 'EUR']], 'locale' => 'en_US', 'scope' => null],
-                        ['data' => [['amount' => 1, 'currency' => 'EUR']], 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_price' => [
+                    ['data' => [['amount' => 10, 'currency' => 'EUR']], 'locale' => 'en_US', 'scope' => null],
+                    ['data' => [['amount' => 1, 'currency' => 'EUR']], 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

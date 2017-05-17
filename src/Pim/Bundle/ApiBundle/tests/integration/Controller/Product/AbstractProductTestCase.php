@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -14,17 +14,6 @@ use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
  */
 abstract class AbstractProductTestCase extends ApiTestCase
 {
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
-    }
-
     /**
      * @param string $identifier
      * @param array  $data
@@ -82,5 +71,27 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
 
         return $data;
+    }
+
+    /**
+     * @param Response $response
+     * @param array    $expected
+     */
+    protected function assertListResponse(Response $response, $expected)
+    {
+        $result = json_decode($response->getContent(), true);
+        $expected = json_decode($expected, true);
+
+        foreach ($result['_embedded']['items'] as $index => $product) {
+            $product = $this->sanitizeDateFields($product);
+            $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
+
+            if (isset($expected['_embedded']['items'][$index])) {
+                $expected['_embedded']['items'][$index] = $this->sanitizeDateFields($expected['_embedded']['items'][$index]);
+                $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
+            }
+        }
+
+        $this->assertEquals($expected, $result);
     }
 }
