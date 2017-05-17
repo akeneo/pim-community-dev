@@ -34,4 +34,4 @@ npm-debug.log
 
 web/dist/0.bundle.js
 
-web/dist/paths.js
+web/dist/app.min.js
