@@ -10,6 +10,7 @@ parameters:
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
     pim_enrich.provider.form.job_instance.class:   Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
+    pim_enrich.provider.form.attribute.class:      Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
 
 services:
@@ -114,6 +115,14 @@ services:
                 xlsx_locale_import: pim-job-instance-xlsx-base-import
                 xlsx_product_import: pim-job-instance-xlsx-product-import
                 xlsx_variant_group_import: pim-job-instance-xlsx-base-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.form.attribute:
+        class: '%pim_enrich.provider.form.attribute.class%'
+        arguments:
+            -
+                pim_catalog_metric: pim-attribute-edit-form-metric
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 

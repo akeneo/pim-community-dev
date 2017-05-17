@@ -143,6 +143,9 @@ services:
             - '@pim_enrich.provider.field.chained'
             - '@pim_enrich.provider.empty_value.chained'
             - '@pim_enrich.provider.filter.chained'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_enrich.provider.form.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

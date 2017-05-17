@@ -5,6 +5,9 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\Form\NoCompatibleFormProviderFoundException;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -32,22 +35,40 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var FilterProviderInterface */
     protected $filterProvider;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
+    /** @var NormalizerInterface */
+    protected $versionNormalizer;
+
+    /** @var FormProviderInterface */
+    private $formProvider;
+
     /**
      * @param NormalizerInterface         $normalizer
      * @param FieldProviderInterface      $fieldProvider
      * @param EmptyValueProviderInterface $emptyValueProvider
      * @param FilterProviderInterface     $filterProvider
+     * @param VersionManager              $versionManager
+     * @param NormalizerInterface         $versionNormalizer
+     * @param FormProviderInterface       $formProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,
-        FilterProviderInterface $filterProvider
+        FilterProviderInterface $filterProvider,
+        VersionManager $versionManager,
+        NormalizerInterface $versionNormalizer,
+        FormProviderInterface $formProvider
     ) {
         $this->normalizer = $normalizer;
         $this->fieldProvider = $fieldProvider;
         $this->emptyValueProvider = $emptyValueProvider;
         $this->filterProvider = $filterProvider;
+        $this->versionManager = $versionManager;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->formProvider = $formProvider;
     }
 
     /**
@@ -60,28 +81,39 @@ class AttributeNormalizer implements NormalizerInterface
         $groupCode = (null === $attribute->getGroup()) ? null : $attribute->getGroup()->getCode();
 
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'standard', $context) + [
-            'id'                  => $attribute->getId(),
-            'wysiwyg_enabled'     => $attribute->isWysiwygEnabled(),
-            'empty_value'         => $this->emptyValueProvider->getEmptyValue($attribute),
-            'field_type'          => $this->fieldProvider->getField($attribute),
-            'filter_types'        => $this->filterProvider->getFilters($attribute),
-            'is_locale_specific'  => (int) $attribute->isLocaleSpecific(),
-            'available_locales'   => $attribute->getAvailableLocaleCodes(),
-            'max_characters'      => $attribute->getMaxCharacters(),
-            'validation_rule'     => $attribute->getValidationRule(),
-            'validation_regexp'   => $attribute->getValidationRegexp(),
-            'number_min'          => $attribute->getNumberMin(),
-            'number_max'          => $attribute->getNumberMax(),
-            'decimals_allowed'    => $attribute->isDecimalsAllowed(),
-            'negative_allowed'    => $attribute->isNegativeAllowed(),
-            'date_min'            => $dateMin,
-            'date_max'            => $dateMax,
-            'metric_family'       => $attribute->getMetricFamily(),
-            'default_metric_unit' => $attribute->getDefaultMetricUnit(),
-            'max_file_size'       => $attribute->getMaxFileSize(),
-            'sort_order'          => $attribute->getSortOrder(),
-            'group_code'          => $groupCode,
+            'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
+            'field_type'         => $this->fieldProvider->getField($attribute),
+            'filter_types'       => $this->filterProvider->getFilters($attribute),
+            'is_locale_specific' => (int) $attribute->isLocaleSpecific(),
+            'date_min'           => $dateMin,
+            'date_max'           => $dateMax,
+            'group_code'         => $groupCode,
         ];
+
+        $firstVersion = $this->versionManager->getOldestLogEntry($attribute);
+        $lastVersion = $this->versionManager->getNewestLogEntry($attribute);
+
+        $firstVersion = null !== $firstVersion ?
+            $this->versionNormalizer->normalize($firstVersion, 'internal_api') :
+            null;
+        $lastVersion = null !== $lastVersion ?
+            $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
+            null;
+
+        $normalizedAttribute['meta'] = [
+            'id'      => $attribute->getId(),
+            'created' => $firstVersion,
+            'updated' => $lastVersion,
+            'form'    => 'pim-attribute-edit-form',
+        ];
+
+        try {
+            $additionalForm = $this->formProvider->getForm($attribute);
+        } catch (NoCompatibleFormProviderFoundException $e) {
+            $additionalForm = null;
+        }
+
+        $normalizedAttribute['meta']['additional_form'] = $additionalForm;
 
         // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes
         // loading does not need complete group normalization. This has to be cleaned.
