@@ -7,7 +7,7 @@
  */
 define([
         'jquery',
-        'module',
+        'config',
         'routing'
     ], function (
         $,
@@ -24,7 +24,7 @@ define([
              * @returns {Promise}
              */
             save: function (project) {
-                var saveRoute = Routing.generate(module.config().url);
+                var saveRoute = Routing.generate(module.config(__moduleName).url);
 
                 return $.post(saveRoute, {project: project});
             }

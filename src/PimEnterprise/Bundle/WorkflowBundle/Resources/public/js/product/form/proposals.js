@@ -15,7 +15,8 @@ define(
         'pim/form',
         'pim/product-manager',
         'pim/user-context',
-        'pimee/template/product/tab/proposals'
+        'pimee/template/product/tab/proposals',
+        'require-context'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define(
         BaseForm,
         ProductManager,
         UserContext,
-        template
+        template,
+        requireContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -151,9 +153,12 @@ define(
                             data: JSON.parse(response.data)
                         });
 
-                        require(response.metadata.requireJSModules, function () {
-                            datagridBuilder(_.toArray(arguments));
-                        });
+                        var resolvedModules = []
+                        response.metadata.requireJSModules.forEach(function(module) {
+                            resolvedModules.push(requireContext(module))
+                        })
+
+                        datagridBuilder(resolvedModules);
                     }.bind(this));
             }
         });
