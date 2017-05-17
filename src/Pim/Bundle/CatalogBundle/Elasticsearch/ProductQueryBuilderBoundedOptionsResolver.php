@@ -34,6 +34,12 @@ class ProductQueryBuilderBoundedOptionsResolver implements ProductQueryBuilderOp
         $resolver->setDefined(['locale', 'scope', 'limit', 'search_after', 'search_after_unique_key']);
         $resolver->setRequired(['locale', 'scope', 'limit']);
 
+        $resolver->setAllowedTypes('locale', ['string', 'null']);
+        $resolver->setAllowedTypes('scope', ['string', 'null']);
+        $resolver->setAllowedTypes('limit', 'int');
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
+
         return $resolver;
     }
 }

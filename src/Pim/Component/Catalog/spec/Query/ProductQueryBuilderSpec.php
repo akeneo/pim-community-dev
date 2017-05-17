@@ -147,7 +147,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorInterface $cursor
     ) {
         $searchQb->getQuery()->willReturn([]);
-        $cursorFactory->createCursor(Argument::any(), ['locale' => 'en_US', 'scope' => 'print'] )->shouldBeCalled()->willReturn($cursor);
+        $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
     }

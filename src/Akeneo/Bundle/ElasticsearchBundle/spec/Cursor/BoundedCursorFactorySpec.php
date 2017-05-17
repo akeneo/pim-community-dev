@@ -43,7 +43,7 @@ class BoundedCursorFactorySpec extends ObjectBehavior
             ]
         ]);
 
-        $this->createCursor([], ['size' => 100, 'limit' => 150, 'search_after' => ['foo']])
+        $this->createCursor([], ['page_size' => 100, 'limit' => 150, 'search_after' => ['foo']])
             ->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
@@ -59,7 +59,7 @@ class BoundedCursorFactorySpec extends ObjectBehavior
             ]
         ]);
 
-        $this->createCursor([], ['size' => 100, 'limit' => 150, 'search_after' => ['2017-12-12'], 'search_after_unique_key' => 'foo'])
+        $this->createCursor([], ['page_size' => 100, 'limit' => 150, 'search_after' => ['2017-12-12'], 'search_after_unique_key' => 'foo'])
             ->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
@@ -69,6 +69,6 @@ class BoundedCursorFactorySpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidObjectException::objectExpected(ProductInterface::class, CursorableRepositoryInterface::class)
-        )->during('createCursor', [[], ['limit' => 150, 'search_after' => null]]);
+        )->during('createCursor', [[], ['limit' => 150, 'search_after' => []]]);
     }
 }

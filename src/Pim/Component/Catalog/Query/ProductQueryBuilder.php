@@ -77,7 +77,16 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $this->defaultContext);
+        $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit'];
+        $cursorOptions = array_filter(
+            $this->defaultContext,
+            function ($key) use ($allowedCursorOptions) {
+                return in_array($key, $allowedCursorOptions);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $cursorOptions);
     }
 
     /**

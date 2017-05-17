@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Cursor factory to instantiate an elasticsearch bounded cursor
@@ -64,24 +65,55 @@ class BoundedCursorFactory implements CursorFactoryInterface
      */
     public function createCursor($queryBuilder, array $options = [])
     {
+        $options = $this->resolveOptions($options);
+
         $repository = $this->om->getRepository($this->entityClassName);
         if (!$repository instanceof CursorableRepositoryInterface) {
             throw InvalidObjectException::objectExpected($this->entityClassName, CursorableRepositoryInterface::class);
         }
 
-        $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
-        $searchAfter = !isset($options['search_after']) ? [] : $options['search_after'];
-        $searchAfterUniqueKey = !isset($options['search_after_unique_key']) ? null : $options['search_after_unique_key'];
-
         return new $this->cursorClassName(
             $this->searchEngine,
             $repository,
             $queryBuilder,
-            $searchAfter,
+            $options['search_after'],
             $this->indexType,
-            $pageSize,
+            $options['page_size'],
             $options['limit'],
-            $searchAfterUniqueKey
+            $options['search_after_unique_key']
         );
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefined(
+            [
+                'page_size',
+                'search_after',
+                'search_after_unique_key',
+                'limit'
+            ]
+        );
+        $resolver->setDefaults(
+            [
+                'page_size' => $this->pageSize,
+                'search_after' => [],
+                'search_after_unique_key' => null
+            ]
+        );
+        $resolver->setAllowedTypes('page_size', 'int');
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
+        $resolver->setAllowedTypes('limit', 'int');
+
+        $options = $resolver->resolve($options);
+
+        return $options;
     }
 }

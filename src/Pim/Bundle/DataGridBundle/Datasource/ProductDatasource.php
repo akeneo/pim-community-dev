@@ -88,8 +88,10 @@ class ProductDatasource extends Datasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
-        $factoryConfig['limit'] = $this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
-        $factoryConfig['search_after'] =  $this->getConfiguration('search_after', false);
+        $factoryConfig['limit'] = (int)$this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
+
+        $factoryConfig['search_after'] = null !== $this->getConfiguration('search_after', false) ?
+            $this->getConfiguration('search_after', false) : [];
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();

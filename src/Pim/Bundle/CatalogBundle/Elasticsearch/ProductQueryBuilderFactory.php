@@ -157,11 +157,20 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',
-            'repository_parameters' => 'o',
+            'repository_parameters' => ['o'],
             'default_locale'        => null,
             'default_scope'         => null,
             'filters'               => [],
         ]);
+        $resolver->setAllowedTypes('repository_method', 'string');
+        $resolver->setAllowedTypes('repository_parameters', 'array');
+        $resolver->setAllowedTypes('currentGroup', 'string');
+        $resolver->setAllowedTypes('product', 'string');
+        $resolver->setAllowedTypes('default_locale', ['string', 'null']);
+        $resolver->setAllowedTypes('default_scope', ['string', 'null']);
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
+        $resolver->setAllowedTypes('limit', 'int');
         $resolver->setAllowedTypes('filters', 'array');
     }
 
@@ -175,6 +184,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             ->setDefined(['context'])
             ->setDefaults([
                 'context'  => [],
-            ]);
+            ])
+            ->setAllowedTypes('context', 'array')
+        ;
     }
 }
