@@ -6,10 +6,8 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 
 /**
@@ -21,13 +19,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
  */
 interface ProductRepositoryInterface extends ObjectRepository
 {
-    /**
-     * @param ChannelInterface $channel
-     *
-     * @return mixed
-     */
-    public function buildByChannelAndCompleteness(ChannelInterface $channel);
-
     /**
      * Find all products in a variant group (by variant axis attribute values)
      *
@@ -53,11 +44,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function getAvailableAttributeIdsToExport(array $productIds);
-
-    /**
-     * @return ObjectManager
-     */
-    public function getObjectManager();
 
     /**
      * @param string $identifier

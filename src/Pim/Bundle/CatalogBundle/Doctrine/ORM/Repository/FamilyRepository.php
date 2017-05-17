@@ -17,23 +17,6 @@ use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 class FamilyRepository extends EntityRepository implements FamilyRepositoryInterface
 {
     /**
-     * @param int $id
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function buildOneWithAttributes($id)
-    {
-        return $this
-            ->createQueryBuilder('family')
-            ->where('family.id = '.intval($id))
-            ->addSelect('attribute')
-            ->leftJoin('family.attributes', 'attribute')
-            ->leftJoin('attribute.group', 'group')
-            ->addOrderBy('group.sortOrder', 'ASC')
-            ->addOrderBy('attribute.sortOrder', 'ASC');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
@@ -82,26 +65,6 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
         }
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAttributeIdsFromFamilies(array $familyIds)
-    {
-        $qb = $this->createQueryBuilder('f');
-        $qb
-            ->select('f.id AS f_id, a.id AS a_id')
-            ->leftJoin('f.attributes', 'a')
-            ->where($qb->expr()->in('f.id', $familyIds));
-
-        $results = $qb->getQuery()->getArrayResult();
-        $attrByFamilies = [];
-        foreach ($results as $result) {
-            $attrByFamilies[$result['f_id']][] = $result['a_id'];
-        }
-
-        return $attrByFamilies;
     }
 
     /**

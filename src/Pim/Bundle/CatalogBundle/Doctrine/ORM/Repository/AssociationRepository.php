@@ -24,31 +24,6 @@ class AssociationRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function countForAssociationType(AssociationTypeInterface $associationType)
-    {
-        $qb = $this->createQueryBuilder('pa');
-
-        $qb
-            ->select(
-                $qb->expr()->countDistinct('pa.id')
-            )
-            ->leftJoin('pa.products', 'products')
-            ->leftJoin('pa.groups', 'groups')
-            ->where('pa.associationType = :association_type')
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->isNotNull('products.id'),
-                    $qb->expr()->isNotNull('groups.id')
-                )
-            )
-            ->setParameter('association_type', $associationType);
-
-        return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         list($productCode, $associationCode) = explode('.', $code);

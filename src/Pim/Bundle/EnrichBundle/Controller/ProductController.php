@@ -127,7 +127,7 @@ class ProductController
      *
      * @return array
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $this->seqEditManager->removeByUser($this->tokenStorage->getToken()->getUser());
 
