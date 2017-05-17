@@ -4,6 +4,7 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.family.create_popin.title
+           successMessage: pim_enrich.entity.family.message.created
            innerForm: pim-family-create-form
            editRoute: pim_enrich_family_edit
            routerKey: code

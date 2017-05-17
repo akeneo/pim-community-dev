@@ -4,6 +4,7 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.product.create_popin.title
+           successMessage: pim_enrich.entity.product.message.created
            innerForm: pim-product-create-form
            editRoute: pim_enrich_product_edit
 

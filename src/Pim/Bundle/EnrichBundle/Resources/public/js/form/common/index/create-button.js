@@ -48,7 +48,7 @@ define(
                 this.$el.html(this.template({
                     title: __(this.config.title),
                     iconName: this.config.iconName,
-                    url: Routing.generate(this.config.url)
+                    url: this.config.url ? Routing.generate(this.config.url) : ''
                 }));
 
                 if (this.config.modalForm) {
@@ -58,6 +58,7 @@ define(
                                 modal.open();
                             })
                     }.bind(this));
+
                     return this;
                 }
 
