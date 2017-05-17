@@ -10,6 +10,7 @@ const deepMerge = require('merge-objects')
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const pathOverrides = require('./frontend/path-overrides')
 const requireConfigPaths = require(path.resolve('web/js/require-config'))
+const AddToContextPlugin = require('./frontend/add-context-plugin')
 
 console.log('Start compile with webpack from', __dirname)
 
@@ -20,10 +21,8 @@ const getRelativePaths = (absolutePaths) => {
     for (let absolutePath in absolutePaths) {
         const pathValue = absolutePaths[absolutePath]
         const currentPath = path.resolve('./')
-        // do it without symlink resolution
         const replacedPath = path.relative(currentPath, pathValue)
         replacedPaths[pathValue] = replacedPath
-        console.log(pathValue)
         exportPaths[absolutePath] = replacedPath
     }
 
@@ -169,14 +168,13 @@ module.exports = {
             '$': 'jquery',
             'jQuery': 'jquery'
         }),
-        // This is needed until summernote is updated
         new webpack.DefinePlugin({
             'require.specified': 'require.resolve'
         }),
         new ContextReplacementPlugin(
           /.\/dynamic/,
-          path.resolve('./'),
-          relativePaths.replacedPaths
-        )
+          path.resolve('./')
+        ),
+        new AddToContextPlugin(_.values(importPaths))
     ]
 }
