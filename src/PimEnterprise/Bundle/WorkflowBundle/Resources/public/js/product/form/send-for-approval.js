@@ -15,7 +15,7 @@ define(
         'oro/messenger',
         'pim/form',
         'pim/product-manager',
-        'text!pimee/template/product/submit-draft',
+        'pimee/template/product/submit-draft',
         'pim/form-modal'
     ],
     function (

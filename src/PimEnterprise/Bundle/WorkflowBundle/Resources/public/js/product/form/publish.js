@@ -6,7 +6,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pimee/template/product/publish',
+        'pimee/template/product/publish',
         'oro/loading-mask',
         'pim/fetcher-registry',
         'pimee/published-product-manager',

@@ -11,7 +11,7 @@ define(
         'underscore',
         'module',
         'pim/form',
-        'text!pimee/template/product/original-product',
+        'pimee/template/product/original-product',
         'pim/router',
         'pim/user-context'
     ],

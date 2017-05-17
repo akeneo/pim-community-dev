@@ -9,7 +9,7 @@ define(
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pimee/template/product/source-switcher'
+        'pimee/template/product/source-switcher'
     ],
     function (
         _,

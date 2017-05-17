@@ -5,7 +5,7 @@ define(
         'underscore',
         'pim/form',
         'oro/mediator',
-        'text!pimee/template/product/meta/owner-groups'
+        'pimee/template/product/meta/owner-groups'
     ],
     function (_, BaseForm, mediator, formTemplate) {
         var FormView = BaseForm.extend({

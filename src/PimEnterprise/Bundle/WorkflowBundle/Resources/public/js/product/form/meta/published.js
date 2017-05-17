@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pimee/template/product/meta/published'
+        'pimee/template/product/meta/published'
     ],
     function (_, BaseForm, formTemplate) {
         var FormView = BaseForm.extend({

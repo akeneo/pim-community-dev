@@ -8,8 +8,8 @@ define(
         'pim/router',
         'pim/dropzonejs',
         'oro/messenger',
-        'text!pimee/template/asset/mass-upload',
-        'text!pimee/template/asset/mass-upload-row'
+        'pimee/template/asset/mass-upload',
+        'pimee/template/asset/mass-upload-row'
     ],
     function (
         $,

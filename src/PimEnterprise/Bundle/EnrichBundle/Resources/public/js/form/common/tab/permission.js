@@ -12,7 +12,7 @@ define([
         'pim/form',
         'pim/fetcher-registry',
         'pim/common/property',
-        'text!pimee/template/form/tab/permission'
+        'pimee/template/form/tab/permission'
     ],
     function (
         _,

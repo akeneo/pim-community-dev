@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'oro/messenger',
         'pim/grid/view-selector/current',
-        'text!teamwork-assistant/templates/grid/view-selector/current'
+        'teamwork-assistant/templates/grid/view-selector/current'
     ],
     function (
         _,

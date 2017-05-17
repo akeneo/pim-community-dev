@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text!teamwork-assistant/templates/grid/view-selector/edit-project',
+        'teamwork-assistant/templates/grid/view-selector/edit-project',
         'teamwork-assistant/project/create-form',
         'pim/formatter/date',
         'pim/date-context',

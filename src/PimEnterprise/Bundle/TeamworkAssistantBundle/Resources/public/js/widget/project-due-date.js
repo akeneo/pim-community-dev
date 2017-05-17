@@ -14,7 +14,7 @@ define(
         'backbone',
         'pim/formatter/date',
         'pim/date-context',
-        'text!teamwork-assistant/templates/widget/project-due-date'
+        'teamwork-assistant/templates/widget/project-due-date'
     ],
     function ($, _, __, BaseForm, Backbone, DateFormatter, DateContext, template) {
         return BaseForm.extend({

@@ -23,8 +23,8 @@ define(
         'pim/formatter/date',
         'pim/fetcher-registry',
         'pim/i18n',
-        'text!teamwork-assistant/templates/grid/create-project-modal-content',
-        'text!teamwork-assistant/templates/field-error'
+        'teamwork-assistant/templates/grid/create-project-modal-content',
+        'teamwork-assistant/templates/field-error'
     ],
     function (
         $,

@@ -11,7 +11,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pimee/template/picker/asset-collection',
+        'pimee/template/picker/asset-collection',
         'pim/fetcher-registry',
         'pim/form-builder',
         'backbone/bootstrap-modal'

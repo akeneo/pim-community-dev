@@ -15,7 +15,7 @@ define(
         'pim/form',
         'pim/product-manager',
         'pim/user-context',
-        'text!pimee/template/product/tab/proposals'
+        'pimee/template/product/tab/proposals'
     ],
     function (
         $,
