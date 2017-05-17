@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-6314: Fix FOSRestBundle exceptions codes configuration
+- PIM-6314: Deleting a published product raises an internal error
 
 # 1.7.3 (2017-04-14)
 
