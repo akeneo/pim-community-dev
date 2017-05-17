@@ -11,9 +11,22 @@ define(
         'pim/user-context',
         'oro/translator',
         'oro/loading-mask',
-        'pim/router'
+        'pim/router',
+        'oro/messenger'
     ],
-    function ($, _, Backbone, Routing, BaseForm, FormBuilder, UserContext, __, LoadingMask, router) {
+    function (
+        $,
+        _,
+        Backbone,
+        Routing,
+        BaseForm,
+        FormBuilder,
+        UserContext,
+        __,
+        LoadingMask,
+        router,
+        messenger
+    ) {
         return BaseForm.extend({
             config: {},
 
@@ -77,6 +90,8 @@ define(
                                     } else {
                                         routerParams = {id: entity.meta.id};
                                     }
+
+                                    messenger.notificationFlashMessage('success', __(self.config.successMessage));
 
                                     router.redirectToRoute(
                                         self.config.editRoute,

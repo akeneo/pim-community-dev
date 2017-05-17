@@ -320,9 +320,6 @@ config:
                     aclResourceId: pim_enrich_family_index
                     config:
                         entity: family
-                pim_enrich_family_create:
-                    module: pim/controller/template
-                    aclResourceId: pim_enrich_family_create
                 pim_enrich_family_edit:
                     module: pim/controller/family
                     aclResourceId: pim_enrich_family_index

@@ -1,10 +1,6 @@
 pim_enrich_family_index:
     path: ''
 
-pim_enrich_family_create:
-    path: /create
-    defaults: { _controller: pim_enrich.controller.family:createAction }
-
 pim_enrich_family_edit:
     path: /{code}/edit
     requirements:

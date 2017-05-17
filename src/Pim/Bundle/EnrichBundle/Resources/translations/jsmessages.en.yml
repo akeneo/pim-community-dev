@@ -233,6 +233,8 @@ pim_enrich:
         attribute:
             scopable: Scopable
             global: Global
+            message:
+                created: Product successfully created
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -297,6 +299,8 @@ pim_enrich:
                 save: Save
             create_popin:
                 title: Create a new family
+            message:
+                created: Family successfully created
         attribute_label:
             pim_catalog_identifier:           Identifier
             pim_catalog_text:                 Text
