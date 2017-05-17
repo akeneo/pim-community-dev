@@ -14,7 +14,7 @@ const requireConfigPaths = require(path.resolve('web/js/require-config'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 
-console.log('Begin compiling modules with webpack from'.green, __dirname)
+console.log('→ Begin compiling modules with webpack from'.green, __dirname)
 
 const getAbsolutePaths = (relativePaths, configPath) => {
     const absolutePaths = {}
@@ -33,7 +33,7 @@ const getRequireConfig = (requirePaths) => {
     let modulePaths = {}
     let config = {}
 
-    console.log('Grabbing requirejs.yml config from bundles'.green)
+    console.log('→ Grabbing requirejs.yml config from bundles'.green)
 
     requirePaths.forEach((requirePath) => {
         try {
@@ -66,15 +66,16 @@ const importPaths = Object.assign(importedPaths, overrides, {
     'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router')
 })
 
-console.log('Including paths for'.green, `(${_.size(importPaths)})`.bold, 'modules'.green)
+console.log('→ Including paths for'.green, `(${_.size(importPaths)})`.bold, 'modules'.green)
 
 const exportModule = (dest, contents) => {
     const fileName = `web/dist/${dest}`
-    console.log('Exporting module to dist'.green, fileName)
+    console.log(`    Exporting module to dist - ${fileName}`.grey)
     fs.writeFileSync(fileName, `module.exports = ${contents}`, 'utf8')
 }
 
 mkdirp('web/dist', function() {
+    console.log('→ Starting to dump module config to dist'.green)
     exportModule('general.js', JSON.stringify(generalConfig))
     exportModule('paths.js', JSON.stringify(importPaths))
 })
