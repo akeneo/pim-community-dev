@@ -21,16 +21,6 @@ interface AttributeRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * Find attributes with related attribute groups
-     *
-     * @param array $attributeIds
-     * @param array $criterias
-     *
-     * @return array
-     */
-    public function findWithGroups(array $attributeIds = [], array $criterias = []);
-
-    /**
      * Find all attributes that belongs to the default group
      *
      * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.8
@@ -99,13 +89,6 @@ interface AttributeRepositoryInterface extends
      * @return string
      */
     public function getIdentifierCode();
-
-    /**
-     * Get non identifier attributes
-     *
-     * @return AttributeInterface[]
-     */
-    public function getNonIdentifierAttributes();
 
     /**
      * Get attribute type by code attributes

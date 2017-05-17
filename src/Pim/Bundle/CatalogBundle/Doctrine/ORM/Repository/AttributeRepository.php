@@ -10,7 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
@@ -27,16 +26,6 @@ class AttributeRepository extends EntityRepository implements
 {
     /** @var string $identifierCode */
     protected $identifierCode;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findWithGroups(array $attributeIds = [], array $criterias = [])
-    {
-        $qb = $this->findWithGroupsQB($attributeIds, $criterias);
-
-        return $qb->getQuery()->execute();
-    }
 
     /**
      * {@inheritdoc}
@@ -172,22 +161,6 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get available attributes as label
-     *
-     * @return AttributeInterface[]
-     */
-    protected function getAvailableAttributesAsLabel()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->andWhere(
-                $qb->expr()->in('a.type', [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER])
-            );
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findOneByIdentifier($code)
@@ -297,20 +270,6 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return $this->identifierCode;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNonIdentifierAttributes()
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        $qb
-            ->andWhere($qb->expr()->neq('a.type', '?1'))
-            ->setParameter(1, AttributeTypes::IDENTIFIER);
-
-        return $qb->getQuery()->getResult();
     }
 
     /**
