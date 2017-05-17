@@ -55,7 +55,18 @@
 
 ### Others
 
-- Remvove OroNotificationBundle
+- Remove useless method `applyFilterByIds` of `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface`
+- Remove useless method `getLocalesQB` of `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`
+- Remove useless method `findTypeIds` of `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Remove useless methods `getChoicesByType`, `countVariantGroups`, `getVariantGroupsByIds`, `getAllVariantGroupIds` and `getVariantGroupsByAttributeIds` of `Pim\Component\Catalog\Repository\GroupRepositoryInterface`
+- Remove useless method `findAttributeIdsFromFamilies` of `Pim\Component\Catalog\Repository\FamilyRepositoryInterface`
+- Change visibility from public to protected of `getActivatedCurrenciesQB` method of `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface`
+- Remove useless methods `findAllWithTranslations` and `getAttributeGroupsFromAttributeCodes` of `Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface`
+- Remove useless method `countForAssociationType` of `Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface`
+- Remove useless methods `countChildren` and `search` of `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+- Remove useless methods `buildByChannelAndCompleteness`, `setAttributeRepository` and `getObjectManager`  of `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- Remove useless methods `findWithGroups` and `getNonIdentifierAttributes` of `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
+- Remove OroNotificationBundle
 - Extract and rename method `valueExists` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface` into `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface`::`uniqueDataExistsInAnotherProduct`.
 - Remove methods `searchAfterOffset`, `searchAfterIdentifier` and `count` of `Pim\Component\Api\Repository\ProductRepositoryInterface`
 - Extract methods `schedule*` of `Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface` into a `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface`. Methods `schedule`, `scheduleForFamily` and `scheduleForChannelAndLocale` have been renamed respectively `removeForProduct`, `removeForFamily` and `removeForChannelAndLocale`.
