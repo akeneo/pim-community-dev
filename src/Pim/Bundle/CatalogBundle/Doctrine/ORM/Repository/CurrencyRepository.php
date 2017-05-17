@@ -45,18 +45,6 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getActivatedCurrenciesQB()
-    {
-        $qb = $this->createQueryBuilder('c');
-        $qb->where($qb->expr()->eq('c.activated', true))
-           ->orderBy('c.code');
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);
@@ -68,5 +56,17 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     public function getIdentifierProperties()
     {
         return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActivatedCurrenciesQB()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->where($qb->expr()->eq('c.activated', true))
+            ->orderBy('c.code');
+
+        return $qb;
     }
 }
