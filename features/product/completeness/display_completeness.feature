@@ -178,5 +178,4 @@ Feature: Display the completeness of a product
     Then I should see "Tablette"
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the text "Tablette"
+    Then I should see the text "Tablette"
