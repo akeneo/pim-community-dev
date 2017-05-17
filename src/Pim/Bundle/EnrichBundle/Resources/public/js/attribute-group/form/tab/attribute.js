@@ -90,7 +90,8 @@ define(
                             attributes: attributes,
                             i18n: i18n,
                             UserContext: UserContext,
-                            __: __
+                            __: __,
+                            hasRightToRemove: this.hasRightToRemove()
                         }));
 
                         this.$('tbody').sortable({
@@ -123,10 +124,10 @@ define(
 
                     return next;
                 }, {});
-                var channel = _.extend({}, this.getFormData());
-                channel['attributes_sort_order'] = sortOrder;
+                var attributeGroup = _.extend({}, this.getFormData());
+                attributeGroup['attributes_sort_order'] = sortOrder;
 
-                this.setData(channel);
+                this.setData(attributeGroup);
 
                 this.render();
             },
@@ -137,11 +138,11 @@ define(
              * @param {Event}
              */
             addAttributes: function (event) {
-                var channel = _.extend({}, this.getFormData());
-                channel['attributes'] = _.union(channel['attributes'], event.codes);
+                var attributeGroup = _.extend({}, this.getFormData());
+                attributeGroup['attributes'] = _.union(attributeGroup['attributes'], event.codes);
                 this.otherAttributes = _.difference(this.otherAttributes, event.codes);
 
-                this.setData(channel);
+                this.setData(attributeGroup);
 
                 this.render();
             },
@@ -167,19 +168,49 @@ define(
                 );
             },
 
+            /**
+             * Remove attribute from collection
+             *
+             * @param {string} code
+             */
             removeAttribute: function (code) {
-                var channel = _.extend({}, this.getFormData());
-                channel['attributes'] = _.without(channel['attributes'], code);
-                delete channel['attributes_sort_order'][code];
+                var attributeGroup = _.extend({}, this.getFormData());
+                attributeGroup['attributes'] = _.without(attributeGroup['attributes'], code);
+                delete attributeGroup['attributes_sort_order'][code];
                 this.otherAttributes = _.union(this.otherAttributes, [code]);
 
-                this.setData(channel);
+                this.setData(attributeGroup);
 
                 this.render();
             },
 
+            /**
+             * Get the list of attributes that are in the 'other' group
+             *
+             * @return {array}
+             */
             getOtherAttributes: function () {
                 return this.otherAttributes;
+            },
+
+            /**
+             * Does the user has right to remove an attribute
+             *
+             * @return {Boolean}
+             */
+            hasRightToRemove: function () {
+                return this.config.otherGroup !== this.getFormData().code &&
+                    SecurityContext.isGranted(this.config.removeAttributeACL)
+            },
+
+            /**
+             * Does the user has right to add an attribute
+             *
+             * @return {Boolean}
+             */
+            hasRightToAdd: function () {
+                return this.config.otherGroup !== this.getFormData().code &&
+                    SecurityContext.isGranted(this.config.addAttributeACL)
             }
         });
     });

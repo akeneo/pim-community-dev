@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -12,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -48,6 +51,9 @@ class AttributeGroupController
     /** @var SaverInterface */
     protected $saver;
 
+    /** @var RemoverInterface */
+    protected $remover;
+
     /** @var EntityRepository */
     protected $attributeRepository;
 
@@ -60,6 +66,9 @@ class AttributeGroupController
     /** @var SecurityFacade */
     protected $securityFacade;
 
+    /** @var SimpleFactoryInterface */
+    protected $attributeGroupFactory;
+
     /**
      * @param EntityRepository              $attributeGroupRepo
      * @param SearchableRepositoryInterface $attributeGroupSearchableRepository
@@ -68,10 +77,12 @@ class AttributeGroupController
      * @param ObjectUpdaterInterface        $updater
      * @param ValidatorInterface            $validator
      * @param SaverInterface                $saver
+     * @param RemoverInterface              $remover
      * @param EntityRepository              $attributeRepository
      * @param ObjectUpdaterInterface        $attributeUpdater
      * @param SaverInterface                $attributeSaver
      * @param SecurityFacade                $securityFacade
+     * @param SimpleFactoryInterface        $attributeGroupFactory
      */
     public function __construct(
         EntityRepository $attributeGroupRepo,
@@ -81,10 +92,12 @@ class AttributeGroupController
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         SaverInterface $saver,
+        RemoverInterface $remover,
         EntityRepository $attributeRepository,
         ObjectUpdaterInterface $attributeUpdater,
         SaverInterface $attributeSaver,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        SimpleFactoryInterface $attributeGroupFactory
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -93,10 +106,12 @@ class AttributeGroupController
         $this->updater                            = $updater;
         $this->validator                          = $validator;
         $this->saver                              = $saver;
+        $this->remover                            = $remover;
         $this->attributeRepository                = $attributeRepository;
         $this->attributeUpdater                   = $attributeUpdater;
         $this->attributeSaver                     = $attributeSaver;
         $this->securityFacade                     = $securityFacade;
+        $this->attributeGroupFactory              = $attributeGroupFactory;
     }
 
     /**
@@ -174,6 +189,42 @@ class AttributeGroupController
      *
      * @return JsonResponse
      *
+     * @AclAncestor("pim_enrich_attributegroup_create")
+     */
+    public function createAction(Request $request)
+    {
+        $attributeGroup = $this->attributeGroupFactory->create();
+
+        $data = json_decode($request->getContent(), true);
+        $this->updater->update($attributeGroup, $data);
+        error_log(print_r($data, true));
+
+        $violations = $this->validator->validate($attributeGroup);
+        if (0 < $violations->count()) {
+            $errors = $this->normalizer->normalize(
+                $violations,
+                'internal_api'
+            );
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($attributeGroup);
+        error_log('saved!');
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $attributeGroup,
+                'internal_api'
+            )
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     *
      * @AclAncestor("pim_enrich_attributegroup_edit")
      */
     public function postAction(Request $request, $identifier)
@@ -222,6 +273,44 @@ class AttributeGroupController
     }
 
     /**
+     * Sort the attribute groups
+     *
+     * @param  Request $request
+     *
+     * @return JsonResponse
+     */
+    public function sortAction(Request $request)
+    {
+        $data = json_decode($request->getContent(), $true);
+
+        foreach ($data as $attributeGroupCode => $sortOder) {
+            $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($attributeGroupCode);
+            $this->updater->update($attributeGroup, ['sort_order' => $sortOrder]);
+            $this->saver->save($attributeGroup);
+        }
+
+        error_log($request->getContent());
+    }
+
+    /**
+     * Remove action
+     *
+     * @param $code
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pim_enrich_attributegroup_remove")
+     */
+    public function removeAction($identifier)
+    {
+        $attributeGroup = $this->getAttributeGroupOr404($identifier);
+
+        $this->remover->remove($attributeGroup);
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * Finds attribute group type by identifier or throws not found exception
      *
      * @param $identifier
@@ -242,6 +331,14 @@ class AttributeGroupController
         return $attributeGroup;
     }
 
+    /**
+     * Check that the user doesn't change the attribute list without permission
+     *
+     * @param array $attributeCodesBefore
+     * @param array $attributeCodesAfter
+     *
+     * @throws AccessDeniedHttpException
+     */
     protected function ensureAttributeCollectionRights($attributeCodesBefore, $attributeCodesAfter)
     {
         if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove_attribute') &&

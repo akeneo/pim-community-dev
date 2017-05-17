@@ -19,19 +19,19 @@ extensions:
         targetZone: title
         position: 110
 
-    # pim-attribute-group-edit-form-delete:
-    #     module: pim/attribute-group-edit-form/delete
-    #     parent: pim-attribute-group-edit-form
-    #     targetZone: buttons
-    #     aclResourceId: pim_enrich_attributegroup_remove
-    #     position: 100
-    #     config:
-    #         trans:
-    #             title: confirmation.remove.attribute_group
-    #             content: pim_enrich.confirmation.delete_item
-    #             success: flash.attribute_group.removed
-    #             fail: error.removing.attribute_group
-    #         redirect: pim_enrich_attributegroup_index
+    pim-attribute-group-edit-form-delete:
+        module: pim/attribute-group-edit-form/delete
+        parent: pim-attribute-group-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_attributegroup_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.attribute_group
+                content: pim_enrich.confirmation.delete_item
+                success: flash.attribute_group.removed
+                fail: error.removing.attribute_group
+            redirect: pim_enrich_attributegroup_index
 
     pim-attribute-group-edit-form-save-buttons:
         module: pim/form/common/save-buttons
@@ -111,10 +111,12 @@ extensions:
         position: 120
         config:
             title: pim_enrich.form.attribute_group.tab.attribute.title
+            otherGroup: other
             confirmation:
                 title: pim_enrich.confirmation.delete_item
                 message: pim_enrich.confirmation.delete.attribute_group
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute
+            addAttributeACL: pim_enrich_attributegroup_add_attribute
 
     pim-attribute-group-edit-form-attribute-add-attribute:
         module: pim/attribute-group/add-select/attribute

@@ -1,0 +1,14 @@
+<div class="AknGridContainer">
+    <table class="AknGrid AknGrid--unclickable table groups">
+        <% _.each(attributeGroups, function (attributeGroup) { %>
+        <tr class="AknGrid-bodyRow" data-attribute-group-code="<%- attributeGroup.code %>">
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                <span class="handle">
+                    <i class="icon-reorder"></i>
+                </span>
+            </td>
+            <td class="AknGrid-bodyCell"><%- attributeGroup.code %></td>
+        </tr>
+        <% }); %>
+    </table>
+</div>

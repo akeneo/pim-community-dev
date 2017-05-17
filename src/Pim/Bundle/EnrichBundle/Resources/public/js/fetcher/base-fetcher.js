@@ -66,10 +66,10 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                         Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
                     ).then(_.identity).done(function (entity) {
                         deferred.resolve(entity);
-                    }).fail(function () {
-                        console.error('Error during fetching: ', arguments);
+                    }).fail(function (promise, status, error) {
+                        console.error('Error during fetching: ', error);
 
-                        return deferred.reject();
+                        return deferred.reject(promise);
                     });
                 } else {
                     this.fetchAll().done(function (entities) {

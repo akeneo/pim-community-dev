@@ -25,7 +25,7 @@ define(
 
                         PageTitle.set({'group.label': _.escape(attributeGroup.labels[UserContext.get('catalogLocale')]) });
 
-                        FormBuilder.build('pim-attribute-group-edit-form')
+                        return FormBuilder.build('pim-attribute-group-edit-form')
                             .then(function (form) {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
@@ -37,10 +37,10 @@ define(
                                 form.setElement(this.$el).render();
                             }.bind(this));
                     }.bind(this))
-                .fail(function (response) {
-                    var errorView = new Error(response.responseJSON.message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                    .fail(function (response) {
+                        var errorView = new Error(response.responseJSON.message, response.status);
+                        errorView.setElement(this.$el).render();
+                    });
             }
         });
     }

@@ -28,6 +28,19 @@ define(
             lineView: LineView,
 
             /**
+             * Render this extension
+             *
+             * @return {Object}
+             */
+            render: function () {
+                if (!this.hasRightToAdd()) {
+                    return this;
+                }
+
+                return AddAttributeSelect.prototype.render.apply(this, arguments);
+            },
+
+            /**
              * Creates request according to recieved options
              *
              * @param {Object} options
@@ -55,6 +68,15 @@ define(
                     return choice;
                 }).value();
             },
+
+            /**
+             * Does the user has right to add an attribute
+             *
+             * @return {Boolean}
+             */
+            hasRightToAdd: function () {
+                return this.getParent().hasRightToAdd();
+            }
         });
     }
 );
