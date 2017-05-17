@@ -6,15 +6,10 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
@@ -34,9 +29,6 @@ class ProductRepository extends EntityRepository implements
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var ConfigurationRegistryInterface */
     protected $referenceDataRegistry;
 
@@ -49,20 +41,6 @@ class ProductRepository extends EntityRepository implements
     public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
     {
         $this->queryBuilderFactory = $factory;
-    }
-
-    /**
-     * Set attribute repository
-     *
-     * @param AttributeRepositoryInterface $attributeRepository
-     *
-     * @return ProductRepository
-     */
-    public function setAttributeRepository(AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-
-        return $this;
     }
 
     /**
@@ -116,42 +94,6 @@ class ProductRepository extends EntityRepository implements
             )
             ->setParameter('enabled', true)
             ->setParameter('scope', $scope);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildByChannelAndCompleteness(ChannelInterface $channel)
-    {
-        $scope = $channel->getCode();
-        $qb = $this->buildByScope($scope);
-        $rootAlias = current($qb->getRootAliases());
-        $expression =
-            'pCompleteness.product = '.$rootAlias.' AND '.
-            $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
-            $qb->expr()->eq('pCompleteness.channel', $channel->getId());
-
-        $rootEntity = current($qb->getRootEntities());
-        $completenessMapping = $this->_em->getClassMetadata($rootEntity)
-            ->getAssociationMapping('completenesses');
-        $completenessClass = $completenessMapping['targetEntity'];
-        $qb->innerJoin(
-            $completenessClass,
-            'pCompleteness',
-            'WITH',
-            $expression
-        );
-
-        $treeId = $channel->getCategory()->getId();
-        $expression = $qb->expr()->eq('pCategory.root', $treeId);
-        $qb->innerJoin(
-            $rootAlias.'.categories',
-            'pCategory',
-            'WITH',
-            $expression
-        );
 
         return $qb;
     }
@@ -232,24 +174,6 @@ class ProductRepository extends EntityRepository implements
         }
 
         return $attributeIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getObjectManager()
-    {
-        return $this->getEntityManager();
-    }
-
-    /**
-     * Return the identifier attribute
-     *
-     * @return AttributeInterface|null
-     */
-    protected function getIdentifierAttribute()
-    {
-        return $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
     }
 
     /**
