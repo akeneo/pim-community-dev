@@ -27,6 +27,6 @@ phpspec.yml
 .grunt
 
 web/dist
-eb/dist/app.min.js
+web/dist/app.min.js
 web/dist/paths.js
 web/dist/general.js
