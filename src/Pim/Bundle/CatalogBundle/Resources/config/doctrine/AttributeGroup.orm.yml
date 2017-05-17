@@ -41,3 +41,4 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             cascade:
                 - persist
                 - detach
+            orphanRemoval: true

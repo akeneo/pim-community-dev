@@ -167,6 +167,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_attribute_group_create": {
                 "route": "/api/rest/v1/attribute-groups",
                 "methods": ["POST"]
+            },
+            "pim_api_attribute_group_partial_update": {
+                "route": "/api/rest/v1/attribute-groups/{code}",
+                "methods": ["PATCH"]
             }
         }
     }
