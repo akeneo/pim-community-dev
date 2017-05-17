@@ -86,7 +86,7 @@ class SetProductsSubscriber implements EventSubscriber
                                 $this
                                     ->registry
                                     ->getRepository($this->productClass)
-                                    ->findBy([$property => [$entity->getId()]])
+                                    ->findBy([$property => $entity->getId()])
                             );
                         }
                     )

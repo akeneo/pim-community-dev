@@ -165,3 +165,17 @@ Feature: Display the completeness of a product
     When I open the "Completeness" panel
     And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
     Then I should be on the "Media" attribute group
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6405
+  Scenario: Successfully display the completeness with channel's label
+    Given I am logged in as "Peter"
+    And I am on the "tablet" channel page
+    Then I should see the Code field
+    And the field Code should be disabled
+    When I fill in the following information:
+      | Default label | Tablette |
+    And I press the "Save" button
+    Then I should see "Tablette"
+    Given I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    Then I should see the text "Tablette"
