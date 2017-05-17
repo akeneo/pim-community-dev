@@ -16,7 +16,6 @@ services:
         arguments: ['%pimee_workflow.entity.published_product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_factory']]
-            - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
         tags:
             - { name: 'pim_repository' }
 
