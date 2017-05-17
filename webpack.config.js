@@ -1,5 +1,6 @@
 /* eslint-env es6 */
 
+require('colors')
 const webpack = require('webpack')
 const path = require('path')
 const yaml = require('yamljs')
@@ -11,23 +12,9 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const pathOverrides = require('./frontend/path-overrides')
 const requireConfigPaths = require(path.resolve('web/js/require-config'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
+const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 
-console.log('Start compile with webpack from', __dirname)
-
-const getRelativePaths = (absolutePaths) => {
-    let replacedPaths = {}
-    let exportPaths = {}
-
-    for (let absolutePath in absolutePaths) {
-        const pathValue = absolutePaths[absolutePath]
-        const currentPath = path.resolve('./')
-        const replacedPath = path.relative(currentPath, pathValue)
-        replacedPaths[pathValue] = replacedPath
-        exportPaths[absolutePath] = replacedPath
-    }
-
-    return {replacedPaths, exportPaths}
-}
+console.log('Begin compiling modules with webpack from'.green, __dirname)
 
 const getAbsolutePaths = (relativePaths, configPath) => {
     const absolutePaths = {}
@@ -46,8 +33,11 @@ const getRequireConfig = (requirePaths) => {
     let modulePaths = {}
     let config = {}
 
+    console.log('Grabbing requirejs.yml config from bundles'.green)
+
     requirePaths.forEach((requirePath) => {
         try {
+            console.log(`    → ${requirePath}`.grey)
             const contents = fs.readFileSync(requirePath, 'utf8')
             const parsedFile = yaml.parse(contents)
             const bundlePaths = parsedFile.config.paths
@@ -67,26 +57,26 @@ const requireConfig = getRequireConfig(requireConfigPaths)
 const importedPaths = requireConfig.modulePaths
 const generalConfig = requireConfig.config
 const overrides = _.mapValues(pathOverrides, override => path.resolve(__dirname, override))
+
 const importPaths = Object.assign(importedPaths, overrides, {
     backbone: require.resolve('backbone'),
-    // Generated
     routes: path.resolve('web/js/routes'),
     general: path.resolve('web/dist/general'),
     paths: path.resolve('web/dist/paths'),
-    'relative-paths': path.resolve('web/dist/relative-paths'),
     'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router')
 })
 
-const exportModule = (dest, contents) => {
-    fs.writeFileSync(`web/dist/${dest}`, `module.exports = ${contents}`, 'utf8')
-}
+console.log('Including paths for'.green, `(${_.size(importPaths)})`.bold, 'modules'.green)
 
-const relativePaths = getRelativePaths(importPaths)
+const exportModule = (dest, contents) => {
+    const fileName = `web/dist/${dest}`
+    console.log('Exporting module to dist'.green, fileName)
+    fs.writeFileSync(fileName, `module.exports = ${contents}`, 'utf8')
+}
 
 mkdirp('web/dist', function() {
     exportModule('general.js', JSON.stringify(generalConfig))
     exportModule('paths.js', JSON.stringify(importPaths))
-    exportModule('relative-paths.js', JSON.stringify(relativePaths.exportPaths))
 })
 
 module.exports = {
@@ -170,6 +160,9 @@ module.exports = {
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths))
+        new AddToContextPlugin(_.values(importPaths)),
+        new SimpleProgressWebpackPlugin({
+            format: 'expanded'
+        })
     ]
 }

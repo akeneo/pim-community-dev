@@ -142,9 +142,7 @@ class Config
         // Tell it to output the paths relative to where you are running the command from
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
-            var_dump($reflection->getExtensionName());
             $fileName = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml';
-            var_dump($fileName);
             $paths[] = $fileName;
         }
 

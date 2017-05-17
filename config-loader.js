@@ -1,5 +1,6 @@
+/* eslint-env es6 */
+
 const hasModule = (content) => content.indexOf('module') >= 0;
-const loaderUtils = require('loader-utils')
 const _ = require('lodash')
 
 module.exports = function(content) {
@@ -11,5 +12,6 @@ module.exports = function(content) {
     const aliasKeys = _.mapKeys(aliases, (alias, key) => key.replace(ext, ''))
     const moduleUrl = this.resourcePath.replace(ext, '')
     const moduleName = aliasKeys[moduleUrl]
+
     return `var __moduleName = '${moduleName}'; ${content}`;
 }
