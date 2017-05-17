@@ -64,7 +64,8 @@ const importPaths = Object.assign(importedPaths, overrides, {
     general: path.resolve('web/dist/general'),
     paths: path.resolve('web/dist/paths'),
     summernote: path.resolve('node_modules/summernote/dist/summernote.min.js'),
-    'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router')
+    'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'),
+    CodeMirror: path.resolve('node_modules/codemirror/lib/codemirror')
 })
 
 console.log('→ Including paths for'.green, `(${_.size(importPaths)})`.bold, 'modules'.green)

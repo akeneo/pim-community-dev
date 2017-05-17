@@ -7,7 +7,6 @@ module.exports = {
     'pim/datagrid-view-fetcher': 'src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher',
     'require-polyfill': 'frontend/require-polyfill',
     'pim-router': 'src/Pim/Bundle/EnrichBundle/Resources/public/js/router',
-    'CodeMirror': 'node_modules/codemirror/lib/codemirror',
     'jquery-setup': 'src/Pim/Bundle/UIBundle/Resources/public/js/jquery-setup.js',
     'require-context': 'frontend/require-context',
      config: 'frontend/module-config'
