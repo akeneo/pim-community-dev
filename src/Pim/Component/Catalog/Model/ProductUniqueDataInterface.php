@@ -22,11 +22,6 @@ interface ProductUniqueDataInterface
     public function getId();
 
     /**
-     * @param int $id
-     */
-    public function setId($id);
-
-    /**
      * @return ProductInterface
      */
     public function getProduct();
