@@ -33,5 +33,4 @@ web/dist/general.js
 npm-debug.log
 
 web/dist/0.bundle.js
-
 web/dist/app.min.js
