@@ -50,6 +50,7 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
 
         return $qb
             ->orderBy(sprintf('%s.id', $rootAlias), 'ASC')
+            ->groupBy(sprintf('%s.id', $rootAlias))
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->getQuery()
@@ -72,6 +73,7 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
 
         return $qb
             ->orderBy(sprintf('%s.id', $rootAlias), 'ASC')
+            ->groupBy(sprintf('%s.id', $rootAlias))
             ->setMaxResults($limit)
             ->getQuery()
             ->execute();
