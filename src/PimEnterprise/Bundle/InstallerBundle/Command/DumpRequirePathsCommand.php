@@ -45,7 +45,7 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
 
         $webRoot = $this->getContainer()->getParameter('oro_require_js.web_root');
         $config = $this->getContainer()->getParameter('oro_require_js');
-        // $configProvider = $this->getContainer()->get('oro_requirejs_config_provider');
+
         $mainConfigContent = json_encode($this->collectConfigPaths(), JSON_UNESCAPED_SLASHES);
 
         $mainConfigContent = 'module.exports = ' . $mainConfigContent;
@@ -64,7 +64,6 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
 
         $paths = array();
 
-        // Tell it to output the paths relative to where you are running the command from
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             $fileName = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml';
