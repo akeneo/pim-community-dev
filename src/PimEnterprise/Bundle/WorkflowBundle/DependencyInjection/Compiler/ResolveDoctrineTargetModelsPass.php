@@ -29,6 +29,7 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
             'PimEnterprise\Component\Workflow\Model\PublishedProductInterface'             => 'pimee_workflow.entity.published_product.class',
             'PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface' => 'pimee_workflow.entity.published_product_completeness.class',
             'PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface'  => 'pimee_workflow.entity.published_product_association.class',
+            'PimEnterprise\Component\Workflow\Model\PublishedProductUniqueDataInterface'   => 'pimee_workflow.entity.published_product_unique_data.class',
         ];
     }
 }
