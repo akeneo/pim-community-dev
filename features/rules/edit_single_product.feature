@@ -147,8 +147,8 @@ Feature: Read a single product by applying rules
         priority: 10
         conditions:
           - field:    sku
-            operator: ENDS WITH
-            value:    ket
+            operator: STARTS WITH
+            value:    my-j
         actions:
           - type:  set
             field: name
@@ -347,7 +347,7 @@ Feature: Read a single product by applying rules
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
-    And the following "climate" attribute options: Hot and Cold
+    And the following "climate" attribute options: hot and cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
       | my-jacket | handmade           | 1                      |        |        |
@@ -432,10 +432,10 @@ Feature: Read a single product by applying rules
       | top_view                 | akeneo2                |
       | length                   | 55.0000 CENTIMETER     |
       | width                    | 55.0000 CENTIMETER     |
-      | weather_conditions       | [hot], [cold]          |
-      | climate                  | [hot], [cold]          |
-      | number_in_stock-mobile   | 800.00                 |
-      | number_in_stock-tablet   | 800.00                 |
+      | weather_conditions       | [cold], [hot]          |
+      | climate                  | [cold], [hot]          |
+      | number_in_stock-mobile   | 800                    |
+      | number_in_stock-tablet   | 800                    |
       | main_color               | [white]                |
       | secondary_color          | [white]                |
       | name-en_US               | White jacket           |
@@ -597,11 +597,11 @@ Feature: Read a single product by applying rules
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                                                             | ratio |
       | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | en_US  | warning | Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
-      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 17%   |
-      | tablet  | de_DE  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery | 10%   |
+      | tablet  | en_US  | warning | Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
+      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 16%   |
+      | tablet  | de_DE  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery | 10%   |
       | mobile  | fr_FR  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | fr_FR  | warning | Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
+      | tablet  | fr_FR  | warning | Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
     And the following product rule definitions:
       """
       set_name:
@@ -625,7 +625,7 @@ Feature: Read a single product by applying rules
       | channel | locale | state   | missing_values                                                                             | ratio |
       | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
       | tablet  | en_US  | warning | Weather conditions, Price, Rating, Side view, Size, Main color, gallery                    | 30%   |
-      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 17%   |
-      | tablet  | de_DE  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery | 10%   |
+      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 16%   |
+      | tablet  | de_DE  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery | 10%   |
       | mobile  | fr_FR  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | fr_FR  | warning | Description, Weather conditions, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
+      | tablet  | fr_FR  | warning | Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
