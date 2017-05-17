@@ -84,17 +84,6 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getLocalesQB()
-    {
-        $qb = $this->createQueryBuilder('l');
-        $qb->orderBy('l.code');
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(
