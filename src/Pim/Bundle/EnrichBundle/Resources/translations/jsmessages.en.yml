@@ -689,7 +689,7 @@ pim_enrich:
                     help: Use the product categories in the tree (defined by the channel above) to select the products to export
                 identifier:
                     title: Identifier
-                    help: Identifiers of products you want to export separated by commas, spaces or line breaks
+                    help: Use the product identifiers to export separated by commas, spaces or line breaks
                 metric:
                     operators:
                         "=": Is equal to
