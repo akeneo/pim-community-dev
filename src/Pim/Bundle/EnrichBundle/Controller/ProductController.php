@@ -125,6 +125,8 @@ class ProductController
      * @AclAncestor("pim_enrich_product_index")
      * @Template
      *
+     * @param Request $request
+     *
      * @return array
      */
     public function indexAction(Request $request)
