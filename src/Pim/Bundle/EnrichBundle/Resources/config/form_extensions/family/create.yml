@@ -1,6 +1,6 @@
 extensions:
     pim-family-create-modal:
-       module: pim/form/common/create-modal
+       module: pim/form/common/creation-modal
        config:
            labels:
                title: pim_enrich.entity.family.create_popin.title
@@ -10,7 +10,7 @@ extensions:
            routerKey: code
 
     pim-family-create-form:
-       module: pim/form/common/input/code
+       module: pim/form/common/creation-code
        config:
           entity: family
           createRoute: pim_enrich_family_rest_create

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Input code
+ * Creation form asking for one code
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/input/code',
+        'text!pim/template/form/creation/code',
         'routing',
         'pim/dialogform',
         'oro/loading-mask'
@@ -48,7 +48,7 @@ define(
              * Model update callback
              */
             updateModel: function () {
-                this.getFormModel().set('code', $($(this.$el).find(':input')[0]).val());
+                this.getFormModel().set('code', this.$('input[name="code"]').val());
             },
 
             /**

@@ -66,7 +66,6 @@ define(
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(modalBody).show();
 
-                var self = this;
                 FormBuilder.build(this.config.innerForm)
                     .then(function (form) {
                         form.setElement(modalBody)
@@ -85,21 +84,21 @@ define(
                                     deferred.resolve();
 
                                     var routerParams = {};
-                                    if (self.config.routerKey) {
-                                        routerParams[self.config.routerKey] = entity[self.config.routerKey];
+                                    if (this.config.routerKey) {
+                                        routerParams[this.config.routerKey] = entity[this.config.routerKey];
                                     } else {
                                         routerParams = {id: entity.meta.id};
                                     }
 
-                                    messenger.notificationFlashMessage('success', __(self.config.successMessage));
+                                    messenger.notificationFlashMessage('success', __(this.config.successMessage));
 
                                     router.redirectToRoute(
-                                        self.config.editRoute,
+                                        this.config.editRoute,
                                         routerParams
                                     );
-                                });
-                        });
-                    });
+                                }.bind(this));
+                        }.bind(this));
+                    }.bind(this));
 
                 return deferred.promise();
             }
