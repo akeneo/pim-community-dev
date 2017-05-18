@@ -3,10 +3,15 @@ pim_enrich_attributegroup_rest_index:
     defaults: { _controller: pim_enrich.controller.rest.attribute_group:indexAction }
     methods: [GET]
 
+pim_enrich_attributegroup_rest_search:
+    path: '/'
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:searchAction }
+    methods: [POST]
+
 pim_enrich_attributegroup_rest_create:
     path: '/'
     defaults: { _controller: pim_enrich.controller.rest.attribute_group:createAction }
-    methods: [POST]
+    methods: [PUT]
 
 pim_enrich_attributegroup_rest_sort:
     path: '/'

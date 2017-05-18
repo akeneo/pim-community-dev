@@ -97,7 +97,7 @@ extensions:
         position: 100
         config:
             title: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.general
+            codeLabel: pim_enrich.form.channel.tab.properties.code
 
     pim-channel-edit-form-properties-general-currencies:
         module: pim/channel-edit-form/properties/general/currencies

@@ -40,11 +40,18 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @return {Promise}
          */
         search: function (searchOptions) {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
+            var url = '';
+            if (!_.has(this.options.urls, 'search')) {
+                if (!_.has(this.options.urls, 'list')) {
+                    return $.Deferred().reject().promise();
+                } else {
+                    url = this.options.urls.list
+                }
+            } else {
+                url = this.options.urls.search;
             }
 
-            return this.getJSON(this.options.urls.list, searchOptions).then(_.identity).promise();
+            return this.getJSON(url, searchOptions).then(_.identity).promise();
         },
 
         /**
@@ -107,8 +114,10 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             }
 
             return $.when(
-                    this.getJSON(this.options.urls.list, _.extend({ identifiers: uncachedIdentifiers.join(',') }, options))
-                        .then(_.identity),
+                    this.getJSON(
+                        this.options.urls.list,
+                        _.extend({ identifiers: uncachedIdentifiers.join(',') }, options)
+                    ).then(_.identity),
                     this.getIdentifierField()
                 ).then(function (entities, identifierCode) {
                     _.each(entities, function (entity) {

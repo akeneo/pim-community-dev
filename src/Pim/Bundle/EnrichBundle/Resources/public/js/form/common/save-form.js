@@ -94,7 +94,7 @@ define(
 
                 return EntitySaver
                     .setUrl(this.config.url)
-                    .save(entity.code, entity)
+                    .save(entity.code, entity, this.config.method || 'POST')
                     .then(function (data) {
                         this.postSave();
                         this.setData(data);

@@ -8,9 +8,8 @@ Feature: List attribute groups
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the attribute groups page
-    Then I should see "Product information"
-    Then I should see "Marketing"
-    And I should see "Please select an attribute group on the left or Create a new attribute group"
+    Then I should see the text "Product information"
+    Then I should see the text "Marketing"
 
   Scenario: Order attribute group choices on the attribute creation page
     Given the "footwear" catalog configuration

@@ -35,6 +35,7 @@ extensions:
             updateFailureMessage: pim_enrich.entity.attribute_group.info.update_failed
             notReadyMessage: pim_enrich.entity.attribute_group.info.field_not_ready
             url: pim_enrich_attributegroup_rest_create
+            method: PUT
             redirectAfter: pim_enrich_attributegroup_edit
 
     pim-attribute-group-create-form-state:
@@ -60,7 +61,7 @@ extensions:
         position: 100
         config:
             sectionTitle: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.general
+            codeLabel: pim_enrich.form.channel.tab.properties.code
 
     pim-attribute-group-create-form-properties-translation:
         module: pim/common/properties/translation

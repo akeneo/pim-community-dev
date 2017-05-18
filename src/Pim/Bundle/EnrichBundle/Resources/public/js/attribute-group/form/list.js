@@ -8,27 +8,38 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
         'pim/common/property',
         'routing',
+        'pim/router',
+        'pim/user-context',
+        'pim/i18n',
         'text!pim/template/form/attribute-group/list'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,
         FetcherRegistry,
         propertyAccessor,
         Routing,
+        router,
+        UserContext,
+        i18n,
         template
     ) {
         return BaseForm.extend({
             className: 'tabsection',
             template: _.template(template),
             attributeGroups: [],
+            events: {
+                'click .attribute-group-link': 'redirectToGroup'
+            },
 
             /**
              * {@inheritdoc}
@@ -46,10 +57,10 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                var config = this.options.config;
-
                 this.$el.html(this.template({
-                    attributeGroups: this.attributeGroups
+                    attributeGroups: _.sortBy(_.values(this.attributeGroups), 'sort_order'),
+                    i18n: i18n,
+                    uiLocale: UserContext.get('uiLocale')
                 }));
 
                 this.$('tbody').sortable({
@@ -69,11 +80,13 @@ define([
                 });
 
                 this.renderExtensions();
-
             },
 
+            /**
+             * Update the attribute order based on the dom
+             */
             updateAttributeOrders: function () {
-                var sortOrder = _.reduce(this.$('tbody > tr'), function (previous, current, order) {
+                var sortOrder = _.reduce(this.$('.attribute-group'), function (previous, current, order) {
                     var next = _.extend({}, previous);
                     next[current.dataset.attributeGroupCode] = order;
 
@@ -83,12 +96,24 @@ define([
                 $.ajax({
                     url: Routing.generate('pim_enrich_attributegroup_rest_sort'),
                     type: 'PATCH',
-                    data: sortOrder
-                }).then(function () {
+                    data: JSON.stringify(sortOrder)
+                }).then(function (attributeGroups) {
+                    this.attributeGroups = attributeGroups;
 
-                });
+                    this.render();
+                }.bind(this));
+            },
 
-                this.render();
+            /**
+             * Redirect to attribute group page
+             *
+             * @param {event} event
+             */
+            redirectToGroup: function (event) {
+                router.redirectToRoute(
+                    'pim_enrich_attributegroup_edit',
+                    {identifier: event.target.dataset.attributeGroupCode}
+                )
             }
         });
     }

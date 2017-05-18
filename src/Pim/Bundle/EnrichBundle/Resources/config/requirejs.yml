@@ -108,6 +108,7 @@ config:
                     module: pim/attribute-group-fetcher
                     options:
                         urls:
+                            search: pim_enrich_attributegroup_rest_search
                             list: pim_enrich_attributegroup_rest_index
                             get: pim_enrich_attributegroup_rest_get
                 attribute:
@@ -587,6 +588,7 @@ config:
         pim/channel-edit-form/save:                             pimenrich/js/channel/form/save
         pim/channel-edit-form/properties/general/currencies:    pimenrich/js/channel/form/properties/general/currencies
         pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
+        pim/channel-edit-form/properties/general/category-tree: pimenrich/js/channel/form/properties/general/category-tree
         pim/channel-edit-form/properties/conversion-unit:       pimenrich/js/channel/form/properties/conversion-unit
 
         # Family
@@ -851,8 +853,8 @@ config:
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
 
         # Attribute group
-        pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute
-        pim/template/form/attribute-group/list:          pimenrich/templates/attribute-group/list
+        pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html
+        pim/template/form/attribute-group/list:          pimenrich/templates/attribute-group/list.html
 
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
         pim/template/channel/tab/properties/general/locales:        pimenrich/templates/channel/tab/properties/general/locales.html

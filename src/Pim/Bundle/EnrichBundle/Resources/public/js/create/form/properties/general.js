@@ -42,6 +42,8 @@ define([
              */
             initialize: function (meta) {
                 this.config = meta.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

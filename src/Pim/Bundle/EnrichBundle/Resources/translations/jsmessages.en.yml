@@ -67,6 +67,7 @@ flash:
         removed: Job instance successfully removed
 
 error:
+    common: An error occured
     creating:
         product: No attribute is configured as a product identifier or you don't have the rights to edit it.
     removing:
@@ -835,6 +836,9 @@ pim_enrich:
             title:       Attribute overview
             create_btn:  Create attribute
             modal_title: Choose the attribute type
+        attribute_group:
+            title:       Attribute group overview
+            create_btn:  Create
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

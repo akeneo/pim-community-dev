@@ -9,6 +9,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -21,6 +22,7 @@ define(
         'jquery-ui'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,
@@ -35,6 +37,7 @@ define(
             className: 'AknTabContainer-content tabbable tabs-left',
             template: _.template(template),
             otherAttributes: [],
+            attributeSortOrderKey: 'attributes_sort_order',
 
             events: {
                 'click .remove-attribute': 'removeAttributeRequest'
@@ -60,11 +63,13 @@ define(
 
                 this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
 
-                return FetcherRegistry.getFetcher('attribute').search({attribute_groups: 'other'}).then(function (attributes) {
-                    this.otherAttributes = _.pluck(attributes, 'code');
-                }.bind(this)).then(function () {
-                    return BaseForm.prototype.configure.apply(this, arguments);
-                }.bind(this));
+                return FetcherRegistry.getFetcher('attribute')
+                    .search({attribute_groups: 'other'})
+                    .then(function (attributes) {
+                        this.otherAttributes = _.pluck(attributes, 'code');
+                    }.bind(this)).then(function () {
+                        return BaseForm.prototype.configure.apply(this, arguments);
+                    }.bind(this));
             },
 
             /**
@@ -75,18 +80,20 @@ define(
                     .fetchByIdentifiers(this.getFormData().attributes, {rights: 0})
                     .then(function (attributes) {
                         var attributes = _.map(attributes, function (attribute) {
+                            //This update the sort order if the attribute is new on the collection
                             var sortOrder = this.getFormData().attributes_sort_order[attribute.code] ?
                                 this.getFormData().attributes_sort_order[attribute.code] :
                                 _.keys(this.getFormData().attributes_sort_order) + 1;
+
                             return _.extend(
                                 {},
                                 attribute,
-                                {sort_order: this.getFormData().attributes_sort_order[attribute.code]}
+                                {sort_order: sortOrder}
                             );
                         }.bind(this));
                         var attributes = _.sortBy(attributes, 'sort_order');
 
-                        this.$el.html(this.template({
+                        this.$el.empty().append(this.template({
                             attributes: attributes,
                             i18n: i18n,
                             UserContext: UserContext,
@@ -94,7 +101,7 @@ define(
                             hasRightToRemove: this.hasRightToRemove()
                         }));
 
-                        this.$('tbody').sortable({
+                        this.$('.attribute-list').sortable({
                             handle: '.handle',
                             containment: 'parent',
                             tolerance: 'pointer',
@@ -110,22 +117,26 @@ define(
                             }
                         });
 
+                        this.delegateEvents();
+
                         BaseForm.prototype.render.apply(this, arguments);
                     }.bind(this));
+
+                return this;
             },
 
             /**
              * Update the sort order of attributes
              */
             updateAttributeOrders: function () {
-                var sortOrder = _.reduce(this.$('tbody > tr'), function (previous, current, order) {
+                var sortOrder = _.reduce(this.$('.attribute'), function (previous, current, order) {
                     var next = _.extend({}, previous);
                     next[current.dataset.attributeCode] = order;
 
                     return next;
                 }, {});
                 var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup['attributes_sort_order'] = sortOrder;
+                attributeGroup.attributes_sort_order = sortOrder;
 
                 this.setData(attributeGroup);
 
@@ -139,7 +150,7 @@ define(
              */
             addAttributes: function (event) {
                 var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup['attributes'] = _.union(attributeGroup['attributes'], event.codes);
+                attributeGroup.attributes = _.union(attributeGroup.attributes, event.codes);
                 this.otherAttributes = _.difference(this.otherAttributes, event.codes);
 
                 this.setData(attributeGroup);
@@ -175,8 +186,8 @@ define(
              */
             removeAttribute: function (code) {
                 var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup['attributes'] = _.without(attributeGroup['attributes'], code);
-                delete attributeGroup['attributes_sort_order'][code];
+                attributeGroup.attributes = _.without(attributeGroup.attributes, code);
+                delete attributeGroup.attributes_sort_order[code];
                 this.otherAttributes = _.union(this.otherAttributes, [code]);
 
                 this.setData(attributeGroup);
@@ -199,7 +210,9 @@ define(
              * @return {Boolean}
              */
             hasRightToRemove: function () {
-                return this.config.otherGroup !== this.getFormData().code &&
+                var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code;
+
+                return currentAttributeGroupIsNotOther &&
                     SecurityContext.isGranted(this.config.removeAttributeACL)
             },
 
@@ -209,7 +222,9 @@ define(
              * @return {Boolean}
              */
             hasRightToAdd: function () {
-                return this.config.otherGroup !== this.getFormData().code &&
+                var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code;
+
+                return currentAttributeGroupIsNotOther &&
                     SecurityContext.isGranted(this.config.addAttributeACL)
             }
         });

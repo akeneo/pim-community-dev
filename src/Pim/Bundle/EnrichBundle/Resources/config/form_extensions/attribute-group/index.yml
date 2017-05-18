@@ -2,7 +2,7 @@ extensions:
     pim-attribute-group-index:
         module: pim/form/common/index/index
         config:
-            title: pim_enrich.index.attribute-group.title
+            title: pim_enrich.index.attribute_group.title
 
     pim-attribute-group-index-list:
         module: pim/attribute-group-edit-form/list

@@ -1,8 +1,16 @@
 'use strict';
 
+/**
+ * Attribute group edit controller
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/controller/base',
         'pim/form-builder',
         'pim/fetcher-registry',
@@ -11,7 +19,7 @@ define(
         'pim/page-title',
         'pim/error'
     ],
-    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -23,7 +31,10 @@ define(
                             return;
                         }
 
-                        PageTitle.set({'group.label': _.escape(attributeGroup.labels[UserContext.get('catalogLocale')]) });
+                        PageTitle.set({
+                            'group.label':
+                            _.escape(attributeGroup.labels[UserContext.get('catalogLocale')])
+                        });
 
                         return FormBuilder.build('pim-attribute-group-edit-form')
                             .then(function (form) {
@@ -38,7 +49,9 @@ define(
                             }.bind(this));
                     }.bind(this))
                     .fail(function (response) {
-                        var errorView = new Error(response.responseJSON.message, response.status);
+                        var message = response.responseJSON ? response.responseJSON.message : __('error.common');
+
+                        var errorView = new Error(message, response.status);
                         errorView.setElement(this.$el).render();
                     });
             }

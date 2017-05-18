@@ -83,15 +83,15 @@ class AttributeController
         if ($request->request->has('attribute_groups')) {
             $options['attribute_groups'] = explode(',', $request->request->get('attribute_groups'));
         }
-        if ($request->request->has('rights')) {
-            $options['rights'] = (bool) $request->request->get('rights');
-        }
 
         if (empty($options)) {
             $options = $request->request->get(
                 'options',
                 ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
             );
+        }
+        if ($request->request->has('rights')) {
+            $options['rights'] = (bool) $request->request->get('rights');
         }
 
         $token = $this->tokenStorage->getToken();

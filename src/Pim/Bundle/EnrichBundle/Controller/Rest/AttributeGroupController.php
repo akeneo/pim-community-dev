@@ -115,11 +115,11 @@ class AttributeGroupController
     }
 
     /**
-     * Get attribute group collection
+     * Search attribute group collection
      *
      * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function searchAction(Request $request)
     {
         $options = [];
 
@@ -166,6 +166,26 @@ class AttributeGroupController
     }
 
     /**
+     * Get attribute group collection.
+     * We should spilt the search and index action in two controllers to handle rights properly.
+     *
+     * @return JsonResponse
+     */
+    public function indexAction()
+    {
+        $attributeGroups = $this->attributeGroupRepo->findAll();
+
+        $normalizedAttributeGroups = [];
+
+        foreach ($attributeGroups as $attributeGroup) {
+            $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
+                ->normalize($attributeGroup, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedAttributeGroups);
+    }
+
+    /**
      * Get a single attribute group
      *
      * @param string $identifier
@@ -197,7 +217,6 @@ class AttributeGroupController
 
         $data = json_decode($request->getContent(), true);
         $this->updater->update($attributeGroup, $data);
-        error_log(print_r($data, true));
 
         $violations = $this->validator->validate($attributeGroup);
         if (0 < $violations->count()) {
@@ -210,7 +229,7 @@ class AttributeGroupController
         }
 
         $this->saver->save($attributeGroup);
-        error_log('saved!');
+
         return new JsonResponse(
             $this->normalizer->normalize(
                 $attributeGroup,
@@ -232,6 +251,8 @@ class AttributeGroupController
         $attributeGroup = $this->getAttributeGroupOr404($identifier);
 
         $data = json_decode($request->getContent(), true);
+        $sortOrder = $data['attributes_sort_order'];
+        unset($data['attributes_sort_order']);
 
         $this->ensureAttributeCollectionRights(
             array_map(function (AttributeInterface $attribute) {
@@ -255,8 +276,6 @@ class AttributeGroupController
 
         $this->saver->save($attributeGroup);
 
-        // It's now time to update sort order on attributes
-        $sortOrder = $data['attributes_sort_order'];
         $attributes = $this->attributeRepository->findBy(['code' => array_keys($sortOrder)]);
         foreach ($attributes as $attribute) {
             $data = ['sort_order' => $sortOrder[$attribute->getCode()]];
@@ -281,15 +300,15 @@ class AttributeGroupController
      */
     public function sortAction(Request $request)
     {
-        $data = json_decode($request->getContent(), $true);
+        $data = json_decode($request->getContent(), true);
 
-        foreach ($data as $attributeGroupCode => $sortOder) {
+        foreach ($data as $attributeGroupCode => $sortOrder) {
             $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($attributeGroupCode);
             $this->updater->update($attributeGroup, ['sort_order' => $sortOrder]);
             $this->saver->save($attributeGroup);
         }
 
-        error_log($request->getContent());
+        return $this->indexAction();
     }
 
     /**
