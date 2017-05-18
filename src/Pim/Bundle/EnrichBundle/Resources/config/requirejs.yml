@@ -748,8 +748,9 @@ config:
         pim/group-edit-form/save:                   pimenrich/js/group/form/save
 
         # Attribute
-        pim/attribute/edit-form:                    pimenrich/js/attribute/form/edit-form
-        pim/attribute/type-specific-form:           pimenrich/js/attribute/form/type-specific-form
+        pim/attribute-edit-form:                       pimenrich/js/attribute/form/edit-form
+        pim/attribute-edit-form/properties/common:     pimenrich/js/attribute/form/properties/common
+        pim/attribute/type-specific-form:              pimenrich/js/attribute/form/type-specific-form
 
         # Common
         pim/common/grid:                   pimenrich/js/form/common/grid
@@ -1014,7 +1015,7 @@ config:
         pim/template/job-execution/auto-refresh:              pimenrich/templates/job-execution/auto-refresh.html
         pim/template/job-execution/download-archives-buttons: pimenrich/templates/job-execution/download-archives-buttons.html
 
-        pim/template/attribute/general: pimenrich/templates/attribute/general.html
+        pim/template/attribute/tab/properties/common: pimenrich/templates/attribute/tab/properties/common.html
         pim/template/attribute/metric: pimenrich/templates/attribute/metric.html
 
         # Order last

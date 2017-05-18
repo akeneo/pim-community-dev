@@ -1,0 +1,108 @@
+<div class="tabsection-title">
+    <%- labels.sectionTitle %>
+</div>
+<div class="tabsection-content">
+    <div class="AknFormContainer AknFormContainer--withPadding">
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_code">
+                    <%- labels.fields.code %> <em><%- labels.required %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <input id="pim_enrich_attribute_form_code" class="AknTextField" type="text" name="code"<% if ('edit' === mode) { %> readonly disabled<% } %> value="<%- attribute.code %>">
+            </div>
+        </div>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_type">
+                    <%- labels.fields.type %> <em><%- labels.required %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <select id="pim_enrich_attribute_form_type" class="select2 input-large" name="type" readonly disabled>
+                    <option><%- labels.type %></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_scopable">
+                    <%- labels.fields.scopable %> <em><%- labels.required %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+                    <input
+                        id="pim_enrich_attribute_form_scopable"
+                        type="checkbox"
+                        name="scopable"
+                        <% if (attribute.scopable) { %> checked<% } %>
+                        <% if ('edit' === mode) { %> readonly disabled<% } %>
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_localizable">
+                    <%- labels.fields.localizable %> <em><%- labels.required %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+                    <input
+                        id="pim_enrich_attribute_form_localizable"
+                        type="checkbox"
+                        name="localizable"
+                        <% if (attribute.localizable) { %> checked<% } %>
+                        <% if ('edit' === mode) { %> readonly disabled<% } %>
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_is_locale_specific">
+                    <%- labels.fields.is_locale_specific %> <em><%- labels.required %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+                    <input
+                        id="pim_enrich_attribute_form_is_locale_specific"
+                        type="checkbox"
+                        name="is_locale_specific"
+                        <% if (attribute.is_locale_specific) { %> checked<% } %>
+                    >
+                </div>
+            </div>
+        </div>
+
+        <% if (attribute.is_locale_specific) { %>
+            <div class="AknFieldContainer">
+                <div class="AknFieldContainer-header">
+                    <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_available_locales">
+                        <%- labels.fields.is_locale_specific %> <em><%- labels.required %></em>
+                    </label>
+                </div>
+                <div class="AknFieldContainer-inputContainer">
+                    <select id="pim_enrich_attribute_form_available_locales" class="select2" name="available_locales" multiple>
+                        <% _.each(availableLocales, function (locale) { %>
+                            <option
+                                value="<%- locale.code %>"
+                                <% if (-1 !== attribute.available_locales.indexOf(locale.code)) { %> selected<% } %>
+                            >
+                                <%- locale.label %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

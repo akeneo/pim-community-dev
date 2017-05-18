@@ -1,6 +1,6 @@
 extensions:
     pim-attribute-edit-form:
-        module: pim/attribute/edit-form
+        module: pim/attribute-edit-form
 
     pim-attribute-edit-form-cache-invalidator:
         module: pim/cache-invalidator
@@ -21,13 +21,13 @@ extensions:
         config:
             label: 'pim_enrich.form.attribute.tab.properties.title'
 
-    pim-attribute-edit-form-properties-general:
-        module: pim/common/simple-view
+    pim-attribute-edit-form-properties-common:
+        module: pim/attribute-edit-form/properties/common
         parent: pim-attribute-edit-form-properties
         targetZone: accordion
         position: 100
         config:
-            template: pim/template/attribute/general
+            mode: create
 
     pim-attribute-edit-form-properties-type-specific:
         module: pim/attribute/type-specific-form

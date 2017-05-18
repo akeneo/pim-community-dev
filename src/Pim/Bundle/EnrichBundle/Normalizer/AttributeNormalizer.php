@@ -84,7 +84,7 @@ class AttributeNormalizer implements NormalizerInterface
             'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
             'field_type'         => $this->fieldProvider->getField($attribute),
             'filter_types'       => $this->filterProvider->getFilters($attribute),
-            'is_locale_specific' => (int) $attribute->isLocaleSpecific(),
+            'is_locale_specific' => $attribute->isLocaleSpecific(),
             'date_min'           => $dateMin,
             'date_max'           => $dateMax,
             'group_code'         => $groupCode,
