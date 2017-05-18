@@ -86,8 +86,8 @@ stage("Checkout") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                    sh "app/console oro:requirejs:generate-config"
                     sh "app/console pim:installer:dump-require-paths"
+                    sh "app/console assets:install"
 
                     stash "pim_enterprise_dev_full"
                 }
