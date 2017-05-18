@@ -67,18 +67,20 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($family, $format = null, array $context = array())
     {
+        $applyFilters = array_key_exists('apply_filters', $context)
+            && true === $context['apply_filters'];
+
         $normalizedFamily = $this->familyNormalizer->normalize(
             $family,
             'standard',
             $context
         );
 
-        $normalizedFamily['attributes'] = $this->normalizeAttributes(
-            $normalizedFamily['attributes']
-        );
+        $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $applyFilters);
 
         $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
-            $normalizedFamily['attribute_requirements']
+            $normalizedFamily['attribute_requirements'],
+            $applyFilters
         );
 
         $firstVersion = $this->versionManager->getOldestLogEntry($family);
@@ -111,22 +113,27 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Fetches attributes by code and normalizes them
      *
-     * @param array $codes
+     * @param FamilyInterface $family
+     * @param boolean         $applyFilters
      *
      * @return array
      */
-    protected function normalizeAttributes($codes)
+    protected function normalizeAttributes(FamilyInterface $family, $applyFilters)
     {
-        $attributes = $this->collectionFilter->filterCollection(
-            $this->attributeRepository->findBy(['code' => $codes]),
-            'pim.internal_api.attribute.view'
-        );
+        $attributes = $this->attributeRepository->findAttributesByFamily($family);
+
+        if ($applyFilters) {
+            $attributes = $this->collectionFilter->filterCollection(
+                $attributes,
+                'pim.internal_api.attribute.view'
+            );
+        }
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
             $normalizedAttributes[] = [
                 'code' => $attribute->getCode(),
-                'type' => $attribute->getAttributeType(),
+                'type' => $attribute->getType(),
                 'group_code' => $attribute->getGroup()->getCode(),
                 'labels' => $this->translationNormalizer->normalize($attribute, 'standard', []),
                 'sort_order' => $attribute->getSortOrder(),
@@ -142,22 +149,27 @@ class FamilyNormalizer implements NormalizerInterface
      * It filters the requirements to the viewable ones
      *
      * @param array $requirements
+     * @param bool  $applyFilters
      *
      * @return array
      */
-    protected function normalizeRequirements($requirements)
+    protected function normalizeRequirements($requirements, $applyFilters)
     {
         $result = [];
 
         foreach ($requirements as $channel => $attributeCodes) {
-            $filteredAttributes = $this->collectionFilter->filterCollection(
-                $this->attributeRepository->findBy(['code' => $attributeCodes]),
-                'pim.internal_api.attribute.view'
-            );
+            $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
+
+            if ($applyFilters) {
+                $attributes = $this->collectionFilter->filterCollection(
+                    $attributes,
+                    'pim.internal_api.attribute.view'
+                );
+            }
 
             $result[$channel] = array_map(function ($attribute) {
                 return $attribute->getCode();
-            }, $filteredAttributes);
+            }, $attributes);
         }
 
         return $result;

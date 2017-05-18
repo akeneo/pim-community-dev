@@ -31,7 +31,8 @@
                                     FetcherRegistry.initialize().done(function () {
                                         FetcherRegistry.getFetcher('family').fetch(code, {
                                             cached: false,
-                                            generateMissing: true
+                                            generateMissing: true,
+                                            apply_filters: false,
                                         }).then(function (family) {
                                             var label = _.escape(
                                                 i18n.getLabel(
