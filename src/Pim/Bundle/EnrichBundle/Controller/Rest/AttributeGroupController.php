@@ -69,6 +69,8 @@ class AttributeGroupController
             );
         }
 
+        $applyFilters = $request->request->getBoolean('apply_filters', true);
+
         if (empty($options)) {
             $options = $request->request->get(
                 'options',
@@ -85,14 +87,16 @@ class AttributeGroupController
                 $options
             );
 
-        $filteredAttributeGroups = $this->collectionFilter->filterCollection(
-            $attributeGroups,
-            'pim.internal_api.attribute_group.view'
-        );
+        if ($applyFilters) {
+            $attributeGroups = $this->collectionFilter->filterCollection(
+                $attributeGroups,
+                'pim.internal_api.attribute_group.view'
+            );
+        }
 
         $normalizedAttributeGroups = [];
 
-        foreach ($filteredAttributeGroups as $attributeGroup) {
+        foreach ($attributeGroups as $attributeGroup) {
             $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
                 ->normalize($attributeGroup, 'standard');
         }
