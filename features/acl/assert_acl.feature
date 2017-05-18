@@ -28,7 +28,6 @@ Feature: Define user rights
     And I should not see the text "There are unsaved changes."
     And I am on the <page> page
     Then I should not see the text "<button>"
-    And I should not be able to access the <forbiddenPage> page
 
     Examples:
       | permission                 | page              | button                  | forbiddenPage            |
