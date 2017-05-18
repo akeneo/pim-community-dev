@@ -56,13 +56,13 @@
                                     FetcherRegistry.initialize().done(function () {
                                         FetcherRegistry.getFetcher('product').fetch('{{ productId }}')
                                             .then(function (product) {
-                                                var sku      = _.escape(product.meta.label[UserContext.get('catalogLocale')]);
-                                                var newTitle = document.title.replace('%product.sku%', sku);
+                                                var label = product.meta.label[UserContext.get('catalogLocale')];
+                                                var newTitle = document.title.replace('%product.sku%', label);
 
                                                 document.title  = newTitle;
                                                 var navigation  = Navigation.getInstance();
                                                 var navTitle    = navigation.getPinButtonsData('title');
-                                                navTitle.params = {'%product.sku%': sku};
+                                                navTitle.params = {'%product.sku%': _.escape(label)};
                                                 navigation.setPinButtonsData('title', navTitle);
                                                 navigation.setPinButtonsData('title-rendered-short', newTitle);
                                                 HistoryItemManager.save(navigation.url, navTitle);
