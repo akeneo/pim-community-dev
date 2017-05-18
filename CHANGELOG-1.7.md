@@ -11,6 +11,7 @@
 - PIM-6392: Fix output buffering error when updating a list of resources from the API
 - PIM-6426: Fix issue when downloading a media file while output buffering is disabled
 - PIM-6413: Fix to ensure that attribute options codes are no longer updated in MongoDB
+- PIM-6285: Fix content type validation in the API
 
 # 1.7.4 (2017-05-10)
 
