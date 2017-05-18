@@ -65,7 +65,7 @@ stage("Checkout") {
         }
 
         docker.image('node').inside {
-            unstash "project_files"
+            unstash "project_files_full"
 
             sh "npm install --verbose"
             sh "npm run webpack"
