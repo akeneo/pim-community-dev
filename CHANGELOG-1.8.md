@@ -13,6 +13,7 @@
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- TIP-730: Reworking of the creation popin for basic entities
 
 ## BC breaks
 
@@ -149,6 +150,7 @@
 - Remove all standard denormalizers classes `Pim\Component\Catalog\Denormalizer\Standard\*` and services `pim_catalog.denormalizer.standard.*`
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
+- Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
 
 ## Requirements
 
