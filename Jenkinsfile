@@ -67,7 +67,7 @@ stage("Checkout") {
             }
 
             docker.image('node').inside {
-                unstash "pim_community_dev"
+                unstash "pim_community_dev_full"
 
                 sh "npm install --verbose"
                 sh "npm run webpack"
@@ -93,7 +93,7 @@ stage("Checkout") {
                 }
 
                 docker.image('node').inside {
-                    unstash "pim_enterprise_dev"
+                    unstash "pim_enterprise_dev_full"
 
                     sh "npm install --verbose"
                     sh "npm run webpack"
