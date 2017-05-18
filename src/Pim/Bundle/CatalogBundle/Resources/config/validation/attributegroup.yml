@@ -13,7 +13,6 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
-    getters:
         code:
             - NotBlank: ~
             - Regex:
