@@ -237,37 +237,6 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
-    public function testResponseWhenTryingToUpdateTheCode()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "code": "new_code"
-    }
-JSON;
-        $client->request('PATCH', '/api/rest/v1/attribute-groups/attributeGroupA', [], [], [], $data);
-
-        $expectedContent =
-<<<JSON
-{
-    "code":422,
-    "message": "Validation failed.",
-    "errors": [
-        {
-            "property": "code",
-            "message": "This property cannot be changed."
-        }
-    ]
-}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-    }
-
     public function testResponseWhenAnAttributeIsCreatedWithInconsistentCodes()
     {
         $client = $this->createAuthenticatedClient();
