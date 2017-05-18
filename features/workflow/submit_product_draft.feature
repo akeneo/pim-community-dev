@@ -39,7 +39,7 @@ Feature: Submit a modification on a product draft
   Scenario: Successfully propose a text attribute change
     When I change the Name to "Coat"
     And I save the product
-    Then the english name of "my-jacket" should be "Jacket"
+    Then the english localizable value name of "my-jacket" should be "Jacket"
     But the field Name should contain "Coat"
     And I should see that Name is a modified value
 
@@ -56,7 +56,7 @@ Feature: Submit a modification on a product draft
     When I visit the "Marketing" group
     And I change the Number in stock for scope mobile to "40"
     And I save the product
-    Then the english mobile number_in_stock of "my-jacket" should be "4"
+    Then the mobile scopable value number_in_stock of "my-jacket" should be "4"
     And the product Number in stock for locale "en_US" and scope "mobile" should be "40"
     And I should see that Number in stock is a modified value
 
@@ -123,7 +123,7 @@ Feature: Submit a modification on a product draft
   Scenario: Successfully accept a date attribute modification on a product draft
     When I change the Release date for scope mobile to "05/20/2014"
     And I save the product
-    Then the english mobile release_date of "my-jacket" should be "2014-05-14"
+    Then the mobile scopable value release_date of "my-jacket" should be "2014-05-14"
     But the product Release date for scope "mobile" should be "05/20/2014"
     And I should see that Release date is a modified value
 
@@ -141,7 +141,7 @@ Feature: Submit a modification on a product draft
     Given I switch the locale to "fr_FR"
     When I change the Nom to "Tricot"
     And I save the product
-    Then the french name of "my-jacket" should be "Veste"
+    Then the french localizable value name of "my-jacket" should be "Veste"
     But the product Nom for locale "fr_FR" should be "Tricot"
     And I should see that Nom is a modified value
 
