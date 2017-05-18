@@ -83,6 +83,7 @@ class StreamResourceResponse
 
         $response->setCallback(function () use ($resource) {
             rewind($resource);
+            $this->ensureOutputBufferingIsStarted();
 
             $lineNumber = 1;
             $bufferSize = $this->configuration['input']['buffer_size'];
@@ -247,5 +248,18 @@ class StreamResourceResponse
         echo $jsonContent;
         ob_flush();
         flush();
+    }
+
+    /**
+     * The directive "ouput_buffering" could be disabled in the php configuration of some providers.
+     * In this case, we have to start the output buffering manually.
+     * Do note that is not possible to close all the output buffers before flushing the data,
+     * because it's needed for the tests.
+     */
+    protected function ensureOutputBufferingIsStarted()
+    {
+        if (0 === ob_get_level()) {
+            ob_start();
+        }
     }
 }
