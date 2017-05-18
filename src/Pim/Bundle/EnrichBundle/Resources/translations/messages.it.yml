@@ -269,9 +269,8 @@ pim_enrich:
         label: Scegli il tipo di dati di riferimento
 attribute:
   title: attributo
-  overview: Anteprima attributi
-  create: Crea attributo
   edit: Modifica attributo
+  create: Crea attributo
 attribute group:
   title: Attributi di gruppo
   overview: Anteprima attributi di gruppo
@@ -723,25 +722,6 @@ Current tab: Scheda corrente
 Group: Gruppo
 View group: Visualizzazione gruppo
 Products: Articoli
-pim_menu:
-  tab:
-    collect: Importazioni
-    enrich: Catalogo
-    settings: Impostazioni
-    spread: Esportazioni
-  item:
-    association_type: Tipi di associazione
-    attribute: Attributi
-    attribute_group: Gruppi di attributi
-    category: Categorie
-    channel: Canali
-    currency: Valute
-    family: Famiglie
-    group: Gruppi
-    group_type: Tipi di gruppo
-    locale: Impostazioni locali
-    product: Articoli
-    variant_group: Gruppi varianti
 Properties: Proprietà
 History: Cronologia
 pane.accordion:

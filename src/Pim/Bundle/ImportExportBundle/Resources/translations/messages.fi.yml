@@ -99,12 +99,6 @@ flash:
     removed: Tuonti poistettu
     updated: Tuonti päivitetty
     running: Tuonti on käynnissä
-pim_menu:
-  item:
-    export_history: Vientihistoria
-    export_profile: Vientiprofiili
-    import_history: Tuontihistoria
-    import_profile: Tuontiprofiilit
 General properties: Yleiset ominaisuudet
 History: Historia
 pane.accordion:

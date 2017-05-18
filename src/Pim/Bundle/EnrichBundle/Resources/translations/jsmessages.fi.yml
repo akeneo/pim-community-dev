@@ -252,6 +252,21 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
+    attribute_label:
+      pim_catalog_identifier: Tunniste
+      pim_catalog_text: Teksti
+      pim_catalog_textarea: Tekstialue
+      pim_catalog_number: Numero
+      pim_catalog_price_collection: Hinta
+      pim_catalog_multiselect: Monivalinta
+      pim_catalog_simpleselect: Yksinkertainen valinta
+      pim_catalog_file: Tiedosto
+      pim_catalog_image: Kuva
+      pim_catalog_boolean: "Kyllä/ei"
+      pim_catalog_date: Päivämäärä
+      pim_catalog_metric: Metriikka
+      pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
+      pim_reference_data_multiselect: Viitetiedot monivalinta
     attribute_option:
       code: Koodi
       label: Nimike
@@ -703,6 +718,8 @@ pim_enrich:
       create_btn: Luo ryhmä
     process_tracker:
       title: Prosessiseurain
+    attribute:
+      modal_title: Valitse attribuutin tyyppi
 pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
 page_title:
@@ -747,3 +764,40 @@ batch_jobs:
     label: Lisää tuotevariaatioryhmään
     perform:
       label: Lisää tuotevariaatioryhmään
+pim_menu:
+  tab:
+    collect: Kerää
+    enrich: Rikastuta
+    settings: Asetukset
+    system: Järjestelmä
+    spread: Levitä
+  item:
+    association_type: Määritetyypit
+    attribute: Attribuutit
+    attribute_group: Attribuuttiryhmät
+    category: Kategoriat
+    channel: Kanavat
+    currency: Valuutat
+    family: Perheet
+    group: Ryhmät
+    group_type: Ryhmätyypit
+    locale: Alueet
+    product: Tuotteet
+    variant_group: Tuotevariaatioryhmät
+    export_history: Vientihistoria
+    export_profile: Vientiprofiili
+    import_history: Tuontihistoria
+    import_profile: Tuontiprofiilit
+    configuration: Kokoonpano
+    user_management: Käyttäjähallinta
+    user: Käyttäjät
+    user_group: Ryhmät
+    user_role: Roolit
+    info: Järjestelmätiedot
+    job_tracker: Prosessiseurain
+pim_header:
+  user:
+    logout: Kirjaudu ulos
+    user_account: Oma tili
+pim_notification:
+  mark_all_as_read: Merkitse kaikki luetuiksi

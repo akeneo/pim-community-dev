@@ -18,5 +18,5 @@ Feature: Import attribute groups
     And I launch the import job
     And I wait for the "xlsx_footwear_attribute_group_import" job to finish
     Then there should be the following attribute groups:
-      | code          | label-en_US   | attributes                           | sort_order | group | type             |
-      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric | 6          | other | pim_catalog_text |
+      | code          | label-en_US   | attributes                           | sort_order |
+      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric | 6          |

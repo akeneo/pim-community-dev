@@ -269,9 +269,8 @@ pim_enrich:
         label: Valitse viite-datatyyppi
 attribute:
   title: attribuutti
-  overview: attribuuttien katsaus
-  create: luo attribuutti
   edit: muokkaa attribuuttia
+  create: luo attribuutti
 attribute group:
   title: attribuuttiryhmä
   overview: attribuuttiryhmien tarkastelu
@@ -723,25 +722,6 @@ Current tab: Nykyinen välilehti
 Group: Ryhmä
 View group: Näytä ryhmä
 Products: Tuotteet
-pim_menu:
-  tab:
-    collect: Kerää
-    enrich: Rikastuta
-    settings: Asetukset
-    spread: Levitä
-  item:
-    association_type: Määritetyypit
-    attribute: Attribuutit
-    attribute_group: Attribuuttiryhmät
-    category: Kategoriat
-    channel: Kanavat
-    currency: Valuutat
-    family: Perheet
-    group: Ryhmät
-    group_type: Ryhmätyypit
-    locale: Alueet
-    product: Tuotteet
-    variant_group: Tuotevariaatioryhmät
 Properties: Ominaisuudet
 History: Historia
 pane.accordion:

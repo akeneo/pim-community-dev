@@ -33,7 +33,7 @@ class AttributeGroupSpec extends ObjectBehavior
             'code'       => 'sizes',
             'sort_order' => 1,
             'attributes' => ['size', 'main_color'],
-            'label'      => [
+            'labels'     => [
                 'en_US' => 'Sizes',
                 'fr_FR' => 'Tailles'
             ]

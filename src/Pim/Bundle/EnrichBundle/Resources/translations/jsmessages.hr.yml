@@ -252,6 +252,21 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
+    attribute_label:
+      pim_catalog_identifier: Identifikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Područje teksta
+      pim_catalog_number: Broj
+      pim_catalog_price_collection: Cijena
+      pim_catalog_multiselect: Višestruki odabir
+      pim_catalog_simpleselect: Jednostavan odabir
+      pim_catalog_file: Datoteka
+      pim_catalog_image: Slika
+      pim_catalog_boolean: "Da/Ne"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Metrika
+      pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
+      pim_reference_data_multiselect: Referentni podaci višestrukog odabira
     attribute_option:
       code: Kod
       label: Oznaka
@@ -708,6 +723,8 @@ pim_enrich:
       create_btn: Kreiraj grupu
     process_tracker:
       title: Proces praćenja
+    attribute:
+      modal_title: Odaberi tip atributa
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
 page_title:
@@ -756,3 +773,40 @@ batch_jobs:
     label: Dodaj u varijantu grupe
     perform:
       label: Dodaj u varijantu grupe
+pim_menu:
+  tab:
+    collect: Prikupi
+    enrich: Obogati
+    settings: Postavke
+    system: Sustav
+    spread: Proširi
+  item:
+    association_type: Tipovi pridruživanja
+    attribute: Atributi
+    attribute_group: Grupe atributa
+    category: Kategorije
+    channel: Kanali
+    currency: Valute
+    family: Obitelji
+    group: Grupe
+    group_type: Tipovi grupa
+    locale: Lokalizacija
+    product: Proizvodi
+    variant_group: Varijante grupa
+    export_history: Povijest izvoza
+    export_profile: Izvoz profila
+    import_history: Povijest izvoza
+    import_profile: Uvoz profila
+    configuration: Konfiguracija
+    user_management: Upravljanje korisnicima
+    user: Korisnici
+    user_group: Grupe
+    user_role: Role
+    info: Informacije o sustavu
+    job_tracker: Proces praćenja
+pim_header:
+  user:
+    logout: Odjava
+    user_account: Moj korisnički račun
+pim_notification:
+  mark_all_as_read: Označi sve kao pročitano

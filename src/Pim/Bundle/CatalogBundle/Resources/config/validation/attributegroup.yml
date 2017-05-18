@@ -7,12 +7,18 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
     properties:
         translations:
             - Valid: ~
+        sortOrder:
+            - NotNull: ~
+            - Type: numeric
+            - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
+            - GreaterThanOrEqual:
+                value: 0
     getters:
         code:
             - NotBlank: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
-                message: Group code may contain only letters, numbers and underscores
+                message: Attribute group code may contain only letters, numbers and underscores
             - Length:
                 max: 100
 
@@ -21,3 +27,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                    standardPropertyName: labels

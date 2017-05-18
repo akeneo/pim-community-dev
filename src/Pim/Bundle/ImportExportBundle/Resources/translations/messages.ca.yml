@@ -99,12 +99,6 @@ flash:
     removed: S'ha eliminat la importació
     updated: La importació s'ha actualitzat correctament
     running: La importació s'està executant
-pim_menu:
-  item:
-    export_history: Històric d'exportacions
-    export_profile: Perfils d'exportació
-    import_history: Històric d'importacions
-    import_profile: Perfils d'importació
 General properties: Propietats generals
 History: Històric
 pane.accordion:

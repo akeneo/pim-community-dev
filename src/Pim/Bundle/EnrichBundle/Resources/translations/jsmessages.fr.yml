@@ -2,7 +2,6 @@ confirmation:
   remove:
     item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
-    attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
@@ -274,6 +273,21 @@ pim_enrich:
         updated_by: Mis à jour par
       btn:
         save: Enregistrer
+    attribute_label:
+      pim_catalog_identifier: Identifiant
+      pim_catalog_text: Texte
+      pim_catalog_textarea: Zone de texte
+      pim_catalog_number: Nombre
+      pim_catalog_price_collection: Prix
+      pim_catalog_multiselect: Liste à choix multiples
+      pim_catalog_simpleselect: Liste à choix unique
+      pim_catalog_file: Fichier
+      pim_catalog_image: Image
+      pim_catalog_boolean: "Oui / Non"
+      pim_catalog_date: Date
+      pim_catalog_metric: Unité de mesure
+      pim_reference_data_simpleselect: Liste à choix unique de données référentielles
+      pim_reference_data_multiselect: Liste à choix multiples de données référentielles
     attribute_option:
       code: Code
       label: Libellé
@@ -783,6 +797,8 @@ pim_enrich:
     channel:
       title: Liste des canaux
       create_btn: Créer un canal
+    attribute:
+      modal_title: Choisir le type d'attribut
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
   http:
@@ -867,7 +883,40 @@ job_tracker:
     input: Télécharger les fichiers lus
     invalid_xlsx: Télécharger les données invalides
     invalid_csv: Télécharger les données invalides
-
 pim_menu:
-    tab:
-        collect: Collecter
+  tab:
+    collect: Collecter
+    enrich: Enrichir
+    settings: Paramètres
+    system: Système
+    spread: Diffuser
+  item:
+    association_type: Types d'association
+    attribute: Attributs
+    attribute_group: Groupes d'attributs
+    category: Catégories
+    channel: Canaux
+    currency: Devises
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    locale: Locales
+    product: Produits
+    variant_group: Groupes de variantes
+    export_history: Historique des exports
+    export_profile: Profils d'export
+    import_history: Historique des imports
+    import_profile: Profils d'import
+    configuration: Configuration
+    user_management: Gestion des utilisateurs
+    user: Utilisateurs
+    user_group: Groupes
+    user_role: Rôles
+    info: Informations système
+    job_tracker: Traqueur de processus
+pim_header:
+  user:
+    logout: Déconnexion
+    user_account: Mon compte
+pim_notification:
+  mark_all_as_read: Marquer tout comme lu

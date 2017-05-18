@@ -328,7 +328,7 @@ class AttributeController
     }
 
     /**
-     * Get a response with HTTP code when an object is created.
+     * Get a response with a location header to the created or updated resource.
      *
      * @param AttributeInterface $attribute
      * @param int                $status

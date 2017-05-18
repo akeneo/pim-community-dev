@@ -252,6 +252,21 @@ pim_enrich:
         updated_by: 更新者：
       btn:
         save: 保存
+    attribute_label:
+      pim_catalog_identifier: 标识
+      pim_catalog_text: 文本
+      pim_catalog_textarea: 文本区域
+      pim_catalog_number: 数量
+      pim_catalog_price_collection: 价格
+      pim_catalog_multiselect: 多选
+      pim_catalog_simpleselect: 单选
+      pim_catalog_file: 文件
+      pim_catalog_image: 图片
+      pim_catalog_boolean: "确定/取消"
+      pim_catalog_date: 日期
+      pim_catalog_metric: 公制
+      pim_reference_data_simpleselect: 参考数据简单选择
+      pim_reference_data_multiselect: 参考数据多项选择
     attribute_option:
       code: 代码
       label: 标签
@@ -677,6 +692,8 @@ pim_enrich:
       create_btn: 创建组
     process_tracker:
       title: 过程跟踪器
+    attribute:
+      modal_title: 选择属性类型
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
 page_title:
@@ -725,3 +742,40 @@ batch_jobs:
     label: 添加到款式组
     perform:
       label: 添加到款式组
+pim_menu:
+  tab:
+    collect: 收集
+    enrich: 添加
+    settings: 设置 
+    system: 系统
+    spread: 传播
+  item:
+    association_type: 关联类型
+    attribute: 属性
+    attribute_group: 属性组
+    category: 分类
+    channel: 渠道
+    currency: 货币
+    family: 品类
+    group: 分组
+    group_type: 分组类型
+    locale: 本地化语言
+    product: 商品
+    variant_group: 款式组
+    export_history: 导出历史
+    export_profile: 导出配置文件
+    import_history: 导入历史
+    import_profile: 导入方案
+    configuration: 配置
+    user_management: 用户管理
+    user: 用户
+    user_group: 分组
+    user_role: 角色
+    info: 系统信息
+    job_tracker: 过程跟踪器
+pim_header:
+  user:
+    logout: 退出登录
+    user_account: 我的帐户
+pim_notification:
+  mark_all_as_read: 标记所有为已读

@@ -7,8 +7,8 @@ Feature: Validate localized number attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attribute groups:
-      | code    | label-en_US | group | type             |
-      | general | General     | other | pim_catalog_text |
+      | code    | label-en_US |
+      | general | General     |
     And the following attributes:
       | code       | label-fr_FR | type               | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
       | sold       | Vendu       | pim_catalog_number | 0        | 0      | 0                | 0                |            |            | other |

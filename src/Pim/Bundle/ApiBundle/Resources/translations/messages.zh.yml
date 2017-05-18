@@ -2,6 +2,8 @@ pim_api:
   acl:
     attribute:
       list: 列出属性
+    attribute_group:
+      list: 列出属性组
     category:
       list: 列出目录
     family:
@@ -10,6 +12,7 @@ pim_api:
     locale.list: 列出本地化语言
   acl_group:
     attribute: 属性
+    attribute_group: 属性组
     category: 分类
     family: 品类
     channel: 渠道
