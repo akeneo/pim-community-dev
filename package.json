@@ -7,7 +7,6 @@
     "devDependencies": {
         "backbone": "0.9.10",
         "bundle-loader": "^0.5.5",
-        "cheerio": "^0.22.0",
         "codemirror": "5.25.2",
         "colors": "^1.1.2",
         "eslint": "^3.19.0",
