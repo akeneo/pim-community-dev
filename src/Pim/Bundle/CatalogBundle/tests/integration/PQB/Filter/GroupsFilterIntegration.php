@@ -16,14 +16,12 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $group = $this->get('pim_catalog.factory.group')->create();
-            $this->get('pim_catalog.updater.group')->update($group, [
-                'code' => 'groupC',
-                'type' => 'RELATED'
-            ]);
-            $this->get('pim_catalog.saver.group')->save($group);
-        }
+        $group = $this->get('pim_catalog.factory.group')->create();
+        $this->get('pim_catalog.updater.group')->update($group, [
+            'code' => 'groupC',
+            'type' => 'RELATED'
+        ]);
+        $this->get('pim_catalog.saver.group')->save($group);
     }
 
     public function testOperatorIn()
@@ -85,9 +83,6 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 }

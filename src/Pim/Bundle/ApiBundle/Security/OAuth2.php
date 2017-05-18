@@ -4,7 +4,8 @@ namespace Pim\Bundle\ApiBundle\Security;
 
 use OAuth2\OAuth2 as BaseOAuth2;
 use OAuth2\OAuth2AuthenticateException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -21,7 +22,7 @@ class OAuth2 extends BaseOAuth2
         try {
             return parent::verifyAccessToken($tokenParam, $scope);
         } catch (OAuth2AuthenticateException $e) {
-            throw new UnprocessableEntityHttpException($e->getDescription(), $e);
+            throw new HttpException(Response::HTTP_UNAUTHORIZED, $e->getDescription(), $e);
         }
     }
 }

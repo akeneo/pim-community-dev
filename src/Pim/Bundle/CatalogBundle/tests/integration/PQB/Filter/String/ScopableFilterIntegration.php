@@ -17,43 +17,41 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_text',
-                'type'                => AttributeTypes::TEXT,
-                'localizable'         => false,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_text',
+            'type'                => AttributeTypes::TEXT,
+            'localizable'         => false,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_scopable_text' => [
-                        ['data' => 'black cat', 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => 'cat', 'locale' => null, 'scope' => 'tablet'],
-                    ]
+        $this->createProduct('cat', [
+            'values' => [
+                'a_scopable_text' => [
+                    ['data' => 'black cat', 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => 'cat', 'locale' => null, 'scope' => 'tablet'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_scopable_text' => [
-                        ['data' => 'cattle', 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => 'cattle', 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_scopable_text' => [
+                    ['data' => 'cattle', 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => 'cattle', 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_scopable_text' => [
-                        ['data' => 'just a dog...', 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => 'dog', 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('dog', [
+            'values' => [
+                'a_scopable_text' => [
+                    ['data' => 'just a dog...', 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => 'dog', 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartsWith()

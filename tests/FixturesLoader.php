@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -16,26 +18,38 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class FixturesLoader
 {
-    /** @var ContainerInterface */
-    protected $container;
-
-    /** @var Configuration */
-    protected $configuration;
+    const CACHE_DIR = '/pim-integration-tests-data-cache/';
 
     /** @var KernelInterface */
     protected $kernel;
 
+    /** @var Configuration */
+    protected $configuration;
+
+    /** @var DatabaseSchemaHandler */
+    protected $databaseSchemaHandler;
+
+    /** @var ContainerInterface */
+    protected $container;
+
     /** @var Application */
     protected $cli;
+
     /**
-     * @param KernelInterface $kernel
-     * @param Configuration   $configuration
+     * @param KernelInterface       $kernel
+     * @param Configuration         $configuration
+     * @param DatabaseSchemaHandler $databaseSchemaHandler
      */
-    public function __construct(KernelInterface $kernel, Configuration $configuration)
-    {
+    public function __construct(
+        KernelInterface $kernel,
+        Configuration $configuration,
+        DatabaseSchemaHandler $databaseSchemaHandler
+    ) {
         $this->kernel = $kernel;
-        $this->container = $kernel->getContainer();
         $this->configuration = $configuration;
+        $this->databaseSchemaHandler = $databaseSchemaHandler;
+
+        $this->container = $kernel->getContainer();
         $this->cli = new Application($kernel);
         $this->cli->setAutoExit(false);
     }
@@ -56,12 +70,47 @@ class FixturesLoader
     public function load()
     {
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
+        $fixturesHash = $this->getHashForFiles($files);
+
+        // TODO: this should change according to the storage
+        $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
+
+        if (file_exists($dumpFile)) {
+            $this->dropDatabase();
+            $this->createDatabase();
+            $this->restoreDatabase($dumpFile);
+
+            return;
+        }
+
+        $this->databaseSchemaHandler->reset();
+        $this->loadData();
+        $this->dumpDatabase($dumpFile);
+    }
+
+    protected function loadData()
+    {
+        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadMongoDbFiles($filesByType['mongodb']);
         $this->loadImportFiles($filesByType['import']);
         $this->loadReferenceData();
+    }
+
+    /**
+     * Returns a unique hash for the specified set of files. If one the file changes, the hash changes.
+     *
+     * @param array $files
+     *
+     * @return string
+     */
+    protected function getHashForFiles(array $files)
+    {
+        $hashes = array_map('sha1_file', $files);
+
+        return sha1(implode(':', $hashes));
     }
 
     /**
@@ -256,5 +305,83 @@ class FixturesLoader
         }
 
         return $files;
+    }
+
+    protected function dropDatabase()
+    {
+        $this->execCommand([
+            'mysql',
+            '-h '.$this->container->getParameter('database_host'),
+            '-u '.$this->container->getParameter('database_user'),
+            '-p'.$this->container->getParameter('database_password'),
+            sprintf('-e "DROP DATABASE %s;"', $this->container->getParameter('database_name')),
+        ]);
+    }
+
+    protected function createDatabase()
+    {
+        $this->execCommand([
+            'mysql',
+            '-h '.$this->container->getParameter('database_host'),
+            '-u '.$this->container->getParameter('database_user'),
+            '-p'.$this->container->getParameter('database_password'),
+            sprintf('-e "CREATE DATABASE %s;"', $this->container->getParameter('database_name')),
+        ]);
+    }
+
+    /**
+     * @param string $filepath
+     */
+    protected function dumpDatabase($filepath)
+    {
+        $dir = dirname($filepath);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $this->execCommand([
+            'mysqldump',
+            '-h '.$this->container->getParameter('database_host'),
+            '-u '.$this->container->getParameter('database_user'),
+            '-p'.$this->container->getParameter('database_password'),
+            '--skip-add-drop-table',
+            '--quick',
+            $this->container->getParameter('database_name'),
+            '> '.$filepath,
+        ]);
+    }
+
+    /**
+     * @param string $filepath
+     */
+    protected function restoreDatabase($filepath)
+    {
+        $this->execCommand([
+            'mysql',
+            '-h '.$this->container->getParameter('database_host'),
+            '-u '.$this->container->getParameter('database_user'),
+            '-p'.$this->container->getParameter('database_password'),
+            $this->container->getParameter('database_name'),
+            '< '.$filepath,
+        ]);
+    }
+
+    /**
+     * @param string[] $arguments
+     * @param int      $timeout
+     *
+     * @return string
+     */
+    protected function execCommand(array $arguments, $timeout = 120)
+    {
+        $process = new Process(implode(' ', $arguments));
+        $process->setTimeout($timeout);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return $process->getOutput();
     }
 }

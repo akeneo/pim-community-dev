@@ -17,43 +17,41 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_text',
-                'type'                => AttributeTypes::TEXT,
-                'localizable'         => true,
-                'scopable'            => false,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_text',
+            'type'                => AttributeTypes::TEXT,
+            'localizable'         => true,
+            'scopable'            => false,
+        ]);
 
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_localizable_text' => [
-                        ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => 'chat noir', 'locale' => 'fr_FR', 'scope' => null],
-                    ]
+        $this->createProduct('cat', [
+            'values' => [
+                'a_localizable_text' => [
+                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => 'chat noir', 'locale' => 'fr_FR', 'scope' => null],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_localizable_text' => [
-                        ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => 'cattle', 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_localizable_text' => [
+                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => 'cattle', 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_localizable_text' => [
-                        ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => 'juste un chien', 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('dog', [
+            'values' => [
+                'a_localizable_text' => [
+                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => 'juste un chien', 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartsWith()

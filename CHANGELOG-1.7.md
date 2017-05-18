@@ -2,8 +2,23 @@
 
 ## Bug Fixes
 
+- PIM-6394: Fix email validation when creating a user in order to be less restrictive
+- GITHUB-6161: Fix JobInstance class hardcoded in `Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute`
+- GITHUB-6151: Fix Mongo TimestampableSubscriber to properly update the CreatedAt date of a product
+- PIM-6254: Fix pagination on the API when filters are applied
+
+# 1.7.4 (2017-05-10)
+
+## Bug Fixes
+
 - PIM-6322: Add output for attribute option form validation
 - PIM-6378: Fix translations for channel labels in export builder
+- PIM-6377: Fix potential notice in price property formatter
+- PIM-6387: Fix HTTP code returned when the token is invalid or expired
+- PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
+- PIM-6381: Fix `Delete` button is visible on channel create screen
+- PIM-6398: Fix Summernote (WYSIWYG) style (backport GITHUB-6101 into 1.7)
+- PIM-6402: Clean attribute properties according to new validation rules during migration
 
 # 1.7.3 (2017-04-14)
 

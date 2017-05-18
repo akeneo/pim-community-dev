@@ -12,6 +12,7 @@ This value should not be blank: Ova vrijednost ne bi trebala biti prazna
 Option code may contain only letters, numbers and underscores: Opcija šifre može sadržavati samo slova, brojeve i donju crtu
 Option code may contain only letters (at least one), numbers and underscores: Opcija šifre može sadržavati samo slova (barem jedno), brojke i donju crtu
 This value should not be a decimal.: Ta vrijednost ne smije biti decimalna.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Ekstenzija datoteke nije dozvoljena (dozvoljene ekstenzije: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Vrijednost %value% je već postavljena za neki drugi proizvod za jedinstveni atribut %attribute%
 regex.comma_or_semicolon.message: Ovo polje ne smije sadržavati niti zarez niti točku-zarez.
 file.extensions.message: 'Ekstenzija datoteke nije dozvoljena (dozvoljene ekstenzije: %extensions%).'

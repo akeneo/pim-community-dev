@@ -17,34 +17,32 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_media',
-                'type'                => AttributeTypes::IMAGE,
-                'localizable'         => false,
-                'scopable'            => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_media',
+            'type'                => AttributeTypes::IMAGE,
+            'localizable'         => false,
+            'scopable'            => true
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_image' => [
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'tablet', 'locale' => null],
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_image' => [
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'tablet', 'locale' => null],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_image' => [
-                        ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'tablet', 'locale' => null],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_image' => [
+                    ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => $this->getFixturePath('ziggy.png'), 'scope' => 'tablet', 'locale' => null],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartWith()

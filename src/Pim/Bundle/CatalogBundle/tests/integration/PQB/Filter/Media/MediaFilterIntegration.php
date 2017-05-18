@@ -16,25 +16,23 @@ class MediaFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('akeneo', [
-                'values' => [
-                    'an_image' => [
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('akeneo', [
+            'values' => [
+                'an_image' => [
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('ziggy', [
-                'values' => [
-                    'an_image' => [
-                        ['data' => $this->getFixturePath('ziggy.png'), 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('ziggy', [
+            'values' => [
+                'an_image' => [
+                    ['data' => $this->getFixturePath('ziggy.png'), 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartWith()
