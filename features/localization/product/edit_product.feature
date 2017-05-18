@@ -7,8 +7,8 @@ Feature: Edit a product with localized attributes
   Background:
     Given the "default" catalog configuration
     And the following attribute groups:
-      | code    | label-en_US | group | type             |
-      | general | General     | other | pim_catalog_text |
+      | code    | label-en_US |
+      | general | General     |
     And the following attributes:
       | code   | label-fr_FR | type                         | scopable | unique | negative_allowed | decimals_allowed | group | metric_family | default_metric_unit |
       | number | Nombre      | pim_catalog_number           | 0        | 0      | 1                | 1                | other |               |                     |

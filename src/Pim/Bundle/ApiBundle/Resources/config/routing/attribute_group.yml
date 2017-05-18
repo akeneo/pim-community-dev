@@ -3,6 +3,11 @@ pim_api_attribute_group_list:
     defaults: { _controller: pim_api.controller.attribute_group:listAction, _format: json }
     methods: [GET]
 
+pim_api_attribute_group_create:
+    path: /attribute-groups
+    defaults: { _controller: pim_api.controller.attribute_group:createAction, _format: json }
+    methods: [POST]
+
 pim_api_attribute_group_get:
     path: /attribute-groups/{code}
     defaults: { _controller: pim_api.controller.attribute_group:getAction, _format: json }

@@ -8,8 +8,8 @@ Feature: Display the attribute history
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And the following attribute group:
-      | code      | label-en_US | group | type             |
-      | technical | Technical   | other | pim_catalog_text |
+      | code      | label-en_US |
+      | technical | Technical   |
 
   Scenario: Successfully edit a reference data attribute and see the history
     Given I am on the attributes page
