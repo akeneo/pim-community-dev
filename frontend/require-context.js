@@ -3,7 +3,7 @@ define(['paths'], function(paths) {
         var modulePath = paths[moduleName]
 
         // Make an array of globs in the webpack config for the 'allowed' dynamic import paths, then convert them to regex and inject the list here
-        var grab = require.context('./dynamic/', true, /^.*(pim-enterprise-dev\/src|pim-community-dev\/src).*\.js$/)
+        var grab = require.context('./dynamic/', true, /^.*(pim-community-dev|pim-enterprise-dev).*src\/.*\/Bundle\/.*\.js$/)
 
         var moduleFileName = modulePath;
 
