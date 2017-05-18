@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6376: Fix slow MongoDB queries when editing attribute options
+- GITHUB-5451: Update akeneo_batch.yml sender email, cheers @julienquetil!
 
 # 1.6.14 (2017-04-21)
 
