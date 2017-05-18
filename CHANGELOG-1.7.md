@@ -9,6 +9,7 @@
 - PIM-6196: Fix collection filters used on `Family` screen
 - GITHUB-6069: Fix Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController::getValidationErrors by preventing to fail when no raw parameters are defined for the job, cheers @aistis-!
 - PIM-6392: Fix output buffering error when updating a list of resources from the API
+- PIM-6426: Fix issue when downloading a media file while output buffering is disabled
 
 # 1.7.4 (2017-05-10)
 
