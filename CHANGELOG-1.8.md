@@ -11,6 +11,7 @@
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid 
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- TIP-730: Reworking of the creation popin for basic entities
 
 ## BC breaks
 
@@ -22,6 +23,7 @@
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `kernel.logs_dir`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Twig\AttributeExtension` to remove `pim_enrich.attribute_icons`
 - Remove OroNavigationBundle
+- Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
 
 ## Requirements
 
