@@ -66,8 +66,14 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            sh "npm install --verbose"
-            sh "npm run webpack"
+            docker.image('node').inside {
+                unstash "pim_community_dev"
+
+                sh "npm install --verbose"
+                sh "npm run webpack"
+
+                stash "pim_community_dev_full"
+            }
 
             deleteDir()
         }
@@ -81,10 +87,20 @@ stage("Checkout") {
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                     sh "app/console oro:requirejs:generate-config"
-                    sh "app/console assets:install"
+                    sh "app/console pim:installer:dump-require-paths"
 
                     stash "pim_enterprise_dev_full"
                 }
+
+                docker.image('node').inside {
+                    unstash "pim_enterprise_dev"
+
+                    sh "npm install --verbose"
+                    sh "npm run webpack"
+
+                    stash "pim_enterprise_dev_full"
+                }
+
                 deleteDir()
             }
         }
