@@ -93,7 +93,7 @@ define([
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
 
-                return _.findWhere(values, { scope: scope, locale: locale });
+                return _.findWhere(values, { scope: scope, locale: locale }) || {};
             },
 
             /**
