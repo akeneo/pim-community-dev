@@ -66,14 +66,8 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            docker.image('node').inside {
-                unstash "pim_community_dev"
-
-                sh "npm install --verbose"
-                sh "npm run webpack"
-
-                stash "pim_community_dev_full"
-            }
+            sh "npm install --verbose"
+            sh "npm run webpack"
 
             deleteDir()
         }
