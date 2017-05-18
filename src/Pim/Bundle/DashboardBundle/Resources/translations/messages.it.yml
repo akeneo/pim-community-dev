@@ -14,9 +14,14 @@ pim_dashboard:
       title: Percentuale di completamento per canale e localizzazione
     last_operations:
       title: Ultime operazioni
+      empty: Non ci sono operazioni
       status: Stato
       date: Data
       type: Tipo
+      "profile name": Nome profilo
+      details: Dettagli
       job_type:
+        import: Importa
+        export: Esporta
         mass_edit: Modifica di massa
         quick_export: Esportazione rapida

@@ -13,7 +13,7 @@ Selected Rows: Righe selezionate
 "Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
 Now: Ora
 Prev: Precedente
-Next: Successivo
+Next: Prossimo
 Today: Oggi
 Wk: Wk
 Done: Completato
@@ -26,6 +26,7 @@ Time: Ora
 Hour: Ora
 Minute: Minuti
 Second: Secondi
+Millisecond: Millisecondi
 Microsecond: Microsecondi
 "Time Zone": "Fuso orario"
 Localized value: Valori localizzati
@@ -36,9 +37,65 @@ Action: Azione
 Unit: Unità
 Currency: Valuta
 jstree:
+  all: Tutti i prodotti
+  unclassified: Prodotti non classificati
+  product:
+    all: Tutti i prodotti
+    unclassified: Prodotti non classificati
   no_tree: Nessuna struttura disponibile
   include_sub: Includere le sotto-categorie
   loading: Caricamento in corso ...
+datetimepicker:
+  days:
+    Sunday: Domenica
+    Monday: Lunedi
+    Tuesday: Martedi
+    Wednesday: Mercoledì
+    Thursday: Giovedì
+    Friday: Venerdì
+    Saturday: Sabato
+  daysShort:
+    Sun: Dom
+    Mon: Lun
+    Tue: Mar
+    Wed: Mer
+    Thu: Gio
+    Fri: Ven
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Lu
+    Tu: Ma
+    We: Me
+    Th: Gi
+    Fr: Ve
+    Sa: Sa
+  months:
+    January: Gennaio
+    February: Febbraio
+    March: Marzo
+    April: Aprile
+    May: Maggio
+    June: Giugno
+    July: Luglio
+    August: Agosto
+    September: Settembre
+    October: Ottobre
+    November: Novembre
+    December: Dicembre
+  monthsShort:
+    Jan: Gen
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Mag
+    Jun: Giu
+    Jul: Lug
+    Aug: Ago
+    Sep: Set
+    Oct: Oct
+    Nov: Nov
+    Dec: Dic
 oro_config:
   form:
     config:
@@ -52,3 +109,4 @@ oro_config:
           system_locale: Lingua
         notification:
           title: Notifiche
+          system_notification: Notifiche di nuove versioni

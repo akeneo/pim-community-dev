@@ -1,3 +1,21 @@
+# 1.6.15 (2017-05-18)
+
+## Bug fixes
+
+- PIM-6376: Fix slow MongoDB queries when editing attribute options
+
+# 1.6.14 (2017-04-21)
+
+## Bug fixes
+
+- PIM-6375: Fix empty tags and content not being saved in wysiwyg
+
+# 1.6.13 (2017-03-29)
+
+## Bug fixes
+
+- PIM-6241: add control on attribute having same code as association type
+
 # 1.6.12 (2017-02-28)
 
 ## Bug fixes

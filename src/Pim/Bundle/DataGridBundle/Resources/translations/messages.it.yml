@@ -1,4 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": Nessun %entityHint% esistente.
+oro_datagrid.not_found_hint: Nessun risultato trovato. Prova a cambiare i criteri di ricerca.
 oro_datagrid.label_add_filter: Gestione filtri
 oro_datagrid.label_loading_mask: Caricamento in corso . . .
 oro.grid.mass_action.selected_rows: Righe selezionate
@@ -14,9 +15,11 @@ oro.grid.datagrid.page_size.all: Tutto
 oro.grid.mass_action.delete.success_message: "{0} nessuna entità rimossa|{1} una entità rimossa|]1, Inf[%count% entità sono state rimosse"
 datagrid_view:
   views: Visualizzazione
+  default: Visualizzazione predefinita
   create: Creare vista
   placeholder: Nome della nuova visualizzazione
   remove: Eliminare questa visualizzazione
+  save_changes: Salva questa visualizzazione
   choose_label: Scegliere un'etichetta per la visualizzazione
   columns:
     min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
@@ -30,4 +33,6 @@ flash.datagrid view:
   removed: La griglia di dati è stata rimossa con successo
   not removable: Non hai l'autorizzazione per rimuovere questa visualizzazione
 quick_export: Esportazione rapida
+import: Importa
+export: Esporta
 mass_edit: Modifica di massa

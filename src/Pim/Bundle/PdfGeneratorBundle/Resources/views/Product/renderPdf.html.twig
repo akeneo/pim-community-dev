@@ -86,11 +86,8 @@
         </div>
         <div class="images">
             {% block images %}
-                {% for attribute in imageAttributes %}
-                    {% set imagePath = image_path(product, attribute, locale, scope) %}
-                    {% if imagePath %}
-                        <img src="{{ imagePath }}"/>
-                    {% endif %}
+                {% for imagePath in imagePaths %}
+                    <img src="media/cache/{{ filter }}/{{ imagePath }}">
                 {% endfor %}
             {% endblock %}
         </div>

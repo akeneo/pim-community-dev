@@ -1,6 +1,8 @@
 Job: Lavoro
 Connector: Connettore
 pim_import_export:
+  job: Lavoro
+  connector: Connettore
   status:
     - Pronto
   batch_status:
@@ -13,9 +15,26 @@ pim_import_export:
     7: ABBANDONATO
     8: SCONOSCIUTO
   download_archive:
+    archive: scarica l'archivio generato |scarica gli archivi generati
     output: scaricare il file generato |scaricare i files generati
     input: scaricare il file letto |scaricare i files letti
-    invalid: Scarica dati non validi
+    invalid_xlsx: Scarica dati non validi
+    invalid_csv: Scarica dati non validi
+  notification:
+    export:
+      error: Esportazione <strong>%label%</strong> non riuscita
+      warning: Esportazione <strong>%label%</strong> completata con alcuni avvisi
+      success: Esportazione <strong>%label%</strong> completata
+    import:
+      error: Importazione <strong>%label%</strong> non riuscita
+      warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
+      success: Importazione <strong>%label%</strong> completata
+  list: Seleziona un job
+  job_profile:
+    tab:
+      property.title: Proprietà generali
+      history.title: Cronologia
+      job_content.title: Contenuto
 pim_title.export_profile.index: Gestione profili di esportazione
 pim_title.export_profile.edit: Esportare profili %job.label% | Modifica
 pim_title.export_profile.show: Esportare profili %job.label% | Visualizza
@@ -49,6 +68,11 @@ pim_importexport:
       edit: Modifica un profilo di esportazione
       remove: Rimuovi un profilo di esportazione
       launch: Esegui un profilo di esportazione
+      property_edit: Modifica le proprietà generali del profilo di esportazione
+      property_show: Visualizza le proprietà generali del profilo di esportazione
+      history: Vedi lo storico del profilo di esportazione
+      content_edit: Modifica il contenuto del profilo di esportazione
+      content_show: Visualizza il contenuto del profilo di esportazione
     import_profile:
       index: Visualizza la lista dei profili di importazione
       create: Crea un profilo di importazione
@@ -56,6 +80,7 @@ pim_importexport:
       edit: Modifica un profilo di importazione
       remove: Rimuovi un profilo di importazione
       launch: Esegui un profilo di importazione
+      history: Vedi lo storico del profilo di importazione
     export_execution:
       index: Vedi la lista dei rapporti di esportazione
       show: Vedi il dettaglio del rapporto di esportazione
@@ -71,9 +96,8 @@ pim_importexport:
     import: Profili di importazione
 btn:
   create:
-    export profile: crea il profilo di esportazione
-    import profile: crea il profilo di importazione
-Upload and import: Carica e importa
+    export profile: crea un profilo di esportazione
+    import profile: crea un profilo di importazione
 Upload and import now: Carica e importa ora
 import now: Importa ora
 export now: Esporta ora
@@ -86,10 +110,12 @@ flash:
     created: L'esportazione è stata creata con successo
     removed: L'esportazione è stata rimossa
     updated: L'esportazione è stata creata con successo
+    running: L'esportazione è in esecuzione
   import:
     created: L'importazione è stata creata con successo
     removed: L'importazione è stata rimossa
     updated: L'importazione è stato caricata con successo
+    running: L'importazione è in esecuzione
 pim_menu:
   item:
     export_history: Cronologia esportazioni
@@ -101,6 +127,7 @@ History: Cronologia
 pane.accordion:
   properties: Proprietà
   global_settings: Impostazioni Globali
+  filters: Filtri
 popin.create:
   export_profile.title: Crea un nuovo profilo di esportazione
   import_profile.title: Crea un nuovo profilo di importazione
@@ -117,6 +144,12 @@ job_execution.summary:
   skip: saltato
   create: creato
   update: caricato
+  update_products: prodotti aggiornati
+  skip_products: prodotti saltati
+  displayed: primi avvisi visualizzati
+  charset_validator:
+    title: 'Codifica del file:'
+    skipped: saltato, estensione nella white list
 Step: Passo
 Status: Stato
 Summary: Riepilogo
@@ -131,3 +164,4 @@ STOPPED: FERMATO
 FAILED: NON RIUSCITA
 ABANDONED: ABBANDONATO
 UNKNOWN: SCONOSCIUTO
+warning.label: Attenzione
