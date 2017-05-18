@@ -277,19 +277,19 @@ class FamilyController
         $this->updater->update($family, $request->get('family'));
 
         $violations = $this->validator->validate($family);
-        if (0 === $violations->count()) {
-            $this->saver->save($family);
+        if (0 < $violations->count()) {
+            $errors = [
+                'values' => $this->normalizer->normalize($violations, 'internal_api', ['family' => $family])
+            ];
 
-            return new JsonResponse($this->normalizer->normalize(
-                $family,
-                'internal_api'
-            ));
+            return new JsonResponse($errors, 400);
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['family' => $family])
-        ];
+        $this->saver->save($family);
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse($this->normalizer->normalize(
+            $family,
+            'internal_api'
+        ));
     }
 }
