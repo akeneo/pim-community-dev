@@ -5,6 +5,7 @@ namespace spec\Akeneo\Component\FileStorage\File;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
@@ -18,15 +19,17 @@ class FileStorerSpec extends ObjectBehavior
     function let(
         MountManager $mountManager,
         SaverInterface $saver,
-        FileInfoFactoryInterface $factory
+        FileInfoFactoryInterface $factory,
+        FileInfoRepositoryInterface $repository
     ) {
-        $this->beConstructedWith($mountManager, $saver, $factory);
+        $this->beConstructedWith($mountManager, $saver, $factory, $repository);
     }
 
     function it_stores_a_raw_file(
         $mountManager,
         $factory,
         $saver,
+        $repository,
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo
@@ -35,6 +38,8 @@ class FileStorerSpec extends ObjectBehavior
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
         $fs->has(Argument::any())->willReturn(false);
+
+        $repository->findOneByHash(Argument::any())->willReturn(null);
 
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
@@ -51,10 +56,29 @@ class FileStorerSpec extends ObjectBehavior
         unlink($localPathname);
     }
 
+    function it_skips_already_stored_files(
+        $repository,
+        $mountManager,
+        $factory,
+        $saver,
+        \SplFileInfo $rawFile,
+        FileInfoInterface $fileInfo
+    ) {
+        $rawFile->getPathname()->willReturn(__FILE__);
+        $repository->findOneByHash(Argument::any())->willReturn($fileInfo);
+
+        $mountManager->getFilesystem(Argument::any())->shouldNotBeCalled();
+        $factory->createFromRawFile(Argument::cetera())->shouldNotBeCalled();
+        $saver->save(Argument::any())->shouldNotBeCalled();
+
+        $this->store($rawFile, 'destination');
+    }
+
     function it_stores_a_raw_file_and_deletes_it_locally(
         $mountManager,
         $factory,
         $saver,
+        $repository,
         \SplFileInfo $rawFile,
         Filesystem $fs,
         FileInfoInterface $fileInfo
@@ -63,6 +87,8 @@ class FileStorerSpec extends ObjectBehavior
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
         $fs->has(Argument::any())->willReturn(false);
+
+        $repository->findOneByHash(Argument::any())->willReturn(null);
 
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
