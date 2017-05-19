@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6418: Fix URL too long in variant group datagrid
+
 # 1.6.15 (2017-05-18)
 
 ## Bug fixes
