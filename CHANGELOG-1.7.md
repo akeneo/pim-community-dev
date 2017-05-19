@@ -356,6 +356,7 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController` to add `updater`, `saver`, `remover`, `validator`, `securityFacade`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to remove `requireSubscriber`, `attributeClass`, `fieldSubscriber`, `labelSubscriber`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `attributeGroupSearchableRepository`
+- Change the constructor of `Akeneo\Component\FileStorage\File\FileStorer`. Add `Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository`.
 
 ### Methods
 
