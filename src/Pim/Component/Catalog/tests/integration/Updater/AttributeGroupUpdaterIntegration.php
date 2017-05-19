@@ -106,6 +106,31 @@ class AttributeGroupUpdaterIntegration extends TestCase
         $this->getUpdater()->update($attributeGroup, ['code' => 'attributeGroupA', 'attributes' => ['unknown_attribute']]);
     }
 
+    public function testSuccessAttributeGroupUpdate()
+    {
+        $attributeGroup = $this->createAttributeGroup();
+        $data = [
+            'code'       => 'attributeGroupA',
+            'sort_order' => 1,
+            'attributes' => ['a_text'],
+            'labels'     => [
+                'fr_FR' => 'Groupe A',
+                'en_US' => 'Group A',
+            ],
+        ];
+        $this->getUpdater()->update(
+            $attributeGroup,
+            $data
+        );
+
+        $this->assertSame($data['code'], $attributeGroup->getCode());
+        $this->assertSame($data['sort_order'], $attributeGroup->getSortOrder());
+        $this->assertSame(current($data['attributes']), current($attributeGroup->getAttributes()->toArray())->getCode());
+        $this->assertCount(1, $attributeGroup->getAttributes());
+        $this->assertSame($data['labels']['fr_FR'], $attributeGroup->getTranslation('fr_FR')->getLabel());
+        $this->assertSame($data['labels']['en_US'], $attributeGroup->getTranslation('en_US')->getLabel());
+    }
+
     /**
      * @return AttributeGroupInterface
      */

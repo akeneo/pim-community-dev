@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -195,6 +196,41 @@ class AttributeGroupController
     }
 
     /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_group_edit")
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $attributeGroup = $this->repository->findOneByIdentifier($code);
+
+        if (null === $attributeGroup) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $attributeGroup = $this->factory->create();
+        }
+
+        $this->updateAttributeGroup($attributeGroup, $data, 'patch_attribute_groups__code_');
+        $this->validateAttributeGroup($attributeGroup);
+
+        $this->saver->save($attributeGroup);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($attributeGroup, $status);
+
+        return $response;
+    }
+
+    /**
      * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
      *
      * @param string $content content of a request to decode
@@ -249,6 +285,30 @@ class AttributeGroupController
         $violations = $this->validator->validate($attributeGroup);
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
+        }
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating a category with a PATCH method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($code, array $data)
+    {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
+            );
         }
     }
 
