@@ -155,6 +155,8 @@ class CommandContext extends PimContext
         foreach ($actions as $key => $action) {
             if (isset($action->data->filePath)) {
                 $action->data->filePath = self::replacePlaceholders($action->data->filePath);
+            } elseif (isset($action->data) && is_string($action->data)) {
+                $action->data = self::replacePlaceholders($action->data);
             }
         }
 

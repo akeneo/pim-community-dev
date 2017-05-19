@@ -5,6 +5,8 @@ namespace Akeneo\Component\FileStorage\File;
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
@@ -31,25 +33,78 @@ class FileStorer implements FileStorerInterface
     /** @var FileInfoFactoryInterface */
     protected $factory;
 
+    /** @var FileInfoRepositoryInterface */
+    protected $repository;
+
     /**
-     * @param MountManager             $mountManager
-     * @param SaverInterface           $saver
-     * @param FileInfoFactoryInterface $factory
+     * @param MountManager                $mountManager
+     * @param SaverInterface              $saver
+     * @param FileInfoFactoryInterface    $factory
+     * @param FileInfoRepositoryInterface $repository
      */
     public function __construct(
         MountManager $mountManager,
         SaverInterface $saver,
-        FileInfoFactoryInterface $factory
+        FileInfoFactoryInterface $factory,
+        FileInfoRepositoryInterface $repository
     ) {
         $this->mountManager = $mountManager;
         $this->saver = $saver;
         $this->factory = $factory;
+        $this->repository   = $repository;
     }
 
     /**
-     * {@inheritdoc}
+     * Find previously saved file copy. If copy not found, save new file.
+     *
+     * @param \SplFileInfo $localFile     file to store
+     * @param string       $destFsAlias   alias of the destination filesystem
+     * @param bool         $deleteRawFile should the raw file be deleted once stored in the VFS or not ?
+     *
+     * @return FileInfoInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
+    {
+        $file = $this->findCopy($localFile);
+
+        if (is_null($file)) {
+            $file = $this->saveFile($localFile, $destFsAlias);
+        }
+
+        if (true === $deleteRawFile) {
+            $this->deleteRawFile($localFile);
+        }
+
+        return $file;
+    }
+
+    /**
+     * Calculate hash and finds file copy in database.
+     *
+     * @param \SplFileInfo $localFile
+     *
+     * @return FileInfoInterface|null
+     */
+    protected function findCopy(\SplFileInfo $localFile)
+    {
+        $hash = sha1_file($localFile->getPathname());
+
+        return $this->repository->findOneByHash($hash);
+    }
+
+    /**
+     * Move a file to the storage destination filesystem
+     * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
+     * and save it to the database.
+     *
+     * @param \SplFileInfo $localFile
+     * @param string       $destFsAlias
+     *
+     * @throws FileTransferException
+     *
+     * @return FileInfoInterface
+     */
+    protected function saveFile(\SplFileInfo $localFile, $destFsAlias)
     {
         $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
@@ -80,10 +135,6 @@ class FileStorer implements FileStorerInterface
         }
 
         $this->saver->save($file);
-
-        if (true === $deleteRawFile) {
-            $this->deleteRawFile($localFile);
-        }
 
         return $file;
     }

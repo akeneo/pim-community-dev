@@ -14,4 +14,12 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface FileInfoRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
 {
+    /**
+     * Finds a single object by a hash.
+     *
+     * @param string $hash
+     *
+     * @return object
+     */
+    public function findOneByHash($hash);
 }
