@@ -379,7 +379,6 @@
     `Pim\Component\Connector\ArrayConverter\Flat\VariantGroupStandardConverter` and
     `Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionStandardConverter`
 - Remove deprecated argument $propertyCopier from constructor of `Pim\Component\Catalog\Updater\ProductUpdater` and allow to inject supported fields
-- Change constructor of `Akeneo\Component\FileStorage\File\FileStorer`. Add `Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository`.
 - Remove argument $em from constructor of `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and inject `Akeneo\Component\StorageUtils\Saver\SaverInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`. Replace `Doctrine\ORM\EntityRepository` by `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and remove `Pim\Bundle\NotificationBundle\Factory\NotificationFactory`.
 - Rename createFamily to create in the `Pim\Bundle\CatalogBundle\Factory\FamilyFactory`
 - Remove createUser from the `Oro\Bundle\UserBundle\Entity\UserManager`. You can now use the SimpleFactory to create new users
