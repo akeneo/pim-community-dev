@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Security;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -144,6 +145,49 @@ JSON;
 
         $expectedResponse =
 <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attribute groups."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAListOfAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "attributeGroupA","sort_order": 7}
+{"code": "attributeGroupB","sort_order": 8}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAListOfAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "attributeGroupA","sort_order": 7}
+{"code": "technical","sort_order": 8}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $expectedResponse =
+            <<<JSON
 {
     "code": 403,
     "message": "Access forbidden. You are not allowed to create or update attribute groups."
