@@ -69,11 +69,9 @@ class AttributeController
     public function indexAction(Request $request)
     {
         $options = [];
-        $context = ['include_group' => true];
 
         if ($request->request->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->request->get('identifiers'));
-            $context['include_group'] = false;
         }
 
         if ($request->request->has('types')) {
@@ -102,7 +100,8 @@ class AttributeController
             $options
         );
 
-        $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api', $context);
+        $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api');
+
         return new JsonResponse($normalizedAttributes);
     }
 

@@ -243,7 +243,7 @@ define(
                     });
 
                     this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group_code
+                        _.first(attributes).group
                     );
 
                     this.setData(formData);

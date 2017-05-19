@@ -78,7 +78,6 @@ class AttributeNormalizer implements NormalizerInterface
     {
         $dateMin = (null === $attribute->getDateMin()) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (null === $attribute->getDateMax()) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
-        $groupCode = (null === $attribute->getGroup()) ? null : $attribute->getGroup()->getCode();
 
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'standard', $context) + [
             'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
@@ -87,7 +86,6 @@ class AttributeNormalizer implements NormalizerInterface
             'is_locale_specific' => $attribute->isLocaleSpecific(),
             'date_min'           => $dateMin,
             'date_max'           => $dateMax,
-            'group_code'         => $groupCode,
         ];
 
         $firstVersion = $this->versionManager->getOldestLogEntry($attribute);
@@ -114,14 +112,6 @@ class AttributeNormalizer implements NormalizerInterface
         }
 
         $normalizedAttribute['meta']['additional_form'] = $additionalForm;
-
-        // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes
-        // loading does not need complete group normalization. This has to be cleaned.
-        $normalizedAttribute['group'] = null;
-
-        if (isset($context['include_group']) && $context['include_group'] && null !== $attribute->getGroup()) {
-            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'standard', $context);
-        }
 
         return $normalizedAttribute;
     }
