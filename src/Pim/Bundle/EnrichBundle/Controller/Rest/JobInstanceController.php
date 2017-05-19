@@ -401,17 +401,19 @@ class JobInstanceController
     protected function getValidationErrors(JobInstance $jobInstance)
     {
         $rawParameters = $jobInstance->getRawParameters();
+
+        $errors = [];
+
         if (!empty($rawParameters)) {
             $job = $this->jobRegistry->get($jobInstance->getJobName());
             $parameters = $this->jobParamsFactory->create($job, $rawParameters);
             $parametersViolations = $this->jobParameterValidator->validate($job, $parameters);
-        }
 
-        $errors = [];
-        $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
-        if ($parametersViolations->count() > 0) {
-            foreach ($parametersViolations as $error) {
-                $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+            $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
+            if ($parametersViolations->count() > 0) {
+                foreach ($parametersViolations as $error) {
+                    $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+                }
             }
         }
 
