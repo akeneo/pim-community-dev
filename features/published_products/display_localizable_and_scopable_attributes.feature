@@ -15,16 +15,15 @@ Feature: Display localizable and scopable attributes
   @info https://akeneo.atlassian.net/browse/PIM-5949
   Scenario: Successfully change locale
     Given I show the "black_jacket" Published Product
-    Then I should see the text "A black jacket"
+    Then the field Name should contain "A black jacket"
     When I switch the locale to "de_DE"
-    Then I should see the text "Eine schwarze Jacke"
+    Then the field Name should contain "Eine schwarze Jacke"
 
   @info https://akeneo.atlassian.net/browse/PIM-5949
   Scenario: Successfully change scope
     Given I show the "black_jacket" Published Product
     And I visit the "Sales" group
     When I switch the scope to "ecommerce"
-    Then I should see the text "1 star"
+    Then the field Customer rating should contain "1 star"
     When I switch the scope to "print"
-    Then I should see the text "2 stars"
-
+    Then the field Customer rating should contain "2 stars"

@@ -31,9 +31,9 @@ Feature: View the completeness of a published product
     And I should see the completeness:
       | channel | locale | state   | missing_values         | ratio |
       | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 89%   |
+      | tablet  | en_US  | warning | Side view              | 88%   |
       | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
+      | tablet  | fr_FR  | warning | Description, Side view | 77%   |
     When I am on the "sandals" published product show page
     And I open the "Completeness" panel
     And I should see the completeness:
