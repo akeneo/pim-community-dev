@@ -8,6 +8,7 @@
 - PIM-6254: Fix pagination on the API when filters are applied
 - PIM-6196: Fix collection filters used on `Family` screen
 - GITHUB-6069: Fix Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController::getValidationErrors by preventing to fail when no raw parameters are defined for the job, cheers @aistis-!
+- GITHUB-4083: Prevent file info copies from being saved, cheers @userz58!
 
 # 1.7.4 (2017-05-10)
 
