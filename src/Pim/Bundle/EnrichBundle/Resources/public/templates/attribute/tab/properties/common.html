@@ -29,8 +29,29 @@
 
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_group">
+                    <%- labels.fields.group %> <em><%- labels.required %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <select id="pim_enrich_attribute_form_group" class="select2" name="group" data-placeholder="<%- labels.defaultGroup %>">
+                    <option value=""<% if (!attribute.group) { %> selected<% } %>></option>
+                    <% _.each(attributeGroups, function (group) { %>
+                        <option
+                            value="<%- group.code %>"
+                            <% if (group.code === attribute.group) { %> selected<% } %>
+                        >
+                            <%- i18n.getLabel(group.labels, currentLocale, group.code) %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+        </div>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
                 <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_scopable">
-                    <%- labels.fields.scopable %> <em><%- labels.required %></em>
+                    <%- labels.fields.scopable %>
                 </label>
             </div>
             <div class="AknFieldContainer-inputContainer">
@@ -49,7 +70,7 @@
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
                 <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_localizable">
-                    <%- labels.fields.localizable %> <em><%- labels.required %></em>
+                    <%- labels.fields.localizable %>
                 </label>
             </div>
             <div class="AknFieldContainer-inputContainer">
@@ -95,7 +116,7 @@
                         <% _.each(availableLocales, function (locale) { %>
                             <option
                                 value="<%- locale.code %>"
-                                <% if (-1 !== attribute.available_locales.indexOf(locale.code)) { %> selected<% } %>
+                                <% if (_.contains(attribute.available_locales, locale.code)) { %> selected<% } %>
                             >
                                 <%- locale.label %>
                             </option>
@@ -104,5 +125,24 @@
                 </div>
             </div>
         <% } %>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_attribute_form_useable_as_grid_filter">
+                    <%- labels.fields.useable_as_grid_filter %>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+                    <input
+                        id="pim_enrich_attribute_form_useable_as_grid_filter"
+                        type="checkbox"
+                        name="useable_as_grid_filter"
+                    <% if (attribute.useable_as_grid_filter) { %> checked<% } %>
+                    <% if ('edit' === mode) { %> readonly disabled<% } %>
+                    >
+                </div>
+            </div>
+        </div>
     </div>
 </div>

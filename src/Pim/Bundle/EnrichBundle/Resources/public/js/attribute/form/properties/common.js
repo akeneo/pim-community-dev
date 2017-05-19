@@ -8,6 +8,8 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
+        'pim/user-context',
+        'pim/i18n',
         'text!pim/template/attribute/tab/properties/common',
         'jquery.select2'
     ],
@@ -16,6 +18,8 @@ define([
         __,
         BaseForm,
         fetcherRegistry,
+        UserContext,
+        i18n,
         template
     ) {
         return BaseForm.extend({
@@ -45,7 +49,7 @@ define([
                 var properties = [
                     'code',
                     'type',
-                    'group_code',
+                    'group',
                     'scopable',
                     'localizable',
                     'is_locale_specific',
@@ -57,19 +61,27 @@ define([
 
                 var attribute = this.getFormData();
 
-                fetcherRegistry.getFetcher('locale').fetchActivated().then(function (availableLocales) {
+                $.when(
+                    fetcherRegistry.getFetcher('locale').fetchActivated(),
+                    fetcherRegistry.getFetcher('attribute-group').fetchAll()
+                )
+                .then(function (availableLocales, attributeGroups) {
                     this.$el.html(this.template({
                         mode: this.config.mode,
                         attribute: attribute,
                         availableLocales: availableLocales,
+                        attributeGroups: attributeGroups,
                         labels: {
                             sectionTitle: __('pim_enrich.form.attribute.tab.properties.common'),
                             fields: fieldLabels,
                             type: __('pim_enrich.entity.attribute.type.' + attribute.type),
+                            defaultGroup: __('pim_enrich.entity.attribute.group.default_value'),
                             required: __('pim_enrich.form.required'),
                             on: __('switch_on'),
                             off: __('switch_off')
-                        }
+                        },
+                        currentLocale: UserContext.get('catalogLocale'),
+                        i18n: i18n
                     }));
 
                     this.$('select.select2').select2();
