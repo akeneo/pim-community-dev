@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
