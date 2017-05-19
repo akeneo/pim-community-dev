@@ -90,10 +90,12 @@ define([
              * @return {Object}
              */
             getValue: function (values, attribute, locale, scope) {
+                console.info('getValue for locale and scope', values)
+                console.log(attribute, locale, scope)
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
 
-                return _.findWhere(values, { scope: scope, locale: locale }) || {};
+                return _.findWhere(values, { scope: scope, locale: locale });
             },
 
             /**
