@@ -4,6 +4,10 @@
 
 - PIM-6394: Fix email validation when creating a user in order to be less restrictive
 - GITHUB-6161: Fix JobInstance class hardcoded in `Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute`
+- GITHUB-6151: Fix Mongo TimestampableSubscriber to properly update the CreatedAt date of a product
+- PIM-6254: Fix pagination on the API when filters are applied
+- PIM-6196: Fix collection filters used on `Family` screen
+- GITHUB-6069: Fix Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController::getValidationErrors by preventing to fail when no raw parameters are defined for the job, cheers @aistis-!
 
 # 1.7.4 (2017-05-10)
 
@@ -14,7 +18,6 @@
 - PIM-6377: Fix potential notice in price property formatter
 - PIM-6387: Fix HTTP code returned when the token is invalid or expired
 - PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
-- PIM-6314: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
 - PIM-6381: Fix `Delete` button is visible on channel create screen
 - PIM-6398: Fix Summernote (WYSIWYG) style (backport GITHUB-6101 into 1.7)
 - PIM-6402: Clean attribute properties according to new validation rules during migration
