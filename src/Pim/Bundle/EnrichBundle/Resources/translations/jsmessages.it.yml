@@ -681,7 +681,6 @@ pim_enrich:
           help: Utilizza le categorie di prodotto nell'albero (definito dal canale di cui sopra) per selezionare i prodotti da esportare
         identifier:
           title: Identificatore
-          help: Identificatori dei prodotti che si desidera esportare separati da virgola, spazio o interruzione di riga
         metric:
           operators:
             "=": È uguale a
