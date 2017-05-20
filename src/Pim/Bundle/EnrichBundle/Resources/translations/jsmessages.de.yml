@@ -349,6 +349,7 @@ pim_enrich:
   error:
     upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
   alert:
+    not_allowed: Sie haben keine Berechtigung, diese Seite anzuzeigen
     error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
     required: (erforderlich)
@@ -681,7 +682,6 @@ pim_enrich:
           help: Verwenden Sie die Produktkategorien im Strukturbaum (definiert durch den Ausgabekanal oben) um die Produkte für den Export zu selektieren
         identifier:
           title: Kennung
-          help: Identifikator der Produkte die Sie exportieren möchten, getrennt durch Kommas, Leerzeichen oder Zeilenumbrüche
         metric:
           operators:
             "=": Ist gleich
@@ -798,30 +798,44 @@ pim_enrich:
       title: Übersicht Ausgabekanäle
       create_btn: Ausgabekanal anlegen
     attribute:
+      title: Attribute Übersicht
+      create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+  http:
+    403: Sie haben keine Berechtigung, diese Seite anzuzeigen
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
+  pim_enrich_attributegroup_edit: Attributgruppen {{ group.label }} | Bearbeiten
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Bearbeiten
   pim_enrich_product_index: Produkte
+  pim_enrich_product_edit: Produkte {{ product.sku }} | Bearbeiten
   pim_enrich_family_index: Produktfamilien
+  pim_enrich_family_edit: Produktfamilien {{ family.label }} | Bearbeiten
   pim_enrich_channel_index: Ausgabekanäle
   pim_enrich_channel_create: Ausgabekanäle | Anlegen
+  pim_enrich_channel_edit: Ausgabekanäle {{ channel.label }} | Bearbeiten
   pim_enrich_currency_index: Währungen
   pim_enrich_locale_index: Gebietsschemata
   pim_enrich_group_index: Gruppen
+  pim_enrich_group_edit: Gruppen {{ group.label }} | Bearbeiten
   pim_enrich_variant_group_index: Variantengruppen
+  pim_enrich_variant_group_edit: Variantengruppen {{ group.label }} | Bearbeiten
   pim_enrich_associationtype_index: Verbindungstypen
+  pim_enrich_associationtype_edit: Verbindungstypen {{ association type.label }} | Bearbeiten
   pim_enrich_grouptype_index: Gruppentypen
+  pim_enrich_grouptype_edit: Gruppentypen {{ group type.label }} | Bearbeiten
   pim_enrich_mass_edit_action_choose: Massenbearbeitung | Auswählen
   pim_enrich_mass_edit_action_configure: Massenbearbeitung | Konfigurieren
+  pim_enrich_mass_edit_action_perform: Massenbearbeitung | Durchführen
   pim_enrich_job_tracker_index: Prozess-Tracker
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
 batch_jobs:
@@ -863,6 +877,13 @@ batch_jobs:
     label: Zu einer Variantengruppe hinzufügen
     perform:
       label: Zu einer Variantengruppe hinzufügen
+job_tracker:
+  download_archive:
+    archive: Generiertes Archiv herunterladen
+    output: Generierte Datei herunterladen
+    input: Eingelesene Datei herunterladen
+    invalid_xlsx: Ungültige Daten herunterladen
+    invalid_csv: Ungültige Daten herunterladen
 pim_menu:
   tab:
     collect: Sammeln

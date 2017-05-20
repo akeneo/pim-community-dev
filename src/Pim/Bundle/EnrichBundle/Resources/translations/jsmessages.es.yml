@@ -666,7 +666,6 @@ pim_enrich:
           help: Usar las categorías de producto en el árbol (definido por el canal anterior) para seleccionar los productos a exportar
         identifier:
           title: Identificador
-          help: Los identificadores de productos que desea exportar separados por comas, espacios o saltos de línea
         metric:
           operators:
             "=": Es igual que

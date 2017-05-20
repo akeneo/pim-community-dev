@@ -637,7 +637,6 @@ pim_enrich:
           help: Utilitzeu les categories de producte a l'arbre (definit al canal de dalt) per seleccionar els productes a exportar
         identifier:
           title: Identificador
-          help: Els identificadors de producte que voleu exportar separats per comes, espais o salts de línia
         metric:
           operators:
             "=": És igual a
