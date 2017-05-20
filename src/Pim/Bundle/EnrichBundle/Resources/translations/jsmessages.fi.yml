@@ -632,7 +632,6 @@ pim_enrich:
           help: Käytä puun tuotekategorioita (määritelty yllä olevan kanavan mukaan) valitaksesi vietävät tuotteet
         identifier:
           title: Tunniste
-          help: Vietävien tuotteiden tunnisteet eroteltuna pilkuilla, välilyönneillä tai rivinvaihdoilla
         metric:
           operators:
             "=": Yhtä kuin
