@@ -39,6 +39,23 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('max_resources_number')->end()
                     ->end()
                 ->end()
+                ->arrayNode('content_type_negotiator')
+                    ->children()
+                        ->arrayNode('rules')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('path')->defaultNull()->info('URL path info')->end()
+                                    ->scalarNode('host')->defaultNull()->info('URL host name')->end()
+                                    ->variableNode('methods')->defaultNull()->info('Method for URL')->end()
+                                    ->booleanNode('stop')->defaultFalse()->end()
+                                    ->arrayNode('content_types')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
