@@ -53,7 +53,7 @@ class AssetsCollectionPresenter implements PresenterInterface
     {
         $beforeCodes = array_map(function (AssetInterface $asset) {
             return $asset->getCode();
-        }, $data->getData()->toArray());
+        }, $data->getData());
         $afterCodes = $change['data'];
 
         return [
