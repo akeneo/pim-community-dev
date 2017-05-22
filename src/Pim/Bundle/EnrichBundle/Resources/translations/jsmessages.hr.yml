@@ -637,7 +637,6 @@ pim_enrich:
           help: Koristite kategorije proizvoda u stablu (definiran za kanal prikazan gore) za odabir proizvoda za izvoz
         identifier:
           title: Identifikator
-          help: Identifikatori proizvoda za izvoz odvojeni su zarezima, razmakom ili prijelomom
         metric:
           operators:
             "=": Je jednako
