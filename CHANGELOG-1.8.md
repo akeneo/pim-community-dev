@@ -23,6 +23,7 @@
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `kernel.logs_dir`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Twig\AttributeExtension` to remove `pim_enrich.attribute_icons`
+- Change the constructor of `Akeneo\Component\FileStorage\File\FileStorer` to add `Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository`
 - Remove OroNavigationBundle
 
 ## Requirements
@@ -32,3 +33,4 @@
 ## Bug Fixes
 
 - GITHUB-6101: Fix Summernote (WYSIWYG) style
+- GITHUB-4083: Prevent file info copies from being saved, cheers @userz58!
