@@ -7,11 +7,11 @@ Feature: View products via widget completeness links
   Background:
     Given the "teamwork_assistant" catalog configuration
     And the following attribute groups:
-      | code      | label-en_US | group | type             |
-      | marketing | Marketing   | other | pim_catalog_text |
-      | technical | Technical   | other | pim_catalog_text |
-      | other     | Other       | other | pim_catalog_text |
-      | media     | Media       | other | pim_catalog_text |
+      | code      | label-en_US |
+      | marketing | Marketing   |
+      | technical | Technical   |
+      | other     | Other       |
+      | media     | Media       |
     And the following attributes:
       | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | negative_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
       | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |                  |               |                     | 1                      | other     |                    |
