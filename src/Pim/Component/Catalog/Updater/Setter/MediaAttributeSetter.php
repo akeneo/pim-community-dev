@@ -6,6 +6,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -57,6 +58,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
+        $this->checkData($attribute, $data);
 
         if (null === $data) {
             $file = null;
@@ -71,6 +73,19 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             $options['scope'],
             null !== $file ? $file->getKey() : null
         );
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (null !== $data && !is_string($data)) {
+            throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $data);
+        }
     }
 
     /**
