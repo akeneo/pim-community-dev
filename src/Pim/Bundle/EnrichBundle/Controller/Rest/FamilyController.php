@@ -274,7 +274,7 @@ class FamilyController
     public function createAction(Request $request)
     {
         $family = $this->familyFactory->create();
-        $this->updater->update($family, $request->get('family'));
+        $this->updater->update($family, json_decode($request->getContent(), true));
 
         $violations = $this->validator->validate($family);
         if (0 < $violations->count()) {
