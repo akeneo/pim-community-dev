@@ -5,9 +5,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\Manager;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
@@ -35,6 +36,9 @@ class PublishedProductsManagerIntegration extends TestCase
     /** @var SaverInterface */
     private $productSaver;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -68,8 +72,8 @@ class PublishedProductsManagerIntegration extends TestCase
         $this->assertValuesEqual($product->getValues()->toArray(), $publishedProduct->getValues()->toArray());
         $this->assertProductAssociationsEqual($product, $publishedProduct);
 
-        // TODO: to do when completeness works (TIP-694)
-        // $this->assertSame($product->getCompletenesses(), $publishedProduct->getCompletenesses());
+
+        $this->assertSameCompletenesses($product->getCompletenesses(), $publishedProduct->getCompletenesses());
     }
 
     public function testProductUpdateDoesNotImpactPublishedProduct()
@@ -185,6 +189,25 @@ class PublishedProductsManagerIntegration extends TestCase
                 $originalAssociation->getReference(),
                 $publishedProductAssociations[$i]->getReference()
             );
+        }
+    }
+
+    /**
+     * @param Collection $completenesses
+     * @param Collection $publishedCompletenesses
+     */
+    protected function assertSameCompletenesses(Collection $completenesses, Collection $publishedCompletenesses)
+    {
+        foreach ($completenesses as $completeness) {
+            foreach ($publishedCompletenesses as $publishedCompleteness) {
+                if ($completeness->getLocale() === $publishedCompleteness->getLocale() &&
+                    $completeness->getChannel() === $publishedCompleteness->getChannel()
+                ) {
+                    $this->assertSame($completeness->getRatio(), $publishedCompleteness->getRatio());
+                    $this->assertSame($completeness->getRequiredCount(), $publishedCompleteness->getRequiredCount());
+                    $this->assertSame($completeness->getMissingCount(), $publishedCompleteness->getMissingCount());
+                }
+            }
         }
     }
 }
