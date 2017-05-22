@@ -50,9 +50,12 @@ class OptionProductValue extends AbstractProductValue implements OptionProductVa
      */
     public function __toString()
     {
-        $option = $this->getData();
-        $optionValue = $option->getOptionValue();
+        if (null !== $option = $this->getData()) {
+            $optionValue = $option->getOptionValue();
 
-        return (null !== $option && null !== $optionValue) ? $optionValue->getValue() : '['.$option->getCode().']';
+            return null !== $optionValue ? $optionValue->getValue() : '['.$option->getCode().']';
+        }
+
+        return '';
     }
 }
