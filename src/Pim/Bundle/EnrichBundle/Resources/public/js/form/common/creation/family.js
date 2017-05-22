@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * Family select2 to be added in a creation form
+ *
+ * @author    Alban Alnot <alban.alnot@consertotech.pro>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define(
     [
         'jquery',
@@ -13,8 +20,7 @@ define(
         'oro/loading-mask',
         'pim/fetcher-registry',
         'pim/initselect2',
-        'text!pim/template/product-create-popin',
-        'text!pim/template/product-create-error',
+        'text!pim/template/form/creation/family',
         'jquery.select2'
     ],
     function (
@@ -29,15 +35,10 @@ define(
         LoadingMask,
         FetcherRegistry,
         initSelect2,
-        template,
-        errorTemplate
+        template
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            errorTemplate: _.template(errorTemplate),
-            events: {
-                'change input': 'updateModel'
-            },
             validationErrors: {},
 
             /**
@@ -56,29 +57,7 @@ define(
              * Model update callback
              */
             updateModel: function () {
-                this.getFormModel().set('identifier', this.$('[data-code="identifier"] input').val());
                 this.getFormModel().set('family', this.$('[data-code="family"] input').select2('val'));
-            },
-
-            /**
-             * Save the form content by posting it to backend
-             *
-             * @return {Promise}
-             */
-            save: function () {
-                this.validationErrors = {};
-
-                var loadingMask = new LoadingMask();
-                this.$el.empty().append(loadingMask.render().$el.show());
-
-                return $.post(Routing.generate('pim_enrich_product_rest_create'), this.getFormData())
-                    .fail(function (response) {
-                        this.validationErrors = response.responseJSON.values;
-                        this.render();
-                    }.bind(this))
-                    .always(function () {
-                        loadingMask.remove();
-                    });
             },
 
             /**
@@ -91,39 +70,10 @@ define(
                     return this;
                 }
 
-                return FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                    .then(function (identifier) {
-                        this.$el.html(
-                            this.template({
-                                identifier: identifier,
-                                labels: {
-                                    identifier: i18n.getLabel(
-                                        identifier.labels,
-                                        UserContext.get('catalogLocale'),
-                                        identifier.code
-                                    ),
-                                    family: __('pim_enrich.entity.product.create_popin.labels.family')
-                                },
-                                errors: this.validationErrors,
-                                __: __
-                            })
-                        );
-                        this.initSelect2();
+                this.$el.html(this.template({
+                    label: __('pim_enrich.form.product.change_family.modal.empty_selection')
+                }));
 
-                        return this.renderExtensions();
-                    }.bind(this), function () {
-                        this.$el.html(
-                            this.errorTemplate({
-                                message: __('error.creating.product')
-                            })
-                        );
-                    }.bind(this));
-            },
-
-            /**
-             * Init select2 family field
-             */
-            initSelect2: function () {
                 var options = {
                     allowClear: true,
                     ajax: {

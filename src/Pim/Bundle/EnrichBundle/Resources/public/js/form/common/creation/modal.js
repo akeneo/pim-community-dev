@@ -62,45 +62,63 @@ define(
                 var modalBody = modal.$('.modal-body');
                 modalBody.css('min-height', 150);
                 modalBody.css('overflow-y', 'hidden');
+                this.render()
+                    .setElement(modalBody)
+                    .render();
 
-                var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo(modalBody).show();
+                modal.on('cancel', function () {
+                    deferred.reject();
+                    modal.remove();
+                });
 
-                FormBuilder.build(this.config.innerForm)
-                    .then(function (form) {
-                        form.setElement(modalBody)
-                            .render();
-
-                        modal.on('cancel', function () {
-                            deferred.reject();
+                modal.on('ok', function () {
+                    this.save()
+                        .done(function (entity) {
+                            modal.close();
                             modal.remove();
-                        });
+                            deferred.resolve();
 
-                        modal.on('ok', function () {
-                            form.save()
-                                .done(function (entity) {
-                                    modal.close();
-                                    modal.remove();
-                                    deferred.resolve();
+                            var routerParams = {};
+                            if (this.config.routerKey) {
+                                routerParams[this.config.routerKey] = entity[this.config.routerKey];
+                            } else {
+                                routerParams = {id: entity.meta.id};
+                            }
 
-                                    var routerParams = {};
-                                    if (this.config.routerKey) {
-                                        routerParams[this.config.routerKey] = entity[this.config.routerKey];
-                                    } else {
-                                        routerParams = {id: entity.meta.id};
-                                    }
+                            messenger.notificationFlashMessage('success', __(this.config.successMessage));
 
-                                    messenger.notificationFlashMessage('success', __(this.config.successMessage));
-
-                                    router.redirectToRoute(
-                                        this.config.editRoute,
-                                        routerParams
-                                    );
-                                }.bind(this));
+                            router.redirectToRoute(
+                                this.config.editRoute,
+                                routerParams
+                            );
                         }.bind(this));
-                    }.bind(this));
+                }.bind(this));
 
                 return deferred.promise();
+            },
+
+            /**
+             * Save the form content by posting it to backend
+             *
+             * @return {Promise}
+             */
+            save: function () {
+                _.forEach(this.extensions, function (extension) {
+                    extension.updateModel();
+                });
+                this.validationErrors = {};
+
+                var loadingMask = new LoadingMask();
+                this.$el.empty().append(loadingMask.render().$el.show());
+
+                return $.post(Routing.generate(this.config.postUrl), JSON.stringify(this.getFormData()))
+                    .fail(function (response) {
+                        this.validationErrors = response.responseJSON.values;
+                        this.render();
+                    }.bind(this))
+                    .always(function () {
+                        loadingMask.remove();
+                    });
             }
         });
     }

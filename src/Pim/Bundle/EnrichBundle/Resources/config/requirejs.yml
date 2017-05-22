@@ -690,9 +690,6 @@ config:
         pim/field-manager: pimenrich/js/product/field-manager
         pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
 
-        # Product create form
-        pim/product-create-form: pimenrich/js/product/create/form
-
         # Mass product edit form
         pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
         pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
@@ -764,8 +761,11 @@ config:
         pim/form/common/index/grid:                          pimenrich/js/form/common/index/grid
         pim/form/common/index/create-button:                 pimenrich/js/form/common/index/create-button
         pim/form/common/index/confirm-button:                pimenrich/js/form/common/index/confirm-button
-        pim/form/common/creation-code:                       pimenrich/js/form/common/creation/code
-        pim/form/common/creation-modal:                      pimenrich/js/form/common/creation/modal
+        pim/form/common/creation/field:                      pimenrich/js/form/common/creation/field
+        pim/form/common/creation/family:                     pimenrich/js/form/common/creation/family
+        pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
+        pim/form/common/creation/identifier:                 pimenrich/js/form/common/creation/identifier
+
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
         pim/menu/item:                                       pimenrich/js/menu/item
@@ -837,7 +837,8 @@ config:
         pim/template/form/index/index:                            pimenrich/templates/form/index/index.html
         pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
-        pim/template/form/creation/code:                          pimenrich/templates/form/creation/code.html
+        pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
+        pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
 
         pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
@@ -880,8 +881,6 @@ config:
         pim/template/product/field/simple-select:            pimenrich/templates/product/field/simple-select.html
         pim/template/product/field/text:                     pimenrich/templates/product/field/text.html
         pim/template/product/field/textarea:                 pimenrich/templates/product/field/textarea.html
-        pim/template/product-create-popin:                   pimenrich/templates/product/create-popin.html
-        pim/template/product-create-error:                   pimenrich/templates/product/create-error.html
         pim/template/product/add-select/attribute/line:      pimenrich/templates/product/form/add-select/attribute/line.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html

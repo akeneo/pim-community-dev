@@ -1,12 +1,19 @@
 extensions:
     pim-product-create-modal:
-       module: pim/form/common/create-modal
+       module: pim/form/common/creation/modal
        config:
            labels:
                title: pim_enrich.entity.product.create_popin.title
            successMessage: pim_enrich.entity.product.message.created
-           innerForm: pim-product-create-form
            editRoute: pim_enrich_product_edit
+           postUrl: pim_enrich_product_rest_create
 
-    pim-product-create-form:
-       module: pim/product-create-form
+    pim-product-create-sku:
+        module: pim/form/common/creation/identifier
+        parent: pim-product-create-modal
+        position: 10
+
+    pim-product-create-family:
+        module: pim/form/common/creation/family
+        parent: pim-product-create-modal
+        position: 20
