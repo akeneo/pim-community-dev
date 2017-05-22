@@ -56,6 +56,12 @@ class PimRequirements extends OroRequirements
             'Install and enable <strong>APCu</strong> extension'
         );
 
+        $this->addPimRequirement(
+            function_exists('bcmul'),
+            'Extension bcmath should be installed',
+            'Install and enable <strong>bcmath</strong> extension'
+        );
+
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
             $this->addPimRequirement(
