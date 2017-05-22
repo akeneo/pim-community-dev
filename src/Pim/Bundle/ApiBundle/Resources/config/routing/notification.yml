@@ -1,0 +1,25 @@
+pim_api_notification_list:
+    path: /notifications
+    defaults: { _controller: pim_api.controller.notification:listAction, _format: json }
+
+pim_api_draft_list:
+    path: /drafts
+    defaults: { _controller: pim_api.controller.notification:draftsAction, _format: json }
+
+pim_api_notification_count_unread:
+    path: /notification/count_unread
+    defaults: { _controller: pim_api.controller.notification:countUnreadAction, _format: json }
+
+pim_api_notification_mark_viewed:
+    path: /notification/mark_viewed/{id}
+    defaults: { _controller: pim_api.controller.notification:markAsViewedAction, _format: json, id: ~ }
+    requirements:
+        id: \d+
+        _method: POST
+
+pim_api_notification_remove:
+    path: /notification/remove/{id}
+    defaults: { _controller: pim_api.controller.notification:removeAction, _format: json }
+    requirements:
+        id: \d+
+        _method: DELETE

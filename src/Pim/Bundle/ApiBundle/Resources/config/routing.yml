@@ -34,3 +34,11 @@ fos_oauth_server_token:
 endpoint:
     resource: '@PimApiBundle/Resources/config/routing/endpoint.yml'
     prefix: /rest
+
+proposal:
+    resource: '@PimApiBundle/Resources/config/routing/proposal.yml'
+    prefix: /rest/v1
+
+notification:
+    resource: '@PimApiBundle/Resources/config/routing/notification.yml'
+    prefix: /rest/v1
