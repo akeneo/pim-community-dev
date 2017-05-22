@@ -4,3 +4,8 @@ parameters:
 services:
     pimee_workflow.factory.product_draft:
         class: '%pimee_workflow.factory.product_draft.class%'
+
+    pimee_workflow.factory.published_product_unique_data:
+        class: '%pim_catalog.factory.product_unique_data.class%'
+        arguments:
+            - '%pimee_workflow.entity.published_product_unique_data.class%'

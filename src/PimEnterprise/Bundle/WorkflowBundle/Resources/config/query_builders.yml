@@ -6,7 +6,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pim_catalog.factory.product_cursor'
+            - '@pimee_workflow.factory.published_product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
     pimee_workflow.doctrine.query.published_product_query_bounded_factory:
@@ -16,5 +16,5 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pim_catalog.factory.published_product_bounded_cursor'
+            - '@pimee_workflow.factory.published_product_bounded_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_bounded_resolver'

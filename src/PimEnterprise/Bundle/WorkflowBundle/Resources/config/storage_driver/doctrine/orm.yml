@@ -16,6 +16,8 @@ services:
         arguments: ['%pimee_workflow.entity.published_product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_factory']]
+            - [setChannelRepository, ['@pim_catalog.repository.channel']]
+            - [setLocaleRepository, ['@pim_catalog.repository.locale']]
         tags:
             - { name: 'pim_repository' }
 
