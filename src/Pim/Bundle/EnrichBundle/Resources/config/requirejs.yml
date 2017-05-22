@@ -961,3 +961,10 @@ config:
 
         # Order last
         pim/form: pimenrich/js/product/form
+
+        # Alias overrides
+        pimcommunity/product-manager:         pimenrich/js/manager/product-manager
+        pimcommunity/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch
+        pimcommunity/grid/view-selector/selector: pimenrich/js/grid/view-selector
+        pimcommunity/grid/view-selector/line: pimenrich/js/grid/view-selector-line
+        pimcommunity/grid/view-selector/current: pimenrich/js/grid/view-selector-current

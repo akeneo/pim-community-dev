@@ -40,14 +40,15 @@ const getRequireConfig = (requirePaths) => {
             console.log(`    → ${requirePath}`.grey)
             const contents = fs.readFileSync(requirePath, 'utf8')
             const parsedFile = yaml.parse(contents)
+
             const bundlePaths = parsedFile.config.paths
+            const mappedPaths = _.get(parsedFile.config, 'map.*')
             const bundleConfig = parsedFile.config.config
-            const absolutePaths = getAbsolutePaths(bundlePaths, requirePath)
+            const absolutePaths = getAbsolutePaths(Object.assign(bundlePaths, mappedPaths), requirePath)
+
             modulePaths = deepMerge(modulePaths, absolutePaths)
             config = deepMerge(config, bundleConfig)
-        } catch (e) {
-            // console.log('###', requirePath)
-        }
+        } catch (e) {}
     })
 
     return {config, modulePaths}
