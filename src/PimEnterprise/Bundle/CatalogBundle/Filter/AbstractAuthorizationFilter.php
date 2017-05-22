@@ -22,7 +22,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-abstract class AbstractAuthorizationFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+abstract class AbstractAuthorizationFilter extends AbstractFilter implements
+    CollectionFilterInterface,
+    ObjectFilterInterface
 {
     /** @var TokenStorageInterface */
     protected $tokenStorage;

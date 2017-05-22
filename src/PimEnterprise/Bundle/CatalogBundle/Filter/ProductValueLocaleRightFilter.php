@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -25,7 +26,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implements
+    CollectionFilterInterface,
+    ObjectFilterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -43,6 +46,20 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
         parent::__construct($tokenStorage, $authorizationChecker);
 
         $this->localeRepository = $localeRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function filterCollection($collection, $type, array $options = [])
+    {
+        foreach ($collection as $productValue) {
+            if ($this->filterObject($productValue, $type, $options)) {
+                $collection->remove($productValue);
+            }
+        }
+
+        return $collection;
     }
 
     /**
@@ -82,6 +99,14 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return $collection instanceof ProductValueCollectionInterface && null !== $this->tokenStorage->getToken();
     }
 
     /**
