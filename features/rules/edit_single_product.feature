@@ -580,7 +580,7 @@ Feature: Read a single product by applying rules
     And the category of "my-jacket" should be "jackets"
     And the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
-      | weather_conditions | [dry], [wet], [hot], [cold] |
+      | weather_conditions | [cold], [dry], [hot], [wet] |
     And the category of "my-jacket" should be "jackets, tshirts"
 
   Scenario: Successfully execute a rule with an "equals" condition

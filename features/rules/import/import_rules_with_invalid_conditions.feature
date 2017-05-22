@@ -338,7 +338,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Object \"option\" with code \"invalid\" does not exist"
+    And I should see the text "conditions[0]: Object \"options\" with code \"invalid\" does not exist"
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the text "Another good description"
@@ -697,7 +697,6 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: The key \"value\" is missing or empty."
-    And I should see the text "conditions[0]: Property \"side_view\" expects a string as data, \"NULL\" given."
     And I should see the text "actions[0]: Property \"side_view\" expects a string as data, \"array\" given"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
