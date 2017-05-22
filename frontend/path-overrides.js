@@ -9,5 +9,8 @@ module.exports = {
     'pim-router': 'src/Pim/Bundle/EnrichBundle/Resources/public/js/router',
     'jquery-setup': 'src/Pim/Bundle/UIBundle/Resources/public/js/jquery-setup.js',
     'require-context': 'frontend/require-context',
-     config: 'frontend/module-config'
+    config: 'frontend/module-config',
+    summernote: 'node_modules/summernote/dist/summernote.min.js',
+    'fos-routing-base': 'vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router',
+    CodeMirror: 'node_modules/codemirror/lib/codemirror'
 }

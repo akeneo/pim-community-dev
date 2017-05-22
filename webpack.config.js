@@ -3,85 +3,20 @@
 require('colors')
 const webpack = require('webpack')
 const path = require('path')
-const yaml = require('yamljs')
-const fs = require('fs')
 const _ = require('lodash')
-const mkdirp = require('mkdirp')
-const deepMerge = require('merge-objects')
+
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const pathOverrides = require('./frontend/path-overrides')
 const requireConfigPaths = require(path.resolve('web/js/require-config'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 
+const pathOverrides = require('./frontend/path-overrides')
+const requireUtils = require('./frontend/requirejs-utils')
+
 console.log('→ Begin compiling modules with webpack from'.green, __dirname)
-
-const getAbsolutePaths = (relativePaths, configPath) => {
-    const absolutePaths = {}
-
-    for (let relativePathName in relativePaths) {
-        let relativePath = relativePaths[relativePathName].split('/')
-        relativePath.shift()
-        const resourcePath = path.resolve(configPath, '../../')
-        absolutePaths[relativePathName] = resourcePath + '/public/' + relativePath.join('/')
-    }
-
-    return absolutePaths
-}
-
-const getRequireConfig = (requirePaths) => {
-    let modulePaths = {}
-    let config = {}
-
-    console.log('→ Grabbing requirejs.yml config from bundles'.green)
-
-    requirePaths.forEach((requirePath) => {
-        try {
-            console.log(`    → ${requirePath}`.grey)
-            const contents = fs.readFileSync(requirePath, 'utf8')
-            const parsedFile = yaml.parse(contents)
-
-            const bundlePaths = parsedFile.config.paths
-            const mappedPaths = _.get(parsedFile.config, 'map.*')
-            const bundleConfig = parsedFile.config.config
-            const absolutePaths = getAbsolutePaths(Object.assign(bundlePaths, mappedPaths), requirePath)
-
-            modulePaths = deepMerge(modulePaths, absolutePaths)
-            config = deepMerge(config, bundleConfig)
-        } catch (e) {}
-    })
-
-    return {config, modulePaths}
-}
-
-const requireConfig = getRequireConfig(requireConfigPaths)
-const importedPaths = requireConfig.modulePaths
-const generalConfig = requireConfig.config
-const overrides = _.mapValues(pathOverrides, override => path.resolve(__dirname, override))
-
-const importPaths = Object.assign(importedPaths, overrides, {
-    backbone: require.resolve('backbone'),
-    routes: path.resolve('web/js/routes'),
-    general: path.resolve('web/dist/general'),
-    paths: path.resolve('web/dist/paths'),
-    summernote: path.resolve('node_modules/summernote/dist/summernote.min.js'),
-    'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'),
-    CodeMirror: path.resolve('node_modules/codemirror/lib/codemirror')
-})
-
+const importPaths = requireUtils.getAliasPaths(requireConfigPaths, pathOverrides, __dirname)
 console.log('→ Including paths for'.green, `(${_.size(importPaths)})`.bold, 'modules'.green)
 
-const exportModule = (dest, contents) => {
-    const fileName = `web/dist/${dest}`
-    console.log(`    Exporting module to dist - ${fileName}`.grey)
-    fs.writeFileSync(fileName, `module.exports = ${contents}`, 'utf8')
-}
-
-mkdirp('web/dist', function() {
-    console.log('→ Starting to dump module config to dist'.green)
-    exportModule('general.js', JSON.stringify(generalConfig))
-    exportModule('paths.js', JSON.stringify(importPaths))
-})
 
 module.exports = {
     target: 'web',
