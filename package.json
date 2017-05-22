@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "bundle-loader": "^0.5.5",
-    "merge-objects": "^1.0.5",
-    "pascal-case": "^2.0.1"
+    "merge-objects": "^1.0.5"
   }
 }
