@@ -52,13 +52,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
     function it_normalizes_family(
         AttributeRepositoryInterface $attributeRepository,
         AttributeGroupInterface $marketingAttributeGroup,
-        $collectionFilter,
         FamilyInterface $family,
         NormalizerInterface $translationNormalizer,
         NormalizerInterface $familyNormalizer,
         VersionManager $versionManager,
         AttributeInterface $name,
-        AttributeInterface $description,
         AttributeInterface $price
     ) {
         $family->getId()->willReturn(1);
@@ -67,8 +65,6 @@ class FamilyNormalizerSpec extends ObjectBehavior
             'code'                   => 'tshirts',
             'attributes'             => [
                 'name',
-                'description',
-                'price',
             ],
             'attribute_as_label'     => 'name',
             'attribute_requirements' => [
@@ -90,20 +86,12 @@ class FamilyNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $familyNormalizer->normalize($family, 'standard', [])->willReturn($normalizedFamily);
+        $familyNormalizer->normalize($family, 'standard', ['apply_filters' => false])->willReturn($normalizedFamily);
 
-        $normalizedFamily['attributes'] = ['name', 'description', 'price'];
+        $familyNormalizer->normalize($family, 'standard', ['apply_filters' => false])->shouldBeCalled();
 
-        $familyNormalizer->normalize($family, 'standard', [])->shouldBeCalled();
-
-        $attributeRepository->findBy(['code' =>['name', 'description', 'price']])->willReturn([$name, $description, $price]);
-
-        $collectionFilter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
-            ->willReturn([$name, $price]);
-
-        $attributeRepository->findBy(['code' =>['name', 'price']])->willReturn([$name, $price]);
-        $collectionFilter->filterCollection([$name, $price], 'pim.internal_api.attribute.view')
-            ->willReturn([$name, $price]);
+        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $price]);
+        $attributeRepository->findBy(['code' => ['name', 'price']])->willReturn([$name, $price]);
 
         $translationNormalizer->normalize(Argument::cetera())->willReturn([]);
         $family->getCode()->willReturn('tshirts');
@@ -112,19 +100,19 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $marketingAttributeGroup->getCode()->willReturn('marketing');
 
         $name->getCode()->willReturn('name');
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->getGroup()->willReturn($marketingAttributeGroup);
         $name->getSortOrder()->willReturn(1);
 
         $price->getCode()->willReturn('price');
-        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getType()->willReturn('pim_catalog_price_collection');
         $price->getGroup()->willReturn($marketingAttributeGroup);
         $price->getSortOrder()->willReturn(3);
 
         $versionManager->getOldestLogEntry($family)->shouldBeCalled();
         $versionManager->getNewestLogEntry($family)->shouldBeCalled();
 
-        $this->normalize($family)->shouldReturn(
+        $this->normalize($family, null, ['apply_filters' => false])->shouldReturn(
             [
                 'code'                   => 'tshirts',
                 'attributes'             => [
