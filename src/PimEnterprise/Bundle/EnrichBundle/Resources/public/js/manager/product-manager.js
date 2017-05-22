@@ -3,7 +3,7 @@
 define([
         'jquery',
         'underscore',
-        'pim/product-manager'
+        'pimcommunity/product-manager'
     ], function (
         $,
         _,

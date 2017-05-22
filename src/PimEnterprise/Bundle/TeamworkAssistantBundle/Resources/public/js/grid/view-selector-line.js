@@ -14,7 +14,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/i18n',
-        'pim/grid/view-selector/line',
+        'pimcommunity/grid/view-selector/line',
         'pim/user-context',
         'pim/date-context',
         'pim/formatter/date',

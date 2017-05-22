@@ -9,7 +9,7 @@
 define(
     [
         'underscore',
-        'pim/job/common/edit/launch',
+        'pimcommunity/job/common/edit/launch',
         'pim/fetcher-registry'
     ],
     function (_, BaseLaunch, FetcherRegistry) {

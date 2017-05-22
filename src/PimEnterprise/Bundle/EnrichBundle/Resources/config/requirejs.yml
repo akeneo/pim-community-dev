@@ -93,12 +93,8 @@ config:
 
     map:
         '*':
-            pim/product-manager:             pimee/product-manager
-            pim/job/common/edit/launch:      pimee/job/common/edit/launch
-        pimee/product-manager:
-            pim/product-manager: pim/product-manager
-        pimee/job/common/edit/launch:
-            pim/job/common/edit/launch: pim/job/common/edit/launch
+            pim/product-manager:             pimenterpriseenrich/js/manager/product-manager
+            pim/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
 
     paths:
         pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
