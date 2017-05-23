@@ -29,11 +29,9 @@ define(
                     throw new Error('No field defined for attribute type "' + attribute.field_type + '"');
                 }
 
-                require.ensure([], function() {
-                    var ResolvedModule = requireContext(fieldModule);
-                    loadedModules[attribute.field_type] = ResolvedModule;
-                    deferred.resolve(ResolvedModule)
-                })
+                var ResolvedModule = requireContext(fieldModule);
+                loadedModules[attribute.field_type] = ResolvedModule;
+                deferred.resolve(ResolvedModule)
             });
 
             return deferred.promise();

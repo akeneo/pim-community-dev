@@ -14,10 +14,8 @@ define(
                     );
                 }
 
-                require.ensure([], function() {
-                    var ResolvedModule = requireContext(form.module);
-                    deferred.resolve(ResolvedModule)
-                })
+                var ResolvedModule = requireContext(form.module);
+                deferred.resolve(ResolvedModule)
 
                 return deferred.promise();
             });

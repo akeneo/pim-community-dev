@@ -325,13 +325,11 @@ define(
                     var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
 
-                    require.ensure([], function() {
-                        var resolvedModules = []
-                        _.each(gridModules, function(module) {
-                            resolvedModules.push(requireContext(module));
-                        })
-                        datagridBuilder(resolvedModules)
+                    var resolvedModules = []
+                    _.each(gridModules, function(module) {
+                        resolvedModules.push(requireContext(module));
                     })
+                    datagridBuilder(resolvedModules)
                 }.bind(this));
             },
             setListenerSelectors: function () {

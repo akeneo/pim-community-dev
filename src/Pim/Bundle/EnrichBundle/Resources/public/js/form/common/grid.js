@@ -94,13 +94,11 @@ define([
 
                     var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
 
-                    require.ensure([], function() {
-                        var resolvedModules = []
-                        _.each(modules, function(module) {
-                            resolvedModules.push(requireContext(module))
-                        })
-                        datagridBuilder(resolvedModules)
+                    var resolvedModules = []
+                    _.each(modules, function(module) {
+                        resolvedModules.push(requireContext(module))
                     })
+                    datagridBuilder(resolvedModules)
                 }.bind(this));
             },
 

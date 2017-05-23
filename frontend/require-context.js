@@ -7,6 +7,7 @@ define(['paths'], function(paths) {
 
         var moduleFileName = modulePath;
 
+        // Do the same with the file extension
         if (!modulePath.endsWith('.js')) {
             moduleFileName = moduleFileName + '.js'
         }
