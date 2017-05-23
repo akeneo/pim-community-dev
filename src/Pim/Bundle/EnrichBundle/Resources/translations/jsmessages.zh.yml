@@ -157,9 +157,6 @@ pim_enrich:
         deletion_failed: 产品不能被删除。
         update_successful: 产品更新成功。
         update_failed: 产品不能更新。
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - 字段
         already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
       error:
         upload: 上传文件时发生错误

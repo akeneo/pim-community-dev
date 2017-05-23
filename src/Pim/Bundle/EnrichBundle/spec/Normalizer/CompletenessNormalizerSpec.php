@@ -15,12 +15,10 @@ class CompletenessNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($completeness, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_completness(
+    function it_normalizes_completeness(
         CompletenessInterface $completeness,
         LocaleInterface $locale,
-        ChannelInterface $mobile,
-        ChannelTranslationInterface $translationEN,
-        ChannelTranslationInterface $translationFR
+        ChannelInterface $mobile
     ) {
         $completeness->getRequiredCount()->willReturn(10);
         $completeness->getMissingCount()->willReturn(2);
@@ -29,23 +27,13 @@ class CompletenessNormalizerSpec extends ObjectBehavior
         $completeness->getChannel()->willReturn($mobile);
         $locale->getCode()->willReturn('en_US');
         $mobile->getCode()->willReturn('mobile');
-        $mobile->getTranslations()->willReturn([$translationEN, $translationFR]);
-
-        $translationEN->getLocale()->willReturn('en_US');
-        $translationEN->getLabel()->willReturn('Mobile');
-        $translationFR->getLocale()->willReturn('fr_FR');
-        $translationFR->getLabel()->willReturn('Smartphone');
 
         $this->normalize($completeness, 'internal_api', [])->shouldReturn([
-                'required' => 10,
-                'missing'  => 2,
-                'ratio'    => 20,
-                'locale'   => 'en_US',
-                'channel_code'  => 'mobile',
-                'channel_labels' => [
-                    'en_US' => 'Mobile',
-                    'fr_FR' => 'Smartphone'
-                ]
-            ]);
+            'required' => 10,
+            'missing'  => 2,
+            'ratio'    => 20,
+            'locale'   => 'en_US',
+            'channel'  => 'mobile',
+        ]);
     }
 }

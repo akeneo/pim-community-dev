@@ -436,6 +436,7 @@ services:
         arguments:
             - '%pim_catalog.entity.attribute_option_value.class%'
             - 'value'
+            - '@pim_catalog.mongodb.normalizer.normalized_data.attribute_option'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 

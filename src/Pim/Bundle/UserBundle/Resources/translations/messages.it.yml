@@ -88,7 +88,7 @@ user:
 Role: Ruolo
 Owner: Proprietario
 General: Generale
-Entity: Entità
+Entity: Soggetto
 Capabilities: Funzionalità
 Save and close: Salva e chiudi
 Has role: Ha il ruolo
@@ -125,7 +125,7 @@ oro_security:
 VIEW: Visualizzazione
 CREATE: Crea
 EDIT: Modifica
-DELETE: Eliminare
+DELETE: Elimina
 ASSIGN: Assegna
 SHARE: Condividi
 oro:

@@ -1418,6 +1418,22 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @When /^I edit the following attribute options?:$/
+     */
+    public function iEditTheFollowingAttributeOptionValue(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['Code'];
+            unset($data['Code']);
+
+            $this->getCurrentPage()->editOption($code, $data);
+            $this->wait();
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @When /^I add an empty attribute option$/
      * @When /^I add the following attribute option:$/
      */

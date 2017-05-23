@@ -53,13 +53,15 @@ define(
                 if (this.getFormData().meta) {
                     $.when(
                         this.fetchCompleteness(),
+                        FetcherRegistry.getFetcher('channel').fetchAll(),
                         FetcherRegistry.getFetcher('locale').fetchActivated()
-                    ).then(function (completeness, locales) {
+                    ).then(function (completeness, channels, locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
                                 completenesses: this.sortCompleteness(completeness.completenesses),
                                 i18n: i18n,
+                                channels: channels,
                                 locales: locales,
                                 uiLocale: UserContext.get('uiLocale'),
                                 catalogLocale: UserContext.get('catalogLocale')
