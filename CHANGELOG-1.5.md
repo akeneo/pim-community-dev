@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6429: Improve the loading of the completeness widget on dashboard in ORM
+
 # 1.5.22 (2017-05-22)
 
 ## Bug fixes
