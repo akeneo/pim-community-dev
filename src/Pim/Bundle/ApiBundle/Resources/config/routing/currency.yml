@@ -1,0 +1,9 @@
+pim_api_currency_list:
+    path: /currencies
+    defaults: { _controller: pim_api.controller.currency:listAction, _format: json }
+    methods: [GET]
+
+pim_api_currency_get:
+    path: /currencies/{code}
+    defaults: { _controller: pim_api.controller.currency:getAction, _format: json }
+    methods: [GET]

@@ -37,3 +37,12 @@ services:
             - '%pim_api.configuration%'
             - 'pim_api.controller.attribute:partialUpdateAction'
             - 'code'
+
+    pim_api.stream.attribute_group_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.attribute_group:partialUpdateAction'
+            - 'code'
