@@ -40,6 +40,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             validationErrors: {},
+            isHidden : false,
 
             /**
              * Configure the form
@@ -47,6 +48,11 @@ define(
              * @return {Promise}
              */
             configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:create_product:error', function () {
+                    this.isHidden = true;
+                    this.render();
+                }.bind(this));
+
                 return $.when(
                     FetcherRegistry.initialize(),
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -67,6 +73,12 @@ define(
              */
             render: function () {
                 if (!this.configured) {
+                    return this;
+                }
+
+                if (this.isHidden) {
+                    this.$el.empty();
+
                     return this;
                 }
 
