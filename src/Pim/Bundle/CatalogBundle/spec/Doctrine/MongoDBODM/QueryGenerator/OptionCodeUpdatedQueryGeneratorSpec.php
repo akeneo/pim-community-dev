@@ -26,12 +26,12 @@ class OptionCodeUpdatedQueryGeneratorSpec extends ObjectBehavior
 
         $this->generateQuery($blue, 'code', 'blue', 'bleu')->shouldReturn([
             [
-                ['normalizedData.color-fr_FR' => [ '$exists' => true ]],
+                ['normalizedData.color-fr_FR' => [ '$exists' => true ], 'normalizedData.color-fr_FR.code' => 'blue'],
                 ['$set' => ['normalizedData.color-fr_FR.code' => 'bleu']],
                 ['multiple' => true]
             ],
             [
-                ['normalizedData.color-en_US' => [ '$exists' => true ]],
+                ['normalizedData.color-en_US' => [ '$exists' => true ], 'normalizedData.color-en_US.code' => 'blue'],
                 ['$set' => ['normalizedData.color-en_US.code' => 'bleu']],
                 ['multiple' => true]
             ]
