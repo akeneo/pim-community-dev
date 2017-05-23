@@ -2,14 +2,15 @@
 
 namespace Context;
 
+use Akeneo\Test\Integration\MediaSanitizer;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
+use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Context for commands
@@ -120,6 +121,9 @@ class CommandContext extends PimContext
                     $update['result']
                 ));
             }
+
+            $actual = $this->sanitizeProductResults($actual);
+
             $diff = $this->arrayIntersect($actual, $expected);
 
             assertEquals(
@@ -155,6 +159,8 @@ class CommandContext extends PimContext
         foreach ($actions as $key => $action) {
             if (isset($action->data->filePath)) {
                 $action->data->filePath = self::replacePlaceholders($action->data->filePath);
+            } elseif (isset($action->data) && is_string($action->data)) {
+                $action->data = self::replacePlaceholders($action->data);
             }
         }
 
@@ -230,5 +236,37 @@ class CommandContext extends PimContext
     {
         $commandLauncher = $this->getService('pim_catalog.command_launcher');
         $commandLauncher->executeForeground($this->replacePlaceholders($command));
+    }
+
+    /**
+     * Sanitized the product results, mostly resolves the issue of checking for a image value.
+     * Because it is impossible to know the filekey of an uploaded file prior of its upload, this method uses
+     * the MediaSanitizer to check if it is a file.
+     *
+     * @param $product
+     *
+     * @return mixed
+     */
+    protected function sanitizeProductResults($product)
+    {
+        foreach ($product['values'] as $attributeCode => $productValue) {
+            $attribute = $this->getContainer()
+                ->get('pim_catalog.repository.attribute')
+                ->findOneByIdentifier($attributeCode);
+            $sanitizedProductValue = $productValue;
+
+            if (null !== $attribute && AttributeTypes::IMAGE === $attribute->getType()) {
+                foreach ($productValue as $data) {
+                    $sanitizedProductValue = [];
+                    $sanitizedData = $data;
+                    $sanitizedData['data'] = MediaSanitizer::sanitize($data['data']);
+                    $sanitizedProductValue[] = $sanitizedData;
+                }
+            }
+
+            $product['values'][$attributeCode] = $sanitizedProductValue;
+        }
+
+        return $product;
     }
 }

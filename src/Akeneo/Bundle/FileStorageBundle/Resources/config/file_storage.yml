@@ -14,6 +14,7 @@ services:
             - '@oneup_flysystem.mount_manager'
             - '@akeneo_file_storage.saver.file'
             - '@akeneo_file_storage.file_storage.file_info_factory'
+            - '@akeneo_file_storage.repository.file_info'
 
     akeneo_file_storage.file_storage.file.file_fetcher:
         class: '%akeneo_file_storage.file_storage.file.file_fetcher.class%'
