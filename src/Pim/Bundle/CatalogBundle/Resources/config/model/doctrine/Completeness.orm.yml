@@ -61,3 +61,4 @@ Pim\Component\Catalog\Model\Completeness:
                 inverseJoinColumns:
                     missing_attribute_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
