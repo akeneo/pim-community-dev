@@ -12,13 +12,21 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                 message: Channel code may contain only letters, numbers and underscores
             - Length:
                 max: 100
+        category:
+            - NotBlank: ~
         currencies:
             - Count: { min: 1 }
         locales:
             - Count: { min: 1 }
+        translations:
+            - Valid: ~
 
 Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
     properties:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                    standardPropertyName: labels
