@@ -1007,6 +1007,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAssetsCategories(TableNode $table)
     {
+        $this->getEntityManager()->clear();
+
         foreach ($table->getHash() as $data) {
             $assetCategory = $this->getAssetCategory($data['code']);
             $this->refresh($assetCategory);
