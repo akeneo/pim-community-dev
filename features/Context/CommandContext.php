@@ -30,6 +30,8 @@ class CommandContext extends PimContext
     }
 
     /**
+     * @param TableNode $filters
+     *
      * @Then /^I should get the following results for the given filters:$/
      */
     public function iShouldGetTheFollowingResultsForTheGivenFilters(TableNode $filters)

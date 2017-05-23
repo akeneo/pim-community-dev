@@ -160,7 +160,7 @@ class ProductIndexingIntegration extends TestCase
                 'a_metric-metric'                                => [
                     '<all_channels>' => [
                         '<all_locales>' => [
-                            'base_data' => '9.8765432198712E+14',
+                            'base_data' => '987654321987123.4000',
                             'base_unit' => 'WATT',
                             'data'      => '987654321987.1234',
                             'unit'      => 'KILOWATT',
@@ -170,7 +170,7 @@ class ProductIndexingIntegration extends TestCase
                 'a_metric_negative-metric'                       => [
                     '<all_channels>' => [
                         '<all_locales>' => [
-                            'base_data' => '252.65',
+                            'base_data' => '252.650000000000',
                             'base_unit' => 'KELVIN',
                             'data'      => '-20.5000',
                             'unit'      => 'CELSIUS',
@@ -190,7 +190,7 @@ class ProductIndexingIntegration extends TestCase
                 'a_metric_without_decimal_negative-metric'       => [
                     '<all_channels>' => [
                         '<all_locales>' => [
-                            'base_data' => '253.15',
+                            'base_data' => '253.150000000000',
                             'data'      => '-20',
                             'base_unit' => 'KELVIN',
                             'unit'      => 'CELSIUS',

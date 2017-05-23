@@ -275,12 +275,9 @@ class ProductSaverIntegration extends TestCase
             'a_metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => '987654321987.1234',
-                        'unit'   => 'KILOWATT',
-                        // TODO: here maybe we should have a "987654321987123.4", but the measure converter
-                        // TODO: returns a double that is too big, and we didn't change that
-                        // TODO: see TIP-695
-                        'base_data' => 987654321987123.4,
+                        'amount'    => '987654321987.1234',
+                        'unit'      => 'KILOWATT',
+                        'base_data' => '987654321987123.4000',
                         'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]
@@ -291,7 +288,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => 98,
                         'unit'      => 'CENTIMETER',
-                        'base_data' => 0.98,
+                        'base_data' => '0.98',
                         'base_unit' => 'METER',
                         'family'    => 'Length',
                     ],
@@ -302,7 +299,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => -20,
                         'unit'      => 'CELSIUS',
-                        'base_data' => 253.15,
+                        'base_data' => '253.15',
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
@@ -313,10 +310,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => '-20.5000',
                         'unit'      => 'CELSIUS',
-                        // TODO: here maybe we should have a string, but the measure converter returns a double,
-                        // TODO: and we didn't change that
-                        // TODO: see TIP-695
-                        'base_data' => 252.65,
+                        'base_data' => '252.65',
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
