@@ -200,6 +200,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
         $newAttribute = $this->attributeFactory->createAttribute($attribute->getType());
         $newAttribute->setCode($code);
+        $newAttribute->setMetricFamily($attribute->getMetricFamily());
         $value = $this->valueFactory->create($newAttribute, null, null, null);
 
         return $value;
