@@ -1,0 +1,18 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label" for="pim_enrich_attribute_form_<%- fieldName %>">
+        <%- labels.field %> <em><%- labels.required %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select id="pim_enrich_attribute_form_<%- fieldName %>" class="select2" name="group" data-placeholder="<%- labels.defaultLabel %>">
+        <option value=""<% if (!value) { %> selected<% } %>></option>
+        <% _.each(choices, function (choiceLabel, choiceValue) { %>
+            <option
+                value="<%- choiceValue %>"
+                <% if (choiceValue === value) { %> selected<% } %>
+            >
+                <%- choiceLabel %>
+            </option>
+        <% }); %>
+    </select>
+</div>

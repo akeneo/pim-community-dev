@@ -1,0 +1,15 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label" for="pim_enrich_attribute_form_<%- fieldName %>">
+        <%- labels.field %>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+        <input
+            id="pim_enrich_attribute_form_<%- fieldName %>"
+            type="checkbox"
+            name="<%- fieldName %>"
+            <% if (value) { %> checked<% } %>
+        >
+    </div>
+</div>
