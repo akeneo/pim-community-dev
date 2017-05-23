@@ -23,7 +23,7 @@ services:
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_bounded_from_cursor:
-        class: '%akeneo_elasticsearch.cursor.bounded_from_cursor.class%'
+        class: '%akeneo_elasticsearch.cursor.bounded_from_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client'
             - '@pim_catalog.object_manager.product'

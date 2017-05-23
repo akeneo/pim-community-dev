@@ -86,6 +86,10 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             $pqbOptions['search_after_unique_key'] = $options['search_after_unique_key'];
         }
 
+        if (isset($options['from'])) {
+            $pqbOptions['from'] = $options['from'];
+        }
+
         $pqb = $this->createProductQueryBuilder($pqbOptions);
         $pqb->setQueryBuilder(new SearchQueryBuilder());
 
@@ -153,7 +157,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'filters',
             'search_after',
             'search_after_unique_key',
-            'limit'
+            'limit',
+            'from'
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',
@@ -172,6 +177,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
         $resolver->setAllowedTypes('limit', 'int');
         $resolver->setAllowedTypes('filters', 'array');
+        $resolver->setAllowedTypes('from', 'int');
     }
 
     /**

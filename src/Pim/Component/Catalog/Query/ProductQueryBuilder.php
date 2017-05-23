@@ -77,7 +77,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit'];
+        $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit', 'from'];
         $cursorOptions = array_filter(
             $this->defaultContext,
             function ($key) use ($allowedCursorOptions) {

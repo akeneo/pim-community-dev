@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
@@ -40,8 +41,6 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
-
-    const PRODUCTS_PER_PAGE = '_per_page';
 
     /** @var DatagridConfiguration */
     protected $configuration;
@@ -417,8 +416,12 @@ class ContextConfigurator implements ConfiguratorInterface
         $pager = $this->requestParams->get('_pager');
 
         // TODO: remove static 25, will be done with TIP-664
-        $value = isset($pager[self::PRODUCTS_PER_PAGE]) ? $pager[self::PRODUCTS_PER_PAGE] : 25;
+        $itemsPerPage = isset($pager[PagerExtension::PER_PAGE_PARAM]) ? $pager[PagerExtension::PER_PAGE_PARAM] : 25;
 
-        $this->configuration->offsetSetByPath($this->getSourcePath(self::PRODUCTS_PER_PAGE), $value);
+        $this->configuration->offsetSetByPath($this->getSourcePath(PagerExtension::PER_PAGE_PARAM), $itemsPerPage);
+
+        $currentPage = isset($pager[PagerExtension::PAGE_PARAM]) ? $pager[PagerExtension::PAGE_PARAM] : 1;
+        $from = ($currentPage - 1) * $itemsPerPage;
+        $this->configuration->offsetSetByPath($this->getSourcePath('from'), $from);
     }
 }
