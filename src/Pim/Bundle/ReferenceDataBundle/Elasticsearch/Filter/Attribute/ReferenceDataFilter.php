@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\AbstractAttributeFilter;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -145,7 +144,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      * @param AttributeInterface $attribute
      * @param mixed              $values
      *
-     * @throws ObjectNotFoundException
+     * @throws InvalidPropertyException
      */
     protected function checkValue(AttributeInterface $attribute, $values)
     {
@@ -166,12 +165,18 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
 
         $unexistingValues = array_diff($values, $referenceDataCodes);
         if (count($unexistingValues) > 0) {
-            throw new ObjectNotFoundException(
-                sprintf(
-                    'Object "%s" with code "%s" does not exist',
-                    $attribute->getBackendType(),
-                    reset($unexistingValues)
-                )
+            $message = sprintf(
+                'No reference data "%s" with code "%s" has been found',
+                $attribute->getReferenceDataName(),
+                reset($unexistingValues)
+            );
+
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'code',
+                $message,
+                $referenceDataRepository->getClassName(),
+                implode(',', $values)
             );
         }
     }

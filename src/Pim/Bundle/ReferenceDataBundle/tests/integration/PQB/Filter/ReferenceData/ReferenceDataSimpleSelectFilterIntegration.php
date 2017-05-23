@@ -87,8 +87,8 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
-     * @expectedExceptionMessage Object "reference_data_option" with code "NOT_FOUND" does not exist
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "a_ref_data_simple_select" expects a valid code. No reference data "color" with code "NOT_FOUND" has been found, "NOT_FOUND" given.
      */
     public function testErrorOptionNotFound()
     {
