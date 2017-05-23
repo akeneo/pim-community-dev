@@ -141,10 +141,6 @@ function($, _, Backbone) {
                         return;
                     case nextLabel:
                         var options = [];
-                        if ('product-grid' === collection.inputName) {
-                            options['search_after'] = _.last(collection.models).attributes.identifier;
-                        }
-
                         if (collection.hasNext()) {
                             collection.getNextPage(options);
                         }

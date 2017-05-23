@@ -60,7 +60,6 @@ class AssociatedProductDatasource extends ProductDatasource
         );
 
         $limit = $this->getConfiguration('_per_page', false);
-        $searchAfter = $this->getConfiguration('search_after', false);
         $locale = $this->getConfiguration('locale_code');
         $scope = $this->getConfiguration('scope_code');
 
@@ -72,7 +71,6 @@ class AssociatedProductDatasource extends ProductDatasource
             $rows['data'] = $this->getProductsSortedByIsAssociatedAsc(
                 $associatedProductsIdentifiers,
                 $limit,
-                $searchAfter,
                 $locale,
                 $scope
             );
@@ -164,7 +162,6 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * @param array  $associatedProductsIdentifiers
      * @param string $limit
-     * @param string $searchAfter
      * @param string $locale
      * @param string $scope
      *
@@ -173,14 +170,12 @@ class AssociatedProductDatasource extends ProductDatasource
     protected function getProductsSortedByIsAssociatedAsc(
         array $associatedProductsIdentifiers,
         $limit,
-        $searchAfter,
         $locale,
         $scope
     ) {
         $nonAssociatedProducts = $this->getNonAssociatedProducts(
             $associatedProductsIdentifiers,
             $limit,
-            $searchAfter,
             $locale,
             $scope
         );
@@ -231,7 +226,6 @@ class AssociatedProductDatasource extends ProductDatasource
     /**
      * @param array  $associatedProductsIdentifiers
      * @param string $limit
-     * @param string $searchAfter
      * @param string $locale
      * @param string $scope
      *
@@ -240,11 +234,10 @@ class AssociatedProductDatasource extends ProductDatasource
     protected function getNonAssociatedProducts(
         array $associatedProductsIdentifiers,
         $limit,
-        $searchAfter,
         $locale,
         $scope
     ) {
-        $pqb = $this->createQueryBuilder($limit, $searchAfter, $locale, $scope);
+        $pqb = $this->createQueryBuilder($limit, $locale, $scope);
         $pqb->addFilter('identifier', Operators::NOT_IN_LIST, $associatedProductsIdentifiers);
 
         $products = $pqb->execute();
@@ -300,13 +293,12 @@ class AssociatedProductDatasource extends ProductDatasource
      * we need to create two PQBs with different settings.
      *
      * @param string $limit
-     * @param string $searchAfter
      * @param string $locale
      * @param string $scope
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function createQueryBuilder($limit, $searchAfter, $locale, $scope)
+    protected function createQueryBuilder($limit, $locale, $scope)
     {
         if (null === $repositoryParameters = $this->getConfiguration('repository_parameters', false)) {
             $repositoryParameters = [];
@@ -320,7 +312,6 @@ class AssociatedProductDatasource extends ProductDatasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['limit'] = $limit;
         // TODO: TIP-644 - Make pagination work
-        $factoryConfig['search_after'] =  null === $searchAfter ? [] : [$searchAfter];
         $factoryConfig['default_locale'] = $locale;
         $factoryConfig['default_scope'] = $scope;
         $factoryConfig['filters'] = $this->pqb->getRawFilters();

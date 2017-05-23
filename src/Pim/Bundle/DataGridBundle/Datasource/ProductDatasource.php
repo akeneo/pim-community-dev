@@ -90,9 +90,6 @@ class ProductDatasource extends Datasource
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
         $factoryConfig['limit'] = (int)$this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
 
-        $factoryConfig['search_after'] = null !== $this->getConfiguration('search_after', false) ?
-            $this->getConfiguration('search_after', false) : [];
-
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();
 
