@@ -9,20 +9,25 @@
  */
 define(
     [
+        'underscore',
         'pim/form/common/creation/field',
         'pim/user-context',
         'pim/i18n',
         'oro/translator',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'text!pim/template/product-create-error'
     ],
     function (
+        _,
         FieldForm,
         UserContext,
         i18n,
         __,
-        FetcherRegistry
+        FetcherRegistry,
+        errorTemplate
     ) {
         return FieldForm.extend({
+            errorTemplate: _.template(errorTemplate),
 
             /**
              * {@inheritdoc}
@@ -53,6 +58,13 @@ define(
                         }));
 
                         return this;
+                    }.bind(this), function () {
+                        this.getRoot().trigger('pim_enrich:form:entity:create_product:error');
+                        this.$el.html(
+                            this.errorTemplate({
+                                message: __('error.creating.product')
+                            })
+                        );
                     }.bind(this));
             }
         });
