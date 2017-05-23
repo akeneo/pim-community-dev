@@ -16,7 +16,9 @@ pim_api:
         family:
             edit: Create and update families
             list: List families
-        channel.list: List channels
+        channel:
+            edit: Create and update channels
+            list: List channels
         locale.list: List locales
         currency.list: List currencies
     acl_group:

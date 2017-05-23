@@ -44,6 +44,10 @@ pim_api_channel_list:
     type: action
     label: pim_api.acl.channel.list
     group_name: pim_api.acl_group.channel
+pim_api_channel_edit:
+    type: action
+    label: pim_api.acl.channel.edit
+    group_name: pim_api.acl_group.channel
 
 pim_api_locale_list:
     type: action
