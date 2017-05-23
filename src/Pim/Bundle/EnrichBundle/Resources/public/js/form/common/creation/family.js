@@ -40,7 +40,9 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             validationErrors: {},
-            isHidden : false,
+            events: {
+                'change input': 'updateModel'
+            },
 
             /**
              * Configure the form
@@ -48,11 +50,6 @@ define(
              * @return {Promise}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:create_product:error', function () {
-                    this.isHidden = true;
-                    this.render();
-                }.bind(this));
-
                 return $.when(
                     FetcherRegistry.initialize(),
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -85,6 +82,7 @@ define(
                 this.$el.html(this.template({
                     label: __('pim_enrich.form.product.change_family.modal.empty_selection')
                 }));
+                this.delegateEvents();
 
                 var options = {
                     allowClear: true,

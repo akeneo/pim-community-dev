@@ -632,6 +632,7 @@ config:
         pim/product-edit-form/status-switcher:             pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
+        pim/product-edit-form/creation/identifier:         pimenrich/js/product/form/creation/identifier
 
         # Exports
         pim/job/product/edit/content:                                pimenrich/js/job/product/edit/content
@@ -764,7 +765,6 @@ config:
         pim/form/common/creation/field:                      pimenrich/js/form/common/creation/field
         pim/form/common/creation/family:                     pimenrich/js/form/common/creation/family
         pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
-        pim/form/common/creation/identifier:                 pimenrich/js/form/common/creation/identifier
 
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
