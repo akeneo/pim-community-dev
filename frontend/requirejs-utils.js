@@ -2,7 +2,7 @@
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
-const deepMerge = require('merge-objects')
+var deepMerge = require('deepmerge')
 const _ = require('lodash')
 const mkdirp = require('mkdirp')
 
@@ -23,17 +23,16 @@ const requireUtils = {
                 console.log(`    → ${file}`.grey)
                 const contents = fs.readFileSync(file, 'utf8')
                 const parsedFile = yaml.parse(contents)
-                const bundleConfig = parsedFile.config.config
+                const bundleConfig = parsedFile.config.config || {}
                 const absolutePaths = requireUtils.getAbsolutePaths(
                     Object.assign(
-                        parsedFile.config.paths,
+                        parsedFile.config.paths || {},
                         _.get(parsedFile.config, 'map.*')
                     ), file
                 )
 
                 modulePaths = deepMerge(modulePaths, absolutePaths)
                 config = deepMerge(config, bundleConfig)
-
             } catch (e) {}
         })
 
