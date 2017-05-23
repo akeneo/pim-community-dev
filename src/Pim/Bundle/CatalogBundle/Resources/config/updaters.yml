@@ -132,6 +132,7 @@ services:
             - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.attribute'
             - '@akeneo_measure.manager'
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.locale:
         class: '%pim_catalog.updater.locale.class%'

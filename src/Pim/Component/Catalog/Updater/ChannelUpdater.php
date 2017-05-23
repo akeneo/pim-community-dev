@@ -3,8 +3,11 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -34,25 +37,31 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var MeasureManager */
     protected $measureManager;
 
+    /** @var TranslatableUpdater */
+    protected $translatableUpdater;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param MeasureManager                        $measureManager
+     * @param TranslatableUpdater                   $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $currencyRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureManager $measureManager
+        MeasureManager $measureManager,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->measureManager = $measureManager;
+        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -81,10 +90,46 @@ class ChannelUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            $this->validateDataType($field, $value);
             $this->setData($channel, $field, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDataType($field, $data)
+    {
+        if (in_array($field, ['labels', 'locales', 'currencies', 'conversion_units'])) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+            }
+
+            foreach ($data as $value) {
+                if (null !== $value && !is_scalar($value)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf('one of the "%s" values is not a scalar', $field),
+                        static::class,
+                        $data
+                    );
+                }
+            }
+        } elseif (in_array($field, ['code', 'category_tree'])) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 
     /**
@@ -113,7 +158,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $this->setConversionUnits($channel, $data);
                 break;
             case 'labels':
-                $this->setLabels($channel, $data);
+                $this->translatableUpdater->update($channel, $data);
                 break;
         }
     }
@@ -190,19 +235,6 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $locales[] = $locale;
         }
         $channel->setLocales($locales);
-    }
-
-    /**
-     * @param ChannelInterface $channel
-     * @param array            $data
-     */
-    protected function setLabels(ChannelInterface $channel, array $data)
-    {
-        foreach ($data as $localeCode => $label) {
-            $channel->setLocale($localeCode);
-            $translation = $channel->getTranslation();
-            $translation->setLabel($label);
-        }
     }
 
     /**
