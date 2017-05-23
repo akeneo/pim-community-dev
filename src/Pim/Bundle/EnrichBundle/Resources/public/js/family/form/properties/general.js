@@ -14,8 +14,7 @@ define([
     'pim/fetcher-registry',
     'pim/common/property',
     'pim/template/form/tab/section',
-    'oro/loading-mask',
-    'jquery.select2'
+    'oro/loading-mask'
     ],
     function (
         _,
@@ -38,14 +37,6 @@ define([
                 this.config = config.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-
-                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**

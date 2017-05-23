@@ -47,9 +47,9 @@ define([
                 this.$el.html(
                     _.template(template)(templateParams)
                 );
-            }.bind(this));
 
-            return this.renderExtensions();
+                this.renderExtensions();
+            }.bind(this));
         }
     });
 });

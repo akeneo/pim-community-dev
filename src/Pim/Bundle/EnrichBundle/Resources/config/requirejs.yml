@@ -840,6 +840,8 @@ config:
         pim/grid/view-selector/current: pimenrich/js/grid/view-selector-current
 
         # Templates
+        pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
+
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
         pim/template/form/delete:                                 pimenrich/templates/form/delete.html

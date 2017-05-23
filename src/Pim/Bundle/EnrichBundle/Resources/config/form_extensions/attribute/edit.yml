@@ -19,7 +19,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.attribute.tab.properties.title'
+            label: pim_enrich.form.attribute.tab.properties.title
 
     pim-attribute-edit-form-properties-common:
         module: pim/attribute-edit-form/properties/common
@@ -30,7 +30,7 @@ extensions:
             mode: create
 
     pim-attribute-edit-form-properties-type-specific:
-        module: pim/attribute/type-specific-form
+        module: pim/attribute-edit-form/type-specific-form
         parent: pim-attribute-edit-form-properties
         targetZone: accordion
         position: 110
