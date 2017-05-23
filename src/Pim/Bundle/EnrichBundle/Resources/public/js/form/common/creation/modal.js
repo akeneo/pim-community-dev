@@ -103,9 +103,6 @@ define(
              * @return {Promise}
              */
             save: function () {
-                _.forEach(this.extensions, function (extension) {
-                    extension.updateModel();
-                });
                 this.validationErrors = {};
 
                 var loadingMask = new LoadingMask();

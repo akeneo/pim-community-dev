@@ -30,14 +30,6 @@ define(
             errorTemplate: _.template(errorTemplate),
 
             /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                FieldForm.prototype.initialize.apply(this, arguments);
-                this.identifier = 'identifier';
-            },
-
-            /**
              * Renders the form
              *
              * @return {Promise}
@@ -54,17 +46,11 @@ define(
                             ),
                             requiredLabel: __('pim_enrich.form.required'),
                             errors: this.getRoot().validationErrors,
-                            value: this.getFormModel().get(this.identifier)
+                            value: this.getFormData()[this.identifier]
                         }));
+                        this.delegateEvents();
 
                         return this;
-                    }.bind(this), function () {
-                        this.getRoot().trigger('pim_enrich:form:entity:create_product:error');
-                        this.$el.html(
-                            this.errorTemplate({
-                                message: __('error.creating.product')
-                            })
-                        );
                     }.bind(this));
             }
         });

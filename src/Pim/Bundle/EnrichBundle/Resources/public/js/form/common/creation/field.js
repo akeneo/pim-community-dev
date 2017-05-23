@@ -25,6 +25,9 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             dialog: null,
+            events: {
+                'change input': 'updateModel'
+            },
 
             /**
              * {@inheritdoc}
@@ -58,8 +61,9 @@ define(
                     label: __(this.config.label),
                     requiredLabel: __('pim_enrich.form.required'),
                     errors: this.getRoot().validationErrors,
-                    value: this.getFormModel().get(this.identifier)
+                    value: this.getFormData()[this.identifier]
                 }));
+                this.delegateEvents();
 
                 return this;
             }
