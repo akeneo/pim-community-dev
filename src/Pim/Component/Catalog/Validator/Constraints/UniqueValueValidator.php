@@ -65,7 +65,10 @@ class UniqueValueValidator extends ConstraintValidator
                 $productValue,
                 $root
             ) : false;
-            $valueAlreadyProcessed = $this->hasAlreadyValidatedTheSameValue($productValue);
+            $valueAlreadyProcessed = $root instanceof ProductInterface ? $this->hasAlreadyValidatedTheSameValue(
+                $productValue,
+                $root
+            ) : false;
 
             if ($valueAlreadyExists || $valueAlreadyProcessed) {
                 $valueData = $productValue->__toString();
@@ -95,11 +98,12 @@ class UniqueValueValidator extends ConstraintValidator
      * Checks if the same exact value has already been processed on a different product instance
      *
      * @param ProductValueInterface $productValue
+     * @param ProductInterface $product
      *
      * @return bool
      */
-    protected function hasAlreadyValidatedTheSameValue(ProductValueInterface $productValue)
+    protected function hasAlreadyValidatedTheSameValue(ProductValueInterface $productValue, ProductInterface $product)
     {
-        return false === $this->uniqueValuesSet->addValue($productValue);
+        return false === $this->uniqueValuesSet->addValue($productValue, $product);
     }
 }

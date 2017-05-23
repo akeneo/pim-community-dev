@@ -86,7 +86,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($releaseDate);
         $value->__toString()->willReturn('2015-16-03');
 
-        $uniqueValuesSet->addValue($value)->willReturn(false);
+        $uniqueValuesSet->addValue($value, $product)->willReturn(false);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
@@ -159,7 +159,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($releaseDate);
         $value->__toString()->willReturn('2015-16-03');
 
-        $uniqueValuesSet->addValue($value)->willReturn(true);
+        $uniqueValuesSet->addValue($value, $product)->willReturn(true);
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(false);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();

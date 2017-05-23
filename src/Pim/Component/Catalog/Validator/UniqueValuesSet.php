@@ -38,12 +38,13 @@ class UniqueValuesSet
      * Return true if value has been added, else if value already exists inside the set
      *
      * @param ProductValueInterface $productValue
+     * @param ProductInterface $product
      *
      * @return bool
      */
-    public function addValue(ProductValueInterface $productValue)
+    public function addValue(ProductValueInterface $productValue, ProductInterface $product)
     {
-        $identifier = spl_object_hash($productValue);
+        $identifier = $this->getProductId($product);
         $data = $productValue->__toString();
         $attributeCode = $productValue->getAttribute()->getCode();
 
@@ -71,5 +72,17 @@ class UniqueValuesSet
     public function getUniqueValues()
     {
         return $this->uniqueValues;
+    }
+
+    /**
+     * spl_object_hash for new product and id when product exists
+     *
+     * @param ProductInterface $product
+     *
+     * @return string
+     */
+    protected function getProductId(ProductInterface $product)
+    {
+        return $product->getId() ? $product->getId() : spl_object_hash($product);
     }
 }
