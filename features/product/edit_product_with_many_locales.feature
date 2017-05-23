@@ -37,14 +37,14 @@ Feature: Edit a product
       | sku          | family  |
       | tshirt-white | tshirts |
     And the following attribute groups:
-      | code       | label-en_US      | label-en_GB      | label-en_GB      | label-fr_FR      | label-de_DE      | label-es_ES      | label-it_IT      | label-pt_PT      | label-ru_RU      | label-ja_JP      | group | type             |
-      | general    | general-en_US    | general-en_GB    | general-en_GB    | general-fr_FR    | general-de_DE    | general-es_ES    | general-it_IT    | general-pt_PT    | general-ru_RU    | general-ja_JP    | other | pim_catalog_text |
-      | media      | media-en_US      | media-en_GB      | media-en_GB      | media-fr_FR      | media-de_DE      | media-es_ES      | media-it_IT      | media-pt_PT      | media-ru_RU      | media-ja_JP      | other | pim_catalog_text |
-      | sales      | sales-en_US      | sales-en_GB      | sales-en_GB      | sales-fr_FR      | sales-de_DE      | sales-es_ES      | sales-it_IT      | sales-pt_PT      | sales-ru_RU      | sales-ja_JP      | other | pim_catalog_text |
-      | sizes      | sizes-en_US      | sizes-en_GB      | sizes-en_GB      | sizes-fr_FR      | sizes-de_DE      | sizes-es_ES      | sizes-it_IT      | sizes-pt_PT      | sizes-ru_RU      | sizes-ja_JP      | other | pim_catalog_text |
-      | colors     | colors-en_US     | colors-en_GB     | colors-en_GB     | colors-fr_FR     | colors-de_DE     | colors-es_ES     | colors-it_IT     | colors-pt_PT     | colors-ru_RU     | colors-ja_JP     | other | pim_catalog_text |
-      | additional | additional-en_US | additional-en_GB | additional-en_GB | additional-fr_FR | additional-de_DE | additional-es_ES | additional-it_IT | additional-pt_PT | additional-ru_RU | additional-ja_JP | other | pim_catalog_text |
-      | internal   | internal-en_US   | internal-en_GB   | internal-en_GB   | internal-fr_FR   | internal-de_DE   | internal-es_ES   | internal-it_IT   | internal-pt_PT   | internal-ru_RU   | internal-ja_JP   | other | pim_catalog_text |
+      | code       | label-en_US      | label-en_GB      | label-en_GB      | label-fr_FR      | label-de_DE      | label-es_ES      | label-it_IT      | label-pt_PT      | label-ru_RU      | label-ja_JP      |
+      | general    | general-en_US    | general-en_GB    | general-en_GB    | general-fr_FR    | general-de_DE    | general-es_ES    | general-it_IT    | general-pt_PT    | general-ru_RU    | general-ja_JP    |
+      | media      | media-en_US      | media-en_GB      | media-en_GB      | media-fr_FR      | media-de_DE      | media-es_ES      | media-it_IT      | media-pt_PT      | media-ru_RU      | media-ja_JP      |
+      | sales      | sales-en_US      | sales-en_GB      | sales-en_GB      | sales-fr_FR      | sales-de_DE      | sales-es_ES      | sales-it_IT      | sales-pt_PT      | sales-ru_RU      | sales-ja_JP      |
+      | sizes      | sizes-en_US      | sizes-en_GB      | sizes-en_GB      | sizes-fr_FR      | sizes-de_DE      | sizes-es_ES      | sizes-it_IT      | sizes-pt_PT      | sizes-ru_RU      | sizes-ja_JP      |
+      | colors     | colors-en_US     | colors-en_GB     | colors-en_GB     | colors-fr_FR     | colors-de_DE     | colors-es_ES     | colors-it_IT     | colors-pt_PT     | colors-ru_RU     | colors-ja_JP     |
+      | additional | additional-en_US | additional-en_GB | additional-en_GB | additional-fr_FR | additional-de_DE | additional-es_ES | additional-it_IT | additional-pt_PT | additional-ru_RU | additional-ja_JP |
+      | internal   | internal-en_US   | internal-en_GB   | internal-en_GB   | internal-fr_FR   | internal-de_DE   | internal-es_ES   | internal-it_IT   | internal-pt_PT   | internal-ru_RU   | internal-ja_JP   |
     And the following product values:
       | product      | attribute              | value                                   | locale | scope     |
       | tshirt-white | name                   | White t-shirt                           | en_US  |           |

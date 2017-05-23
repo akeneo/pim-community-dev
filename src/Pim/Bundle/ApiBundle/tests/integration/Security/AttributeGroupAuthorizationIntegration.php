@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Security;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -74,6 +75,122 @@ JSON;
 {
     "code": 403,
     "message": "Access forbidden. You are not allowed to list attribute groups."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForCreatingAnAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code":"fashion"
+}
+JSON;
+
+        $client->request('POST', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForCreatingAnAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $data = <<<JSON
+{
+    "code":"tech"
+}
+JSON;
+
+        $client->request('POST', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attribute groups."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAnAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = '{}';
+
+        $client->request('PATCH', '/api/rest/v1/attribute-groups/fashion', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAnAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $data = '{}';
+
+        $client->request('PATCH', '/api/rest/v1/attribute-groups/fashion', [], [], [], $data);
+
+        $expectedResponse =
+<<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attribute groups."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAListOfAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "attributeGroupA","sort_order": 7}
+{"code": "attributeGroupB","sort_order": 8}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAListOfAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "attributeGroupA","sort_order": 7}
+{"code": "technical","sort_order": 8}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $expectedResponse =
+            <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attribute groups."
 }
 JSON;
 

@@ -614,7 +614,6 @@ pim_enrich:
           help: 使用在目录树上 （由渠道中定义） 的产品类别来选择要导出的产品
         identifier:
           title: 标识
-          help: 你想要导出的产品标识，用逗号，空格或换行来隔开
         metric:
           operators:
             "=": 等于

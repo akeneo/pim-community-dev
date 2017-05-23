@@ -18,8 +18,8 @@ Feature: Import attribute groups
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
     Then there should be the following attribute groups:
-      | code          | label-en_US   | attributes                           | sort_order | group | type             |
-      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric | 6          | other | pim_catalog_text |
+      | code          | label-en_US   | attributes                           | sort_order |
+      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric | 6          |
 
   Scenario: Successfully update existing attribute group and add a new one
     Given the "footwear" catalog configuration
@@ -38,8 +38,8 @@ Feature: Import attribute groups
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
     Then there should be the following attribute groups:
-      | code          | label-en_US   | attributes                                                                                                  | sort_order | group | type             |
-      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric                                                                        | 6          | other | pim_catalog_text |
-      | sizes         | Size          | size                                                                                                        | 3          | other | pim_catalog_text |
-      | marketing     | Marketing     | sku                                                                                                         | 10         | other | pim_catalog_text |
-      | other         | Default       | 123,cap_color,comment,destocking_date,handmade,heel_color,number_in_stock,price,rate_sale,rating,sole_color | 200        | other | pim_catalog_text |
+      | code          | label-en_US   | attributes                                                                                                  | sort_order |
+      | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric                                                                        | 6          |
+      | sizes         | Size          | size                                                                                                        | 3          |
+      | marketing     | Marketing     | sku                                                                                                         | 10         |
+      | other         | Default       | 123,cap_color,comment,destocking_date,handmade,heel_color,number_in_stock,price,rate_sale,rating,sole_color | 200        |

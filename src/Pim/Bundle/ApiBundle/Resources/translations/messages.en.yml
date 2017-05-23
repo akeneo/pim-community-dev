@@ -8,6 +8,7 @@ pim_api:
             edit: Create and update attribute options
             list: List attribute options
         attribute_group:
+            edit: Create and update attribute groups
             list: List attribute groups
         category:
             edit: Create and update categories
@@ -17,6 +18,7 @@ pim_api:
             list: List families
         channel.list: List channels
         locale.list: List locales
+        currency.list: List currencies
     acl_group:
         overall_access: Overall Web API access
         attribute: Attributes
@@ -26,5 +28,6 @@ pim_api:
         family: Families
         channel: Channels
         locale: Locales
+        currency: Currencies
 
 rights.api: Web API permissions
