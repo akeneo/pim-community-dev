@@ -23,6 +23,9 @@
 ### Constructors
 
 - Change the constructor of `Pim\Component\Catalog\Updater\ChannelUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\ChannelController` to add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`,
+ `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`, `Symfony\Component\Validator\Validator\ValidatorInterface`,`Symfony\Component\Routing\RouterInterface`
+  and `Akeneo\Component\StorageUtils\Saver\SaverInterface` before last parameter
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeGroupUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to add `Oro\Bundle\SecurityBundle\SecurityFacade` and add an associative array
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Pim\Component\Api\Pagination\PaginatorInterface`
