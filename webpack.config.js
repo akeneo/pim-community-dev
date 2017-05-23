@@ -15,8 +15,6 @@ const requireUtils = require('./frontend/requirejs-utils')
 
 console.log('→ Begin compiling modules with webpack from'.green, __dirname)
 const importPaths = requireUtils.getAliasPaths(requireConfigPaths, pathOverrides, __dirname)
-console.log('→ Including paths for'.green, `(${_.size(importPaths)})`.bold, 'modules'.green)
-
 
 module.exports = {
     target: 'web',
