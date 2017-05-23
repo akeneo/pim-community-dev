@@ -30,8 +30,6 @@ define(
         LoadingMask,
         Routing
     ) {
-        console.log('project-widget');
-
         return BaseForm.extend({
             template: _.template(template),
             templateEmpty: _.template(templateEmpty),
