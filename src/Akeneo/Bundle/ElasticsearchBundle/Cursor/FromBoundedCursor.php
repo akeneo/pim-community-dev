@@ -7,12 +7,16 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
+ * Bounded cursor to iterate over items where a start and a limit are defined.
+ * Internally, this is implemented with the from/size pagination.
+ * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
+ *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FromBoundedCursor extends Cursor implements CursorInterface
+class FromBoundedCursor extends AbstractCursor implements CursorInterface
 {
     /** @var int */
     protected $from;
@@ -44,21 +48,23 @@ class FromBoundedCursor extends Cursor implements CursorInterface
         $limit,
         $from = 0
     ) {
+        $this->esClient = $esClient;
+        $this->repository = $repository;
+        $this->esQuery = $esQuery;
+        $this->indexType = $indexType;
+        $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->from = $from;
         $this->to = $this->from + $this->limit;
 
-        parent::__construct($esClient, $repository, $esQuery, $indexType, $pageSize);
+        $this->items = $this->getNextItems($esQuery);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
      */
-    protected function getItemsCountToFetch()
-    {
-        return ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
-    }
-
     protected function getNextIdentifiers(array $esQuery)
     {
         $size = $this->getItemsCountToFetch();
@@ -88,5 +94,13 @@ class FromBoundedCursor extends Cursor implements CursorInterface
         $this->from += $size;
 
         return $identifiers;
+    }
+
+    /**
+     * @return int
+     */
+    private function getItemsCountToFetch()
+    {
+        return ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
     }
 }

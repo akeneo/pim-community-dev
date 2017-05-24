@@ -7,38 +7,19 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
- * Cursor to iterate on items
+ * Cursor to iterate over all items.
+ * Internally, this is implemented with the search after pagination.
+ * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html}
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Cursor implements CursorInterface
+class Cursor extends AbstractCursor implements CursorInterface
 {
-    /** @var Client */
-    protected $esClient;
-
-    /** @var CursorableRepositoryInterface */
-    protected $repository;
-
     /** @var array */
-    protected $esQuery;
-
-    /** @var string */
-    protected $indexType;
-
-    /** @var array */
-    protected $items = [];
-
-    /** @var array */
-    protected $searchAfter = [];
-
-    /** @var int */
-    protected $pageSize;
-
-    /** @var int */
-    protected $count;
+    protected $searchAfter;
 
     /**
      * @param Client                        $esClient
@@ -54,8 +35,8 @@ class Cursor implements CursorInterface
         $indexType,
         $pageSize
     ) {
-        $this->repository = $repository;
         $this->esClient = $esClient;
+        $this->repository = $repository;
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
@@ -65,85 +46,8 @@ class Cursor implements CursorInterface
 
     /**
      * {@inheritdoc}
-     */
-    public function current()
-    {
-        return current($this->items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
-    {
-        if (false === next($this->items)) {
-            $this->items = $this->getNextItems($this->esQuery);
-            $this->rewind();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
-    {
-        return key($this->items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
-    {
-        return !empty($this->items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        reset($this->items);
-    }
-
-    /**
-     * Get the next items (hydrated from doctrine repository)
      *
-     * @param array       $esQuery
-     *
-     * @return array
-     */
-    private function getNextItems(array $esQuery)
-    {
-        $identifiers = $this->getNextIdentifiers($esQuery);
-        if (empty($identifiers)) {
-            return [];
-        }
-
-        $hydratedItems = $this->repository->getItemsFromIdentifiers($identifiers);
-
-        $orderedItems = [];
-
-        foreach ($identifiers as $identifier) {
-            foreach ($hydratedItems as $hydratedItem) {
-                if ($identifier === $hydratedItem->getIdentifier()) {
-                    $orderedItems[] = $hydratedItem;
-                    break;
-                }
-            }
-        }
-
-        return $orderedItems;
-    }
-
-    /**
-     * Get the next identifiers from elasticsearch query
-     *
-     * @param array $esQuery
-     *
-     * @return array
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
     protected function getNextIdentifiers(array $esQuery)
     {
@@ -183,17 +87,9 @@ class Cursor implements CursorInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        return $this->count;
-    }
-
-    /**
      * @return int
      */
-    protected function getItemsCountToFetch()
+    private function getItemsCountToFetch()
     {
         return $this->pageSize;
     }

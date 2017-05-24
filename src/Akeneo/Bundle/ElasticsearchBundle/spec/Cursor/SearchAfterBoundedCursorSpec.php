@@ -4,6 +4,7 @@ namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterBoundedCursor;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -57,7 +58,7 @@ class SearchAfterBoundedCursorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Cursor::class);
+        $this->shouldHaveType(SearchAfterBoundedCursor::class);
         $this->shouldImplement(CursorInterface::class);
     }
 

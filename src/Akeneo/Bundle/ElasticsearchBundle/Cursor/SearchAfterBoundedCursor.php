@@ -7,14 +7,16 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
- * Bounded cursor to iterate on items where a start and a limit are defined
+ * Bounded cursor to iterate over items where a start and a limit are defined.
+ * Internally, this is implemented with the search after pagination.
+ * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html}
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SearchAfterBoundedCursor extends Cursor implements CursorInterface
+class SearchAfterBoundedCursor extends AbstractCursor implements CursorInterface
 {
     /** @var string|null */
     protected $searchAfterUniqueKey;
@@ -24,6 +26,9 @@ class SearchAfterBoundedCursor extends Cursor implements CursorInterface
 
     /** @var int */
     protected $fetchedItemsCount;
+
+    /** @var array */
+    protected $searchAfter;
 
     /**
      * @param Client                        $esClient
@@ -45,6 +50,11 @@ class SearchAfterBoundedCursor extends Cursor implements CursorInterface
         $limit,
         $searchAfterUniqueKey = null
     ) {
+        $this->repository = $repository;
+        $this->esClient = $esClient;
+        $this->esQuery = $esQuery;
+        $this->indexType = $indexType;
+        $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->searchAfter = $searchAfter;
         $this->searchAfterUniqueKey = $searchAfterUniqueKey;
@@ -53,13 +63,55 @@ class SearchAfterBoundedCursor extends Cursor implements CursorInterface
             array_push($this->searchAfter, $indexType . '#' . $searchAfterUniqueKey);
         }
 
-        parent::__construct($esClient, $repository, $esQuery, $indexType, $pageSize);
+        $this->items = $this->getNextItems($esQuery);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getItemsCountToFetch()
+    protected function getNextIdentifiers(array $esQuery)
+    {
+        $esQuery['size'] = $this->getItemsCountToFetch();
+
+        if (0 === $esQuery['size']) {
+            return [];
+        }
+
+        $sort = ['_uid' => 'asc'];
+
+        if (isset($esQuery['sort'])) {
+            $sort = array_merge($esQuery['sort'], $sort);
+        }
+
+        $esQuery['sort'] = $sort;
+
+        if (!empty($this->searchAfter)) {
+            $esQuery['search_after'] = $this->searchAfter;
+        }
+
+        $response = $this->esClient->search($this->indexType, $esQuery);
+        $this->count = $response['hits']['total'];
+
+        $identifiers = [];
+        foreach ($response['hits']['hits'] as $hit) {
+            $identifiers[] = $hit['_source']['identifier'];
+        }
+
+        $lastResult = end($response['hits']['hits']);
+
+        if (false !== $lastResult) {
+            $this->searchAfter = $lastResult['sort'];
+        }
+
+        return $identifiers;
+    }
+
+    /**
+     * @return int
+     */
+    private function getItemsCountToFetch()
     {
         $itemsCountToFetch = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
         if (null !== $this->fetchedItemsCount && ($this->fetchedItemsCount + $itemsCountToFetch) > $this->limit) {
