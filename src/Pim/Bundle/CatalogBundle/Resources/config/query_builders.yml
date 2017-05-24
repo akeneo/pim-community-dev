@@ -4,7 +4,7 @@ parameters:
 
     # resolvers
     pim_catalog.elasticsearch.product_query_builder_bounded_resolver.class: Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderBoundedOptionsResolver
-    pim_catalog.elasticsearch.product_query_builder_bounded_from_resolver.class: Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderBoundedFromOptionsResolver
+    pim_catalog.elasticsearch.product_query_builder_from_bounded_resolver.class: Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFromBoundedOptionsResolver
     pim_catalog.query.product_query_builder_resolver.class:  Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolver
 
     pim_catalog.query.filter.registry.class:                      Pim\Component\Catalog\Query\Filter\FilterRegistry
@@ -61,15 +61,15 @@ services:
             - '@pim_catalog.factory.product_bounded_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_bounded_resolver'
 
-    pim_catalog.query.product_query_builder_bounded_from_factory:
+    pim_catalog.query.product_query_builder_from_bounded_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pim_catalog.factory.product_bounded_from_cursor'
-            - '@pim_catalog.elasticsearch.product_query_builder_bounded_from_resolver'
+            - '@pim_catalog.factory.product_from_bounded_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_bounded_resolver'
 
     pim_catalog.query.product_query_builder_resolver:
         class: '%pim_catalog.query.product_query_builder_resolver.class%'
@@ -77,8 +77,8 @@ services:
     pim_catalog.elasticsearch.product_query_builder_bounded_resolver:
         class: '%pim_catalog.elasticsearch.product_query_builder_bounded_resolver.class%'
 
-    pim_catalog.elasticsearch.product_query_builder_bounded_from_resolver:
-        class: '%pim_catalog.elasticsearch.product_query_builder_bounded_from_resolver.class%'
+    pim_catalog.elasticsearch.product_query_builder_from_bounded_resolver:
+        class: '%pim_catalog.elasticsearch.product_query_builder_from_bounded_resolver.class%'
 
     pim_catalog.query.filter.registry:
         class: '%pim_catalog.query.filter.registry.class%'
