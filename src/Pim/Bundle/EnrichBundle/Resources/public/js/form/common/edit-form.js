@@ -17,7 +17,8 @@ define(
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry',
-        'pim/field-manager'
+        'pim/field-manager',
+        'oro/messenger'
     ],
     function (
         module,
@@ -28,7 +29,8 @@ define(
         BaseForm,
         mediator,
         FetcherRegistry,
-        FieldManager
+        FieldManager,
+        messenger
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -43,6 +45,8 @@ define(
                 if (_.has(module.config(), 'forwarded-events')) {
                     this.forwardMediatorEvents(module.config()['forwarded-events']);
                 }
+
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.displayError.bind(this));
 
                 this.onExtensions('save-buttons:register-button', function (button) {
                     this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
@@ -81,6 +85,19 @@ define(
                 FetcherRegistry.clearAll();
                 FieldManager.clearFields();
                 this.render();
+            },
+
+            /**
+             * Display validation error as flash message
+             *
+             * @param {Event} event
+             */
+            displayError: function (event) {
+                _.each(event.response, function (error) {
+                    if (error.global) {
+                        messenger.notificationFlashMessage('error', error.message);
+                    }
+                })
             }
         });
     }

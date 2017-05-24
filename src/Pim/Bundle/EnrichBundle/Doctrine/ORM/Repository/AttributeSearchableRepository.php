@@ -64,6 +64,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'user_groups_ids'      => null,
                 'types'                => null,
                 'attribute_groups'     => [],
+                'rights'               => true
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -75,6 +76,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
         $resolver->setAllowedTypes('types', ['array', 'null']);
         $resolver->setAllowedTypes('attribute_groups', ['array']);
+        $resolver->setAllowedTypes('rights', ['bool']);
 
         $options = $resolver->resolve($options);
 
@@ -120,7 +122,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 $qb->setParameter('locale', $localeCode);
             }
         }
-
         if (!empty($options['identifiers'])) {
             $qb->andWhere('a.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);

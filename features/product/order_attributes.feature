@@ -18,6 +18,7 @@ Feature: Order attributes
     And the attribute "Description" should be in position 5
     And the attribute "Length" should be in position 6
     And I change the attribute "Description" position to 2
+    Then I save the attribute group
     When I am on the "info" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "SKU" should be in position 1
@@ -40,6 +41,7 @@ Feature: Order attributes
     When I am on the "info" attribute group page
     And I visit the "Attributes" tab
     And I change the attribute "Description" position to 2
+    Then I save the attribute group
     And I am on the "boot-001" product page
     Then the attribute "SKU" should be in position 1
     And the attribute "Description" should be in position 2
