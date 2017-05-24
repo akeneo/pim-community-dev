@@ -9,6 +9,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-csv-base-export-show-permission:
@@ -19,6 +20,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -30,6 +32,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-csv-base-import-show-permission:
@@ -40,6 +43,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_show_permissions
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -51,6 +55,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-csv-product-import-show-permission:
@@ -61,6 +66,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_show_permissions
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -72,6 +78,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-csv-product-export-show-permission:
@@ -82,6 +89,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_show_permissions
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -93,6 +101,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-csv-product-import-show-permission:
@@ -103,6 +112,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_show_permissions
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -114,6 +124,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-xlsx-base-export-show-permission:
@@ -124,6 +135,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_show_permissions
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -135,6 +147,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-xlsx-product-export-show-permission:
@@ -145,6 +158,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_show_permissions
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -156,6 +170,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-yml-base-export-show-permission:
@@ -166,6 +181,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
@@ -177,6 +193,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
 
     pim-job-instance-yml-base-import-show-permission:
@@ -187,6 +204,7 @@ extensions:
         position: 115
         config:
             title: pimee_enrich.form.job_instance.tab.permission.title
+            entity: job_instance
             tabCode: pim-job-instance-permission
             readOnly: true
 
