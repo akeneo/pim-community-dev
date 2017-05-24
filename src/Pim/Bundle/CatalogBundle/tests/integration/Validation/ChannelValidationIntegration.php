@@ -82,6 +82,25 @@ class ChannelValidationIntegration extends TestCase
         $this->assertSame('category', $violation->getPropertyPath());
     }
 
+    public function testChannelCategoryNotRoot()
+    {
+        $channel = $this->createChannel();
+        $this->getUpdater()->update(
+            $channel,
+            ['code' => 'mobile', 'currencies' => ['EUR'], 'locales' => ['fr_FR'], 'category_tree' => 'categoryA']
+        );
+
+        $violations = $this->getValidator()->validate($channel);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'The category "categoryA" has to be a root category.',
+            $violation->getMessage()
+        );
+        $this->assertSame('category', $violation->getPropertyPath());
+    }
+
     public function testChannelCodeRegex()
     {
         $channel = $this->createChannel();
@@ -174,6 +193,60 @@ class ChannelValidationIntegration extends TestCase
             $violation->getMessage()
         );
         $this->assertSame('locales', $violation->getPropertyPath());
+    }
+
+    public function testChannelConversionUnitsInvalidAttributeCode()
+    {
+        $channel = $this->createChannel();
+        $this->getUpdater()->update(
+            $channel,
+            [
+                'code'             => 'new_channel',
+                'category_tree'    => 'master',
+                'currencies'       => ['EUR'],
+                'locales'          => ['fr_FR'],
+                'conversion_units' => [
+                    'attr'   => 'KILOGRAM',
+                ],
+            ]
+        );
+
+        $violations = $this->getValidator()->validate($channel);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "attr" given.',
+            $violation->getMessage()
+        );
+        $this->assertSame('conversionUnits', $violation->getPropertyPath());
+    }
+
+    public function testChannelConversionUnitsInvalidUnitCode()
+    {
+        $channel = $this->createChannel();
+        $this->getUpdater()->update(
+            $channel,
+            [
+                'code'             => 'new_channel',
+                'category_tree'    => 'master',
+                'currencies'       => ['EUR'],
+                'locales'          => ['fr_FR'],
+                'conversion_units' => [
+                    'a_metric_without_decimal'   => 'KILOWATT',
+                ],
+            ]
+        );
+
+        $violations = $this->getValidator()->validate($channel);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "KILOWATT" given.',
+            $violation->getMessage()
+        );
+        $this->assertSame('conversionUnits', $violation->getPropertyPath());
     }
 
     public function testChannelTranslationsLength()

@@ -153,10 +153,6 @@
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
 
-### Methods
-
-- Remove `setLabels` method from `Pim\Component\Catalog\Updater\ChannelUpdater`
-
 ## Requirements
 
 - GITHUB-5937: Remove the need to have mcrypt installed

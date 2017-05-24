@@ -191,51 +191,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         )->during('update', [$channel, $values]);
     }
 
-    function it_throws_an_exception_if_conversion_unit_attribute_does_not_exist(
-        $attributeRepository,
-        ChannelInterface $channel
-    ) {
-        $values = [
-            'conversion_units' => ['unknown_attribute' => 'INCHES'],
-        ];
-        $attributeRepository->findOneByIdentifier('unknown_attribute')->willReturn(null);
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'conversionUnits',
-                'attributeCode',
-                'the attribute code for the conversion unit does not exist',
-                ChannelUpdater::class,
-                'unknown_attribute'
-            )
-        )->during('update', [$channel, $values]);
-    }
-
-    function it_throws_an_exception_if_conversion_unit_metric_code_does_not_exist(
-        $attributeRepository,
-        $measureManager,
-        ChannelInterface $channel,
-        AttributeInterface $maximumDiagonalAttribute
-    ) {
-        $values = [
-            'conversion_units' => ['maximum_diagonal' => 'unknown_unit_code'],
-        ];
-
-        $maximumDiagonalAttribute->getMetricFamily()->willReturn('Length');
-        $attributeRepository->findOneByIdentifier('maximum_diagonal')->willReturn($maximumDiagonalAttribute);
-        $measureManager->unitCodeExistsInFamily('unknown_unit_code', 'Length')->willReturn(false);
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'conversionUnits',
-                'unitCode',
-                'the metric unit code for the conversion unit does not exist',
-                ChannelUpdater::class,
-                'unknown_unit_code'
-            )
-        )->during('update', [$channel, $values]);
-    }
-
     function it_throws_an_exception_when_labels_is_not_an_array(ChannelInterface $channel)
     {
         $data = [

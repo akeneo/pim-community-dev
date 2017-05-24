@@ -155,7 +155,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $this->setCurrencies($channel, $data);
                 break;
             case 'conversion_units':
-                $this->setConversionUnits($channel, $data);
+                $channel->setConversionUnits($data);
                 break;
             case 'labels':
                 $this->translatableUpdater->update($channel, $data);
@@ -235,42 +235,5 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $locales[] = $locale;
         }
         $channel->setLocales($locales);
-    }
-
-    /**
-     * Validates the list of conversion units passed in before updating the channel object with.
-     *
-     * @param ChannelInterface $channel
-     * @param array            $conversionUnits
-     *
-     * @throws InvalidPropertyException
-     */
-    protected function setConversionUnits(ChannelInterface $channel, $conversionUnits)
-    {
-        foreach ($conversionUnits as $attributeCode => $conversionUnit) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
-            if ($attribute === null) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'conversionUnits',
-                    'attributeCode',
-                    'the attribute code for the conversion unit does not exist',
-                    static::class,
-                    $attributeCode
-                );
-            }
-
-            if (!$this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'conversionUnits',
-                    'unitCode',
-                    'the metric unit code for the conversion unit does not exist',
-                    static::class,
-                    $conversionUnit
-                );
-            }
-
-            $channel->setConversionUnits($conversionUnits);
-        }
     }
 }

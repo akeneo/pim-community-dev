@@ -23,6 +23,8 @@ parameters:
     pim_catalog.validator.constraint.unique_variant_group_type.class:      Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupTypeValidator
     pim_catalog.validator.constraints.locale_validator.class:              Pim\Component\Catalog\Validator\Constraints\LocaleValidator
     pim_catalog.validator.constraints.channel_validator.class:             Pim\Component\Catalog\Validator\Constraints\ChannelValidator
+    pim_catalog.validator.constraints.is_root_category_validator.class:    Pim\Component\Catalog\Validator\Constraints\IsRootCategoryValidator
+    pim_catalog.validator.constraints.conversion_units.class:              Pim\Component\Catalog\Validator\Constraints\ConversionUnitsValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Component\Catalog\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Component\Catalog\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Component\Catalog\Validator\ConstraintGuesser\FileGuesser
@@ -198,6 +200,19 @@ services:
             - '%pim_catalog_image_allowed_extensions%'
         tags:
             - { name: validator.constraint_validator, alias: pim_image_allowed_extensions_validator }
+
+    pim_catalog.validator.constraints.is_root_category:
+        class: '%pim_catalog.validator.constraints.is_root_category_validator.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_root_category_validator }
+
+    pim_catalog.validator.constraints.conversion_units:
+        class: '%pim_catalog.validator.constraints.conversion_units.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_measure.manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_conversion_units_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:

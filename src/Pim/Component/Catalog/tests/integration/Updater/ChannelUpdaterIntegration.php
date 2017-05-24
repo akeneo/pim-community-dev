@@ -162,28 +162,6 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "conversionUnits" expects a valid attributeCode. the attribute code for the conversion unit does not exist, "unknown_attribute" given.
-     */
-    public function testChannelUpdateWithUnknownAttributeOnConversionUnits()
-    {
-        $channel = $this->createChannel();
-
-        $this->getUpdater()->update($channel, ['conversion_units' => ['unknown_attribute' => 'METER']]);
-    }
-
-    /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "conversionUnits" expects a valid unitCode. the metric unit code for the conversion unit does not exist, "KILOWATT" given.
-     */
-    public function testChannelUpdateWithInvalidUnitCodeOnConversionUnits()
-    {
-        $channel = $this->createChannel();
-
-        $this->getUpdater()->update($channel, ['conversion_units' => ['a_metric_without_decimal' => 'KILOWATT']]);
-    }
-
-    /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "unknown_property" does not exist.
      */

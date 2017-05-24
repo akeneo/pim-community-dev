@@ -14,12 +14,15 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                 max: 100
         category:
             - NotBlank: ~
+            - Pim\Component\Catalog\Validator\Constraints\IsRootCategory: ~
         currencies:
             - Count: { min: 1 }
         locales:
             - Count: { min: 1 }
         translations:
             - Valid: ~
+        conversionUnits:
+            - Pim\Component\Catalog\Validator\Constraints\ConversionUnits: ~
 
 Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
     properties:

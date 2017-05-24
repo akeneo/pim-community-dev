@@ -1,0 +1,64 @@
+<?php
+
+namespace Pim\Component\Catalog\Validator\Constraints;
+
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+
+/**
+ * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+class ConversionUnitsValidator extends ConstraintValidator
+{
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var MeasureManager */
+    protected $measureManager;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param MeasureManager                        $measureManager
+     */
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        MeasureManager $measureManager
+    ) {
+        $this->attributeRepository = $attributeRepository;
+        $this->measureManager = $measureManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($conversionUnits, Constraint $constraint)
+    {
+        if (null !== $conversionUnits && is_array($conversionUnits)) {
+            foreach ($conversionUnits as $attributeCode => $conversionUnit) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+                if (null === $attribute) {
+                    $this->context
+                        ->buildViolation($constraint->invalidAttributeCode)
+                        ->setParameter('%attributeCode%', $attributeCode)
+                        ->addViolation();
+                }
+
+                if (null !== $attribute && !$this->measureManager->unitCodeExistsInFamily(
+                        $conversionUnit,
+                        $attribute->getMetricFamily()
+                    )
+                ) {
+                    $this->context
+                        ->buildViolation($constraint->invalidUnitCode)
+                        ->setParameter('%unitCode%', $conversionUnit)
+                        ->addViolation();
+                }
+            }
+        }
+    }
+}
