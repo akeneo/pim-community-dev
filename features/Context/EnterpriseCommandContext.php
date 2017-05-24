@@ -310,10 +310,7 @@ class EnterpriseCommandContext extends CommandContext
         $getCommand->setContainer($this->getMainContext()->getContainer());
         $getCommandTester = new CommandTester($getCommand);
 
-        $subcontext = $this->getMainContext()->getSubcontext('hook');
-
         foreach ($updates->getHash() as $update) {
-            $subcontext->clearUOW();
             $username = isset($update['username']) ? $update['username'] : null;
 
             $draftCommandTester->execute(
