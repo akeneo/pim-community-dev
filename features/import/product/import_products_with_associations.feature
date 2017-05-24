@@ -182,3 +182,28 @@ Feature: Execute a job
       | type   | products |
       | X_SELL | SKU-002  |
       | UPSELL | SKU-003  |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6071
+  Scenario: Successfully import product associations with an attribute having the same code
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+      | SKU-003 | sku-003    |
+    Given the following association type:
+      | code |
+      | sku  |
+    And the following CSV file to import:
+      """
+      sku;sku-products
+      SKU-001;SKU-003
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | yes              |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then the product "SKU-001" should have the following associations:
+      | type   | products |
+      | sku    | SKU-003  |
