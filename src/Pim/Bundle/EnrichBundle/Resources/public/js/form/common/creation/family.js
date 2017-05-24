@@ -38,7 +38,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             validationErrors: {},
-            currentSelect2Data : null,
             events: {
                 'change input': 'updateModel'
             },
@@ -58,10 +57,8 @@ define(
             /**
              * Model update callback
              */
-            updateModel: function () {
-                var select2Dom = this.$('[data-code="family"] input');
-                this.getFormModel().set('family', select2Dom.select2('val'));
-                this.currentSelect2Data = select2Dom.select2('data');
+            updateModel: function (event) {
+                this.getFormModel().set('family', event.target.value);
             },
 
             /**
@@ -75,7 +72,8 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    label: __('pim_enrich.form.product.change_family.modal.empty_selection')
+                    label: __('pim_enrich.form.product.change_family.modal.empty_selection'),
+                    code: this.getFormData().family
                 }));
                 this.delegateEvents();
 
@@ -109,15 +107,26 @@ define(
 
                             return data;
                         }
-                    }
+                    },
+                    initSelection: function (element, callback) {
+                        if (this.getFormData().family) {
+                            FetcherRegistry.getFetcher('family')
+                                .fetch(this.getFormData().family)
+                                .then(function (family) {
+                                    callback({
+                                        id: family.code,
+                                        text: i18n.getLabel(
+                                            family.labels,
+                                            UserContext.get('catalogLocale'),
+                                            family.code
+                                        )
+                                    });
+                                });
+                        }
+                    }.bind(this)
                 };
 
-                var select2Dom = this.$('[data-code="family"] input');
-                initSelect2.init(select2Dom, options);
-
-                if (this.currentSelect2Data) {
-                    select2Dom.select2('data', this.currentSelect2Data);
-                }
+                initSelect2.init(this.$('[data-code="family"] input'), options);
             }
         });
     }
