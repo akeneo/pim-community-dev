@@ -4,7 +4,6 @@ parameters:
             type:          pim_assets_collection
             frontend_type: html
             template:      PimEnterpriseProductAssetBundle:Property:assetsCollection.html.twig
-            selector:      pim_assets_collection
         filter:
             type:     pim_assets_collection
             ftype:    ajax_choice
