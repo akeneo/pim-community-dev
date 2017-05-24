@@ -6,6 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExten
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -413,14 +414,17 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addPaginationConfig()
     {
-        $pager = $this->requestParams->get('_pager');
+        $pager = $this->requestParams->get(PagerExtension::PAGER_ROOT_PARAM);
 
-        // TODO: remove static 25, will be done with TIP-664
-        $itemsPerPage = isset($pager[PagerExtension::PER_PAGE_PARAM]) ? $pager[PagerExtension::PER_PAGE_PARAM] : 25;
+        $defaultPerPage = $this->configuration->offsetGetByPath(
+            ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH,
+            25
+        );
+        $itemsPerPage = isset($pager[PagerExtension::PER_PAGE_PARAM]) ? (int)$pager[PagerExtension::PER_PAGE_PARAM] : $defaultPerPage;
 
         $this->configuration->offsetSetByPath($this->getSourcePath(PagerExtension::PER_PAGE_PARAM), $itemsPerPage);
 
-        $currentPage = isset($pager[PagerExtension::PAGE_PARAM]) ? $pager[PagerExtension::PAGE_PARAM] : 1;
+        $currentPage = isset($pager[PagerExtension::PAGE_PARAM]) ? (int)$pager[PagerExtension::PAGE_PARAM] : 1;
         $from = ($currentPage - 1) * $itemsPerPage;
         $this->configuration->offsetSetByPath($this->getSourcePath('from'), $from);
     }

@@ -93,7 +93,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'repository_parameters' => [],
             'repository_method'     => 'createQueryBuilder',
             'limit'                 => 42,
-            'search_after'          => [],
+            'from'                  => 0,
             'default_locale'        => 'a_locale',
             'default_scope'         => 'a_channel',
         ])->willReturn($pqb);
@@ -143,7 +143,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'repository_parameters' => [],
             'repository_method'     => 'createQueryBuilder',
             'limit'                 => 42,
-            'search_after'          => [],
+            'from'                  => 0,
             'default_locale'        => 'a_locale',
             'default_scope'         => 'a_channel',
             'filters'               => [[
@@ -169,7 +169,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'repository_parameters' => [],
             'repository_method'     => 'createQueryBuilder',
             'limit'                 => 40,
-            'search_after'          => [0],
+            'from'                  => 0,
             'default_locale'        => 'a_locale',
             'default_scope'         => 'a_channel',
             'filters'               => [[

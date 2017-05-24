@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -59,9 +60,11 @@ class AssociatedProductDatasource extends ProductDatasource
             $this->getConfiguration('association_type_id')
         );
 
-        $limit = $this->getConfiguration('_per_page', false);
+        $limit = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM, false);
         $locale = $this->getConfiguration('locale_code');
         $scope = $this->getConfiguration('scope_code');
+        $from = null !== $this->getConfiguration('from', false) ?
+            (int)$this->getConfiguration('from', false) : 0;
 
         $this->pqb->addFilter('identifier', Operators::NOT_EQUAL, $currentProduct->getIdentifier());
         $productCursor = $this->pqb->execute();
@@ -71,6 +74,7 @@ class AssociatedProductDatasource extends ProductDatasource
             $rows['data'] = $this->getProductsSortedByIsAssociatedAsc(
                 $associatedProductsIdentifiers,
                 $limit,
+                $from,
                 $locale,
                 $scope
             );
@@ -78,7 +82,7 @@ class AssociatedProductDatasource extends ProductDatasource
             $rows['data'] = $this->getProductsSortedByIsAssociatedDesc(
                 $associatedProductsIdentifiers,
                 $limit,
-                $searchAfter,
+                $from,
                 $locale,
                 $scope
             );
@@ -100,7 +104,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $identifiers = [];
 
         foreach ($product->getAssociations() as $association) {
-            if ($association->getAssociationType()->getId() === (int) $associationTypeId) {
+            if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
                 foreach ($association->getProducts() as $associatedProduct) {
                     $identifiers[] = $associatedProduct->getIdentifier();
                 }
@@ -115,8 +119,8 @@ class AssociatedProductDatasource extends ProductDatasource
      * the limit (number of product per page) is not reached.
      *
      * @param array  $associatedProductsIdentifiers
-     * @param string $limit
-     * @param string $searchAfter
+     * @param int    $limit
+     * @param int    $from
      * @param string $locale
      * @param string $scope
      *
@@ -125,14 +129,14 @@ class AssociatedProductDatasource extends ProductDatasource
     protected function getProductsSortedByIsAssociatedDesc(
         array $associatedProductsIdentifiers,
         $limit,
-        $searchAfter,
+        $from,
         $locale,
         $scope
     ) {
         $associatedProducts = $this->getAssociatedProducts(
             $associatedProductsIdentifiers,
             $limit,
-            $searchAfter,
+            $from,
             $locale,
             $scope
         );
@@ -141,13 +145,11 @@ class AssociatedProductDatasource extends ProductDatasource
         $nbAssociated = count($associatedProducts);
         if ($limit > $nbAssociated) {
             $limit -= $nbAssociated;
-            $searchAfter -= count($associatedProductsIdentifiers);
-            $searchAfter = max($searchAfter, 0);
 
             $nonAssociatedProducts = $this->getNonAssociatedProducts(
                 $associatedProductsIdentifiers,
                 $limit,
-                $searchAfter,
+                0,
                 $locale,
                 $scope
             );
@@ -161,7 +163,8 @@ class AssociatedProductDatasource extends ProductDatasource
      * the limit (number of product per page) is not reached.
      *
      * @param array  $associatedProductsIdentifiers
-     * @param string $limit
+     * @param int    $limit
+     * @param int    $from
      * @param string $locale
      * @param string $scope
      *
@@ -170,12 +173,14 @@ class AssociatedProductDatasource extends ProductDatasource
     protected function getProductsSortedByIsAssociatedAsc(
         array $associatedProductsIdentifiers,
         $limit,
+        $from,
         $locale,
         $scope
     ) {
         $nonAssociatedProducts = $this->getNonAssociatedProducts(
             $associatedProductsIdentifiers,
             $limit,
+            $from,
             $locale,
             $scope
         );
@@ -184,13 +189,11 @@ class AssociatedProductDatasource extends ProductDatasource
         $nbNonAssociated = count($nonAssociatedProducts);
         if ($limit > $nbNonAssociated) {
             $limit -= $nbNonAssociated;
-            $searchAfter -= count($associatedProductsIdentifiers);
-            $searchAfter = max($searchAfter, 0);
 
             $associatedProducts = $this->getAssociatedProducts(
                 $associatedProductsIdentifiers,
                 $limit,
-                $searchAfter,
+                0,
                 $locale,
                 $scope
             );
@@ -201,8 +204,8 @@ class AssociatedProductDatasource extends ProductDatasource
 
     /**
      * @param array  $associatedProductsIdentifiers
-     * @param string $limit
-     * @param string $searchAfter
+     * @param int    $limit
+     * @param int    $from
      * @param string $locale
      * @param string $scope
      *
@@ -211,11 +214,11 @@ class AssociatedProductDatasource extends ProductDatasource
     protected function getAssociatedProducts(
         array $associatedProductsIdentifiers,
         $limit,
-        $searchAfter,
+        $from,
         $locale,
         $scope
     ) {
-        $pqb = $this->createQueryBuilder($limit, $searchAfter, $locale, $scope);
+        $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductsIdentifiers);
 
         $products = $pqb->execute();
@@ -225,7 +228,8 @@ class AssociatedProductDatasource extends ProductDatasource
 
     /**
      * @param array  $associatedProductsIdentifiers
-     * @param string $limit
+     * @param int    $limit
+     * @param int    $from
      * @param string $locale
      * @param string $scope
      *
@@ -234,10 +238,11 @@ class AssociatedProductDatasource extends ProductDatasource
     protected function getNonAssociatedProducts(
         array $associatedProductsIdentifiers,
         $limit,
+        $from,
         $locale,
         $scope
     ) {
-        $pqb = $this->createQueryBuilder($limit, $locale, $scope);
+        $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('identifier', Operators::NOT_IN_LIST, $associatedProductsIdentifiers);
 
         $products = $pqb->execute();
@@ -274,8 +279,8 @@ class AssociatedProductDatasource extends ProductDatasource
             $normalizedProduct = array_merge(
                 $this->normalizer->normalize($product, 'datagrid', $context),
                 [
-                    'id'            => $product->getId(),
-                    'dataLocale'    => $dataLocale,
+                    'id'         => $product->getId(),
+                    'dataLocale' => $dataLocale,
                 ]
             );
 
@@ -292,13 +297,14 @@ class AssociatedProductDatasource extends ProductDatasource
      * and that "search_after" parameter can be changed according to pagination,
      * we need to create two PQBs with different settings.
      *
-     * @param string $limit
+     * @param int    $limit
+     * @param int    $from
      * @param string $locale
      * @param string $scope
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function createQueryBuilder($limit, $locale, $scope)
+    protected function createQueryBuilder($limit, $from, $locale, $scope)
     {
         if (null === $repositoryParameters = $this->getConfiguration('repository_parameters', false)) {
             $repositoryParameters = [];
@@ -311,7 +317,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $factoryConfig['repository_parameters'] = $repositoryParameters;
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['limit'] = $limit;
-        // TODO: TIP-644 - Make pagination work
+        $factoryConfig['from'] = $from;
         $factoryConfig['default_locale'] = $locale;
         $factoryConfig['default_scope'] = $scope;
         $factoryConfig['filters'] = $this->pqb->getRawFilters();
