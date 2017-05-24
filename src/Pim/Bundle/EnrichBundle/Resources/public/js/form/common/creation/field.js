@@ -43,9 +43,8 @@ define(
             /**
              * Model update callback
              */
-            updateModel: function () {
-                this.getFormModel().set(this.identifier,
-                    this.$('input[name="' + this.identifier + '"]').val() || '');
+            updateModel: function (event) {
+                this.getFormModel().set(this.identifier, event.target.value || '');
             },
 
             /**

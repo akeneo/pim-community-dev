@@ -110,7 +110,8 @@ define(
 
                 return $.post(Routing.generate(this.config.postUrl), JSON.stringify(this.getFormData()))
                     .fail(function (response) {
-                        this.validationErrors = response.responseJSON.values;
+                        this.validationErrors = response.responseJSON ?
+                            response.responseJSON.values : [{message: __('error.common')}];
                         this.render();
                     }.bind(this))
                     .always(function () {
