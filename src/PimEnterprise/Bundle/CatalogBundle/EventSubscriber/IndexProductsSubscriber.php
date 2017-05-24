@@ -124,9 +124,9 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         }
 
         if (current($product) instanceof PublishedProductInterface) {
-            $this->publishedProductIndexer->remove($product);
+            $this->publishedProductIndexer->remove($event->getSubjectId());
         } else {
-            $this->productIndexer->remove($product);
+            $this->productIndexer->remove($event->getSubjectId());
         }
     }
 }
