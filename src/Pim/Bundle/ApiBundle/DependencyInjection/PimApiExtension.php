@@ -29,6 +29,7 @@ class PimApiExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('hateoas.yml');
+        $loader->load('negotiators.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
         $loader->load('security.yml');
