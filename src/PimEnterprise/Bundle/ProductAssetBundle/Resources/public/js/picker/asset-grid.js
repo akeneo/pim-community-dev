@@ -208,6 +208,10 @@ define(
              * @param {Object} datagrid
              */
             updateChecked: function (datagrid) {
+                if (datagrid.inputName !== this.datagrid.name) {
+                    return;
+                }
+
                 var assets = this.getAssets();
 
                 _.each(datagrid.models, function (row) {
