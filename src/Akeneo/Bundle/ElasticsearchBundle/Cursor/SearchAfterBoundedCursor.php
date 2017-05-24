@@ -14,7 +14,7 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BoundedCursor extends Cursor implements CursorInterface
+class SearchAfterBoundedCursor extends Cursor implements CursorInterface
 {
     /** @var string|null */
     protected $searchAfterUniqueKey;

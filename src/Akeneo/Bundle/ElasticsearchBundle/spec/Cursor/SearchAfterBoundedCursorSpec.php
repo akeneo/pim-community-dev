@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class BoundedCursorSpec extends ObjectBehavior
+class SearchAfterBoundedCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,

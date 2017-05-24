@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\BoundedCursor;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterBoundedCursor;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 
-class BoundedCursorFactorySpec extends ObjectBehavior
+class SearchAfterBoundedCursorFactorySpec extends ObjectBehavior
 {
     const DEFAULT_BATCH_SIZE = 100;
 
@@ -21,7 +21,7 @@ class BoundedCursorFactorySpec extends ObjectBehavior
             $searchEngine,
             $om,
             ProductInterface::class,
-            BoundedCursor::class,
+            SearchAfterBoundedCursor::class,
             self::DEFAULT_BATCH_SIZE,
             'pim_catalog_product'
         );
@@ -29,7 +29,7 @@ class BoundedCursorFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\BoundedCursorFactory');
+        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterBoundedCursorFactory');
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 
