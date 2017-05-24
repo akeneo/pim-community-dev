@@ -76,12 +76,6 @@ define(
                     return this;
                 }
 
-                if (this.isHidden) {
-                    this.$el.empty();
-
-                    return this;
-                }
-
                 this.$el.html(this.template({
                     label: __('pim_enrich.form.product.change_family.modal.empty_selection')
                 }));
