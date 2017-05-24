@@ -44,6 +44,7 @@
             <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Channel</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Locale</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Media</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Currency</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Token</directory>
         </testsuite>
 

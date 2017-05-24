@@ -3,12 +3,13 @@
 ## Functional improvements
 
 - TIP-718: Update group types form
+- GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 
 ## Technical improvements
 
 - TIP-711: Rework job execution reporting page with the new PEF architecture
 - TIP-724: Refactoring of the 'Settings/Association types' index screen using 'pim/common/grid'
-- TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid 
+- TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 - TIP-730: Reworking of the creation popin for basic entities
@@ -17,13 +18,15 @@
 
 ### Constructors
 
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to add `Oro\Bundle\SecurityBundle\SecurityFacade` and add an associative array 
+- Change the constructor of `Pim\Component\Catalog\Updater\AttributeGroupUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to add `Oro\Bundle\SecurityBundle\SecurityFacade` and add an associative array
 - Change the constructor of `Pim\Component\Catalog\Updater\FamilyUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `kernel.logs_dir`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Twig\AttributeExtension` to remove `pim_enrich.attribute_icons`
 - Remove OroNavigationBundle
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`, `Symfony\Component\Validator\ValidatorInterface`, `Akeneo\Component\StorageUtils\Saver\SaverInterface`, `Akeneo\Component\StorageUtils\Remover\RemoverInterface`, `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`
 
 ## Requirements
 

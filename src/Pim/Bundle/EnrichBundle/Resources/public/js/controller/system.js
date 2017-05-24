@@ -4,13 +4,14 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/controller/base',
         'pim/form-builder',
         'pim/page-title',
         'pim/error',
         'routing'
     ],
-    function ($, _, BaseController, FormBuilder, PageTitle, Error, Routing) {
+    function ($, _, __, BaseController, FormBuilder, PageTitle, Error, Routing) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -26,7 +27,9 @@ define(
                     form.setData(response[0]);
                     form.setElement(this.$el).render();
                 }.bind(this)).fail(function (response) {
-                    var errorView = new Error(response.responseJSON.message, response.status);
+                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
+
+                    var errorView = new Error(message, response.status);
                     errorView.setElement(this.$el).render();
                 });
             }

@@ -12,3 +12,4 @@ config:
                     options:
                         urls:
                             list: pim_user_user_group_rest_index
+                            search: pim_user_user_group_rest_index

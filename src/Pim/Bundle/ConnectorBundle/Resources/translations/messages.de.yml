@@ -48,7 +48,7 @@ job_execution.summary:
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
     export.label: Kategorie export
@@ -71,7 +71,7 @@ batch_jobs:
     label: Exportiere Produktfamilie in CSV-Datei
     export.label: Exportiere Produktfamilie
   csv_product_import:
-    label: Produkt-Export als CSV-Datei
+    label: Produkt-Import aus CSV-Datei
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import

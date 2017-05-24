@@ -26,6 +26,10 @@ pim_api_attribute_group_list:
     type: action
     label: pim_api.acl.attribute_group.list
     group_name: pim_api.acl_group.attribute_group
+pim_api_attribute_group_edit:
+    type: action
+    label: pim_api.acl.attribute_group.edit
+    group_name: pim_api.acl_group.attribute_group
 
 pim_api_category_list:
     type: action
@@ -54,3 +58,8 @@ pim_api_family_edit:
     type: action
     label: pim_api.acl.family.edit
     group_name: pim_api.acl_group.family
+
+pim_api_currency_list:
+    type: action
+    label: pim_api.acl.currency.list
+    group_name: pim_api.acl_group.currency

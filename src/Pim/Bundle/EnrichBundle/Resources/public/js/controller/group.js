@@ -3,6 +3,7 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/controller/base',
         'pim/form-builder',
         'pim/fetcher-registry',
@@ -13,7 +14,19 @@ define(
         'pim/i18n',
         'module'
     ],
-    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n, module) {
+    function (
+        _,
+        __,
+        BaseController,
+        FormBuilder,
+        FetcherRegistry,
+        UserContext,
+        Dialog,
+        PageTitle,
+        Error,
+        i18n,
+        module
+    ) {
         return BaseController.extend({
             initialize: function () {
                 this.config = module.config();
@@ -50,7 +63,9 @@ define(
                             }.bind(this));
                     }.bind(this))
                 .fail(function (response) {
-                    var errorView = new Error(response.responseJSON.message, response.status);
+                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
+
+                    var errorView = new Error(message, response.status);
                     errorView.setElement(this.$el).render();
                 });
             }

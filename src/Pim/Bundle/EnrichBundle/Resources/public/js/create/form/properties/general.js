@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Module used to display the generals properties of a channel
+ * Module used to display the generals properties of a create entity form
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/channel/tab/properties/general',
+        'text!pim/template/create/tab/properties/general',
         'pim/user-context',
         'oro/mediator',
         'pim/common/property',
@@ -34,7 +34,16 @@ define([
             catalogLocale: UserContext.get('catalogLocale'),
             errors: [],
             events: {
-                'change input.channel-code': 'updateCode'
+                'change input.code': 'updateCode'
+            },
+
+            /**
+             * @param {Object} meta
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -68,10 +77,10 @@ define([
                 this.$el.html(this.template({
                     code: this.getFormData().code,
                     hasId: _.has(this.getFormData().meta, 'id'),
-                    sectionTitle: __('pim_enrich.form.channel.tab.properties.general'),
+                    sectionTitle: __(this.config.title),
                     catalogLocale: this.catalogLocale,
                     errors: this.getValidationErrorsForField('code'),
-                    label: __('pim_enrich.form.channel.tab.properties.code'),
+                    label: __(this.config.codeLabel),
                     requiredLabel: __('pim_enrich.form.required')
                 }));
 
