@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Factory\GroupTypeFactory;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,6 +47,9 @@ class GroupTypeController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var GroupTypeFactory */
+    protected $groupTypeFactory;
+
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepo
      * @param NormalizerInterface          $normalizer
@@ -54,6 +58,7 @@ class GroupTypeController
      * @param SaverInterface               $saver
      * @param ValidatorInterface           $validator
      * @param UserContext                  $userContext
+     * @param groupTypeFactory             $groupTypeFactory
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepo,
@@ -62,7 +67,8 @@ class GroupTypeController
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         ValidatorInterface $validator,
-        UserContext $userContext
+        UserContext $userContext,
+        groupTypeFactory $groupTypeFactory
     ) {
         $this->groupTypeRepo = $groupTypeRepo;
         $this->normalizer = $normalizer;
@@ -71,6 +77,7 @@ class GroupTypeController
         $this->saver = $saver;
         $this->validator = $validator;
         $this->userContext = $userContext;
+        $this->groupTypeFactory = $groupTypeFactory;
     }
 
     /**
@@ -181,5 +188,34 @@ class GroupTypeController
         }
 
         return $groupType;
+    }
+
+    /**
+     * Creates group type
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $groupType = $this->groupTypeFactory->create();
+        $this->updater->update($groupType, json_decode($request->getContent(), true));
+
+        $violations = $this->validator->validate($groupType);
+        if (0 < $violations->count()) {
+            $errors = [
+                'values' => $this->normalizer->normalize($violations, 'internal_api', ['groupType' => $groupType])
+            ];
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($groupType);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $groupType,
+            'internal_api'
+        ));
     }
 }

@@ -30,11 +30,9 @@ Feature: Define user rights
 
     Examples:
       | permission                 | page              | forbiddenPage            |
-      | Create an association type | association types | AssociationType creation |
       | Create a channel           | channels          | channel creation         |
       | Create a group             | product groups    | ProductGroup creation    |
       | Create a variant group     | variant groups    | VariantGroup creation    |
-      | Create a group type        | group types       | GroupType creation       |
       | Create an attribute        | attributes        | Attribute creation       |
 
   Scenario Outline: Successfully hide entity creation, deletion buttons when user doesn't have the rights

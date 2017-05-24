@@ -11,7 +11,6 @@ parameters:
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.variant_group.class:                Pim\Bundle\EnrichBundle\Controller\VariantGroupController
-    pim_enrich.controller.group_type.class:                   Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.sequential_edit.class:              Pim\Bundle\EnrichBundle\Controller\SequentialEditController
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
     pim_enrich.controller.rest.attribute.class:               Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
@@ -192,17 +191,6 @@ services:
             - '@pim_catalog.factory.group'
             - '@pim_catalog.builder.product_template'
 
-    pim_enrich.controller.group_type:
-        scope: request
-        class: '%pim_enrich.controller.group_type.class%'
-        arguments:
-            - '@request'
-            - '@router'
-            - '@translator'
-            - '@pim_enrich.form.handler.group_type'
-            - '@pim_enrich.form.group_type'
-            - '@pim_catalog.remover.group_type'
-
     pim_enrich.controller.sequential_edit:
         scope: request
         class: '%pim_enrich.controller.sequential_edit.class%'
@@ -250,6 +238,7 @@ services:
             - '@pim_catalog.saver.group_type'
             - '@validator'
             - '@pim_user.context.user'
+            - '@pim_catalog.factory.group_type'
 
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'

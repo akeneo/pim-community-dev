@@ -250,6 +250,10 @@ pim_enrich:
             btn:
                 save: Save
             title: association type
+            create_popin:
+                title: Create a new association type
+            message:
+                created: Association type successfully created
         group_type:
             info:
                 deletion_successful: Group type successfully deleted.
@@ -265,6 +269,10 @@ pim_enrich:
             btn:
                 save: Save
             title: group type
+            create_popin:
+                title: Create a new group type
+            message:
+                created: Group type successfully created
         channel:
             title: channel
             info:

@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -175,5 +176,34 @@ class AssociationTypeController
         }
 
         return $associationType;
+    }
+
+    /**
+     * Creates association type
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $associationType = new AssociationType();
+        $this->updater->update($associationType, json_decode($request->getContent(), true));
+
+        $violations = $this->validator->validate($associationType);
+        if (0 < $violations->count()) {
+            $errors = [
+                'values' => $this->normalizer->normalize($violations, 'internal_api', ['associationType' => $associationType])
+            ];
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($associationType);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $associationType,
+            'internal_api'
+        ));
     }
 }

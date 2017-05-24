@@ -1,0 +1,17 @@
+extensions:
+    pim-group-type-create-modal:
+       module: pim/form/common/creation/modal
+       config:
+           labels:
+               title: pim_enrich.entity.group_type.create_popin.title
+           successMessage: pim_enrich.entity.group_type.message.created
+           editRoute: pim_enrich_grouptype_edit
+           postUrl: pim_enrich_grouptype_rest_create
+           routerKey: code
+
+    pim-group-type-create-form:
+       module: pim/form/common/creation/field
+       parent: pim-group-type-create-modal
+       config:
+          identifier: code
+          label: pim_enrich.entity.create_popin.code
