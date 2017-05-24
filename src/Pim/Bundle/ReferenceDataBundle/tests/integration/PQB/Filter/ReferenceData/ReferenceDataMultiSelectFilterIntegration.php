@@ -119,8 +119,8 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
-     * @expectedExceptionMessage Object "reference_data_options" with code "NOT_FOUND" does not exist
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "a_ref_data_multi_select" expects a valid code. No reference data "fabrics" with code "NOT_FOUND" has been found, "NOT_FOUND" given.
      */
     public function testErrorOptionNotFound()
     {

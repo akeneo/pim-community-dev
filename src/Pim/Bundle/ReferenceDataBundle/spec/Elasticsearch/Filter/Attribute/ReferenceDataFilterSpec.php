@@ -334,6 +334,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
 
         $referenceDataRepositoryResolver->resolve('color_reference_data')->willReturn($repository);
         $repository->findCodesByIdentifiers(['black'])->willReturn([]);
+        $repository->getClassName()->willReturn('My\Class');
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
@@ -341,8 +342,12 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
-            new ObjectNotFoundException(
-                'Object "reference_data_option" with code "black" does not exist'
+            InvalidPropertyException::validEntityCodeExpected(
+                'color_attribute',
+                'code',
+                'No reference data "color_reference_data" with code "black" has been found',
+                'My\Class',
+                'black'
             )
         )->during('addAttributeFilter', [$color, Operators::IN_CHILDREN_LIST, ['black'], 'en_US', 'ecommerce', []]);
     }
