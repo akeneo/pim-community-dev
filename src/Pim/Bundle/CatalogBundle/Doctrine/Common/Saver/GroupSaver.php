@@ -93,9 +93,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
-
         $options = $this->optionsResolver->resolveSaveOptions($options);
+
+        $this->dispatchPreSaveEvent($group, $options);
 
         $this->versionContext->addContextInfo(
             sprintf('Comes from variant group %s', $group->getCode()),
@@ -126,7 +126,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->removeProducts($options['remove_products']);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        $this->dispatchPostSaveEvent($group, $options);
     }
 
     /**
@@ -138,9 +138,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -181,5 +182,31 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
         $this->productTplApplier->apply($template, $products);
+    }
+
+    /**
+     * Dispatch pre save event if flush is true
+     *
+     * @param object $group
+     * @param array  $options
+     */
+    protected function dispatchPreSaveEvent($group, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group));
+        }
+    }
+
+    /**
+     * Dispatch post save event if flush is true
+     *
+     * @param object $group
+     * @param array  $options
+     */
+    protected function dispatchPostSaveEvent($group, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        }
     }
 }

@@ -66,18 +66,21 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family));
-
         $options = $this->optionsResolver->resolveSaveOptions($options);
+
+        $this->dispatchPreSaveEvent($family, $options);
+
         $this->objectManager->persist($family);
+
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
         if (true === $options['schedule']) {
             $this->completenessManager->scheduleForFamily($family);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
+        $this->dispatchPostSaveEvent($family, $options);
     }
 
     /**
@@ -89,9 +92,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families));
 
-        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -104,5 +108,31 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families));
+    }
+
+    /**
+     * Dispatch pre save event if flush is true
+     *
+     * @param object $family
+     * @param array  $options
+     */
+    protected function dispatchPreSaveEvent($family, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family));
+        }
+    }
+
+    /**
+     * Dispatch post save event if flush is true
+     *
+     * @param object $family
+     * @param array  $options
+     */
+    protected function dispatchPostSaveEvent($family, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family));
+        }
     }
 }

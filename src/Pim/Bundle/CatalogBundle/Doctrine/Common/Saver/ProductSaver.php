@@ -67,8 +67,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
+        $this->dispatchPreSaveEvent($product, $options);
 
         $this->objectManager->persist($product);
 
@@ -84,7 +84,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             $this->completenessManager->generateMissingForProduct($product);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        $this->dispatchPostSaveEvent($product, $options);
     }
 
     /**
@@ -97,6 +97,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options = $this->optionsResolver->resolveSaveAllOptions($options);
+
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
         $itemOptions = $options;
@@ -111,5 +112,31 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+    }
+
+    /**
+     * Dispatch pre save event if flush is true
+     *
+     * @param object $product
+     * @param array  $options
+     */
+    protected function dispatchPreSaveEvent($product, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+        }
+    }
+
+    /**
+     * Dispatch post save event if flush is true
+     *
+     * @param object $product
+     * @param array  $options
+     */
+    protected function dispatchPostSaveEvent($product, array $options)
+    {
+        if (true === $options['flush']) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        }
     }
 }
