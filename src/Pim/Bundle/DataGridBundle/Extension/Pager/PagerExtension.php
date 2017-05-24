@@ -53,10 +53,7 @@ class PagerExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return !in_array(
-            $config->offsetGetByPath('name'),
-            ['product-grid', 'association-product-grid', 'product-variant-group-grid', 'product-group-grid', 'published-product-grid']
-        );
+        return true;
     }
 
     /**
@@ -129,8 +126,6 @@ class PagerExtension extends AbstractExtension
      */
     protected function getPager(DatagridConfiguration $config)
     {
-        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-
-        return $this->pagerResolver->getPager($datasourceType);
+        return $this->pagerResolver->getPager($config->getName());
     }
 }

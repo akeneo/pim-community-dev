@@ -134,17 +134,10 @@ function($, _, Backbone) {
                 var nextLabel = _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined;
                 switch (label) {
                     case prevLabel:
-                        if (collection.hasPrevious()) {
-                            collection.getPreviousPage();
-                        }
-                        
+                        if (collection.hasPrevious()) collection.getPreviousPage();
                         return;
                     case nextLabel:
-                        var options = [];
-                        if (collection.hasNext()) {
-                            collection.getNextPage(options);
-                        }
-
+                        if (collection.hasNext()) collection.getNextPage();
                         return;
                 }
             }
