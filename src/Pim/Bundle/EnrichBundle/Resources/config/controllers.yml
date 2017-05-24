@@ -257,6 +257,11 @@ services:
             - '@security.token_storage'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.repository.attribute.search'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+            - '@pim_catalog.remover.attribute'
+            - '@pim_catalog.factory.attribute'
 
     pim_enrich.controller.rest.attribute_group:
         class: '%pim_enrich.controller.rest.attribute_group.class%'

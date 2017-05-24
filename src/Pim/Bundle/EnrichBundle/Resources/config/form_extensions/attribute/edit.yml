@@ -7,6 +7,79 @@ extensions:
         parent: pim-attribute-edit-form
         position: 1000
 
+    pim-attribute-edit-form-label:
+        module: pim/form/common/label
+        parent: pim-attribute-edit-form
+        targetZone: title
+        position: 90
+
+    pim-attribute-edit-form-back-to-grid:
+        module: pim/form/common/back-to-grid
+        parent: pim-attribute-edit-form
+        targetZone: back
+        aclResourceId: pim_enrich_attribute_index
+        position: 80
+        config:
+            backUrl: pim_enrich_attribute_index
+
+    pim-attribute-edit-form-delete:
+        module: pim/attribute-edit-form/delete
+        parent: pim-attribute-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_attribute_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.attribute
+                content: pim_enrich.confirmation.delete_item
+                success: flash.attribute.removed
+                fail: error.removing.attribute
+            redirect: pim_enrich_attribute_index
+
+    pim-attribute-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-attribute-edit-form
+        targetZone: buttons
+        position: 110
+
+    pim-attribute-edit-form-save:
+        module: pim/form/common/save-form
+        parent: pim-attribute-edit-form
+        targetZone: buttons
+        position: 0
+        config:
+            updateSuccessMessage: pim_enrich.entity.attribute.info.update_successful
+            updateFailureMessage: pim_enrich.entity.attribute.info.update_failed
+            notReadyMessage: pim_enrich.entity.attribute.info.field_not_ready
+            url: pim_enrich_attribute_rest_post
+            redirectAfter: pim_enrich_attribute_edit
+
+    pim-attribute-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-attribute-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.attribute.title
+
+    pim-attribute-edit-form-created:
+        module: pim/form/common/meta/created
+        parent: pim-attribute-edit-form
+        targetZone: meta
+        position: 90
+        config:
+            label: pim_enrich.entity.attribute.meta.created
+            labelBy: pim_enrich.entity.attribute.meta.created_by
+
+    pim-attribute-edit-form-updated:
+        module: pim/form/common/meta/updated
+        parent: pim-attribute-edit-form
+        targetZone: meta
+        position: 100
+        config:
+            label: pim_enrich.entity.attribute.meta.updated
+            labelBy: pim_enrich.entity.attribute.meta.updated_by
+
     pim-attribute-edit-form-form-tabs:
         module: pim/form/common/form-tabs
         parent: pim-attribute-edit-form

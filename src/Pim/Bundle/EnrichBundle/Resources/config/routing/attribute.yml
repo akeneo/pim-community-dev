@@ -1,26 +1,3 @@
-pim_enrich_attribute_index:
-    path: ''
-    defaults: { _controller: pim_enrich.controller.attribute:indexAction }
-
-pim_enrich_attribute_types_index:
-    path: /types
-    defaults: { _controller: pim_enrich.controller.attribute:getTypesAction }
-    methods: [GET]
-
-pim_enrich_attribute_create:
-    path: /create
-    defaults: { _controller: pim_enrich.controller.attribute:createAction }
-
-pim_enrich_attribute_edit:
-    path: /{code}/edit
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-pim_enrich_attribute_sort:
-    path: /sort
-    defaults: { _controller: pim_enrich.controller.attribute:sortAction }
-    methods: [POST]
-
 pim_enrich_attribute_remove:
     path: /{id}/remove
     defaults: { _controller: pim_enrich.controller.attribute:removeAction }
@@ -33,15 +10,3 @@ pim_enrich_attribute_create_option:
     defaults: { _controller: pim_enrich.controller.attribute:createOptionAction }
     requirements:
         id: \d+
-
-pim_enrich_attribute_rest_index:
-    path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.attribute:indexAction }
-    methods: [GET, POST]
-
-pim_enrich_attribute_rest_get:
-    path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.attribute:getAction }
-    requirements:
-        identifier: '[a-zA-Z0-9_]+'
-    methods: [GET]

@@ -250,36 +250,6 @@ class AttributeController
     }
 
     /**
-     * Edit AttributeInterface sort order
-     *
-     * @param Request $request
-     *
-     * @AclAncestor("pim_enrich_attribute_sort")
-     *
-     * @return Response
-     */
-    public function sortAction(Request $request)
-    {
-        $data = $request->request->all();
-
-        if (!empty($data)) {
-            $attributes = [];
-            foreach ($data as $id => $sort) {
-                $attribute = $this->attributeRepository->find((int) $id);
-                if ($attribute) {
-                    $attribute->setSortOrder((int) $sort);
-                    $attributes[] = $attribute;
-                }
-            }
-            $this->attributeSaver->saveAll($attributes);
-
-            return new Response(1);
-        }
-
-        return new Response(0);
-    }
-
-    /**
      * Create a new option for a simple/multi-select attribute
      *
      * @param Request $request

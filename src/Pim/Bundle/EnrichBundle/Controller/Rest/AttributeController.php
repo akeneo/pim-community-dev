@@ -2,14 +2,21 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Component\Catalog\Factory\AttributeFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Attribute rest controller
@@ -35,25 +42,55 @@ class AttributeController
     /** @var SearchableRepositoryInterface */
     protected $attributeSearchRepository;
 
+    /** @var ObjectUpdaterInterface */
+    private $updater;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var SaverInterface */
+    private $saver;
+
+    /** @var RemoverInterface */
+    private $remover;
+
+    /** @var AttributeFactory */
+    private $factory;
+
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
      * @param TokenStorageInterface         $tokenStorage
      * @param ObjectFilterInterface         $attributeFilter
      * @param SearchableRepositoryInterface $attributeSearchRepository
+     * @param ObjectUpdaterInterface        $updater
+     * @param ValidatorInterface            $validator
+     * @param SaverInterface                $saver
+     * @param RemoverInterface              $remover
+     * @param AttributeFactory              $factory
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         ObjectFilterInterface $attributeFilter,
-        SearchableRepositoryInterface $attributeSearchRepository
+        SearchableRepositoryInterface $attributeSearchRepository,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        SaverInterface $saver,
+        RemoverInterface $remover,
+        AttributeFactory $factory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
         $this->tokenStorage = $tokenStorage;
         $this->attributeFilter = $attributeFilter;
         $this->attributeSearchRepository = $attributeSearchRepository;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->saver = $saver;
+        $this->remover = $remover;
+        $this->factory = $factory;
     }
 
     /**
@@ -124,5 +161,76 @@ class AttributeController
         }
 
         return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));
+    }
+
+    /**
+     * @param Request $request
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pim_enrich_attribute_edit")
+     */
+    public function postAction(Request $request, $identifier)
+    {
+        $attribute = $this->getAttributeOr404($identifier);
+
+        $data = json_decode($request->getContent(), true);
+        $this->updater->update($attribute, $data);
+
+        $violations = $this->validator->validate($attribute);
+
+        if (0 < $violations->count()) {
+            $errors = $this->normalizer->normalize(
+                $violations,
+                'internal_api'
+            );
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($attribute);
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $attribute,
+                'internal_api'
+            )
+        );
+    }
+
+    /**
+     * @param $identifier
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pim_enrich_attribute_remove")
+     */
+    public function removeAction($identifier)
+    {
+        $attribute = $this->getAttributeOr404($identifier);
+
+        $this->remover->remove($attribute);
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param $identifier
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return AttributeInterface
+     */
+    protected function getAttributeOr404($identifier)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
+        if (null === $attribute) {
+            throw new NotFoundHttpException(
+                sprintf('Attribute with identifier "%s" not found', $identifier)
+            );
+        }
+
+        return $attribute;
     }
 }

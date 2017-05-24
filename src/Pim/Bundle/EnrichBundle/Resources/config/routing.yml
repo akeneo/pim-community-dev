@@ -26,6 +26,14 @@ attribute:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute.yml'
     prefix: /configuration/attribute
 
+attribute_front:
+    resource: '@PimEnrichBundle/Resources/config/routing/attribute/front.yml'
+    prefix: /configuration/attribute
+
+attribute_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/attribute/rest.yml'
+    prefix: /rest/attribute
+
 attribute_option:
     resource: '@PimEnrichBundle/Resources/config/routing/attributeoption.yml'
     prefix: /configuration/attribute-option

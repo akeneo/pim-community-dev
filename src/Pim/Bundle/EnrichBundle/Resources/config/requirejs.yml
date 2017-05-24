@@ -58,6 +58,8 @@ config:
             url: pim_enrich_job_instance_rest_import_delete
         pim/remover/job-instance-export:
             url: pim_enrich_job_instance_rest_export_delete
+        pim/remover/attribute:
+            url: pim_enrich_attribute_rest_remove
         pim/saver/channel:
             postUrl: pim_enrich_channel_rest_post
             putUrl: pim_enrich_channel_rest_put
@@ -559,6 +561,7 @@ config:
         pim/remover/group:               pimenrich/js/remover/group-remover
         pim/remover/job-instance-import: pimenrich/js/remover/job-instance-import-remover
         pim/remover/job-instance-export: pimenrich/js/remover/job-instance-export-remover
+        pim/remover/attribute:           pimenrich/js/remover/attribute
 
         # Saver
         pim/saver/base:                pimenrich/js/saver/base-saver
@@ -749,6 +752,7 @@ config:
 
         # Attribute
         pim/attribute-edit-form:                                pimenrich/js/attribute/form/edit-form
+        pim/attribute-edit-form/delete:                         pimenrich/js/attribute/form/delete
         pim/attribute-edit-form/properties/common:              pimenrich/js/attribute/form/properties/common
         pim/attribute-edit-form/type-specific-form:             pimenrich/js/attribute/form/type-specific-form
         pim/attribute-edit-form/properties/boolean:             pimenrich/js/attribute/form/properties/boolean
