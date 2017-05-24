@@ -60,8 +60,8 @@ define(
                 modal.open();
 
                 var modalBody = modal.$('.modal-body');
-                modalBody.css('min-height', 150);
-                modalBody.css('overflow-y', 'hidden');
+                modalBody.addClass('creation');
+
                 this.render()
                     .setElement(modalBody)
                     .render();

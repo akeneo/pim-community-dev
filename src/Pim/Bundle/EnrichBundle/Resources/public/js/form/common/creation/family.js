@@ -17,7 +17,6 @@ define(
         'pim/user-context',
         'pim/i18n',
         'oro/translator',
-        'oro/loading-mask',
         'pim/fetcher-registry',
         'pim/initselect2',
         'pim/template/product-create-popin',
@@ -34,7 +33,6 @@ define(
         UserContext,
         i18n,
         __,
-        LoadingMask,
         FetcherRegistry,
         initSelect2,
         template
@@ -42,6 +40,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             validationErrors: {},
+            currentSelect2Data : null,
             events: {
                 'change input': 'updateModel'
             },
@@ -62,7 +61,9 @@ define(
              * Model update callback
              */
             updateModel: function () {
-                this.getFormModel().set('family', this.$('[data-code="family"] input').select2('val'));
+                var select2Dom = this.$('[data-code="family"] input');
+                this.getFormModel().set('family', select2Dom.select2('val'));
+                this.currentSelect2Data = select2Dom.select2('data');
             },
 
             /**
@@ -119,7 +120,12 @@ define(
                     }
                 };
 
-                initSelect2.init(this.$('[data-code="family"] input'), options);
+                var select2Dom = this.$('[data-code="family"] input');
+                initSelect2.init(select2Dom, options);
+
+                if (this.currentSelect2Data) {
+                    select2Dom.select2('data', this.currentSelect2Data);
+                }
             }
         });
     }
