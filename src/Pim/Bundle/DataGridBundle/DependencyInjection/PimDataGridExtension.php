@@ -42,7 +42,6 @@ class PimDataGridExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-        $loader->load('selectors.yml');
         $loader->load('sorters.yml');
         $loader->load('subscribers.yml');
         $loader->load('twig.yml');
