@@ -69,3 +69,24 @@ Feature: Execute a job
       | sole_fabric              |              |
       | lace_fabric-en_US-tablet | Kevlar, Jute |
       | lace_fabric-en_US-mobile | Kevlar, Jute |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6433
+  Scenario: Successfully update an existing product with duplicate reference data code
+    Given the following product:
+      | sku     | sole_fabric |
+      | SKU-001 |             |
+    And the following CSV file to import:
+    """
+    sku;sole_fabric
+    SKU-001;PVC,PVC
+    """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see "processed 1"
+    And I should see "skipped product (no differences) 1"
+    And there should be 1 product
+    And the product "SKU-001" should have the following values:
+      | sole_fabric              | PVC          |
