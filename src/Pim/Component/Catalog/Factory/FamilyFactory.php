@@ -54,13 +54,20 @@ class FamilyFactory implements SimpleFactoryInterface
         /** @var FamilyInterface $family */
         $family = new $this->familyClass();
         $identifier = $this->attributeRepository->getIdentifier();
+        $supplierAttributeOption = $this->attributeRepository->findOneByIdentifier('supplier');
 
         $family->addAttribute($identifier);
         $family->setAttributeAsLabel($identifier);
 
+        $family->addAttribute($supplierAttributeOption);
+        $supplierChannel = $this->channelRepository->findOneByIdentifier('supplier');
+
+        $supplierAttributeOptionRequirement = $this->factory->createAttributeRequirement($supplierAttributeOption, $supplierChannel, true);
+        $family->addAttributeRequirement($supplierAttributeOptionRequirement);
+
         foreach ($this->getChannels() as $channel) {
-            $requirement = $this->factory->createAttributeRequirement($identifier, $channel, true);
-            $family->addAttributeRequirement($requirement);
+            $identifierRequirement = $this->factory->createAttributeRequirement($identifier, $channel, true);
+            $family->addAttributeRequirement($identifierRequirement);
         }
 
         return $family;
