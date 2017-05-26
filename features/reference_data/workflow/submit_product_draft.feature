@@ -38,6 +38,6 @@ Feature: Submit a modification on reference data for a product draft
     And I save the product
     Then I should not see the text "There are unsaved changes."
     And the product "my-vans" should have the following values:
-      | sole_fabric | [neoprene], [kevlar] |
+      | sole_fabric | [kevlar], [neoprene]|
     And the field Sole fabric should contain "[kevlar], [wool]"
     And I should see that Sole fabric is a modified value
