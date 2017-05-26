@@ -39,3 +39,4 @@ services:
             - '@security.token_storage'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.remover.product_draft'
+            - '@pim_catalog.synchronizer.product_unique_data'
