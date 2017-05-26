@@ -4,6 +4,7 @@ namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Namespaces\IndicesNamespace;
@@ -31,11 +32,12 @@ class ClientSpec extends ObjectBehavior
                 'index' => 'an_index_name',
                 'type'  => 'an_index_type',
                 'id'    => 'identifier',
-                'body'  => ['a key' => 'a value']
+                'body'  => ['a key' => 'a value'],
+                'refresh' => 'wait_for',
             ]
         )->shouldBeCalled();
 
-        $this->index('an_index_type', 'identifier', ['a key' => 'a value']);
+        $this->index('an_index_type', 'identifier', ['a key' => 'a value'], Refresh::waitFor());
     }
 
     public function it_gets_a_document($client)
@@ -157,7 +159,8 @@ class ClientSpec extends ObjectBehavior
                         '_id' => 'bar'
                     ]],
                     ['identifier' => 'bar', 'name' => 'a name']
-                ]
+                ],
+                'refresh' => 'wait_for'
             ]
         )->shouldBeCalled();
 
@@ -166,7 +169,7 @@ class ClientSpec extends ObjectBehavior
             ['identifier' => 'bar', 'name' => 'a name']
         ];
 
-        $this->bulkIndexes('an_index_type', $documents, 'identifier');
+        $this->bulkIndexes('an_index_type', $documents, 'identifier', Refresh::waitFor());
     }
 
     function it_throws_an_exception_if_identifier_key_is_missing($client)
@@ -179,6 +182,6 @@ class ClientSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(new MissingIdentifierException('Missing "identifier" key in document'))
-            ->during('bulkIndexes', ['an_index_type', $documents, 'identifier']);
+            ->during('bulkIndexes', ['an_index_type', $documents, 'identifier', Refresh::waitFor()]);
     }
 }

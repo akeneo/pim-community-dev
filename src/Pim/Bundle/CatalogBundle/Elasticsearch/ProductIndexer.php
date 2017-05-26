@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
@@ -49,7 +50,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
         $this->validateProduct($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'indexing');
         $this->validateProductNormalization($normalizedProduct);
-        $this->indexer->index($this->indexType, $normalizedProduct['id'], $normalizedProduct);
+        $this->indexer->index($this->indexType, $normalizedProduct['id'], $normalizedProduct, Refresh::waitFor());
     }
 
     /**
@@ -65,7 +66,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
             $normalizedProducts[] = $normalizedProduct;
         }
 
-        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'id');
+        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'id', Refresh::waitFor());
     }
 
     /**
