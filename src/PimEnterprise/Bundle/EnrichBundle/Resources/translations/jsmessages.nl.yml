@@ -21,6 +21,12 @@ pimee_enrich:
           title: Machtigingen
           execute.label: Toegestaan om profiel uit te voeren
           edit.label: Toegestaan om profiel te wijzigen
+    attribute_group:
+      tab:
+        permission:
+          title: Machtigingen
+          view.label: Toegestaan om kenmerken te bekijken
+          edit.label: Toegestaan om attributen bewerken
   entity:
     product:
       history:

@@ -28,6 +28,12 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: Transformacije imovine
+    attribute_group:
+      tab:
+        permission:
+          title: Dozvole
+          view.label: Dozvoljen pregled svojstava
+          edit.label: Dozvoljeno uređivanje atributa
   entity:
     product:
       history:

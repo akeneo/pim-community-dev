@@ -31,6 +31,12 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: Assetumwandlungen
+    attribute_group:
+      tab:
+        permission:
+          title: Berechtigungen
+          view.label: Berechtigt Attribute anzuzeigen
+          edit.label: Berechtigt Attribute zu bearbeiten
   entity:
     product:
       history:

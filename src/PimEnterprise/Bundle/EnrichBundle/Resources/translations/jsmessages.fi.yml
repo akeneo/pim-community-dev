@@ -29,6 +29,12 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: Resurssien muunnokset
+    attribute_group:
+      tab:
+        permission:
+          title: Käyttöoikeudet
+          view.label: Attribuuttien katselu sallittu
+          edit.label: Attribuuttien muokkaaminen sallittu
   entity:
     product:
       history:
