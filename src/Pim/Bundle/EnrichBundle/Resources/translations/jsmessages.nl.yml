@@ -36,6 +36,8 @@ flash:
     removed: Associatietype succesvol verwijderd
   attribute:
     removed: Attribuut succesvol verwijderd
+  attribute_group:
+    removed: Attribuutgroep succesvol verwijderd
   family:
     removed: Familie succesvol verwijderd
   product:
@@ -202,6 +204,9 @@ pim_enrich:
           family: Kies een familie
           save: Opslaan
           cancel: Annuleren
+    attribute:
+      scopable: Bereik instelbaar
+      global: Globaal
     association_type:
       info:
         deletion_successful: Associatietype succesvol verwijderd.
@@ -320,6 +325,9 @@ pim_enrich:
     job_instance:
       info:
         update_failed: Het jobprofiel kon niet worden bijgewerkt.
+    attribute_group:
+      info:
+        update_successful: Attribuutgroep succesvol bijgewerkt
   confirmation:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
@@ -475,6 +483,21 @@ pim_enrich:
           title: Geschiedenis
         products:
           title: Producten
+    attribute_group:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          label_translations: Labelvertalingen
+        attribute:
+          title: Attributen
+          table:
+            name: Naam
+            type: Type
+            scope: Bereik
+            localizable: Lokaliseerbaar
+        history.title: Geschiedenis
     common:
       tab:
         attributes:
@@ -725,6 +748,8 @@ pim_enrich:
       create_btn: Groep aanmaken
     attribute:
       modal_title: Kies het attribuuttype
+    attribute_group:
+      create_btn: Aanmaken
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
 page_title:

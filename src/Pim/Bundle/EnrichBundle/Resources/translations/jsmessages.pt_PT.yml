@@ -34,6 +34,8 @@ flash:
     removed: Tipo de associação removido com sucesso
   attribute:
     removed: Atributo removido com sucesso
+  attribute_group:
+    removed: Grupo de atributos removido com sucesso
   family:
     removed: Família removida com sucesso
   product:
@@ -193,6 +195,9 @@ pim_enrich:
           family: Escolha uma família
           save: Guardar
           cancel: Cancelar
+    attribute:
+      scopable: Com âmbito definível
+      global: Global
     association_type:
       info:
         field_not_ready:
@@ -276,6 +281,9 @@ pim_enrich:
         product_count: Produtos
         created: Criado
         updated: Atualizado
+    attribute_group:
+      info:
+        update_successful: Grupo de atributos atualizado com sucesso
   confirmation:
     leave: Tem certeza que deseja sair desta página?
     discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
@@ -434,6 +442,21 @@ pim_enrich:
           title: Histórico
         products:
           title: Produtos
+    attribute_group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        attribute:
+          title: Atributos
+          table:
+            name: Nome
+            type: Tipo
+            scope: Âmbito
+            localizable: Multilingue
+        history.title: Histórico
     common:
       tab:
         attributes:
@@ -619,6 +642,8 @@ pim_enrich:
       title: Visualizador de processos
     attribute:
       modal_title: Escolha o tipo de atributo
+    attribute_group:
+      create_btn: Criar
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
 page_title:

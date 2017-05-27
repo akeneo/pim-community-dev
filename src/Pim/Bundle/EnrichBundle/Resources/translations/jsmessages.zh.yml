@@ -36,6 +36,8 @@ flash:
     removed: 关联类型已删除
   attribute:
     removed: 属性已删除
+  attribute_group:
+    removed: 属性组已删除
   family:
     removed: 产品族已删除
   product:
@@ -204,6 +206,9 @@ pim_enrich:
           family: 选择一个品类
           save: 保存
           cancel: 取消
+    attribute:
+      scopable: 范围允许
+      global: 全局
     association_type:
       info:
         field_not_ready:
@@ -305,6 +310,9 @@ pim_enrich:
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
+    attribute_group:
+      info:
+        update_successful: 属性组已更新
   confirmation:
     leave: 你确定你要离开此页面？
     discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
@@ -462,6 +470,21 @@ pim_enrich:
           title: 历史
         products:
           title: 商品
+    attribute_group:
+      tab:
+        properties:
+          title: 属性
+          general: 常规属性
+          code: 代码
+          label_translations: 标签翻译
+        attribute:
+          title: 属性
+          table:
+            name: 名称
+            type: 类型
+            scope: 范围
+            localizable: 可本地化
+        history.title: 历史
     common:
       tab:
         attributes:
@@ -693,6 +716,8 @@ pim_enrich:
       title: 过程跟踪器
     attribute:
       modal_title: 选择属性类型
+    attribute_group:
+      create_btn: 创建
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
 page_title:
