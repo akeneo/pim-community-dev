@@ -29,6 +29,12 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: 资源转换
+    attribute_group:
+      tab:
+        permission:
+          title: 权限
+          view.label: 允许查看属性
+          edit.label: 允许编辑属性
   entity:
     product:
       history:
