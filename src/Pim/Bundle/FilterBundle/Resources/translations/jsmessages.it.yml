@@ -1,5 +1,5 @@
 Close: Chiudi
-Update: Aggiorna
+Update: Carica
 Now: Ora
 Selected Rows: Righe selezionate
 more than: Più di
@@ -11,4 +11,4 @@ to: A
 and: e
 system_filter_group: Sistema
 oro_filter.filters.manage: Gestione filtri
-oro_filter.placeholder.all: Tutti
+oro_filter.placeholder.all: Tutto
