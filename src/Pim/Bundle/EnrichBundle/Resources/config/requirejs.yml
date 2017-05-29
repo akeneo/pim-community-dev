@@ -504,7 +504,7 @@ config:
         pim/controller/user:                   pimenrich/js/controller/user
         pim/controller/attribute-group/edit:   pimenrich/js/controller/attribute-group/edit
         pim/controller/attribute-group/create: pimenrich/js/controller/attribute-group/create
-		pim/controller/attribute:              pimenrich/js/controller/attribute
+        pim/controller/attribute:              pimenrich/js/controller/attribute
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
