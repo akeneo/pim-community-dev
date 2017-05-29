@@ -9,12 +9,12 @@ services:
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pimee_workflow_published_product'
 
-    pimee_workflow.factory.published_product_bounded_cursor:
-        class: '%akeneo_elasticsearch.cursor.bounded_cursor_factory.class%'
+    pimee_workflow.factory.published_product_from_size_cursor:
+        class: '%akeneo_elasticsearch.cursor.from_size_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client'
             - '@pim_catalog.object_manager.product'
             - '%pimee_workflow.entity.published_product.class%'
-            - '%akeneo_elasticsearch.cursor.bounded_cursor.class%'
+            - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pimee_workflow_published_product'

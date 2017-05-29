@@ -11,5 +11,5 @@ services:
     pimee_workflow.completeness.generator:
         class: '%pim_catalog.completeness.generator.class%'
         arguments:
-            - '@pimee_workflow.doctrine.query.published_product_query_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pimee_workflow.completeness.calculator'

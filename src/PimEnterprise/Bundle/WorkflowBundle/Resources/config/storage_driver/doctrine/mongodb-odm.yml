@@ -26,7 +26,7 @@ services:
         factory_method: getRepository
         arguments: ['%pimee_workflow.entity.published_product.class%']
         calls:
-            - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_factory']]
+            - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_builder_factory']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
             - [setFamilyRepository, ['@pim_catalog.repository.family']]

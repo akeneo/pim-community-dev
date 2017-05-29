@@ -15,7 +15,7 @@ services:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pimee_workflow.doctrine.query.published_product_query_bounded_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory'
             - '@pim_datagrid.normalizer.product'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
