@@ -112,7 +112,7 @@ define(
                     if (attributeTypesMap.hasOwnProperty(key)) {
                         sortedAttributeTypesByLabel.push({
                             code: key,
-                            label: __('pim_enrich.entity.attribute_label.' + attributeTypesMap[key])
+                            label: __('pim_enrich.entity.attribute.type.' + attributeTypesMap[key])
                         });
                     }
                 }
