@@ -169,7 +169,7 @@
                             $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                             var modules = resp.metadata.requireJSModules;
-                            modules.unshift('pim/datagrid/state-listener');
+                            modules.push('pim/datagrid/state-listener');
                             var resolvedModules = []
                             _.each(modules, function(module) {
                               var resolvedModule = require(module)
