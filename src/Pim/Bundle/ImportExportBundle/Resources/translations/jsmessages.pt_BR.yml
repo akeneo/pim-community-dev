@@ -10,8 +10,9 @@ pim_connector:
           title: Seleção de categorias
           cancel: Cancelar
           confirm: Confirmar
+        label: "{0} todos os produtos |{1} uma categoria selecionada |] 1, Inf [{{ count }} categorias selecionadas"
         edit: Editar
         title: Selecionar categorias
     locales:
       validation:
-        not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
+        not_blank: Uma localidade deve ser selecionado, por favor, escolha um local para exportar.

@@ -1,16 +1,26 @@
 pim_api:
   acl:
+    rights: Permissões de API Web
     attribute:
+      edit: Criar e atualizar atributos
       list: Listar atributos
+    attribute_option:
+      edit: Criar e atualizar as opções de atributo
+      list: Lista as opções de atributo
     category:
+      edit: Criar e atualizar as categorias
       list: Listar categorias
     family:
+      edit: Criar e atualizar as famílias
       list: Listar famílias
     channel.list: Listar canais
     locale.list: Lista de localidades
   acl_group:
+    overall_access: Acesso total à API Web
     attribute: Atributos
+    attribute_option: Opções de atributo
     category: Categorias
     family: Famílias
     channel: Canais
     locale: Localidades
+rights.api: Permissões de API Web
