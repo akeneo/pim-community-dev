@@ -173,7 +173,7 @@
                             var resolvedModules = []
                             _.each(modules, function(module) {
                               var resolvedModule = require(module)
-                              resolvedModules.push(resolvedModule)
+                              resolvedModules.unshift(resolvedModule)
                             })
                             datagridBuilder(resolvedModules);
                         });

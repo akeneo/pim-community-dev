@@ -139,7 +139,6 @@ class Config
         $bundles = $this->container->getParameter('kernel.bundles');
         $paths = array();
 
-        // Tell it to output the paths relative to where you are running the command from
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             $fileName = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml';
