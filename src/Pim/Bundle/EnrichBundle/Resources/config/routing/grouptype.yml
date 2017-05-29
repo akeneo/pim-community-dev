@@ -23,11 +23,11 @@ pim_enrich_grouptype_rest_get:
         identifier: '[a-zA-Z0-9_]+'
 
 pim_enrich_grouptype_rest_post:
-    path: /rest/{code}
+    path: /rest/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.group_type:postAction }
     methods: [POST]
     requirements:
-        code: '[a-zA-Z0-9_]+'
+        identifier: '[a-zA-Z0-9_]+'
 
 pim_enrich_grouptype_rest_remove:
     path: /rest/{code}

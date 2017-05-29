@@ -36,6 +36,8 @@ flash:
     removed: Tip pridruživanja je uspješno uklonjen
   attribute:
     removed: Atribut je uspješno uklonjen
+  attribute_group:
+    removed: Atribut grupe je uspješno uklonjen
   family:
     removed: Obitelj je uspješno uklonjena
   product:
@@ -204,6 +206,9 @@ pim_enrich:
           family: Odaberi obitelj
           save: Spremi
           cancel: Poništi
+    attribute:
+      scopable: Moguće je odrediti djelokrug
+      global: Globalno
     association_type:
       info:
         field_not_ready:
@@ -309,6 +314,9 @@ pim_enrich:
         created_by: Kreirao korisnik
         updated: Ažurirano
         updated_by: Ažurirao korisnik
+    attribute_group:
+      info:
+        update_successful: Atribut grupe je uspješno ažuriran
   confirmation:
     leave: Jeste li sigurni da želite napustiti ovu stranicu?
     discard_changes: Promjene u {{ entity }} će se izgubiti ako napustite ovu stranicu.
@@ -468,6 +476,21 @@ pim_enrich:
           title: Povijest
         products:
           title: Proizvodi
+    attribute_group:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          label_translations: Prijevodi oznaka
+        attribute:
+          title: Atributi
+          table:
+            name: Ime
+            type: Tip
+            scope: Djelokrug
+            localizable: Moguće je lokalizirati
+        history.title: Povijest
     common:
       tab:
         attributes:
@@ -724,6 +747,8 @@ pim_enrich:
       title: Proces praćenja
     attribute:
       modal_title: Odaberi tip atributa
+    attribute_group:
+      create_btn: Kreiraj
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
 page_title:

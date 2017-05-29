@@ -1,0 +1,48 @@
+<div class="AknHorizontalNavtab-item--active AknVerticalNavtab-item--active">
+    <div class="AknGridToolbar">
+        <div class="AknGridToolbar-right" data-drop-zone="actions">
+        </div>
+    </div>
+    <div class="tabsection-content">
+        <div class="AknGridContainer">
+            <table class="AknGrid AknGrid--unclickable table attributes">
+                <thead>
+                    <tr>
+                        <th class="AknGrid-headerCell">&nbsp;</th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.name') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.type') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.scope') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.localizable') %></th>
+                        <% if (hasRightToRemove) { %>
+                        <th class="AknGrid-headerCell">&nbsp;</th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody class="attribute-list">
+                    <% _.each(attributes, function (attribute) { %>
+                        <tr class="AknGrid-bodyRow attribute" data-attribute-code="<%- attribute.code %>">
+                            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                                <span class="handle">
+                                    <i class="icon-reorder"></i>
+                                </span>
+                            </td>
+                            <td class="AknGrid-bodyCell"><%- i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code) %></td>
+                            <td class="AknGrid-bodyCell"><%- __('pim_enrich.entity.attribute_label.' + attribute.type) %></td>
+                            <td class="AknGrid-bodyCell"><%- attribute.scopable ? __('pim_enrich.entity.attribute.scopable') : __('pim_enrich.entity.attribute.global') %></td>
+                            <td class="AknGrid-bodyCell">
+                                <input type="checkbox" disabled="disabled" <%- attribute.localizable ? 'checked="checked"' : '' %>>
+                            </td>
+                            <% if (hasRightToRemove) { %>
+                            <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                                <span class="AknIconButton AknIconButton--small AknIconButton--grey remove-attribute" data-attribute-code="<%- attribute.code %>">
+                                    <i class="icon-trash"></i>
+                                </span>
+                            </td>
+                            <% } %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

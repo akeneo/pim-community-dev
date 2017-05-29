@@ -25,8 +25,11 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Attributes' => array('css' => '.tab-pane.tab-attribute table'),
-                'Attribute list' => ['css' => '#attributes-sortable'],
+                'Attribute list'              => ['css' => '.table.attributes'],
+                'Available attributes button' => ['css' => '.add-attribute a.select2-choice'],
+                'Available attributes list'   => ['css' => '.add-attribute .select2-results'],
+                'Available attributes search' => ['css' => '.add-attribute .select2-search input[type="text"]'],
+                'Available attributes add button' => ['css' => '.ui-multiselect-footer button'],
             ]
         );
     }
@@ -45,12 +48,13 @@ class Creation extends Form
             $this->openAvailableAttributesMenu();
         }
 
+        sleep(1);
         $search = $this->getElement('Available attributes search');
         foreach ($attributes as $attributeLabel) {
             $search->setValue($attributeLabel);
             $label = $this->spin(
                 function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
+                    return $list->find('css', sprintf('li span:contains("%s")', $attributeLabel));
                 },
                 sprintf('Could not find available attribute "%s".', $attributeLabel)
             );
@@ -68,28 +72,9 @@ class Creation extends Form
      */
     public function getRemoveLinkFor($attribute)
     {
-        $attributeRow = $this->getElement('Attributes')->find('css', sprintf('tr:contains("%s")', $attribute));
-
-        if (!$attributeRow) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Couldn\'t find the attribute row "%s" in the attributes table',
-                    $attribute
-                )
-            );
-        }
-
-        $removeLink = $attributeRow->find('css', 'a.remove-attribute');
-
-        if (!$removeLink) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Couldn\'t find the attribute remove link for "%s" in the attributes table',
-                    $attribute
-                )
-            );
-        }
-
-        return $removeLink;
+        return $this->spin(function () use ($attribute) {
+            return $this->getElement('Attribute list')
+                ->find('css', sprintf('tr:contains("%s") .remove-attribute', $attribute));
+        }, sprintf('Cannot find delete link for %s', $attribute));
     }
 }

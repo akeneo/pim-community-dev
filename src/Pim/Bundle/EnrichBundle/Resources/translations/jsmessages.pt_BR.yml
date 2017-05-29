@@ -36,6 +36,8 @@ flash:
     removed: Tipo de associação removido com sucesso
   attribute:
     removed: Atributo removido com sucesso
+  attribute_group:
+    removed: Grupo de atributos removido com sucesso
   family:
     removed: Família removida com sucesso
   product:
@@ -57,6 +59,8 @@ flash:
   role:
     removed: Função removida com sucesso
 error:
+  creating:
+    product: Nenhum atributo está configurado como um identificador de produto ou você não tem os direitos para editá-lo.
   removing:
     item: Não é possível excluir este item
     association_type: Não é possível excluir este tipo de associação
@@ -200,8 +204,15 @@ pim_enrich:
           family: Escolha uma família
           save: Salvar
           cancel: Cancelar
+    attribute:
+      scopable: Com escopo definível
+      global: Global
     association_type:
       info:
+        deletion_successful: Tipo de associação excluído com êxito.
+        deletion_failed: Tipo de associação não pode ser excluído.
+        update_successful: Tipo de associação atualizado com sucesso.
+        update_failed: O tipo de associação não pôde ser atualizado.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - campos
@@ -225,6 +236,12 @@ pim_enrich:
     channel:
       title: canal
       info:
+        deletion_successful: Canal excluído com êxito.
+        deletion_failed: Canal não pode ser excluído.
+        update_successful: Canal atualizado com sucesso.
+        update_failed: O canal não pôde ser atualizado.
+        create_successful: Canal criado com êxito.
+        create_failed: O canal não pôde ser criado.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - campos
@@ -235,6 +252,9 @@ pim_enrich:
         save: Salvar
     family:
       title: família
+      info:
+        create_successful: Canal criado com êxito.
+        update_failed: Ocorreu um erro durante a atualização de família.
       meta:
         created: Criado
         updated: Atualizado
@@ -276,6 +296,10 @@ pim_enrich:
     group:
       title: Grupo
       info:
+        deletion_successful: Grupo excluído com sucesso.
+        deletion_failed: Grupo não pode ser excluído.
+        update_successful: Grupo atualizado com sucesso.
+        update_failed: O grupo não pôde ser atualizado.
         field_not_ready:
           The group cannot be saved right now. The following fields are not ready:
             - campos
@@ -285,6 +309,14 @@ pim_enrich:
         product_count: Produtos
         created: Criado
         updated: Atualizado
+    job_instance:
+      title: perfil de trabalho
+      info:
+        update_failed: O perfil de trabalho não pôde ser atualizado.
+        update_successful: O perfil de trabalho foi atualizado com sucesso.
+    attribute_group:
+      info:
+        update_successful: Grupo de atributos atualizado com sucesso
   confirmation:
     leave: Tem certeza de que deseja sair desta página?
     discard_changes: Você perderá as alterações feitas em %entity% se sair dessa página.
@@ -444,6 +476,21 @@ pim_enrich:
           title: Histórico
         products:
           title: Produtos
+    attribute_group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções do rótulo
+        attribute:
+          title: Atributos
+          table:
+            name: Nome
+            type: Tipo
+            scope: Escopo
+            localizable: Localizável
+        history.title: Histórico
     common:
       tab:
         attributes:
@@ -471,6 +518,12 @@ pim_enrich:
         header.start: Iniciar
         header.end: Fim
     job_instance:
+      fail:
+        launch: Falha ao iniciar o perfil de trabalho. Certifique-se que é válido e que você tem direito a lançá-lo.
+        save: Falha ao salvar o perfil de trabalho. Certifique-se de que você tem direito de editá-lo.
+      title:
+        import: Importar perfil
+        export: Exportar Perfil
       button:
         edit.title: Editar
         export.title: Exportar Agora
@@ -669,6 +722,8 @@ pim_enrich:
       title: Visualizador de processos
     attribute:
       modal_title: Escolher tipo de atributo
+    attribute_group:
+      create_btn: Criar
 pim_enrich.error:
   exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
 page_title:

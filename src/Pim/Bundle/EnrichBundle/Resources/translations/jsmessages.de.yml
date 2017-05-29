@@ -36,6 +36,8 @@ flash:
     removed: Verbindungstyp erfolgreich gelöscht
   attribute:
     removed: Attribut erfolgreich entfernt
+  attribute_group:
+    removed: Attributgruppe erfolgreich entfernt
   family:
     removed: Produktfamilie erfolgreich entfernt
   product:
@@ -206,6 +208,9 @@ pim_enrich:
           family: Wählen Sie eine Produktfamilie
           save: Speichern
           cancel: Abbrechen
+    attribute:
+      scopable: Je Ausgabekanal individualisierbar
+      global: Global
     association_type:
       info:
         deletion_successful: Verbindungstyp erfolgreich entfernt.
@@ -336,6 +341,9 @@ pim_enrich:
       info:
         update_failed: Das Job-Profil konnte nicht aktualisiert werden.
         update_successful: Das Job-Profil wurde erfolgreich aktualisiert.
+    attribute_group:
+      info:
+        update_successful: Attributgruppe erfolgreich aktualisiert
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
@@ -499,6 +507,21 @@ pim_enrich:
           title: Historie
         products:
           title: Produkte
+    attribute_group:
+      tab:
+        properties:
+          title: Eigenschaften
+          general: Allgemeine Eigenschaften
+          code: Code
+          label_translations: Feldbezeichner-Übersetzungen
+        attribute:
+          title: Attribute
+          table:
+            name: Name
+            type: Typ
+            scope: Gültigkeitsbereich
+            localizable: Lokalisierbar
+        history.title: Historie
     common:
       tab:
         attributes:
@@ -801,6 +824,8 @@ pim_enrich:
       title: Attribute Übersicht
       create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
+    attribute_group:
+      create_btn: Anlegen
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
