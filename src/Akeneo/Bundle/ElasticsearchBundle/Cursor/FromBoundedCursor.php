@@ -19,6 +19,9 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 class FromBoundedCursor extends AbstractCursor implements CursorInterface
 {
     /** @var int */
+    protected $initialFrom;
+
+    /** @var int */
     protected $from;
 
     /** @var int */
@@ -55,9 +58,22 @@ class FromBoundedCursor extends AbstractCursor implements CursorInterface
         $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->from = $from;
+        $this->initialFrom = $from;
         $this->to = $this->from + $this->limit;
 
         $this->items = $this->getNextItems($esQuery);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        if (false === next($this->items)) {
+            $this->from += count($this->items);
+            $this->items = $this->getNextItems($this->esQuery);
+            reset($this->items);
+        }
     }
 
     /**
@@ -67,7 +83,7 @@ class FromBoundedCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery)
     {
-        $size = $this->getItemsCountToFetch();
+        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
         $esQuery['size'] = $size;
 
         if (0 === $esQuery['size']) {
@@ -91,16 +107,18 @@ class FromBoundedCursor extends AbstractCursor implements CursorInterface
             $identifiers[] = $hit['_source']['identifier'];
         }
 
-        $this->from += $size;
-
         return $identifiers;
     }
 
+
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    private function getItemsCountToFetch()
+    public function rewind()
     {
-        return ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $this->from = $this->initialFrom;
+        $this->to = $this->from + $this->limit;
+        $this->items = $this->getNextItems($this->esQuery);
+        reset($this->items);
     }
 }

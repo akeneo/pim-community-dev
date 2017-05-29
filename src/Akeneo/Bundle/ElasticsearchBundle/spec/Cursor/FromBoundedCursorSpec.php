@@ -115,7 +115,6 @@ class FromBoundedCursorSpec extends ObjectBehavior
         $productBaz->getIdentifier()->willReturn('baz');
         $productFum->getIdentifier()->willReturn('fum');
 
-        $this->rewind()->shouldReturn(null);
         for ($i = 0; $i < 2; $i++) {
             if ($i > 0) {
                 $this->next()->shouldReturn(null);

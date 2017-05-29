@@ -47,17 +47,6 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
-    {
-        if (false === next($this->items)) {
-            $this->items = $this->getNextItems($this->esQuery);
-            $this->rewind();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function key()
     {
         return key($this->items);
@@ -69,14 +58,6 @@ abstract class AbstractCursor implements CursorInterface
     public function valid()
     {
         return !empty($this->items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        reset($this->items);
     }
 
     /**

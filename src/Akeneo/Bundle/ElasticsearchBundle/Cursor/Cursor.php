@@ -40,8 +40,30 @@ class Cursor extends AbstractCursor implements CursorInterface
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
+        $this->searchAfter = [];
 
         $this->items = $this->getNextItems($esQuery);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        if (false === next($this->items)) {
+            $this->items = $this->getNextItems($this->esQuery);
+            reset($this->items);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        $this->searchAfter = [];
+        $this->items = $this->getNextItems($this->esQuery);
+        reset($this->items);
     }
 
     /**
@@ -51,7 +73,7 @@ class Cursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery)
     {
-        $esQuery['size'] = $this->getItemsCountToFetch();
+        $esQuery['size'] = $this->pageSize;
 
         if (0 === $esQuery['size']) {
             return [];
@@ -84,13 +106,5 @@ class Cursor extends AbstractCursor implements CursorInterface
         }
 
         return $identifiers;
-    }
-
-    /**
-     * @return int
-     */
-    private function getItemsCountToFetch()
-    {
-        return $this->pageSize;
     }
 }

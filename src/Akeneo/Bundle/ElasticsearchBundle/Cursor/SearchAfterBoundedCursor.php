@@ -30,6 +30,9 @@ class SearchAfterBoundedCursor extends AbstractCursor implements CursorInterface
     /** @var array */
     protected $searchAfter;
 
+    /** @var array */
+    protected $initialSearchAfter;
+
     /**
      * @param Client                        $esClient
      * @param CursorableRepositoryInterface $repository
@@ -57,13 +60,23 @@ class SearchAfterBoundedCursor extends AbstractCursor implements CursorInterface
         $this->pageSize = $pageSize;
         $this->limit = $limit;
         $this->searchAfter = $searchAfter;
+        $this->initialSearchAfter = $this->searchAfter;
         $this->searchAfterUniqueKey = $searchAfterUniqueKey;
-
-        if (null !== $searchAfterUniqueKey) {
-            array_push($this->searchAfter, $indexType . '#' . $searchAfterUniqueKey);
-        }
+        $this->fetchedItemsCount = 0;
 
         $this->items = $this->getNextItems($esQuery);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        if (false === next($this->items)) {
+            $this->fetchedItemsCount += count($this->items);
+            $this->items = $this->getNextItems($this->esQuery);
+            reset($this->items);
+        }
     }
 
     /**
@@ -73,7 +86,11 @@ class SearchAfterBoundedCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery)
     {
-        $esQuery['size'] = $this->getItemsCountToFetch();
+        $size = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
+        if ($this->fetchedItemsCount + $size > $this->limit) {
+            $size = $this->limit - $this->fetchedItemsCount;
+        }
+        $esQuery['size'] = $size;
 
         if (0 === $esQuery['size']) {
             return [];
@@ -109,16 +126,17 @@ class SearchAfterBoundedCursor extends AbstractCursor implements CursorInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    private function getItemsCountToFetch()
+    public function rewind()
     {
-        $itemsCountToFetch = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
-        if (null !== $this->fetchedItemsCount && ($this->fetchedItemsCount + $itemsCountToFetch) > $this->limit) {
-            $itemsCountToFetch = $this->fetchedItemsCount - $this->limit;
+        $this->searchAfter = $this->initialSearchAfter;
+        if (null !== $this->searchAfterUniqueKey) {
+            array_push($this->searchAfter, $this->indexType . '#' . $this->searchAfterUniqueKey);
         }
-        $this->fetchedItemsCount += $itemsCountToFetch;
 
-        return $itemsCountToFetch;
+        $this->fetchedItemsCount = 0;
+        $this->items = $this->getNextItems($this->esQuery);
+        reset($this->items);
     }
 }

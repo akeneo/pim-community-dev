@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCase
 {
-    /** @var Collection */
+    /** @var ProductInterface[] */
     private $products;
 
     /**
