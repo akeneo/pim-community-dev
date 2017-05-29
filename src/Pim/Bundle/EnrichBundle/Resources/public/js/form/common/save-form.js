@@ -33,7 +33,6 @@ define(
         router
     ) {
         return BaseSave.extend({
-
             /**
              * Sets message labels for updates
              */
@@ -77,8 +76,8 @@ define(
              * {@inheritdoc}
              */
             save: function () {
-                var entity = $.extend(true, {}, this.getFormData());
-                delete entity.meta;
+                var excludedProperties = _.union(this.config.excludedProperties, ['meta']);
+                var entity = _.omit(this.getFormData(), excludedProperties);
 
                 var notReadyFields = FieldManager.getNotReadyFields();
 
