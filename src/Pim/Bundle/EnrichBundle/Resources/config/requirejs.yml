@@ -755,9 +755,13 @@ config:
         pim/attribute-edit-form/delete:                         pimenrich/js/attribute/form/delete
         pim/attribute-edit-form/properties/common:              pimenrich/js/attribute/form/properties/common
         pim/attribute-edit-form/type-specific-form:             pimenrich/js/attribute/form/type-specific-form
+        pim/attribute-edit-form/properties/available-locales:   pimenrich/js/attribute/form/properties/available-locales
         pim/attribute-edit-form/properties/boolean:             pimenrich/js/attribute/form/properties/boolean
-        pim/attribute-edit-form/properties/text:                pimenrich/js/attribute/form/properties/text
+        pim/attribute-edit-form/properties/group:               pimenrich/js/attribute/form/properties/group
+        pim/attribute-edit-form/properties/is-locale-specific:  pimenrich/js/attribute/form/properties/is-locale-specific
         pim/attribute-edit-form/properties/metric-family:       pimenrich/js/attribute/form/properties/metric-family
+        pim/attribute-edit-form/properties/text:                pimenrich/js/attribute/form/properties/text
+        pim/attribute-edit-form/properties/type:                pimenrich/js/attribute/form/properties/type
         pim/attribute-edit-form/properties/default-metric-unit: pimenrich/js/attribute/form/properties/default-metric-unit
 
         # Common

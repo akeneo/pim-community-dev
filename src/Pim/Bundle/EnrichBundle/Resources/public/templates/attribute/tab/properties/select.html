@@ -4,12 +4,18 @@
     </label>
 </div>
 <div class="AknFieldContainer-inputContainer">
-    <select id="pim_enrich_attribute_form_<%- fieldName %>" class="select2" name="group" data-placeholder="<%- labels.defaultLabel %>">
+    <select
+        id="pim_enrich_attribute_form_<%- fieldName %>"
+        class="select2"
+        name="<%- fieldName %>"
+        data-placeholder="<%- labels.defaultLabel %>"
+        <% if (multiple) { %> multiple<% } %>
+    >
         <option value=""<% if (!value) { %> selected<% } %>></option>
         <% _.each(choices, function (choiceLabel, choiceValue) { %>
             <option
                 value="<%- choiceValue %>"
-                <% if (choiceValue === value) { %> selected<% } %>
+                <% if ((!multiple && choiceValue === value) || (multiple && _.contains(value, choiceValue))) { %> selected<% } %>
             >
                 <%- choiceLabel %>
             </option>

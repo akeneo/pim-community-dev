@@ -96,12 +96,73 @@ extensions:
             label: pim_enrich.form.attribute.tab.properties.title
 
     pim-attribute-edit-form-properties-common:
-        module: pim/attribute-edit-form/properties/common
+        module: pim/common/simple-view
         parent: pim-attribute-edit-form-properties
         targetZone: accordion
         position: 100
         config:
-            mode: create
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.attribute.tab.properties.common
+                dropZone: content
+
+    pim-attribute-edit-form-properties-common-code:
+        module: pim/attribute-edit-form/properties/text
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 120
+        config:
+            fieldName: code
+
+    pim-attribute-edit-form-properties-common-type:
+        module: pim/attribute-edit-form/properties/type
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 130
+
+    pim-attribute-edit-form-properties-common-group:
+        module: pim/attribute-edit-form/properties/group
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 140
+
+    pim-attribute-edit-form-properties-common-scopable:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 150
+        config:
+            fieldName: scopable
+
+    pim-attribute-edit-form-properties-common-localizable:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 160
+        config:
+            fieldName: localizable
+
+    pim-attribute-edit-form-properties-common-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 170
+        config:
+            fieldName: is_locale_specific
+
+    pim-attribute-edit-form-properties-common-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 180
+
+    pim-attribute-edit-form-properties-common-usable_as_grid_filter:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 190
+        config:
+            fieldName: useable_as_grid_filter
 
     pim-attribute-edit-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form

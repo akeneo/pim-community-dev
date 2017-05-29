@@ -10,6 +10,8 @@ define([
     'oro/translator',
     'pim/form',
     'pim/fetcher-registry',
+    'pim/user-context',
+    'pim/i18n',
     'text!pim/template/attribute/tab/properties/select'
 ],
 function (
@@ -17,12 +19,14 @@ function (
     __,
     BaseForm,
     fetcherRegistry,
+    UserContext,
+    i18n,
     template
 ) {
     return BaseForm.extend({
         className: 'AknFieldContainer',
         template: _.template(template),
-        fieldName: 'default_metric_unit',
+        fieldName: 'group',
         events: {
             'change select': function (event) {
                 this.updateModel(event.target);
@@ -30,34 +34,13 @@ function (
             }
         },
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            this.listenTo(this.getRoot(), this.getRoot().preUpdateEventName, function (newData) {
-                var oldData = this.getFormData();
-
-                if (_.has(newData, 'metric_family') && oldData.metric_family !== newData.metric_family) {
-                    var unitNewData = {};
-                    unitNewData[this.fieldName] = null;
-
-                    this.setData(unitNewData, {silent: true});
-                }
-            }.bind(this));
-
-            return BaseForm.prototype.configure.apply(this, arguments);
-        },
-
         render: function () {
-            fetcherRegistry.getFetcher('measure').fetchAll()
-                .then(function (measures) {
-                    var metricFamily = this.getFormData().metric_family;
-                    var choices = metricFamily ? this.formatChoices(measures[metricFamily].units) : [];
-
+            fetcherRegistry.getFetcher('attribute-group').fetchAll()
+                .then(function (attributeGroups) {
                     this.$el.html(this.template({
                         value: this.getFormData()[this.fieldName],
                         fieldName: this.fieldName,
-                        choices: choices,
+                        choices: this.formatChoices(attributeGroups, UserContext.get('catalogLocale')),
                         labels: {
                             field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
                             required: __('pim_enrich.form.required'),
@@ -84,31 +67,13 @@ function (
         },
 
         /**
-         * Transforms:
-         *
-         * {
-         *     BIT: {...},
-         *     BYTE: {...}
-         * }
-         *
-         * into:
-         *
-         * {
-         *     BIT: "Bit",
-         *     BYTE: "Octet"
-         * }
-         *
-         * (for locale fr_FR)
-         *
-         * @param {Object} units
+         * @param {Object} attributeGroups
+         * @param {String} currentLocale
          */
-        formatChoices: function (units) {
-            var unitCodes = _.keys(units);
-
-            return _.object(
-                unitCodes,
-                _.map(unitCodes, __)
-            );
+        formatChoices: function (attributeGroups, currentLocale) {
+            return _.mapObject(attributeGroups, function (group) {
+                return i18n.getLabel(group.labels, currentLocale, group.code);
+            });
         }
     });
 });

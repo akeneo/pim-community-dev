@@ -40,7 +40,8 @@ function (
                         labels: {
                             field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
                             required: __('pim_enrich.form.required')
-                        }
+                        },
+                        multiple: false
                     }));
 
                     this.$('select.select2').select2();
