@@ -169,11 +169,11 @@
                             $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                             var modules = resp.metadata.requireJSModules;
-                            modules.push('pim/datagrid/state-listener');
+                            modules.unshift('pim/datagrid/state-listener');
                             var resolvedModules = []
                             _.each(modules, function(module) {
                               var resolvedModule = require(module)
-                              resolvedModules.unshift(resolvedModule)
+                              resolvedModules.push(resolvedModule)
                             })
                             datagridBuilder(resolvedModules);
                         });
