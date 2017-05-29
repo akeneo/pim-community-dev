@@ -29,6 +29,12 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: Преобразования активов
+    attribute_group:
+      tab:
+        permission:
+          title: Права доступа
+          view.label: Разрешено просматривать атрибуты
+          edit.label: Разрешено изменение атрибутов
   entity:
     product:
       history:
