@@ -41,8 +41,6 @@ class Cursor extends AbstractCursor implements CursorInterface
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->searchAfter = [];
-
-        $this->items = $this->getNextItems($esQuery);
     }
 
     /**

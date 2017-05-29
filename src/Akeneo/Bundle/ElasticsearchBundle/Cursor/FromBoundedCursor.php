@@ -60,8 +60,6 @@ class FromBoundedCursor extends AbstractCursor implements CursorInterface
         $this->from = $from;
         $this->initialFrom = $from;
         $this->to = $this->from + $this->limit;
-
-        $this->items = $this->getNextItems($esQuery);
     }
 
     /**

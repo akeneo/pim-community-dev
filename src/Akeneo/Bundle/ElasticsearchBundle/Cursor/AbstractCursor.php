@@ -28,7 +28,7 @@ abstract class AbstractCursor implements CursorInterface
     protected $indexType;
 
     /** @var array */
-    protected $items = [];
+    protected $items;
 
     /** @var int */
     protected $pageSize;
@@ -41,6 +41,10 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function current()
     {
+        if (null === $this->items) {
+            $this->rewind();
+        }
+
         return current($this->items);
     }
 
@@ -49,6 +53,10 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function key()
     {
+        if (null === $this->items) {
+            $this->rewind();
+        }
+
         return key($this->items);
     }
 
@@ -57,6 +65,10 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function valid()
     {
+        if (null === $this->items) {
+            $this->rewind();
+        }
+
         return !empty($this->items);
     }
 
@@ -65,12 +77,15 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function count()
     {
+        if (null === $this->items) {
+            $this->rewind();
+        }
+
         return $this->count;
     }
 
     /**
      * Get the next items (hydrated from doctrine repository).
-     * This method should be called by the constructor of the cursors.
      *
      * @param array $esQuery
      *

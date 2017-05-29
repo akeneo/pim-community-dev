@@ -63,8 +63,6 @@ class SearchAfterBoundedCursor extends AbstractCursor implements CursorInterface
         $this->initialSearchAfter = $this->searchAfter;
         $this->searchAfterUniqueKey = $searchAfterUniqueKey;
         $this->fetchedItemsCount = 0;
-
-        $this->items = $this->getNextItems($esQuery);
     }
 
     /**
