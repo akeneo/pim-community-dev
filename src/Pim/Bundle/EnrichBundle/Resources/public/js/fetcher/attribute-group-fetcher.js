@@ -9,10 +9,12 @@
  */
 define([
     'jquery',
+    'underscore',
     'pim/base-fetcher',
     'routing'
 ], function (
     $,
+    _,
     BaseFetcher,
     Routing
 ) {
