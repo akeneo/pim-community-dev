@@ -78,11 +78,17 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
      */
     protected function openDropList()
     {
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->getElements()['dropListBtn']);
-        }, 'Cannot find drop list button');
+        $this->spin(function () {
+            $button = $this->find('css', $this->getElements()['dropListBtn']);
 
-        $selector->click();
+            if (null !== $button) {
+                $button->click();
+
+                return true;
+            }
+
+            return false;
+        }, 'Cannot open drop list');
 
         return $this;
     }

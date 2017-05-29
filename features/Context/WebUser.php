@@ -972,7 +972,7 @@ class WebUser extends RawMinkContext
     /**
      * @param string $groups
      *
-     * @Then /^I add attributes by group "([^"]*)"$/
+     * @Then /^I add attributes by groups? "([^"]*)"$/
      */
     public function iAddAttributesByGroup($groups)
     {

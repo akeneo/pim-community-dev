@@ -16,7 +16,7 @@ define(
                 FetcherRegistry.getFetcher('attribute-group').fetchAll(),
                 AttributeManager.getAttributes(object)
             ).then(function (attributeGroups, ObjectAttributes) {
-                return attributeGroups.reduce(function (result, attributeGroup) {
+                return _.reduce(attributeGroups, function (result, attributeGroup) {
                     if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
                         result[attributeGroup.code] = attributeGroup;
                     }
