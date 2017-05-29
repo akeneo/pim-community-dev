@@ -8,6 +8,7 @@
 - [Migrate your standard project](#migrate-your-standard-project)
 - [Migrate your custom code](#migrate-your-custom-code)
   - [Structured normalizers to Standard Normalizers](#structured-normalizers-to-standard-normalizers)
+  - [Array converters](#array-converters)
   - [Import/export UI migration](#importexport-ui-migration)
   - [Update references to business reader classes that have been moved](#update-references-to-business-reader-classes-that-have-been-moved)
   - [Versioning formats](#versioning-formats)
@@ -283,6 +284,12 @@ This normalizer has been split in two distinct normalizers:
 In order to use the right one, a proxy group normalizer
 [`Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer`](https://github.com/akeneo/pim-community-dev/blob/1.7/src/Pim/Component/Catalog/Normalizer/Standard/ProxyGroupNormalizer.php)
 has been created. This proxy normalizer will be used instead of `Pim\Component\Catalog\Normalizer\Structured\GroupNormalizer`.
+
+### Array Converters
+
+To be able to use the standard format during import, we removed the generic `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ScalarConverter`
+in favor of `BooleanConverter`, `DateConverter` and `NumberConverter` classes.
+With that, imported data can be transformed as the [standard format](https://docs.akeneo.com/1.7/reference/standard_format/index.html) expect.
 
 ### Import/export UI migration
 

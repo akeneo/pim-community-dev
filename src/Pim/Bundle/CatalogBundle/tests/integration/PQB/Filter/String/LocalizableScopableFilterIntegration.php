@@ -17,49 +17,47 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_text',
-                'type'                => AttributeTypes::TEXT,
-                'localizable'         => true,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_text',
+            'type'                => AttributeTypes::TEXT,
+            'localizable'         => true,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_localizable_scopable_text' => [
-                        ['data' => 'black cat', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'cat', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'chat noir', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'chat', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('cat', [
+            'values' => [
+                'a_localizable_scopable_text' => [
+                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'cat', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'chat noir', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'chat', 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_localizable_scopable_text' => [
-                        ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_localizable_scopable_text' => [
+                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_localizable_scopable_text' => [
-                        ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'dog', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'juste un chien...', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'chien', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('dog', [
+            'values' => [
+                'a_localizable_scopable_text' => [
+                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'dog', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'juste un chien...', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'chien', 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartsWith()

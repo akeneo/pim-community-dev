@@ -52,14 +52,17 @@ define(
 
                 if (this.getFormData().meta) {
                     $.when(
+                        FetcherRegistry.getFetcher('channel').fetchAll(),
                         FetcherRegistry.getFetcher('locale').fetchActivated()
-                    ).then(function (locales) {
+                    ).then(function (channels, locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
                                 completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
+                                channels: channels,
                                 locales: locales,
+                                uiLocale: UserContext.get('uiLocale'),
                                 catalogLocale: UserContext.get('catalogLocale')
                             })
                         );

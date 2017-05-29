@@ -755,6 +755,32 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $label
+     * @param string $scope
+     *
+     * @Then /^the field ([^"]*) should display the ([^"]*) scope label$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
+     */
+    public function theFieldShouldDisplayTheScopeLabel($label, $scope)
+    {
+        $fieldContainer = $this->getCurrentPage()->findFieldContainer($label);
+        $scopeLabel = $fieldContainer->find('css', '.field-scope')->getText();
+
+        if ($scopeLabel !== $scope) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Scope label %s is not displayed for %s. %s is displayed instead.',
+                    $scope,
+                    $label,
+                    $scopeLabel
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $field
      * @param string $scope
      * @param string $value
@@ -1403,6 +1429,22 @@ class WebUser extends RawMinkContext
                 $this->wait();
                 return true;
             }, sprintf('Unable to create the attribute option %s', $data['Code']));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I edit the following attribute options?:$/
+     */
+    public function iEditTheFollowingAttributeOptionValue(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['Code'];
+            unset($data['Code']);
+
+            $this->getCurrentPage()->editOption($code, $data);
+            $this->wait();
         }
     }
 

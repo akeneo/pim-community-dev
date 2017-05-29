@@ -16,11 +16,9 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $family = $this->get('pim_catalog.factory.family')->create();
-            $this->get('pim_catalog.updater.family')->update($family, ['code' => 'familyB']);
-            $this->get('pim_catalog.saver.family')->save($family);
-        }
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, ['code' => 'familyB']);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 
     public function testOperatorIn()
@@ -79,9 +77,6 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 }

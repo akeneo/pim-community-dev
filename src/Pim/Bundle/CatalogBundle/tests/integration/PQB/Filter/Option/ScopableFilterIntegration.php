@@ -17,43 +17,41 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_select_scopable_simple_select',
-                'type'                => AttributeTypes::OPTION_SIMPLE_SELECT,
-                'localizable'         => false,
-                'scopable'            => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_select_scopable_simple_select',
+            'type'                => AttributeTypes::OPTION_SIMPLE_SELECT,
+            'localizable'         => false,
+            'scopable'            => true
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_select_scopable_simple_select',
-                'code'      => 'orange'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_select_scopable_simple_select',
+            'code'      => 'orange'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_select_scopable_simple_select',
-                'code'      => 'black'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_select_scopable_simple_select',
+            'code'      => 'black'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_select_scopable_simple_select' => [
-                        ['data' => 'orange', 'locale' => null, 'scope' => 'ecommerce']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_select_scopable_simple_select' => [
+                    ['data' => 'orange', 'locale' => null, 'scope' => 'ecommerce']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_select_scopable_simple_select' => [
-                        ['data' => 'black', 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => 'black', 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_select_scopable_simple_select' => [
+                    ['data' => 'black', 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => 'black', 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorIn()

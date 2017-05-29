@@ -76,6 +76,7 @@ class PanelDecorator extends ElementDecorator
     {
         $ratio = $scopeBlock ? $scopeBlock->find('css', '.literal-progress')->getHtml() : '';
         $state = $this->getState($scopeBlock);
+        $label = $scopeBlock->find('css', '.channel')->getText();
 
         $missingValuesBlocks = $scopeBlock ? $scopeBlock->findAll('css', '.missing-attributes [data-attribute]') : [];
 
@@ -89,6 +90,7 @@ class PanelDecorator extends ElementDecorator
         }
 
         return [
+            'label'          => $label,
             'ratio'          => $ratio,
             'state'          => $state,
             'missing_values' => $missingValues

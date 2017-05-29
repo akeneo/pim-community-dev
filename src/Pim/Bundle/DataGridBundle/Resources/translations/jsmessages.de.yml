@@ -84,6 +84,6 @@ grid.view_selector:
   placeholder: Name der neuen Ansicht
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   confirmation:
-    remove: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
+    remove: Sind Sie sicher, dass Sie diese Tabellenansicht löschen möchten?
     delete: Löschbestätigung
-grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert
+grid.view_selector.flash.updated: Tabellenansicht erfolgreich aktualisiert

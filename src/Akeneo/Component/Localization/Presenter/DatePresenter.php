@@ -38,6 +38,10 @@ class DatePresenter implements PresenterInterface
             return $value;
         }
 
+        if (is_array($value)) {
+            return $this->presentArray($value, $options);
+        }
+
         if (!($value instanceof \DateTime)) {
             $value = new \DateTime($value);
         }
@@ -53,5 +57,23 @@ class DatePresenter implements PresenterInterface
     public function supports($attributeType)
     {
         return in_array($attributeType, $this->attributeTypes);
+    }
+
+    /**
+     * Presents an array of values to be readable
+     *
+     * @param array $values  The original values
+     * @param array $options The options for presentation
+     *
+     * @return string
+     */
+    protected function presentArray($values, $options)
+    {
+        $formattedValues = [];
+        foreach ($values as $value) {
+            $formattedValues[] = $this->present($value, $options);
+        }
+
+        return implode(', ', $formattedValues);
     }
 }

@@ -259,14 +259,27 @@ class GetAccessTokenIntegration extends ApiTestCase
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
     }
 
+    public function testInvalidToken()
+    {
+        $client = ApiTestCase::createClient();
+
+        $client->request('GET', 'api/rest/v1/products/foo', [], [], [
+            'HTTP_AUTHORIZATION' => 'Bearer invalidToken',
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+
+        $response = $client->getResponse();
+        $responseBody = json_decode($response->getContent(), true);
+
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        $this->assertSame('The access token provided is invalid.', $responseBody['message']);
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

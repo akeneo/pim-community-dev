@@ -19,11 +19,28 @@ Feature: Create a user
       | Status            | Inactive |
     And I scroll down
     And I fill in the following information:
-      | E-mail | jack@example.com |
+      | E-mail | jack+doe@example.com |
     And I visit the "Groups and Roles" tab
     And I select the role "User"
     When I save the user
     Then there should be a "jack" user
+
+  Scenario: Fail to create a user with an invalid email address
+    Given I am on the user creation page
+    And I fill in the following information:
+      | Username          | jack     |
+      | First name        | Jack     |
+      | Last name         | Doe      |
+      | Password          | DoeDoe   |
+      | Re-enter password | DoeDoe   |
+      | Status            | Inactive |
+    And I scroll down
+    And I fill in the following information:
+      | E-mail | jack..doe@example.com |
+    And I visit the "Groups and Roles" tab
+    And I select the role "User"
+    When I save the user
+    Then I should see a validation tooltip "This value is not a valid email address."
 
   Scenario: Successfully delete a user
     Given I am on the users page

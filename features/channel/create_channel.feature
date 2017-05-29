@@ -31,3 +31,10 @@ Feature: Create a channel
       | Locales       | French          |
     And I press the "Save" button
     Then I should see the text "This value should not be blank."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6381
+  Scenario: Do not show delete button when creating channel
+    Given a "footwear" catalog configuration
+    And I am logged in as "Peter"
+    When I am on the channel creation page
+    Then I should not see the "Delete" button

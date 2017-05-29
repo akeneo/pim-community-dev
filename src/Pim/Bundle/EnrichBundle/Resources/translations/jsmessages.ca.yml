@@ -159,9 +159,6 @@ pim_enrich:
         deletion_failed: No s'ha pogut suprimir el producte.
         update_successful: Producte actualitzat correctament.
         update_failed: El producte podria no actualitzar-se.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - camps
         already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       error:
         upload: S'ha produït un error durant la càrrega
@@ -618,7 +615,6 @@ pim_enrich:
             title: Selecció de l'atribut
         attributes_selector:
           attribute_group: Grups d'atribut
-          attributes: "Cercar a {{ attributeCount }} atributs"
           selected: "Atributs seleccionats"
           clear: Restablir
           all_group: Tots els grups

@@ -17,49 +17,47 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_multi_select',
-                'type'                => AttributeTypes::OPTION_MULTI_SELECT,
-                'localizable'         => true,
-                'scopable'            => false
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_multi_select',
+            'type'                => AttributeTypes::OPTION_MULTI_SELECT,
+            'localizable'         => true,
+            'scopable'            => false
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_localizable_multi_select',
-                'code'      => 'orange'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_localizable_multi_select',
+            'code'      => 'orange'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_localizable_multi_select',
-                'code'      => 'black'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_localizable_multi_select',
+            'code'      => 'black'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_localizable_multi_select',
-                'code'      => 'purple'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_localizable_multi_select',
+            'code'      => 'purple'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_multi_select' => [
-                        ['data' => ['orange'], 'locale' => 'en_US', 'scope' => null],
-                        ['data' => ['black', 'purple'], 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_multi_select' => [
+                    ['data' => ['orange'], 'locale' => 'en_US', 'scope' => null],
+                    ['data' => ['black', 'purple'], 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_multi_select' => [
-                        ['data' => ['black', 'orange'], 'locale' => 'en_US', 'scope' => null],
-                        ['data' => ['black', 'orange'], 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_multi_select' => [
+                    ['data' => ['black', 'orange'], 'locale' => 'en_US', 'scope' => null],
+                    ['data' => ['black', 'orange'], 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorIn()

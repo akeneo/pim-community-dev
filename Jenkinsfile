@@ -199,7 +199,7 @@ def runPhpUnitTest(phpVersion) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "find app/build/logs -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -269,7 +269,7 @@ def runPhpSpecTest(phpVersion) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -290,7 +290,7 @@ def runPhpCsFixerTest() {
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -336,7 +336,7 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
             try {
                 sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${edition}-${storage}\" -e ${esVersion} --exit_on_failure"
             } finally {
-                sh "sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\" app/build/logs/behat/*.xml"
+                sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\""
                 junit 'app/build/logs/behat/*.xml'
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()

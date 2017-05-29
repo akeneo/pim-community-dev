@@ -17,33 +17,31 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_date',
-                'type'                => AttributeTypes::DATE,
-                'localizable'         => false,
-                'scopable'            => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_date',
+            'type'                => AttributeTypes::DATE,
+            'localizable'         => false,
+            'scopable'            => true
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_date' => [
-                        ['data' => '2016-04-23', 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => '2016-04-23', 'scope' => 'tablet', 'locale' => null],
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_date' => [
+                    ['data' => '2016-04-23', 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => '2016-04-23', 'scope' => 'tablet', 'locale' => null],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_date' => [
-                        ['data' => '2016-09-23', 'scope' => 'ecommerce', 'locale' => null],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_date' => [
+                    ['data' => '2016-09-23', 'scope' => 'ecommerce', 'locale' => null],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

@@ -224,14 +224,11 @@ class GetProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     /**

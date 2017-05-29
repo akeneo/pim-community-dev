@@ -9,7 +9,27 @@ require(
             // Get form name
             var formName = '#{{ form.vars.id }}';
 
-            var $optionList;
+            function getFirstInvalidField() {
+                var container = $('.field-input.validation-error', formName).first();
+
+                return $('input', container);
+            }
+
+            function getParentTabLink(field) {
+                var paneId = $(field).parents('.tab-pane').attr('id');
+
+                return $('.AknHorizontalNavtab-link[href="#'+ paneId +'"]');
+            }
+
+            function focusInvalidField() {
+                var invalidField = getFirstInvalidField();
+                var parentTab = getParentTabLink(invalidField);
+
+                parentTab.trigger('click');
+                invalidField.trigger('focus');
+            }
+
+            $(formName).on('refresh', focusInvalidField);
 
             function initializeForm() {
                 var $switch = $(formName+'_autoOptionSorting')

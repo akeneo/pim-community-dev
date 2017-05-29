@@ -2,6 +2,7 @@ Pim\Bundle\UserBundle\Entity\User:
     type: entity
     table: oro_user
     changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\UserBundle\Doctrine\ORM\Repository\UserRepository
     fields:
         id:
             type: integer

@@ -16,40 +16,38 @@ class OptionsFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttributeOption([
-               'attribute' => 'a_multi_select',
-               'code'      => 'orange'
-            ]);
+        $this->createAttributeOption([
+           'attribute' => 'a_multi_select',
+           'code'      => 'orange'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_multi_select',
-                'code'      => 'black'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_multi_select',
+            'code'      => 'black'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_multi_select',
-                'code'      => 'purple'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_multi_select',
+            'code'      => 'purple'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_multi_select' => [
-                        ['data' => ['orange'], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_multi_select' => [
+                    ['data' => ['orange'], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_multi_select' => [
-                        ['data' => ['black', 'purple'], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_multi_select' => [
+                    ['data' => ['black', 'purple'], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorIn()
