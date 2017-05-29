@@ -16,14 +16,13 @@ define(
                 FetcherRegistry.getFetcher('attribute-group').fetchAll(),
                 AttributeManager.getAttributes(object)
             ).then(function (attributeGroups, ObjectAttributes) {
-                var activeAttributeGroups = {};
-                _.each(attributeGroups, function (attributeGroup) {
+                return attributeGroups.reduce(function (result, attributeGroup) {
                     if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
-                        activeAttributeGroups[attributeGroup.code] = attributeGroup;
+                        result[attributeGroup.code] = attributeGroup;
                     }
-                });
 
-                return activeAttributeGroups;
+                    return result;
+                }, {});
             });
         },
 

@@ -27,6 +27,29 @@ define([
          */
         getJSON: function (url, parameters) {
             return $.post(Routing.generate(url), parameters, null, 'json');
+        },
+
+        /**
+         * Overrides bas method to remove the limit and fetch all the attribute groups.
+         *
+         * {@inheritdoc}
+         */
+        fetchAll: function () {
+            if (!this.entityListPromise) {
+                if (!_.has(this.options.urls, 'list')) {
+                    return $.Deferred().reject().promise();
+                }
+
+                this.entityListPromise = $.getJSON(
+                    Routing.generate(this.options.urls.list, {
+                        options: {
+                            limit: -1
+                        }
+                    })
+                ).then(_.identity).promise();
+            }
+
+            return this.entityListPromise;
         }
     });
 });

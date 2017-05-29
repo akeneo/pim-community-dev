@@ -56,7 +56,51 @@ class AttributeGroupController
      */
     public function indexAction(Request $request)
     {
-        $options = [];
+        $applyFilters = $request->request->getBoolean('apply_filters', true);
+
+        $attributeGroups = $this->attributeGroupSearchableRepository
+            ->findBySearch(
+                $request->request->get('search'),
+                $this->parseOptions($request)
+            );
+
+        if ($applyFilters) {
+            $attributeGroups = $this->collectionFilter->filterCollection(
+                $attributeGroups,
+                'pim.internal_api.attribute_group.view'
+            );
+        }
+
+        $normalizedAttributeGroups = array_reduce($attributeGroups, function ($result, $attributeGroup) {
+            $result[$attributeGroup->getCode()] = $this->normalizer
+                ->normalize($attributeGroup, 'standard');
+
+            return $result;
+        }, []);
+
+        return new JsonResponse($normalizedAttributeGroups);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Array
+     */
+    protected function parseOptions(Request $request)
+    {
+        $options = $request->get('options', []);
+
+        if (!isset($options['limit'])) {
+            $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
+        }
+
+        if (0 > intval($options['limit'])) {
+            $options['limit'] = null;
+        }
+
+        if (!isset($options['locale'])) {
+            $options['locale'] = null;
+        }
 
         if ($request->request->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->request->get('identifiers'));
@@ -69,38 +113,6 @@ class AttributeGroupController
             );
         }
 
-        $applyFilters = $request->request->getBoolean('apply_filters', true);
-
-        if (empty($options)) {
-            $options = $request->request->get(
-                'options',
-                [
-                    'limit' => SearchableRepositoryInterface::FETCH_LIMIT,
-                    'locale' => null,
-                ]
-            );
-        }
-
-        $attributeGroups = $this->attributeGroupSearchableRepository
-            ->findBySearch(
-                $request->request->get('search'),
-                $options
-            );
-
-        if ($applyFilters) {
-            $attributeGroups = $this->collectionFilter->filterCollection(
-                $attributeGroups,
-                'pim.internal_api.attribute_group.view'
-            );
-        }
-
-        $normalizedAttributeGroups = [];
-
-        foreach ($attributeGroups as $attributeGroup) {
-            $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
-                ->normalize($attributeGroup, 'standard');
-        }
-
-        return new JsonResponse($normalizedAttributeGroups);
+        return $options;
     }
 }
