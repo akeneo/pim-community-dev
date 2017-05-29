@@ -89,7 +89,7 @@ class ProductIndexerSpec extends ObjectBehavior
     function it_indexes_a_single_product($normalizer, $indexer, ProductInterface $product)
     {
         $normalizer->normalize($product, 'indexing')->willReturn(['id' => 'foobar', 'a key' => 'a value']);
-        $indexer->index('an_index_type_for_test_purpose', 'foobar', ['id' => 'foobar', 'a key' => 'a value'], Refresh::waitFor())->shouldBeCalled();
+        $indexer->index('an_index_type_for_test_purpose', 'foobar', ['id' => 'foobar', 'a key' => 'a value'])->shouldBeCalled();
 
         $this->index($product);
     }

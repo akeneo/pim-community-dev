@@ -50,7 +50,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
         $this->validateProduct($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'indexing');
         $this->validateProductNormalization($normalizedProduct);
-        $this->indexer->index($this->indexType, $normalizedProduct['id'], $normalizedProduct, Refresh::waitFor());
+        $this->indexer->index($this->indexType, $normalizedProduct['id'], $normalizedProduct);
     }
 
     /**

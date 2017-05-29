@@ -47,37 +47,40 @@ class Client
     }
 
     /**
-     * @param string  $indexType
-     * @param string  $id
-     * @param array   $body
-     * @param Refresh $refresh
+     * @param string       $indexType
+     * @param string       $id
+     * @param array        $body
+     * @param Refresh|null $refresh
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
-    public function index($indexType, $id, array $body, Refresh $refresh)
+    public function index($indexType, $id, array $body, Refresh $refresh = null)
     {
         $params = [
             'index' => $this->indexName,
             'type' => $indexType,
             'id' => $id,
             'body' => $body,
-            'refresh' => $refresh->getType(),
         ];
+
+        if (null !== $refresh) {
+            $params['refresh'] = $refresh->getType();
+        }
 
         return $this->client->index($params);
     }
 
     /**
-     * @param string  $indexType
-     * @param array   $documents
-     * @param string  $keyAsId
-     * @param Refresh $refresh
+     * @param string       $indexType
+     * @param array        $documents
+     * @param string       $keyAsId
+     * @param Refresh|null $refresh
      *
      * @throws MissingIdentifierException
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes($indexType, $documents, $keyAsId, Refresh $refresh)
+    public function bulkIndexes($indexType, $documents, $keyAsId, Refresh $refresh = null)
     {
         $params = [];
 
@@ -95,7 +98,10 @@ class Client
             ];
 
             $params['body'][] = $document;
-            $params['refresh'] = $refresh->getType();
+
+            if (null !== $refresh) {
+                $params['refresh'] = $refresh->getType();
+            }
         }
 
         return $this->client->bulk($params);
