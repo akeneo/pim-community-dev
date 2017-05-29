@@ -57,6 +57,8 @@ flash:
   role:
     removed: Função removida com sucesso
 error:
+  creating:
+    product: Nenhum atributo está configurado como um identificador de produto ou você não tem os direitos para editá-lo.
   removing:
     item: Não é possível excluir este item
     association_type: Não é possível excluir este tipo de associação
@@ -74,6 +76,7 @@ error:
     attribute_option: Erro ao deletar a Opção de Atributo
   saving:
     attribute_option: Opções de Atributos não pode ser salva
+    export_profile: Não pode salvar o perfil de exportação. Por favor, verifique que todos os filtros são bem preenchidos
 alert:
   attribute_option:
     error_occured_during_submission: Ocorreu um erro ao tentar submeter o formulário ao servidor
@@ -102,8 +105,11 @@ pim:
         csv_all: CSV (Todos atributos)
         csv_grid_context: CSV (Contexto de grelha)
         xlsx_all: Excel (todos os atributos)
+        xlsx_grid_context: Excel (contexto de grade)
       delete: Eliminar produtos
       mass_edit: Alterar as informações de produto
+      category_edit: Mover produtos para categorias
+      sequential_edit: Editar produtos sequencialmente
 jstree.create: Criar
 switch_on: "Sim"
 switch_off: "Não"
@@ -199,30 +205,52 @@ pim_enrich:
           cancel: Cancelar
     association_type:
       info:
+        deletion_successful: Tipo de associação excluído com êxito.
+        deletion_failed: Tipo de associação não pode ser excluído.
+        update_successful: Tipo de associação atualizado com sucesso.
+        update_failed: O tipo de associação não pôde ser atualizado.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - campos
       meta:
         created: Criado
+        created_by: Criado por
         updated: Atualizado
+        updated_by: Atualizado por
       btn:
         save: Salvar
     channel:
       title: canal
       info:
+        deletion_successful: Canal excluído com êxito.
+        deletion_failed: Canal não pode ser excluído.
+        update_successful: Canal atualizado com sucesso.
+        update_failed: O canal não pôde ser atualizado.
+        create_successful: Canal criado com êxito.
+        create_failed: O canal não pôde ser criado.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - campos
       meta:
         created: Criado
+        created_by: Criado por
         updated: Atualizado
+        updated_by: Atualizado por
       btn:
         save: Salvar
     family:
       title: família
+      info:
+        update_successful: Família atualizada com sucesso.
+        create_successful: Canal criado com êxito.
+        update_failed: Ocorreu um erro durante a atualização de família.
+        cant_remove_attribute_as_label: Não pode remover o atributo usado como rótulo
+        attribute_edit_permission_is_not_granted: Você não tem direitos para editar atributos da família
       meta:
         created: Criado
+        created_by: Criado por
         updated: Atualizado
+        updated_by: Atualizado por
       btn:
         save: Salvar
     attribute_option:
@@ -232,6 +260,10 @@ pim_enrich:
     variant_group:
       title: Grupo de variantes
       info:
+        deletion_successful: Variante grupo excluído com êxito.
+        deletion_failed: O grupo variante não pôde ser excluído.
+        update_successful: Grupo variante atualizado com sucesso.
+        update_failed: O grupo variante não pôde ser atualizado.
         field_not_ready:
           The variant group cannot be saved right now. The following fields are not ready:
             - campos
@@ -242,10 +274,16 @@ pim_enrich:
       meta:
         product_count: Produtos
         created: Criado
+        created_by: Criado por
         updated: Atualizado
+        updated_by: Atualizado por
     group:
       title: Grupo
       info:
+        deletion_successful: Grupo excluído com sucesso.
+        deletion_failed: Grupo não pode ser excluído.
+        update_successful: Grupo atualizado com sucesso.
+        update_failed: O grupo não pôde ser atualizado.
         field_not_ready:
           The group cannot be saved right now. The following fields are not ready:
             - campos
@@ -254,21 +292,28 @@ pim_enrich:
       meta:
         product_count: Produtos
         created: Criado
+        created_by: Criado por
         updated: Atualizado
+        updated_by: Atualizado por
+    job_instance:
+      title: perfil de trabalho
+      info:
+        update_failed: O perfil de trabalho não pôde ser atualizado.
+        update_successful: O perfil de trabalho foi atualizado com sucesso.
   confirmation:
     leave: Tem certeza de que deseja sair desta página?
     discard_changes: Você perderá as alterações feitas em %entity% se sair dessa página.
     delete_item: Confirmar exclusão
     delete:
-      attribute: Tem certeza que deseja eliminar este atributo do produto?
+      attribute: Tem certeza que deseja excluir este atributo do produto?
   info:
     not_applicable: Não aplicável
     entity:
       updated: Há alterações que ainda não foram salvas.
   error:
-    upload: Ocorreu um erro durante o envio do ficheiro
+    upload: Ocorreu um erro durante o upload do arquivo
   alert:
-    not_allowed: Não tem autorização para aceder a esta página
+    not_allowed: Você não tem permissão para acessar esta página
     error_occured: Ocorreu um erro durante o carregamento da página
   form:
     required: (Obrigatório)
@@ -289,8 +334,9 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para serem adicionados
+            attributes_selected: "{{ itemsCount }} atributo(s) selecionado(s)"
             no_match: Nenhum resultado encontrado
-            load_more: A carregar mais resultados...
+            load_more: Carregando mais resultados...
         categories:
           title: Categorias
       panel:
@@ -361,8 +407,10 @@ pim_enrich:
           title: Atributos
           label_label: Rótulo
           toolbox:
+            select_attributes_by_groups: Adicionar por grupos
             select_attributes: Adicionar atributos
             add: Adicionar
+            attributes_groups_selected: '{{ itemsCount }} grupo(s) selecionado(s)'
           not_required_label: Não obrigatório
           required_label: Obrigatório
         history:
@@ -416,6 +464,12 @@ pim_enrich:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para serem adicionados
     job_instance:
+      fail:
+        launch: Falha ao iniciar o perfil de trabalho. Certifique-se que é válido e que você tem direito a lançá-lo.
+        save: Falha ao salvar o perfil de trabalho. Certifique-se de que você tem direito de editá-lo.
+      title:
+        import: Importar perfil
+        export: Exportar Perfil
       button:
         edit.title: Editar
         export.title: Exportar Agora
@@ -451,9 +505,8 @@ pim_enrich:
           with_header:
             title: Com Cabeçalho
             help: Imprimir ou não o nome da coluna
-          lines_per_file:
-            title: Número de linhas por ficheiro
-            help: Definir o número limite de linhas por ficheiro
+          with_media:
+            title: Exportação de arquivos e imagens
           upload_allowed:
             title: Permitir envio de arquivos
             help: Permitir ou não o upload direto do arquivo
@@ -474,7 +527,6 @@ pim_enrich:
             help: Habilitar ou não os produtos importados
           enabled_comparison:
             title: Comparar Valores
-            help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
           real_time_versioning:
             title: Atualização de histórico em tempo real
             help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
