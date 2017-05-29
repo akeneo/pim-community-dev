@@ -36,6 +36,8 @@ flash:
     removed: Тип ассоциации успешно удален
   attribute:
     removed: Атрибут успешно удален
+  attribute_group:
+    removed: Группа атрибутов успешно удалена
   family:
     removed: Семейство успешно удалено
   product:
@@ -204,6 +206,9 @@ pim_enrich:
           family: Выберите семейство
           save: Сохранить
           cancel: Отмена
+    attribute:
+      scopable: Область назначаема
+      global: Глобальный
     association_type:
       info:
         field_not_ready:
@@ -305,6 +310,9 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+    attribute_group:
+      info:
+        update_successful: Группа атрибутов успешно обновлена
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
@@ -464,6 +472,21 @@ pim_enrich:
           title: Журнал
         products:
           title: Продукты
+    attribute_group:
+      tab:
+        properties:
+          title: Свойства
+          general: Общие свойства
+          code: Код
+          label_translations: Переводы меток
+        attribute:
+          title: Атрибуты
+          table:
+            name: Имя
+            type: Тип
+            scope: Область
+            localizable: Локализуемый
+        history.title: Журнал
     common:
       tab:
         attributes:
@@ -719,6 +742,8 @@ pim_enrich:
       title: Трекер процессов
     attribute:
       modal_title: Выберите тип атрибута
+    attribute_group:
+      create_btn: Создать
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
 page_title:

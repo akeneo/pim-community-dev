@@ -10,6 +10,7 @@ pim_api:
       list: Llistar famílies
     channel.list: Llistar canals
     locale.list: Llistar configuracions regionals
+    currency.list: Llistar monedes
   acl_group:
     attribute: Atributs
     attribute_group: Grups d'atribut
@@ -17,3 +18,4 @@ pim_api:
     family: Famílies
     channel: Canals
     locale: Configuracions regionals
+    currency: Monedes

@@ -10,6 +10,7 @@ pim_api:
       list: Popis obitelji
     channel.list: Popis kanala
     locale.list: Popis lokalizacija
+    currency.list: Popis valuta
   acl_group:
     attribute: Atributi
     attribute_group: Grupe atributa
@@ -17,3 +18,4 @@ pim_api:
     family: Obitelji
     channel: Kanali
     locale: Lokalizacija
+    currency: Valute

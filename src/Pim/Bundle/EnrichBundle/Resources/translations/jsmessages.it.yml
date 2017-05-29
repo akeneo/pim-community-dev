@@ -36,6 +36,8 @@ flash:
     removed: Tipo di associazione rimossa con successo
   attribute:
     removed: Attributo eliminato con successo
+  attribute_group:
+    removed: Gruppo di attributi rimosso con successo
   family:
     removed: Famiglia rimossa con successo
   product:
@@ -206,6 +208,9 @@ pim_enrich:
           family: Scegli una famiglia
           save: Salva
           cancel: Cancella
+    attribute:
+      scopable: Customizzazione per canale
+      global: Globale
     association_type:
       info:
         deletion_successful: Tipo di associazione rimosso con successo.
@@ -336,6 +341,9 @@ pim_enrich:
       info:
         update_failed: Il profilo del job non può essere aggiornato.
         update_successful: Il profilo del job è stato aggiornato con successo.
+    attribute_group:
+      info:
+        update_successful: Gruppo di attributi aggiornato con successo
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
     discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
@@ -498,6 +506,21 @@ pim_enrich:
           title: Cronologia
         products:
           title: Articoli
+    attribute_group:
+      tab:
+        properties:
+          title: Proprietà
+          general: Proprietà generali
+          code: Codice
+          label_translations: Traduzioni etichetta
+        attribute:
+          title: Attributi
+          table:
+            name: Nome
+            type: Tipo
+            scope: Ambito
+            localizable: Localizzabile
+        history.title: Cronologia
     common:
       tab:
         attributes:
@@ -771,6 +794,8 @@ pim_enrich:
       title: Tracker di processo
     attribute:
       modal_title: Scegliere il tipo di attributo
+    attribute_group:
+      create_btn: Crea
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
 page_title:

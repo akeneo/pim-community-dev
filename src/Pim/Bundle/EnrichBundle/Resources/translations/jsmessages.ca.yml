@@ -36,6 +36,8 @@ flash:
     removed: Tipus d'associació suprimit correctament
   attribute:
     removed: Atribut suprimit correctament
+  attribute_group:
+    removed: Grup d'atributs suprimit correctament
   family:
     removed: Família eliminada correctament
   product:
@@ -204,6 +206,9 @@ pim_enrich:
           family: Trieu una família
           save: Desar
           cancel: Cancelar
+    attribute:
+      scopable: Abastable
+      global: Global
     association_type:
       info:
         field_not_ready:
@@ -309,6 +314,9 @@ pim_enrich:
         created_by: Creat per
         updated: Actualitzat
         updated_by: Actualitzat per
+    attribute_group:
+      info:
+        update_successful: Grup d'atributs actualitzat correctament
   confirmation:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
@@ -468,6 +476,21 @@ pim_enrich:
           title: Històric
         products:
           title: Productes
+    attribute_group:
+      tab:
+        properties:
+          title: Propietats
+          general: Propietats generals
+          code: Codi
+          label_translations: Traduccions d'etiquetes
+        attribute:
+          title: Atributs
+          table:
+            name: Nom
+            type: Tipus
+            scope: Abast
+            localizable: Configurable regionalment
+        history.title: Històric
     common:
       tab:
         attributes:
@@ -724,6 +747,8 @@ pim_enrich:
       title: Seguiment del procés
     attribute:
       modal_title: Trieu el tipus d'atribut
+    attribute_group:
+      create_btn: Crear
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
 page_title:
