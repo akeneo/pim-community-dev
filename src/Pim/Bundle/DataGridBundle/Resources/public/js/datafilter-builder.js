@@ -25,8 +25,8 @@ function($, _, tools,  mediator, FiltersManager) {
             collectModules: function () {
                 var modules = this.modules;
                 _.each((this.metadata.filters || {}) || {}, function (filter) {
-                     var type = filter.type;
-                     modules[type] = filterModuleName.replace('{{type}}', filterTypes[type] || type);
+                    var type = filter.type;
+                    modules[type] = filterModuleName.replace('{{type}}', filterTypes[type] || type);
                 });
             },
 

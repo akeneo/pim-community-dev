@@ -17,11 +17,13 @@ function (_, requireContext) {
             var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
 
-            _.each(modules, _.bind(function (value, key) {
-                var module = requireContext(value)
-                modules[key] = module
-            }, arrayArguments));
-            callback(modules);
+            require.ensure([], function() {
+                _.each(modules, _.bind(function (value, key) {
+                    var module = requireContext(value)
+                    modules[key] = module
+                }, arrayArguments));
+                callback(modules);
+            })
         }
     };
 });
