@@ -1696,10 +1696,12 @@ EQUALS ON AT LEAST ONE LOCALE
     [
         'query' => [
             'bool' => [
-                'should' => [
-                    'term' => [
-                        'completeness.print.en_US' => 30,
-                        'completeness.print.fr_FR' => 30,
+                'filter' => [
+                    'bool' => [
+                        'should' => [
+                            ['term' => ['completeness.print.en_US' => 30]],
+                            ['term' => ['completeness.print.fr_FR' => 30]]
+                        ]
                     ]
                 ]
             ]
@@ -1761,10 +1763,12 @@ LOWER THAN ON AT LEAST ONE LOCALE
     [
         'query' => [
             'bool' => [
-                'should' => [
-                    'range' => [
-                        'completeness.print.en_US' => ['lt' => 30],
-                        'completeness.print.fr_FR' => ['lt' => 30],
+                'filter' => [
+                    'bool' => [
+                        'should' => [
+                            ['range' => ['completeness.print.en_US' => ['lt' => 30]]],
+                            ['range' => ['completeness.print.fr_FR' => ['lt' => 30]]]
+                        ]
                     ]
                 ]
             ]
@@ -1781,10 +1785,12 @@ LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE
     [
         'query' => [
             'bool' => [
-                'should' => [
-                    'range' => [
-                        'completeness.print.en_US' => ['lte' => 30],
-                        'completeness.print.fr_FR' => ['lte' => 30],
+                'filter' => [
+                    'bool' => [
+                        'should' => [
+                            ['range' => ['completeness.print.en_US' => ['lte' => 30]]],
+                            ['range' => ['completeness.print.fr_FR' => ['lte' => 30]]]
+                        ]
                     ]
                 ]
             ]
@@ -1801,10 +1807,12 @@ GREATER THAN ON AT LEAST ONE LOCALE
     [
         'query' => [
             'bool' => [
-                'should' => [
-                    'range' => [
-                        'completeness.print.en_US' => ['gt' => 30],
-                        'completeness.print.fr_FR' => ['gt' => 30],
+                'filter' => [
+                    'bool' => [
+                        'should' => [
+                            ['range' => ['completeness.print.en_US' => ['gt' => 30]]],
+                            ['range' => ['completeness.print.fr_FR' => ['gt' => 30]]]
+                        ]
                     ]
                 ]
             ]
@@ -1821,10 +1829,12 @@ GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
     [
         'query' => [
             'bool' => [
-                'should' => [
-                    'range' => [
-                        'completeness.print.en_US' => ['gte' => 30],
-                        'completeness.print.fr_FR' => ['gte' => 30],
+                'filter' => [
+                    'bool' => [
+                        'should' => [
+                            ['range' => ['completeness.print.en_US' => ['gte' => 30]]],
+                            ['range' => ['completeness.print.fr_FR' => ['gte' => 30]]]
+                        ]
                     ]
                 ]
             ]

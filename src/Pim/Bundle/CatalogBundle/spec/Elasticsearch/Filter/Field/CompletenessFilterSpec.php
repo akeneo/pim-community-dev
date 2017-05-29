@@ -146,11 +146,13 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_one_locale_with_a_regular_filter($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'term' => [
-                    'completeness.ecommerce.en_US' => 56,
-                ],
+                'bool' => [
+                    'should' => [
+                        ['term' => ['completeness.ecommerce.en_US' => 56]]
+                    ]
+                ]
             ]
         )->shouldBeCalled();
 
@@ -165,21 +167,16 @@ class CompletenessFilterSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
         $ecommerce->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
 
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'term' => [
-                    'completeness.ecommerce.en_US' => 56,
-                ],
+                'bool' => [
+                    'should' => [
+                        ['term' => ['completeness.ecommerce.en_US' => 56]],
+                        ['term' => ['completeness.ecommerce.fr_FR' => 56]]
+                    ]
+                ]
             ]
-        )->shouldBeCalled();
-
-        $sqb->addShould(
-            [
-                'term' => [
-                    'completeness.ecommerce.fr_FR' => 56,
-                ],
-            ]
-        )->shouldBeCalled();
+        );
 
         $this->addFieldFilter('completeness', Operators::EQUALS, 56, null, 'ecommerce', []);
     }
@@ -240,11 +237,13 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'term' => [
-                    'completeness.ecommerce.en_US' => 56,
-                ],
+                'bool' => [
+                    'should' => [
+                        ['term' => ['completeness.ecommerce.en_US' => 56]]
+                    ]
+                ]
             ]
         )->shouldBeCalled();
 
@@ -324,11 +323,13 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_LOWER_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['lt' => 56],
-                ],
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['lt' => 56]]]
+                    ]
+                ]
             ]
         )->shouldBeCalled();
 
@@ -365,11 +366,13 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_GREATER_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['gt' => 56],
-                ],
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['gt' => 56]]]
+                    ]
+                ]
             ]
         )->shouldBeCalled();
 
@@ -406,11 +409,13 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['lte' => 56],
-                ],
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['lte' => 56]]]
+                    ]
+                ]
             ]
         )->shouldBeCalled();
 
@@ -446,11 +451,13 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['gte' => 56],
-                ],
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['gte' => 56]]]
+                    ]
+                ]
             ]
         )->shouldBeCalled();
 

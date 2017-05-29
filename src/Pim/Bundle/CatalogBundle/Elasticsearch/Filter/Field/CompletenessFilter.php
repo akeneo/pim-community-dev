@@ -125,6 +125,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             return $this;
         }
 
+        $shouldClauses = [];
+
         foreach ($localeCodes as $localeCode) {
             $field = sprintf('completeness.%s.%s', $channel, $localeCode);
 
@@ -136,7 +138,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                             $field => $value
                         ]
                     ];
-                    $this->searchQueryBuilder->addShould($clause);
+
+                    $shouldClauses[] = $clause;
                     break;
                 case Operators::LOWER_THAN:
                 case Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE:
@@ -147,7 +150,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                             ]
                         ]
                     ];
-                    $this->searchQueryBuilder->addShould($clause);
+
+                    $shouldClauses[] = $clause;
                     break;
                 case Operators::LOWER_THAN_ON_ALL_LOCALES:
                     $clause = [
@@ -168,7 +172,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                             ]
                         ]
                     ];
-                    $this->searchQueryBuilder->addShould($clause);
+
+                    $shouldClauses[] = $clause;
                     break;
                 case Operators::GREATER_THAN_ON_ALL_LOCALES:
                     $clause = [
@@ -189,7 +194,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                             ]
                         ]
                     ];
-                    $this->searchQueryBuilder->addShould($clause);
+
+                    $shouldClauses[] = $clause;
                     break;
                 case Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES:
                     $clause = [
@@ -210,7 +216,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                             ]
                         ]
                     ];
-                    $this->searchQueryBuilder->addShould($clause);
+
+                    $shouldClauses[] = $clause;
                     break;
                 case Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES:
                     $clause = [
@@ -225,6 +232,10 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                 default:
                     throw InvalidOperatorException::notSupported($operator, static::class);
             }
+        }
+
+        if (!empty($shouldClauses)) {
+            $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
         }
 
         return $this;

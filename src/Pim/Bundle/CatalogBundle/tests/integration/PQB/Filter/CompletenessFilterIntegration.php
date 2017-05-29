@@ -58,7 +58,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 
             $this->createProduct('product_two', [
                 'family' => 'familyB',
-                'categories' => ['categoryA2'],
+                'categories' => ['categoryA2', 'categoryA1'],
                 'values' => [
                     'a_metric'                           => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]],
                     'a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'tablet']],
@@ -75,7 +75,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 
             $this->createProduct('empty_product', [
                 'family' => 'familyB',
-                'categories' => ['categoryA2']
+                'categories' => ['categoryA2', 'categoryA1']
             ]);
 
             $this->createProduct('no_family', [
@@ -396,7 +396,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $result = $this->executeFilter([
             ['completeness', '=', 100, ['scope' => 'tablet', 'locale' => 'en_US']],
-            ['categories', 'IN', ['categoryA2']]
+            ['categories', 'IN OR UNCLASSIFIED', ['categoryA1']]
         ]);
         $this->assert($result, ['product_two']);
     }

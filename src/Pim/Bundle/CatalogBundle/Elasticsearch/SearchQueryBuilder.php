@@ -48,7 +48,7 @@ class SearchQueryBuilder
     private $sortClauses = [];
 
     /**
-     * Adds a filter clause to the query
+     * Adds a must_not clause to the query
      *
      * @param array $clause
      *
@@ -62,7 +62,7 @@ class SearchQueryBuilder
     }
 
     /**
-     * Adds a must_not clause to the query
+     * Adds a filter clause to the query
      *
      * @param array $clause
      *
