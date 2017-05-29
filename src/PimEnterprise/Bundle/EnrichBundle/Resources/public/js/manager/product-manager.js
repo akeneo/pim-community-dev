@@ -11,6 +11,7 @@ define([
     ) {
         return _.extend(ProductManager, {
             generateMissing: function (product) {
+                console.log('generateMissing', product)
                 return ProductManager.doGenerateMissing(product).then(function (product) {
                     var workingCopyPromise = new $.Deferred();
 
