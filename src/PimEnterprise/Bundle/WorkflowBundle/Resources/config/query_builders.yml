@@ -1,5 +1,5 @@
 services:
-    pimee_workflow.doctrine.query.published_product_query_factory:
+    pimee_workflow.doctrine.query.published_product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
@@ -9,12 +9,12 @@ services:
             - '@pimee_workflow.factory.published_product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
-    pimee_workflow.doctrine.query.published_product_query_bounded_factory:
+    pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pimee_workflow.factory.published_product_bounded_cursor'
-            - '@pim_catalog.elasticsearch.product_query_builder_bounded_resolver'
+            - '@pimee_workflow.factory.published_product_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
