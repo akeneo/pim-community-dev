@@ -18,5 +18,5 @@ services:
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.elasticsearch.product_indexer'
+            - '@pim_catalog.elasticsearch.published_product_indexer'
             - 'pimee_workflow_published_product_completeness'
