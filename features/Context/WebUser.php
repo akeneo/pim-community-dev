@@ -909,18 +909,18 @@ class WebUser extends RawMinkContext
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? (.*)(?: in group "([^"]*)")?$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    public function iShouldSeeAvailableAttributes($not, $attributes, $group = null)
     {
         $expecting = !$not;
 
         foreach ($this->listToArray($attributes) as $attribute) {
             $result = $this->getCurrentPage()
                 ->getAttributeAddSelect()
-                ->hasAvailableOptionGroupPair($attribute, $group);
+                ->hasAvailableOption($attribute, $group);
 
             if ($expecting !== $result) {
                 throw $this->createExpectationException(
