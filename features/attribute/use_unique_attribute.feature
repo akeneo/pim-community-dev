@@ -15,8 +15,8 @@ Feature: Use an unique attribute
   Scenario: Successfully use unique attributes on family edit
     Given I am on the "boots" family page
     When I visit the "Attributes" tab
-    Then I should see available attribute Unique attribute in group "info"
-    And I should see available attribute Name in group "info"
+    Then I should see available attribute Unique attribute
+    And I should see available attribute Handmade
 
   @jira https://akeneo.atlassian.net/browse/PIM-6428
   Scenario: Successfully use unique attributes on product edit form
@@ -27,8 +27,7 @@ Feature: Use an unique attribute
       | family | Boots  |
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
-    Then I add available attribute Unique attribute
-    And I wait 30 seconds
+    Then I should see available attribute Unique attribute
 
   @jira https://akeneo.atlassian.net/browse/PIM-6428
   Scenario: Successfully hide unique attributes on product mass edit
