@@ -6,7 +6,7 @@ const path = require('path')
 const _ = require('lodash')
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const requireConfigPaths = require(path.resolve('web/js/require-config'))
+const requireConfigPaths = require(path.resolve('web/js/require-paths'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 
@@ -68,14 +68,6 @@ module.exports = {
                     }, {
                         loader: 'expose-loader',
                         options: '$'
-                    }
-                ]
-            }, {
-                test: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/app'),
-                use: [
-                    {
-                        loader: 'expose-loader',
-                        options: 'PimApp'
                     }
                 ]
             }, {

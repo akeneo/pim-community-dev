@@ -21,7 +21,14 @@
     "grunt-template-jasmine-requirejs": "~0.2.3",
     "html-loader": "^0.4.5",
     "imports-loader": "^0.7.1",
+    "jasmine-core": "^2.6.2",
+    "jasmine-webpack-plugin": "^0.1.1",
     "jquery": "^1.11.0",
+    "karma": "^1.7.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-spec-reporter": "0.0.31",
+    "karma-webpack": "^2.0.3",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.4",
     "raw-loader": "^0.5.1",
@@ -46,6 +53,7 @@
   },
   "dependencies": {
     "bundle-loader": "^0.5.5",
+    "karma-es6-shim": "^1.0.0",
     "merge-objects": "^1.0.5",
     "pascal-case": "^2.0.1"
   }

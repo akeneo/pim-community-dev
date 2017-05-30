@@ -16,14 +16,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Dump a file called require-config containing all requirejs.yml config files for reach registered bundle
+ * Dump a file called require-paths containing all requirejs.yml config files for reach registered bundle
  *
  * @author Tamara Robichet <tamara.robichet@akeneo.com>
  */
 class DumpRequirePathsCommand extends ContainerAwareCommand
 {
 
-    const MAIN_CONFIG_FILE_NAME = 'js/require-config.js';
+    const MAIN_CONFIG_FILE_NAME = 'js/require-paths.js';
     /**
      * {@inheritdoc}
      */

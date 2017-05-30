@@ -35,36 +35,38 @@ module.exports = function (grunt) {
         },
         jasmine: {
             specs: {
-                src: '/bundles/ororequirejs/lib/require.js',
+                src: 'jasmine.bundle.js',
                 options: {
                     specs: 'src/**/spec/**/*Spec.js',
                     vendor: ['.grunt/grunt-contrib-jasmine/es5-shim.js'],
-                    template: require('grunt-template-jasmine-requirejs'),
-                    templateOptions: {
-                        requireConfigFile: 'web/js/require-config.js',
-                        requireConfig: {
-                            baseUrl: 'web/bundles',
-                            shim: {
-                                'oro/routes': {
-                                    deps: ['routing'],
-                                    init: function (routing) {
-                                        return routing;
-                                    }
-                                }
-                            },
-                            map: {
-                                '*': {
-                                    'routing': 'oro/routes'
-                                },
-                                'oro/routes': {
-                                    'routing': 'routing'
-                                }
-                            },
-                            paths: {
-                                'oro/routes': '../js/routes'
-                            }
-                        }
-                    }
+                    template: require('grunt-template-jasmine-requirejs')
+                    // ,
+                    // templateOptions: {
+                        // requireConfigFile: 'web/js/require-config.js',
+                        // requireConfig: {
+                            // baseUrl: 'web/bundles'
+                            // ,
+                            // shim: {
+                            //     'oro/routes': {
+                            //         deps: ['routing'],
+                            //         init: function (routing) {
+                            //             return routing;
+                            //         }
+                            //     }
+                            // },
+                            // map: {
+                            //     '*': {
+                            //         'routing': 'oro/routes'
+                            //     },
+                            //     'oro/routes': {
+                            //         'routing': 'routing'
+                            //     }
+                            // },
+                            // paths: {
+                            //     'oro/routes': '../js/routes'
+                            // }
+                        // }
+                    // }
                 }
             }
         }

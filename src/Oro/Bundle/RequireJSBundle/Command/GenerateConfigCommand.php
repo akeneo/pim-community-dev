@@ -31,9 +31,8 @@ class GenerateConfigCommand extends ContainerAwareCommand
         $configProvider = $this->getContainer()->get('oro_requirejs_config_provider');
 
         $output->writeln('Generating require.js main config');
-        $mainConfigContent = json_encode($configProvider->collectConfigPaths(), JSON_UNESCAPED_SLASHES);
-
-        $mainConfigContent = 'module.exports = ' . $mainConfigContent;
+        $mainConfigContent = $configProvider->generateMainConfig();
+        // for some reason built application gets broken with configuration in "oneline-json"
         $mainConfigContent = str_replace(',', ",\n", $mainConfigContent);
         $mainConfigFilePath = $webRoot . DIRECTORY_SEPARATOR . self::MAIN_CONFIG_FILE_NAME;
         if (false === @file_put_contents($mainConfigFilePath, $mainConfigContent)) {
