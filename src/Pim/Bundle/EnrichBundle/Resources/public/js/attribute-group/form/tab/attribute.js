@@ -18,7 +18,7 @@ define(
         'pim/fetcher-registry',
         'pim/security-context',
         'pim/dialog',
-        'text!pim/template/form/attribute-group/tab/attribute',
+        'pim/template/form/attribute-group/tab/attribute',
         'jquery-ui'
     ],
     function (
