@@ -13,7 +13,7 @@ use Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException;
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class MeasureConverter
+class MeasureConverter implements MeasureConverterInterface
 {
     /**
      * @var array
@@ -40,7 +40,7 @@ class MeasureConverter
      * @param string $family
      *
      * @throws UnknownFamilyMeasureException
-     * @return MeasureConverter
+     * @return MeasureConverterInterface
      *
      */
     public function setFamily($family)

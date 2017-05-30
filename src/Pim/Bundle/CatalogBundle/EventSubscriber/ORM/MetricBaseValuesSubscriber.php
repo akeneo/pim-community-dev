@@ -21,7 +21,7 @@ use Pim\Component\Catalog\Model\MetricInterface;
 class MetricBaseValuesSubscriber implements EventSubscriber
 {
     /**
-     * @var MeasureConverter
+     * @var MeasureConverterInterface
      */
     protected $converter;
 
@@ -33,7 +33,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     /**
      * Constructor
      *
-     * @param MeasureConverter $converter the measure converter
+     * @param MeasureConverterInterface $converter the measure converter
      * @param MeasureManager   $manager   the measure manager
      */
     public function __construct(MeasureConverter $converter, MeasureManager $manager)

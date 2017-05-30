@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Converter;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverterInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -16,15 +16,15 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class MetricConverter
 {
-    /** @var MeasureConverter */
+    /** @var MeasureConverterInterface */
     protected $converter;
 
     /**
      * Constructor
      *
-     * @param MeasureConverter $converter
+     * @param MeasureConverterInterface $converter
      */
-    public function __construct(MeasureConverter $converter)
+    public function __construct(MeasureConverterInterface $converter)
     {
         $this->converter = $converter;
     }
