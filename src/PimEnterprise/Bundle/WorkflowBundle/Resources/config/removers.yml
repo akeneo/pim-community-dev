@@ -6,6 +6,13 @@ services:
             - '@event_dispatcher'
             - '%pimee_workflow.model.product_draft.class%'
 
+    pimee_workflow.remover.published_product:
+        class: '%akeneo_storage_utils.remover.base.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@event_dispatcher'
+            - '%pimee_workflow.entity.published_product.class%'
+
     pimee_workflow.remover.completeness:
         class: '%pim_catalog.remover.completeness.class%'
         arguments:
