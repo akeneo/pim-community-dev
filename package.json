@@ -32,7 +32,6 @@
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.4",
     "raw-loader": "^0.5.1",
-    "simple-progress-webpack-plugin": "^1.0.4",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "time-grunt": "~1.1.0",
@@ -41,7 +40,10 @@
   },
   "scripts": {
     "test": "grunt test",
-    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js"
+    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js",
+    "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
+    "lint": "node ./node_modules/eslint/bin/eslint 'Gruntfile.js' 'src/**/*.js' --ignore-path .eslintignore --quiet",
+    "lint-fix": "node ./node_modules/eslint/bin/eslint 'Gruntfile.js' 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
   },
   "repository": {
     "type": "git",

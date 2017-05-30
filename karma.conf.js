@@ -1,13 +1,15 @@
 const webpack = require('./webpack.config.js')
+const path = require('path')
+const runnerPath = path.resolve(__dirname, 'frontend/jasmine-runner.js')
 
 module.exports = function(config) {
     config.set({
         files: [
-            'frontend/jasmine-runner.js'
+            runnerPath
         ],
 
         preprocessors: {
-            'frontend/jasmine-runner.js': ['webpack']
+            [runnerPath] : ['webpack']
         },
 
         webpack,

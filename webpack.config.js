@@ -8,8 +8,6 @@ const _ = require('lodash')
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const requireConfigPaths = require(path.resolve('web/js/require-paths'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
-const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
-
 const pathOverrides = require('./frontend/path-overrides')
 const requireUtils = require('./frontend/requirejs-utils')
 
@@ -89,9 +87,6 @@ module.exports = {
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths)),
-        new SimpleProgressWebpackPlugin({
-            format: 'expanded'
-        })
+        new AddToContextPlugin(_.values(importPaths))
     ]
 }

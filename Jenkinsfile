@@ -185,10 +185,11 @@ def runGruntTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
+            docker.image('node').inside("") {
                 unstash "pim_community_dev_full"
-                sh "npm install"
-
+                sh "npm install --verbose"
+                sh "npm run lint"
+                sh "npm run webpack-jasmine"
                 sh "grunt"
             }
         } finally {
