@@ -7,6 +7,7 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
@@ -528,6 +529,13 @@ class Form extends Base
         }
     }
 
+    /**
+     * Returns the 'Add attributes' node element
+     *
+     * @throws SpinException
+     *
+     * @return NodeElement
+     */
     public function getAttributeAddSelect()
     {
         return $this->spin(function () {
@@ -535,6 +543,13 @@ class Form extends Base
         }, 'Cannot find the add attribute element');
     }
 
+    /**
+     * Returns the 'Add attributes by group' node element
+     *
+     * @throws SpinException
+     *
+     * @return NodeElement
+     */
     public function getAttributeGroupAddSelect()
     {
         return $this->spin(function () {
