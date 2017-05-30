@@ -434,7 +434,6 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
               standardPropertyName: attribute
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
-                - code
                 - attribute
     properties:
         code:
