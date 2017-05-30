@@ -61,3 +61,4 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             cascade:
                 - persist
                 - detach
+            orphanRemoval: true

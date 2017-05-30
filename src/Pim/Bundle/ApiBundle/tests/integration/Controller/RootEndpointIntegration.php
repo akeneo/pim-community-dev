@@ -195,6 +195,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_channel_create": {
                 "route": "/api/rest/v1/channels",
                 "methods": ["POST"]
+            },
+            "pim_api_channel_partial_update": {
+                "route": "/api/rest/v1/channels/{code}",
+                "methods": ["PATCH"]
             }
         }
     }
