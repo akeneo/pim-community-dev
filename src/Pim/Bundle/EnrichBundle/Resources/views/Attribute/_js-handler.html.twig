@@ -2,7 +2,6 @@
 require(
     ['jquery', 'underscore', 'datepicker', 'oro/mediator', 'pim/date-context', 'jquery.select2', 'bootstrap.bootstrapswitch'],
     function ($, _, datepicker, mediator, dateContext) {
-        'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
 
@@ -17,7 +16,8 @@ require(
                     .appendTo('#attribute-option-switcher')
                     .removeClass('hide')
                     .find('.has-switch');
-                $switch.on('switch-change', function (e, data) {
+
+                    $switch.on('switch-change', function (e, data) {
                         mediator.trigger('attribute:auto_option_sorting:changed', data.value);
                     });
 
@@ -81,7 +81,7 @@ require(
                 $(formName).trigger('refresh');
             }
 
-            initializeForm();
+            setTimeout(initializeForm, 0);
         });
     }
 );
