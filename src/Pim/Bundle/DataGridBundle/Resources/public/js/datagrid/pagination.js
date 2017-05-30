@@ -134,21 +134,10 @@ function($, _, Backbone) {
                 var nextLabel = _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined;
                 switch (label) {
                     case prevLabel:
-                        if (collection.hasPrevious()) {
-                            collection.getPreviousPage();
-                        }
-                        
+                        if (collection.hasPrevious()) collection.getPreviousPage();
                         return;
                     case nextLabel:
-                        var options = [];
-                        if ('product-grid' === collection.inputName) {
-                            options['search_after'] = _.last(collection.models).attributes.identifier;
-                        }
-
-                        if (collection.hasNext()) {
-                            collection.getNextPage(options);
-                        }
-
+                        if (collection.hasNext()) collection.getNextPage();
                         return;
                 }
             }

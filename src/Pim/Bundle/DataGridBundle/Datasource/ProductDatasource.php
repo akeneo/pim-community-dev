@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -88,8 +88,9 @@ class ProductDatasource extends Datasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
-        $factoryConfig['limit'] = $this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
-        $factoryConfig['search_after'] =  $this->getConfiguration('search_after', false);
+        $factoryConfig['limit'] = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM);
+        $factoryConfig['from'] = null !== $this->getConfiguration('from', false) ?
+            (int)$this->getConfiguration('from', false) : 0;
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();

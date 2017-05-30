@@ -3,13 +3,13 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class BoundedCursorSpec extends ObjectBehavior
+class SearchAfterSizeCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
@@ -57,7 +57,7 @@ class BoundedCursorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Cursor::class);
+        $this->shouldHaveType(SearchAfterSizeCursor::class);
         $this->shouldImplement(CursorInterface::class);
     }
 
@@ -115,7 +115,6 @@ class BoundedCursorSpec extends ObjectBehavior
         $productBaz->getIdentifier()->willReturn('baz');
         $productFum->getIdentifier()->willReturn('fum');
 
-        $this->rewind()->shouldReturn(null);
         for ($i = 0; $i < 2; $i++) {
             if ($i > 0) {
                 $this->next()->shouldReturn(null);

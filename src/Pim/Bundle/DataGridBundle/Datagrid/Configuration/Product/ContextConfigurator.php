@@ -6,7 +6,9 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExten
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
@@ -40,8 +42,6 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
-
-    const PRODUCTS_PER_PAGE = '_per_page';
 
     /** @var DatagridConfiguration */
     protected $configuration;
@@ -108,7 +108,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addAttributesIds();
         $this->addAttributesConfig();
         $this->addPaginationConfig();
-        $this->addSearchAfter();
     }
 
     /**
@@ -415,21 +414,18 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addPaginationConfig()
     {
-        $pager = $this->requestParams->get('_pager');
+        $pager = $this->requestParams->get(PagerExtension::PAGER_ROOT_PARAM);
 
-        // TODO: remove static 25, will be done with TIP-664
-        $value = isset($pager[self::PRODUCTS_PER_PAGE]) ? $pager[self::PRODUCTS_PER_PAGE] : 25;
+        $defaultPerPage = $this->configuration->offsetGetByPath(
+            ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH,
+            25
+        );
+        $itemsPerPage = isset($pager[PagerExtension::PER_PAGE_PARAM]) ? (int)$pager[PagerExtension::PER_PAGE_PARAM] : $defaultPerPage;
 
-        $this->configuration->offsetSetByPath($this->getSourcePath(self::PRODUCTS_PER_PAGE), $value);
-    }
+        $this->configuration->offsetSetByPath($this->getSourcePath(PagerExtension::PER_PAGE_PARAM), $itemsPerPage);
 
-    /**
-     * Inject requested _per_page parameters in the datagrid configuration
-     */
-    protected function addSearchAfter()
-    {
-        $identifier = $this->requestParams->get('search_after', null);
-
-        $this->configuration->offsetSetByPath($this->getSourcePath('search_after'), $identifier);
+        $currentPage = isset($pager[PagerExtension::PAGE_PARAM]) ? (int)$pager[PagerExtension::PAGE_PARAM] : 1;
+        $from = ($currentPage - 1) * $itemsPerPage;
+        $this->configuration->offsetSetByPath($this->getSourcePath('from'), $from);
     }
 }

@@ -7,19 +7,31 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
- * Cursor to iterate over all items.
- * Internally, this is implemented with the search after pagination.
- * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html}
+ * Bounded cursor to iterate over items where a start and a limit are defined.
+ * Internally, this is implemented with the from/size pagination.
+ * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Cursor extends AbstractCursor implements CursorInterface
+class FromSizeCursor extends AbstractCursor implements CursorInterface
 {
-    /** @var array */
-    protected $searchAfter;
+    /** @var int */
+    protected $initialFrom;
+
+    /** @var int */
+    protected $from;
+
+    /** @var int */
+    protected $limit;
+
+    /** @var int */
+    protected $to;
+
+    /** @var int */
+    protected $fetchedItemsCount;
 
     /**
      * @param Client                        $esClient
@@ -27,20 +39,27 @@ class Cursor extends AbstractCursor implements CursorInterface
      * @param array                         $esQuery
      * @param string                        $indexType
      * @param int                           $pageSize
+     * @param int                           $limit
+     * @param int                           $from
      */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
         $indexType,
-        $pageSize
+        $pageSize,
+        $limit,
+        $from = 0
     ) {
         $this->esClient = $esClient;
         $this->repository = $repository;
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
-        $this->searchAfter = [];
+        $this->limit = $limit;
+        $this->from = $from;
+        $this->initialFrom = $from;
+        $this->to = $this->from + $this->limit;
     }
 
     /**
@@ -49,6 +68,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     public function next()
     {
         if (false === next($this->items)) {
+            $this->from += count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
             reset($this->items);
         }
@@ -56,22 +76,13 @@ class Cursor extends AbstractCursor implements CursorInterface
 
     /**
      * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->searchAfter = [];
-        $this->items = $this->getNextItems($this->esQuery);
-        reset($this->items);
-    }
-
-    /**
-     * {@inheritdoc}
      *
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
+     * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
      */
     protected function getNextIdentifiers(array $esQuery)
     {
-        $esQuery['size'] = $this->pageSize;
+        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $esQuery['size'] = $size;
 
         if (0 === $esQuery['size']) {
             return [];
@@ -84,10 +95,7 @@ class Cursor extends AbstractCursor implements CursorInterface
         }
 
         $esQuery['sort'] = $sort;
-
-        if (!empty($this->searchAfter)) {
-            $esQuery['search_after'] = $this->searchAfter;
-        }
+        $esQuery['from'] = $this->from;
 
         $response = $this->esClient->search($this->indexType, $esQuery);
         $this->count = $response['hits']['total'];
@@ -97,12 +105,18 @@ class Cursor extends AbstractCursor implements CursorInterface
             $identifiers[] = $hit['_source']['identifier'];
         }
 
-        $lastResult = end($response['hits']['hits']);
-
-        if (false !== $lastResult) {
-            $this->searchAfter = $lastResult['sort'];
-        }
-
         return $identifiers;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        $this->from = $this->initialFrom;
+        $this->to = $this->from + $this->limit;
+        $this->items = $this->getNextItems($this->esQuery);
+        reset($this->items);
     }
 }

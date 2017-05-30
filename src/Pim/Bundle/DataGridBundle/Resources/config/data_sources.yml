@@ -118,7 +118,7 @@ services:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_bounded_factory'
+            - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_datagrid.normalizer.product'
         calls:
             - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action'] ]
@@ -129,7 +129,7 @@ services:
         class: '%pim_datagrid.datasource.associated_product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_bounded_factory'
+            - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_datagrid.normalizer.product_association'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_associated_product }
@@ -138,7 +138,7 @@ services:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_bounded_factory'
+            - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_datagrid.normalizer.group_product'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_group_product }
@@ -147,7 +147,7 @@ services:
         class: '%pim_datagrid.datasource.variant_group_product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_bounded_factory'
+            - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_datagrid.normalizer.group_product'
             - '@pim_catalog.repository.group'
         tags:

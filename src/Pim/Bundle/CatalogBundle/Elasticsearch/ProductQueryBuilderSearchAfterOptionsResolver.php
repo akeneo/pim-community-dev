@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductQueryBuilderBoundedOptionsResolver implements ProductQueryBuilderOptionsResolverInterface
+class ProductQueryBuilderSearchAfterOptionsResolver implements ProductQueryBuilderOptionsResolverInterface
 {
     /**
      * {@inheritdoc}
@@ -33,6 +33,12 @@ class ProductQueryBuilderBoundedOptionsResolver implements ProductQueryBuilderOp
         $resolver = new OptionsResolver();
         $resolver->setDefined(['locale', 'scope', 'limit', 'search_after', 'search_after_unique_key']);
         $resolver->setRequired(['locale', 'scope', 'limit']);
+
+        $resolver->setAllowedTypes('locale', ['string', 'null']);
+        $resolver->setAllowedTypes('scope', ['string', 'null']);
+        $resolver->setAllowedTypes('limit', 'int');
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
 
         return $resolver;
     }

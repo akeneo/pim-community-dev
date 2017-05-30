@@ -86,6 +86,10 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             $pqbOptions['search_after_unique_key'] = $options['search_after_unique_key'];
         }
 
+        if (isset($options['from'])) {
+            $pqbOptions['from'] = $options['from'];
+        }
+
         $pqb = $this->createProductQueryBuilder($pqbOptions);
         $pqb->setQueryBuilder(new SearchQueryBuilder());
 
@@ -153,16 +157,27 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'filters',
             'search_after',
             'search_after_unique_key',
-            'limit'
+            'limit',
+            'from'
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',
-            'repository_parameters' => 'o',
+            'repository_parameters' => ['o'],
             'default_locale'        => null,
             'default_scope'         => null,
             'filters'               => [],
         ]);
+        $resolver->setAllowedTypes('repository_method', 'string');
+        $resolver->setAllowedTypes('repository_parameters', 'array');
+        $resolver->setAllowedTypes('currentGroup', 'string');
+        $resolver->setAllowedTypes('product', 'string');
+        $resolver->setAllowedTypes('default_locale', ['string', 'null']);
+        $resolver->setAllowedTypes('default_scope', ['string', 'null']);
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
+        $resolver->setAllowedTypes('limit', 'int');
         $resolver->setAllowedTypes('filters', 'array');
+        $resolver->setAllowedTypes('from', 'int');
     }
 
     /**
@@ -175,6 +190,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             ->setDefined(['context'])
             ->setDefaults([
                 'context'  => [],
-            ]);
+            ])
+            ->setAllowedTypes('context', 'array')
+        ;
     }
 }
