@@ -190,7 +190,7 @@ def runGruntTest() {
                 sh "npm install --verbose"
                 sh "npm run lint"
                 sh "npm run webpack-jasmine"
-                sh "grunt"
+                sh "npm run test"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"

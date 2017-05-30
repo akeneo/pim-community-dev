@@ -39,7 +39,7 @@
     "yamljs": "^0.2.10"
   },
   "scripts": {
-    "test": "grunt test",
+    "test": "node ./node_modules/grunt-cli/bin/grunt",
     "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
     "lint": "node ./node_modules/eslint/bin/eslint 'Gruntfile.js' 'src/**/*.js' --ignore-path .eslintignore --quiet",
