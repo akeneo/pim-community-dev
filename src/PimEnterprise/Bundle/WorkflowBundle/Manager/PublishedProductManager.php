@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -55,6 +56,9 @@ class PublishedProductManager
     /** @var SaverInterface */
     protected $publishedProductSaver;
 
+    /** @var RemoverInterface */
+    protected $remover;
+
     /**
      * @param ProductRepositoryInterface          $productRepository     the product repository
      * @param PublishedProductRepositoryInterface $repository            the published repository
@@ -64,6 +68,7 @@ class PublishedProductManager
      * @param UnpublisherInterface                $unpublisher           the product unpublisher
      * @param ObjectManager                       $objectManager         the object manager
      * @param SaverInterface                      $publishedProductSaver the object saver
+     * @param RemoverInterface                    $remover
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -73,7 +78,8 @@ class PublishedProductManager
         PublisherInterface $publisher,
         UnpublisherInterface $unpublisher,
         ObjectManager $objectManager,
-        SaverInterface $publishedProductSaver
+        SaverInterface $publishedProductSaver,
+        RemoverInterface $remover
     ) {
         $this->productRepository = $productRepository;
         $this->repository = $repository;
@@ -83,6 +89,7 @@ class PublishedProductManager
         $this->unpublisher = $unpublisher;
         $this->objectManager = $objectManager;
         $this->publishedProductSaver = $publishedProductSaver;
+        $this->remover = $remover;
     }
 
     /**
@@ -160,8 +167,7 @@ class PublishedProductManager
         $published = $this->findPublishedProductByOriginal($product);
         if ($published) {
             $this->unpublisher->unpublish($published);
-            $this->getObjectManager()->remove($published);
-            $this->getObjectManager()->flush();
+            $this->remover->remove($published);
         }
 
         $published = $this->publisher->publish($product, $publishOptions);

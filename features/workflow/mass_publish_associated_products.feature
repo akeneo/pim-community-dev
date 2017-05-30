@@ -58,6 +58,9 @@ Feature: Publish many products at once
     And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
+    When I am on the products page
+    Then the grid should contain 3 elements
+    And I should see product unionjack, jackadi and teafortwo
 
   @jira https://akeneo.atlassian.net/browse/PIM-3636
   Scenario: Allow to mass publish two products that are associated, I should be able to publish them twice

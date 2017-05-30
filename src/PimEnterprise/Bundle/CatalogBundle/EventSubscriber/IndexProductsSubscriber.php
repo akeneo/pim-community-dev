@@ -123,7 +123,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (current($product) instanceof PublishedProductInterface) {
+        if ($product instanceof PublishedProductInterface) {
             $this->publishedProductIndexer->remove($event->getSubjectId());
         } else {
             $this->productIndexer->remove($event->getSubjectId());
