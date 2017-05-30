@@ -15,6 +15,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pimee_workflow.saver.published_product'
             - '@pimee_workflow.remover.published_product'
+            - '@pimee_workflow.remover.published_product'
 
     pimee_workflow.manager.product_draft:
         class: '%pimee_workflow.manager.product_draft.class%'

@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,7 +35,9 @@ class PublishedProductManagerSpec extends ObjectBehavior
         PublisherInterface $publisher,
         UnpublisherInterface $unpublisher,
         ObjectManager $objectManager,
-        SaverInterface $publishedProductSaver
+        SaverInterface $publishedProductSaver,
+        RemoverInterface $remover,
+        BulkRemoverInterface $bulkRemover
     ) {
         $this->beConstructedWith(
             $productRepository,
@@ -43,7 +47,9 @@ class PublishedProductManagerSpec extends ObjectBehavior
             $publisher,
             $unpublisher,
             $objectManager,
-            $publishedProductSaver
+            $publishedProductSaver,
+            $remover,
+            $bulkRemover
         );
     }
 
@@ -69,10 +75,10 @@ class PublishedProductManagerSpec extends ObjectBehavior
     function it_publishes_products_with_associations(
         $publisher,
         $repository,
+        $remover,
         BulkSaverInterface $publishedProductSaver,
         ProductInterface $productFoo,
         ProductInterface $productBar,
-        $objectManager,
         PublishedProductInterface $publishedFoo,
         PublishedProductInterface $publishedBar,
         AssociationInterface $association
@@ -98,9 +104,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $publisher->publish($association, ['published' => $publishedFoo])->willReturn($association);
         $publisher->publish($association, ['published' => $publishedBar])->willReturn($association);
 
-
-        $objectManager->remove(Argument::any())->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $remover->remove(Argument::any())->shouldBeCalled();
 
         $this->publishAll([$productFoo, $productBar]);
     }
@@ -110,7 +114,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $publisher,
         $unpublisher,
         $repository,
-        $objectManager,
+        $remover,
         $publishedProductSaver,
         ProductInterface $product,
         PublishedProductInterface $alreadyPublished,
@@ -123,8 +127,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
 
         $unpublisher->unpublish($alreadyPublished)->shouldBeCalled();
-        $objectManager->remove($alreadyPublished)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $remover->remove($alreadyPublished)->shouldBeCalled();
 
         $publishedProductSaver->save($published)->shouldBeCalled();
 
@@ -134,7 +137,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
     function it_unpublishes_a_product(
         $eventDispatcher,
         $unpublisher,
-        $objectManager,
+        $remover,
         PublishedProductInterface $published,
         ProductInterface $product
     ) {
@@ -144,8 +147,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_UNPUBLISH, Argument::any(), null)->shouldBeCalled();
 
-        $objectManager->remove($published)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $remover->remove($published)->shouldBeCalled();
 
         $this->unpublish($published);
     }
@@ -153,7 +155,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
     function it_unpublishes_products(
         $eventDispatcher,
         $unpublisher,
-        $objectManager,
+        $bulkRemover,
         PublishedProductInterface $published1,
         PublishedProductInterface $published2,
         ProductInterface $product
@@ -167,9 +169,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
 
-        $objectManager->remove($published1)->shouldBeCalled();
-        $objectManager->remove($published2)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalledTimes(1);
+        $bulkRemover->removeAll([$published1, $published2])->shouldBeCalled();
 
         $this->unpublishAll([$published1, $published2]);
     }
