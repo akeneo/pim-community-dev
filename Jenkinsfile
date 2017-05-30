@@ -125,10 +125,10 @@ def runGruntTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
+            docker.image('node').inside("") {
                 unstash "project_files_full"
-                sh "npm install"
-
+                sh "npm install --verbose"
+                sh "npm run lint"
                 sh "grunt"
             }
         } finally {
