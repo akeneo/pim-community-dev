@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -23,34 +21,16 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     protected $channelRepository;
 
     /**
-     * @var AttributeRepositoryInterface
-     * @deprecated Will be removed in 1.8, avoid usage of this property
-     */
-    protected $attributeRepository;
-
-    /**
-     * @var        AttributeRequirementFactory
-     * @deprecated Will be removed in 1.8, avoid usage of this property
-     */
-    protected $factory;
-
-    /**
      * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param AttributeRequirementFactory  $factory
      * @param string                       $jobInstanceCode
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementFactory $factory,
         $jobInstanceCode
     ) {
         parent::__construct($jobInstanceCode);
 
         $this->channelRepository = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->factory = $factory;
     }
 
     /**

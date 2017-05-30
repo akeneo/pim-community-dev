@@ -3,29 +3,20 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
     function let(
         ChannelRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementFactory $factory,
         ChannelInterface $channelA,
         ChannelInterface $channelB
     ) {
         $channelA->getCode()->willReturn('channel_a');
         $channelB->getCode()->willReturn('channel_b');
         $channelRepository->findAll()->willReturn([$channelA, $channelB]);
-        $this->beConstructedWith(
-            $channelRepository,
-            $attributeRepository,
-            $factory,
-            'set_attribute_requirements'
-        );
+        $this->beConstructedWith($channelRepository, 'set_attribute_requirements');
     }
 
     function it_is_a_mass_edit_operation()
