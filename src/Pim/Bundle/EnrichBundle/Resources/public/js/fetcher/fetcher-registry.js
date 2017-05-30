@@ -1,6 +1,7 @@
 'use strict';
 
-define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'require-context'], function (module, $, _, BaseFetcher, requireContext) {
+define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'require-context'],
+function (module, $, _, BaseFetcher, requireContext) {
     return {
         fetchers: {},
         initializePromise: null,

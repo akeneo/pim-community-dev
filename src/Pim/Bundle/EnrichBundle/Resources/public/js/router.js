@@ -26,8 +26,7 @@ define(
         ControllerRegistry,
         mediator,
         Error,
-        securityContext,
-        controllerTemplate
+        securityContext
     ) {
         var Router = Backbone.Router.extend({
             DEFAULT_ROUTE: 'oro_default',
