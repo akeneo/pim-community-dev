@@ -102,6 +102,7 @@ services:
             - '@validator'
             - '@router'
             - '@pim_catalog.saver.channel'
+            - '@pim_api.stream.channel_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.locale:

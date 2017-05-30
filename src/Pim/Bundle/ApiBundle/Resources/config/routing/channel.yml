@@ -17,3 +17,8 @@ pim_api_channel_partial_update:
     path: /channels/{code}
     defaults: { _controller: pim_api.controller.channel:partialUpdateAction, _format: json }
     methods: [PATCH]
+
+pim_api_channel_partial_update_list:
+    path: /channels
+    defaults: { _controller: pim_api.controller.channel:partialUpdateListAction, _format: json }
+    methods: [PATCH]

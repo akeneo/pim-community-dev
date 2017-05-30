@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Security;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -146,7 +147,52 @@ JSON;
         $client->request('PATCH', '/api/rest/v1/channels/ecommerce', [], [], [], $data);
 
         $expectedResponse =
-            <<<JSON
+<<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update channels."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAListOfChannel()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "ecommerce","currencies": ["EUR"]}
+{"code": "ecommerce_china","currencies": ["EUR"]}
+JSON;
+
+        ob_start(function() { return ''; });
+        $client->request('PATCH', '/api/rest/v1/channels', [], [], [], $data);
+        ob_end_flush();
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAListOfChannel()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "ecommerce","currencies": ["EUR"]}
+{"code": "ecommerce_china","currencies": ["EUR"]}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/channels', [], [], [], $data);
+
+        $expectedResponse =
+<<<JSON
 {
     "code": 403,
     "message": "Access forbidden. You are not allowed to create or update channels."
