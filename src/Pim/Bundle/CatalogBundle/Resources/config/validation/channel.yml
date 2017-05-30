@@ -13,8 +13,12 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             - Length:
                 max: 100
         category:
-            - NotBlank: ~
-            - Pim\Component\Catalog\Validator\Constraints\IsRootCategory: ~
+            - NotBlank:
+                payload:
+                    standardPropertyName: tree
+            - Pim\Component\Catalog\Validator\Constraints\IsRootCategory:
+                payload:
+                    standardPropertyName: tree
         currencies:
             - Count: { min: 1 }
         locales:
