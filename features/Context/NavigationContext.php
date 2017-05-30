@@ -29,13 +29,15 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iGoOnTheLastExecutedJobResume($code)
     {
-        $this->wait();
-        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $jobExecutions = $jobInstance->getJobExecutions();
+        $jobExecution = $this->spin(function () use ($code) {
+            $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+            $this->getFixturesContext()->refresh($jobInstance);
 
-        $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecutions->last()->getId()]);
-        $this->getSession()->visit($this->locatePath($url));
-        $this->wait();
+            return $jobInstance->getJobExecutions()->last();
+        }, 'Cannot find the last job execution');
+        $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecution->getId()]);
+
+        $this->getSession()->visit($this->locatePath('#' . $url));
     }
 
     /**
@@ -65,6 +67,7 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
+     * @todo remove when all routes will use `code` for identifier
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" association type$/
@@ -74,6 +77,28 @@ class NavigationContext extends BaseNavigationContext
     {
         $page   = 'AssociationType';
         $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Then /^I should be redirected to the "([^"]*)" (channel|family) page$/
+     */
+    public function shouldBeRedirectedToTheChannel($code, $page)
+    {
+        $url = str_replace(
+            '{code}',
+            $code,
+            $this->getPage(sprintf('%s edit', ucfirst($page)))->getUrl()
+        );
+
+        $this->spin(function () use ($url) {
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $result = (bool) strpos($actualFullUrl, $url);
+            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
+
+            return true;
+        }, "Expected to be redirected to channel '%s'", $url);
     }
 
     /**
@@ -116,7 +141,6 @@ class NavigationContext extends BaseNavigationContext
     {
         $jobType = ucfirst($jobType);
         $this->getPage(sprintf('%s index', $jobType))->clickJobCreationLink($jobTitle);
-        $this->wait();
         $this->currentPage = sprintf('%s creation', $jobType);
     }
 
@@ -131,7 +155,7 @@ class NavigationContext extends BaseNavigationContext
         $page   = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['code' => $entity->getCode()]);
     }
 
     /**
@@ -142,9 +166,7 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
         $page   = 'AttributeGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['identifier' => $identifier]);
     }
 
     /**
@@ -189,7 +211,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
-        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['id' => $groupType->getId()]);
+        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['code' => $groupType->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -210,17 +232,6 @@ class NavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheUserGroupsEditPage()
     {
         $this->assertAddress($this->getPage('UserGroup edit')->getUrl());
-    }
-
-    /**
-     * @param Family $family
-     *
-     * @Given /^I should be on the ("([^"]*)" family) page$/
-     */
-    public function iShouldBeOnTheFamilyPage(Family $family)
-    {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(['id' => $family->getId()]);
-        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -300,7 +311,6 @@ class NavigationContext extends BaseNavigationContext
     {
         $expectedAddress = $this->getPage('Product index')->getUrl();
         $this->assertAddress($expectedAddress);
-        $this->wait();
     }
 
     /**

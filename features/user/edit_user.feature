@@ -17,7 +17,6 @@ Feature: Edit a user
     Then I should see the flash message "User saved"
     And I should see the text "John Smith"
 
-  @javascript
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
@@ -30,7 +29,7 @@ Feature: Edit a user
     Then I should see the flash message "User saved"
     When I am on the products page
     Then I should see the text "Products de"
-    And I should see the text "Print"
+    And I should see the text "Drucken"
     And I should see the text "2015 Männer-Kollektion"
     And I should see the text "2015 Damenkollektion"
     And I should see the filters name, family and sku

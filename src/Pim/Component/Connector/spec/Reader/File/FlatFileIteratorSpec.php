@@ -3,7 +3,6 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class FileIteratorSpec extends ObjectBehavior

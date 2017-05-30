@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: Mai
+    May: Maig
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -110,3 +110,8 @@ oro_config:
         notification:
           title: Notificacions
           system_notification: Notificacions de noves versions
+        loading_message:
+          title: S'estan carregant els missatges
+          label: Permetre els missatges que s'estan carregant
+        loading_messages:
+          label: Missatges de càrrega disponibles

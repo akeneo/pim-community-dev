@@ -157,6 +157,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $title
      *
+     * @throws ExpectationException
+     *
      * @Then /^I could see "([^"]*)" in the manage filters list$/
      */
     public function iCouldSeeInTheManageFiltersList($title)
@@ -399,6 +401,28 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see available filters in the following order "([^"]*)"$/
+     */
+    public function iShouldSeeAvailableFiltersInTheFollowingOrder($filters)
+    {
+        $filters = explode(',', $filters);
+        $existingFiltersArr = [];
+        foreach ($this->getCurrentPage()->getFiltersList() as $filter) {
+            $existingFiltersArr[] = strtolower(trim($filter->getHtml()));
+        }
+
+        $ordered = $filters === array_slice(
+            $existingFiltersArr,
+            array_search($filters[0], $existingFiltersArr),
+            count($filters)
+        );
+
+        if (!$ordered) {
+            throw $this->createExpectationException('Filters are not ordered as expected');
+        }
+    }
+
+    /**
      * @param string $filterName
      *
      * @Then /^I expand the "([^"]*)" sidebar$/
@@ -595,7 +619,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $this->datagrid->sortBy($columnName, $order);
+        $this->spin(function () use ($columnName, $order) {
+            $this->datagrid->sortBy($columnName, $order);
+
+            return true;
+        }, sprintf('Cannot sort by %s %s', $columnName, $order));
 
         $loadingMask = $this->datagrid
             ->getElement('Grid container')
@@ -603,7 +631,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $this->spin(function () use ($loadingMask) {
             return (null === $loadingMask) || !$loadingMask->isVisible();
-        }, '".loading-mask" is still visible');
+        }, 'Loading mask is still visible');
     }
 
     /**
@@ -630,8 +658,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $elements
      *
      * @throws ExpectationException
-     *
-     * @return Step
      *
      * @Then /^I should see products? (.*)$/
      * @Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
@@ -703,7 +729,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $operator, $value)
     {
         $this->datagrid->filterBy($filterName, $operator, $value);
-        $this->wait();
+
+        $loadingMask = $this->datagrid
+            ->getElement('Grid container')
+            ->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
     }
 
     /**
@@ -743,6 +776,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $optionNames = $this->getMainContext()->listToArray($optionNames);
 
         $this->datagrid->checkOptionInFilter($optionNames, $filterName);
+    }
+
+    /**
+     * @param boolean $not
+     * @param string  $option
+     * @param string  $filterName
+     *
+     * @Given /^I should( not)? see the available option "([^"]*)" in the filter "([^"]*)"$/
+     */
+    public function iShouldNotSeeTheAvailableOptionInTheFilter($not, $option, $filterName)
+    {
+        $filter = $this->datagrid->getFilter($filterName);
+        $filter->open();
+
+        if ($not && in_array($option, $filter->getAvailableValues())) {
+            throw $this->createExpectationException(
+                sprintf('Option "%s" should not be available for the filter "%s"', $option, $filterName)
+            );
+        }
+
+        if (!$not && !in_array($option, $filter->getAvailableValues())) {
+            throw $this->createExpectationException(
+                sprintf('Option "%s" should be available for the filter "%s"', $option, $filterName)
+            );
+        }
+
+        $filter->open();
     }
 
     /**
@@ -821,18 +881,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $rows
+     * @param string      $rows
+     * @param string|null $notChecked If not null, it checks checkbox is not checked.
      *
      * @throws ExpectationException
      *
-     * @Then /^the rows? "([^"]*)" should be checked$/
+     * @Then /^the rows? "([^"]*)" should (not )?be checked$/
      */
-    public function theRowShouldBeChecked($rows)
+    public function theRowShouldBeChecked($rows, $notChecked = null)
     {
         $rows = $this->getMainContext()->listToArray($rows);
 
         foreach ($rows as $row) {
-            $this->spin(function () use ($row) {
+            $this->spin(function () use ($row, $notChecked) {
                 $gridRow  = $this->datagrid->getRow($row);
                 $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
@@ -840,33 +901,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     return false;
                 }
 
-                return $checkbox->isChecked();
-            }, sprintf('Fail asserting that "%s" row was checked', $row));
-        }
-    }
-
-    /**
-     * @param string $rows
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^the rows? "([^"]*)" should not be checked$/
-     */
-    public function theRowShouldBeUnchecked($rows)
-    {
-        $rows = $this->getMainContext()->listToArray($rows);
-
-        foreach ($rows as $row) {
-            $this->spin(function () use ($row) {
-                $gridRow  = $this->datagrid->getRow($row);
-                $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-
-                if (!$checkbox) {
-                    return false;
-                }
-
-                return !$checkbox->isChecked();
-            }, sprintf('Fail asserting that "%s" row was unchecked', $row));
+                return ((null === $notChecked && $checkbox->isChecked()) ||
+                    (null !== $notChecked && !$checkbox->isChecked()));
+            }, sprintf('Fail asserting that "%s" row was %schecked', $row, $notChecked));
         }
     }
 
@@ -895,11 +932,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickBackToGrid()
     {
-        $this->spin(function () {
-            $this->getSession()->getPage()->clickLink('Back to grid');
-
-            return true;
+        $backButton = $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.back-link');
         }, 'Cannot find the button "Back to grid"');
+
+        $backButton->click();
     }
 
     /**
@@ -908,12 +945,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnImportProfile()
     {
         $collectLink = $this->spin(function () {
-            return $this->getSession()->getPage()->findLink('Collect');
+            return $this->getSession()->getPage()->find('css', '.AknMainMenu-link:contains("Collect")');
         }, 'Cannot find the button "Collect"');
         $collectLink->click();
 
         $importProfileLink = $this->spin(function () {
-            return $this->getSession()->getPage()->findLink('Import profiles');
+            return $this->getSession()->getPage()->find('css', '.AknMainMenu-link:contains("Import profiles")');
         }, 'Cannot find the button "Import profiles"');
         $importProfileLink->click();
     }
@@ -1022,6 +1059,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iDeleteTheView()
     {
         $this->getCurrentPage()->removeView();
+    }
+
+    /**
+     * @Then /^I should not be able to remove the view$/
+     */
+    public function iShouldNotBeAbleToRemoveTheView()
+    {
+        if (true === $this->getCurrentPage()->isViewDeletable()) {
+            throw $this->createExpectationException('The current view should not be allowed to be removed.');
+        }
+    }
+
+    /**
+     * @Then /^I should not be able to save the view$/
+     */
+    public function iShouldNotBeAbleToSaveTheView()
+    {
+        if (true === $this->getCurrentPage()->isViewCanBeSaved()) {
+            throw $this->createExpectationException('The current view should not be allowed to be saved.');
+        }
     }
 
     /**

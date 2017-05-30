@@ -13,6 +13,7 @@ class FilterType extends AbstractType
 {
     const NAME = 'oro_type_filter';
     const TYPE_EMPTY = 'empty';
+    const TYPE_NOT_EMPTY = 'not empty';
     const TYPE_IN_LIST = 'in';
 
     /**
@@ -47,10 +48,13 @@ class FilterType extends AbstractType
         }
         if ($emptyChoice) {
             $emptyChoice = [self::TYPE_EMPTY => $this->translator->trans('oro.filter.form.label_type_empty')];
+            $notEmptyChoice = [self::TYPE_NOT_EMPTY => $this->translator->trans('oro.filter.form.label_type_not_empty')];
             if (isset($options['field_options']['choices'])) {
                 $options['field_options']['choices'] += $emptyChoice;
+                $options['field_options']['choices'] += $notEmptyChoice;
             } else {
                 $options['operator_choices'] += $emptyChoice;
+                $options['operator_choices'] += $notEmptyChoice;
             }
         }
 

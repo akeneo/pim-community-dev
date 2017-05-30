@@ -17,7 +17,7 @@ use Context\Spin\TimeoutException;
 class Creation extends Form
 {
     /** @var string */
-    protected $path = '/enrich/product/create';
+    protected $path = '#/enrich/product/create';
 
     /**
      * {@inheritdoc}

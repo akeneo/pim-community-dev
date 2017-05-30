@@ -39,7 +39,7 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | [blue]               |
+      | Heel color  | [blue]             |
       | Sole fabric | Cashmerewool, Silk |
     When I save the product
     Then I should be on the product "high-heels" edit page

@@ -96,8 +96,8 @@ function($, _, __, app, TextFilter, initSelect2) {
             var selectedChoiceLabel = '';
             if (!_.isEmpty(this.choices)) {
                 var foundChoice = _.find(this.choices, function(choice) {
-                        return (choice.value == selectedChoice);
-                    });
+                    return (choice.value == selectedChoice);
+                });
                 selectedChoiceLabel = foundChoice.label;
             }
             $(el).append(
@@ -117,7 +117,7 @@ function($, _, __, app, TextFilter, initSelect2) {
         _getCriteriaHint: function() {
             var option, hint,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
-            if (value.type === 'empty') {
+            if (_.contains(['empty', 'not empty'], value.type)) {
                 return this._getChoiceOption(value.type).label;
             }
             if (!value.value) {
@@ -184,7 +184,7 @@ function($, _, __, app, TextFilter, initSelect2) {
                     item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
                 }
             });
-            if (newValue.type === 'empty') {
+            if (_.contains(['empty', 'not empty'], newValue.type)) {
                 this.$(this.criteriaValueSelectors.value).hide();
             } else {
                 this.$(this.criteriaValueSelectors.value).show();
@@ -214,7 +214,7 @@ function($, _, __, app, TextFilter, initSelect2) {
             } else {
                 this._disableListSelection();
             }
-            if ($(e.currentTarget).attr('data-value') === 'empty') {
+            if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
                 filterContainer.find(this.criteriaValueSelectors.value).hide();
             } else {
                 filterContainer.find(this.criteriaValueSelectors.value).show();

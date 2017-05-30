@@ -5,6 +5,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             properties:
                 - code
         - Pim\Component\Catalog\Validator\Constraints\FamilyRequirements: ~
+        - Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel: ~
     properties:
         code:
             - NotBlank: ~
@@ -21,3 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                    standardPropertyName: labels

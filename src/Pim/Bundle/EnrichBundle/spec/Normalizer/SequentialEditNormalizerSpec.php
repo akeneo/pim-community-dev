@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class SequentialEditNormalizerSpec extends ObjectBehavior

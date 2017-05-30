@@ -6,15 +6,15 @@ Feature: Set the attribute used as label
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code |
-      | Bags |
     And the following attributes:
-      | label       | families | type     |
-      | Brand       | Bags     | text     |
-      | Model       | Bags     | text     |
-      | Size        | Bags     | number   |
-      | Description | Bags     | textarea |
+      | label-en_US | type                 | group | code        | decimals_allowed | negative_allowed |
+      | Brand       | pim_catalog_text     | other | brand       |                  |                  |
+      | Model       | pim_catalog_text     | other | model       |                  |                  |
+      | Size        | pim_catalog_number   | other | size        | 0                | 0                |
+      | Description | pim_catalog_textarea | other | description |                  |                  |
+    And the following family:
+      | code | attributes                   |
+      | Bags | brand,model,size,description |
     And I am logged in as "Peter"
 
   Scenario: Successfully set a family attribute as the family label
@@ -26,6 +26,7 @@ Feature: Set the attribute used as label
     And I fill in the following information:
       | Attribute used as label | Brand |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     Then I am on the families page
     And I should see "Brand"
 
@@ -48,6 +49,6 @@ Feature: Set the attribute used as label
     Given the attribute "Brand" has been chosen as the family "Bags" label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
-    And I remove the "Brand" attribute
-    And I confirm the deletion
+    And I remove the "brand" attribute
     Then I should see the flash message "This attribute can not be removed because it is used as the label of the family"
+    And I should see attributes "Brand" in group "Other"

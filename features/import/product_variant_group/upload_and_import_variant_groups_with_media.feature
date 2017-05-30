@@ -7,8 +7,8 @@ Feature: Upload and import variant groups with media
   Scenario: Successfully upload and import variant groups from an archive
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code       | type | label-en_US | allowed_extensions |
-      | attachment | file | Attachment  | txt                |
+      | code       | type             | label-en_US | allowed_extensions | group |
+      | attachment | pim_catalog_file | Attachment  | txt                | other |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_variant_group_import" import job page
     When I upload and import the file "caterpillar_variant_import.zip"

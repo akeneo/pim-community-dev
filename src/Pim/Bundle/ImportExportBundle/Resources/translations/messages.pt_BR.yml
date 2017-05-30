@@ -6,14 +6,14 @@ pim_import_export:
   status:
     - Pronto
   batch_status:
-    1: CONCLUÍDO
-    2: INICIANDO
-    3: INICIADO
-    4: PARANDO
-    5: PARADO
-    6: FALHOU
-    7: ABANDONADO
-    8: DESCONHECIDO
+    1: Concluído
+    2: Iniciando
+    3: Iniciado
+    4: Parando
+    5: Parado
+    6: Falha na execução
+    7: Abandonado
+    8: Desconhecido
   download_archive:
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
@@ -46,18 +46,10 @@ pim_title.import_execution.index: Histórico de execuções de importação
 pim_title.import_execution.show: Execuções de importação | Detalhes
 export profile:
   title: perfil de exportação
-  overview: visão geral do perfil de exportação
-  create: criar perfil de exportação
   edit: editar perfil de exportação
-export report:
-  overview: relatórios de exportação
 import profile:
   title: perfil de importação
-  overview: visão geral do perfil de importação
-  create: criar perfil de importação
   edit: editar perfil de importação
-import report:
-  overview: relatórios de importação
 pim_importexport:
   acl:
     export_profile:
@@ -87,12 +79,12 @@ pim_importexport:
       dl_log: Baixar o log do relatório de importação
       dl_files: Baixar os arquivos importados
   acl_group:
-    export: Exportar perfis
-    import: Importar perfis
+    export: Perfis de exportação
+    import: Perfis de importação
 btn:
   create:
-    export profile: criar um perfil de exportação
-    import profile: criar um perfil de importação
+    export profile: criar perfil de exportação
+    import profile: criar perfil de importação
 Upload and import now: Enviar e Importar Agora
 import now: Importar Agora
 export now: Exportar Agora
@@ -111,12 +103,6 @@ flash:
     removed: A importação foi removida
     updated: A importação foi atualizada com sucesso
     running: A importação está a ser executada
-pim_menu:
-  item:
-    export_history: Histórico de exportações
-    export_profile: Perfis de exportação
-    import_history: Histórico de importações
-    import_profile: Perfis de importação
 General properties: Propriedades gerais
 History: Histórico
 pane.accordion:
@@ -147,16 +133,17 @@ job_execution.summary:
     skipped: pulado, extensão na lista branca
 Step: Passo
 Status: Status
+Warnings: Avisos
 Summary: Resumo
 Start: Iniciar
 End: Fim
 set_attribute_requirements: Estabelecer requisitos do atributo
-COMPLETED: CONCLUÍDO
-STARTING: INICIANDO
-STARTED: INICIADO
-STOPPING: PARANDO
-STOPPED: PARADO
-FAILED: FALHOU
-ABANDONED: ABANDONADO
-UNKNOWN: DESCONHECIDO
+COMPLETED: Concluído
+STARTING: Iniciando
+STARTED: Iniciado
+STOPPING: Parando
+STOPPED: Parado
+FAILED: Falha na execução
+ABANDONED: Abandonado
+UNKNOWN: Desconhecido
 warning.label: Aviso

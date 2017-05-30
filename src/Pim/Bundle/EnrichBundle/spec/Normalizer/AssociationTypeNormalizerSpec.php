@@ -21,12 +21,13 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_adds_the_attribute_id_to_the_normalized_association_type($normalizer, AssociationTypeInterface $variant)
-    {
-        $normalizer->normalize($variant, 'standard', [])->willReturn(['code' => 'variant']);
-        $variant->getId()->willReturn(12);
+    public function it_adds_the_attribute_id_to_the_normalized_association_type(
+        $normalizer, AssociationTypeInterface $associationType
+    ) {
+        $normalizer->normalize($associationType, 'standard', [])->willReturn(['code' => 'variant']);
+        $associationType->getId()->willReturn(12);
 
-        $this->normalize($variant, 'internal_api', [])
+        $this->normalize($associationType, 'internal_api', [])
             ->shouldReturn(
                 [
                     'code' => 'variant',
@@ -42,10 +43,10 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
             );
     }
 
-    public function it_supports_association_types_and_internal_api(AssociationTypeInterface $variant)
+    public function it_supports_association_types_and_internal_api(AssociationTypeInterface $associationType)
     {
-        $this->supportsNormalization($variant, 'internal_api')->shouldReturn(true);
-        $this->supportsNormalization($variant, 'json')->shouldReturn(false);
+        $this->supportsNormalization($associationType, 'internal_api')->shouldReturn(true);
+        $this->supportsNormalization($associationType, 'json')->shouldReturn(false);
         $this->supportsNormalization(new \StdClass(), 'internal_api')->shouldReturn(false);
     }
 }

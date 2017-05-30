@@ -14,13 +14,13 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
 
     function let(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn(null);
         $attribute->getNumberMin()
             ->willReturn(null);
         $attribute->getNumberMax()
             ->willReturn(null);
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn(null);
         $attribute->isDecimalsAllowed()
             ->willReturn(null);
@@ -30,17 +30,17 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
 
     function it_enforces_attribute_type(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_price_collection');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_text');
         $this->supportAttribute($attribute)
             ->shouldReturn(false);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('foo');
         $this->supportAttribute($attribute)
             ->shouldReturn(false);

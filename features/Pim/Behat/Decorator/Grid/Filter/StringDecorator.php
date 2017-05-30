@@ -23,7 +23,7 @@ class StringDecorator extends ElementDecorator
         );
         $operatorDropdown->setValue($operator);
 
-        if ('is empty' !== $operator) {
+        if (!in_array($operator, ['is empty', 'is not empty'])) {
             $field = $this->spin(function () {
                 return $this->find('css', '.select-field');
             }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));

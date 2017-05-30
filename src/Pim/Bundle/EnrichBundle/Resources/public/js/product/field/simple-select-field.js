@@ -35,10 +35,11 @@ define(
              */
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
-                    templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
+                    var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit');
+                    templateContext.userCanAddOption = this.editable && isAllowed;
 
                     return templateContext;
-                });
+                }.bind(this));
             },
 
             /**
@@ -81,7 +82,6 @@ define(
                                     search: term,
                                     options: {
                                         limit: 20,
-                                        locale: UserContext.get('catalogLocale'),
                                         page: page
                                     }
                                 };

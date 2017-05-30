@@ -9,7 +9,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -166,13 +165,6 @@ class UserUpdater implements ObjectUpdaterInterface
                     $user->addGroup($role);
                 }
                 break;
-            case 'api_key':
-                if (null === $api = $user->getApi()) {
-                    $api = new UserApi();
-                }
-                $api->setApiKey($data)->setUser($user);
-                $user->setApi($api);
-                break;
         }
     }
 
@@ -192,8 +184,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'default_tree',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -218,8 +209,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 $field,
                 'locale code',
                 'The locale does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -243,8 +233,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'catalog_scope',
                 'channel code',
                 'The channel does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -268,8 +257,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'roles',
                 'role',
                 'The role does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -293,8 +281,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'groups',
                 'group',
                 'The group does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }

@@ -4,7 +4,6 @@ namespace spec\Akeneo\Component\FileStorage;
 
 use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileInfoFactorySpec extends ObjectBehavior

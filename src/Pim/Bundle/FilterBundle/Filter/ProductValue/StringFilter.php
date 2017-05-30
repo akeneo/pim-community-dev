@@ -26,6 +26,7 @@ class StringFilter extends OroStringFilter
         TextFilterType::TYPE_STARTS_WITH  => Operators::STARTS_WITH,
         TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
         FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
+        FilterType::TYPE_NOT_EMPTY        => Operators::IS_NOT_EMPTY,
         FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
     ];
 
@@ -63,7 +64,7 @@ class StringFilter extends OroStringFilter
             return false;
         }
 
-        if (FilterType::TYPE_EMPTY === $data['type']) {
+        if (in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])) {
             $data['value'] = '';
 
             return $data;

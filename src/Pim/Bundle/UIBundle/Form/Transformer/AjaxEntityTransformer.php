@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 class AjaxEntityTransformer implements DataTransformerInterface
 {
     /**
-     * @var OptionRepositoryInterface
+     * @var AttributeOptionRepository
      */
     protected $repository;
 
@@ -27,10 +27,10 @@ class AjaxEntityTransformer implements DataTransformerInterface
     /**
      * Constructor
      *
-     * @param OptionRepositoryInterface $repository
+     * @param AttributeOptionRepository $repository
      * @param array                     $options
      */
-    public function __construct(OptionRepositoryInterface $repository, array $options)
+    public function __construct(AttributeOptionRepository $repository, array $options)
     {
         $this->repository = $repository;
         $this->options = $options;

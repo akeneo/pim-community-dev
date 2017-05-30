@@ -17,23 +17,5 @@ class Profile extends Base
     use ClosestTrait;
 
     /** @var string */
-    protected $path = '/user/profile/view';
-
-    /**
-     * Retrieve user API key
-     *
-     * @return null|string
-     */
-    public function getApiKey()
-    {
-        $generateButton = $this->spin(function () {
-            return $this->find('css', '#btn-apigen');
-        }, 'Could not find Generate API Key button.');
-
-        $generateElement = $this->spin(function () use ($generateButton) {
-            return $this->getClosest($generateButton, 'AknFieldContainer')->find('css', '.AknTextField');
-        }, 'Could not find API Key.');
-
-        return $generateElement->getHtml();
-    }
+    protected $path = '#/user/profile/view';
 }

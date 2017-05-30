@@ -2,8 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -37,20 +39,26 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
+    /** @var TranslatableUpdater */
+    protected $translatableUpdater;
+
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
      * @param AttributeTypeRegistry             $registry
+     * @param TranslatableUpdater               $translatableUpdater
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
-        AttributeTypeRegistry $registry
+        AttributeTypeRegistry $registry,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
         $this->registry = $registry;
         $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -66,10 +74,74 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            $this->validateDataType($field, $value);
             $this->setData($attribute, $field, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDataType($field, $data)
+    {
+        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions'])) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+            }
+
+            foreach ($data as $key => $value) {
+                if (null !== $value && !is_scalar($value)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf('one of the "%s" values is not a scalar', $field),
+                        static::class,
+                        $data
+                    );
+                }
+            }
+        } elseif (in_array(
+            $field,
+            [
+                'code',
+                'type',
+                'group',
+                'unique',
+                'useable_as_grid_filter',
+                'metric_family',
+                'default_metric_unit',
+                'reference_data_name',
+                'max_characters',
+                'validation_rule',
+                'validation_regexp',
+                'wysiwyg_enabled',
+                'number_min',
+                'number_max',
+                'decimals_allowed',
+                'negative_allowed',
+                'date_min',
+                'date_max',
+                'max_file_size',
+                'minimum_input_length',
+                'sort_order',
+                'localizable',
+                'scopable',
+                'required',
+            ]
+        )) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 
     /**
@@ -83,11 +155,11 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setData(AttributeInterface $attribute, $field, $data)
     {
         switch ($field) {
-            case 'attribute_type':
+            case 'type':
                 $this->setType($attribute, $data);
                 break;
             case 'labels':
-                $this->setLabels($attribute, $data);
+                $this->translatableUpdater->update($attribute, $data);
                 break;
             case 'group':
                 $this->setGroup($attribute, $data);
@@ -143,21 +215,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /**
      * @param AttributeInterface $attribute
-     * @param array              $data
-     */
-    protected function setLabels(AttributeInterface $attribute, array $data)
-    {
-        foreach ($data as $localeCode => $label) {
-            if (null !== $label && '' !== $label) {
-                $attribute->setLocale($localeCode);
-                $translation = $attribute->getTranslation();
-                $translation->setLabel($label);
-            }
-        }
-    }
-
-    /**
-     * @param AttributeInterface $attribute
      * @param string             $field
      * @param array              $availableLocaleCodes
      *
@@ -174,8 +231,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                     'available_locales',
                     'locale code',
                     'The locale does not exist',
-                    'updater',
-                    'attribute',
+                    static::class,
                     $localeCode
                 );
             }
@@ -200,8 +256,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'group',
                 'code',
                 'The attribute group does not exist',
-                'updater',
-                'attribute',
+                static::class,
                 $data
             );
         }
@@ -218,28 +273,24 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setType($attribute, $data)
     {
         if (('' === $data) || (null === $data)) {
-            throw InvalidPropertyException::valueNotEmptyExpected(
-                'attribute_type',
-                'updater',
-                'attribute'
-            );
+            throw InvalidPropertyException::valueNotEmptyExpected('type', static::class);
         }
 
         try {
             $attributeType = $this->registry->get($data);
-            $attribute->setAttributeType($attributeType->getName());
-            $attribute->setBackendType($attributeType->getBackendType());
-            $attribute->setUnique($attributeType->isUnique());
         } catch (\LogicException $exception) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'attribute_type',
+                'type',
                 'attribute type',
                 'The attribute type does not exist',
-                'updater',
-                'attribute',
+                static::class,
                 $data
             );
         }
+
+        $attribute->setType($attributeType->getName());
+        $attribute->setBackendType($attributeType->getBackendType());
+        $attribute->setUnique($attributeType->isUnique());
     }
 
     /**
@@ -266,23 +317,11 @@ class AttributeUpdater implements ObjectUpdaterInterface
         try {
             new \DateTime($data);
         } catch (\Exception $e) {
-            throw InvalidPropertyException::dateExpected(
-                $field,
-                'yyyy-mm-dd',
-                'updater',
-                'attribute',
-                $data
-            );
+            throw InvalidPropertyException::dateExpected($field, 'yyyy-mm-dd', static::class, $data);
         }
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-            throw InvalidPropertyException::dateExpected(
-                $field,
-                'yyyy-mm-dd',
-                'updater',
-                'attribute',
-                $data
-            );
+            throw InvalidPropertyException::dateExpected($field, 'yyyy-mm-dd', static::class, $data);
         }
     }
 

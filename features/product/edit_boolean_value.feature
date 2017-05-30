@@ -8,9 +8,9 @@ Feature: Edit a boolean value
     Given the "default" catalog configuration
     And a "tshirt" product
     And the following attributes:
-      | code             | label            | type    | scopable | localizable |
-      | boolean          | Boolean          | boolean | no       | no          |
-      | scopable_boolean | Scopable boolean | boolean | yes      | yes         |
+      | code             | label-en_US      | type                | scopable | localizable | group |
+      | boolean          | Boolean          | pim_catalog_boolean | 0        | 0           | other |
+      | scopable_boolean | Scopable boolean | pim_catalog_boolean | 1        | 1           | other |
     And I am logged in as "Mary"
     And I am on the "tshirt" product page
     And I add available attributes Boolean and Scopable boolean

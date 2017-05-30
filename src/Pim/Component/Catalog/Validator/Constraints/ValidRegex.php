@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for attribute not being localizable and scopable when unique
+ * Constraint for validate regular expressions.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

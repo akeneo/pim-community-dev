@@ -58,7 +58,7 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-csv-base-export-show-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -69,7 +69,7 @@ extensions:
             fieldCode: configuration.delimiter
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-base-export-show-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -80,7 +80,7 @@ extensions:
             fieldCode: configuration.enclosure
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-base-export-show-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -91,7 +91,7 @@ extensions:
             fieldCode: configuration.withHeader
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.withHeader.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-csv-base-export-show-label:
         module: pim/job/common/edit/label
@@ -120,6 +120,7 @@ extensions:
         targetZone: buttons
         position: 100
         config:
+            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
             identifier:

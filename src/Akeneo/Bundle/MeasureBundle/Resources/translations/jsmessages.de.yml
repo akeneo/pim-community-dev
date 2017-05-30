@@ -95,6 +95,9 @@ SECOND: Sekunde
 MINUTE: Minute
 HOUR: Stunde
 DAY: Tag
+WEEK: Woche
+MONTH: Monat
+YEAR: Jahr
 Speed: Geschwindigkeit
 FOOT_PER_SECOND: Fuß pro Sekunde
 FOOT_PER_HOUR: Fuß pro Stunde
@@ -146,3 +149,9 @@ ATM: Atmosphäre
 PSI: Pfund pro Quadratzoll
 TORR: Torr
 MMHG: Millimeter Quecksilbersäule
+Energy: Energie
+KILOCALORIE: Kilokalorien
+KILOJOULE: Kilojoule
+CaseBox: Verpackung
+PIECE: Stück
+DOZEN: Dutzend

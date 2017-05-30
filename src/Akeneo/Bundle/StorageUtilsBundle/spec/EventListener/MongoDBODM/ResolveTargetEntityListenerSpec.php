@@ -4,7 +4,6 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\EventListener\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 
 /**

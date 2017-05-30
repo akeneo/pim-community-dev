@@ -3,14 +3,12 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -48,35 +46,6 @@ class UserController extends Controller
     }
 
     /**
-     * @AclAncestor("pim_user_user_edit")
-     *
-     * @param int $id
-     *
-     * @return JsonResponse|Response
-     */
-    public function apigenAction($id)
-    {
-        $userRepository = $this->container->get('pim_user.repository.user');
-        $user = $userRepository->findOneBy(['id' => $id]);
-
-        if (!$api = $user->getApi()) {
-            $api = new UserApi();
-        }
-
-        $api->setApiKey($api->generateKey())
-            ->setUser($user);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($api);
-        $em->flush();
-
-        return $this->getRequest()->isXmlHttpRequest()
-            ? new JsonResponse($api->getApiKey())
-            : $this->forward('OroUserBundle:User:view', ['id' => $id]);
-    }
-
-    /**
      * Create user form
      *
      * @Template("OroUserBundle:User:update.html.twig")
@@ -98,15 +67,6 @@ class UserController extends Controller
     public function updateAction($id)
     {
         return $this->update($id);
-    }
-
-    /**
-     * @Template
-     * @AclAncestor("pim_user_user_index")
-     */
-    public function indexAction()
-    {
-        return [];
     }
 
     /**
@@ -163,8 +123,8 @@ class UserController extends Controller
 
             $this->get('session')->remove('dataLocale');
 
-            return new RedirectResponse(
-                $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
+            return new JsonResponse(
+                ['route' => 'oro_user_update', 'params' => ['id' => $user->getId()]]
             );
         }
 

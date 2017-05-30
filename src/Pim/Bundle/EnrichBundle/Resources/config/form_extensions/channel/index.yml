@@ -1,0 +1,25 @@
+extensions:
+    pim-channel-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.channel.title
+
+    pim-channel-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-channel-index
+        position: 100
+        targetZone: content
+        config:
+            alias: channel-grid
+
+    pim-channel-index-create-button:
+        module: pim/common/redirect
+        parent: pim-channel-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_channel_create
+        config:
+            iconName: plus
+            label: pim_enrich.index.channel.create_btn
+            route: pim_enrich_channel_create
+            buttonClass: AknButton--apply

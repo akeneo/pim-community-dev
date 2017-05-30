@@ -11,7 +11,13 @@
                     </label>
                 </div>
                 <div class="AknFieldContainer-inputContainer field-input">
-                    <input id="<%- fieldBaseId %><%- locale.code %>" class="AknTextField label-field" type="text" data-locale="<%- locale.code %>" value="<%- model.labels[locale.code] %>">
+                    <input id="<%- fieldBaseId %><%- locale.code %>"
+                           class="AknTextField label-field"
+                           type="text"
+                           data-locale="<%- locale.code %>"
+                           value="<%- model.labels[locale.code] %>"
+                           <%- isReadOnly ? 'readonly disabled' : '' %>
+                    >
                 </div>
                 <% if (errors[locale.code]) { %>
                     <div class="AknFieldContainer-footer">

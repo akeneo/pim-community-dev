@@ -56,7 +56,7 @@ class AttributeTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
         $builder
             ->add(
-                'attributeType',
+                'type',
                 'choice',
                 [
                     'choices'   => ['text' => 'text', 'number' => 'number', 'email' => 'email'],
@@ -103,13 +103,7 @@ class AttributeTypeSpec extends ObjectBehavior
             ->add(
                 'group',
                 'entity',
-                [
-                    'class'       => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup',
-                    'required'    => true,
-                    'multiple'    => false,
-                    'empty_value' => 'Choose the attribute group',
-                    'select2'     => true
-                ]
+                Argument::any()
             )->shouldHaveBeenCalled();
     }
 

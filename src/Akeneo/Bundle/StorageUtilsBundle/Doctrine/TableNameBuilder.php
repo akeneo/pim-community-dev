@@ -47,7 +47,8 @@ class TableNameBuilder
 
         if (null !== $targetEntity) {
             $assocMapping = $classMetadata->getAssociationMapping($targetEntity);
-            $classMetadata = $assocMapping['targetEntity'];
+
+            return $assocMapping['joinTable']['name'];
         }
 
         return $classMetadata->getTableName();

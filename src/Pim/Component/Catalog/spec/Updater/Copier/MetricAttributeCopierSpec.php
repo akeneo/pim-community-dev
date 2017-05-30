@@ -40,12 +40,12 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $fromNumberAttribute,
         AttributeInterface $toNumberAttribute
     ) {
-        $fromMetricAttribute->getAttributeType()->willReturn('pim_catalog_metric');
-        $toMetricAttribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $fromMetricAttribute->getType()->willReturn('pim_catalog_metric');
+        $toMetricAttribute->getType()->willReturn('pim_catalog_metric');
         $this->supportsAttributes($fromMetricAttribute, $toMetricAttribute)->shouldReturn(true);
 
-        $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
+        $fromNumberAttribute->getType()->willReturn('pim_catalog_number');
+        $toNumberAttribute->getType()->willReturn('pim_catalog_number');
         $this->supportsAttributes($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
         $this->supportsAttributes($fromMetricAttribute, $toNumberAttribute)->shouldReturn(false);
@@ -109,7 +109,7 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
         $metricFactory->createMetric('Weight')->shouldBeCalledTimes(1)->willReturn($metric);
 
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
         foreach ($products as $product) {

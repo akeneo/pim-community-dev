@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -61,7 +62,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'prices collection');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $this->addPrices($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -73,66 +74,66 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @return mixed
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'adder',
-                'prices collection',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $price) {
             if (!is_array($price)) {
-                throw InvalidArgumentException::arrayOfArraysExpected(
+                throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
-                    'adder',
-                    'prices collection',
-                    gettype($data)
+                    static::class,
+                    $data
                 );
             }
 
             if (!array_key_exists('amount', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'adder',
-                    'prices collection',
-                    print_r($data, true)
+                    static::class,
+                    $data
                 );
             }
 
             if (!array_key_exists('currency', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
-                    'adder',
-                    'prices collection',
-                    print_r($data, true)
+                    static::class,
+                    $data
                 );
             }
 
             if (!is_numeric($price['amount']) && null !== $price['amount']) {
-                throw InvalidArgumentException::arrayNumericKeyExpected(
+                throw new InvalidPropertyTypeException(
                     $attribute->getCode(),
-                    'amount',
-                    'adder',
-                    'prices collection',
-                    gettype($price['amount'])
+                    $price['amount'],
+                    static::class,
+                    sprintf(
+                        'Property "%s" expects a numeric as data for the currency, "%s" given.',
+                        $attribute->getCode(),
+                        $price['amount']
+                    ),
+                    InvalidPropertyTypeException::NUMERIC_EXPECTED_CODE
                 );
             }
 
             if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'currency',
+                    'currency code',
                     'The currency does not exist',
-                    'adder',
-                    'prices collection',
+                    static::class,
                     $price['currency']
                 );
             }
@@ -153,7 +154,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         foreach ($data as $price) {

@@ -25,6 +25,7 @@ css:
         - bundles/pimui/less/lib/tabs.less
         - bundles/pimui/less/lib/wizard.less
         - bundles/pimui/less/lib/select2.less
+        - bundles/pimui/less/lib/summernote.less
 
     bem:
         - bundles/pimui/less/base/general.less
@@ -44,7 +45,9 @@ css:
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
 
+        - bundles/pimui/less/components/product-edit-form/AssetCollectionField.less
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less
+        - bundles/pimui/less/components/product-edit-form/ChoicesField.less
         - bundles/pimui/less/components/product-edit-form/CommentPanel.less
         - bundles/pimui/less/components/product-edit-form/CompletenessBlock.less
         - bundles/pimui/less/components/product-edit-form/ComparableFields.less
@@ -85,8 +88,8 @@ css:
         - bundles/pimui/less/components/Rule.less
         - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/TabContainer.less
+        - bundles/pimui/less/components/Thumbnail.less
         - bundles/pimui/less/components/TitleContainer.less
-        - bundles/pimui/less/components/UserMenu.less
         - bundles/pimui/less/components/VerticalList.less
         - bundles/pimui/less/components/Widget.less
 

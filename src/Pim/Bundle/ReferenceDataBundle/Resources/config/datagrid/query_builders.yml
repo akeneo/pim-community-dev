@@ -5,7 +5,7 @@ services:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_reference_data.registry'
             - '@pim_reference_data.id_resolver'
-            - ['IN', 'EMPTY']
+            - ['IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

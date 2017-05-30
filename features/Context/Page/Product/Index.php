@@ -19,7 +19,7 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/enrich/product/';
+    protected $path = '#/enrich/product/';
 
     /**
      * {@inheritdoc}
@@ -40,6 +40,7 @@ class Index extends Grid
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
+                'Manage filters options'  => ['css' => '.filter-list.select-filter-widget .ui-multiselect-checkboxes li label span'],
             ]
         );
     }
@@ -64,7 +65,7 @@ class Index extends Grid
     public function findLocaleLink($locale, $label, $flag = null)
     {
         $link = $this->getElement('Locales dropdown')
-            ->find('css', sprintf('li > a[href="/enrich/product/?dataLocale=%s"]', $locale));
+            ->find('css', sprintf('li > a[href="#/enrich/product/?dataLocale=%s"]', $locale));
 
         if (!$link) {
             throw new ElementNotFoundException(
@@ -133,5 +134,17 @@ class Index extends Grid
         }
 
         $elt->click();
+    }
+
+    /**
+     * Returns list of filters available from "Manage filters" select/dropdown
+     *
+     * @return NodeElement[]
+     */
+    public function getFiltersList()
+    {
+        return $this->spin(function () {
+            return $this->findAll('css', $this->elements['Manage filters options']['css']);
+        }, 'Filters list was not found.');
     }
 }

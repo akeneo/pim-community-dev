@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -34,10 +34,10 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         AttributeInterface $multiSelectAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $multiSelectAttribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $multiSelectAttribute->getType()->willReturn('pim_catalog_multiselect');
         $this->supportsAttribute($multiSelectAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
@@ -77,11 +77,10 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 
         $data = 'not an array!';
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
-                'remover',
-                'multi select',
-                gettype($data)
+                'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -94,12 +93,11 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 
         $data = [0];
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'attributeCode',
-                0,
-                'remover',
-                'multi select',
-                gettype($data[0])
+                'one of the option codes is not a string, "integer" given',
+                'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }

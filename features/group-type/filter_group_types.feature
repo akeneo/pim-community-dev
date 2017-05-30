@@ -7,9 +7,9 @@ Feature: Filter group types
   Scenario: Successfully filter group types
     Given the "default" catalog configuration
     And the following group types:
-      | code    | label    |
-      | related | Relation |
-      | special | Special  |
+      | code    | label-en_US |
+      | related | Relation    |
+      | special | Special     |
     And I am logged in as "Peter"
     Given I am on the group types page
     Then the grid should contain 4 elements

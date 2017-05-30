@@ -17,8 +17,8 @@ Feature: Delete a family
     But I should not see family boots
 
   Scenario: Successfully delete a family from the edit page
-    Given I edit the "sneakers" family
-    When I press the "Delete" button
+    Given I am on the "sneakers" family page
+    When I press the "Delete" button and wait for modal
     And I confirm the deletion
     Then I should be on the families page
     And the grid should contain 4 elements
@@ -32,8 +32,8 @@ Feature: Delete a family
     When I am on the products page
     And I display the columns SKU, Family
     Then I should see the text "sneakers"
-    When I edit the "sneakers" family
-    And I press the "Delete" button
+    When I am on the "sneakers" family page
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I am on the products page
     And I display the columns SKU, Family

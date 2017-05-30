@@ -64,29 +64,6 @@ class VariantGroupNormalizer extends BaseNormalizer
     }
 
     /**
-     * Generate an array representing the list of variant group values in flat array
-     *
-     * @param array $variantGroupValues
-     * @param array $context
-     *
-     * @return array
-     */
-    protected function normalizeValues(array $variantGroupValues, array $context = [])
-    {
-        $flatValues = [];
-
-        foreach ($variantGroupValues as $attributeCode => $variantGroupValue) {
-            $flatValues += $this->valuesNormalizer->normalize(
-                [$attributeCode => $variantGroupValue],
-                'flat',
-                $context
-            );
-        }
-
-        return $flatValues;
-    }
-
-    /**
      * @param array $labels
      *
      * @return array

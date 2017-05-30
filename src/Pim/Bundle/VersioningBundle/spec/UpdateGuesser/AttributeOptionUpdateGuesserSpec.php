@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;

@@ -71,7 +71,7 @@ define(
                 var initialView = this.getRoot().initialView;
                 var initialViewExists = null !== initialView && 0 !== initialView.id;
 
-                var filtersModified = initialView.filters !== datagridState.filters;
+                var filtersModified = this.areFiltersModified(initialView.filters, datagridState.filters);
                 var columnsModified = !_.isEqual(initialView.columns, datagridState.columns.split(','));
 
                 if (initialViewExists) {
@@ -95,6 +95,18 @@ define(
              */
             setView: function (view) {
                 this.datagridView = view;
+            },
+
+            /**
+             * Check if current datagrid state filters are modified regarding the initial view
+             *
+             * @param {Object} initialViewFilters
+             * @param {Object} datagridStateFilters
+             *
+             * @return {boolean}
+             */
+            areFiltersModified: function (initialViewFilters, datagridStateFilters) {
+                return initialViewFilters !== datagridStateFilters;
             }
         });
     }

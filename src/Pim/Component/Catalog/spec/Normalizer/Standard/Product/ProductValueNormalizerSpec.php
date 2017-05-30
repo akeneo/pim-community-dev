@@ -3,15 +3,12 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\SerializerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -54,7 +51,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
@@ -80,7 +77,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getLocale()->willReturn('en_US');
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
@@ -106,7 +103,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getLocale()->willReturn('en_US');
         $productValue->getScope()->willReturn('ecommerce');
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
@@ -132,7 +129,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn('ecommerce');
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(true);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $attribute->getType()->willReturn(AttributeTypes::NUMBER);
         $attribute->isDecimalsAllowed()->willReturn(true);
 
         $this->normalize($productValue)->shouldReturn(
@@ -158,7 +155,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getScope()->willReturn('ecommerce');
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(false);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $attribute->getType()->willReturn(AttributeTypes::NUMBER);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
@@ -184,7 +181,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $attribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(
@@ -223,7 +220,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn(null);
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
+        $attribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
         $this->normalize($productValue)->shouldReturn(

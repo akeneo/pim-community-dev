@@ -8,6 +8,8 @@ parameters:
     pim_enrich.normalizer.version.class:                           Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pim_enrich.normalizer.collection.class:                        Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer
     pim_enrich.normalizer.association_type.class:                  Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer
+    pim_enrich.normalizer.group_type.class:                        Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer
+    pim_enrich.normalizer.family.class:                            Pim\Bundle\EnrichBundle\Normalizer\FamilyNormalizer
     pim_enrich.normalizer.attribute.class:                         Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
     pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
@@ -18,6 +20,7 @@ parameters:
     pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
     pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
+    pim_enrich.normalizer.attribute_group.class:                   Pim\Bundle\EnrichBundle\Normalizer\AttributeGroupNormalizer
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
 
 services:
@@ -50,6 +53,13 @@ services:
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '%pim_catalog_product_storage_driver%'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -61,7 +71,7 @@ services:
     pim_enrich.normalizer.completeness_collection:
         class: '%pim_enrich.normalizer.completeness_collection.class%'
         arguments:
-            - '@pim_internal_api_serializer'
+            - '@pim_enrich.normalizer.completeness'
 
     pim_enrich.normalizer.version:
         class: '%pim_enrich.normalizer.version.class%'
@@ -78,8 +88,16 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
+
     pim_enrich.normalizer.family:
-        parent: pim_catalog.normalizer.standard.family
+        class: '%pim_enrich.normalizer.family.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -89,6 +107,14 @@ services:
             - '@pim_serializer'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.group_type:
+        class: '%pim_enrich.normalizer.group_type.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.provider.structure_version.group_type'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -104,6 +130,8 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.locale'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
             - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
@@ -166,6 +194,14 @@ services:
         class: '%pim_enrich.normalizer.category.class%'
         arguments:
             - '@pim_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.attribute_group:
+        class: '%pim_enrich.normalizer.attribute_group.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

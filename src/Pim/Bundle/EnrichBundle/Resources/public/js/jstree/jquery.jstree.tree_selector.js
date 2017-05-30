@@ -46,7 +46,7 @@
 
                 }, this))
                 // Rewrite the root node to link it to the selected tree
-                .bind('loaded.jstree', $.proxy(function (event, data) {
+                .bind('loaded.jstree', $.proxy(function (event) {
                     if (event.namespace === 'jstree') {
                         this.switch_tree();
                     }
@@ -76,7 +76,7 @@
             preselect_node_id: false
         },
         _fn: {
-            refresh: function (obj) {
+            refresh: function () {
                 this.refresh_trees();
 
                 return this.__call_old();

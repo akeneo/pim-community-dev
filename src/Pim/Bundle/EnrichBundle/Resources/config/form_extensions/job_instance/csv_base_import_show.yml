@@ -64,18 +64,18 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
-    pim-job-instance-csv-base-import-show-properties-escape:
-        module: pim/job/common/edit/field/text
+    pim-job-instance-csv-base-import-show-properties-file-upload:
+        module: pim/job/common/edit/field/switch
         parent: pim-job-instance-csv-base-import-show-properties
         position: 130
         targetZone: global-settings
         config:
-            fieldCode: configuration.escape
+            fieldCode: configuration.uploadAllowed
             readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.escape.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.escape.help
+            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
     pim-job-instance-csv-base-import-show-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -86,7 +86,7 @@ extensions:
             fieldCode: configuration.delimiter
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-base-import-show-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -97,18 +97,18 @@ extensions:
             fieldCode: configuration.enclosure
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
 
-    pim-job-instance-csv-base-import-show-properties-file-upload:
-        module: pim/job/common/edit/field/switch
+    pim-job-instance-csv-base-import-show-properties-escape:
+        module: pim/job/common/edit/field/text
         parent: pim-job-instance-csv-base-import-show-properties
         position: 160
         targetZone: global-settings
         config:
-            fieldCode: configuration.uploadAllowed
+            fieldCode: configuration.escape
             readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.uploadAllowed.help
+            label: pim_enrich.form.job_instance.tab.properties.escape.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.escape.help
 
     pim-job-instance-csv-base-import-show-label:
         module: pim/job/common/edit/label
@@ -137,6 +137,7 @@ extensions:
         targetZone: buttons
         position: 100
         config:
+            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
             identifier:

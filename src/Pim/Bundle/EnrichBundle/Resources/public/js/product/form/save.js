@@ -75,6 +75,7 @@ define(
                         this.postSave();
 
                         this.setData(data, options);
+
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
                     }.bind(this))
                     .fail(this.fail.bind(this))

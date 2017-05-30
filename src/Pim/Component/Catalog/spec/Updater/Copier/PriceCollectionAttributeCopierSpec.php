@@ -35,12 +35,12 @@ class PriceCollectionAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $fromNumberAttribute,
         AttributeInterface $toNumberAttribute
     ) {
-        $fromPriceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
-        $toPriceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $fromPriceCollectionAttribute->getType()->willReturn('pim_catalog_price_collection');
+        $toPriceCollectionAttribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttributes($fromPriceCollectionAttribute, $toPriceCollectionAttribute)->shouldReturn(true);
 
-        $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $toPriceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $fromNumberAttribute->getType()->willReturn('pim_catalog_number');
+        $toPriceCollectionAttribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttributes($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
         $this->supportsAttributes($fromPriceCollectionAttribute, $toNumberAttribute)->shouldReturn(false);
@@ -88,7 +88,7 @@ class PriceCollectionAttributeCopierSpec extends ObjectBehavior
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $builder->addPriceForCurrency($toProductValue, 'USD', 123)->shouldBeCalled();
 

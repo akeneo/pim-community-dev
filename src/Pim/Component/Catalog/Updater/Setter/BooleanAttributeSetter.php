@@ -40,7 +40,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'boolean');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }
@@ -59,7 +59,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         if (1 === $data || '1' === $data || 0 === $data || '0' === $data) {

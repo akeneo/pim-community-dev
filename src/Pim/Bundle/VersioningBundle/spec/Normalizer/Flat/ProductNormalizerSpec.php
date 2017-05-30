@@ -54,7 +54,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->getType()->willReturn('pim_catalog_identifier');
         $skuAttribute->isLocalizable()->willReturn(false);
         $skuAttribute->isScopable()->willReturn(false);
         $sku->getAttribute()->willReturn($skuAttribute);
@@ -103,7 +103,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->getType()->willReturn('pim_catalog_identifier');
         $skuAttribute->isLocalizable()->willReturn(false);
         $skuAttribute->isScopable()->willReturn(false);
         $sku->getAttribute()->willReturn($skuAttribute);
@@ -167,7 +167,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->getType()->willReturn('pim_catalog_identifier');
         $skuAttribute->isLocalizable()->willReturn(false);
         $skuAttribute->isScopable()->willReturn(false);
         $sku->getAttribute()->willReturn($skuAttribute);
@@ -218,7 +218,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     ) {
         $family->getCode()->willReturn('shoes');
         $priceAttribute->getCode()->willReturn('price');
-        $priceAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $priceAttribute->getType()->willReturn('pim_catalog_price_collection');
         $priceAttribute->isLocalizable()->willReturn(false);
         $priceAttribute->isScopable()->willReturn(false);
 

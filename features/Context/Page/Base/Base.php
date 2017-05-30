@@ -7,6 +7,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -21,6 +22,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class Base extends Page
 {
     use SpinCapableTrait;
+    use ClosestTrait;
 
     protected $elements = [
         'Body'             => ['css' => 'body'],
@@ -154,7 +156,7 @@ class Base extends Page
      */
     public function getUrl(array $options = [])
     {
-        $url = $this->getPath();
+        $url = preg_split('/#/', $this->getPath())[1];
 
         foreach ($options as $parameter => $value) {
             $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
@@ -237,6 +239,25 @@ class Base extends Page
     }
 
     /**
+     * Get icon button
+     *
+     * @param string  $locator
+     *
+     * @return NodeElement|null
+     */
+    public function getIconButton($locator)
+    {
+        $button = null;
+        $icon = $this->find('css', sprintf('i[data-original-title="%s"]', $locator));
+
+        if (null !== $icon) {
+            $button = $this->getClosest($icon, 'AknIconButton');
+        }
+
+        return $button;
+    }
+
+    /**
      * Get visible button
      *
      * @param string $locator
@@ -282,19 +303,13 @@ class Base extends Page
     /**
      * Get the confirm dialog element
      *
-     * @throws \Exception
-     *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
+     * @return NodeElement
      */
     protected function getConfirmDialog()
     {
-        $element = $this->getElement('Dialog');
-
-        if (null === $element) {
-            throw new \Exception('Could not find dialog window');
-        }
-
-        return $element;
+        return $this->spin(function () {
+            return $this->getElement('Dialog');
+        }, 'Could not find dialog popin');
     }
 
     /**

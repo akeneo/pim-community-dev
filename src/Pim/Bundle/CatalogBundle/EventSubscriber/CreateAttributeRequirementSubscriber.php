@@ -60,7 +60,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
                 $requirement = $this->requirementFactory->createAttributeRequirement(
                     $attribute,
                     $entity,
-                    AttributeTypes::IDENTIFIER === $attribute->getAttributeType()
+                    AttributeTypes::IDENTIFIER === $attribute->getType()
                 );
                 $requirement->setFamily($family);
                 $entityManager->persist($requirement);

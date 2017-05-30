@@ -5,12 +5,14 @@ datagrid:
         source:
             acl_resource: pim_enrich_variant_group_index
             type: pim_datasource_group
+            default_query_params:
+                isVariant: true
         columns:
             code:
                 label: Code
             label:
                 label: Label
-            attributes:
+            axisAttributes:
                 label: Axis
                 type: twig
                 template: PimDataGridBundle:Property:options.html.twig
@@ -57,7 +59,7 @@ datagrid:
                     type:      string
                     label:     Label
                     data_name: translation.label
-                attributes:
+                axisAttributes:
                     type:      choice
                     label:     Axis
                     data_name: attribute

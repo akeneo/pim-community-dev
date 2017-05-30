@@ -104,10 +104,10 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('localisable_attr')->willReturn($localisableAttr);
         $attributeRepository->findOneByIdentifier('localised_attr')->willReturn($localiedAttr);
 
-        $normalAttr->getAttributeType()->willReturn('not_localized');
-        $scopableAttr->getAttributeType()->willReturn('not_localized');
-        $localisableAttr->getAttributeType()->willReturn('not_localized');
-        $localiedAttr->getAttributeType()->willReturn('localized');
+        $normalAttr->getType()->willReturn('not_localized');
+        $scopableAttr->getType()->willReturn('not_localized');
+        $localisableAttr->getType()->willReturn('not_localized');
+        $localiedAttr->getType()->willReturn('localized');
 
         $localizerRegistry->getLocalizer('not_localized')->willReturn(null);
         $localizerRegistry->getLocalizer('localized')->willReturn($localizer);

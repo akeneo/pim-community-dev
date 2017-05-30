@@ -27,8 +27,8 @@ Feature: Editing attribute values of a variant group also updates products with 
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
     And the following attributes:
-      | code                  | label-en_US           | type | group | allowedExtensions    |
-      | technical_description | Technical description | file | media | gif,png,jpeg,jpg,txt |
+      | code                  | label-en_US           | type             | group | allowed_extensions |
+      | technical_description | Technical description | pim_catalog_file | media | txt                |
     And I am logged in as "Julia"
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -56,6 +56,7 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I visit the "Other" group
     And I change the "Sole fabric" to "Gold, smooth"
     And I save the variant group
+    Then I should not see the text "There are unsaved changes."
     And I am on the "boot" product page
     And I visit the "Other" group
     Then the product Sole fabric should be "gold, smooth"

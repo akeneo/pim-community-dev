@@ -32,14 +32,14 @@ Feature: Handle import of invalid CSV data
   Scenario: From an attribute CSV import, create an invalid data file and be able to download it
     Given the following CSV file to import:
       """
-      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
-      pim_catalog_identifier;sku;SKU;info;1;1;;;;;0;0;1;1;;;;;;;
-      pim_catalog_text;name;Name;info;0;1;;;;;1;0;0;2;;;;;;;
-      pim_catalog_simpleselect;manufacturer;Manufacturer;NICE_GROUP;0;1;;;;;0;0;0;3;;;;;;;
-      pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;1;;;;;0;0;0;4;;;;;;;
-      pim_catalog_textarea;description;Description;info;0;1;;;;;1;1;0;5;;1000;;;;;
-      pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;0;7;;255;;;;;
-      pim_catalog_price_collection;price;Price;NOPE;0;1;;;;;0;0;0;1;;;1;200;1;;
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
+      pim_catalog_identifier;sku;SKU;info;1;1;;;;;0;0;1;;;;;;;
+      pim_catalog_text;name;Name;info;0;1;;;;;1;0;2;;;;;;;
+      pim_catalog_simpleselect;manufacturer;Manufacturer;NICE_GROUP;0;1;;;;;0;0;3;;;;;;;
+      pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;1;;;;;0;0;4;;;;;;;
+      pim_catalog_textarea;description;Description;info;0;1;;;;;1;1;5;;1000;;;;;
+      pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;7;;255;;;;;
+      pim_catalog_price_collection;price;Price;NOPE;0;1;;;;;0;0;1;;;1;200;1;;
       """
     And the following job "csv_footwear_attribute_import" configuration:
       | filePath | %file to import% |
@@ -50,9 +50,9 @@ Feature: Handle import of invalid CSV data
     Then I should see the text "Download invalid data"
     And the invalid data file of "csv_footwear_attribute_import" should contain:
       """
-      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
-      pim_catalog_simpleselect;manufacturer;Manufacturer;NICE_GROUP;0;1;;;;;0;0;0;3;;;;;;;
-      pim_catalog_price_collection;price;Price;NOPE;0;1;;;;;0;0;0;1;;;1;200;1;;
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
+      pim_catalog_simpleselect;manufacturer;Manufacturer;NICE_GROUP;0;1;;;;;0;0;3;;;;;;;
+      pim_catalog_price_collection;price;Price;NOPE;0;1;;;;;0;0;1;;;1;200;1;;
       """
 
   Scenario: From an attribute option CSV import, create an invalid data file and be able to download it

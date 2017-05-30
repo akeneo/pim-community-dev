@@ -1,0 +1,33 @@
+pim_api:
+    acl:
+        rights: Web API permissions
+        attribute:
+            edit: Create and update attributes
+            list: List attributes
+        attribute_option:
+            edit: Create and update attribute options
+            list: List attribute options
+        attribute_group:
+            edit: Create and update attribute groups
+            list: List attribute groups
+        category:
+            edit: Create and update categories
+            list: List categories
+        family:
+            edit: Create and update families
+            list: List families
+        channel.list: List channels
+        locale.list: List locales
+        currency.list: List currencies
+    acl_group:
+        overall_access: Overall Web API access
+        attribute: Attributes
+        attribute_option: Attribute options
+        attribute_group: Attribute groups
+        category: Categories
+        family: Families
+        channel: Channels
+        locale: Locales
+        currency: Currencies
+
+rights.api: Web API permissions

@@ -1,9 +1,9 @@
+@javascript
 Feature: Export families
   In order to be able to access and modify families outside PIM
   As a product manager
   I need to be able to export families in CSV
 
-  @javascript
   Scenario: Successfully export catalog families
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:
@@ -24,12 +24,11 @@ Feature: Export families
       led_tvs;"LED TVs";color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
       """
 
-  @javascript
   Scenario: Successfully export families CSV
     Given a "footwear" catalog configuration
     And the following family:
-      | code      | label-en_US |requirements-tablet | requirements-mobile |
-      | tractors  |             |sku                 | sku                 |
+      | code     | label-en_US | requirements-tablet | requirements-mobile |
+      | tractors |             | sku                 | sku                 |
     And the following job "csv_footwear_family_export" configuration:
       | filePath | %tmp%/family_export/family.csv |
     And I am logged in as "Julia"
@@ -49,7 +48,7 @@ Feature: Export families
       tractors;;sku;sku;sku;sku
       """
 
-  @javascript @jira https://akeneo.atlassian.net/browse/SDS-511
+  @ce @jira https://akeneo.atlassian.net/browse/SDS-511
   Scenario: Successfully export families after activating new locales
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:
@@ -72,6 +71,7 @@ Feature: Export families
       | French (Luxembourg)  | Baskets  |
       | French (Monaco)      | Baskets  |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_family_export" job to finish

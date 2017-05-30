@@ -37,12 +37,6 @@ pim_enrich:
     group_type:
         tab:
             property.title: Properties
-    # Channel
-    channel:
-        pick_conversion_unit: Pick a conversion unit for each metric attribute that will be used during product export
-        tab:
-            property.title: Properties
-            history.title:  History
     # Category
     category:
         tab:
@@ -308,9 +302,8 @@ pim_enrich:
 # Entity and page header titles
 attribute:
     title:    attribute
-    overview: attribute overview
-    create:   create attribute
     edit:     edit attribute
+    create:   create attribute
 attribute group:
     title:    attribute group
     overview: attribute group overview
@@ -339,17 +332,13 @@ channel:
     edit:     edit channel
 currency:
     title:    currency
-    overview: currency overview
     create:   create currency
     edit:     edit currency
 family:
     title:    family
-    overview: family overview
-    create:   create family
     edit:     edit family
 locale:
     title:    locale
-    overview: locale overview
     create:   create locale
     edit:     edit locale
 product:
@@ -359,22 +348,15 @@ product:
     edit:     edit product
 group:
     title:    group
-    overview: group overview
-    create:   create group
     edit:     edit group
 group type:
     title:    group type
-    overview: group type overview
-    create:   create group type
     edit:     edit group type
 variant group:
     title:    variant group
-    overview: variant group overview
-    create:   create variant group
     edit:     edit variant group
 association type:
     title:    association type
-    overview: association type overview
     create:   create association type
     edit:     edit association type
 
@@ -428,10 +410,8 @@ confirmation:
         category:         Are you sure you want to delete the category %name%?
         family:           Are you sure you want to delete the family %name%?
         product:          Are you sure you want to delete the product %name%?
-        channel:          Are you sure you want to delete the channel %name%?
         group:            Are you sure you want to delete the group %name%?
         variant group:    Are you sure you want to delete the variant group %name%?
-        association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
         user:             Are you sure you want to delete the user %name%?
     attribute group:
@@ -471,10 +451,6 @@ flash:
         updated: Tree successfully updated
         removed: Tree successfully removed
         not removable: Trees associated to channels cannot be removed.
-    channel:
-        saved:   Channel successfully saved
-        removed: Channel successfully removed
-        not removable: The last channel cannot be removed
     currency:
         updated: Currency successfully updated
         error.linked_to_channel: You cannot disable a currency linked to a channel.
@@ -846,27 +822,6 @@ Group: Group
 View group: View group
 Products: Products
 
-# Menu entries
-pim_menu:
-    tab:
-        collect: Collect
-        enrich: Enrich
-        settings: Settings
-        spread: Spread
-    item:
-        association_type: Association types
-        attribute: Attributes
-        attribute_group: Attribute groups
-        category: Categories
-        channel: Channels
-        currency: Currencies
-        family: Families
-        group: Groups
-        group_type: Group types
-        locale: Locales
-        product: Products
-        variant_group: Variant groups
-
 # Tabs
 Properties: Properties
 History: History
@@ -1039,10 +994,10 @@ job_tracker:
 
 pim_enrich_attribute_form:
     code: Code
-    attributeType: Attribute Type
+    type: Attribute Type
     reference_data_name: Reference data name
-    scopable: Scope
-    localizable: Localizable
+    scopable: Value per channel
+    localizable: Value per locale
     unique: Unique value
     availableLocales: Available locales
     locale_specific: Locale specific

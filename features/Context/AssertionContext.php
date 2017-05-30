@@ -42,10 +42,13 @@ class AssertionContext extends RawMinkContext
     /**
      * Checks, that page does not contain specified text.
      *
-     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     * @Then /^I should not see the text "(?P<text>(?:[^"]|\\")*)"$/
      */
     public function assertPageNotContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\"', '"', $text);
+        $text = strip_tags($text);
         $this->spin(function () use ($text) {
             $this->assertSession()->pageTextNotContains($text);
 
@@ -92,6 +95,20 @@ class AssertionContext extends RawMinkContext
             $errors = $this->getCurrentPage()->getValidationErrors();
             assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
         }
+    }
+
+    /**
+     * @param string $message
+     *
+     * @Then /^I should see the tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeTheTooltip($message)
+    {
+        $this->spin(function () use ($message) {
+            $tooltipMessages = $this->getCurrentPage()->getTooltipMessages();
+
+            return in_array($message, $tooltipMessages);
+        }, sprintf('Expecting to see tooltip "%s", not found', $message));
     }
 
     /**
@@ -547,37 +564,30 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param TableNode $table
-     *
-     * @return Then[]
-     *
-     * @Then /^the following pages should have the following titles:$/
-     */
-    public function theFollowingPagesShouldHaveTheFollowingTitles($table)
-    {
-        $steps = [];
-
-        foreach ($table->getHash() as $item) {
-            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
-            $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
-        }
-
-        return $steps;
-    }
-
-    /**
      * @param int $count
      *
      * @Then /^I should have (\d+) new notifications?$/
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
+        $this->spin(function () use ($count) {
+            $countContainer = $this->getCurrentPage()->find('css', '.AknBell-countContainer');
 
-        assertEquals(
-            $actualCount,
-            $count,
-            sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+            if (!$countContainer) {
+                return false;
+            }
+            $actualCount = (int) $countContainer->getText();
+
+            assertEquals(
+                $actualCount,
+                $count,
+                sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+            );
+
+            return true;
+        }, sprintf(
+            'Expecting to see %d new notifications',
+            $count)
         );
     }
 
@@ -587,14 +597,22 @@ class AssertionContext extends RawMinkContext
     public function iOpenTheNotificationPanel()
     {
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        }, 'Cannot find "#header-notification-widget" notification panel');
+            return $this->getCurrentPage()->find('css', '.AknHeader-rightMenus .notification');
+        }, 'Cannot find the link to the notification widget');
 
         if ($notificationWidget->hasClass('open')) {
             return;
         }
 
-        $notificationWidget->find('css', '.dropdown-toggle')->click();
+        $this->spin(function () use ($notificationWidget) {
+            $toggle = $notificationWidget->find('css', '.dropdown-toggle');
+
+            if (null !== $toggle && $toggle->isVisible()) {
+                $toggle->click();
+
+                return true;
+            }
+        }, 'Can not find the dropdown notification toggle');
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
@@ -633,8 +651,8 @@ class AssertionContext extends RawMinkContext
         $this->iOpenTheNotificationPanel();
 
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        }, 'Cannot find "#header-notification-widget" notification widget');
+            return $this->getCurrentPage()->find('css', '.AknHeader-rightMenus .notification');
+        }, 'Cannot find the link to the notification widget');
 
         $icons = [
             'success' => 'icon-ok',
@@ -750,5 +768,19 @@ class AssertionContext extends RawMinkContext
     protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
+    }
+
+    /**
+     * @When /^(?:|I )should see "([^"]*)" in popup$/
+     *
+     * @param string $message The message.
+     *
+     * @return bool
+     */
+    public function assertPopupMessage($message)
+    {
+        return $this->spin(function () use ($message) {
+            return $message == $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+        }, sprintf('Cannot assert that the modal contains %s', $message));
     }
 }

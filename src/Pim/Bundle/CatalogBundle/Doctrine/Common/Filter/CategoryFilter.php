@@ -5,8 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -147,10 +145,10 @@ class CategoryFilter implements FieldFilterInterface
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'category');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'category');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 

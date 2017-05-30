@@ -148,11 +148,7 @@ define(
                     .then(function (attribute) {
                         return {
                             field: attribute.code,
-                            /* jshint sub:true */
-                            /* jscs:disable requireDotNotation */
-                            view: attribute['filter_types']['product-export-builder'],
-                            /* jscs:enable requireDotNotation */
-                            /* jshint sub:false */
+                            view: attribute.filter_types['product-export-builder'],
                             isRemovable: true
                         };
                     });
@@ -308,8 +304,9 @@ define(
              * @param {string} fieldCode
              */
             removeFilter: function (fieldCode) {
+                var cleanedFieldCode = fieldCode.replace(/\.code$/, '');
                 this.filterViews = _.filter(this.filterViews, function (filterView) {
-                    return filterView.getCode() !== fieldCode;
+                    return filterView.getCode() !== cleanedFieldCode;
                 });
 
                 this.updateModel();

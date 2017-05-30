@@ -5,12 +5,17 @@ pim_dashboard:
       status: Status
       date: Datum
       type: Typ
-      profile name: Profilname
+      profile_name: Profilname
       details: Details
+      warning_count: Warnungen
       job_type:
         import: Import
         export: Export
         mass_edit: Massenbearbeitung
         quick_export: Schnellexport
+    completeness:
+      load_more: 'Mehr laden...'
     header:
       view_all: Alle anzeigen
+page_title:
+  pim_dashboard_index: Dashboard

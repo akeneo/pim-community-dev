@@ -2,6 +2,7 @@
 
 namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
 
 /**
@@ -11,9 +12,6 @@ use Pim\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNo
  */
 class ProductIntegration extends AbstractFlatNormalizerTestCase
 {
-    const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
-
     public function testProduct()
     {
         $standardProduct = [
@@ -260,21 +258,11 @@ class ProductIntegration extends AbstractFlatNormalizerTestCase
     private function sanitizeMediaAttributeData(array $data, array $mediaAttributes)
     {
         foreach ($data as $attribute => $value) {
-            if (in_array($attribute, $mediaAttributes) && $this->assertMediaAttributeDataPattern($value)) {
-                $data[$attribute] = self::MEDIA_ATTRIBUTE_DATA_COMPARISON;
+            if (in_array($attribute, $mediaAttributes)) {
+                $data[$attribute] = MediaSanitizer::sanitize($value);
             }
         }
 
         return $data;
-    }
-
-    /**
-     * @param string $data
-     *
-     * @return bool
-     */
-    private function assertMediaAttributeDataPattern($data)
-    {
-        return 1 === preg_match(self::MEDIA_ATTRIBUTE_DATA_PATTERN, $data);
     }
 }

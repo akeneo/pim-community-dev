@@ -1,20 +1,20 @@
+@javascript
 Feature: Export variant groups with localizable and scopable values
   In order to be able to access and modify groups data outside PIM
   As a product manager
   I need to be able to export variant groups
 
   # extracted from export_variant_group.feature to avoid issue with changing the catalog in a same feature
-  @javascript
   Scenario: Successfully export variant groups with localizable and scopable attributes
   Given an "apparel" catalog configuration
   And the following attributes:
-    | code                      | type | localizable | scopable |
-    | localizable_text          | text | yes         | no       |
-    | scopable_text             | text | no          | yes      |
-    | localizable_scopable_text | text | yes         | yes      |
-    | localizable_date          | date | yes         | no       |
-    | scopable_date             | date | no          | yes      |
-    | localizable_scopable_date | date | yes         | yes      |
+    | code                      | type             | localizable | scopable | group |
+    | localizable_text          | pim_catalog_text | 1           | 0        | other |
+    | scopable_text             | pim_catalog_text | 0           | 1        | other |
+    | localizable_scopable_text | pim_catalog_text | 1           | 1        | other |
+    | localizable_date          | pim_catalog_date | 1           | 0        | other |
+    | scopable_date             | pim_catalog_date | 0           | 1        | other |
+    | localizable_scopable_date | pim_catalog_date | 1           | 1        | other |
   And the following variant group values:
     | group   | attribute                 | value      | locale | scope     |
     | tshirts | localizable_text          | text1      | en_US  |           |

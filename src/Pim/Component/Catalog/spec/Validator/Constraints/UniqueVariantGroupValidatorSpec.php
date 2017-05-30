@@ -52,7 +52,7 @@ class UniqueVariantGroupValidatorSpec extends ObjectBehavior
         CustomGroupInterface $mugVariantGroup,
         CustomGroupInterface $otherGroup,
         GroupTypeInterface $variantType,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $mug->getGroups()->willReturn([$mugVariantGroup, $otherGroup]);
 
@@ -67,7 +67,12 @@ class UniqueVariantGroupValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation($onlyOneVariantGroup->message, ['%groups%' => 'mug, other', '%product%' => 'mug'])
             ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+        $violationBuilder->atPath('variant_group')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $violationBuilder->atPath('variant_group')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($mug, $onlyOneVariantGroup);
     }

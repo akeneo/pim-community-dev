@@ -17,44 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ImportProfileController extends JobProfileController
 {
     /**
-     * List the import profiles
-     *
-     * @param Request $request
-     *
-     * @Template
-     * @AclAncestor("pim_importexport_import_profile_index")
-     *
-     * @return array
-     */
-    public function indexAction(Request $request)
-    {
-        return [
-            'jobType'    => $this->getJobType(),
-            'connectors' => $this->jobRegistry->allByType($this->getJobType())
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_import_profile_create")
-     */
-    public function createAction(Request $request)
-    {
-        return parent::createAction($request);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_import_profile_show")
-     */
-    public function showAction($code)
-    {
-        return parent::showAction($code);
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @AclAncestor("pim_importexport_import_profile_edit")

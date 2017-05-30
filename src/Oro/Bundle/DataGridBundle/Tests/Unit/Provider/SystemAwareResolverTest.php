@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
-use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\SomeClass;
 
 class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
 {

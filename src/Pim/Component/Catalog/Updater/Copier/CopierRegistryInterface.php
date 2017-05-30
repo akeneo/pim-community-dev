@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Updater\Copier\CopierInterface;
 
 /**
  * Registry of copiers

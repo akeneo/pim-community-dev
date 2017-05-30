@@ -94,6 +94,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
         if (isset($options['field_options']['attr']['empty_choice']) &&
             true === $options['field_options']['attr']['empty_choice']) {
             $operatorChoices[] = strtolower(Operators::IS_EMPTY);
+            $operatorChoices[] = strtolower(Operators::IS_NOT_EMPTY);
         }
 
         return array_combine($operatorChoices, $operatorChoices);

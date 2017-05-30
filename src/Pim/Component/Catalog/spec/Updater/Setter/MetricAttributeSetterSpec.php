@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -39,10 +39,10 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $metrictAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $metrictAttribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $metrictAttribute->getType()->willReturn('pim_catalog_metric');
         $this->supportsAttribute($metrictAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
@@ -77,7 +77,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = 'Not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'metric', gettype($data))
+            InvalidPropertyTypeException::arrayExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter', $data)
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -90,12 +90,11 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'setter',
-                'metric',
-                print_r($data, true)
+                'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter',
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -109,8 +108,12 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = ['amount' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric',
-                print_r($data, true))
+            InvalidPropertyTypeException::arrayKeyExpected(
+                'attributeCode',
+                'unit',
+                'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter',
+                $data
+            )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -138,7 +141,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setData($data['amount'])->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
@@ -175,7 +178,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setUnit('KILOGRAM')->shouldBeCalled();
         $metric->setData($data['amount'])->shouldBeCalled();
 
-        $builder->addProductValue($product2, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);

@@ -1,0 +1,26 @@
+extensions:
+    pim-import-profile-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.import_profiles.title
+
+    pim-import-profile-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-import-profile-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: import-profile-grid
+            metadata:
+                jobType: import
+
+    pim-import-profile-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-import-profile-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_importexport_import_profile_create
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.import_profiles.create_btn
+           url:       pim_importexport_import_profile_create

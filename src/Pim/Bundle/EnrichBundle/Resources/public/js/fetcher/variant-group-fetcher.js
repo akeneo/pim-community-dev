@@ -1,6 +1,7 @@
 'use strict';
 
-define([
+define(
+    [
         'jquery',
         'pim/base-fetcher',
         'module',
@@ -8,7 +9,8 @@ define([
         'oro/mediator',
         'pim/cache-invalidator',
         'pim/product-manager'
-    ], function (
+    ],
+    function (
         $,
         BaseFetcher,
         module,
@@ -39,24 +41,19 @@ define([
                 options.code = identifier;
                 var promise = BaseFetcher.prototype.fetch.apply(this, [identifier, options]);
 
-                if (false === options.cached) {
-                    promise.then(function (variantGroup) {
+                return promise
+                    .then(function (variantGroup) {
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(variantGroup);
 
-                        return ProductManager.generateMissing(variantGroup);
-                    }.bind(this));
-                }
-
-                if (options.generateMissing) {
-                    promise.then(function (variantGroup) {
+                        return variantGroup;
+                    })
+                    .then(ProductManager.generateMissing.bind(ProductManager))
+                    .then(function (variantGroup) {
                         mediator.trigger('pim_enrich:form:variant_group:post_fetch', variantGroup);
 
                         return variantGroup;
                     });
-                }
-
-                return promise.promise();
             }
         });
     }

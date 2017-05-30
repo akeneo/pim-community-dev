@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Velj
     Mar: Ožu
     Apr: Tra
-    May: Svi
+    May: Svibanj
     Jun: Lip
     Jul: Srp
     Aug: Kol
@@ -110,3 +110,8 @@ oro_config:
         notification:
           title: Obavijesti
           system_notification: Obavijesti o novoj inačici
+        loading_message:
+          title: Učitavanje poruka
+          label: Omogućiti učitavanje poruke
+        loading_messages:
+          label: Dostupno učitavanje poruka

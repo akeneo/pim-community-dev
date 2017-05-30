@@ -7,8 +7,8 @@ Feature: Edit and remove a product
   Background:
     Given the "footwear" catalog configuration
     And the following family:
-      | code  | attributes                                                               |
-      | shoes | sku, name, description, price, rating, size, color, manufacturer, length |
+      | code  | attributes                                                       |
+      | shoes | sku,name,description,price,rating,size,color,manufacturer,length |
     And I am logged in as "Julia"
     And I am on the products page
     And I create a new product
@@ -32,7 +32,7 @@ Feature: Edit and remove a product
     And I should not see product boots
 
   Scenario: Successfully delete a product from the edit form
-    Given I press the "Delete" button
+    Given I press the "Delete" button and wait for modal
     Then I should see "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots

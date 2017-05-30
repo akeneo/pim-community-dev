@@ -93,11 +93,16 @@ class MediaMigration
      */
     public function storeLocalMedias()
     {
+        /** @var \Doctrine\ORM\EntityManagerInterface $em */
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
         $this->output->writeln(sprintf('Storing medias located in <comment>%s</comment> to the catalog filesystem...', $this->mediaDirectory));
 
         $storer = $this->container->get('akeneo_file_storage.file_storage.file.file_storer');
 
         $finder = new Finder();
+        $count = 0;
+        $batch = 1000;
         foreach ($finder->files()->followLinks()->in($this->mediaDirectory) as $file) {
             $fileInfo = $storer->store($file, FileStorage::CATALOG_STORAGE_ALIAS);
             $this->ormConnection->update(
@@ -105,7 +110,17 @@ class MediaMigration
                 ['old_file_key' => $file->getFilename()],
                 ['id'           => $fileInfo->getId()]
             );
+            $em->detach($fileInfo);
+            unset($fileInfo);
+            unset($file);
+
+            if (0 == $count % $batch) {
+                $em->clear();
+            }
+            $count++;
         }
+
+        $em->clear();
     }
 
     /**

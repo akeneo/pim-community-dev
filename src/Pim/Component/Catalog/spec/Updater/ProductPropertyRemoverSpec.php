@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -70,6 +71,19 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException('No remover found for field "unknown_field"'))->during(
             'removeData', [$product, 'unknown_field', 'code']
+        );
+    }
+
+    function it_throws_an_exception_when_trying_to_remove_anything_else_than_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\ProductInterface'
+            )
+        )->during(
+            'removeData',
+            [new \stdClass(), 'category', []]
         );
     }
 }

@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -36,6 +35,9 @@ class SequentialEditController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var SaverInterface */
+    protected $saver;
+
     /** @var array */
     protected $objects;
 
@@ -47,19 +49,22 @@ class SequentialEditController
      * @param SequentialEditManager $seqEditManager
      * @param UserContext           $userContext
      * @param NormalizerInterface   $normalizer
+     * @param SaverInterface        $saver
      */
     public function __construct(
         RouterInterface $router,
         MassActionDispatcher $massActionDispatcher,
         SequentialEditManager $seqEditManager,
         UserContext $userContext,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SaverInterface $saver
     ) {
         $this->router = $router;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->seqEditManager = $seqEditManager;
         $this->userContext = $userContext;
         $this->normalizer = $normalizer;
+        $this->saver = $saver;
     }
 
     /**
@@ -67,16 +72,16 @@ class SequentialEditController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function sequentialEditAction(Request $request)
     {
         if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
-            return new RedirectResponse(
-                $this->router->generate(
-                    'pim_enrich_product_index',
-                    ['dataLocale' => $request->get('dataLocale')]
-                )
+            return new JsonResponse(
+                [
+                    'route'  => 'pim_enrich_product_index',
+                    'params' => ['dataLocale' => $request->get('dataLocale')]
+                ]
             );
         }
 
@@ -85,16 +90,16 @@ class SequentialEditController
             $this->userContext->getUser()
         );
 
-        $this->seqEditManager->save($sequentialEdit);
+        $this->saver->save($sequentialEdit);
 
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_product_edit',
-                [
+        return new JsonResponse(
+            [
+                'route'  => 'pim_enrich_product_edit',
+                'params' => [
                     'dataLocale' => $request->get('dataLocale'),
                     'id'         => current($sequentialEdit->getObjectSet())
                 ]
-            )
+            ]
         );
     }
 

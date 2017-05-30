@@ -31,6 +31,7 @@ class FileType extends AbstractAttributeType
                     'by_reference' => false,
                     'select2'      => true,
                     'attr'         => [
+                        'class'     => 'AknTextField--select2',
                         'data-tags' => 'doc,docx,rtf,txt,csv,ppt,pptx,mp3,wav,svg,pdf'
                     ]
                 ]

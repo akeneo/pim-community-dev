@@ -38,3 +38,11 @@ Most Viewed: Més vistos
 "Yes": "Sí"
 "No": "No"
 required: (obligatori)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Permetre els missatges que s'estan carregant
+    loading_message_enabled.tooltip: Mostrar missatges amistosos mentre l'usuari espera que es carregui una pàgina
+    loading_messages.label: Missatges de càrrega disponibles
+    loading_messages.tooltip: Tots els missatges de càrrega disponibles estaran separats per salts de línia
+  group:
+    loading_message.title: S'estan carregant els missatges

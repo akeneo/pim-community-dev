@@ -8,7 +8,6 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
-use Pim\Component\Connector\Exception\StructureArrayConversionException;
 use Prophecy\Argument;
 
 class ProductValueSpec extends ObjectBehavior
@@ -57,13 +56,13 @@ class ProductValueSpec extends ObjectBehavior
 
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
 
-        $attribute1->getAttributeType()->willReturn('sku');
-        $attribute2->getAttributeType()->willReturn('categories');
-        $attribute3->getAttributeType()->willReturn('enabled');
-        $attribute4->getAttributeType()->willReturn('name');
-        $attribute5->getAttributeType()->willReturn('release_date');
-        $attribute6->getAttributeType()->willReturn('7');
-        $attribute7->getAttributeType()->willReturn('price');
+        $attribute1->getType()->willReturn('sku');
+        $attribute2->getType()->willReturn('categories');
+        $attribute3->getType()->willReturn('enabled');
+        $attribute4->getType()->willReturn('name');
+        $attribute5->getType()->willReturn('release_date');
+        $attribute6->getType()->willReturn('7');
+        $attribute7->getType()->willReturn('price');
 
         $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute1]);
         $fieldExtractor->extractColumnInfo('categories')->willReturn(['attribute' => $attribute2]);
@@ -207,7 +206,7 @@ class ProductValueSpec extends ObjectBehavior
         $columnsMerger->merge($item)->willReturn($item);
 
         $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
-        $attribute->getAttributeType()->willReturn('sku');
+        $attribute->getType()->willReturn('sku');
 
         $converterRegistry->getConverter(Argument::any())->willReturn(null);
 

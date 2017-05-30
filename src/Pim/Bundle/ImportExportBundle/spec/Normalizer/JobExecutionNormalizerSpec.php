@@ -8,14 +8,16 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
+use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
+    function let(SerializerInterface $serializer, TranslatorInterface $translator, TranslatedLabelProvider $labelProvider, NormalizerInterface $jobInstanceNormalizer)
     {
-        $this->beConstructedWith($translator, $labelProvider);
+        $this->beConstructedWith($translator, $labelProvider, $jobInstanceNormalizer);
 
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -36,6 +38,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $serializer,
         $translator,
         $labelProvider,
+        $jobInstanceNormalizer,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $exportExecution,
@@ -60,13 +63,14 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
         $serializer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
         $serializer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
+        $jobInstanceNormalizer->normalize($jobInstance, 'standard', Argument::cetera())->willReturn(['Normalized job instance']);
 
         $this->normalize($jobExecution, 'any')->shouldReturn([
-            'label'          => 'Wow job',
             'failures'       => ['Such error'],
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
             'status'         => 'COMPLETED',
+            'jobInstance'    => ['Normalized job instance']
         ]);
     }
 

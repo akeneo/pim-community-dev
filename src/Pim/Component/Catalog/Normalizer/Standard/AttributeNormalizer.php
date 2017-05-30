@@ -39,7 +39,7 @@ class AttributeNormalizer implements NormalizerInterface
     {
         return [
             'code'                   => $attribute->getCode(),
-            'type'                   => $attribute->getAttributeType(),
+            'type'                   => $attribute->getType(),
             'group'                  => ($attribute->getGroup()) ? $attribute->getGroup()->getCode() : null,
             'unique'                 => (bool) $attribute->isUnique(),
             'useable_as_grid_filter' => (bool) $attribute->isUseableAsGridFilter(),
@@ -48,19 +48,19 @@ class AttributeNormalizer implements NormalizerInterface
             'default_metric_unit'    => '' === $attribute->getDefaultMetricUnit() ?
                 null : $attribute->getDefaultMetricUnit(),
             'reference_data_name'    => $attribute->getReferenceDataName(),
-            'available_locales'      => $attribute->getLocaleSpecificCodes(),
+            'available_locales'      => $attribute->getAvailableLocaleCodes(),
             'max_characters'         => null === $attribute->getMaxCharacters() ?
                 null : (int) $attribute->getMaxCharacters(),
             'validation_rule'        => '' === $attribute->getValidationRule() ? null : $attribute->getValidationRule(),
             'validation_regexp'      => '' === $attribute->getValidationRegexp() ?
                 null : $attribute->getValidationRegexp(),
-            'wysiwyg_enabled'        => (bool) $attribute->isWysiwygEnabled(),
+            'wysiwyg_enabled'        => $attribute->isWysiwygEnabled(),
             'number_min'             => null === $attribute->getNumberMin() ?
                 null : (string) $attribute->getNumberMin(),
             'number_max'             => null === $attribute->getNumberMax() ?
                 null : (string) $attribute->getNumberMax(),
-            'decimals_allowed'       => (bool) $attribute->isDecimalsAllowed(),
-            'negative_allowed'       => (bool) $attribute->isNegativeAllowed(),
+            'decimals_allowed'       => $attribute->isDecimalsAllowed(),
+            'negative_allowed'       => $attribute->isNegativeAllowed(),
             'date_min'               => $this->dateTimeNormalizer->normalize($attribute->getDateMin()),
             'date_max'               => $this->dateTimeNormalizer->normalize($attribute->getDateMax()),
             'max_file_size'          => null === $attribute->getMaxFileSize() ?

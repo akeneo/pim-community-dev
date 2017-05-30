@@ -47,7 +47,7 @@ class ProductValueConverter
             throw new \LogicException(
                 sprintf(
                     'No standard to flat array converter found for attribute type "%s"',
-                    $attribute->getAttributeType()
+                    $attribute->getType()
                 )
             );
         }

@@ -39,6 +39,8 @@ class AttributeOptionRepository extends EntityRepository implements
             throw new \InvalidArgumentException('Please supply attribute id as collectionId');
         }
 
+        $identifier = isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id';
+
         $qb = $this->createQueryBuilder('o')
             ->select('o.id, o.code, v.value AS label, a.properties')
             ->leftJoin('o.optionValues', 'v', 'WITH', 'v.locale=:locale')
@@ -55,7 +57,7 @@ class AttributeOptionRepository extends EntityRepository implements
         if (isset($options['ids'])) {
             $qb
                 ->andWhere(
-                    $qb->expr()->in('o.id', ':ids')
+                    $qb->expr()->in(sprintf('o.%s', $identifier), ':ids')
                 )
                 ->setParameter('ids', $options['ids']);
         }
@@ -77,7 +79,7 @@ class AttributeOptionRepository extends EntityRepository implements
 
             $isLabelBlank = (null === $row['label']) || ('' === $row['label']);
             $results[] = [
-                'id'   => (isset($options['type']) && 'code' === $options['type']) ? $row['code'] : $row['id'],
+                'id'   => $row[$identifier],
                 'text' => $isLabelBlank ? sprintf('[%s]', $row['code']) : $row['label'],
             ];
         }

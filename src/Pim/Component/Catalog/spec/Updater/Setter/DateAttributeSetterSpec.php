@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -28,10 +28,10 @@ class DateAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $dateAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $dateAttribute->getAttributeType()->willReturn('pim_catalog_date');
+        $dateAttribute->getType()->willReturn('pim_catalog_date');
         $this->supportsAttribute($dateAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
@@ -76,12 +76,11 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = 'not a date';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'attributeCode',
-                'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data)
+                'yyyy-mm-dd',
+                'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
+                'not a date'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -95,12 +94,11 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = '1970-mm-01';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'attributeCode',
-                'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data)
+                'yyyy-mm-dd',
+                'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
+                '1970-mm-01'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -128,12 +126,11 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = 132654;
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'attributeCode',
-                'datetime or string',
-                gettype($data),
-                'setter',
-                'date'
+                'yyyy-mm-dd',
+                'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
+                'integer'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -154,7 +151,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
@@ -180,7 +177,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);

@@ -49,8 +49,8 @@ class BaseAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
             $fromProduct,
@@ -69,10 +69,10 @@ class BaseAttributeCopier extends AbstractAttributeCopier
      */
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
+        $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
 
-        $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
+        $sameType = $fromAttribute->getType() === $toAttribute->getType();
 
         return $supportsFrom && $supportsTo && $sameType;
     }
@@ -103,7 +103,7 @@ class BaseAttributeCopier extends AbstractAttributeCopier
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
             $toValue->setData($fromValue->getData());

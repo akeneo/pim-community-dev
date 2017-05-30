@@ -1,14 +1,14 @@
 confirmation:
   remove:
-    item: Tem a certeza que pretende eliminar este item?
-    association type: Tem certeza que deseja eliminar este tipo de associação?
+    item: Tem a certeza que pretende remover este item?
+    association_type: Tem certeza que deseja eliminar este tipo de associação?
     attribute: Tem certeza que deseja eliminar este atributo?
     family: Tem certeza que deseja eliminar esta família?
     product: Tem certeza que deseja eliminar este produto?
     channel: Tem certeza que deseja eliminar este canal?
     group: Tem certeza que deseja eliminar este grupo?
     variant group: Tem certeza que deseja eliminar este grupo variante?
-    group type: Tem certeza que deseja eliminar este tipo de grupo?
+    group_type: Tem certeza que deseja eliminar este tipo de grupo?
     import profile: Tem certeza que deseja eliminar este perfil de importação?
     export profile: Tem certeza que deseja eliminar este perfil de exportação?
     user: Tem a certeza que deseja eliminar este utilizador?
@@ -22,13 +22,20 @@ pim_datagrid:
       confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
       success: Produtos selecionados eliminados com sucesso.
       error: Ocorreu um erro ao tentar eliminar os produtos seleccionados, por favor tente novamente.
+  view_selector:
+    view: Visualizações
+    create_view_modal:
+      confirm: OK
+      cancel: Cancelar
 flash:
   item:
     removed: Item removido com sucesso
-  association type:
+  association_type:
     removed: Tipo de associação removido com sucesso
   attribute:
     removed: Atributo removido com sucesso
+  attribute_group:
+    removed: Grupo de atributos removido com sucesso
   family:
     removed: Família removida com sucesso
   product:
@@ -39,7 +46,7 @@ flash:
     removed: Grupo removido com sucesso
   variant group:
     removed: Grupo variante removido com sucesso
-  group type:
+  group_type:
     removed: Tipo de grupo removido com sucesso
   import profile:
     removed: Perfil de importação removido com sucesso
@@ -52,7 +59,7 @@ flash:
 error:
   removing:
     item: Não é possível eliminar este item
-    association type: Não é possível eliminar este tipo de associação
+    association_type: Não é possível eliminar este tipo de associação
     attribute: Não é possível eliminar este atributo
     family: Não é possível eliminar esta família
     product: Não é possível eliminar este produto
@@ -127,12 +134,15 @@ pim_enrich:
         save_and_back: Gravar e voltar à grelha
       history:
         version: Versão
+        author: Autor
+        logged_at: Iniciado sessão em
         more: Mais
         less: Menos
         from: De
         modified: Modificado
         property: Propriedade
-        actions: Ações
+        old_values: Valores antigos
+        new_values: Novos valores
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
@@ -169,8 +179,8 @@ pim_enrich:
       variant_group:
         updated_by: Atualizado por um grupo variante
         switch:
-          "yes": Sim
-          "no": Não
+          "yes": "Sim"
+          "no": "Não"
       optional_attribute:
         remove: Remover este atributo
       locale_specific_attribute:
@@ -185,6 +195,64 @@ pim_enrich:
           family: Escolha uma família
           save: Guardar
           cancel: Cancelar
+    attribute:
+      scopable: Com âmbito definível
+      global: Global
+    association_type:
+      info:
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+      title: tipo de associação
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+      title: tipo de grupo
+    channel:
+      title: canal
+      info:
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+    family:
+      title: família
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+    attribute_label:
+      pim_catalog_identifier: Identificador
+      pim_catalog_text: Texto
+      pim_catalog_textarea: Área de Texto
+      pim_catalog_number: Número
+      pim_catalog_price_collection: Preço
+      pim_catalog_multiselect: Seleção múltipla
+      pim_catalog_simpleselect: Seleção simples
+      pim_catalog_file: Ficheiro
+      pim_catalog_image: Imagem
+      pim_catalog_boolean: "Sim/Não"
+      pim_catalog_date: Data
+      pim_catalog_metric: Métrica
+      pim_reference_data_simpleselect: Selecione os dados de referência simples
+      pim_reference_data_multiselect: Referência de dados multi selecionáveis
     attribute_option:
       code: Código
       label: Rótulo
@@ -201,10 +269,27 @@ pim_enrich:
         product_count: Produtos
         created: Criado
         updated: Atualizado
+    group:
+      title: Grupo
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - campos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Produtos
+        created: Criado
+        updated: Atualizado
+    attribute_group:
+      info:
+        update_successful: Grupo de atributos atualizado com sucesso
   confirmation:
     leave: Tem certeza que deseja sair desta página?
     discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
     delete_item: Confirmar eliminação
+    delete:
+      attribute: Tem certeza que deseja eliminar este atributo do produto?
   info:
     not_applicable: N/A
     entity:
@@ -212,7 +297,6 @@ pim_enrich:
   error:
     upload: Ocorreu um erro durante o envio do ficheiro
   alert:
-    not_allowed: Não tem autorização para aceder a esta página
     error_occured: Ocorreu um erro durante o carregamento da página
   form:
     product:
@@ -223,7 +307,7 @@ pim_enrich:
             none_exist: Nenhum tipo de associação existente.
             show_products: Mostrar produtos
             show_groups: Mostrar grupos
-            number_of_associations: '{{ productCount }} produtos e {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -232,7 +316,6 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
-            attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
             no_match: Nenhuma correspondência encontrada
             load_more: A carregar mais resultados...
         categories:
@@ -247,8 +330,8 @@ pim_enrich:
         history:
           title: Histórico
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
       sequential_edit:
         info:
           products: produtos
@@ -269,6 +352,57 @@ pim_enrich:
       mass_edit:
         select_attributes: Selecionar atributos
         select: Selecionar
+    association_type:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+    group_type:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+    channel:
+      tab:
+        history:
+          title: Histórico
+        properties:
+          title: Propriedades
+          general: Geral
+          code: Código
+          currencies: Moedas
+          locales: Linguagens
+          category_tree: Árvore de categoria
+          label_translations: Traduções de rótulo
+          label_conversion_units: Escolher uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
+          conversion_unit:
+            do_not_convert: Não converter
+    family:
+      tab:
+        properties:
+          title: Propriedades
+          general: Geral
+          code: Código
+          attribute_as_label: Atributo usado como rótulo
+          label_translations: Traduções de rótulo
+        attributes:
+          title: Atributos
+          label_label: Rótulo
+          toolbox:
+            select_attributes: Adicionar atributos
+            add: Adicionar
+          not_required_label: Não obrigatório
+          required_label: Obrigatório
+        history:
+          title: Histórico
     attribute_option:
       flash:
         option_created: Opção de atributo criada com sucesso
@@ -279,8 +413,8 @@ pim_enrich:
         cancel: Cancelar
     entity:
       switch:
-        "no": Não
-        "yes": Sim
+        "no": "Não"
+        "yes": "Sim"
     variant_group:
       tab:
         properties:
@@ -296,6 +430,33 @@ pim_enrich:
           title: Produtos
         attributes:
           title: Atributos
+    group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          type: Tipo
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+        products:
+          title: Produtos
+    attribute_group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        attribute:
+          title: Atributos
+          table:
+            name: Nome
+            type: Tipo
+            scope: Âmbito
+            localizable: Multilingue
+        history.title: Histórico
     common:
       tab:
         attributes:
@@ -305,6 +466,94 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
+    job_execution:
+      loading: A carregar...
+      refreshBtn.title: Atualizar
+      meta:
+        status.title: Estado
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Transferir log
+      summary:
+        fetching: A recolher dados sobre a execução da tarefa...
+        warning: Aviso
+        header.step: Passo
+        header.status: Estado
+        header.summary: Resumo
+        header.start: Início
+        header.end: Fim
+    job_instance:
+      button:
+        edit.title: Editar
+        export.title: Exportar agora
+        import.launch: Importar agora
+        import.upload: Enviar e importar agora
+      meta:
+        job: Tarefa
+        connector: Conector
+      tab:
+        content:
+          title: Conteúdo
+        properties:
+          title: Propriedades gerais
+          code:
+            title: Código
+          label:
+            title: Rótulo
+          decimal_separator:
+            title: Separador decimal
+            help: Determinar o separador decimal
+          date_format:
+            title: Formato de data
+            help: Determinar o formato dos campos de data
+          file_path:
+            title: Caminho do ficheiro
+            help: Onde escrever o ficheiro gerado no sistema de ficheiros
+          delimiter:
+            title: Delimitador
+            help: Um carácter usado para definir o delimitador de campo
+          enclosure:
+            title: Invólucro
+            help: Caractere usado para definir o invólucro do campo
+          with_header:
+            title: Com o cabeçalho
+            help: Imprimir ou não o nome da coluna
+          lines_per_file:
+            title: Número de linhas por ficheiro
+            help: Definir o número limite de linhas por ficheiro
+          upload_allowed:
+            title: Permitir o upload do ficheiro
+            help: Deve ou não permitir o upload to ficheiro diretamente
+          categories_column:
+            title: Coluna das categorias
+            help: Nome da coluna das categorias
+          escape:
+            title: Escape
+            help: Um caractere usado para definir o campo de escape
+          family_column:
+            title: Coluna da família
+            help: Nome da coluna da família
+          groups_column:
+            title: Coluna dos groupos
+            help: Nome da coluna dos grupos
+          enabled:
+            title: Ativar o produto
+            help: Ativar ou não o produto importado
+          enabled_comparison:
+            title: Comparar valores
+            help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
+          real_time_versioning:
+            title: Atulização do histórico a tempo real
+            help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+        history:
+          title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Rótulo
+          toolbox:
+            select_attributes: Adicionar atributos
+            add: Adicionar
   export:
     product:
       structure:
@@ -327,10 +576,12 @@ pim_enrich:
           all_group: Todos os grupos
         family:
           title: Família
+          operators:
+            IN: Na lista
         updated:
           operators:
             ALL: Sem restrição de data
-            SINCE LAST JOB: Produtos atualizados desde a última exportação
+            "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Estado
           value:
@@ -340,16 +591,137 @@ pim_enrich:
         completeness:
           title: '% de Dados Completos'
           operators:
-            >=: Completo em pelo menos uma das linguagens selecionadas
-            GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
+            ">=": Completo em pelo menos uma das linguagens selecionadas
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         identifier:
           title: Identificador
+        metric:
+          operators:
+            EMPTY: Está vazio
         string:
           operators:
             ALL: Tudo
+            EMPTY: Está vazio
+        price-collection:
+          operators:
+            EMPTY: Está vazio
+        multi_select:
+          operators:
+            IN: Na lista
+            EMPTY: Está vazio
+        media:
+          operators:
+            EMPTY: Está vazio
+        date:
+          operators:
+            EMPTY: Está vazio
+        number:
+          operators:
+            EMPTY: Está vazio
+      properties:
+        title: Propriedades
+      global_settings:
+        title: Definições Gerais
   mass_edit_action:
     edit_common_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
+  index:
+    group:
+      create_btn: Criar grupo
+    user:
+      title: Utilizador
+      create_btn: Criar utilizador
+    user_role:
+      title: Função
+      create_btn: Criar função
+    user_group:
+      title: Grupos
+      create_btn: Criar grupo
+    process_tracker:
+      title: Visualizador de processos
+    attribute:
+      modal_title: Escolha o tipo de atributo
+    attribute_group:
+      create_btn: Criar
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
+page_title:
+  oro_default: Painel
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de atributos | Criar
+  pim_enrich_categorytree_index: Árvores de categorias
+  pim_enrich_categorytree_create: Árvores de categorias | Criar
+  pim_enrich_categorytree_create_tree: Árvores de categorias | Criar
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Criar
+  pim_enrich_product_index: Produtos
+  pim_enrich_family_index: Famílias
+  pim_enrich_channel_index: Canais
+  pim_enrich_channel_create: Canais | Criar
+  pim_enrich_currency_index: Moedas
+  pim_enrich_locale_index: Linguagens
+  pim_enrich_group_index: Grupos
+  pim_enrich_variant_group_index: Grupos variantes
+  pim_enrich_associationtype_index: Tipos de associação
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Editar em massa | Escolher
+  pim_enrich_mass_edit_action_configure: Editar em massa | Configurar
+  pim_enrich_job_tracker_index: Visualizador de processos
+  pim_enrich_job_tracker_show: Visualizador de processos | Mostrar tarefa
+batch_jobs:
+  update_product_value:
+    label: Atualizar o valor do produto
+    perform:
+      label: Atualizar o valor do produto
+  edit_common_attributes:
+    label: Editar atributos comuns
+    perform:
+      label: Editar atributos comuns
+    cleaner:
+      label: Limpar ficheiros de atributos comuns
+  set_attribute_requirements:
+    label: Estabelecer requisitos do atributo
+    perform:
+      label: Estabelecer requisitos do atributo
+  add_to_variant_group:
+    label: Adicionar a grupo variante
+    perform:
+      label: Adicionar a grupo variante
+pim_menu:
+  tab:
+    collect: Recolher
+    enrich: Enriquecer
+    settings: Preferências
+    system: Sistema
+    spread: Propagação
+  item:
+    association_type: Tipos de associação
+    attribute: Atributos
+    attribute_group: Grupos de atributos
+    category: Categorias
+    channel: Canais
+    currency: Moedas
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupo
+    locale: Linguagens
+    product: Produtos
+    variant_group: Grupos variantes
+    export_history: Histórico de exportações
+    export_profile: Perfis de exportação
+    import_history: Histórico de importações
+    import_profile: Perfis de importação
+    configuration: Configuração
+    user_management: Gestão de Utilizadores
+    user: Utilizadores
+    user_group: Grupos
+    user_role: Funções
+    info: Informações do Sistema
+    job_tracker: Visualizador de processos
+pim_header:
+  user:
+    logout: Terminar sessão
+    user_account: A minha conta
+pim_notification:
+  mark_all_as_read: Marcar tudo como lido

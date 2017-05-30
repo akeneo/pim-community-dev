@@ -2,8 +2,9 @@
 
 namespace Pim\Component\ReferenceData\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter;
@@ -49,7 +50,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         $data,
         array $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'reference data');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         if (empty($data)) {
@@ -59,16 +60,11 @@ class ReferenceDataSetter extends AbstractAttributeSetter
             $referenceData = $repository->findOneBy(['code' => $data]);
 
             if (null === $referenceData) {
-                throw InvalidArgumentException::validEntityCodeExpected(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'code',
-                    sprintf(
-                        'No reference data "%s" with code "%s" has been found',
-                        $attribute->getReferenceDataName(),
-                        $data
-                    ),
-                    'setter',
-                    'reference data',
+                    'reference data code',
+                    sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
+                    static::class,
                     $data
                 );
             }
@@ -82,6 +78,8 @@ class ReferenceDataSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -90,11 +88,10 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         }
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected(
+            throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
-                'setter',
-                'reference data',
-                gettype($data)
+                static::class,
+                $data
             );
         }
     }
@@ -120,7 +117,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         $setMethod = MethodNameGuesser::guess('set', $attribute->getReferenceDataName(), true);

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -40,7 +40,7 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedTypes);
+        return in_array($attribute->getType(), $this->supportedTypes);
     }
 
     /**
@@ -49,21 +49,19 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
-     * @param string             $type
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
             $this->attrValidatorHelper->validateScope($attribute, $scope);
         } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $attribute->getCode(),
-                'remover',
-                $type
+                static::class,
+                $e
             );
         }
     }

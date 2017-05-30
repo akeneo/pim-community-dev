@@ -55,7 +55,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $title->isLocalizable()->willReturn(false);
         $title->isScopable()->willReturn(true);
         $title->isUseableAsGridFilter()->willReturn(true);
-        $title->getAttributeType()->willReturn('pim_catalog_text');
+        $title->getType()->willReturn('pim_catalog_text');
 
         $en_US->getCode()->willReturn('en_US');
         $en_US->isActivated()->willReturn(true);
@@ -100,7 +100,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(false);
         $description->isUseableAsGridFilter()->willReturn(true);
-        $description->getAttributeType()->willReturn('pim_catalog_text');
+        $description->getType()->willReturn('pim_catalog_text');
 
         $en_US->getCode()->willReturn('en_US');
         $en_US->isActivated()->willReturn(true);
@@ -145,7 +145,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $price->isLocalizable()->willReturn(false);
         $price->isScopable()->willReturn(false);
         $price->isUseableAsGridFilter()->willReturn(true);
-        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getType()->willReturn('pim_catalog_price_collection');
 
         $namingUtility->getPricesAttributes()->willReturn([$price]);
         $namingUtility->getCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -180,7 +180,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->isScopable()->willReturn(false);
         $name->isUseableAsGridFilter()->willReturn(true);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
@@ -207,7 +207,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $ean->isScopable()->willReturn(false);
         $ean->isUnique()->willReturn(true);
         $ean->isUseableAsGridFilter()->willReturn(false);
-        $ean->getAttributeType()->willReturn('pim_catalog_text');
+        $ean->getType()->willReturn('pim_catalog_text');
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
@@ -230,7 +230,7 @@ class IndexCreatorSpec extends ObjectBehavior
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
-        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isUseableAsGridFilter()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -269,7 +269,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $price->isLocalizable()->willReturn(false);
         $price->isScopable()->willReturn(false);
         $price->isUseableAsGridFilter()->willReturn(true);
-        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getType()->willReturn('pim_catalog_price_collection');
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
@@ -294,7 +294,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
         $color->isUseableAsGridFilter()->willReturn(true);
-        $color->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $color->getType()->willReturn('pim_catalog_simpleselect');
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
@@ -322,7 +322,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $title->isLocalizable()->willReturn(false);
         $title->isScopable()->willReturn(true);
         $title->isUseableAsGridFilter()->willReturn(true);
-        $title->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $title->getType()->willReturn('pim_catalog_simpleselect');
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
@@ -350,7 +350,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(false);
         $description->isUseableAsGridFilter()->willReturn(true);
-        $description->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $description->getType()->willReturn('pim_catalog_simpleselect');
 
         $indexes = array_fill(0, 10, 'fake_index');
         $collection->getIndexInfo()->willReturn($indexes);
@@ -378,7 +378,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(true);
         $description->isUseableAsGridFilter()->willReturn(true);
-        $description->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $description->getType()->willReturn('pim_catalog_simpleselect');
 
         $namingUtility
             ->getAttributeNormFields($description)
@@ -545,7 +545,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(false);
         $description->isUseableAsGridFilter()->willReturn(true);
-        $description->getAttributeType()->willReturn('pim_catalog_textarea');
+        $description->getType()->willReturn('pim_catalog_textarea');
 
         $namingUtility
             ->getAttributeNormFields($description)

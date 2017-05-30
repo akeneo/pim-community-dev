@@ -35,7 +35,7 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
         AttributeTypeForOption $constraint
     ) {
         $attributeOption->getAttribute()->willReturn($allowedAttribute);
-        $allowedAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $allowedAttribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($attributeOption, $constraint);
@@ -49,15 +49,30 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation
     ) {
         $attributeOption->getAttribute()->willReturn($notAllowedAttribute);
-        $notAllowedAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $notAllowedAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $notAllowedAttribute->getCode()->willReturn('attributeCode');
+        $constraint->propertyPath = 'path';
 
         $violationData = [
-            '%attribute%' => 'attributeCode'
+            '%attribute%'       => 'attributeCode',
+            '%attribute_types%' => 'pim_catalog_simpleselect", "pim_catalog_multiselect',
         ];
         $context->buildViolation($constraint->invalidAttributeMessage, $violationData)
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->atPath('path')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($attributeOption, $constraint);
+    }
+
+    function it_does_not_add_violations_if_attribute_is_null(
+        $context,
+        AttributeOptionInterface $attributeOption,
+        AttributeTypeForOption $constraint
+    ) {
+        $attributeOption->getAttribute()->willReturn(null);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($attributeOption, $constraint);
     }

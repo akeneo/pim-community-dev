@@ -10,8 +10,8 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products with special characters value for text attribute
     Given the following attribute:
-      | label | type | useable_as_grid_filter | localizable |
-      | name  | text | yes                    | yes         |
+      | label-en_US | type             | useable_as_grid_filter | localizable | group | code |
+      | name        | pim_catalog_text | 1                      | 1           | other | name |
     And the following products:
       | sku      | name-en_US                     |
       | 11026270 | HP LA2206xc + WF722A           |
@@ -40,9 +40,9 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
-      | label       | type     | localizable | scopable | useable_as_grid_filter |
-      | name        | text     | no          | no       | yes                    |
-      | description | textarea | no          | no       | yes                    |
+      | label-en_US | type                 | localizable | scopable | useable_as_grid_filter | group | code        |
+      | name        | pim_catalog_text     | 0           | 0        | 1                      | other | name        |
+      | description | pim_catalog_textarea | 0           | 0        | 1                      | other | description |
     And the following products:
       | sku    | name     | description      |
       | postit | MyPostit |                  |
@@ -54,14 +54,16 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter      | operator | value | result          |
-      | name        | is empty |       | book and mug    |
-      | description | is empty |       | postit and book |
+      | filter      | operator     | value | result          |
+      | name        | is empty     |       | book and mug    |
+      | name        | is not empty |       | postit          |
+      | description | is empty     |       | postit and book |
+      | description | is not empty |       | mug             |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
-      | label | type | localizable | scopable | useable_as_grid_filter |
-      | name  | text | yes         | no       | yes                    |
+      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |
+      | name        | pim_catalog_text | 1           | 0        | 1                      | other | name |
     And the following products:
       | sku    | name-en_US | name-fr_FR |
       | postit | MyPostit   | MonPostit  |
@@ -71,13 +73,14 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | name   | is empty |       | book and mug |
+      | filter | operator     | value | result       |
+      | name   | is empty     |       | book and mug |
+      | name   | is not empty |       | postit       |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
-      | label | type | localizable | scopable | useable_as_grid_filter |
-      | name  | text | no          | yes      | yes                    |
+      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |
+      | name        | pim_catalog_text | 0           | 1        | 1                      | other | name |
     And the following products:
       | sku    | name-ecommerce | name-mobile |
       | postit | MyPostit       | MyPostit    |
@@ -87,14 +90,15 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | name   | is empty |       | book and mug |
+      | filter | operator     | value | result       |
+      | name   | is empty     |       | book and mug |
+      | name   | is not empty |       | postit       |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
     Given I add the "english" locale to the "mobile" channel
     And the following attributes:
-      | label | type | localizable | scopable | useable_as_grid_filter |
-      | name  | text | yes         | yes      | yes                    |
+      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |
+      | name        | pim_catalog_text | 1           | 1        | 1                      | other | name |
     And the following products:
       | sku    | name-en_US-ecommerce | name-en_US-mobile | name-fr_FR-ecommerce | name-fr_FR-mobile |
       | postit | MyPostit             | MyPostit          | MonPostit            | MonPostit         |
@@ -104,5 +108,6 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | name   | is empty |       | book and mug |
+      | filter | operator     | value | result       |
+      | name   | is empty     |       | book and mug |
+      | name   | is not empty |       | postit       |

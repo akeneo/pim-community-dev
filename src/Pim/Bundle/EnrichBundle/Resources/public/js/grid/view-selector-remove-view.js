@@ -16,6 +16,7 @@ define(
         'pim/form',
         'text!pim/template/grid/view-selector/remove-view',
         'pim/dialog',
+        'pim/user-context',
         'pim/remover/datagrid-view',
         'oro/messenger'
     ],
@@ -26,6 +27,7 @@ define(
         BaseForm,
         template,
         Dialog,
+        UserContext,
         DatagridViewRemover,
         messenger
     ) {
@@ -41,7 +43,10 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if ('view' !== this.getRoot().currentViewType || this.getRoot().currentView.id === 0) {
+                if ('view' !== this.getRoot().currentViewType ||
+                    this.getRoot().currentView.id === 0 ||
+                    UserContext.get('meta').id !== this.getRoot().currentView.owner_id
+                ) {
                     this.$el.html('');
 
                     return this;
@@ -59,7 +64,9 @@ define(
             /**
              * Prompt the datagrid view deletion modal.
              */
-            promptDeletion: function () {
+            promptDeletion: function (event) {
+                event.stopPropagation();
+
                 Dialog.confirm(
                     __('grid.view_selector.confirmation.remove'),
                     __('grid.view_selector.confirmation.delete'),

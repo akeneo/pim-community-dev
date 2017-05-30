@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractAttributeFilter;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -60,9 +60,9 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (!in_array($operator, [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
             $field = $options['field'];
             $this->checkValue($field, $value);
 
@@ -94,6 +94,9 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         if (Operators::IS_EMPTY === $operator) {
             $expr = $this->qb->expr()->field($field)->exists(false);
             $this->qb->addAnd($expr);
+        } elseif (Operators::IS_NOT_EMPTY === $operator) {
+            $expr = $this->qb->expr()->field($field)->exists(true);
+            $this->qb->addAnd($expr);
         } else {
             $value = array_map('intval', $value);
             $expr = $this->qb->expr()->field($field)->in($value);
@@ -119,10 +122,10 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'reference_data');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'reference_data');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 
@@ -137,12 +140,11 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         try {
             $value = $this->idsResolver->resolve($attribute->getReferenceDataName(), $value);
         } catch (\LogicException $e) {
-            throw InvalidArgumentException::validEntityCodeExpected(
+            throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'code',
                 $e->getMessage(),
-                'setter',
-                'reference data',
+                static::class,
                 implode(',', $value)
             );
         }

@@ -37,10 +37,10 @@ Feature: Editing attribute values of a variant group also updates products
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
     And the following attributes:
-      | code                         | label-en_US           | label-fr_FR           | type         | group     | allowedExtensions    | localizable | available_locales |
-      | technical_description        | Technical description | Description technique | file         | media     | gif,png,jpeg,jpg,txt |             |                   |
-      | simple_select_local_specific | Simple                | Simple                | simpleselect | marketing |                      | yes         | fr_FR,en_US       |
-      | multi_select_local_specific  | Multi                 | Multi                 | multiselect  | marketing |                      | yes         | fr_FR,en_US       |
+      | code                         | label-en_US           | label-fr_FR           | type                     | group     | allowed_extensions | localizable | available_locales |
+      | technical_description        | Technical description | Description technique | pim_catalog_file         | media     | txt                | 0           |                   |
+      | simple_select_local_specific | Simple                | Simple                | pim_catalog_simpleselect | marketing |                    | 1           | fr_FR,en_US       |
+      | multi_select_local_specific  | Multi                 | Multi                 | pim_catalog_multiselect  | marketing |                    | 1           | fr_FR,en_US       |
     And I am logged in as "Julia"
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -133,8 +133,9 @@ Feature: Editing attribute values of a variant group also updates products
     And I save the variant group
     Then I should not see the text "There are unsaved changes."
     When I am on the "boot" product page
-    And I visit the "Marketing" group
+    And I visit the "[marketing]" group
     And I switch the scope to "mobile"
+    And I switch the locale to "en_US"
     Then I should see the text "[red]"
     When I switch the locale to "fr_FR"
     Then I should see the text "[blue]"
@@ -181,14 +182,15 @@ Feature: Editing attribute values of a variant group also updates products
   Scenario: Change a pim_catalog_file attribute of a variant group
     When I add available attributes Technical description
     And I visit the "Media" group
-    And I attach file "SNKRS-1R.png" to "Technical description"
+    And I attach file "bic-core-148.txt" to "Technical description"
     And I save the variant group
     Then I should not see the text "There are unsaved changes."
     When I am on the "boot" product page
     And I visit the "Media" group
-    Then I should see the text "SNKRS-1R.png"
+    Then I should see the text "bic-core-148.txt"
 
+  @skip-nav
   Scenario: Successfully see a warning message on page exit
     When I add available attribute Handmade
     And I click back to grid
-    Then I should see the text "You will lose changes to the Variant group if you leave the page"
+    And I should see "You will lose changes to the Variant group if you leave the page." in popup

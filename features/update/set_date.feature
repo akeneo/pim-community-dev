@@ -6,11 +6,11 @@ Feature: Update date fields
   Scenario: Successfully update a date field
     Given a "default" catalog configuration
     And the following attributes:
-      | code          | type | localizable | scopable |
-      | release_date  | date | yes         | no       |
-      | end_date      | date | no          | yes      |
-      | publish_date  | date | yes         | yes      |
-      | creation_date | date | no          | no       |
+      | code          | type             | localizable | scopable | group |
+      | release_date  | pim_catalog_date | 1           | 0        | other |
+      | end_date      | pim_catalog_date | 0           | 1        | other |
+      | publish_date  | pim_catalog_date | 1           | 1        | other |
+      | creation_date | pim_catalog_date | 0           | 0        | other |
     And the following products:
       | sku     |
       | AKN_MUG |

@@ -6,14 +6,14 @@ pim_import_export:
   status:
     - Listo
   batch_status:
-    1: COMPLETADO
-    2: INICIANDO
-    3: INICIADO
-    4: PARAR
-    5: DETENIDO
-    6: FALLO
-    7: ABANDONADO
-    8: DESCONOCIDO
+    1: Finalizado
+    2: Iniciando
+    3: Iniciado
+    4: Suspendiendo
+    5: Suspendido
+    6: Fallido
+    7: Abandonado
+    8: Desconocido
   download_archive:
     archive: descargar fichero generado|descargar ficheros generados
     output: descargar ficher generado |descargar ficheros generados
@@ -47,18 +47,10 @@ pim_title.import_execution.index: Historia de las ejecuciones de importación
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
 export profile:
   title: Perfil de exportación
-  overview: Resumen del perfil de exportación
-  create: crear perfil exportador
   edit: Editar perfil exportador
-export report:
-  overview: informes de exportaciones
 import profile:
   title: Perfil de importación
-  overview: resumen del perfil de importación
-  create: crear perfil de importación
   edit: editar perfil de importación
-import report:
-  overview: informes de importación
 pim_importexport:
   acl:
     export_profile:
@@ -97,7 +89,7 @@ pim_importexport:
 btn:
   create:
     export profile: crear perfil exportador
-    import profile: crear Perfil de importación
+    import profile: crear perfil de importación
 Upload and import now: Subir e importar ahora
 import now: Importar ahora
 export now: Exportar Ahora
@@ -116,12 +108,6 @@ flash:
     removed: La importación se ha eliminado
     updated: La importación se ha actualizado exitosamente
     running: La importación se está ejecutando
-pim_menu:
-  item:
-    export_history: Histórico de exportaciones
-    export_profile: Perfiles de exportación
-    import_history: Histórico de importaciones
-    import_profile: Perfiles de importación
 General properties: Propiedades generales
 History: Histórico
 pane.accordion:
@@ -152,16 +138,17 @@ job_execution.summary:
     skipped: omitido, extensión en lista blanca
 Step: Paso
 Status: Estado
+Warnings: Advertencias
 Summary: Resumen
 Start: Iniciar
 End: Finalizar
 set_attribute_requirements: Configurar requerimientos del atributo
-COMPLETED: FINALIZADO
-STARTING: INICIANDO
-STARTED: INICIADO
-STOPPING: DETENIENDO
-STOPPED: DETENIDO
-FAILED: FALLIDO
-ABANDONED: ABANDONADO
-UNKNOWN: DESCONOCIDO
+COMPLETED: Finalizado
+STARTING: Iniciando
+STARTED: Iniciado
+STOPPING: Suspendiendo
+STOPPED: Suspendido
+FAILED: Fallido
+ABANDONED: Abandonado
+UNKNOWN: Desconocido
 warning.label: '¡Advertencia!'

@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use Pim\Bundle\UserBundle\Entity\User;

@@ -14,7 +14,7 @@ use Context\Page\Base\Form;
 class Edit extends Form
 {
     /** @var string */
-    protected $path = '/user/role/update/{id}';
+    protected $path = '#/user/role/update/{id}';
 
     /**
      * {@inheritdoc}
@@ -27,6 +27,12 @@ class Edit extends Form
             [
                 'Permission' => [
                     'css'        => '#rights-action',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                    ]
+                ],
+                'API permission' => [
+                    'css'        => '#rights-api',
                     'decorators' => [
                         'Pim\Behat\Decorator\Permission\PermissionDecorator'
                     ]

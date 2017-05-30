@@ -34,25 +34,25 @@ class AttributeValuesResolverSpec extends ObjectBehavior
         ChannelInterface $print
     ) {
         $sku->getCode()->willReturn('sku');
-        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
         $sku->isLocaleSpecific()->willReturn(false);
 
         $name->getCode()->willReturn('name');
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
         $name->isLocaleSpecific()->willReturn(false);
 
         $desc->getCode()->willReturn('description');
-        $desc->getAttributeType()->willReturn('pim_catalog_text');
+        $desc->getType()->willReturn('pim_catalog_text');
         $desc->isLocalizable()->willReturn(true);
         $desc->isScopable()->willReturn(true);
         $desc->isLocaleSpecific()->willReturn(false);
 
         $tax->getCode()->willReturn('tax');
-        $tax->getAttributeType()->willReturn('pim_catalog_text');
+        $tax->getType()->willReturn('pim_catalog_text');
         $tax->isLocalizable()->willReturn(true);
         $tax->isScopable()->willReturn(false);
         $tax->isLocaleSpecific()->willReturn(true);

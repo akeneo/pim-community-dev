@@ -38,25 +38,25 @@ class BaseSorterSpec extends ObjectBehavior
         AttributeInterface $date,
         AttributeInterface $other
     ) {
-        $identifier->getAttributeType()->willReturn('pim_catalog_identifier');
+        $identifier->getType()->willReturn('pim_catalog_identifier');
         $this->supportsAttribute($identifier)->shouldReturn(true);
 
-        $text->getAttributeType()->willReturn('pim_catalog_text');
+        $text->getType()->willReturn('pim_catalog_text');
         $this->supportsAttribute($text)->shouldReturn(true);
 
-        $textarea->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textarea->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textarea)->shouldReturn(true);
 
-        $number->getAttributeType()->willReturn('pim_catalog_number');
+        $number->getType()->willReturn('pim_catalog_number');
         $this->supportsAttribute($number)->shouldReturn(true);
 
-        $boolean->getAttributeType()->willReturn('pim_catalog_boolean');
+        $boolean->getType()->willReturn('pim_catalog_boolean');
         $this->supportsAttribute($boolean)->shouldReturn(true);
 
-        $date->getAttributeType()->willReturn('pim_catalog_date');
+        $date->getType()->willReturn('pim_catalog_date');
         $this->supportsAttribute($date)->shouldReturn(true);
 
-        $other->getAttributeType()->willReturn(Argument::any());
+        $other->getType()->willReturn(Argument::any());
         $this->supportsAttribute($other)->shouldReturn(false);
     }
 

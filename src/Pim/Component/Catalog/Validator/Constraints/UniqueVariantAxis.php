@@ -27,6 +27,9 @@ class UniqueVariantAxis extends Constraint
      */
     public $missingAxisMessage = 'Product "%product%" should have value for axis "%axis%" of variant group "%group%"';
 
+    /** @var string */
+    public $propertyPath = 'variant_group';
+
     /**
      * {@inheritdoc}
      */

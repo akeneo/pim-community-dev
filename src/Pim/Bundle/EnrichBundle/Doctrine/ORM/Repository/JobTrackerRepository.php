@@ -40,7 +40,11 @@ class JobTrackerRepository extends EntityRepository implements DatagridRepositor
             ->addSelect('e.startTime as startTime')
             ->addSelect('j.label AS jobLabel')
             ->addSelect('e.user AS user')
-            ->innerJoin('e.jobInstance', 'j');
+            ->addSelect('COUNT(w.id) as warningCount')
+            ->innerJoin('e.jobInstance', 'j')
+            ->leftJoin('e.stepExecutions', 's')
+            ->leftJoin('s.warnings', 'w')
+            ->groupBy('e.id');
 
         return $qb;
     }

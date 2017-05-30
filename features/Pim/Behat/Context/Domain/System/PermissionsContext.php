@@ -11,13 +11,15 @@ class PermissionsContext extends PimContext
 {
     /**
      * @param string $action
+     * @param string $api
+     * @param string $type
      * @param string $acls
      *
      * @throws \InvalidArgumentException If $action is not a defined method
      *
-     * @When /^I (grant|revoke) rights to (resources?|groups?) (.*)$/
+     * @When /^I (grant|revoke) rights to( API)? (resources?|groups?) (.*)$/
      */
-    public function iSetRightsToACL($action, $type, $acls)
+    public function iSetRightsToACL($action, $api, $type, $acls)
     {
         if (false !== strpos($type, 'resource')) {
             $type = 'Resource';
@@ -25,7 +27,8 @@ class PermissionsContext extends PimContext
             $type = 'Group';
         }
 
-        $permissionElement = $this->getCurrentPage()->getElement('Permission');
+        $element = $api ? 'API permission' : 'Permission';
+        $permissionElement = $this->getCurrentPage()->getElement($element);
         switch ($action) {
             case 'grant':
                 $method = 'grant' . $type;
@@ -53,5 +56,35 @@ class PermissionsContext extends PimContext
         $this->getSession()->executeScript(
             sprintf('$("%s").each(function () { $(this).click(); });', $iconSelector)
         );
+    }
+
+    /**
+     * @param string $api
+     * @param string $acls
+     * @param string $action
+     *
+     * @throws \InvalidArgumentException If $action is not a defined method
+     *
+     * @When /^I should see( API)? resources? (.*) (granted|revoked)$/
+     */
+    public function iShouldSeeRightsOnACL($api, $acls, $action)
+    {
+        $element = $api ? 'API permission' : 'Permission';
+        $permissionElement = $this->getCurrentPage()->getElement($element);
+        switch ($action) {
+            case 'granted':
+                $method = 'isGrantedResource';
+                break;
+            case 'revoked':
+                $method = 'isRevokedResource';
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Action "%s" does not exist.', $action));
+                break;
+        }
+
+        foreach ($this->listToArray($acls) as $acl) {
+            $permissionElement->$method($acl);
+        }
     }
 }

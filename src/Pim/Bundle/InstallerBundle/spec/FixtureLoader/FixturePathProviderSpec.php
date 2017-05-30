@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\InstallerBundle\FixtureLoader;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FixturePathProviderSpec extends ObjectBehavior
 {

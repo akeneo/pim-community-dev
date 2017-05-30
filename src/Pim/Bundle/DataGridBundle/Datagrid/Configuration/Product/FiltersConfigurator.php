@@ -42,7 +42,7 @@ class FiltersConfigurator implements ConfiguratorInterface
                 continue;
             }
 
-            $attributeType = $attribute['attributeType'];
+            $attributeType = $attribute['type'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['filter'])) {

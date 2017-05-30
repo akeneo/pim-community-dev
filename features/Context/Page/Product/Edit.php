@@ -3,14 +3,16 @@
 namespace Context\Page\Product;
 
 use Akeneo\Component\Classification\Model\Category;
-use Behat\Mink\Element\Element;
 use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\ProductEditForm;
-use Context\Page\Category\CategoryView;
 use Context\Spin\TimeoutException;
+use Pim\Behat\Decorator\Completeness\PanelDecorator;
+use Pim\Behat\Decorator\ContextSwitcherDecorator;
+use Pim\Behat\Decorator\Tab\ComparableTabDecorator;
+use Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator;
+use Pim\Behat\Decorator\Tree\JsTreeDecorator;
 
 /**
  * Product edit page
@@ -24,7 +26,7 @@ class Edit extends ProductEditForm
     /**
      * @var string
      */
-    protected $path = '/enrich/product/{id}';
+    protected $path = '#/enrich/product/{id}';
 
     /**
      * {@inheritdoc}
@@ -46,14 +48,14 @@ class Edit extends ProductEditForm
                 'Completeness'            => [
                     'css'        => '.completeness-panel',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Completeness\PanelDecorator'
+                        PanelDecorator::class
                     ]
                 ],
                 'Category pane'           => ['css' => '#product-categories'],
                 'Category tree'           => [
                     'css'        => '#trees',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
+                        JsTreeDecorator::class
                     ]
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
@@ -65,20 +67,20 @@ class Edit extends ProductEditForm
                 'Attribute tab'           => [
                     'css'        => '.tab-container .object-attributes',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Tab\ComparableTabDecorator'
+                        ComparableTabDecorator::class
                     ]
                 ],
                 'Comparison panel' => [
                     'css'        => '.tab-container .attribute-actions .attribute-copy-actions',
                     'decorators' => [
-                        'Pim\Behat\Decorator\ContextSwitcherDecorator',
-                        'Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator'
+                        ContextSwitcherDecorator::class,
+                        ComparisonPanelDecorator::class
                     ]
                 ],
                 'Main context selector' => [
                     'css'        => '.tab-container .attribute-edit-actions .context-selectors',
                     'decorators' => [
-                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                        ContextSwitcherDecorator::class
                     ]
                 ]
             ]
@@ -604,11 +606,20 @@ class Edit extends ProductEditForm
 
         $changeLink->click();
 
-        $selectContainer = $this->spin(function () {
-            return $this->getElement('Modal')->find('css', '.select2-container');
-        }, 'Cannot find ".select2-container" in family modal');
+        if ('' !== $family) {
+            $selectContainer = $this->spin(function () {
+                return $this->getElement('Modal')->find('css', '.select2-container');
+            }, 'Cannot find ".select2-container" in family modal');
 
-        $this->fillSelectField($selectContainer, $family);
+            $this->fillSelectField($selectContainer, $family);
+        } else {
+            $resetButton = $this->spin(function () {
+                return $this->getElement('Modal')
+                    ->find('css', '.select2-search-choice-close');
+            }, 'Can not find family reset button');
+
+            $resetButton->click();
+        }
 
         $validationButton = $this->spin(function () {
             return $this->find('css', '.modal .ok');
@@ -617,7 +628,9 @@ class Edit extends ProductEditForm
         $validationButton->click();
 
         return $this->spin(function () use ($family) {
-            return $this->getElement('Meta zone')->find('css', '.AknTitleContainer-metaItem .product-family');
+            return $this
+                ->getElement('Meta zone')
+                ->find('css', '.AknTitleContainer-metaItem .product-family');
         }, 'Cannot find Product Family element')->getHTML();
     }
 

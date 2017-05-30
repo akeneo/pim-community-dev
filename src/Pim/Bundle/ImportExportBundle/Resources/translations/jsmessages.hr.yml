@@ -1,6 +1,6 @@
 job_execution:
   summary:
-    display_item: Prikaz stavke
+    display_item: Prikaži stavku
     hide_item: Sakrij stavku
 pim_connector:
   export:
@@ -10,9 +10,16 @@ pim_connector:
           title: Odabir kategorija
           cancel: Poništi
           confirm: Potvrdi
-        label: '{0} svi proizvodi |{1} jedna kategorija odabrana |] 1, Inf [{{ count }} odabranih kategorija'
+        label: "{0} svi proizvodi |{1} jedna kategorija odabrana |] 1, Inf [{{ count }} odabranih kategorija"
         edit: Uredi
         title: Odaberi kategorije
     locales:
       validation:
         not_blank: Mora biti odabrana barem jedan lokalni parametar, odaberite lokalni parametar za izvoz.
+page_title:
+  pim_importexport_export_profile_index: Upravljanje profilima izvoza
+  pim_importexport_export_execution_index: Povijest izvođenja izvoza
+  pim_importexport_export_execution_show: Izvoz izvođenja | Detalji
+  pim_importexport_import_profile_index: Upravljanje profilima uvoza
+  pim_importexport_import_execution_index: Povijest izvođenja uvoza
+  pim_importexport_import_execution_show: Uvoz izvođenja | Detalji

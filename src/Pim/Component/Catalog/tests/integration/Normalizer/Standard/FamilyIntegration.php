@@ -59,6 +59,9 @@ class FamilyIntegration extends AbstractStandardNormalizerTestCase
                     'an_image',
                     'sku'
                 ],
+                'ecommerce_china' => [
+                    'sku'
+                ],
                 'tablet' => [
                     'a_date',
                     'a_file',

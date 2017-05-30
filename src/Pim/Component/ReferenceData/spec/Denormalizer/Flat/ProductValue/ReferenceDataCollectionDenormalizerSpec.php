@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
-use Prophecy\Argument;
 
 class ReferenceDataCollectionDenormalizerSpec extends ObjectBehavior
 {

@@ -36,15 +36,17 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
-            case 'attribute_type':
-                $convertedItem['type'] = $data;
-                break;
             case 'options':
             case 'available_locales':
             case 'allowed_extensions':
                 $convertedItem[$property] = implode(',', $data);
                 break;
             case in_array($property, $this->booleanFields):
+                if (null === $data) {
+                    $convertedItem[$property] = '';
+                    break;
+                }
+
                 $convertedItem[$property] = (true === $data) ? '1' : '0';
                 break;
             default:

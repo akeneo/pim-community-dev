@@ -1,0 +1,9 @@
+pim_api_channel_list:
+    path: /channels
+    defaults: { _controller: pim_api.controller.channel:listAction, _format: json }
+    methods: [GET]
+
+pim_api_channel_get:
+    path: /channels/{code}
+    defaults: { _controller: pim_api.controller.channel:getAction, _format: json }
+    methods: [GET]

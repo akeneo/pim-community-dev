@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -43,11 +44,11 @@ class FamilyFieldSetter extends AbstractFieldSetter
         if (null !== $data && '' !== $data) {
             $family = $this->getFamily($data);
             if (null === $family) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
-                    'existing family code',
-                    'setter',
-                    'family',
+                    'family code',
+                    'The family does not exist',
+                    static::class,
                     $data
                 );
             }
@@ -62,15 +63,16 @@ class FamilyFieldSetter extends AbstractFieldSetter
      *
      * @param string $field
      * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData($field, $data)
     {
-        if (!is_string($data) && null !== $data && '' !== $data) {
-            throw InvalidArgumentException::stringExpected(
+        if (!is_string($data) && null !== $data) {
+            throw InvalidPropertyTypeException::stringExpected(
                 $field,
-                'setter',
-                'family',
-                gettype($data)
+                static::class,
+                $data
             );
         }
     }

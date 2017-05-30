@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Catalog\Comparator\Attribute;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FileComparatorSpec extends ObjectBehavior
 {

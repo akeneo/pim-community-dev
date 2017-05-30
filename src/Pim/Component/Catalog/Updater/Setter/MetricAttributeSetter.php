@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -54,7 +54,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'metric');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
 
         if (null === $data) {
             $data = ['amount' => null, 'unit' => null];
@@ -73,30 +73,30 @@ class MetricAttributeSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric', gettype($data));
+            throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
 
         if (!array_key_exists('amount', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'setter',
-                'metric',
-                print_r($data, true)
+                static::class,
+                $data
             );
         }
 
         if (!array_key_exists('unit', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',
-                'setter',
-                'metric',
-                print_r($data, true)
+                static::class,
+                $data
             );
         }
     }
@@ -121,7 +121,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         if (null === $metric = $value->getMetric()) {

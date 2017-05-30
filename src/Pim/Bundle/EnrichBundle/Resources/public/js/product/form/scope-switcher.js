@@ -13,9 +13,10 @@ define(
         'pim/form',
         'text!pim/template/product/scope-switcher',
         'pim/fetcher-registry',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/i18n'
     ],
-    function (_, BaseForm, template, FetcherRegistry, UserContext) {
+    function (_, BaseForm, template, FetcherRegistry, UserContext, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknDropdown AknButtonList-item scope-switcher',
@@ -29,7 +30,7 @@ define(
             render: function () {
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
-                    .done(function (channels) {
+                    .then(function (channels) {
                         var params = { scopeCode: channels[0].code };
                         this.trigger('pim_enrich:form:scope_switcher:pre_render', params);
 
@@ -38,10 +39,16 @@ define(
                         this.$el.html(
                             this.template({
                                 channels: channels,
-                                currentScope: scope.labels[UserContext.get('catalogLocale')],
-                                catalogLocale: UserContext.get('catalogLocale')
+                                currentScope: i18n.getLabel(
+                                    scope.labels,
+                                    UserContext.get('catalogLocale'),
+                                    scope.code
+                                ),
+                                catalogLocale: UserContext.get('catalogLocale'),
+                                i18n: i18n
                             })
                         );
+
                         this.delegateEvents();
                     }.bind(this)
                 );

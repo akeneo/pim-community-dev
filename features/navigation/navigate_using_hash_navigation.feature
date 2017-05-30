@@ -29,7 +29,6 @@ Feature: Navigate the application in hash navigation mode
       | pim_importexport_export_execution_index |
       | pim_importexport_import_profile_index   |
       | pim_importexport_import_execution_index |
-      | oro_pinbar_help                         |
       | oro_user_create                         |
       | oro_user_group_create                   |
       | oro_user_group_index                    |
@@ -42,12 +41,12 @@ Feature: Navigate the application in hash navigation mode
   Scenario: Reload a page in hash navigation mode
     Given a "footwear" catalog configuration
     And the following family:
-      | code       | attributes                                                       |
-      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
+      | code       | attributes                                                |
+      | high_heels | sku,name,description,price,rating,size,color,manufacturer |
     And the following products:
-      | sku            | family     | color  | groups        |
-      | boots          | boots      |        |               |
-      | sneakers       | sneakers   |        |               |
+      | sku      | family   | color | groups |
+      | boots    | boots    |       |        |
+      | sneakers | sneakers |       |        |
     And I am logged in as "Julia"
     And I am on the products page
     When I select rows boots and sneakers

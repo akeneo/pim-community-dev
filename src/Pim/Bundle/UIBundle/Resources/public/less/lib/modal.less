@@ -19,10 +19,6 @@
     top: 5%;
     margin-left: 0;
     transform: none;
-
-    .modal-body {
-      max-height: inherit;
-    }
   }
 
   .modal-header {
@@ -33,6 +29,7 @@
     color: white;
     padding: 0 16px;
     border: none;
+    margin-top: -1px;
 
     .close {
       display: none;
@@ -55,6 +52,10 @@
   .modal-footer {
     border-top: 1px solid @AknBorderColor;
     padding: 10px 20px;
+  }
+
+  &.modal-full .modal-body {
+    padding: 0;
   }
 }
 

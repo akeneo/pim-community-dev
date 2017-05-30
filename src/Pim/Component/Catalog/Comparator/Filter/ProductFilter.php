@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -111,7 +112,7 @@ class ProductFilter implements ProductFilterInterface
         $result = [];
         foreach ($values as $code => $value) {
             if (!isset($attributeTypes[$code])) {
-                throw new \LogicException(sprintf('Cannot filter value of attribute "%s"', $code));
+                throw UnknownPropertyException::unknownProperty($code);
             }
 
             $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);

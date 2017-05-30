@@ -54,7 +54,7 @@ class AttributeSpec extends ObjectBehavior
                 'fr_FR' => 'La description',
                 'en_US' => 'The description',
             ],
-            'attribute_type'         => 'pim_catalog_text',
+            'type'                   => 'pim_catalog_text',
             'number_min'             => 23.5,
             'number_max'             => 29.9,
             'max_file_size'          => 3500,
@@ -78,6 +78,23 @@ class AttributeSpec extends ObjectBehavior
             'wysiwyg_enabled'        => false,
             'decimals_allowed'       => true,
             'negative_allowed'       => true,
+        ];
+
+        $this->convert($item)->shouldReturn($expected);
+    }
+
+    function it_converts_from_standard_to_flat_format_with_null_values()
+    {
+        $expected = [
+            'wysiwyg_enabled'  => '',
+            'decimals_allowed' => '',
+            'negative_allowed' => '',
+        ];
+
+        $item = [
+            'wysiwyg_enabled'  => null,
+            'decimals_allowed' => null,
+            'negative_allowed' => null,
         ];
 
         $this->convert($item)->shouldReturn($expected);

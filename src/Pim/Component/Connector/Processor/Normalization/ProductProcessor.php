@@ -149,8 +149,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected function filterValues(array $values, array $attributesToFilter)
     {
         $valuesToExport = [];
+        $attributesToFilter = array_flip($attributesToFilter);
         foreach ($values as $code => $value) {
-            if (in_array($code, $attributesToFilter)) {
+            if (isset($attributesToFilter[$code])) {
                 $valuesToExport[$code] = $value;
             }
         }

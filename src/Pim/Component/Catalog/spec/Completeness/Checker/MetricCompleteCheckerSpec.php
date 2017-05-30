@@ -21,10 +21,10 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $this->supportsValue($productValue)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn('other');
+        $attribute->getType()->willReturn('other');
         $this->supportsValue($productValue)->shouldReturn(false);
     }
 

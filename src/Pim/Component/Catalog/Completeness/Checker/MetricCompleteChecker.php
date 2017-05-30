@@ -35,6 +35,6 @@ class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
      */
     public function supportsValue(ProductValueInterface $productValue)
     {
-        return 'pim_catalog_metric' === $productValue->getAttribute()->getAttributeType();
+        return 'pim_catalog_metric' === $productValue->getAttribute()->getType();
     }
 }

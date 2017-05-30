@@ -7,12 +7,12 @@ Feature: Import variant group involving reference data
   Background:
     Given a "footwear" catalog configuration
     And the following reference data:
-      | type   | code | label |
-      | color  | red  | Red   |
-      | color  | blue | Blue  |
-    And the following product groups:
-      | code   | label  | axis       | type    |
-      | jacket | Jacket | sole_color | VARIANT |
+      | type  | code | label |
+      | color | red  | Red   |
+      | color | blue | Blue  |
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | jacket | Jacket      | sole_color | VARIANT |
     And the following products:
       | sku       | sole_color | groups |
       | my-jacket | red        | jacket |

@@ -6,8 +6,8 @@ Feature: Update boolean fields
   Scenario: Successfully update a text field
     Given a "apparel" catalog configuration
     And the following attributes:
-      | code        | type    |
-      | is_discount | boolean |
+      | code        | type                | group |
+      | is_discount | pim_catalog_boolean | other |
     And the following products:
       | sku  | handmade |
       | AKN1 | 1        |

@@ -11,16 +11,18 @@ Feature: Edit a variant group adding/removing products
       | mug       | Mug         |
       | furniture | Furniture   |
     And the following attributes:
-      | code  | label | type         | useable_as_grid_filter |
-      | color | Color | simpleselect | yes                    |
-      | size  | Size  | simpleselect | yes                    |
+      | code  | label-en_US | type                     | useable_as_grid_filter | group |
+      | color | Color       | pim_catalog_simpleselect | 1                      | other |
+      | size  | Size        | pim_catalog_simpleselect | 1                      | other |
     And the following "color" attribute options: Yellow, Blue, Green, Pink and Red
     And the following "size" attribute options: XS, S, M, L and XL
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | MUG    | MUG Akeneo  | color      | VARIANT |
+      | POSTIT | Postit      | color,size | VARIANT |
     And the following product groups:
-      | code       | label      | axis        | type    |
-      | MUG        | MUG Akeneo | color       | VARIANT |
-      | POSTIT     | Postit     | color, size | VARIANT |
-      | CROSS_SELL | Cross sell |             | X_SELL |
+      | code       | label-en_US | type   |
+      | CROSS_SELL | Cross sell  | X_SELL |
     And the following products:
       | sku    | groups          | family    | color  | size |
       | MUG_A1 |                 | mug       |        |      |
@@ -54,3 +56,20 @@ Feature: Edit a variant group adding/removing products
     And I should not see products MUG_A1, MUG_A3, MUG_A4, MUG_B1, MUG_B2, MUG_C1, MUG_C3, MUG_C4, MUG_D1 and MUG_D2
     And the rows "MUG_A2, MUG_C2 and POSTIT" should not be checked
     And I should see the columns In group, SKU, Color, Size, Label, Family, Status, Complete, Created at and Updated at
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6283
+  Scenario: Successfully display SKUs of products
+    And I am on the variant groups page
+    And I click on the "MUG" row
+    Then the row "MUG_B1" should contain:
+      | column | value  |
+      | SKU    | MUG_B1 |
+    And the row "MUG_B2" should contain:
+      | column | value  |
+      | SKU    | MUG_B2 |
+    And the row "MUG_D1" should contain:
+      | column | value  |
+      | SKU    | MUG_D1 |
+    And the row "MUG_D2" should contain:
+      | column | value  |
+      | SKU    | MUG_D2 |

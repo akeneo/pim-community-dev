@@ -18,7 +18,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -127,23 +126,6 @@ class ProductController
     }
 
     /**
-     * Edit product
-     *
-     * @param int $id
-     *
-     * @Template("PimEnrichBundle:Product:edit.html.twig")
-     * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return array
-     */
-    public function editAction($id)
-    {
-        return [
-            'productId' => $id
-        ];
-    }
-
-    /**
      * @param string $id Product id
      *
      * @throws NotFoundHttpException If product is not found or the user cannot see it
@@ -160,11 +142,13 @@ class ProductController
             'disable_grouping_separator' => true
         ];
 
-        return new JsonResponse($this->normalizer->normalize(
+        $normalizedProduct = $this->normalizer->normalize(
             $product,
             'internal_api',
             $normalizationContext
-        ));
+        );
+
+        return new JsonResponse($normalizedProduct);
     }
 
     /**
@@ -238,11 +222,13 @@ class ProductController
                 'disable_grouping_separator' => true
             ];
 
-            return new JsonResponse($this->normalizer->normalize(
+            $normalizedProduct = $this->normalizer->normalize(
                 $product,
                 'internal_api',
                 $normalizationContext
-            ));
+            );
+
+            return new JsonResponse($normalizedProduct);
         }
 
         $errors = [
@@ -296,7 +282,11 @@ class ProductController
             throw new BadRequestHttpException();
         }
 
-        $this->productBuilder->removeAttributeFromProduct($product, $attribute);
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
+        }
         $this->productSaver->save($product);
 
         return new JsonResponse();
@@ -368,7 +358,6 @@ class ProductController
         } else {
             $data['values'] = [];
         }
-
 
         $this->productUpdater->update($product, $data);
     }

@@ -1,0 +1,13 @@
+extensions:
+    pim-currency-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.currency.title
+
+    pim-currency-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-currency-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: currency-grid

@@ -3,6 +3,8 @@ extensions:
         module: pim/grid/view-selector/selector
         config:
             viewTypes: ['view']
+            fetchers:
+                view: 'datagrid-view'
 
     pim-grid-view-selector-line:
         module: pim/grid/view-selector/line

@@ -59,28 +59,6 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.label.title
             readOnly: true
 
-    pim-job-instance-csv-product-export-show-properties-decimal-separator:
-        module: pim/job/common/edit/field/decimal-separator
-        parent: pim-job-instance-csv-product-export-show-properties
-        position: 100
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.decimalSeparator
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.decimal_separator.help
-
-    pim-job-instance-xlsx-product-export-show-properties-date-format:
-        module: pim/job/product/edit/field/date-format
-        parent: pim-job-instance-xlsx-product-export-show-properties
-        position: 110
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.dateFormat
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.date_format.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.date_format.help
-
     pim-job-instance-xlsx-product-export-show-properties-file-path:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-show-properties
@@ -90,40 +68,62 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.file_path.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+
+    pim-job-instance-csv-product-export-show-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
+        parent: pim-job-instance-csv-product-export-show-properties
+        position: 130
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.decimalSeparator
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+
+    pim-job-instance-xlsx-product-export-show-properties-date-format:
+        module: pim/job/product/edit/field/date-format
+        parent: pim-job-instance-xlsx-product-export-show-properties
+        position: 140
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.dateFormat
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
 
     pim-job-instance-xlsx-product-export-show-properties-lines-per-file:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-export-show-properties
-        position: 130
+        position: 150
         targetZone: global-settings
         config:
             fieldCode: configuration.linesPerFile
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.lines_per_file.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.lines_per_file.help
 
     pim-job-instance-xlsx-product-export-show-properties-with-header:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-export-show-properties
-        position: 140
+        position: 160
         targetZone: global-settings
         config:
             fieldCode: configuration.withHeader
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_header.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-xlsx-product-export-show-properties-with-media:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-export-show-properties
-        position: 150
+        position: 170
         targetZone: global-settings
         config:
             fieldCode: configuration.with_media
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_media.help
 
     pim-job-instance-xlsx-product-export-show-content-structure:
         module: pim/job/product/edit/content/structure
@@ -209,7 +209,7 @@ extensions:
             types: [pim_catalog_identifier]
 
     pim-job-instance-xlsx-product-export-show-content-data-help:
-        module: pim/job/product/edit/content/data/help
+        module: pim/job/common/edit/content/data/help
         parent: pim-job-instance-xlsx-product-export-show-content-data
 
     pim-job-instance-xlsx-product-export-show-edit:
@@ -218,6 +218,7 @@ extensions:
         targetZone: buttons
         position: 100
         config:
+            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
             identifier:

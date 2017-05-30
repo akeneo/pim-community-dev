@@ -7,23 +7,23 @@ Feature: Export products according to a locale policy
   Background:
     Given a "default" catalog configuration
     And the following attributes:
-      | code     | type     | localizable | label    | available_locales |
-      | name     | textarea | yes         | Name     | fr_FR,en_US       |
-      | baguette | text     | yes         | Baguette | fr_FR             |
+      | code     | type                 | localizable | label-en_US | available_locales | group |
+      | name     | pim_catalog_textarea | 1           | Name        | fr_FR,en_US       | other |
+      | baguette | pim_catalog_text     | 1           | Baguette    | fr_FR             | other |
     And the following family:
-      | code      | requirements-ecommerce |
-      | localized | sku, name              |
+      | code      | requirements-ecommerce | attributes |
+      | localized | sku,name               | sku,name   |
     And the following products:
-      | sku        | categories | family    | name-fr_FR | name-en_US | baguette-fr_FR |
-      | french     | default    | localized | French     |            | Yes            |
-      | english    | default    | localized |            | English    | Yes            |
-      | complete   | default    | localized | Complete   | Complete   | Yes            |
-      | empty      | default    | localized |            |            | Yes            |
+      | sku      | categories | family    | name-fr_FR | name-en_US | baguette-fr_FR |
+      | french   | default    | localized | French     |            | Yes            |
+      | english  | default    | localized |            | English    | Yes            |
+      | complete | default    | localized | Complete   | Complete   | Yes            |
+      | empty    | default    | localized |            |            | Yes            |
     And the following jobs:
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                        |
       | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 

@@ -7,31 +7,19 @@ Feature: Validate localized price attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code    | label-fr_FR | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max |
-      | cost    | Coût        | prices | no       | no               | no               |            |            |
-      | price   | Prix        | prices | yes      | no               | no               |            |            |
-      | tax     | Taxe        | prices | no       |                  | yes              | 10         | 100        |
-      | customs | Douane      | prices | yes      |                  | yes              | 10         | 100        |
+      | code    | label-fr_FR | type                         | scopable | decimals_allowed | number_min | number_max | group |
+      | cost    | Coût        | pim_catalog_price_collection | 0        | 0                |            |            | other |
+      | price   | Prix        | pim_catalog_price_collection | 1        | 0                |            |            | other |
+      | tax     | Taxe        | pim_catalog_price_collection | 0        | 1                | 10         | 100        | other |
+      | customs | Douane      | pim_catalog_price_collection | 1        | 1                | 10         | 100        | other |
     And the following family:
-      | code | label-en_US | attributes                     |
-      | baz  | Baz         | sku, cost, price, tax, customs |
+      | code | label-en_US | attributes                 |
+      | baz  | Baz         | sku,cost,price,tax,customs |
     And the following product:
       | sku | family |
       | foo | baz    |
     And I am logged in as "Julien"
     And I am on the "foo" product page
-
-  Scenario: Validate the negative allowed constraint of price attribute
-    Given I change the "Coût" to "-10 USD"
-    And I save the product
-    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 0."
-    And there should be 1 error in the "[other]" tab
-
-  Scenario: Validate the negative allowed constraint of scopable price attribute
-    Given I change the "Prix" to "-10 USD"
-    And I save the product
-    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 0."
-    And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of price attribute
     Given I change the "Coût" to "2,7 USD"
@@ -74,7 +62,8 @@ Feature: Validate localized price attributes of a product
     And I change the "Taxe" to "qux EUR"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être un nombre."
-    And there should be 1 error in the "[other]" tab
+    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."
+    And there should be 2 error in the "[other]" tab
 
   Scenario: Validate the decimal separator constraint of price attribute
     Given I change the "Taxe" to "50.50 EUR"

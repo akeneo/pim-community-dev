@@ -9,56 +9,69 @@
     processIsolation="false"
     stopOnFailure="false"
     syntaxCheck="false"
-    bootstrap="bootstrap.php.cache" >
+    bootstrap="./autoload.php">
 
     <php>
+        <ini name="date.timezone" value="Europe/Paris"/>
         <ini name="intl.default_locale" value="en"/>
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
-        <ini name="zend.enable_gc" value="0"/>
+        <ini name="zend.enable_gc" value="1"/>
     </php>
 
     <testsuites>
 
-        <!-- Project (PIM+Oro) test suites -->
-        <testsuite name="Project_Test">
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-
-        <!-- PIM test suites -->
+        <!-- Legacy PIM phpunit unit tests -->
         <testsuite name="PIM_Unit_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="PIM_Functional_Test">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-        <testsuite name="PIM_Performance_Test">
-            <directory suffix="Perf.php">../src/Pim/Bundle/*Bundle/Tests/Performance</directory>
+
+        <!-- Complete suite for PIM integration tests -->
+        <testsuite name="PIM_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
         </testsuite>
 
-        <!-- Jenkins test suite -->
-        <testsuite name="Jenkins_PIM_Test">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
+        <!-- Set of small suites for PIM integration tests -->
+        <testsuite name="PIM_Api_Base_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Component/Api/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/EventSubscriber</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Security</directory>
+            <file>../src/Pim/Bundle/ApiBundle/tests/integration/Controller/RootEndpointIntegration.php</file>
+        </testsuite>
+
+        <testsuite name="PIM_Api_Bundle_Controllers_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Channel</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Locale</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Media</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Currency</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Token</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Api_Bundle_Controllers_Catalog_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Attribute</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/AttributeGroup</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/AttributeOption</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Category</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Family</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Api_Bundle_Controller_Product_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Product</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Catalog_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Validation</directory>
+            <directory suffix="Integration.php">../src/Pim/Component/Catalog/tests/integration</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Catalog_Completeness_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Completeness</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Catalog_PQB_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
         </testsuite>
 
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>../src/Pim</directory>
-            <exclude>
-                <!-- exclude demo used load sample data -->
-                <directory>../src/Pim/Bundle/DemoBundle</directory>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/vendor</directory>
-                <directory>../src/*/Bundle/*Bundle/cov</directory>
-                <directory>../src/*/Bundle/*Bundle/DataFixtures/ORM/Load*Data.php</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>

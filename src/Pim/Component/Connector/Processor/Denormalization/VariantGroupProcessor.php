@@ -35,4 +35,17 @@ class VariantGroupProcessor extends Processor implements ItemProcessorInterface,
 
         return $violations;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function findOrCreateObject(array $convertedItem)
+    {
+        $entity = $this->findObject($this->repository, $convertedItem);
+        if (null === $entity) {
+            return $this->factory->createGroup($convertedItem['type']);
+        }
+
+        return $entity;
+    }
 }

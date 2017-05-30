@@ -1,14 +1,14 @@
 confirmation:
   remove:
     item: Weet u zeker dat u dit item wilt verwijderen?
-    association type: Weet u zeker dat u dit associatietype wilt verwijderen?
+    association_type: Weet u zeker dat u dit associatietype wilt verwijderen?
     attribute: Weet u zeker dat u attribuut wilt verwijderen?
     family: Weet u zeker dat u deze familie wilt verwijderen?
     product: Weet u zeker dat u dit product wilt verwijderen?
     channel: Weet u zeker dat u dit kanaal wilt verwijderen?
     group: Weet u zeker dat u deze groep wilt verwijderen?
     variant group: Weet u zeker dat u deze variantgroep wilt verwijderen?
-    group type: Weet u zeker dat u dit groepstype wilt verwijderen?
+    group_type: Weet u zeker dat u dit groepstype wilt verwijderen?
     import profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
     export profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
     user: Weet u zeker dat u deze gebruiker wilt verwijderen?
@@ -24,13 +24,20 @@ pim_datagrid:
       confirm_content: Weet u zeker dat u de geselecteerde producten wilt verwijderen?
       success: Geselecteerde producten succesvol verwijderd.
       error: Er is een fout opgetreden tijdens het verwijderen van de geselecteerde producten, probeer het opnieuw.
+  view_selector:
+    view: Weergaves
+    create_view_modal:
+      confirm: OK
+      cancel: Annuleren
 flash:
   item:
     removed: Item succesvol verwijderd
-  association type:
+  association_type:
     removed: Associatietype succesvol verwijderd
   attribute:
     removed: Attribuut succesvol verwijderd
+  attribute_group:
+    removed: Attribuutgroep succesvol verwijderd
   family:
     removed: Familie succesvol verwijderd
   product:
@@ -41,7 +48,7 @@ flash:
     removed: Groep succesvol verwijderd
   variant group:
     removed: Variantgroep succesvol verwijderd
-  group type:
+  group_type:
     removed: Groepstype succesvol verwijderd
   import profile:
     removed: Importprofiel succesvol verwijderd
@@ -54,7 +61,7 @@ flash:
 error:
   removing:
     item: Kan dit item niet verwijderen
-    association type: Kan deze associatie niet verwijderen
+    association_type: Kan deze associatie niet verwijderen
     attribute: Kan dit attribuut niet verwijderen
     family: Kan deze familie niet verwijderen
     product: Kan dit product niet verwijderen
@@ -95,6 +102,7 @@ pim:
   grid:
     mass_action:
       quick_export:
+        csv_all: CSV (alle kenmerken)
         csv_grid_context: CSV (rastercontext)
         xlsx_all: Excel (alle attributen)
         xlsx_grid_context: Excel (rastercontext)
@@ -182,25 +190,100 @@ pim_enrich:
       variant_group:
         updated_by: Geüpdatet door variant groep
         switch:
-          "yes": Ja
-          "no": Nee
+          "yes": "Ja"
+          "no": "Nee"
       optional_attribute:
         remove: Dit attribuut verwijderen
       locale_specific_attribute:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
-      media:
-        upload: Klik-en-sleep om te uploaden of klik hier
       create_popin:
         title: Een nieuw product aanmaken
         labels:
           family: Kies een familie
           save: Opslaan
           cancel: Annuleren
+    attribute:
+      scopable: Bereik instelbaar
+      global: Globaal
+    association_type:
+      info:
+        deletion_successful: Associatietype succesvol verwijderd.
+        deletion_failed: Associatietype kon niet worden verwijderd.
+        update_successful: Associatietype succesvol bijgewerkt.
+        update_failed: Het associatietype kon niet worden bijgewerkt.
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - velden
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
+      title: koppelingstype
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - velden
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
+      title: groepstype
+    channel:
+      title: kanaal
+      info:
+        deletion_successful: Kanaal succesvol verwijderd.
+        deletion_failed: Het kanaal kon niet worden verwijderd.
+        update_successful: Kanaal succesvol bijgewerkt.
+        update_failed: Het kanaal kon niet worden bijgewerkt.
+        create_successful: Kanaal succesvol aangemaakt.
+        create_failed: Het kanaal kon niet aangemaakt worden.
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - velden
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
+    family:
+      title: familie
+      info:
+        create_successful: Kanaal succesvol aangemaakt.
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
+    attribute_label:
+      pim_catalog_identifier: Id
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Tekstblok
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Prijs
+      pim_catalog_multiselect: Meervoudige selectie
+      pim_catalog_simpleselect: Enkelvoudige selectie
+      pim_catalog_file: Bestand
+      pim_catalog_image: Afbeelding
+      pim_catalog_boolean: "Ja/Nee"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Meeteenheid
     attribute_option:
       code: Code
       label: Label
+      actions: Acties
     variant_group:
       title: Variant groep
       info:
@@ -221,12 +304,34 @@ pim_enrich:
         created_by: Aangemaakt door
         updated: Bijgewerkt
         updated_by: Bijgewerkt door
+    group:
+      title: Groep
+      info:
+        deletion_successful: Groep succesvol verwijderd.
+        deletion_failed: Groep kon niet verwijderd worden.
+        update_successful: Groep succesvol bijgewerkt.
+        update_failed: De groep kon niet worden bijgewerkt.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - velden
+      btn:
+        save: Opslaan
+      meta:
+        product_count: Producten
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+    job_instance:
+      info:
+        update_failed: Het jobprofiel kon niet worden bijgewerkt.
+    attribute_group:
+      info:
+        update_successful: Attribuutgroep succesvol bijgewerkt
   confirmation:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
     delete_item: Verwijderen bevestigen
-    delete:
-      attribute: Bent u zeker dat u dit attribuut wil verwijderen van het product?
   info:
     not_applicable: Niet beschikbaar
     entity:
@@ -234,7 +339,6 @@ pim_enrich:
   error:
     upload: Er deed zich een fout voor tijdens het upload van het bestand
   alert:
-    not_allowed: U heeft geen toegang tot deze pagina
     error_occured: Er deed zich een four voor tijdens het laden van de pagina
   form:
     required: (vereist)
@@ -246,7 +350,7 @@ pim_enrich:
             none_exist: Er bestaan geen associatietypes.
             show_products: Toon producten
             show_groups: Toon groepen
-            number_of_associations: '{{ productCount }} producten en {{ groupCount }} groepen'
+            number_of_associations: "{{ productCount }} producten en {{ groupCount }} groepen"
         attributes:
           title: Attributen
           btn:
@@ -255,7 +359,6 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
-            attributes_selected: '{{ attributeCount }} attribu(u) t(en) geselecteerd'
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
         categories:
@@ -270,8 +373,8 @@ pim_enrich:
         history:
           title: Geschiedenis
       switch:
-        "no": Nee
-        "yes": Ja
+        "no": "Nee"
+        "yes": "Ja"
       sequential_edit:
         info:
           products: producten
@@ -292,6 +395,55 @@ pim_enrich:
       mass_edit:
         select_attributes: Selecteer attributen
         select: Selecteer
+    association_type:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          label_translations: Labelvertalingen
+        history:
+          title: Geschiedenis
+    group_type:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          label_translations: Labelvertalingen
+        history:
+          title: Geschiedenis
+    channel:
+      tab:
+        history:
+          title: Geschiedenis
+        properties:
+          title: Eigenschappen
+          general: Algemeen
+          code: Code
+          currencies: Valuta
+          locales: Lokalisaties
+          category_tree: Categoriestructuur
+          label_translations: Labelvertalingen
+          label_conversion_units: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
+    family:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemeen
+          code: Code
+          attribute_as_label: Attribuut gebruikt als label
+          label_translations: Labelvertalingen
+        attributes:
+          title: Attributen
+          label_label: Label
+          toolbox:
+            select_attributes: Attributen toevoegen
+            add: Toevoegen
+          not_required_label: Niet verplicht
+          required_label: Verplicht
+        history:
+          title: Geschiedenis
     attribute_option:
       flash:
         option_created: Attribuut optie succesvol aangemaakt
@@ -302,8 +454,8 @@ pim_enrich:
         cancel: Annuleren
     entity:
       switch:
-        "no": Nee
-        "yes": Ja
+        "no": "Nee"
+        "yes": "Ja"
     variant_group:
       tab:
         properties:
@@ -319,6 +471,33 @@ pim_enrich:
           title: Producten
         attributes:
           title: Attributen
+    group:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          type: Type
+          label_translations: Labelvertalingen
+        history:
+          title: Geschiedenis
+        products:
+          title: Producten
+    attribute_group:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          label_translations: Labelvertalingen
+        attribute:
+          title: Attributen
+          table:
+            name: Naam
+            type: Type
+            scope: Bereik
+            localizable: Lokaliseerbaar
+        history.title: Geschiedenis
     common:
       tab:
         attributes:
@@ -328,6 +507,94 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
+    job_execution:
+      loading: Laden...
+      refreshBtn.title: Vernieuwen
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Profiel weergeven
+        download_log.title: Logbestand downloaden
+      summary:
+        fetching: Gegevens verzamelen over taakverwerking...
+        warning: Waarschuwing
+        header.step: Stap
+        header.status: Status
+        header.warnings: Waarschuwingen
+        header.summary: Samenvatting
+        header.start: Start
+        header.end: Einde
+    job_instance:
+      title:
+        import: Profiel importeren
+        export: Profiel exporteren
+      button:
+        edit.title: Bewerken
+        export.title: Nu exporteren
+        import.launch: Nu importeren
+        import.upload: Uploaden en nu importeren
+      meta:
+        job: Taak
+        connector: Connector
+      tab:
+        content:
+          title: Inhoud
+        properties:
+          title: Algemene eigenschappen
+          code:
+            title: Code
+          label:
+            title: Label
+          file_path:
+            title: Bestandspad
+            help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
+          delimiter:
+            title: Scheidingsteken
+            help: Eén teken voor het scheiden van de velden
+          enclosure:
+            title: Omsluiting
+            help: Eén teken voor gebruik als omsluitingsteken voor het veld
+          with_header:
+            title: Met koptekst
+            help: Of de kolomnaam geprint moet worden
+          with_media:
+            title: Bestanden en afbeeldingen exporteren
+            help: Productbestanden en afbeeldingen al dan niet exporteren
+          lines_per_file:
+            title: Aantal regels per bestand
+            help: Het maximum aantal regels per bestand definiëren
+          upload_allowed:
+            title: Bestanden uploaden toestaan
+            help: Of direct uploaden van het bestand is toegestaan
+          categories_column:
+            title: Categoriekolom
+            help: Naam van de categoriekolom
+          escape:
+            title: Escape-teken
+            help: Eén teken voor gebruik als escape-teken voor het veld
+          family_column:
+            title: Familiekolom
+            help: Naam van de familiekolom
+          groups_column:
+            title: Groepskolom
+            help: Naam van de groepskolom
+          enabled:
+            title: Het product inschakelen
+            help: Of geïmporteerd product moet worden ingeschakeld
+          real_time_versioning:
+            title: Real-time geschiedenis bijwerken
+            help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+        history:
+          title: Geschiedenis
+    mass_edit:
+      family:
+        attributes:
+          label_label: Label
+          toolbox:
+            select_attributes: Attributen toevoegen
+            add: Toevoegen
+  job:
+    upload: Klik en sleep om te uploaden of klik hier
   export:
     product:
       data:
@@ -345,7 +612,7 @@ pim_enrich:
         attributes:
           title: Attributen
           edit: Bewerken
-          label: '{0} alle attributen|{1} 1 attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd'
+          label: "{0} alle attributen|{1} 1 attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd"
           help: Selecteer de product informatie om te exporteren. Bv. enkel technische attributen.
           empty: Alle attributen worden geëxporteerd
           modal:
@@ -354,8 +621,8 @@ pim_enrich:
             title: Attribuut selectie
         attributes_selector:
           attribute_group: Attribuutgroepen
-          attributes: Zoek in {{ attributeCount }} attributen
-          selected: Selecteer attributen
+          attributes: "Zoek in {{ attributeCount }} attributen"
+          selected: "Selecteer attributen"
           clear: Opruimen
           all_group: Alle groepen
           empty_selection: Alle attributen worden geëxporteerd
@@ -363,17 +630,18 @@ pim_enrich:
           title: Familie
           help: Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken.
           operators:
-            NOT IN: Niet in de lijst
+            IN: In lijst
+            "NOT IN": Niet in de lijst
             EMPTY: Producten die geen familie hebben
-            NOT EMPTY: Producten die een familie hebben
+            "NOT EMPTY": Producten die een familie hebben
           empty_selection: Geen voorwaarde voor families
         updated:
           title: Tijdsvoorwaarde
           operators:
             ALL: Geen datum voorwaarde
-            SINCE LAST N DAYS: Geüpdatete producten gedurende de laatste n dagen (bv. 6)
-            >: Geüpdatete producten sinds deze datum
-            SINCE LAST JOB: Geüpdatete producten sinds laatste export
+            "SINCE LAST N DAYS": Geüpdatete producten gedurende de laatste n dagen (bv. 6)
+            ">": Geüpdatete producten sinds deze datum
+            "SINCE LAST JOB": Geüpdatete producten sinds laatste export
         enabled:
           title: Status
           help: Selecteer de producten om te exporteren volgens hun status. Bv. exporteer allerlei producten volgens hun status.
@@ -386,72 +654,163 @@ pim_enrich:
           help: Selecteer de producten om te exporteren volgens hun volledigheid.
           operators:
             ALL: Geen voorwaarde op volledigheid
-            >=: Vervolledig op z'n minst één gekozen landinstelling
-            GREATER OR EQUALS THAN ON ALL LOCALES: Voltooi op alle geselecteerde landinstellingen
+            ">=": Vervolledig op z'n minst één gekozen landinstelling
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Voltooi op alle geselecteerde landinstellingen
             LOWER THAN ON ALL LOCALES: Niet volledig op alle geselecteerde landinstellingen
           empty_selection: Selecteer een familie
         category:
           title: Categorie
+          help: Gebruik de productcategorieën in de boom (gedefinieerd door het bovenstaande kanaal) om de producten te selecteren om te exporteren
         identifier:
           title: Id
         metric:
           operators:
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
-            >=: Groter dan of gelijk aan
-            >: Groter dan
-            <=: Kleiner dan of gelijk aan
-            <: Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
+            ">=": Groter dan of gelijk aan
+            ">": Groter dan
+            "<=": Kleiner dan of gelijk aan
+            "<": Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         string:
           operators:
             ALL: Alle
             CONTAINS: Bevat
             DOES NOT CONTAIN: Bevat geen
-            =: Is gelijk aan
+            "=": Is gelijk aan
             STARTS WITH: Begint met
             ENDS WITH: Eindigt met
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         price-collection:
           operators:
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
-            >=: Groter dan of gelijk aan
-            >: Groter dan
-            <=: Kleiner dan of gelijk aan
-            <: Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
+            ">=": Groter dan of gelijk aan
+            ">": Groter dan
+            "<=": Kleiner dan of gelijk aan
+            "<": Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         multi_select:
           operators:
+            IN: In lijst
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         media:
           operators:
             CONTAINS: Bevat
             DOES NOT CONTAIN: Bevat geen
-            =: Is gelijk aan
+            "=": Is gelijk aan
             STARTS WITH: Begint met
             ENDS WITH: Eindigt met
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         date:
           operators:
-            >: Groter dan
-            <: Kleiner dan
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
+            ">": Groter dan
+            "<": Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
             BETWEEN: Tussen
             NOT BETWEEN: Niet tussen
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
         number:
           operators:
-            =: Is gelijk aan
-            !=: Is niet gelijk aan
-            >=: Groter dan of gelijk aan
-            >: Groter dan
-            <=: Kleiner dan of gelijk aan
-            <: Kleiner dan
+            "=": Is gelijk aan
+            "!=": Is niet gelijk aan
+            ">=": Groter dan of gelijk aan
+            ">": Groter dan
+            "<=": Kleiner dan of gelijk aan
+            "<": Kleiner dan
+            EMPTY: Is leeg
             NOT EMPTY: Is niet leeg
+      properties:
+        title: Eigenschappen
+      global_settings:
+        title: Algemene instellingen
   mass_edit_action:
     edit_common_attributes:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
+  index:
+    group:
+      create_btn: Groep aanmaken
+    user:
+      title: Gebruiker
+      create_btn: Gebruiker aanmaken
+    user_role:
+      title: Rol
+      create_btn: Rol aanmaken
+    user_group:
+      title: Groepen
+      create_btn: Groep aanmaken
+    attribute:
+      modal_title: Kies het attribuuttype
+    attribute_group:
+      create_btn: Aanmaken
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
+page_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribuutgroepen
+  pim_enrich_attributegroup_create: Attribuutgroepen | Aanmaken
+  pim_enrich_categorytree_index: Categorie boomstructuren
+  pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_attribute_index: Attributen
+  pim_enrich_attribute_create: Attributen | Aanmaken
+  pim_enrich_product_index: Producten
+  pim_enrich_family_index: Families
+  pim_enrich_channel_index: Kanalen
+  pim_enrich_channel_create: Kanalen | Aanmaken
+  pim_enrich_currency_index: Valuta
+  pim_enrich_locale_index: Lokalisaties
+  pim_enrich_group_index: Groepen
+  pim_enrich_variant_group_index: Variantgroepen
+  pim_enrich_associationtype_index: Associatietypes
+  pim_enrich_grouptype_index: Groepstypen
+  pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
+  pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
+batch_jobs:
+  update_product_value:
+    label: Update productwaarde
+    perform:
+      label: Update productwaarde
+pim_menu:
+  tab:
+    collect: Verzamelen
+    enrich: Verrijken
+    settings: Instellingen
+    system: Systeem
+    spread: Verspreiden
+  item:
+    association_type: Associatietypes
+    attribute: Attributen
+    attribute_group: Attribuutgroepen
+    category: Categorieën
+    channel: Kanalen
+    currency: Valuta
+    family: Families
+    group: Groepen
+    group_type: Groepstypen
+    locale: Lokalisaties
+    product: Producten
+    variant_group: Variantgroepen
+    export_history: Exportgeschiedenis
+    export_profile: Exportprofielen
+    import_history: Importgeschiedenis
+    import_profile: Importprofielen
+    configuration: Configuratie
+    user_management: Gebruikersbeheer
+    user: Gebruikers
+    user_group: Groepen
+    user_role: Rollen
+    info: Systeeminformatie
+pim_header:
+  user:
+    logout: Afmelden
+    user_account: Mijn Account
+pim_notification:
+  mark_all_as_read: Markeer alles als gelezen

@@ -14,7 +14,6 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
-use Prophecy\Argument;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -129,13 +128,13 @@ class ProductSpec extends ObjectBehavior
             ['associations' => ['SUBSTITUTION' => ['products' => ['sku-C']]]]
         );
 
-        $attribute1->getAttributeType()->willReturn('sku');
-        $attribute2->getAttributeType()->willReturn('categories');
-        $attribute3->getAttributeType()->willReturn('enabled');
-        $attribute4->getAttributeType()->willReturn('name');
-        $attribute5->getAttributeType()->willReturn('release_date');
-        $attribute6->getAttributeType()->willReturn('7');
-        $attribute7->getAttributeType()->willReturn('price');
+        $attribute1->getType()->willReturn('sku');
+        $attribute2->getType()->willReturn('categories');
+        $attribute3->getType()->willReturn('enabled');
+        $attribute4->getType()->willReturn('name');
+        $attribute5->getType()->willReturn('release_date');
+        $attribute6->getType()->willReturn('7');
+        $attribute7->getType()->willReturn('price');
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
 
@@ -271,7 +270,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
-        $attribute->getAttributeType()->willReturn('sku');
+        $attribute->getType()->willReturn('sku');
         $fieldConverter->supportsColumn('sku')->willReturn(false);
         $fieldConverter->supportsColumn('enabled')->willReturn(true);
 
@@ -326,7 +325,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
-        $attribute->getAttributeType()->willReturn('sku');
+        $attribute->getType()->willReturn('sku');
         $fieldConverter->supportsColumn('sku')->willReturn(false);
 
         $this->shouldThrow(
@@ -354,7 +353,7 @@ class ProductSpec extends ObjectBehavior
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
-        $attribute->getAttributeType()->willReturn('sku');
+        $attribute->getType()->willReturn('sku');
 
         $fieldConverter->supportsColumn('sku')->willReturn(true);
 

@@ -70,12 +70,19 @@ class Select2Decorator extends ElementDecorator
             'a.select2-choice'
         ));
         foreach ($elements as $element) {
-            $closeElement = $element->find('css', '.select2-search-choice-close');
-            if ($closeElement->isVisible()) {
-                $closeElement->click();
-            }
+            $this->spin(function () use ($element) {
+                $closeElement = $element->find('css', '.select2-search-choice-close');
+                if (null !== $closeElement && $closeElement->isVisible()) {
+                    $closeElement->click();
+
+                    return false === $element->isValid() || !$closeElement->isVisible();
+                };
+
+                return true;
+            }, 'Element is unchanged after deletion');
         }
     }
+
 
     /**
      * Open the select2 dropdown.
@@ -99,7 +106,9 @@ class Select2Decorator extends ElementDecorator
      */
     public function close()
     {
-        if (false !== strstr($this->getAttribute('class'), 'select2-dropdown-open')) {
+        $selectElementExists = $this->find('css', '.select2-dropdown-open') !== null;
+
+        if ($selectElementExists && false !== strstr($this->getAttribute('class'), 'select2-dropdown-open')) {
             $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
 
             if (null !== $dropMask) {
@@ -233,5 +242,19 @@ class Select2Decorator extends ElementDecorator
                 $text
             )
         );
+    }
+
+    /**
+     * Get the current value for the Select2
+     *
+     * @return string
+     */
+    public function getCurrentValue()
+    {
+        $input = $this->spin(function () {
+            return $this->find('css', '.select2-selection-label-view');
+        }, 'Cannot find the Select2 current selection input');
+
+        return $input->getText();
     }
 }

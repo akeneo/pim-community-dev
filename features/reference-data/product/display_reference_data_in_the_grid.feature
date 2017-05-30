@@ -52,8 +52,8 @@ Feature: Display reference data in the grid
     And I am on the products page
     When I display the columns SKU, Cap color and Lace fabric
     Then the row "high-heels" should contain:
-      | column      | value         |
-      | Cap color   | Purple        |
+      | column      | value           |
+      | Cap color   | Purple          |
       | Lace fabric | [cotton], Straw |
     When I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "high-heels" should contain:

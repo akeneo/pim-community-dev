@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Updater\Adder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Updater\Adder\AdderInterface;
 
 /**
  * Registry of adders

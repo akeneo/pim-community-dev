@@ -24,24 +24,6 @@ Feature: Create an attribute
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
-    And the following attribute codes should not be available:
-      | code             |
-      | id               |
-      | associationTypes |
-      | category         |
-      | categoryId       |
-      | categories       |
-      | completeness     |
-      | enabled          |
-      | family           |
-      | groups           |
-      | associations     |
-      | products         |
-      | scope            |
-      | treeId           |
-      | values           |
-      | my_groups        |
-      | my_products      |
 
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:

@@ -11,8 +11,6 @@ use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandard
  */
 class DateTimeIntegration extends AbstractStandardNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testDateTimeWithParisTimezone()
     {
         $datetime = new \DateTime('2015-01-01 23:50:00');

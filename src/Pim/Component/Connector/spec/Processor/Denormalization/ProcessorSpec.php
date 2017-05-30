@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -93,7 +94,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $updater
             ->update($channel, $values)
-            ->willThrow(new \InvalidArgumentException());
+            ->willThrow(new InvalidPropertyException('code', 'value', 'className', 'The code could not be blank.'));
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')

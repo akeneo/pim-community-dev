@@ -1,0 +1,21 @@
+pim_api:
+  acl:
+    attribute:
+      list: Listaa attribuutit
+    attribute_group:
+      list: Listaa määriteryhmät
+    category:
+      list: Listaa kategoriat
+    family:
+      list: Listaa tuoteperheet
+    channel.list: Listaa kanavat
+    locale.list: Lista lokaatioista
+    currency.list: Lista valuutoista
+  acl_group:
+    attribute: Attribuutit
+    attribute_group: Attribuuttiryhmät
+    category: Kategoriat
+    family: Perheet
+    channel: Kanavat
+    locale: Alueet
+    currency: Valuutat

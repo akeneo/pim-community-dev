@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;

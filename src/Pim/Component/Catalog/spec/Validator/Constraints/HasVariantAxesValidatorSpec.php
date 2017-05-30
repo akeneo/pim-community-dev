@@ -66,7 +66,7 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         $this->validate($product, $constraint);
     }
 
-    function it_adds_a_violation_when_validates_a_product_with_missing_value_for_an_axe_of_its_variant_group(
+    function it_adds_a_violation_when_validates_a_product_with_missing_value_for_an_axis_of_its_variant_group(
         $context,
         ProductInterface $product,
         GroupInterface $tShirtVariantGroup,
@@ -75,7 +75,7 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         ProductValueInterface $sizeValue,
         ProductValueInterface $identifierValue,
         HasVariantAxes $constraint,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $tShirtVariantGroup->getCode()->willReturn('tshirt');
         $tShirtVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
@@ -99,7 +99,12 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
             ]
         )
         ->shouldBeCalled()
-        ->willReturn($violation);
+        ->willReturn($violationBuilder);
+        $violationBuilder->atPath('variant_group')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $violationBuilder->atPath('variant_group')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($product, $constraint);
     }

@@ -34,7 +34,7 @@ class UniqueVariantGroupValidator extends ConstraintValidator
                         '%groups%'  => $this->formatValues($variantGroups, ConstraintValidator::OBJECT_TO_STRING),
                         '%product%' => $product->getIdentifier()
                     ]
-                )->addViolation();
+                )->atPath($constraint->propertyPath)->addViolation();
             }
         }
     }

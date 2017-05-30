@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
@@ -35,10 +35,10 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $price_collectionAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $price_collectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price_collectionAttribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($price_collectionAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
@@ -70,7 +70,11 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'prices collection', gettype($data))
+            InvalidPropertyTypeException::arrayExpected(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
+                $data
+            )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -83,11 +87,10 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = ['not an array'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayOfArraysExpected(
+            InvalidPropertyTypeException::arrayOfArraysExpected(
                 'attributeCode',
-                'setter',
-                'prices collection',
-                gettype($data)
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -101,12 +104,11 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = [['not the data key' => 123]];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'setter',
-                'prices collection',
-                print_r($data, true)
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -120,12 +122,11 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = [['amount' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
-                'setter',
-                'prices collection',
-                print_r($data, true)
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -147,7 +148,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);

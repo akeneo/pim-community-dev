@@ -32,7 +32,7 @@ class HasVariantAxesValidator extends ConstraintValidator
                         '%variant%' => $variant->getCode(),
                         '%axes%'    => implode(', ', $missingAxisCodes),
                     ]
-                )->addViolation();
+                )->atPath($constraint->propertyPath)->addViolation();
             }
         }
     }

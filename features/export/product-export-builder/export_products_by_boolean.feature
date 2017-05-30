@@ -7,8 +7,8 @@ Feature: Export products according to boolean attribute filter
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku,name            | sku,name   |
     And the following products:
       | sku      | enabled | family  | categories        | handmade |
       | SNKRS-1B | 1       | rangers | summer_collection | 0        |
@@ -17,15 +17,15 @@ Feature: Export products according to boolean attribute filter
 
   Scenario: Export products by boolean values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                                              |
+      | filePath | %tmp%/product_export/product_export.csv                                                                             |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "handmade", "operator": "=", "value": true}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;handmade
-    SNKRS-1R;summer_collection;1;rangers;;1
+    sku;categories;enabled;family;groups;handmade;name-en_US
+    SNKRS-1R;summer_collection;1;rangers;;1;
     """
 
   Scenario: Export products by boolean values using the UI
@@ -43,6 +43,6 @@ Feature: Export products according to boolean attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;handmade
-    SNKRS-1B;summer_collection;1;rangers;;0
+    sku;categories;enabled;family;groups;handmade;name-en_US
+    SNKRS-1B;summer_collection;1;rangers;;0;
     """

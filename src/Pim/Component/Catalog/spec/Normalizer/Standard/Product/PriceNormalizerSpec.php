@@ -6,7 +6,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 
 class PriceNormalizerSpec extends ObjectBehavior
 {

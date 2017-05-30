@@ -5,7 +5,11 @@
 <ul class="AknDropdown-menu">
     <% _.each(channels, function (scope) { %>
         <li>
-            <a class="AknDropdown-menuLink" data-scope="<%- scope.code %>" data-label="<%- scope.labels[catalogLocale] %>"><%- scope.labels[catalogLocale] %></a>
+            <a class="AknDropdown-menuLink"
+               data-scope="<%- scope.code %>"
+               data-label="<%- i18n.getLabel(scope.labels, catalogLocale, scope.code) %>">
+                <%- i18n.getLabel(scope.labels, catalogLocale, scope.code) %>
+            </a>
         </li>
     <% }); %>
 </ul>

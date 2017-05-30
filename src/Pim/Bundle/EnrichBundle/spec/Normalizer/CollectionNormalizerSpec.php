@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class CollectionNormalizerSpec extends ObjectBehavior
 {

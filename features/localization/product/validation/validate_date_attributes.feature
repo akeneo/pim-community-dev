@@ -7,13 +7,13 @@ Feature: Validate localized date attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code      | label-fr_FR | type | scopable | unique | date_min   | date_max   |
-      | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 |
-      | available | Dispo       | date | yes      | no     | 2013-01-01 | 2015-12-12 |
-      | sold      | Solde       | date | no       | no     |            |            |
+      | code      | label-fr_FR | type             | scopable | unique | date_min   | date_max   | group |
+      | release   | Release     | pim_catalog_date | 0        | 1      | 2013-01-01 | 2015-12-12 | other |
+      | available | Dispo       | pim_catalog_date | 1        | 0      | 2013-01-01 | 2015-12-12 | other |
+      | sold      | Solde       | pim_catalog_date | 0        | 0      |            |            | other |
     And the following family:
-      | code | label-en_US | attributes                    | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku, release, available, sold | sku                    | sku                 |
+      | code | label-en_US | attributes                 | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,release,available,sold | sku                    | sku                 |
     And the following products:
       | sku | family |
       | foo | baz    |

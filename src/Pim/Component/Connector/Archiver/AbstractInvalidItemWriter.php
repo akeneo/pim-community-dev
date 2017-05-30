@@ -100,7 +100,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 
             if ($invalidItemPositions->contains($currentItemPosition)) {
                 $headers = $fileIterator->getHeaders();
-                $invalidItem = array_combine($headers, $readItem);
+                $invalidItem = array_combine($headers, array_slice($readItem, 0, count($headers)));
                 if (false !== $invalidItem) {
                     $itemsToWrite[] = $invalidItem;
                 }

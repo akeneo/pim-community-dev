@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Prophecy\Argument;
 
 class AttributeRepositorySpec extends ObjectBehavior
 {

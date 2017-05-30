@@ -11,7 +11,7 @@ datagrid:
                 label: Code
             label:
                 label: Label
-            attributeType:
+            type:
                 label: Type
                 type: translateable
             scopable:
@@ -69,9 +69,9 @@ datagrid:
                     type: string
                     label: Label
                     data_name: translation.label
-                attributeType:
+                type:
                     type:      choice
-                    data_name: a.attributeType
+                    data_name: a.type
                     options:
                         field_options:
                             multiple: true

@@ -115,7 +115,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             type: string
             length: 255
             column: entity_type
-        attributeType:
+        type:
             type: string
             length: 255
             column: attribute_type
@@ -146,6 +146,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             cascade:
                 - persist
                 - detach
+            orphanRemoval: true
     manyToOne:
         group:
             targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface

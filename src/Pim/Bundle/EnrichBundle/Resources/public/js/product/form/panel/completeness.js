@@ -35,7 +35,7 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
@@ -52,13 +52,12 @@ define(
 
                 if (this.getFormData().meta) {
                     $.when(
-                        this.fetchCompleteness(),
-                        FetcherRegistry.getFetcher('locale').fetchAll()
-                    ).then(function (completeness, locales) {
+                        FetcherRegistry.getFetcher('locale').fetchActivated()
+                    ).then(function (locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
-                                completenesses: this.sortCompleteness(completeness.completenesses),
+                                completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
                                 locales: locales,
                                 catalogLocale: UserContext.get('catalogLocale')
@@ -69,16 +68,6 @@ define(
                 }
 
                 return this;
-            },
-
-            /**
-             * @returns {Promise}
-             */
-            fetchCompleteness: function () {
-                return FetcherRegistry.getFetcher('product-completeness').fetchForProduct(
-                    this.getFormData().meta.id,
-                    this.getFormData().family
-                );
             },
 
             /**
@@ -128,23 +117,14 @@ define(
             },
 
             /**
-             * Update the completeness by fetching it from the backend
-             */
-            update: function () {
-                if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
-                }
-
-                this.render();
-            },
-
-            /**
              * On family change listener
              */
             onChangeFamily: function () {
-                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
-                    this.render();
-                }
+                var data = this.getFormData();
+                data.meta.completenesses = [];
+                this.setData(data);
+
+                this.render();
             }
         });
     }

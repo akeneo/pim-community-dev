@@ -2,8 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
@@ -27,14 +29,16 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $attrRequiRepo
+        AttributeRequirementRepositoryInterface $attributeRequirementRepo,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,
-            $attrRequiRepo
+            $attributeRequirementRepo,
+            $translatableUpdater
         );
     }
 
@@ -64,6 +68,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
     function it_updates_a_family(
         $attrRequiFactory,
         $channelRepository,
+        $attributeRequirementRepo,
+        $translatableUpdater,
         FamilyTranslation $translation,
         FamilyInterface $family,
         AttributeRepositoryInterface $attributeRepository,
@@ -107,61 +113,63 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+
         $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuPrintRqrmt->getChannelCode()->willReturn('print');
 
-        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
-        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
-        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
 
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $nameAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $descAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $priceAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
-
-        $channelRepository->getChannelCodes()->willReturn(['mobile', 'print']);
         $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
         $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
 
-        $attrRequiFactory->createAttributeRequirement($nameAttribute, $mobileChannel, true)
-            ->willReturn($nameMobileRqrmt);
+        $mobileChannel->getId()->willReturn(1);
+        $printChannel->getId()->willReturn(2);
+
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => 2,
+            'channel' => 1,
+            'family' => 42
+        ])->willReturn($nameMobileRqrmt);
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => 2,
+            'channel' => 2,
+            'family' => 42
+        ])->willReturn(null);
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => 3,
+            'channel' => 2,
+            'family' => 42
+        ])->willReturn($descPrintRqrmt);
+
         $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)->willReturn($namePrintRqrmt);
-        $attrRequiFactory->createAttributeRequirement($descAttribute, $printChannel, true)->willReturn($descPrintRqrmt);
 
-        $nameMobileRqrmt->getAttribute()->willReturn($nameAttribute);
-        $namePrintRqrmt->getAttribute()->willReturn($nameAttribute);
-        $descPrintRqrmt->getAttribute()->willReturn($descAttribute);
+        $family->addAttributeRequirement($nameMobileRqrmt)->shouldBeCalled();
+        $family->addAttributeRequirement($descPrintRqrmt)->shouldBeCalled();
+        $family->addAttributeRequirement($namePrintRqrmt)->shouldBeCalled();
 
-        $family
-            ->setAttributeRequirements(
-                [
-                    $skuMobileRqrmt,
-                    $skuPrintRqrmt,
-                    $nameMobileRqrmt,
-                    $namePrintRqrmt,
-                    $descPrintRqrmt,
-                ]
-            )
-            ->shouldBeCalled();
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+
+        $nameAttribute->getType()->willReturn(AttributeTypes::TEXT);
+        $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
+        $priceAttribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
 
         $family->setCode('mycode')->shouldBeCalled();
-        $nameMobileRqrmt->setRequired(true)->shouldBeCalled();
-        $namePrintRqrmt->setRequired(true)->shouldBeCalled();
-        $descPrintRqrmt->setRequired(true)->shouldBeCalled();
 
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($nameAttribute)->shouldBeCalled();
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($skuAttribute)->shouldBeCalled();
 
-        $family->setLocale('en_US')->shouldBeCalled();
-        $family->setLocale('fr_FR')->shouldBeCalled();
-        $family->getTranslation()->willReturn($translation);
 
-        $translation->setLabel('label en us');
-        $translation->setLabel('label fr fr');
+        $translatableUpdater->update($family, ['fr_FR' => 'Moniteurs', 'en_US' => 'PC Monitors'])->shouldBeCalled();
 
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($nameAttribute)->shouldBeCalled();
@@ -173,7 +181,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $this->update($family, $values, []);
     }
 
-    public function it_should_not_remove_identifier_requirements_when_no_requirements_are_provided(
+    function it_does_not_remove_identifier_requirements_when_no_requirements_are_provided(
         FamilyInterface $family
     ) {
         $values = [
@@ -186,51 +194,83 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $this->update($family, $values, []);
     }
 
-    public function it_should_not_remove_identifier_requirements_when_empty_requirements_are_provided(
+    function it_does_not_remove_requirements_when_channel_column_is_missing(
         $channelRepository,
+        ChannelInterface $mobileChannel,
         FamilyInterface $family,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $skuAttribute,
         AttributeRequirementInterface $skuMobileRqrmt,
-        AttributeRequirementInterface $skuPrintRqrmt,
-        ChannelInterface $mobileChannel,
-        ChannelInterface $printChannel
+        AttributeRequirementInterface $skuEcommerceRqrmt,
+        AttributeRequirementInterface $nameEcommerceRqrmt
     ) {
-        $values = [
-            'code'                   => 'mycode',
-            'attribute_requirements' => []
-        ];
-        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
-        $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
-        $skuPrintRqrmt->getChannelCode()->willReturn('print');
-        $skuAttribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
-
-        $channelRepository->getChannelCodes()->willReturn(['mobile', 'print']);
         $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
-        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
-        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+
+        $values = [
+            'attribute_requirements' => [
+                'mobile' => ['sku']
+            ],
+            'code'                   => 'mycode'
+        ];
+        $family->getAttributeRequirements()->willReturn([
+            'sku_ecommerce'  => $skuEcommerceRqrmt,
+            'name_ecommerce' => $nameEcommerceRqrmt,
+            'sku_mobile'     => $skuMobileRqrmt
+        ]);
 
         $family->setCode('mycode')->shouldBeCalled();
-        $family->setAttributeRequirements([$skuMobileRqrmt, $skuPrintRqrmt])->shouldBeCalled();
+        $skuEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
+        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+        $nameEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
+
+        $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
+
+        $skuAttribute->getCode()->willReturn('sku');
+
+        $family->removeAttributeRequirement($nameEcommerceRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuEcommerceRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+
+        $family->addAttributeRequirement($nameEcommerceRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuEcommerceRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
 
         $this->update($family, $values, []);
     }
 
-    public function it_should_not_remove_identifier_requirements_when_other_requirements_are_provided(
+    function it_does_not_remove_identifier_requirements_when_empty_requirements_are_provided(
+        FamilyInterface $family,
+        AttributeRequirementInterface $skuMobileRqrmt,
+        AttributeRequirementInterface $skuPrintRqrmt
+    ) {
+        $values = [
+            'attribute_requirements' => []
+        ];
+        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
+
+        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+        $skuPrintRqrmt->getChannelCode()->willReturn('print');
+
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+
+        $this->update($family, $values, []);
+    }
+
+    function it_does_not_remove_identifier_requirements_when_other_requirements_are_provided(
         $attrRequiFactory,
         $channelRepository,
+        $attributeRepository,
+        $attributeRequirementRepo,
         FamilyInterface $family,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
-        AttributeInterface $descAttribute,
+        AttributeInterface $descriptionAttribute,
         AttributeRequirementInterface $skuMobileRqrmt,
         AttributeRequirementInterface $skuPrintRqrmt,
         AttributeRequirementInterface $namePrintRqrmt,
         AttributeRequirementInterface $descPrintRqrmt,
-        ChannelInterface $mobileChannel,
         ChannelInterface $printChannel
     ) {
         $values = [
@@ -239,41 +279,58 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'print' => ['name', 'description']
             ]
         ];
-        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
-        $family->getId()->willReturn(42);
-        $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
-        $skuPrintRqrmt->getChannelCode()->willReturn('print');
-        $skuAttribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
-
-        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
-        $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)
-            ->willReturn($namePrintRqrmt);
-        $attrRequiFactory->createAttributeRequirement($descAttribute, $printChannel, true)
-            ->willReturn($descPrintRqrmt);
-        $namePrintRqrmt->getAttribute()->willReturn($nameAttribute);
-        $descPrintRqrmt->getAttribute()->willReturn($descAttribute);
-
-        $channelRepository->getChannelCodes()->willReturn(['mobile', 'print']);
-        $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
-        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
-        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
 
         $family->setCode('mycode')->shouldBeCalled();
-        $family->setAttributeRequirements(
-            [$skuMobileRqrmt, $skuPrintRqrmt, $namePrintRqrmt, $descPrintRqrmt]
-        )
-        ->shouldBeCalled();
-        $namePrintRqrmt->setRequired(true)->shouldBeCalled();
-        $descPrintRqrmt->setRequired(true)->shouldBeCalled();
+        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
+
+        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+
+        $skuPrintRqrmt->getChannelCode()->willReturn('print');
+        $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+
+        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
+
+        $printChannel->getId()->willReturn('1');
+        $nameAttribute->getId()->willReturn('1');
+        $descriptionAttribute->getId()->willReturn('2');
+        $nameAttribute->getType()->willReturn('text');
+        $descriptionAttribute->getType()->willReturn('text');
+        $family->getId()->willReturn('1');
+
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => '1',
+            'channel' => '1',
+            'family' => '1'
+        ])->willReturn(null);
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => '2',
+            'channel' => '1',
+            'family' => '1'
+        ])->willReturn(null);
+
+        $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)->willReturn($namePrintRqrmt);
+        $attrRequiFactory->createAttributeRequirement(
+            $descriptionAttribute,
+            $printChannel,
+            true
+        )->willReturn($descPrintRqrmt);
+
+        $family->addAttributeRequirement($namePrintRqrmt)->shouldBeCalled();
+        $family->addAttributeRequirement($descPrintRqrmt)->shouldBeCalled();
 
         $this->update($family, $values, []);
     }
 
-    public function it_throws_an_exception_if_attribute_does_not_exist(
+    function it_throws_an_exception_if_attribute_does_not_exist(
         $attributeRepository,
         FamilyInterface $family,
         AttributeInterface $priceAttribute
@@ -303,8 +360,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attributes',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -338,8 +394,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -347,8 +402,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_attribute_as_label_does_not_exist(
         $attributeRepository,
-        FamilyInterface $family,
-        AttributeInterface $priceAttribute
+        FamilyInterface $family
     ) {
         $data = [
             'attribute_as_label'     => 'unknown',
@@ -368,11 +422,10 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'attributes',
+                'attribute_as_label',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'unknown'
             )
         )->during('update', [$family, $data]);
@@ -387,8 +440,9 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $data = [
             'code'                   => 'mycode',
             'attribute_requirements' => [
-                'mobile' => ['sku', 'name'],
-                'print'  => ['sku', 'name', 'description'],
+                'ecommerce' => ['sku'],
+                'mobile'    => ['sku', 'name'],
+                'print'     => ['sku', 'name', 'description'],
             ]
         ];
         $family->getAttributeRequirements()->willReturn([]);
@@ -400,24 +454,23 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
         $channelRepository->findOneByIdentifier('print')->willReturn(null);
         $channelRepository->findOneByIdentifier('mobile')->willReturn(null);
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn(null);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
                 'attribute_requirements',
                 'code',
                 'The channel does not exist',
-                'updater',
-                'family',
-                'mobile'
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
+                'ecommerce'
             )
         )->during('update', [$family, $data]);
     }
 
-    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(FamilyInterface $family) {
-        $values = [
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(FamilyInterface $family)
+    {
+        $data = [
             'unknown_field' => 'field',
-            'code'          => 'mycode',
-            'parent'        => 'master',
         ];
 
         $this->shouldThrow(
@@ -425,6 +478,168 @@ class FamilyUpdaterSpec extends ObjectBehavior
                     'unknown_field',
                     new NoSuchPropertyException()
                 )
-        )->during('update', [$family, $values, []]);
+        )->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_code_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'code' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected(
+                    'code',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    []
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_attribute_as_label_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_as_label' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected(
+                    'attribute_as_label',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    []
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_attributes_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'attributes' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected(
+                    'attributes',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'foo'
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_attributes_array_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'attributes' => ['foo', []],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attributes',
+                    'one of the attributes is not a scalar',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['foo', []]
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'labels' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected(
+                    'labels',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'foo'
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_labels_array_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'labels' => [
+                'en_US' => 'us_Label',
+                'fr_FR' => [],
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'labels',
+                    'one of the labels is not a scalar',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['en_US' => 'us_Label', 'fr_FR' => []]
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_attribute_requirements_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_requirements' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('attribute_requirements', 'update', 'family', 'foo')
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_attribute_requirements_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_requirements' => [
+                'ecommerce' => ['sku'],
+                'tablet'    => 'foo',
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attribute_requirements',
+                    'the channel "tablet" is not an array',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['ecommerce' => ['sku'], 'tablet' => 'foo']
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_an_attribute_in_attribute_requirements_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_requirements' => [
+                'ecommerce' => ['sku'],
+                'tablet'    => ['foo', []],
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attribute_requirements',
+                    'one of the attributes in the channel "tablet" is not a scalar',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['ecommerce' => ['sku'], 'tablet' => ['foo', []]]
+                )
+            )
+            ->during('update', [$family, $data, []]);
     }
 }

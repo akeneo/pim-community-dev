@@ -5,17 +5,8 @@ pim_import_export:
   connector: Соединитель
   status:
     - Готов
-  batch_status:
-    1: ЗАВЕРШЕНО
-    2: НАЧИНАЕТСЯ
-    3: НАЧАТО
-    4: ОСТАНАВЛИВАЕТСЯ
-    5: ОСТАНОВЛЕНО
-    6: НЕ УДАЛОСЬ
-    7: ОТМЕНЕНО
-    8: НЕИЗВЕСТНО
   download_archive:
-    archive: Скачать созданный архив|Скачать созданные архивы
+    archive: Скачать созданный архив|Скачать созданные архивы|Скачать созданные архивы
     output: Скачать созданный файл|скачать созданные файлы
     input: Скачать прочитанный файл|Скачать прочитанные файлы
     invalid_xlsx: Скачать недопустимые значения
@@ -47,18 +38,10 @@ pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
   title: Профиль экспорта
-  overview: Обзор профиля экспорта
-  create: Создать профиль экспорта
   edit: Редактировать профиль экспорта
-export report:
-  overview: Отчеты экспорта
 import profile:
   title: Профиль импорта
-  overview: Обзор профилей импорта
-  create: Создать профиль импорта
   edit: Редактировать профиль импорта
-import report:
-  overview: Отчеты импорта
 pim_importexport:
   acl:
     export_profile:
@@ -116,12 +99,6 @@ flash:
     removed: Импорт был успешно удален
     updated: Импорт был успешно обновлен
     running: Выполняется импорт
-pim_menu:
-  item:
-    export_history: История экспорта
-    export_profile: Профили экспорта
-    import_history: История импорта
-    import_profile: Профили импорта
 General properties: Общие свойства
 History: Журнал
 pane.accordion:
@@ -151,17 +128,9 @@ job_execution.summary:
     title: 'Кодировка файла:'
     skipped: пропущено, расширение из белого списка
 Step: Этап
-Status: Состояние
+Status: Статус
 Summary: Сводка
 Start: Начало
 End: Конец
 set_attribute_requirements: Установить требования к атрибутам
-COMPLETED: ЗАВЕРШЕНО
-STARTING: НАЧИНАЕТСЯ
-STARTED: НАЧАТО
-STOPPING: ОСТАНАВЛИВАЕТСЯ
-STOPPED: ОСТАНОВЛЕНО
-FAILED: НЕ УДАЛОСЬ
-ABANDONED: ОТМЕНЕНО
-UNKNOWN: НЕИЗВЕСТНО
 warning.label: Предупреждение

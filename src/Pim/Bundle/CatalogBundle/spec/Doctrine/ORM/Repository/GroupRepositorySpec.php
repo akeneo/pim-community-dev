@@ -43,7 +43,7 @@ class GroupRepositorySpec extends ObjectBehavior
 
         $queryBuilder1->select('g')->willReturn($queryBuilder1);
         $queryBuilder1->from(Argument::any(), 'g')->willReturn($queryBuilder1);
-        $queryBuilder1->leftJoin('g.attributes', 'a')->willReturn($queryBuilder1);
+        $queryBuilder1->leftJoin('g.axisAttributes', 'a')->willReturn($queryBuilder1);
         $queryBuilder1->leftJoin('g.type', 't')->willReturn($queryBuilder1);
         $queryBuilder1->where('g.id IN (:ids)')->willReturn($queryBuilder1);
         $queryBuilder1->andWhere('t.variant = :variant')->willReturn($queryBuilder1);
@@ -72,7 +72,7 @@ class GroupRepositorySpec extends ObjectBehavior
 
         $queryBuilder1->select('g')->willReturn($queryBuilder1);
         $queryBuilder1->from(Argument::any(), 'g')->willReturn($queryBuilder1);
-        $queryBuilder1->leftJoin('g.attributes', 'a')->willReturn($queryBuilder1);
+        $queryBuilder1->leftJoin('g.axisAttributes', 'a')->willReturn($queryBuilder1);
         $queryBuilder1->leftJoin('g.type', 't')->willReturn($queryBuilder1);
         $queryBuilder1->where('g.id IN (:ids)')->willReturn($queryBuilder1);
         $queryBuilder1->andWhere('t.variant = :variant')->willReturn($queryBuilder1);

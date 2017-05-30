@@ -2,9 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -51,19 +52,18 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi select');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $attributeOptions = [];
         foreach ($data as $optionCode) {
             $option = $this->getOption($attribute, $optionCode);
             if (null === $option) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'code',
+                    'option code',
                     'The option does not exist',
-                    'adder',
-                    'multi select',
+                    static::class,
                     $optionCode
                 );
             }
@@ -79,26 +79,26 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'adder',
-                'multi select',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
-                    'adder',
-                    'multi select',
-                    gettype($value)
+                    sprintf('one of the option codes is not a string, "%s" given', gettype($value)),
+                    static::class,
+                    $data
                 );
             }
         }
@@ -122,7 +122,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         foreach ($attributeOptions as $attributeOption) {

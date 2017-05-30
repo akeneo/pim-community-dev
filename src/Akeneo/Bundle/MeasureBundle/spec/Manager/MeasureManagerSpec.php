@@ -33,6 +33,12 @@ class MeasureManagerSpec extends ObjectBehavior
                 new \InvalidArgumentException('Undefined measure family "foo"')
             )
             ->during('getUnitSymbolsForFamily', ['foo']);
+
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException('Undefined measure family "foo"')
+            )
+            ->during('getUnitCodesForFamily', ['foo']);
     }
 
     public function it_returns_unit_symbols_list_from_a_family()
@@ -48,10 +54,39 @@ class MeasureManagerSpec extends ObjectBehavior
             );
     }
 
+    public function it_indicates_wether_a_unit_symbol_exists_for_a_family()
+    {
+        $this
+            ->unitSymbolExistsInFamily('mg', WeightFamilyInterface::FAMILY)
+            ->shouldReturn(true);
+
+        $this
+            ->unitSymbolExistsInFamily('foo', WeightFamilyInterface::FAMILY)
+            ->shouldReturn(false);
+    }
+
     public function it_returns_standard_unit_for_a_family()
     {
         $this
             ->getStandardUnitForFamily(WeightFamilyInterface::FAMILY)
             ->shouldReturn(WeightFamilyInterface::GRAM);
+    }
+
+    public function it_returns_unit_codes_for_a_family()
+    {
+        $this
+            ->getUnitCodesForFamily(WeightFamilyInterface::FAMILY)
+            ->shouldReturn(['MILLIGRAM', 'GRAM', 'KILOGRAM']);
+    }
+
+    public function it_indicates_wether_a_unit_code_exists_for_a_family()
+    {
+        $this
+            ->unitCodeExistsInFamily(WeightFamilyInterface::GRAM, WeightFamilyInterface::FAMILY)
+            ->shouldReturn(true);
+
+        $this
+            ->unitCodeExistsInFamily('FOO', WeightFamilyInterface::FAMILY)
+            ->shouldReturn(false);
     }
 }

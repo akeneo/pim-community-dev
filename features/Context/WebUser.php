@@ -18,6 +18,7 @@ use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
+use Context\Traits\ClosestTrait;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -32,7 +33,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class WebUser extends RawMinkContext
 {
     use SpinCapableTrait;
-
+    use ClosestTrait;
     /* -------------------- Page-related methods -------------------- */
 
 
@@ -54,7 +55,13 @@ class WebUser extends RawMinkContext
     public function iCreateANew($entity)
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
-        $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
+
+        $this->spin(function () use ($entity) {
+            $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
+
+            return true;
+        }, sprintf('Cannot create a new %s', $entity));
+
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
     }
@@ -81,7 +88,7 @@ class WebUser extends RawMinkContext
      */
     public function iChooseTheAttributeType($type)
     {
-        $this->getCurrentPage()->clickLink($type);
+        $this->getCurrentPage()->selectAttributeType($type);
         $this->wait();
     }
 
@@ -95,12 +102,12 @@ class WebUser extends RawMinkContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("require(['oro/navigation'], function (Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+                sprintf("require(['backbone'], function (Backbone) { Backbone.history.navigate('#%s'); } );", $url)
             );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
-            $currentUrl = explode('#url=', $currentUrl);
+            $currentUrl = explode('#', $currentUrl);
             $currentUrl = end($currentUrl);
             $currentUrl = explode('|g/', $currentUrl);
             $currentUrl = reset($currentUrl);
@@ -204,7 +211,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
-        $actualVersions = $this->spin(function () use ($expectedCount) {
+        $this->spin(function () use ($expectedCount) {
             $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
 
             return ((int) $expectedCount) === count($actualVersions);
@@ -236,40 +243,26 @@ class WebUser extends RawMinkContext
 
     /**
      * @Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+     *
+     * @param $expectedErrorsCount
+     * @param $tabName
+     *
+     * @throws TimeoutException
      */
-    public function thereShouldBeErrorsInTheTab($number, $name)
+    public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
-        $tab = $this->getCurrentPage()->getTab($name);
-        if (!$tab) {
-            throw $this->createExpectationException(
-                sprintf('Tab "%s" not found', $name)
-            );
-        }
+        $tab = $this->spin(function () use ($tabName) {
+            return $this->getCurrentPage()->getTab($tabName);
+        }, sprintf('Tab "%s" not found', $tabName));
 
-        $badge = $tab->find('css', '.invalid-badge');
-        if (!$badge && 0 < (int) $number) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to find "%d" errors in the tab "%s", no errors found',
-                    $number,
-                    $name
-                )
-            );
-        } elseif (!$badge && 0 === (int) $number) {
-            return;
-        }
-
-        $errors = $badge->getText();
-        if ($errors != $number) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to find "%d" errors in the tab "%s", found %s instead',
-                    $number,
-                    $name,
-                    $errors
-                )
-            );
-        }
+        $this->spin(function () use ($tab, $expectedErrorsCount) {
+            return $this->getTabErrorsCount($tab) === intval($expectedErrorsCount);
+        }, sprintf(
+            'Expecting to see %d errors on tab "%s", found %s',
+            $expectedErrorsCount,
+            $tabName,
+            $this->getTabErrorsCount($tab)
+        ));
     }
 
     /* -------------------- Other methods -------------------- */
@@ -305,7 +298,6 @@ class WebUser extends RawMinkContext
     public function iSwitchTheLocaleTo($locale)
     {
         $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
-        $this->wait();
     }
 
     /**
@@ -394,6 +386,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I should not see confirm dialog$/
+     */
+    public function iShouldNotSeeConfirmDialog()
+    {
+        return $this->spin(function () {
+            return null === $this->getCurrentPage()->getElement('Dialog')->find('css', '.ok');
+        }, 'Confirm dialog button is still visible');
+    }
+
+    /**
      * @Given /^I save the (.*)$/
      */
     public function iSave()
@@ -430,8 +432,12 @@ class WebUser extends RawMinkContext
      */
     public function theAttributeShouldBeInPosition($attribute, $position)
     {
-        $actual = $this->getCurrentPage()->getAttributePosition($attribute);
-        assertEquals($position, $actual);
+        $this->spin(function () use ($attribute, $position) {
+            $actual = $this->getCurrentPage()->getAttributePosition($attribute);
+            assertEquals($position, $actual);
+
+            return true;
+        }, sprintf('Cannot assert that %s is at position %s', $attribute, $position));
     }
 
     /**
@@ -651,22 +657,21 @@ class WebUser extends RawMinkContext
         $this->spin(function () use ($field, $label, $expected) {
             if ($field->hasClass('select2-focusser')) {
                 for ($i = 0; $i < 2; ++$i) {
-                    if (!$field->getParent()) {
+                    $parent = $field->getParent();
+                    if (!$parent) {
                         break;
                     }
-                    $field = $field->getParent();
+                    $field = $parent;
                 }
-                if ($select = $field->find('css', 'select')) {
-                    $actual = $select->find('css', 'option[selected]')->getHtml();
-                } else {
-                    $actual = trim($field->find('css', '.select2-chosen')->getHtml());
-                }
+
+                $actual = trim($field->find('css', '.select2-chosen')->getHtml());
             } elseif ($field->hasClass('select2-input')) {
                 for ($i = 0; $i < 4; ++$i) {
-                    if (!$field->getParent()) {
+                    $parent = $field->getParent();
+                    if (!$parent) {
                         break;
                     }
-                    $field = $field->getParent();
+                    $field = $parent;
                 }
                 if ($select = $field->find('css', 'select')) {
                     $options = $field->findAll('css', 'option[selected]');
@@ -815,21 +820,60 @@ class WebUser extends RawMinkContext
      */
     public function iChangeTheTo($field, $value = null, $language = null)
     {
-        if (null !== $language) {
-            try {
-                $field = $this->spin(function () use ($field, $language) {
-                    return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
-                }, sprintf('Cannot find "%s" field', $field));
-            } catch (\BadMethodCallException $e) {
-                // Use default $field if current page does not provide a getFieldLocator method
-            }
-        }
-
         $value = $value !== null ? $value : $this->getInvalidValueFor(
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
-        $this->getCurrentPage()->fillField($field, $value);
+        $this->spin(function () use ($field, $value, $language) {
+            if (null !== $language) {
+                try {
+                    $field = $this->spin(function () use ($field, $language) {
+                        return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
+                    }, sprintf('Cannot find "%s" field', $field));
+                } catch (\BadMethodCallException $e) {
+                    // Use default $field if current page does not provide a getFieldLocator method
+                }
+            }
+
+            $this->getCurrentPage()->fillField($field, $value);
+
+            return true;
+        }, sprintf('Cannot fill the field "%s"', $field));
+    }
+
+    /**
+     * @Then /^I should see select choices of the "(.*)" in the following order:$/
+     *
+     * @param string $field
+     * @param array  $items
+     */
+    public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
+    {
+        $searched = array_values(explode(',', implode(',', $items->getLines())));
+
+        $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+
+        $valuesRoot = $this->getClosest($label, 'select2');
+
+        $foundChoices = $valuesRoot
+            ->findAll('css', '.field-input select option');
+
+        $fieldsArray = [];
+        foreach ($foundChoices as $choice) {
+            $fieldsArray[] = trim($choice->getHtml());
+        }
+
+        $fieldsArray = array_values(array_filter($fieldsArray));
+
+        if ($searched !== $fieldsArray) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Order of choices for field "%s" is not as expected, got: %s',
+                    $fieldName,
+                    implode(', ', $fieldsArray)
+                )
+            );
+        }
     }
 
     /**
@@ -845,42 +889,96 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $not
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
+    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
-        foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
+        $expecting = !$not;
 
-            if (null === $element) {
+        foreach ($this->listToArray($attributes) as $attribute) {
+            $result = $this->getCurrentPage()
+                ->getAttributeAddSelect()
+                ->hasAvailableOptionGroupPair($attribute, $group);
+
+            if ($expecting !== $result) {
                 throw $this->createExpectationException(
-                    sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group)
+                    sprintf(
+                        'Expecting to %ssee attribute "%s" under group "%s"',
+                        true === (bool) $not ? $not : '',
+                        $attribute,
+                        $group
+                    )
                 );
             }
         }
     }
 
     /**
-     * @param string $attributes
-     * @param string $group
+     * @param string $status 'enabled'|'disabled'
      *
-     * @Then /^I should not see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^The available attributes button should be (enabled|disabled)$/
+     */
+    public function theAvailableAttributeButtonShouldBeEnabled($status)
+    {
+        $expectedStatus = ('enabled' === $status);
+
+        $this->spin(function () use ($expectedStatus) {
+            return $expectedStatus === $this->getCurrentPage()->isAvailableAttributeEnabled();
+        }, sprintf('The available attribute button should be %s', $status));
+    }
+
+    /**
+     * @param string $groups
+     *
+     * @Then /^I should see available attribute group "([^"]*)"$/
      *
      * @throws ExpectationException
      */
-    public function iShouldNotSeeAvailableAttributesInGroup($attributes, $group)
+    public function iShouldSeeAvailableAttributeGroup($groups)
     {
-        foreach ($this->listToArray($attributes) as $attribute) {
+        foreach ($this->listToArray($groups) as $group) {
+            $exists = $this->getCurrentPage()->findAvailableAttributeGroup($group);
+
+            if (true !== $exists) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see attribute group "%s"', $group)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $groups
+     *
+     * @Then /^I add attributes by group "([^"]*)"$/
+     */
+    public function iAddAttributesByGroup($groups)
+    {
+        $this->getCurrentPage()
+            ->addAttributesByGroup($this->listToArray($groups));
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Then /^I should see available group "([^"]*)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeAvailableGroup($group)
+    {
+        foreach ($this->listToArray($group) as $attribute) {
             $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
 
-            if (null !== $element) {
+            if (null === $element) {
                 throw $this->createExpectationException(
-                    sprintf('Expecting not to see attribute "%s" under group "%s"', $attribute, $group)
+                    sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group)
                 );
             }
         }
@@ -932,15 +1030,13 @@ class WebUser extends RawMinkContext
         $attributes = $this->listToArray($attributes);
 
         foreach ($attributes as $attribute) {
-            if (null === $this->getCurrentPage()->getAttribute($attribute, $group)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see attribute %s under group %s, but was not present.',
-                        $attribute,
-                        $group
-                    )
-                );
-            }
+            $this->spin(function () use ($attribute, $group) {
+                return $this->getCurrentPage()->getAttribute($attribute, $group);
+            }, sprintf(
+                'Expecting to see attribute %s under group %s, but was not present.',
+                $attribute,
+                $group
+            ));
         }
     }
 
@@ -1022,7 +1118,6 @@ class WebUser extends RawMinkContext
         }
 
         $removeLink->click();
-        $this->wait();
     }
 
     /**
@@ -1068,6 +1163,25 @@ class WebUser extends RawMinkContext
         $addButton->click();
 
         $this->wait();
+    }
+
+    /**
+     * @param string $field
+     *
+     * @Then /^I should not see the add option link for the "([^"]*)" attribute$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldNotSeeTheAddOptionLinkFor($field)
+    {
+        if (null !== $this->getCurrentPage()->getAddOptionLinkFor($field)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Add option link should not be displayed for attribute "%s".',
+                    $field
+                )
+            );
+        }
     }
 
     /**
@@ -1150,7 +1264,11 @@ class WebUser extends RawMinkContext
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value, $element);
+            $this->spin(function () use ($field, $value, $element) {
+                $this->getCurrentPage()->fillField($field, $value, $element);
+
+                return true;
+            }, sprintf('Cannot fill the field %s', $field));
         }
     }
 
@@ -1276,11 +1394,15 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $code = $data['Code'];
-            unset($data['Code']);
+            $this->spin(function () use ($data) {
+                $code = $data['Code'];
+                unset($data['Code']);
 
-            $this->getCurrentPage()->addOption($code, $data);
-            $this->wait();
+                $this->getCurrentPage()->addOption($code, $data);
+
+                $this->wait();
+                return true;
+            }, sprintf('Unable to create the attribute option %s', $data['Code']));
         }
     }
 
@@ -1315,19 +1437,7 @@ class WebUser extends RawMinkContext
      * @param string $oldOptionName
      * @param string $newOptionName
      *
-     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
-     */
-    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
-    {
-        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
-        $this->wait();
-    }
-
-    /**
-     * @param string $oldOptionName
-     * @param string $newOptionName
-     *
-     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     * @Given /^I edit the attribute option "([^"]*)" to turn it to "([^"]*)" and cancel$/
      */
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
@@ -1339,21 +1449,29 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $button
+     * $modalWait is a temporary solution waiting for Attributes PEFization
+     * TODO Remove the $modalWait parameter after the merge of TIP-732
      *
-     * @Given /^I press the "([^"]*)" button$/
+     * @param string      $button
+     * @param string|null $modalWait
+     *
+     * @Given /^I press the "([^"]*)" button( and wait for modal)?$/
      */
-    public function iPressTheButton($button)
+    public function iPressTheButton($button, $modalWait = null)
     {
-        $this->spin(function () use ($button) {
+        $this->spin(function () use ($button, $modalWait) {
             $this->getCurrentPage()->pressButton($button, true);
+
+            if (null !== $modalWait) {
+                return null !== $this->getCurrentPage()->find('css', '.modal');
+            }
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));
     }
 
     /**
-     * @param string locator
+     * @param string $locator
      *
      * @When /^I hover over the element "([^"]*)"$/
      */
@@ -1428,6 +1546,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $button
+     *
+     * @Given /^I should not see the "([^"]*)" icon button$/
+     */
+    public function iShouldNotSeeTheIconButton($button)
+    {
+        $this->spin(function () use ($button) {
+            return null === $this->getCurrentPage()->getIconButton($button);
+        }, sprintf('Icon button "%s" should not be displayed', $button));
+    }
+
+    /**
      * @param string $buttonLabel
      *
      * @Given /^I press the "([^"]*)" button in the popin$/
@@ -1453,10 +1583,15 @@ class WebUser extends RawMinkContext
      */
     public function iPressOnTheDropdownButton($item, $button)
     {
-        $this
-            ->getCurrentPage()
-            ->getDropdownButtonItem($item, $button)
-            ->click();
+        $this->spin(function () use ($item, $button) {
+            $this
+                ->getCurrentPage()
+                ->getDropdownButtonItem($item, $button)
+                ->click();
+
+            return true;
+        }, sprintf('Cannot click on item %s ', $item));
+
         $this->wait();
     }
 
@@ -1465,11 +1600,14 @@ class WebUser extends RawMinkContext
      */
     public function iSaveAndBackToTheGrid()
     {
-        $this
-            ->getCurrentPage()
-            ->getSaveAndBackButton()
-            ->click();
-        $this->wait();
+        $this->spin(function () {
+            $this
+                ->getCurrentPage()
+                ->getSaveAndBackButton()
+                ->click();
+
+            return true;
+        }, 'Cannot click on the back to the grid button');
     }
 
     /**
@@ -1675,61 +1813,22 @@ class WebUser extends RawMinkContext
      * @param string $code
      *
      * @When /^I wait for the "([^"]*)" job to finish$/
+     *
+     * @throws \Exception
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
+        $jobExecution = $this->spin(function () use ($code) {
+            $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+            // Force to retrieve its job executions
+            $jobInstance->getJobExecutions()->setInitialized(false);
 
-        try {
-            $this->wait($condition);
-        } catch (BehaviorException $e) {
-            $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
-            $jobExecution = $jobInstance->getJobExecutions()->first();
-            if (false === $jobExecution) {
-                throw new \Exception('No job execution found');
-            }
+            $this->getFixturesContext()->refresh($jobInstance);
+            $jobExecution = $jobInstance->getJobExecutions()->last();
+            $this->getFixturesContext()->refresh($jobExecution);
 
-            $log = $jobExecution->getLogFile();
-            if (is_file($log)) {
-                $dir = getenv('WORKSPACE');
-                $id  = getenv('BUILD_ID');
-
-                if (false !== $dir && false !== $id) {
-                    $target = sprintf('%s/../builds/%s/batch_log/%s', $dir, $id, pathinfo($log, PATHINFO_BASENAME));
-
-                    $fs = new \Symfony\Component\Filesystem\Filesystem();
-                    $fs->copy($log, $target);
-
-                    $log = sprintf(
-                        'http://ci.akeneo.com/screenshots/%s/%s/batch_log/%s',
-                        getenv('JOB_NAME'),
-                        $id,
-                        pathinfo($log, PATHINFO_BASENAME)
-                    );
-                }
-
-                $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
-                $this->getMainContext()->addErrorMessage($message);
-            } else {
-                $this->getMainContext()->addErrorMessage(sprintf('Job "%s" failed, no log available', $code));
-            }
-
-            // Get and print the normalized jobexecution to ease debugging
-            $this->getSession()->executeScript(
-                sprintf(
-                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
-                    $jobInstance->getType() === 'import' ? 'collect' : 'spread',
-                    $jobInstance->getType(),
-                    $jobExecution->getId()
-                )
-            );
-            $this->wait();
-            $executionLog = $this->getSession()->evaluateScript("return window.executionLog;");
-            $this->getMainContext()->addErrorMessage(sprintf('Job execution: %s', print_r($executionLog, true)));
-
-            // Call the wait method again to trigger timeout failure
-            $this->wait($condition);
-        }
+            return $jobExecution && !$jobExecution->isRunning();
+        }, sprintf('The job execution of "%s" was too long', $code));
     }
 
     /**
@@ -1841,19 +1940,16 @@ class WebUser extends RawMinkContext
      */
     public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
     {
-        $channels    = $this->listToArray($channels);
         $expectation = $not === '';
-        foreach ($channels as $channel) {
-            if ($expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Attribute %s should be%s required in channel %s',
-                        $attribute,
-                        $not,
-                        $channel
-                    )
-                );
-            }
+        foreach ($this->listToArray($channels) as $channel) {
+            $this->spin(function () use ($attribute, $channel, $expectation) {
+                return $expectation === $this->getCurrentPage()->isAttributeRequired($attribute, $channel);
+            }, sprintf(
+                'Attribute %s should be%s required in channel %s',
+                $attribute,
+                $not,
+                $channel
+            ));
         }
     }
 
@@ -1982,18 +2078,28 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * TODO This step should be renamed to "I confirm the mass edit"
+     *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
+    {
+        $this->iMoveToTheConfirmPage();
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->confirm();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I move to the confirm page$/
+     */
+    public function iMoveToTheConfirmPage()
     {
         $this->scrollContainerTo(900);
         $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.next');
         }, 'Could not find next button');
         $this->getCurrentPage()->next();
-        $this->scrollContainerTo(900);
-        $this->getCurrentPage()->confirm();
-        $this->wait();
     }
 
     /**
@@ -2377,13 +2483,13 @@ class WebUser extends RawMinkContext
      */
     protected function waitForMassEditJobToFinish($code)
     {
-        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        // Force to retrieve its job executions
-        $jobInstance->getJobExecutions()->setInitialized(false);
-        $jobExecution = $jobInstance->getJobExecutions()->last();
-        if (false === $jobExecution) {
-            throw new \InvalidArgumentException(sprintf('No job execution found for job with code "%s"', $code));
-        }
+        $jobExecution = $this->spin(function () use ($code) {
+            $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+            // Force to retrieve its job executions
+            $jobInstance->getJobExecutions()->setInitialized(false);
+
+            return $jobInstance->getJobExecutions()->last();
+        }, sprintf('No job execution found for job with code "%s"', $code));
 
         $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
 
@@ -2409,30 +2515,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * Check the user API key
-     *
-     * @Then /^The API key should (not )?be (.+)$/
-     */
-    public function theApiKeyShouldBe($not, $value)
-    {
-        $this->spin(function () use ($not, $value) {
-            $apiKey = $this->getCurrentPage()->getApiKey();
-
-            if ($not) {
-                if ($apiKey === $value) {
-                    throw new SpinException('API key should not be ' . $apiKey);
-                }
-            } else {
-                if ($apiKey !== $value) {
-                    throw new SpinException('API key should be ' . $apiKey);
-                }
-            }
-
-            return true;
-        }, 'Problem occurred with API Key.');
-    }
-
-    /**
      * Check the number of items in a select2 autocomplete. This function spins when autocomplete is searching; it
      * returns 0 only if special dom item is found.
      *
@@ -2453,5 +2535,17 @@ class WebUser extends RawMinkContext
         } else {
             assertEquals((int) $expectedCount, count($items));
         }
+    }
+
+    /**
+     * @param NodeElement $tab
+     *
+     * @return integer
+     */
+    protected function getTabErrorsCount($tab)
+    {
+        $badge = $tab->find('css', '.invalid-badge');
+
+        return (null === $badge) ? 0 : intval($badge->getText());
     }
 }

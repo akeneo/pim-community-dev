@@ -42,7 +42,7 @@ class NumberAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'number');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }
@@ -60,7 +60,7 @@ class NumberAttributeSetter extends AbstractAttributeSetter
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
         $value->setData($data);
     }

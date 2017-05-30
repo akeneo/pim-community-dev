@@ -6,9 +6,9 @@ Feature: Update multi select fields
   Scenario: Successfully update a multi select field
     Given a "default" catalog configuration
     And the following attributes:
-      | code          | type        |
-      | body_color    | multiselect |
-      | sleeves_color | multiselect |
+      | code          | type                    | group |
+      | body_color    | pim_catalog_multiselect | other |
+      | sleeves_color | pim_catalog_multiselect | other |
     And the following "body_color" attribute options: Red, Yellow, Black and White
     And the following products:
       | sku             | body_color   |

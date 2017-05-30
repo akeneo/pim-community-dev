@@ -1,0 +1,24 @@
+parameters:
+    pim_api.security.voter.action_acl.class: Pim\Bundle\ApiBundle\Security\ActionAclVoter
+    pim_api.security.access_denied_handler.class: Pim\Bundle\ApiBundle\Security\AccessDeniedHandler
+    pim_api.security.primary_key_encrypter.class: Pim\Component\Api\Security\PrimaryKeyEncrypter
+    fos_oauth_server.server.class: Pim\Bundle\ApiBundle\Security\OAuth2
+
+services:
+    pim_api.security.acl.voter.overall_access:
+        class: '%pim_api.security.voter.action_acl.class%'
+        arguments:
+            - '@security.acl.voter.basic_permissions'
+            - 'pim_api_overall_access'
+        tags:
+            - { name: security.voter, priority: 200 }
+
+    pim_api.security.access_denied_handler:
+        class: '%pim_api.security.access_denied_handler.class%'
+
+    pim_api.security.primary_key_encrypter:
+        class: '%pim_api.security.primary_key_encrypter.class%'
+        arguments:
+            - 'AES-256-OFB'
+            - '%secret%'
+            - '%secret%'

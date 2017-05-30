@@ -21,7 +21,7 @@ class DateGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return AttributeTypes::DATE === $attribute->getAttributeType();
+        return AttributeTypes::DATE === $attribute->getType();
     }
 
     /**

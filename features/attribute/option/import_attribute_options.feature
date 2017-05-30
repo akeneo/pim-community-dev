@@ -1,3 +1,4 @@
+@javascript
 Feature: Import attribute options
   In order to define choices for a choice attribute
   As a product manager
@@ -13,12 +14,12 @@ Feature: Import attribute options
       | Attribute group | Other |
     And I save the attribute
 
-  @javascript
   Scenario: Successfully show default translation when blank text
     Given the following CSV file to import:
       """
       code;attribute;sort_order;label-en_US
       kiwi;fruit;0;
+      Converse;manufacturer;0;
       """
     And the following job "csv_footwear_option_import" configuration:
       | filePath | %file to import% |
@@ -35,3 +36,6 @@ Feature: Import attribute options
     When I add available attributes fruit
     And I change the "[fruit]" to "[kiwi]"
     Then I should see the text "[kiwi]"
+    When I add available attributes Manufacturer
+    And I change the "Manufacturer" to "[Converse]"
+    Then I should see the text "[Converse]"

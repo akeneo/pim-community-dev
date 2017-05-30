@@ -2,13 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Prophecy\Argument;
 
 class CompletenessFilterSpec extends ObjectBehavior
@@ -329,7 +328,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_integer()
     {
-        $this->shouldThrow(InvalidArgumentException::numericExpected('completeness', 'filter', 'completeness', gettype('123')))
+        $this->shouldThrow(InvalidPropertyTypeException::numericExpected('completeness', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter', '12z3'))
             ->during('addFieldFilter', ['completeness', '=', '12z3', 'en_US', 'mobile']);
     }
 
@@ -337,12 +336,11 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(
-                InvalidArgumentException::arrayKeyExpected(
+                InvalidPropertyTypeException::arrayKeyExpected(
                     'completeness',
                     'locales',
-                    'filter',
-                    'completeness',
-                    print_r([], true)
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
+                    []
                 )
             )
             ->during(
@@ -359,11 +357,10 @@ class CompletenessFilterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidArgumentException::arrayOfArraysExpected(
+                InvalidPropertyTypeException::arrayOfArraysExpected(
                     'completeness',
-                    'filter',
-                    'completeness',
-                    print_r(['locales' => 'fr_FR'], true)
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
+                    ['locales' => 'fr_FR']
                 )
             )
             ->during(

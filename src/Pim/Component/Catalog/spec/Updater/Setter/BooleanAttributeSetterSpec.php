@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -28,10 +27,10 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $booleanAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $booleanAttribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $booleanAttribute->getType()->willReturn('pim_catalog_boolean');
         $this->supportsAttribute($booleanAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
@@ -73,7 +72,7 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
         $productValue->setData($data)->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);

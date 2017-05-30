@@ -1,0 +1,17 @@
+<div class="tabsection-title">
+    <%- sectionTitle %>
+</div>
+<div class="tabsection-content">
+    <div class="AknFormContainer AknFormContainer--withPadding">
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="control-label required" for="<%- inputField %>">
+                    <%- codeLabel %> <em><%- formRequired %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <input id="<%- inputField %>" class="AknTextField" type="text" <%- false === hasId ? '' : 'readonly disabled' %> required value="<%- model.code %>">
+            </div>
+        </div>
+    </div>
+</div>

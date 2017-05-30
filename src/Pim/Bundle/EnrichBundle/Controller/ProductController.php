@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -18,7 +17,6 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -158,7 +156,7 @@ class ProductController
      * @param Request $request
      * @param int     $id
      *
-     * @return Response|RedirectResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
@@ -172,32 +170,9 @@ class ProductController
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                ['successful' => true, 'message' => $this->translator->trans($successMessage)]
-            );
-        } else {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-    }
-
-    /**
-     * Switch case to redirect after saving a product from the edit form
-     *
-     * @param array $params
-     *
-     * @return Response
-     */
-    protected function redirectAfterEdit($params)
-    {
-        switch ($request->get('action')) {
-            case self::CREATE:
-                $route = 'pim_enrich_product_edit';
-                $params['create_popin'] = true;
-                break;
-        }
-
-        return $this->redirectToRoute($route, $params);
+        return new JsonResponse(
+            ['successful' => true, 'message' => $this->translator->trans($successMessage)]
+        );
     }
 
     /**
@@ -260,7 +235,7 @@ class ProductController
             $parameters['dataLocale'] = $this->userContext->getCurrentLocaleCode();
         }
 
-        return new RedirectResponse($this->router->generate($route, $parameters));
+        return new JsonResponse(['route' => $route, 'params' => $parameters]);
     }
 
     /**

@@ -27,7 +27,7 @@ class OptionsTransformer
         $attributeCode = $attribute['code'];
         $normalizedData = $result['normalizedData'];
         $fromNormData = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
-        if (in_array($attribute['attributeType'], $fromNormData)) {
+        if (in_array($attribute['type'], $fromNormData)) {
             $fieldCode = ProductQueryUtility::getNormalizedValueField(
                 $attributeCode,
                 $attribute['localizable'],

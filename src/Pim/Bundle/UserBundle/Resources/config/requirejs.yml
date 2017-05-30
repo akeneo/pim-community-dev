@@ -12,6 +12,4 @@ config:
                     options:
                         urls:
                             list: pim_user_user_group_rest_index
-
-    paths:
-        oro/init-user: pimuser/js/init-user
+                            search: pim_user_user_group_rest_index

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\DataGridBundle\DataTransformer\DefaultViewDataTransformer;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -78,9 +77,7 @@ class DefaultViewSubscriber implements EventSubscriberInterface
                     'class'         => 'PimDataGridBundle:DatagridView',
                     'choice_label'  => 'label',
                     'label'         => 'user.default_' . str_replace('-', '_', $alias) . '_view.label',
-                    'query_builder' => function (
-                        DatagridViewRepositoryInterface $gridViewRepository
-                    ) use ($user, $alias) {
+                    'query_builder' => function (DatagridViewRepositoryInterface $gridViewRepository) use ($alias) {
                         return $gridViewRepository->findDatagridViewByAlias($alias);
                     },
                     'required'      => false,

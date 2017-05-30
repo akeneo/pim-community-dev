@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Prophecy\Argument;
 
 class ProductLocalizedSpec extends ObjectBehavior
 {

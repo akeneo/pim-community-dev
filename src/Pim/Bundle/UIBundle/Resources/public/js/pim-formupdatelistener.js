@@ -1,14 +1,15 @@
 /* global console */
 define(
-    ['jquery', 'backbone', 'pim/dialog', 'oro/navigation'],
-    function ($, Backbone, Dialog, Navigation) {
+    ['jquery', 'backbone', 'pim/dialog', 'pim/router'],
+    function ($, Backbone, Dialog, router) {
         'use strict';
 
         return function ($form) {
             this.updated = false;
             var message = $form.attr('data-updated-message');
             if (!message) {
-                console.error('FormUpdateListener: message not provided.');
+                console.warn('FormUpdateListener: message not provided.');
+
                 return;
             }
             var title = $form.attr('data-updated-title');
@@ -44,13 +45,14 @@ define(
                 e.preventDefault();
                 var url      = $(this).attr('href');
                 var doAction = function () {
-                    Navigation.getInstance().setLocation(url);
+                    router.redirect(url);
                 };
                 if (!self.updated) {
                     doAction();
                 } else {
                     Dialog.confirm(message, title, doAction);
                 }
+
                 return false;
             };
 

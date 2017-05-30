@@ -64,18 +64,18 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-xlsx-base-import-show-properties-file-upload:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-base-import-show-properties
-        position: 160
+        position: 130
         targetZone: global-settings
         config:
             fieldCode: configuration.uploadAllowed
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.uploadAllowed.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
     pim-job-instance-xlsx-base-import-show-label:
         module: pim/job/common/edit/label
@@ -104,6 +104,7 @@ extensions:
         targetZone: buttons
         position: 100
         config:
+            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
             identifier:

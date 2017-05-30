@@ -41,7 +41,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
     ) {
         $transNormalizer->normalize(Argument::cetera())->willReturn([]);
 
-        $attribute->getAttributeType()->willReturn('Yes/No');
+        $attribute->getType()->willReturn('Yes/No');
         $attribute->getCode()->willReturn('attribute_size');
         $attribute->getGroup()->willReturn($attributeGroup);
         $attributeGroup->getCode()->willReturn('size');
@@ -53,7 +53,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn(null);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-        $attribute->getLocaleSpecificCodes()->willReturn([]);
+        $attribute->getAvailableLocaleCodes()->willReturn([]);
         $attribute->getMaxCharacters()->willReturn(null);
         $attribute->getValidationRule()->willReturn(null);
         $attribute->getValidationRegexp()->willReturn(null);
@@ -112,7 +112,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $dateMin = new \DateTime('2015-05-23 15:55:50');
         $dateMax = new \DateTime('2015-06-23 15:55:50');
 
-        $attribute->getAttributeType()->willReturn('Yes/No');
+        $attribute->getType()->willReturn('Yes/No');
         $attribute->getCode()->willReturn('attribute_size');
         $attribute->getGroup()->willReturn($attributeGroup);
         $attributeGroup->getCode()->willReturn('size');
@@ -124,7 +124,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $attribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
+        $attribute->getAvailableLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $attribute->getMaxCharacters()->willReturn(255);
         $attribute->getValidationRule()->willReturn('email');
         $attribute->getValidationRegexp()->willReturn('[0-9]*');

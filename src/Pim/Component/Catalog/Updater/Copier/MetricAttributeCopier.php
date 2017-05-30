@@ -56,8 +56,8 @@ class MetricAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'metric');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'metric');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
         $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
 
         $this->copySingleValue(
@@ -97,7 +97,7 @@ class MetricAttributeCopier extends AbstractAttributeCopier
             $fromData = $fromValue->getData();
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
             if (null === $metric = $toValue->getMetric()) {

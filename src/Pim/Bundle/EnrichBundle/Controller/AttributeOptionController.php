@@ -225,7 +225,27 @@ class AttributeOptionController
             return new JsonResponse($option);
         }
 
-        return $this->viewHandler->handle(RestView::create($form));
+        return new JsonResponse($this->getFormErrors($form), 400);
+    }
+
+    /**
+     * Parse form errors and return as an object
+     *
+     * @param FormInterface $form
+     *
+     * @return object
+     */
+    protected function getFormErrors($form)
+    {
+        $errors = [];
+
+        foreach ($form as $child) {
+            foreach ($child->getErrors(true) as $error) {
+                $errors[$child->getName()] = $error->getMessage();
+            }
+        }
+
+        return $errors;
     }
 
     /**

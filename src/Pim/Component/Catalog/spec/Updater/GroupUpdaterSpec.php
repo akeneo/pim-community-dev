@@ -14,7 +14,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
-use Prophecy\Argument;
 
 class GroupUpdaterSpec extends ObjectBehavior
 {
@@ -110,8 +109,7 @@ class GroupUpdaterSpec extends ObjectBehavior
                 'type',
                 'group type',
                 'The group type does not exist',
-                'updater',
-                'group',
+                'Pim\Component\Catalog\Updater\GroupUpdater',
                 'UNKNOWN'
             )
         )->during('update', [$group, $values, []]);
@@ -133,8 +131,7 @@ class GroupUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::validGroupTypeExpected(
                 'type',
                 'Cannot process variant group, only groups are supported',
-                'updater',
-                'group',
+                'Pim\Component\Catalog\Updater\GroupUpdater',
                 'mycode'
             )
         )->during('update', [$group, $values, []]);
@@ -156,8 +153,7 @@ class GroupUpdaterSpec extends ObjectBehavior
                 'axis',
                 'attribute code',
                 'The attribute does not exist',
-                'updater',
-                'group',
+                'Pim\Component\Catalog\Updater\GroupUpdater',
                 'foo'
             )
         )->during('update', [$group, $values, []]);

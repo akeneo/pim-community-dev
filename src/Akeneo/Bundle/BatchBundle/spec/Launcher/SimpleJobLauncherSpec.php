@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class SimpleJobLauncherSpec extends ObjectBehavior
 {
@@ -15,7 +14,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, '/', 'prod');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, '/', 'prod', '/logs');
     }
 
     function it_is_a_job_launcher()

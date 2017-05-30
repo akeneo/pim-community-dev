@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\EnrichBundle\Flash\Message;
@@ -18,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -180,7 +178,7 @@ class CategoryTreeController extends Controller
      *
      * @Template
      *
-     * @return array
+     * @return Response
      */
     public function childrenAction(Request $request)
     {
@@ -188,7 +186,11 @@ class CategoryTreeController extends Controller
             throw new AccessDeniedException();
         }
 
-        $parent = $this->findCategory($request->get('id'));
+        try {
+            $parent = $this->findCategory($request->get('id'));
+        } catch (\Exception $e) {
+            $parent = $this->userContext->getUserProductCategoryTree();
+        }
 
         $selectNodeId = $request->get('select_node_id', -1);
 
@@ -202,7 +204,7 @@ class CategoryTreeController extends Controller
             $selectNode = null;
         }
 
-        $categories = $this->getChildrenCategories($request, $selectNode);
+        $categories = $this->getChildrenCategories($request, $selectNode, $parent);
 
         if (null === $selectNode) {
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
@@ -256,7 +258,7 @@ class CategoryTreeController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request, $parent = null)
     {
@@ -283,9 +285,12 @@ class CategoryTreeController extends Controller
                 $this->addFlash('success', $message);
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
-                return $this->redirectToRoute($this->buildRouteName('categorytree_edit'), [
-                    'id' => $category->getId()
-                ]);
+                return new JsonResponse(
+                    [
+                        'route'  => $this->buildRouteName('categorytree_edit'),
+                        'params' => ['id' => $category->getId()]
+                    ]
+                );
             }
         }
 
@@ -349,7 +354,7 @@ class CategoryTreeController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function removeAction($id)
     {
@@ -363,11 +368,7 @@ class CategoryTreeController extends Controller
 
         $this->categoryRemover->remove($category);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute($this->buildRouteName('categorytree_index'), $params);
-        }
+        return new Response('', 204);
     }
 
     /**
@@ -408,10 +409,8 @@ class CategoryTreeController extends Controller
      *
      * @return array|ArrayCollection
      */
-    protected function getChildrenCategories(Request $request, $selectNode)
+    protected function getChildrenCategories(Request $request, $selectNode, $parent)
     {
-        $parent = $this->findCategory($request->get('id'));
-
         if (null !== $selectNode) {
             $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
         } else {

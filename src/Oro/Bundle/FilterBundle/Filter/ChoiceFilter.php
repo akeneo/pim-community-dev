@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
@@ -127,11 +128,12 @@ class ChoiceFilter extends AbstractFilter
     protected function getOperator($type)
     {
         $operatorTypes = [
-            ChoiceFilterType::TYPE_CONTAINS     => 'IN',
-            ChoiceFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
-            FilterType::TYPE_EMPTY              => 'EMPTY',
+            ChoiceFilterType::TYPE_CONTAINS     => Operators::IN_LIST,
+            ChoiceFilterType::TYPE_NOT_CONTAINS => Operators::NOT_IN_LIST,
+            FilterType::TYPE_EMPTY              => Operators::IS_EMPTY,
+            FilterType::TYPE_NOT_EMPTY          => Operators::IS_NOT_EMPTY,
         ];
 
-        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
+        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : Operators::IN_LIST;
     }
 }

@@ -1,9 +1,9 @@
+@javascript
 Feature: Export group types
   In order to be able to access and modify group types data outside PIM
   As an administrator
   I need to be able to export group types
 
-  @javascript
   Scenario: Successfully export group types
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_group_type_export" configuration:

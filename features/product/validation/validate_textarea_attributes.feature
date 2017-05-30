@@ -7,15 +7,15 @@ Feature: Validate textarea attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code             | label-en_US     | type     | scopable | max_characters | wysiwyg_enabled |
-      | long_info        | Longinfo        | textarea | no       | 10             | yes             |
-      | long_description | Longdescription | textarea | yes      | 10             | yes             |
-      | long_text        | Longtext        | textarea | no       |                | yes             |
-      | info             | Info            | textarea | no       | 5              | no              |
-      | description      | Description     | textarea | yes      | 5              | no              |
+      | code             | label-en_US     | type                 | scopable | max_characters | wysiwyg_enabled | group |
+      | long_info        | Longinfo        | pim_catalog_textarea | 0        | 10             | 1               | other |
+      | long_description | Longdescription | pim_catalog_textarea | 1        | 10             | 1               | other |
+      | long_text        | Longtext        | pim_catalog_textarea | 0        |                | 1               | other |
+      | info             | Info            | pim_catalog_textarea | 0        | 5              | 0               | other |
+      | description      | Description     | pim_catalog_textarea | 1        | 5              | 0               | other |
     And the following family:
-      | code | label-en_US | attributes                                                     |
-      | baz  | Baz         | sku, info, long_info, description, long_description, long_text |
+      | code | label-en_US | attributes                                                |
+      | baz  | Baz         | sku,info,long_info,description,long_description,long_text |
     And the following product:
       | sku | family |
       | foo | baz    |

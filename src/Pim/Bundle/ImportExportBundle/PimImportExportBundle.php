@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle;
 
-use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobNameVisibilityCheckerPass;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\RegisterJobParametersFormsOptionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

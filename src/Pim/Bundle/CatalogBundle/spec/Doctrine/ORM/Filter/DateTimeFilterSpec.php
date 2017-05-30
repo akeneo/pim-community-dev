@@ -5,12 +5,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 class DateTimeFilterSpec extends ObjectBehavior
@@ -275,7 +276,11 @@ class DateTimeFilterSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(
-                InvalidArgumentException::stringExpected('updated', 'filter', 'updated', 'integer')
+                InvalidPropertyTypeException::stringExpected(
+                    'updated',
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter',
+                    42
+                )
             )->during(
                 'addFieldFilter',
                 [
@@ -292,7 +297,11 @@ class DateTimeFilterSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(
-                InvalidArgumentException::numericExpected('updated', 'filter', 'updated', 'string')
+                InvalidPropertyTypeException::numericExpected(
+                    'updated',
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter',
+                    'csv_product_export'
+                )
             )->during(
                 'addFieldFilter',
                 [
@@ -308,25 +317,34 @@ class DateTimeFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_string_an_array_or_a_datetime()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('updated_at', 'array with 2 elements, string or \DateTime', 'filter', 'date', print_r(123, true))
+            InvalidPropertyException::dateExpected(
+                'updated_at',
+                'yyyy-mm-dd H:i:s',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter',
+                123
+            )
         )->during('addFieldFilter', ['updated_at', '>', 123]);
     }
 
     function it_throws_an_error_if_data_is_not_a_valid_date_format()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('updated_at', 'a string with the format yyyy-mm-dd H:i:s', 'filter', 'date', 'not a valid date format')
+            InvalidPropertyException::dateExpected(
+                'updated_at',
+                'yyyy-mm-dd H:i:s',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter',
+                'not a valid date format'
+            )
         )->during('addFieldFilter', ['updated_at', '>', ['not a valid date format', 'WRONG']]);
     }
 
     function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings_or_dates()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'updated_at',
-                'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                'yyyy-mm-dd H:i:s',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter',
                 123
             )
         )->during('addFieldFilter', ['updated_at', '>', [123, 123]]);
@@ -335,12 +353,11 @@ class DateTimeFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_two_values()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'updated_at',
-                'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
-                print_r([123, 123, 'three'], true)
+                'should contain 2 strings with the format "yyyy-mm-dd H:i:s"',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter',
+                [123, 123, 'three']
             )
         )->during('addFieldFilter', ['updated_at', '>', [123, 123, 'three']]);
     }

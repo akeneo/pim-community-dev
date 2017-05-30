@@ -1,24 +1,37 @@
-{% extends 'PimUIBundle:Default:index.html.twig' %}
-
-{% block hash_nav %}
-{% endblock %}
-
-{% block header %}
-{% endblock header %}
-
-{% block main %}
-    {% block messages %}
-        {% if app.session.flashbag.peekAll|length > 0 %}
-            {% for type, messages in app.session.flashbag.all %}
-                {% for message in messages %}
-                <div class="alert{{ type ? ' alert-'~type : '' }}">
-                {{ message|trans|raw }}
-                </div>
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block head_style %}
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+            {% include 'OroAsseticBundle:Assets:oro_css.html.twig' %}
+        {% endblock %}
     {% endblock %}
-
-    {% block content %}
-    {% endblock content %}
-{% endblock %}
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+    <div id="page">
+        <div id="top-page">
+            {% block main %}
+                {% block messages %}
+                    {% if app.session.flashbag.peekAll|length > 0 %}
+                        {% for type, messages in app.session.flashbag.all %}
+                            {% for message in messages %}
+                            <div class="alert{{ type ? ' alert-'~type : '' }}">
+                            {{ message|trans|raw }}
+                            </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                {% endblock %}
+                {% block content %}
+                {% endblock content %}
+            {% endblock main %}
+        </div>
+    </div>
+</body>
+</html>

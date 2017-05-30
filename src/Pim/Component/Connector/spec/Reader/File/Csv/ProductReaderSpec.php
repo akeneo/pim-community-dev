@@ -9,7 +9,6 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
-use Prophecy\Argument;
 
 class  ProductReaderSpec extends ObjectBehavior
 {

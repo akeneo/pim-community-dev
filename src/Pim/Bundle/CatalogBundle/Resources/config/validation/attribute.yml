@@ -1,13 +1,15 @@
 Pim\Bundle\CatalogBundle\Entity\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute:
+            payload:
+                standardPropertyName: type
         - Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured: ~
         - Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
-                - attributeType
+                - type
                 - scopable
                 - localizable
                 - metricFamily
@@ -23,13 +25,32 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
-        - Pim\Component\Catalog\Validator\Constraints\NotBlankProperties:
+        - Pim\Component\Catalog\Validator\Constraints\NotNullProperties:
             properties:
                 - reference_data_name
+        - Pim\Component\Catalog\Validator\Constraints\NullProperties:
+            message: This attribute cannot be linked to reference data.
+            properties:
+                - reference_data_name
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_boolean
+                - pim_catalog_date
+                - pim_catalog_metric
     properties:
-        attributeType:
+        type:
+            - Type: string
             - NotBlank: ~
         code:
+            - Type: string
             - NotBlank: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
@@ -41,36 +62,113 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 message: This code is not available
         localizable:
             - Type: bool
-            - 'IsFalse':
-                message: An unique attribute can not be localizable
-                groups: [unique]
-        scopable:
             - NotNull: ~
             - 'IsFalse':
-                message: An unique attribute can not be scopable
-                groups: [unique]
+                message: A unique attribute can not be localizable
+                groups:
+                    - unique
+        scopable:
+            - Type: bool
+            - NotNull: ~
+            - 'IsFalse':
+                message: A unique attribute can not be scopable
+                groups:
+                    - unique
         useableAsGridFilter:
             - Type: bool
+            - NotNull: ~
         wysiwygEnabled:
             - Type: bool
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         decimalsAllowed:
             - Type: bool
+            - NotNull:
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_metric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         negativeAllowed:
             - Type: bool
+            - NotNull:
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_metric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         maxCharacters:
             - Type: numeric
             - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
-            - Range:
-                max: 255
-                groups: [pim_catalog_text, pim_catalog_identifier]
-            - Range:
-                max: 65535
-                groups: [pim_catalog_textarea]
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+            - LessThanOrEqual:
+                value: 255
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+            - LessThanOrEqual:
+                value: 65535
+                groups:
+                    - pim_catalog_textarea
+            - IsNull:
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         sortOrder:
             - NotNull: ~
             - Type: numeric
+            - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
         required:
@@ -93,8 +191,15 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         unique:
             - Type: bool
+            - NotNull: ~
+            - 'IsTrue':
+                message: This attribute type must be unique
+                groups:
+                    - pim_catalog_identifier
             - 'IsFalse':
                 message: This attribute type can't have unique value
                 groups:
@@ -106,26 +211,74 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_metric
                     - pim_catalog_boolean
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         maxFileSize:
+            - Type: numeric
             - Range:
                 min: 0.01
                 max: 9999.99
-                groups: [pim_catalog_file, pim_catalog_image]
-            - Type:
-                type: numeric
-                groups: [pim_catalog_file, pim_catalog_image]
+                groups:
+                    - pim_catalog_file
+                    - pim_catalog_image
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         dateMin:
-            - DateTime:
-                groups: [pim_catalog_date]
+            - DateTime: ~
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         dateMax:
-            - DateTime:
-                groups: [pim_catalog_date]
+            - DateTime: ~
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         validationRule:
             - Choice:
                 choices: [null, url, email, regexp]
-                groups: [pim_catalog_text]
-        validationRegexp:
-            - Blank:
+                groups:
+                    - pim_catalog_text
+            - Choice:
+                choices: [null, regexp]
+                groups:
+                    - pim_catalog_identifier
+            - IsNull:
                 groups:
                     - pim_catalog_textarea
                     - pim_catalog_multiselect
@@ -137,27 +290,124 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_image
                     - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        validationRegexp:
+            - Type: string
+            - IsNull:
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
             - Pim\Component\Catalog\Validator\Constraints\ValidRegex:
                 groups:
                     - pim_catalog_text
                     - pim_catalog_identifier
         allowedExtensions:
-            - NotNull:
-                groups: [pim_catalog_file, pim_catalog_image]
-                message: This value should not be blank
+            - Blank:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+            - Pim\Component\Catalog\Validator\Constraints\FileAllowedExtensions:
+                groups:
+                    - pim_catalog_file
+            - Pim\Component\Catalog\Validator\Constraints\ImageAllowedExtensions:
+                groups:
+                    - pim_catalog_image
         translations:
             - Valid: ~
         group:
             - NotBlank: ~
         numberMin:
-            - Type:
-                type: numeric
-                groups: [pim_catalog_number]
+            - Type: numeric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         numberMax:
-            - Type:
-                type: numeric
-                groups: [pim_catalog_number]
-
+            - Type: numeric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        metricFamily:
+            - Type: string
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        defaultMetricUnit:
+            - Type: string
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        availableLocales:
+            - Count:
+                min: 0
+                max: 0
+                exactMessage: This attribute cannot have available locales.
+                groups:
+                    - pim_catalog_identifier
     getters:
         group:
             - Valid: ~
@@ -167,13 +417,25 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
         label:
             - Length:
                 max: 100
+                payload:
+                    standardPropertyName: labels
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                    standardPropertyName: labels
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             - code
             - attribute
-        - Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOption : ~
+        - Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOption:
+            payload:
+              standardPropertyName: attribute
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - attribute
     properties:
         code:
             - NotBlank: ~
@@ -183,4 +445,19 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             - Length:
                 max: 255
         attribute:
+            - NotBlank: ~
             - Valid: ~
+        optionValues:
+            - Valid: ~
+
+Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
+    properties:
+        value:
+            - Length:
+                max: 100
+                payload:
+                  standardPropertyName: labels
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                  standardPropertyName: labels

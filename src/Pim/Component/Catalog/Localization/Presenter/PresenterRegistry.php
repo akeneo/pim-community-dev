@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * The PresenterRegistry registers the presenters to display attribute values readable information. The matching
- * presenters are returned from an attributeType or an option name.
+ * presenters are returned from an attribute type or an option name.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -55,7 +55,7 @@ class PresenterRegistry implements PresenterRegistryInterface
             return null;
         }
 
-        $attributeType = $attribute->getAttributeType();
+        $attributeType = $attribute->getType();
         if (null === $attributeType) {
             return null;
         }

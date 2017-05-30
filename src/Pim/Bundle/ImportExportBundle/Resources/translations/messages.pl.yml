@@ -5,17 +5,7 @@ pim_import_export:
   connector: Wtyczka
   status:
     - Gotowe
-  batch_status:
-    1: WYKONANO
-    2: ROZPOCZYNANIE
-    3: ROZPOCZĘTE
-    4: ZATRZYMYWANIE
-    5: ZATRZYMANE
-    6: NIE POWIODŁO SIĘ
-    7: PORZUCONE
-    8: NIEZNANY
   download_archive:
-    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
     invalid_xlsx: pobierz nieprawidłowe dane
@@ -46,18 +36,10 @@ pim_title.import_execution.index: Historia wykonanych importów
 pim_title.import_execution.show: Wykonane importy | Szczegóły
 export profile:
   title: eksportuj profil
-  overview: przegląd profili eksportu
-  create: utwórz profil eksportu
   edit: edytuj profil eksportu
-export report:
-  overview: raporty eksportu
 import profile:
   title: profil importu
-  overview: przegląd profili importu
-  create: utwórz profil importu
   edit: edytuj profil importu
-import report:
-  overview: raporty importów
 pim_importexport:
   acl:
     export_profile:
@@ -111,12 +93,6 @@ flash:
     removed: Import został usunięty
     updated: Import został pomyślnie zaktualizowany
     running: Import jest uruchomiony
-pim_menu:
-  item:
-    export_history: Historia eksportów
-    export_profile: Profile eksportu
-    import_history: Historia importów
-    import_profile: Profile importu
 General properties: Ustawienia ogólne
 History: Historia
 pane.accordion:
@@ -149,12 +125,4 @@ Status: Status
 Summary: Podsumowanie
 Start: Start
 End: Koniec
-set_attribute_requirements: Określone wymagania atrybutów
-COMPLETED: WYKONANO
-STARTING: ROZPOCZYNANIE
-STARTED: ROZPOCZĘTE
-STOPPING: ZATRZYMYWANIE
-STOPPED: ZATRZYMANE
-FAILED: NIE POWIODŁO SIĘ
-ABANDONED: PORZUCONE
-UNKNOWN: NIEZNANY
+set_attribute_requirements: Określ wymagania atrybutów

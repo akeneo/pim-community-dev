@@ -9,6 +9,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job
@@ -66,7 +67,7 @@ class VariantGroupWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * Copy variant group values to products
      *
-     * @param array $variantGroups
+     * @param GroupInterface[] $variantGroups
      */
     protected function copyValuesToProducts(array $variantGroups)
     {

@@ -81,7 +81,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
-            $attribute->getAttributeType(),
+            $attribute->getType(),
             $this->supportedAttributes
         );
     }

@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -44,20 +45,19 @@ class GroupFieldRemover extends AbstractFieldRemover
             $group = $this->groupRepository->findOneByIdentifier($groupCode);
 
             if (null === $group) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
-                    'existing group code',
-                    'remover',
-                    'groups',
+                    'group code',
+                    'The group does not exist',
+                    static::class,
                     $groupCode
                 );
             }
             if ($group->getType()->isVariant()) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::validGroupExpected(
                     $field,
-                    'non variant group code',
-                    'remover',
-                    'groups',
+                    'Cannot process variant group, only groups are supported',
+                    static::class,
                     $groupCode
                 );
             }
@@ -74,26 +74,26 @@ class GroupFieldRemover extends AbstractFieldRemover
      *
      * @param string $field
      * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData($field, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $field,
-                'remover',
-                'groups',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    $key,
-                    'remover',
-                    'groups',
-                    gettype($value)
+                    sprintf('one of the group codes is not a string, "%s" given', gettype($value)),
+                    static::class,
+                    $data
                 );
             }
         }

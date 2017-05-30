@@ -7,11 +7,11 @@ Feature: Validate values for unique attributes when importing products
   Background:
     Given an "footwear" catalog configuration
     And the following attributes:
-      | code                  | type   | group     | unique | scopable | localizable | useable_as_grid_filter |
-      | test_unique_attribute | text   | marketing | yes    | no       | no          | yes                    |
-      | date                  | date   | marketing | yes    | no       | no          | yes                    |
-      | number                | number | marketing | yes    | no       | no          | yes                    |
-      | text                  | text   | marketing | yes    | no       | no          | yes                    |
+      | code                  | type               | group     | unique | scopable | localizable | useable_as_grid_filter | decimals_allowed | negative_allowed |
+      | test_unique_attribute | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
+      | date                  | pim_catalog_date   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
+      | number                | pim_catalog_number | marketing | 1      | 0        | 0           | 1                      | 0                | 0                |
+      | text                  | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
     And I am logged in as "Julia"
 
   Scenario: Successfully ignore duplicate unique date values
@@ -25,7 +25,7 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value 2014-01-01 is already set on another product for the unique attribute date"
     And there should be 1 product
 
@@ -40,7 +40,7 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value 123 is already set on another product for the unique attribute number"
     And there should be 1 product
 
@@ -55,7 +55,7 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value foo is already set on another product for the unique attribute text"
     And there should be 1 product
 

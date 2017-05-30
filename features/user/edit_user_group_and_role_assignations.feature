@@ -50,6 +50,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     And I click on the "Peter" row
     And I save the group
+    And I visit the "Users" tab
     Then I should see the flash message "Group saved"
     And the row "Peter" should be checked
 
@@ -69,7 +70,7 @@ Feature: Edit a user groups and roles
     And I revoke rights to resource Edit roles
     And I save the Role
     Then I should see the flash message "Role saved"
-    But I should not see the text "There are unsaved changes."
+    And I should not see the text "There are unsaved changes."
     When I logout
     And I am logged in as "Mary"
     And I am on the Role index page

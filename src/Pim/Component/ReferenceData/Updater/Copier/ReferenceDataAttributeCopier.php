@@ -52,8 +52,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'reference data');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'reference data');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
             $fromProduct,
@@ -72,8 +72,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
      */
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
+        $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
@@ -103,7 +103,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
             $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');

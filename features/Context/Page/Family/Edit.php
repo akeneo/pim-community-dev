@@ -4,6 +4,7 @@ namespace Context\Page\Family;
 
 use Context\Page\Base\Form;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 
 /**
  * Family edit page
@@ -19,7 +20,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/configuration/family/{id}/edit';
+    protected $path = '#/configuration/family/{code}/edit';
 
     /**
      * {@inheritdoc}
@@ -31,8 +32,19 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Attributes'                 => ['css' => '.tab-pane.tab-attribute table'],
-                'Attribute as label choices' => ['css' => '#pim_enrich_family_form_attributeAsLabel'],
+                'Attributes'                        => ['css' => '.tab-pane.tab-attribute table'],
+                'Attribute as label choices'        => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
+                'Available attributes button'       => ['css' => '.add-attribute a.select2-choice'],
+                'Available attribute groups button' => ['css' => '.add-attribute-group a.select2-choice'],
+                'Available attributes list'         => ['css' => '.add-attribute .select2-results'],
+                'Available attribute groups list'   => ['css' => '.add-attribute-group .select2-results'],
+                'Available attributes search'       => ['css' => '.add-attribute .select2-search input[type="text"]'],
+                'Available attribute groups search' => ['css' => '.add-attribute-group .select2-search input[type="text"]'],
+                'Available groups'                  => [
+                    'css'        => '.add-attribute-group',
+                    'decorators' => [AttributeGroupAddSelectDecorator::class],
+                ],
+                'Select2 dropmask'                  => ['css' => '.select2-drop-mask'],
             ]
         );
     }
@@ -99,29 +111,12 @@ class Edit extends Form
      */
     public function getRemoveLinkFor($attribute)
     {
-        $attributeRow = $this->getElement('Attributes')->find('css', sprintf('tr:contains("%s")', $attribute));
-
-        if (!$attributeRow) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Couldn\'t find the attribute row "%s" in the attributes table',
-                    $attribute
-                )
-            );
-        }
-
-        $removeLink = $attributeRow->find('css', 'a.remove-attribute');
-
-        if (!$removeLink) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Couldn\'t find the attribute remove link for "%s" in the attributes table',
-                    $attribute
-                )
-            );
-        }
-
-        return $removeLink;
+        return $this->spin(function () use ($attribute) {
+            return $this->find(
+                    'css',
+                    sprintf('.remove-attribute[data-attribute="%s"]', $attribute)
+                );
+        }, sprintf('Remove link for field "%s" was not found', $attribute));
     }
 
     /**
@@ -131,11 +126,11 @@ class Edit extends Form
     {
         $options = array_map(
             function ($option) {
-                return $option->getText();
+                return trim($option->getText());
             },
             $this->getElement('Attribute as label choices')->findAll('css', 'option')
         );
-        $options[0] = $this->find('css', '#s2id_pim_enrich_family_form_attributeAsLabel .select2-chosen')->getText();
+        $options[0] = $this->find('css', '#s2id_pim_enrich_family_form_label_attribute_as_label .select2-chosen')->getText();
 
         return $options;
     }
@@ -148,8 +143,8 @@ class Edit extends Form
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $selector = '#pim_enrich_family_form_attributeRequirements_%s_%s_required';
-        $checkbox = $this->find('css', sprintf($selector, $attributeCode, $channelCode));
+        $selector = '.attribute-requirement [data-channel="%s"][data-attribute="%s"]';
+        $checkbox = $this->find('css', sprintf($selector, $channelCode, $attributeCode));
         if (!$checkbox) {
             throw new \RuntimeException(
                 sprintf(
@@ -160,7 +155,7 @@ class Edit extends Form
             );
         }
 
-        return $checkbox->isChecked();
+        return 'true' === $checkbox->getAttribute('data-required');
     }
 
     /**
@@ -171,12 +166,6 @@ class Edit extends Form
     {
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
         $requirement = $cell->find('css', 'i');
-
-        $loadingMask = $this->find('css', '.hash-loading-mask .loading-mask');
-
-        $this->spin(function () use ($loadingMask) {
-            return (null === $loadingMask) || !$loadingMask->isVisible();
-        }, '".loading-mask" is still visible');
 
         $requirement->click();
     }
@@ -191,26 +180,38 @@ class Edit extends Form
      */
     protected function getAttributeRequirementCell($attribute, $channel)
     {
-        $attributesTable = $this->getElement('Attributes');
-        $columnIdx       = 0;
+        return $this->spin(function () use ($attribute, $channel) {
+            return $this->find('css', sprintf('i.AknAcl-icon[data-attribute="%s"][data-channel="%s"]', $attribute, $channel));
+        }, sprintf('The cell for attribute "%s" and channel "%s" was not found', $attribute, $channel));
+    }
 
-        foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
-            if ($header->getText() === strtoupper($channel)) {
-                $columnIdx = $index;
-                break;
-            }
-        }
+    /**
+     * Finds available attribute group
+     *
+     * @param string $group
+     *
+     * @return boolean
+     */
+    public function findAvailableAttributeGroup($group)
+    {
+        $addAttributeGroupElement = $this->spin(function () {
+            return $this->getElement('Available groups');
+        }, 'Can not find add by group option');
 
-        if (0 === $columnIdx) {
-            throw new \Exception(sprintf('An error occured when trying to get the "%s" header', $channel));
-        }
+        return $addAttributeGroupElement->hasOption($group);
+    }
 
-        $cells = $attributesTable->findAll('css', sprintf('tbody tr:contains("%s") td', $attribute));
+    /**
+     * Adds attributes by group
+     *
+     * @param array $groups
+     */
+    public function addAttributesByGroup($groups)
+    {
+        $addGroupElement = $this->spin(function () {
+            return $this->getElement('Available groups');
+        }, 'Can not find add by group select');
 
-        if (count($cells) < $columnIdx) {
-            throw new \Exception(sprintf('An error occured when trying to get the attributes "%s" row', $attribute));
-        }
-
-        return $cells[$columnIdx];
+        $addGroupElement->addOptions($groups);
     }
 }

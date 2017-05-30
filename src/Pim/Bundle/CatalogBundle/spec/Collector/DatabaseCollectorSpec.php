@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Collector;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 use Pim\Component\Catalog\Repository\ProductValueCounterRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

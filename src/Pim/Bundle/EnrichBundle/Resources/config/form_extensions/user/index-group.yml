@@ -1,0 +1,25 @@
+extensions:
+    pim-user-group-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.user_group.title
+
+    pim-user-group-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-user-group-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: pim-user-group-grid
+
+    pim-user-group-index-create-button:
+        module: pim/common/redirect
+        parent: pim-user-group-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_user_group_create
+        config:
+            iconName: plus
+            label: pim_enrich.index.user_group.create_btn
+            route: oro_user_group_create
+            buttonClass: AknButton--apply

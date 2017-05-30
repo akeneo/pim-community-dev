@@ -19,7 +19,7 @@ Feature: Export products according to text attribute filter
 
   Scenario: Export products by filtering on text values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "comment", "operator": "=", "value": "Awesome"}]} |
+      | filters | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "comment", "operator": "=", "value": "Awesome"}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

@@ -68,3 +68,4 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
+            - '%kernel.logs_dir%'

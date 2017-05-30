@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
@@ -20,9 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationProcessor extends AbstractProcessor implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+class ProductAssociationProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
@@ -105,10 +103,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements
 
         try {
             $this->updateProduct($product, $item);
-        } catch (ObjectUpdaterException $exception) {
-            $this->detachProduct($product);
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (PropertyException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -137,7 +132,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements
      * @param ProductInterface $product
      * @param array            $item
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      */
     protected function updateProduct(ProductInterface $product, array $item)
     {

@@ -38,18 +38,19 @@ Feature: Display the completeness of a product
     Then I should be on the product "sneakers" edit page
     When I open the "Completeness" panel
     Then I should see the completeness:
-      | channel | locale | state   | missing_values  | ratio |
-      | mobile  | en_US  | success |                 | 100%  |
-      | tablet  | en_US  | success |                 | 100%  |
-      | mobile  | fr_FR  | success |                 | 100%  |
-      | tablet  | fr_FR  | warning | Description     | 89%   |
+      | channel | locale | state   | missing_values | ratio |
+      | mobile  | en_US  | success |                | 100%  |
+      | tablet  | en_US  | success |                | 100%  |
+      | mobile  | fr_FR  | success |                | 100%  |
+      | tablet  | fr_FR  | warning | Description    | 89%   |
 
   Scenario: Update completeness when family requirements change
     Given I am on the "sneakers" family page
     And I visit the "Attributes" tab
-    And I switch the attribute "Rating" requirement in channel "Mobile"
+    And I switch the attribute "rating" requirement in channel "mobile"
     And I save the family
     And I should see "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     And I am on the "sneakers" product page
     When I open the "Completeness" panel
     Then I should see the completeness:

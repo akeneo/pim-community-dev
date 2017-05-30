@@ -58,7 +58,7 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-xlsx-base-export-show-properties-lines-per-file:
         module: pim/job/common/edit/field/text
@@ -69,18 +69,18 @@ extensions:
             fieldCode: configuration.linesPerFile
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.lines_per_file.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.lines_per_file.help
 
     pim-job-instance-xlsx-base-export-show-properties-with-header:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-base-export-show-properties
-        position: 160
+        position: 140
         targetZone: global-settings
         config:
             fieldCode: configuration.withHeader
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.withHeader.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-xlsx-base-export-show-label:
         module: pim/job/common/edit/label
@@ -109,6 +109,7 @@ extensions:
         targetZone: buttons
         position: 100
         config:
+            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
             identifier:

@@ -19,7 +19,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 max: 100
         translations:
             - Valid: ~
-        attributes:
+        axisAttributes:
             - Count:
                 min: 1
                 groups: [variant]

@@ -31,7 +31,6 @@ class PimEnrichExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('attribute_icons.yml');
         $loader->load('category_counters.yml');
         $loader->load('colors.yml');
         $loader->load('command.yml');
@@ -65,16 +64,10 @@ class PimEnrichExtension extends Extension
         $loader->load('steps.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements.yml');
-        $loader->load('view_elements/association_type.yml');
         $loader->load('view_elements/attribute.yml');
-        $loader->load('view_elements/attribute_group.yml');
         $loader->load('view_elements/category.yml');
-        $loader->load('view_elements/channel.yml');
-        $loader->load('view_elements/family.yml');
-        $loader->load('view_elements/group.yml');
         $loader->load('view_elements/group_type.yml');
         $loader->load('view_elements/mass_edit.yml');
-        $loader->load('view_updaters.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

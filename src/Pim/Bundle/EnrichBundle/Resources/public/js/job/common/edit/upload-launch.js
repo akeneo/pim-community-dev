@@ -12,10 +12,10 @@ define(
         'underscore',
         'oro/translator',
         'pim/job/common/edit/launch',
-        'oro/navigation',
+        'pim/router',
         'oro/messenger'
     ],
-    function ($, _, __, BaseLaunch, Navigation, messenger) {
+    function ($, _, __, BaseLaunch, router, messenger) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -45,6 +45,8 @@ define(
                     var formData = new FormData();
                     formData.append('file', this.getFormData().file);
 
+                    router.showLoadingMask();
+
                     $.ajax({
                         url: this.getUrl(),
                         method: 'POST',
@@ -54,15 +56,16 @@ define(
                         processData: false
                     })
                     .then(function (response) {
-                        Navigation.getInstance().setLocation(response.redirectUrl);
+                        router.redirect(response.redirectUrl);
                     }.bind(this))
                     .fail(function () {
                         messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
-                    });
+                    })
+                    .always(router.hideLoadingMask());
                 } else {
                     $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
-                            Navigation.getInstance().setLocation(response.redirectUrl);
+                            router.redirect(response.redirectUrl);
                         })
                         .fail(function () {
                             messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));

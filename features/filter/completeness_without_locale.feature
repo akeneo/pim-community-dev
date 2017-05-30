@@ -11,7 +11,7 @@ Feature: Filter on completeness
       | TSHIRTM | tshirts | T-shirt M Black |                 | 10 USD, 9 GBP | size_M | black | american_apparel |
       | TSHIRTL | tshirts | T-shirt L Black |                 | 10 USD, 9 GBP | size_L |       |                  |
     Then I should get the following results for the given filters:
-      | filter                                                                       | result                 |
+      | filter                                                                                    | result                 |
       | [{"field":"completeness", "operator":"=",  "value": 100, "context": {"scope": "tablet"}}] | ["TSHIRTS", "TSHIRTM"] |
       | [{"field":"completeness", "operator":"<",  "value": 100, "context": {"scope": "tablet"}}] | ["TSHIRTM", "TSHIRTL"] |
       | [{"field":"completeness", "operator":"!=", "value": 100, "context": {"scope": "tablet"}}] | ["TSHIRTM", "TSHIRTL"] |

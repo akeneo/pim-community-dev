@@ -14,11 +14,13 @@ Feature: purge versions
     And I visit the "Attributes" tab
     And I add available attributes Weather conditions
     And I press the "Save" button
-    And I switch the attribute "Manufacturer" requirement in channel "Mobile"
+    Then I should not see the text "There are unsaved changes."
+    And I switch the attribute "manufacturer" requirement in channel "mobile"
     And I press the "Save" button
     And I visit the "History" tab
     Then there should be 4 updates
-    When I launch the purge versions command for entity "Pim\\Bundle\\CatalogBundle\\Entity\\Family"
+    When I launch the purge versions command for entity "Pim\Bundle\CatalogBundle\Entity\Family"
     And I am on the "heels" family page
     And I visit the "History" tab
+    And I reset the grid
     Then there should be 2 updates

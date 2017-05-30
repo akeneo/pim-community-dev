@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -90,10 +89,9 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        $invalidItem = new FileInvalidItem(
-            $item,
-            ($this->stepExecution->getSummaryInfo('item_position'))
-        );
+        $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
+
+        $invalidItem = new FileInvalidItem($item, $itemPosition);
 
         throw new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
@@ -116,9 +114,11 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
+        $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
+
         throw new InvalidItemFromViolationsException(
             $violations,
-            new FileInvalidItem($item, ($this->stepExecution->getSummaryInfo('item_position'))),
+            new FileInvalidItem($item, $itemPosition),
             [],
             0,
             $previousException

@@ -5,7 +5,6 @@ pim_connector:
     entity_reader.title: Izvlačenje entiteta
     csv_reader:
       title: CSV čitač
-      invalid_item_columns_count: 'Očekujuje se %totalColumnsCount% stupaca, trenutno su %itemColumnsCount% u %csvPath%:%lineno%'
     csv_product_reader.title: CSV čitač proizvoda
     csv_category_reader.title: CSV čitač kategorija
     csv_variant_group .title: CSV čitač varijanti grupa
@@ -28,147 +27,9 @@ pim_connector:
     variant_group_writer.title: Pohrana grupne varijante
     writer.title: Pohrana entiteta
     csv_writer.title: CSV pisač
-  export:
-    csv:
-      delimiter:
-        label: Graničnik
-        help: Jedan znak se koristi za postavljanje granice polja
-      enclosure:
-        label: Zagrada
-        help: Jedan znak se koristi za postavljanje zagrade polja
-      withHeader:
-        label: Sa zaglavljem
-        help: Da li se ispisuje naziv stupaca
-      with_media:
-        label: Izvoz datoteka i slika
-        help: Izvoz datoteke proizvoda i slika ili ne
-      filePath:
-        label: Put datoteke
-        help: Gdje se zapisuje generirana datoteka u datotečnom sustavu
-      decimalSeparator:
-        label: Odvajanje decimala
-        help: Određivanje odvajanja decimala
-      dateFormat:
-        label: Format datuma
-        help: Određivanje oblika polja za datum
-    xlsx:
-      lines_per_files:
-        label: Broj redaka po datoteci
-        help: Definiranje broja redaka po datoteci
-      withHeader:
-        label: Sa zaglavljem
-        help: Da li se ispisuje naziv stupaca
-      with_media:
-        label: Izvoz datoteka i slika
-        help: Izvoz datoteke proizvoda i slika ili ne
-      filePath:
-        label: Put datoteke
-        help: Gdje se zapisuje generirana datoteka u datotečnom sustavu
-      decimalSeparator:
-        label: Odvajanje decimala
-        help: Određivanje odvajanja decimala
-      dateFormat:
-        label: Format datuma
-        help: Određivanje oblika polja za datum
-    yml:
-      filePath:
-        label: Put datoteke
-        help: Gdje se zapisuje generirana datoteka u datotečnom sustavu
-  import:
-    csv:
-      enabled:
-        label: Omogući proizvod
-        help: Da li uvezeni proizvod treba biti omogućen
-      categoriesColumn:
-        label: Stupac kategorije
-        help: Naziv stupca kategorije
-      familyColumn:
-        label: Stupac obitelji
-        help: Naziv stupca obitelji
-      groupsColumn:
-        label: Stupac grupe
-        help: Naziv stupca grupe
-      filePath:
-        label: Datoteka
-        help: CSV datoteka za uvoz
-      uploadAllowed:
-        label: Omogući prijenos datoteke
-        help: Omogući izravno učitavanje datoteke
-      delimiter:
-        label: Graničnik
-        help: Jedan znak koji se koristi za postavljanje granica u CSV datoteci
-      enclosure:
-        label: Zagrada
-        help: Jedan znak se koristi za postavljanje zagrade polja
-      escape:
-        label: Izlaz
-        help: Jedan znak koji se koristi za postavljanje polja izlaza
-      circularRefsChecked:
-        label: Provjeri ponavljajuće reference
-        help: Ako da, podaci će se obraditi kako bi bili sigurni da ne postoje ponavljajuće reference među kategorijama
-      realTimeVersioning:
-        label: Povijest ažuriranja u stvarnom vremenu
-        help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
-      copyValuesToProducts:
-        label: Kopiranje vrijednosti varijante grupa proizvoda
-        help: Znači da se proizvodi automatski ažuriraju sa vrijednostima varijante grupe, može se odabrati samo ažuriranje varijante grupe
-      enabledComparison:
-        label: Usporedba vrijednosti
-        help: Omogući usporedbe između izvorne vrijednosti i uvezene vrijednosti. Može se ubrzati uvoz ako su uvezene vrijednosti vrlo slične izvornim vrijednostima
-      decimalSeparator:
-        label: Odvajanje decimala
-        help: Jedan znak se koristi za postavljanje granica decimala
-      dateFormat:
-        label: Format datuma
-        help: Odaberi oblik bilo kojeg stupaca datuma u datoteci, npr. DD/MM/GGGG za oblik 30/04/2014.
-    xlsx:
-      enabled:
-        label: Omogući proizvod
-        help: Da li uvezeni proizvod treba biti omogućen
-      categoriesColumn:
-        label: Stupac kategorije
-        help: Naziv stupca kategorije
-      familyColumn:
-        label: Stupac obitelji
-        help: Naziv stupca obitelji
-      groupsColumn:
-        label: Stupac grupe
-        help: Naziv stupca grupe
-      filePath:
-        label: Datoteka
-        help: XLSX datoteka za uvoz
-      uploadAllowed:
-        label: Omogući prijenos datoteke
-        help: Omogući izravno učitavanje datoteke
-      circularRefsChecked:
-        label: Provjeri ponavljajuće reference
-        help: Ako da, podaci će se obraditi kako bi bili sigurni da ne postoje ponavljajuće reference među kategorijama
-      realTimeVersioning:
-        label: Povijest ažuriranja u stvarnom vremenu
-        help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
-      copyValuesToProducts:
-        label: Kopiranje vrijednosti varijante grupa proizvoda
-        help: Znači da se proizvodi automatski ažuriraju sa vrijednostima varijante grupe, može se odabrati samo ažuriranje varijante grupe
-      enabledComparison:
-        label: Usporedba vrijednosti
-        help: Omogući usporedbe između izvorne vrijednosti i uvezene vrijednosti. Može se ubrzati uvoz ako su uvezene vrijednosti vrlo slične izvornim vrijednostima
-      decimalSeparator:
-        label: Odvajanje decimala
-        help: Jedan znak se koristi za postavljanje granica decimala
-      dateFormat:
-        label: Format datuma
-        help: Odaberi oblik bilo kojeg stupaca datuma u datoteci, npr. DD/MM/GGGG za oblik 30/04/2014.
-    yml:
-      filePath:
-        label: Datoteka
-        help: YML datoteka za uvoz
-      uploadAllowed:
-        label: Omogući prijenos datoteke
-        help: Omogući izravno učitavanje datoteke
 job_execution.summary:
-  read: čitanje
-  read_lines: čitanje redaka
-  write: napisano
+  read: pročitano
+  write: upisano
   skip: preskočeno
   create: kreirano
   process: obrađeno
@@ -180,6 +41,7 @@ job_execution.summary:
     title: 'Kod datoteke:'
     skipped: preskočeno, ekstenzija u bijeloj listi
   product_skipped_no_diff: preskočeni proizvodi (bez razlike)
+  item_position: čitanje redaka
 batch_jobs:
   csv_product_export:
     label: Izvoz proizvoda u CSV

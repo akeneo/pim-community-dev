@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {
@@ -37,19 +37,43 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         AssociationTypeInterface $associationType1,
         AssociationTypeInterface $associationType2,
         GroupInterface $group1,
-        ProductInterface $productAssociated
+        ProductInterface $productAssociated,
+        \ArrayIterator $association1Iterator,
+        \ArrayIterator $association2Iterator
     ) {
         $group1->getCode()->willReturn('group_code');
         $associationType1->getCode()->willReturn('XSELL');
         $association1->getAssociationType()->willReturn($associationType1);
-        $association1->getGroups()->willReturn([$group1]);
-        $association1->getProducts()->willReturn([]);
+        $association1->getGroups()->willReturn($association1Iterator);
+        $association1->getProducts()->willReturn(new ArrayCollection());
+
+        $association1Iterator->rewind()->willReturn($group1);
+        $valueCount = 1;
+        $association1Iterator->valid()->will(
+            function () use (&$valueCount) {
+                return $valueCount-- > 0;
+            }
+        );
+        $association1Iterator->current()->willReturn($group1);
+        $association1Iterator->next()->willReturn(null);
+        $association1Iterator->count()->willReturn(1);
 
         $productAssociated->getReference()->willReturn('product_code');
         $associationType2->getCode()->willReturn('PACK');
         $association2->getAssociationType()->willReturn($associationType2);
-        $association2->getGroups()->willReturn([]);
-        $association2->getProducts()->willReturn([$productAssociated]);
+        $association2->getGroups()->willReturn(new ArrayCollection());
+        $association2->getProducts()->willReturn($association2Iterator);
+
+        $association2Iterator->rewind()->willReturn($productAssociated);
+        $valueCount2 = 1;
+        $association2Iterator->valid()->will(
+            function () use (&$valueCount2) {
+                return $valueCount2-- > 0;
+            }
+        );
+        $association2Iterator->current()->willReturn($productAssociated);
+        $association2Iterator->next()->willReturn(null);
+        $association2Iterator->count()->willReturn(1);
 
         $product->getAssociations()->willReturn([$association1, $association2]);
 

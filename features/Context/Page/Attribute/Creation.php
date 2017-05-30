@@ -17,7 +17,7 @@ class Creation extends Form
     /**
      * @var string
      */
-    protected $path = '/configuration/attribute/create';
+    protected $path = '#/configuration/attribute/create';
 
     /**
      * {@inheritdoc}
@@ -64,6 +64,11 @@ class Creation extends Form
 
         $this->fillLastOption($name, $labels);
         $this->saveLastOption();
+
+        return $this->getElement('attribute_option_table')->find(
+            'css',
+            sprintf('.option-code:contains("%s")', $name)
+        );
     }
 
     public function createOption()
@@ -87,10 +92,14 @@ class Creation extends Form
     {
         $row = $this->getLastOption();
 
-        $row->find('css', '.attribute_option_code')->setValue($name);
+        $this->spin(function () use ($row) {
+            return $row->find('css', '.attribute_option_code');
+        }, 'Unable to find the attribute option code field')->setValue($name);
 
         foreach ($labels as $locale => $label) {
-            $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
+            $this->spin(function () use ($row, $label, $locale) {
+                return $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale));
+            }, sprintf('Unable fo find attribute option with locale "%s"', $locale))->setValue($label);
         }
     }
 
@@ -110,21 +119,6 @@ class Creation extends Form
     }
 
     /**
-     * Edit an attribute option
-     *
-     * @param string $name
-     * @param string $newValue
-     */
-    public function editOption($name, $newValue)
-    {
-        $row = $this->getOptionElement($name);
-
-        $row->find('css', '.edit-row')->click();
-        $row->find('css', '.attribute_option_code')->setValue($newValue);
-        $row->find('css', '.update-row')->click();
-    }
-
-    /**
      * Edit and cancel edition on an attribute option
      *
      * @param string $name
@@ -132,10 +126,12 @@ class Creation extends Form
      */
     public function editOptionAndCancel($name, $newValue)
     {
-        $row = $this->getOptionElement($name);
+        $row = $this->spin(function () use ($name) {
+            return $this->getOptionElement($name);
+        }, 'Cannot find option row');
 
         $row->find('css', '.edit-row')->click();
-        $row->find('css', '.attribute_option_code')->setValue($newValue);
+        $row->find('css', '.attribute-option-value:first-child')->setValue($newValue);
         $row->find('css', '.show-row')->click();
     }
 
@@ -182,7 +178,9 @@ class Creation extends Form
      */
     public function removeOption($optionName)
     {
-        $optionRow = $this->getOptionElement($optionName);
+        $optionRow = $this->spin(function () use ($optionName) {
+            return $this->getOptionElement($optionName);
+        }, 'Cannot find option row');
         $deleteBtn = $optionRow->find('css', '.delete-row');
 
         if ($deleteBtn === null) {
@@ -230,5 +228,25 @@ class Creation extends Form
         }
 
         throw new \InvalidArgumentException(sprintf('Option %s was not found', $optionName));
+    }
+
+    /**
+     * Select the attribute type in the modal
+     *
+     * @param $name
+     *
+     */
+    public function selectAttributeType($name)
+    {
+        $this->spin(function () use ($name) {
+            $fields = $this->findAll('css', '.attribute-choice');
+            foreach ($fields as $field) {
+                if (trim($field->getText()) === $name) {
+                    return $field;
+                }
+            }
+
+            return null;
+        }, sprintf('Cannot find attribute type "%s"', $name))->click();
     }
 }

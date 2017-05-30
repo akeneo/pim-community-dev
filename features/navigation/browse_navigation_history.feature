@@ -11,7 +11,7 @@ Feature: Browse the history in the history tab of the pinbar
       | pineapple |
     And I am logged in as "Mary"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5828
+  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-5828
   Scenario: Add pages to the pinbar
     Given I am on the "pineapple" product page
     And I click back to grid

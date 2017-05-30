@@ -11,17 +11,17 @@ Feature: Add attribute options
   Scenario: Successfully create a simple reference data
     Given I create a "Reference data simple select" attribute
     Given I fill in the following information:
-      | Code                | mycolor   |
-      | Reference data name | color     |
-      | Attribute group     | Other     |
+      | Code                | mycolor |
+      | Reference data name | color   |
+      | Attribute group     | Other   |
     Then I save the attribute
     Then I should see the flash message "Attribute successfully created"
 
   Scenario: Successfully create a multiple reference data
     Given I create a "Reference data multi select" attribute
     Given I fill in the following information:
-      | Code                | mycolor   |
-      | Reference data name | fabric    |
-      | Attribute group     | Other     |
+      | Code                | mycolor |
+      | Reference data name | fabric  |
+      | Attribute group     | Other   |
     Then I save the attribute
     Then I should see the flash message "Attribute successfully created"

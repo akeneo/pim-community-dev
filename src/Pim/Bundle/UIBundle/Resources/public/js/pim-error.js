@@ -80,5 +80,6 @@ function (_, Backbone, routing, app, Modal) {
             document.location.href = routing.generate('oro_user_security_login');
         }
     });
+
     return error;
 });

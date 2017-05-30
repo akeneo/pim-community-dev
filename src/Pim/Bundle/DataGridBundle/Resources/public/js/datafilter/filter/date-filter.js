@@ -141,7 +141,7 @@ function(
             } else if (this.typeValues.lessThan == parseInt(type)) {
                 this.$el.find('.AknFilterDate-separator').hide();
                 this.$el.find(this.criteriaValueSelectors.value.start).hide();
-            } else if ('empty' === type) {
+            } else if (_.contains(['empty', 'not empty'], type)) {
                 this.$el.find('.AknFilterDate-separator').hide();
                 this.$el.find(this.criteriaValueSelectors.value.end).hide();
                 this.$el.find(this.criteriaValueSelectors.value.start).hide();
@@ -178,7 +178,7 @@ function(
                 option, start, end, type,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
 
-            if (value.type === 'empty') {
+            if (_.contains(['empty', 'not empty'], value.type)) {
                 return this._getChoiceOption(value.type).label;
             }
 
@@ -308,7 +308,7 @@ function(
                 return true;
             }
 
-            return value.type === 'empty' || value.value.start || value.value.end;
+            return _.contains(['empty', 'not empty'], value.type) || value.value.start || value.value.end;
         },
 
         /**
@@ -316,7 +316,7 @@ function(
          */
         _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
-            if ('empty' === newValue.type) {
+            if (_.contains(['empty', 'not empty'], newValue.type)) {
                 this.$el.find('.AknFilterDate-separator').hide().end()
                     .find(this.criteriaValueSelectors.value.end).hide().end()
                     .find(this.criteriaValueSelectors.value.start).hide();

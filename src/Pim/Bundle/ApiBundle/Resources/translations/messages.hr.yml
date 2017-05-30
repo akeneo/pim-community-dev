@@ -1,0 +1,21 @@
+pim_api:
+  acl:
+    attribute:
+      list: Popis atributa
+    attribute_group:
+      list: Popis atributa grupa
+    category:
+      list: Popis kategorija
+    family:
+      list: Popis obitelji
+    channel.list: Popis kanala
+    locale.list: Popis lokalizacija
+    currency.list: Popis valuta
+  acl_group:
+    attribute: Atributi
+    attribute_group: Grupe atributa
+    category: Kategorije
+    family: Obitelji
+    channel: Kanali
+    locale: Lokalizacija
+    currency: Valute

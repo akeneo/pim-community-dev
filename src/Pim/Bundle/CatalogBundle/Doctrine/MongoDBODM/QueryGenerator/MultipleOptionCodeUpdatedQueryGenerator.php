@@ -39,6 +39,6 @@ class MultipleOptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            AttributeTypes::OPTION_MULTI_SELECT === $entity->getAttribute()->getAttributeType();
+            AttributeTypes::OPTION_MULTI_SELECT === $entity->getAttribute()->getType();
     }
 }

@@ -18,5 +18,5 @@ Feature: Import locales
     And I launch the import job
     And I wait for the "csv_footwear_locale_import" job to finish
     Then there should be the following locales:
-      | code   | activated |
-      | fr_FR  | 1         |
+      | code  | activated |
+      | fr_FR | 1         |

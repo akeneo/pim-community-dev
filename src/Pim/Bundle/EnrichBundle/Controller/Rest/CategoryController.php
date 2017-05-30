@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\EnrichBundle\Twig\CategoryExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -77,6 +75,24 @@ class CategoryController
         }
 
         return new JsonResponse($tree);
+    }
+
+    /**
+     * List root categories
+     *
+     * @return JsonResponse
+     */
+    public function listAction()
+    {
+        $categories = $this->repository->findBy(
+            [
+                'parent' => null,
+            ]
+        );
+
+        return new JsonResponse(
+            $this->normalizer->normalize($categories, 'internal_api')
+        );
     }
 
     /**

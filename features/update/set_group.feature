@@ -6,15 +6,15 @@ Feature: Update groups fields
   Scenario: Successfully update the groups field
     Given a "default" catalog configuration
     And the following products:
-      | sku                              |
-      | pack1                            |
-      | pack2                            |
-      | pack1_and_pack2                  |
+      | sku             |
+      | pack1           |
+      | pack2           |
+      | pack1_and_pack2 |
     Given the following group type:
-      | code    |
+      | code |
       | PACK |
     And the following product groups:
-      | code  | label       | type |
+      | code  | label-en_US | type |
       | PACK1 | First pack  | PACK |
       | PACK2 | Second pack | PACK |
       | PACK3 | Third pack  | PACK |

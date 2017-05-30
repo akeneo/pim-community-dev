@@ -158,9 +158,9 @@ class ProductFieldsBuilder
                 }
             } elseif ($attribute->isScopable()) {
                 $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
-            } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+            } elseif (AttributeTypes::IDENTIFIER === $attribute->getType()) {
                 array_unshift($fieldsList, $attCode);
-            } elseif (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
+            } elseif (AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
                 foreach ($this->currencyRepository->getActivatedCurrencyCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }

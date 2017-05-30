@@ -28,25 +28,25 @@ class ValuesTransformerSpec extends ObjectBehavior
         ];
 
         $attributes = [
-            'sku'  => ['code' => 'sku', 'attributeType' => 'text', 'backendType' => 'text', 'properties' => []],
-            'name' => ['code' => 'name', 'attributeType' => 'text', 'backendType' => 'text', 'properties' => []],
-            'desc' => ['code' => 'desc', 'attributeType' => 'text', 'backendType' => 'text', 'properties' => []],
+            'sku'  => ['code' => 'sku', 'type' => 'text', 'backendType' => 'text', 'properties' => []],
+            'name' => ['code' => 'name', 'type' => 'text', 'backendType' => 'text', 'properties' => []],
+            'desc' => ['code' => 'desc', 'type' => 'text', 'backendType' => 'text', 'properties' => []],
         ];
 
         $expected = [
             'normalizedData' => [],
             'sku'  => [
-                'attribute' => ['code' => 'sku', 'attributeType' => 'text', 'backendType' => 'text', 'properties' => []],
+                'attribute' => ['code' => 'sku', 'type' => 'text', 'backendType' => 'text', 'properties' => []],
                 'locale' => null,
                 'scope' => null
             ],
             'name' => [
-                'attribute' => ['code' => 'name', 'attributeType' => 'text', 'backendType' => 'text', 'properties' => []],
+                'attribute' => ['code' => 'name', 'type' => 'text', 'backendType' => 'text', 'properties' => []],
                 'locale' => 'fr_FR',
                 'scope' => null
             ],
             'desc' => [
-                'attribute' => ['code' => 'desc', 'attributeType' => 'text', 'backendType' => 'text', 'properties' => []],
+                'attribute' => ['code' => 'desc', 'type' => 'text', 'backendType' => 'text', 'properties' => []],
                 'locale' => 'fr_FR',
                 'scope' => 'print'
             ]

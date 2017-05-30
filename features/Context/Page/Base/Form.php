@@ -7,7 +7,12 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
+use Pim\Behat\Decorator\Page\PanelableDecorator;
 
 /**
  * Basic form page
@@ -39,12 +44,23 @@ class Form extends Base
                 'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
-                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid, .tab-container .history'],
+                'Updates grid'                    => [
+                    'css' => '.tab-pane.tab-history table.grid, .tab-container .history'
+                ],
                 'Save'                            => ['css' => '.AknButton--apply'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
-                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator']
-                ]
+                    'decorators' => [PanelableDecorator::class],
+                ],
+                'Available attributes'            => [
+                    'css'        => '.add-attribute',
+                    'decorators' => [AttributeAddSelectDecorator::class]
+                ],
+                'Available groups'                  => [
+                    'css'        => '.add-attribute-group',
+                    'decorators' => [AttributeGroupAddSelectDecorator::class],
+                ],
+                'Tooltips'                        => ['css' => '.icon-info-sign'],
             ],
             $this->elements
         );
@@ -159,12 +175,26 @@ class Form extends Base
     public function visitGroup($group)
     {
         $this->spin(function () use ($group) {
-            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
-            if (null !== $group && $group->isVisible()) {
+            $group = $this->findGroup($group);
+            if ($group->isVisible()) {
                 $group->click();
 
                 return true;
             }
+        }, sprintf('Cannot click the group "%s".', $group));
+    }
+
+    /**
+     * Get the specified group
+     *
+     * @param string $group
+     */
+    public function findGroup($group)
+    {
+        return $this->spin(function () use ($group) {
+            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
+
+            return $group;
         }, sprintf('Cannot find the group "%s".', $group));
     }
 
@@ -245,6 +275,23 @@ class Form extends Base
     }
 
     /**
+     * Get tooltips messages
+     *
+     * @return string[]
+     */
+    public function getTooltipMessages()
+    {
+        $tooltips = $this->findAll('css', $this->elements['Tooltips']['css']);
+
+        $messages = [];
+        foreach ($tooltips as $tooltip) {
+            $messages[] = $tooltip->getAttribute('data-original-title');
+        }
+
+        return $messages;
+    }
+
+    /**
      * Open the available attributes popin
      */
     public function openAvailableAttributesMenu()
@@ -259,47 +306,10 @@ class Form extends Base
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        $list = $this->getElement('Available attributes list');
-        if (!$list->isVisible()) {
-            $this->openAvailableAttributesMenu();
-        }
-
-        $search = $this->getElement('Available attributes search');
-        foreach ($attributes as $attributeLabel) {
-            $search->setValue($attributeLabel);
-            $label = $this->spin(
-                function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
-                },
-                sprintf('Could not find available attribute "%s".', $attributeLabel)
-            );
-
-            $label->click();
-        }
-
-        $this->getElement('Available attributes add button')->press();
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $group
-     *
-     * @return NodeElement
-     */
-    public function findAvailableAttributeInGroup($attribute, $group)
-    {
-        return $this->getElement('Available attributes form')->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
+        $attributeAddSelectElement = $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+        $attributeAddSelectElement->addOptions($attributes);
     }
 
     /**
@@ -327,9 +337,6 @@ class Form extends Base
         }, sprintf('Cannot find "%s" file field', $locator));
 
         $field->attachFile($path);
-        $this
-            ->getSession()
-            ->executeScript('$(\'.edit .field-input input[type="file"], .AknMediaField-fileUploaderInput\').trigger(\'change\');');
     }
 
     /**
@@ -445,24 +452,18 @@ class Form extends Base
      */
     public function findFieldInTabSection($groupField, $field)
     {
-        $tabSection = $this->find(
-            'css',
-            sprintf('.tabsection-title:contains("%s")', $groupField)
-        );
-
-        if (!$tabSection) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find tab section "%s"', $groupField)
+        $tabSection = $this->spin(function () use ($groupField) {
+            return $this->find(
+                'css',
+                sprintf('.tabsection-title:contains("%s")', $groupField)
             );
-        }
+        }, sprintf('Could not find tab section "%s"', $groupField));
 
         $accordionContent = $tabSection->getParent()->find('css', '.tabsection-content');
 
-        if (!$accordionContent->findField($field)) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
-            );
-        }
+        $this->spin(function () use ($accordionContent, $field) {
+            return $accordionContent->findField($field);
+        }, sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField));
     }
 
     /**
@@ -472,14 +473,14 @@ class Form extends Base
      */
     public function fillPopinFields($fields)
     {
-        foreach ($fields as $field => $value) {
-            $field = $this->spin(function () use ($field) {
-                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $field));
-            }, sprintf('Cannot find "%s" in popin field', $field));
+        foreach ($fields as $fieldCode => $value) {
+            $field = $this->spin(function () use ($fieldCode) {
+                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $fieldCode));
+            }, sprintf('Cannot find "%s" in popin field', $fieldCode));
 
             $field->setValue($value);
             $this->getSession()
-                ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
+                ->executeScript(sprintf('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');', $fieldCode));
         }
     }
 
@@ -494,32 +495,20 @@ class Form extends Base
      */
     public function checkFieldChoices($label, array $choices, $isExpected = true)
     {
-        $field = $this->spin(function () use ($label) {
-            return $this->findField($label);
-        }, sprintf('Cannot find "%s" field', $label));
-
-        // TODO: Improve this part to make it work with regular selects if necessary
-        $field->find('css', 'input[type="text"]')->click();
-        $select2Drop   = $this->findById('select2-drop');
-        $selectChoices = $this->spin(function () use ($select2Drop) {
-            $choices = [];
-            $select2Choices = $select2Drop->findAll('css', '.select2-result');
-            if (!empty($select2Choices)) {
-                foreach ($select2Choices as $select2Choice) {
-                    $choices[] = trim($select2Choice->getText(), '[]');
-                }
-
-                return $choices;
-            }
-        }, 'Cannot find "select2-drop" element');
-
+        $labelElement = $this->extractLabelElement($label);
+        $container = $this->getClosest($labelElement, 'AknFieldContainer');
+        $select2 = $this->spin(function () use ($container) {
+            return $container->find('css', '.select2');
+        }, 'Impossible to find the select');
+        $select2 = $this->decorate($select2, [Select2Decorator::class]);
+        $selectChoices = $select2->getAvailableValues();
         if ($isExpected) {
             foreach ($choices as $choice) {
                 if (!in_array($choice, $selectChoices)) {
                     throw new ExpectationException(sprintf(
                         'Expecting to find choice "%s" in field "%s"',
                         $choice,
-                        $label
+                        $labelElement
                     ), $this->getSession());
                 }
             }
@@ -529,11 +518,25 @@ class Form extends Base
                     throw new ExpectationException(sprintf(
                         'Choice "%s" should not be in available for field "%s"',
                         $choice,
-                        $label
+                        $labelElement
                     ), $this->getSession());
                 }
             }
         }
+    }
+
+    public function getAttributeAddSelect()
+    {
+        return $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+    }
+
+    public function getAttributeGroupAddSelect()
+    {
+        return $this->spin(function () {
+            return $this->getElement('Available attribute groups');
+        }, 'Cannot find the add attribute element');
     }
 
     /**
@@ -705,32 +708,23 @@ class Form extends Base
      *
      * @param NodeElement $label
      * @param string      $value
-     *
-     * @throws \InvalidArgumentException
      */
     protected function fillSelect2Field(NodeElement $label, $value)
     {
-        if (trim($value)) {
-            $container = $this->getClosest($label, 'AknFieldContainer');
-            $link = $container->find('css', '.select2-choice');
+        $container = $this->getClosest($label, 'AknFieldContainer');
 
-            if (null !== $link) {
-                $link->click();
-                $this->getSession()->wait($this->getTimeout(), '!$.active');
+        $select2Container = $this->spin(function () use ($container) {
+            return $container->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
 
-                $field = $this->spin(function () use ($value) {
-                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
-                }, sprintf('Cannot find "%s" select2 element', $value));
+        $field = $this->decorate(
+            $select2Container,
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
+        );
 
-                $field->click();
+        $field->setValue($value);
 
-                return;
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $container->getHtml())
-            );
-        }
+        return;
     }
 
     /**
@@ -793,7 +787,11 @@ class Form extends Base
             return $this->find('css', sprintf('#%s', $for));
         }, sprintf('Cannot find element field with id %s', $for));
 
-        $field->setValue($value);
+        $this->spin(function () use ($field, $value) {
+            $field->setValue($value);
+
+            return $field->getValue() === $value;
+        }, sprintf('Cannot fill field "%s" with value "%s"', $label->getHtml(), $value));
 
         $this->getSession()->executeScript(
             sprintf("$('#%s').trigger('change');", $for)
@@ -848,5 +846,21 @@ class Form extends Base
 
             return $tabs;
         }, 'Cannot find any tabs in this page');
+    }
+
+    /**
+     * Returns if the "add available attributes" button is enabled
+     *
+     * @return bool
+     *
+     * @throws TimeoutException
+     */
+    public function isAvailableAttributeEnabled()
+    {
+        $button = $this->spin(function () {
+            return $this->find('css', $this->elements['Available attributes button']['css']);
+        }, 'Cannot find available attribute button');
+        
+        return !$this->getClosest($button, 'select2-container')->hasClass('select2-container-disabled');
     }
 }

@@ -7,8 +7,8 @@ Feature: Delete a product group
   Background:
     Given the "default" catalog configuration
     And the following product groups:
-      | code | label      | type   |
-      | MUG  | MUG Akeneo | X_SELL |
+      | code | label-en_US | type   |
+      | MUG  | MUG Akeneo  | X_SELL |
     And I am logged in as "Julia"
 
   Scenario: Successfully delete a product group from the grid
@@ -20,6 +20,6 @@ Feature: Delete a product group
 
   Scenario: Successfully delete a product group
     Given I edit the "MUG" product group
-    When I press the "Delete" button
+    When I press the "Delete" button and wait for modal
     And I confirm the deletion
     Then I should not see group "MUG"

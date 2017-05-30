@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class FamilyNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer */
+    /** @var NormalizerInterface */
     protected $translationNormalizer;
 
     /** @var CollectionFilterInterface */
@@ -28,13 +28,13 @@ class FamilyNormalizer implements NormalizerInterface
     protected $attributeRequirementRepo;
 
     /**
-     * @param TranslationNormalizer                   $translationNormalizer
+     * @param NormalizerInterface                     $translationNormalizer
      * @param CollectionFilterInterface               $collectionFilter
      * @param AttributeRepositoryInterface            $attributeRepository
      * @param AttributeRequirementRepositoryInterface $attributeRequirementRepo
      */
     public function __construct(
-        TranslationNormalizer $translationNormalizer,
+        NormalizerInterface $translationNormalizer,
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementRepositoryInterface $attributeRequirementRepo

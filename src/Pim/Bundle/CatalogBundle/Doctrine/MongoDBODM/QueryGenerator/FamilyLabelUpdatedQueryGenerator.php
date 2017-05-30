@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
+use Pim\Component\Catalog\Model\FamilyTranslationInterface;
+
 /**
  * Family label updated query generator
  *
@@ -12,15 +14,19 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 class FamilyLabelUpdatedQueryGenerator extends AbstractQueryGenerator
 {
     /**
+     * Generates a query to update all the products belonging to the updated family.
+     *
+     * @param FamilyTranslationInterface $entity
+     *
      * {@inheritdoc}
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
         return [[
-            ['family' => $entity->getId()],
+            ['family' => $entity->getForeignKey()->getId()],
             [
                 '$set' => [
-                    sprintf('normalizedData.family.label.%s', $entity->getLocale()) => (string) $newValue
+                    sprintf('normalizedData.family.labels.%s', $entity->getLocale()) => (string) $newValue
                 ]
             ],
             ['multiple' => true]
