@@ -909,7 +909,7 @@ class WebUser extends RawMinkContext
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should (not )?see available attributes? (.*?)(?: in group "([^"]*)")?$/
+     * @Then /^I should (not )?see available attributes? ([^"]*)(?: in group "([^"]*)")?$/
      *
      * @throws ExpectationException
      */

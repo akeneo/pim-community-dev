@@ -40,8 +40,8 @@ Feature: Edit an attribute group
       """
       code;attributes;sort_order
       Z;sole_fabric;100
-      Y;size;300
-      X;side_view;200
+      Y;length;300
+      X;weight;200
       """
     And the following job "csv_footwear_attribute_group_import" configuration:
       | filePath | %file to import% |
@@ -55,6 +55,6 @@ Feature: Edit an attribute group
       | family | Boots  |
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
-    When I add available attributes Sole fabric, Size, Side view
+    When I add available attributes Sole fabric, Length, Weight
     Then I should see the text "[Z] [X] [Y]"
 
