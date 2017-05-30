@@ -276,7 +276,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "code":"technical"
+        "code":"attributeGroupA"
     }
 JSON;
 
