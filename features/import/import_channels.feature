@@ -27,7 +27,7 @@ Feature: Import channels
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
-      code;label;currencies;locales;tree;conversion_units
+      code;label-en_US;currencies;locales;tree;conversion_units
       mobile;Mobile app;EUR,USD;en_US,fr_FR;2014_collection;
       """
     And the following job "csv_footwear_channel_import" configuration:
