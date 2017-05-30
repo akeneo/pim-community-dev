@@ -6,9 +6,6 @@
 - PIM-6118: Improve attribute add select to avoid performance impact
 - GITHUB-5716: Redo family mass edit form using backbonejs architecture and internal REST API
 
-## Technical improvements
-- GITHUB-5285: Update to spout 2.7.1
-
 ## Bug Fixes
 
 - PIM-6270: Fix sequential edit style

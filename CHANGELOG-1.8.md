@@ -12,6 +12,7 @@
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- GITHUB-5285: Upgrade to spout 2.7.2
 
 ## BC breaks
 
