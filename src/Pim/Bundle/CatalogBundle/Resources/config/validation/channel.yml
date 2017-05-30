@@ -21,6 +21,8 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                     standardPropertyName: tree
         currencies:
             - Count: { min: 1 }
+            - All:
+                - Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated: ~
         locales:
             - Count: { min: 1 }
         translations:

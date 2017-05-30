@@ -25,3 +25,4 @@ file.extensions.message:                                                        
 The category "%category%" has to be a root category.: The category "%category%" has to be a root category.
 Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "%attributeCode%" given.: Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "%attributeCode%" given.
 Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "%unitCode%" given.: Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "%unitCode%" given.
+The currency "%currency%" has to be activated.: The currency "%currency%" has to be activated.

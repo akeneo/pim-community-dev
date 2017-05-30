@@ -172,6 +172,31 @@ class ChannelValidationIntegration extends TestCase
         $this->assertSame('currencies', $violation->getPropertyPath());
     }
 
+    public function testChannelCurrenciesNotActivated()
+    {
+        $channel = $this->createChannel();
+        $this->getUpdater()->update(
+            $channel,
+            [
+                'code'          => 'new_channel',
+                'category_tree' => 'master',
+                'currencies'    => ['BEC'],
+                'locales'       => ['fr_FR'],
+            ]
+        );
+
+        $violations = $this->getValidator()->validate($channel);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'The currency "BEC" has to be activated.',
+            $violation->getMessage()
+        );
+        $this->assertSame('currencies[0]', $violation->getPropertyPath());
+    }
+
+
     public function testChannelLocalesCollectionLength()
     {
         $channel = $this->createChannel();
