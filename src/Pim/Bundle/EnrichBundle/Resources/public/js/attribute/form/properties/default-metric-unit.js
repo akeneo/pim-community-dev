@@ -8,79 +8,64 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/form',
+    'pim/attribute-edit-form/properties/field',
     'pim/fetcher-registry',
     'text!pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
     __,
-    BaseForm,
+    BaseField,
     fetcherRegistry,
     template
 ) {
-    return BaseForm.extend({
-        className: 'AknFieldContainer',
+    return BaseField.extend({
         template: _.template(template),
-        fieldName: 'default_metric_unit',
-        events: {
-            'change select': function (event) {
-                this.updateModel(event.target);
-                this.getRoot().render();
-            }
-        },
+        measures: {},
 
         /**
          * {@inheritdoc}
          */
         configure: function () {
-            this.listenTo(this.getRoot(), this.getRoot().preUpdateEventName, function (newData) {
-                var oldData = this.getFormData();
-
-                if (_.has(newData, 'metric_family') && oldData.metric_family !== newData.metric_family) {
-                    var unitNewData = {};
-                    unitNewData[this.fieldName] = null;
-
-                    this.setData(unitNewData, {silent: true});
-                }
-            }.bind(this));
-
-            return BaseForm.prototype.configure.apply(this, arguments);
-        },
-
-        render: function () {
-            fetcherRegistry.getFetcher('measure').fetchAll()
-                .then(function (measures) {
-                    var metricFamily = this.getFormData().metric_family;
-                    var choices = metricFamily ? this.formatChoices(measures[metricFamily].units) : [];
-
-                    this.$el.html(this.template({
-                        value: this.getFormData()[this.fieldName],
-                        fieldName: this.fieldName,
-                        choices: choices,
-                        labels: {
-                            field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
-                            required: __('pim_enrich.form.required'),
-                            defaultLabel: __('pim_enrich.entity.attribute.default_metric_unit.default_value')
-                        },
-                        multiple: false
-                    }));
-
-                    this.$('select.select2').select2();
-
-                    this.renderExtensions();
-                    this.delegateEvents();
-                }.bind(this));
+            return $.when(
+                BaseField.prototype.configure.apply(this, arguments),
+                fetcherRegistry.getFetcher('measure').fetchAll()
+                    .then(function (measures) {
+                        this.measures = measures;
+                    }.bind(this))
+            );
         },
 
         /**
-         * @param {Object} field
+         * {@inheritdoc}
          */
-        updateModel: function (field) {
-            var newData = {};
-            newData[this.fieldName] = $(field).val();
+        renderInput: function (templateContext) {
+            var metricFamily = this.getFormData().metric_family;
 
-            this.setData(newData);
+            return this.template(_.extend(templateContext, {
+                value: this.getFormData()[this.fieldName],
+                choices: this.formatChoices(this.measures[metricFamily].units),
+                multiple: false,
+                labels: {
+                    defaultLabel: __('pim_enrich.entity.attribute.default_metric_unit.default_value')
+                }
+            }));
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        postRender: function () {
+            this.$('select.select2').select2();
+        },
+
+        /**
+         * {@inheritdoc}
+         *
+         * This field shouldn't be displayed if the attribute has no metric family defined yet.
+         */
+        isVisible: function () {
+            return undefined !== this.getFormData().metric_family && null !== this.getFormData().metric_family;
         },
 
         /**
@@ -109,6 +94,13 @@ function (
                 unitCodes,
                 _.map(unitCodes, __)
             );
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getFieldValue: function (field) {
+            return $(field).val();
         }
     });
 });

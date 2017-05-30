@@ -8,7 +8,7 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/form',
+    'pim/attribute-edit-form/properties/field',
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
@@ -17,53 +17,48 @@ define([
 function (
     _,
     __,
-    BaseForm,
+    BaseField,
     fetcherRegistry,
     UserContext,
     i18n,
     template
 ) {
-    return BaseForm.extend({
-        className: 'AknFieldContainer',
+    return BaseField.extend({
         template: _.template(template),
-        fieldName: 'group',
-        events: {
-            'change select': function (event) {
-                this.updateModel(event.target);
-                this.getRoot().render();
-            }
-        },
+        attributeGroups: {},
 
-        render: function () {
-            fetcherRegistry.getFetcher('attribute-group').fetchAll()
-                .then(function (attributeGroups) {
-                    this.$el.html(this.template({
-                        value: this.getFormData()[this.fieldName],
-                        fieldName: this.fieldName,
-                        choices: this.formatChoices(attributeGroups, UserContext.get('catalogLocale')),
-                        labels: {
-                            field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
-                            required: __('pim_enrich.form.required'),
-                            defaultLabel: __('pim_enrich.entity.attribute.default_metric_unit.default_value')
-                        },
-                        multiple: false
-                    }));
-
-                    this.$('select.select2').select2();
-
-                    this.renderExtensions();
-                    this.delegateEvents();
-                }.bind(this));
+        /**
+         * {@inheritdoc}
+         */
+        configure: function () {
+            return $.when(
+                BaseField.prototype.configure.apply(this, arguments),
+                fetcherRegistry.getFetcher('attribute-group').fetchAll()
+                    .then(function (attributeGroups) {
+                        this.attributeGroups = attributeGroups;
+                    }.bind(this))
+            );
         },
 
         /**
-         * @param {Object} field
+         * {@inheritdoc}
          */
-        updateModel: function (field) {
-            var newData = {};
-            newData[this.fieldName] = $(field).val();
+        renderInput: function (templateContext) {
+            return this.template(_.extend(templateContext, {
+                value: this.getFormData()[this.fieldName],
+                choices: this.formatChoices(this.attributeGroups, UserContext.get('catalogLocale')),
+                multiple: false,
+                labels: {
+                    defaultLabel: __('pim_enrich.entity.attribute.group.default_value')
+                }
+            }));
+        },
 
-            this.setData(newData);
+        /**
+         * {@inheritdoc}
+         */
+        postRender: function () {
+            this.$('select.select2').select2();
         },
 
         /**
@@ -74,6 +69,13 @@ function (
             return _.mapObject(attributeGroups, function (group) {
                 return i18n.getLabel(group.labels, currentLocale, group.code);
             });
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getFieldValue: function (field) {
+            return $(field).val();
         }
     });
 });

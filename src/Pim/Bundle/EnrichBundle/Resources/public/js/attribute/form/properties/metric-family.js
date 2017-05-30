@@ -8,57 +8,53 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/form',
+    'pim/attribute-edit-form/properties/field',
     'pim/fetcher-registry',
     'text!pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
     __,
-    BaseForm,
+    BaseField,
     fetcherRegistry,
     template
 ) {
-    return BaseForm.extend({
-        className: 'AknFieldContainer',
+    return BaseField.extend({
         template: _.template(template),
-        fieldName: 'metric_family',
-        events: {
-            'change select': function (event) {
-                this.updateModel(event.target);
-                this.getRoot().render();
-            }
-        },
+        measures: {},
 
-        render: function () {
-            fetcherRegistry.getFetcher('measure').fetchAll()
-                .then(function (measures) {
-                    this.$el.html(this.template({
-                        value: this.getFormData()[this.fieldName],
-                        fieldName: this.fieldName,
-                        choices: this.formatChoices(measures),
-                        labels: {
-                            field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
-                            required: __('pim_enrich.form.required')
-                        },
-                        multiple: false
-                    }));
-
-                    this.$('select.select2').select2();
-
-                    this.renderExtensions();
-                    this.delegateEvents();
-                }.bind(this));
+        /**
+         * {@inheritdoc}
+         */
+        configure: function () {
+            return $.when(
+                BaseField.prototype.configure.apply(this, arguments),
+                fetcherRegistry.getFetcher('measure').fetchAll()
+                    .then(function (measures) {
+                        this.measures = measures;
+                    }.bind(this))
+            );
         },
 
         /**
-         * @param {Object} field
+         * {@inheritdoc}
          */
-        updateModel: function (field) {
-            var newData = {};
-            newData[this.fieldName] = $(field).val();
+        renderInput: function (templateContext) {
+            return this.template(_.extend(templateContext, {
+                value: this.getFormData()[this.fieldName],
+                choices: this.formatChoices(this.measures),
+                multiple: false,
+                labels: {
+                    defaultLabel: __('pim_enrich.entity.attribute.metric_family.default_value')
+                }
+            }));
+        },
 
-            this.setData(newData);
+        /**
+         * {@inheritdoc}
+         */
+        postRender: function () {
+            this.$('select.select2').select2();
         },
 
         /**
@@ -87,6 +83,24 @@ function (
                 metricFamilyCodes,
                 _.map(metricFamilyCodes, __)
             );
+        },
+
+        /**
+         * {@inheritdoc}
+         *
+         * Override to reset the default metric unit each time the metric family changes.
+         */
+        updateModel: function (field) {
+            BaseField.prototype.updateModel.apply(this, arguments);
+
+            this.setData({default_metric_unit: null}, {silent: true});
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getFieldValue: function (field) {
+            return $(field).val();
         }
     });
 });

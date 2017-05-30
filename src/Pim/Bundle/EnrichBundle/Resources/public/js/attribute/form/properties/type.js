@@ -8,40 +8,41 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/form',
+    'pim/attribute-edit-form/properties/field',
     'text!pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
     __,
-    BaseForm,
+    BaseField,
     template
 ) {
-    return BaseForm.extend({
-        className: 'AknFieldContainer',
+    return BaseField.extend({
         template: _.template(template),
-        fieldName: 'type',
 
-        render: function () {
+        /**
+         * {@inheritdoc}
+         */
+        renderInput: function (templateContext) {
             var value = this.getFormData()[this.fieldName];
             var choices = {};
             choices[value] = __('pim_enrich.entity.attribute.type.' + value);
 
-            this.$el.html(this.template({
+            return this.template(_.extend(templateContext, {
                 value: value,
-                fieldName: this.fieldName,
                 choices: choices,
+                multiple: false,
                 labels: {
-                    field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
-                    required: __('pim_enrich.form.required')
-                },
-                multiple: false
+                    defaultLabel: ''
+                }
             }));
+        },
 
+        /**
+         * {@inheritdoc}
+         */
+        postRender: function () {
             this.$('select.select2').select2();
-
-            this.renderExtensions();
-            this.delegateEvents();
         }
     });
 });

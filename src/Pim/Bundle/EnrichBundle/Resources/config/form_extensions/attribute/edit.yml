@@ -110,7 +110,7 @@ extensions:
         module: pim/attribute-edit-form/properties/text
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 120
+        position: 100
         config:
             fieldName: code
 
@@ -118,19 +118,23 @@ extensions:
         module: pim/attribute-edit-form/properties/type
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 130
+        position: 110
+        config:
+            fieldName: type
 
     pim-attribute-edit-form-properties-common-group:
         module: pim/attribute-edit-form/properties/group
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 140
+        position: 120
+        config:
+            fieldName: group
 
     pim-attribute-edit-form-properties-common-scopable:
         module: pim/attribute-edit-form/properties/boolean
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 150
+        position: 130
         config:
             fieldName: scopable
 
@@ -138,7 +142,7 @@ extensions:
         module: pim/attribute-edit-form/properties/boolean
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 160
+        position: 140
         config:
             fieldName: localizable
 
@@ -146,7 +150,7 @@ extensions:
         module: pim/attribute-edit-form/properties/is-locale-specific
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 170
+        position: 150
         config:
             fieldName: is_locale_specific
 
@@ -154,13 +158,15 @@ extensions:
         module: pim/attribute-edit-form/properties/available-locales
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 180
+        position: 160
+        config:
+            fieldName: available_locales
 
     pim-attribute-edit-form-properties-common-usable_as_grid_filter:
         module: pim/attribute-edit-form/properties/boolean
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 190
+        position: 170
         config:
             fieldName: useable_as_grid_filter
 

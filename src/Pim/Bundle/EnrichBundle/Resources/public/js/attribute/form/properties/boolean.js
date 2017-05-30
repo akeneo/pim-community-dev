@@ -8,66 +8,43 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/form',
+    'pim/attribute-edit-form/properties/field',
     'text!pim/template/attribute/tab/properties/boolean'
 ],
 function (
     _,
     __,
-    BaseForm,
+    BaseField,
     template
 ) {
-    return BaseForm.extend({
-        className: 'AknFieldContainer',
+    return BaseField.extend({
         template: _.template(template),
-        config: {},
-        events: {
-            'change input': function (event) {
-                this.updateModel(event.target);
-                this.getRoot().render();
-            }
+
+        /**
+         * {@inheritdoc}
+         */
+        renderInput: function (templateContext) {
+            return this.template(_.extend(templateContext, {
+                value: this.getFormData()[this.fieldName],
+                labels: {
+                    on: __('switch_on'),
+                    off: __('switch_off')
+                }
+            }));
         },
 
         /**
          * {@inheritdoc}
          */
-        initialize: function (meta) {
-            this.config = meta.config;
-
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
-
-        render: function () {
-            if (undefined === this.config.fieldName) {
-                throw new Error('The view "' + this.code + '" must be configured with a field name.');
-            }
-
-            var fieldName = this.config.fieldName;
-
-            this.$el.html(this.template({
-                value: this.getFormData()[fieldName],
-                fieldName: fieldName,
-                labels: {
-                    field: __('pim_enrich.form.attribute.tab.properties.' + fieldName),
-                    on: __('switch_on'),
-                    off: __('switch_off')
-                }
-            }));
-
+        postRender: function () {
             this.$('.switch').bootstrapSwitch();
-
-            this.renderExtensions();
-            this.delegateEvents();
         },
 
         /**
-         * @param {Object} field
+         * {@inheritdoc}
          */
-        updateModel: function (field) {
-            var newData = {};
-            newData[this.config.fieldName] = $(field).is(':checked');
-
-            this.setData(newData);
+        getFieldValue: function (field) {
+            return $(field).is(':checked');
         }
     });
 });

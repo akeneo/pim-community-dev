@@ -20,12 +20,16 @@ extensions:
         parent: pim-attribute-edit-form-metric-type-specific-params
         targetZone: content
         position: 100
+        config:
+            fieldName: metric_family
 
     pim-attribute-edit-form-metric-type-specific-params-default-metric-unit:
         module: pim/attribute-edit-form/properties/default-metric-unit
         parent: pim-attribute-edit-form-metric-type-specific-params
         targetZone: content
         position: 110
+        config:
+            fieldName: default_metric_unit
 
     pim-attribute-edit-form-metric-validation-params:
         module: pim/common/simple-view

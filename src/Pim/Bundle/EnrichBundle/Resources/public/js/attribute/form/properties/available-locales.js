@@ -7,33 +7,26 @@
 
 define([
     'underscore',
-    'oro/translator',
-    'pim/form',
+    'pim/attribute-edit-form/properties/field',
     'pim/fetcher-registry',
     'text!pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
-    __,
-    BaseForm,
+    BaseField,
     fetcherRegistry,
     template
 ) {
-    return BaseForm.extend({
-        className: 'AknFieldContainer',
+    return BaseField.extend({
         template: _.template(template),
-        fieldName: 'available_locales',
-        events: {
-            'change select': function (event) {
-                this.updateModel(event.target);
-                this.getRoot().render();
-            }
-        },
         availableLocales: [],
 
+        /**
+         * {@inheritdoc}
+         */
         configure: function () {
             return $.when(
-                BaseForm.prototype.configure.apply(this, arguments),
+                BaseField.prototype.configure.apply(this, arguments),
                 fetcherRegistry.getFetcher('locale').fetchActivated()
                     .then(function (availableLocales) {
                         this.availableLocales = availableLocales;
@@ -41,36 +34,34 @@ function (
             );
         },
 
-        render: function () {
-            if (!this.getFormData().is_locale_specific) {
-                this.$el.empty();
-                return;
-            }
-
-            this.$el.html(this.template({
+        /**
+         * {@inheritdoc}
+         */
+        renderInput: function (templateContext) {
+            return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
-                fieldName: this.fieldName,
                 choices: this.formatChoices(this.availableLocales),
+                multiple: true,
                 labels: {
-                    field: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName)
-                },
-                multiple: true
+                    defaultLabel: ''
+                }
             }));
-
-            this.$('select.select2').select2();
-
-            this.renderExtensions();
-            this.delegateEvents();
         },
 
         /**
-         * @param {Object} field
+         * {@inheritdoc}
          */
-        updateModel: function (field) {
-            var newData = {};
-            newData[this.fieldName] = $(field).val();
+        postRender: function () {
+            this.$('select.select2').select2();
+        },
 
-            this.setData(newData);
+        /**
+         * {@inheritdoc}
+         *
+         * This field shouldn't be displayed if the attribute is not locale specific.
+         */
+        isVisible: function () {
+            return undefined !== this.getFormData().is_locale_specific && this.getFormData().is_locale_specific;
         },
 
         /**
@@ -81,6 +72,13 @@ function (
                 _.pluck(locales, 'code'),
                 _.pluck(locales, 'label')
             );
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        getFieldValue: function (field) {
+            return $(field).val();
         }
     });
 });

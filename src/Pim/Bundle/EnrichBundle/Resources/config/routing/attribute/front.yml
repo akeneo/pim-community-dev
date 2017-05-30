@@ -7,6 +7,6 @@ pim_enrich_attribute_create:
     defaults: { _controller: pim_enrich.controller.attribute:createAction }
 
 pim_enrich_attribute_edit:
-    path: /{identifier}/edit
+    path: /{code}/edit
     requirements:
-        identifier: '[a-zA-Z0-9_]+'
+        code: '[a-zA-Z0-9_]+'

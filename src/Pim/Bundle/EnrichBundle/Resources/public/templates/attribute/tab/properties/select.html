@@ -1,24 +1,17 @@
-<div class="AknFieldContainer-header">
-    <label class="AknFieldContainer-label control-label" for="pim_enrich_attribute_form_<%- fieldName %>">
-        <%- labels.field %> <em><%- labels.required %></em>
-    </label>
-</div>
-<div class="AknFieldContainer-inputContainer">
-    <select
-        id="pim_enrich_attribute_form_<%- fieldName %>"
-        class="select2"
-        name="<%- fieldName %>"
-        data-placeholder="<%- labels.defaultLabel %>"
-        <% if (multiple) { %> multiple<% } %>
-    >
-        <option value=""<% if (!value) { %> selected<% } %>></option>
-        <% _.each(choices, function (choiceLabel, choiceValue) { %>
-            <option
-                value="<%- choiceValue %>"
-                <% if ((!multiple && choiceValue === value) || (multiple && _.contains(value, choiceValue))) { %> selected<% } %>
-            >
-                <%- choiceLabel %>
-            </option>
-        <% }); %>
-    </select>
-</div>
+<select
+    id="pim_enrich_attribute_form_<%- fieldName %>"
+    class="select2"
+    name="<%- fieldName %>"
+    data-placeholder="<%- labels.defaultLabel %>"
+    <% if (multiple) { %> multiple<% } %>
+>
+    <option value=""<% if (!value) { %> selected<% } %>></option>
+    <% _.each(choices, function (choiceLabel, choiceValue) { %>
+        <option
+            value="<%- choiceValue %>"
+            <% if ((!multiple && choiceValue === value) || (multiple && _.contains(value, choiceValue))) { %> selected<% } %>
+        >
+            <%- choiceLabel %>
+        </option>
+    <% }); %>
+</select>
