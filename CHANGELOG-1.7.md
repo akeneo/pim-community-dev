@@ -139,6 +139,7 @@
 - TIP-682: Update to Symfony 2.7.23
 - TIP-666: Implement BEM methodology for CSS
 - TIP-575: Rename FileIterator classes to FlatFileIterator and changes the reader/processor behavior to iterate over the item's position in the file instead of the item's line number in the file.
+- Add `Pim\Bundle\CatalogBundle\EventSubscriber\LocaleActivationSubscriber` to dispatch an event when a locale is activated or not.
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
 - TIP-667: Introduce a product value factory service to instanciate product values.
 - TIP-652: Redo the import/export screens in new PEF architecture
