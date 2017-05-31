@@ -34,7 +34,7 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         ProductInterface $publishedProduct
     ) {
         $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXTAREA);
 
         $value = new ScalarProductValue($attribute, null, null, null);
 

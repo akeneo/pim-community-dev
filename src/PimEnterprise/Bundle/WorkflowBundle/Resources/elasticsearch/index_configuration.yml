@@ -33,23 +33,23 @@ mappings:
                         type: 'keyword'
                         normalizer: 'family_normalizer'
             -
-                text_area:
-                    path_match: 'values.*-text.*'
+                textarea:
+                    path_match: 'values.*-textarea.*'
                     match_mapping_type: 'string'
                     mapping:
                         fields:
                             preprocessed:
                                 type: 'keyword'
-                                normalizer: 'text_normalizer'
+                                normalizer: 'textarea_normalizer'
                         type: 'text'
-                        analyzer: 'text_analyzer'
+                        analyzer: 'textarea_analyzer'
             -
                 text:
-                    path_match: 'values.*-varchar.*'
+                    path_match: 'values.*-text.*'
                     match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
-                        normalizer: 'varchar_normalizer'
+                        normalizer: 'text_normalizer'
             -
                 completeness:
                      path_match: 'completeness.*'
