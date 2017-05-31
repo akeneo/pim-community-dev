@@ -316,7 +316,7 @@ class IndexCreator
      */
     protected function getIndexTypeFromAttribute(AttributeInterface $attribute)
     {
-        return (AttributeTypes::BACKEND_TYPE_TEXT === $attribute->getBackendType()) ?
+        return (AttributeTypes::BACKEND_TYPE_TEXTAREA === $attribute->getBackendType()) ?
             self::HASHED_INDEX_TYPE : self::ASCENDANT_INDEX_TYPE;
     }
 }

@@ -16,7 +16,7 @@ class TextAreaTypeSpec extends ObjectBehavior
     {
         $value->getAttribute()->willReturn($attribute);
 
-        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_TEXT, 'textarea', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_TEXTAREA, 'textarea', $guesser);
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, $attribute)

@@ -30,7 +30,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
         $numberValue->getAttribute()->willReturn($numberAttribute);
 
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
         $numberAttribute->getBackendType()->willReturn('decimal');
 
         $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
@@ -48,15 +48,15 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
         $textAreaValue->getLocale()->willReturn(null);
         $textAreaValue->getScope()->willReturn(null);
-        $textAreaValue->getData()->willReturn('a product name');
+        $textAreaValue->getData()->willReturn('a product description');
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product name'
+                    '<all_locales>' => 'a product description'
                 ]
             ]
         ]);
@@ -71,11 +71,11 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaValue->getScope()->willReturn(null);
         $textAreaValue->getData()->willReturn(null);
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
                 ]
@@ -91,15 +91,15 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaValue->getLocale()->willReturn(null);
         $textAreaValue->getScope()->willReturn(null);
         $textAreaValue->getData()->willReturn("a\n product \n\r\n\n
-name\r\n");
+description\r\n");
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product name'
+                    '<all_locales>' => 'a product description'
                 ]
             ]
         ]);
@@ -112,15 +112,15 @@ name\r\n");
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
         $textAreaValue->getLocale()->willReturn(null);
         $textAreaValue->getScope()->willReturn(null);
-        $textAreaValue->getData()->willReturn('<br/><h1>a</h1> <i>product</i><br/> name<hr/><br/>');
+        $textAreaValue->getData()->willReturn('<br/><h1>a</h1> <i>product</i><br/> description<hr/><br/>');
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product name'
+                    '<all_locales>' => 'a product description'
                 ]
             ]
         ]);
@@ -134,15 +134,15 @@ name\r\n");
         $textAreaValue->getLocale()->willReturn(null);
         $textAreaValue->getScope()->willReturn(null);
         $textAreaValue->getData()->willReturn("<br/>\n<h1>a</h1>\r\n <i>product</i>
-<br/>\n name<hr/><br/>\n");
+<br/>\n description<hr/><br/>\n");
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product name'
+                    '<all_locales>' => 'a product description'
                 ]
             ]
         ]);
@@ -155,15 +155,15 @@ name\r\n");
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
         $textAreaValue->getLocale()->willReturn('fr_FR');
         $textAreaValue->getScope()->willReturn(null);
-        $textAreaValue->getData()->willReturn("<h1>a product name</h1>\n");
+        $textAreaValue->getData()->willReturn("<h1>a product description</h1>\n");
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 '<all_channels>' => [
-                    'fr_FR' => 'a product name'
+                    'fr_FR' => 'a product description'
                 ]
             ]
         ]);
@@ -176,15 +176,15 @@ name\r\n");
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
         $textAreaValue->getLocale()->willReturn(null);
         $textAreaValue->getScope()->willReturn('ecommerce');
-        $textAreaValue->getData()->willReturn("<h1>a product name</h1>\n");
+        $textAreaValue->getData()->willReturn("<h1>a product description</h1>\n");
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 'ecommerce' => [
-                    '<all_locales>' => 'a product name'
+                    '<all_locales>' => 'a product description'
                 ]
             ]
         ]);
@@ -197,15 +197,15 @@ name\r\n");
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
         $textAreaValue->getLocale()->willReturn('fr_FR');
         $textAreaValue->getScope()->willReturn('ecommerce');
-        $textAreaValue->getData()->willReturn("<h1>a product name</h1>\n");
+        $textAreaValue->getData()->willReturn("<h1>a product description</h1>\n");
 
-        $textAreaAttribute->getCode()->willReturn('name');
-        $textAreaAttribute->getBackendType()->willReturn('text');
+        $textAreaAttribute->getCode()->willReturn('description');
+        $textAreaAttribute->getBackendType()->willReturn('textarea');
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
-            'name-text' => [
+            'description-textarea' => [
                 'ecommerce' => [
-                    'fr_FR' => 'a product name'
+                    'fr_FR' => 'a product description'
                 ]
             ]
         ]);

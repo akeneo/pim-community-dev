@@ -124,7 +124,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $violation->getPropertyPath()->willReturn('values[name-ecommerce-<all_locales>].varchar');
+        $violation->getPropertyPath()->willReturn('values[name-ecommerce-<all_locales>].text');
         $violation->getMessage()->willReturn('The text is too short.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
@@ -146,7 +146,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $violation->getPropertyPath()->willReturn('values[{"code":"name","locale":null,"scope":"ecommerce"}].varchar');
+        $violation->getPropertyPath()->willReturn('values[{"code":"name","locale":null,"scope":"ecommerce"}].text');
         $violation->getMessage()->willReturn('The text is too short.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([

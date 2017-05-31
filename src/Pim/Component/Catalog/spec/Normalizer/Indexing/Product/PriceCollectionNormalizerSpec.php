@@ -31,7 +31,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $textValue->getAttribute()->willReturn($textAttribute);
         $priceCollectionValue->getAttribute()->willReturn($priceCollectionAttribute);
 
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
         $priceCollectionAttribute->getBackendType()->willReturn('prices');
 
         $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);

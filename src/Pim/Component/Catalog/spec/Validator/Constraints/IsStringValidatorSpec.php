@@ -72,7 +72,7 @@ class IsStringValidatorSpec extends ObjectBehavior
     ) {
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getBackendType()->willReturn('text');
         $productValue->getData()->willReturn('bar');
 
         $context

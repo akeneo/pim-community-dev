@@ -52,7 +52,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -71,7 +71,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -90,7 +90,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -109,7 +109,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -130,7 +130,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -154,7 +154,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -180,7 +180,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -206,7 +206,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -215,13 +215,13 @@ class StringFilterSpec extends ObjectBehavior
         $expr->literal('My Sku')->willReturn($literal);
         $expr->notLike(Argument::any(), 'My Sku')->shouldBeCalled()->willReturn($comp);
         $literal->__toString()->willReturn('My Sku');
-        $comp->__toString()->willReturn('filtersku.varchar NOT LIKE "My Sku"');
+        $comp->__toString()->willReturn('filtersku.text NOT LIKE "My Sku"');
 
         $queryBuilder->innerJoin(
             Argument::any(),
             Argument::any(),
             'WITH',
-            Argument::containingString('.attribute = 42 AND filtersku.varchar NOT LIKE "My Sku"')
+            Argument::containingString('.attribute = 42 AND filtersku.text NOT LIKE "My Sku"')
         )->shouldBeCalled();
 
         $this->addAttributeFilter($sku, '!=', 'My Sku', null, null, ['field' => 'sku']);

@@ -55,6 +55,8 @@
 - Change the constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor` to remove `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\ProductDatasource` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
+- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
+- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
 
 ### Others
 

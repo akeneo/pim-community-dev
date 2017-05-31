@@ -21,7 +21,7 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductValueInterface &&
-            AttributeTypes::BACKEND_TYPE_VARCHAR === $data->getAttribute()->getBackendType() &&
+            AttributeTypes::BACKEND_TYPE_TEXT === $data->getAttribute()->getBackendType() &&
             'indexing' === $format;
     }
 

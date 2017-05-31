@@ -58,14 +58,14 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter([
                 'term' => [
-                    'values.name-varchar.ecommerce.en_US' => 'Sony',
+                    'values.name-text.ecommerce.en_US' => 'Sony',
                 ],
             ]
         )->shouldBeCalled();
@@ -80,20 +80,20 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot([
                 'term' => [
-                    'values.name-varchar.ecommerce.en_US' => 'Sony',
+                    'values.name-text.ecommerce.en_US' => 'Sony',
                 ],
             ]
         )->shouldBeCalled();
 
         $sqb->addFilter([
-                'exists' => ['field' => 'values.name-varchar.ecommerce.en_US'],
+                'exists' => ['field' => 'values.name-text.ecommerce.en_US'],
             ]
         )->shouldBeCalled();
 
@@ -107,14 +107,14 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
         $sqb->addMustNot([
                 'exists' => [
-                    'field' => 'values.name-varchar.ecommerce.en_US',
+                    'field' => 'values.name-text.ecommerce.en_US',
                 ],
             ]
         )->shouldBeCalled();
@@ -129,14 +129,14 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter([
                 'exists' => [
-                    'field' => 'values.name-varchar.ecommerce.en_US',
+                    'field' => 'values.name-text.ecommerce.en_US',
                 ],
             ]
         )->shouldBeCalled();
@@ -151,14 +151,14 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter([
                 'query_string' => [
-                    'default_field' => 'values.name-varchar.ecommerce.en_US',
+                    'default_field' => 'values.name-text.ecommerce.en_US',
                     'query'         => '*sony*',
                 ],
             ]
@@ -174,7 +174,7 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
@@ -182,7 +182,7 @@ class TextFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'query_string' => [
-                    'default_field' => 'values.name-varchar.ecommerce.en_US',
+                    'default_field' => 'values.name-text.ecommerce.en_US',
                     'query'         => '*sony*',
                 ],
             ]
@@ -191,7 +191,7 @@ class TextFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => 'values.name-varchar.ecommerce.en_US',
+                    'field' => 'values.name-text.ecommerce.en_US',
                 ],
             ]
         )->shouldBeCalled();
@@ -206,14 +206,14 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
         $sqb->addFilter([
                 'query_string' => [
-                    'default_field' => 'values.name-varchar.ecommerce.en_US',
+                    'default_field' => 'values.name-text.ecommerce.en_US',
                     'query'         => 'sony*',
                 ],
             ]
@@ -237,7 +237,7 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
@@ -259,7 +259,7 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
@@ -280,7 +280,7 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
         $name->isLocaleSpecific()->willReturn(true);
         $name->getAvailableLocaleCodes('fr_FR');
 
@@ -304,7 +304,7 @@ class TextFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
         $name->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "name" does not expect a scope, "ecommerce" given.');

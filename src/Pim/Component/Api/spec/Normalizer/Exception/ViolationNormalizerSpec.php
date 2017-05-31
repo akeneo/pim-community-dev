@@ -52,7 +52,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
         $violation->getRoot()->willReturn($product);
         $violation->getMessage()->willReturn('Not Blank');
-        $violation->getPropertyPath()->willReturn('values[sku].varchar');
+        $violation->getPropertyPath()->willReturn('values[sku].text');
         $violation->getMessageTemplate()->willReturn(null);
 
         $constraintViolations->getIterator()->willReturn($iterator);
@@ -103,7 +103,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
         $violationProductValue->getRoot()->willReturn($product);
         $violationProductValue->getMessage()->willReturn('Product value sku is too long (10)');
-        $violationProductValue->getPropertyPath()->willReturn('values[sku].varchar');
+        $violationProductValue->getPropertyPath()->willReturn('values[sku].text');
         $violationProductValue->getConstraint()->willReturn($lengthConstraint);
         $violationProductValue->getMessageTemplate()->willReturn('This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.');
 
@@ -165,7 +165,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
         $violationProductValue->getRoot()->willReturn($product);
         $violationProductValue->getMessage()->willReturn('This value is not valid.');
-        $violationProductValue->getPropertyPath()->willReturn('values[sku].varchar');
+        $violationProductValue->getPropertyPath()->willReturn('values[sku].text');
         $violationProductValue->getConstraint()->willReturn($regexpConstraint);
         $violationProductValue->getMessageTemplate()->willReturn(null);
 
@@ -218,7 +218,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
 
         $violation->getRoot()->willReturn($product);
         $violation->getMessage()->willReturn('Not Blank');
-        $violation->getPropertyPath()->willReturn('values[description-en_US-ecommerce].varchar');
+        $violation->getPropertyPath()->willReturn('values[description-en_US-ecommerce].textarea');
         $violation->getMessageTemplate()->willReturn(null);
 
         $constraintViolations->getIterator()->willReturn($iterator);

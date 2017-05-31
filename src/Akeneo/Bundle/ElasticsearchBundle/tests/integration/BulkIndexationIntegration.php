@@ -53,8 +53,8 @@ class BulkIndexationIntegration extends TestCase
 
         $products = [
             [
-                'identifier'       => 'product_1',
-                'description-text' => 'My product description',
+                'identifier'           => 'product_1',
+                'description-textarea' => 'My product description',
             ]
         ];
 
