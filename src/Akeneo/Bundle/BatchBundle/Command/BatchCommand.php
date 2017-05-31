@@ -2,12 +2,15 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Job\Job;
+use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManager;
@@ -79,137 +82,210 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $code = $input->getArgument('code');
-        $jobInstance = $this
-            ->getJobManager()
-            ->getRepository('Akeneo\Component\Batch\Model\JobInstance')
-            ->findOneByCode($code);
+
+        $jobInstance = $this->getJobManager()->getRepository(JobInstance::class)->findOneByCode($code);
 
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
 
         $job = $this->getJobRegistry()->get($jobInstance->getJobName());
-        $jobParamsFactory = $this->getJobParametersFactory();
-        $rawParameters = $jobInstance->getRawParameters();
-        if ($config = $input->getOption('config')) {
-            $rawParameters = array_merge($rawParameters, $this->decodeConfiguration($config));
-        }
-        $jobParameters = $jobParamsFactory->create($job, $rawParameters);
-        $validator = $this->getValidator();
 
-        // Override mail notifier recipient email
-        if ($email = $input->getOption('email')) {
-            $errors = $validator->validateValue($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $this
-                ->getMailNotifier()
-                ->setRecipientEmail($email);
-        }
+        $this->setupMailOption($input->getOption('email'));
+
+        $jobParameters = $this->getJobParameters($job, $jobInstance, $input->getOption('config'));
 
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
-        $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
-        $paramsValidator = $this->getJobParametersValidator();
-        $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
-        if (count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    print_r($jobParameters->all(), true),
-                    $this->getErrorMessages($errors)
-                )
-            );
-        }
+        $this->getDefaultEntityManager()->merge($jobInstance);
+
+        $this->validateJobParameters($job, $jobParameters, $code);
 
         $this->getDefaultEntityManager()->clear(get_class($jobInstance));
 
         $executionId = $input->getArgument('execution');
-        if ($executionId) {
-            $jobExecution = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobExecution')
-                ->find($executionId);
-            $jobExecution->setJobParameters($jobParameters);
-            if (!$jobExecution) {
-                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
-            }
-            if (!$jobExecution->getStatus()->isStarting()) {
-                throw new \RuntimeException(
-                    sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
-                );
-            }
-            if (null === $jobExecution->getExecutionContext()) {
-                $jobExecution->setExecutionContext(new ExecutionContext());
-            }
-        } else {
-            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
-        }
-        $jobExecution->setJobInstance($jobInstance);
 
-        $jobExecution->setPid(getmypid());
-
-        $this
-            ->getContainer()
-            ->get('akeneo_batch.logger.batch_log_handler')
-            ->setSubDirectory($jobExecution->getId());
+        $jobExecution = $this->getConfiguredJobExecution($job, $jobInstance, $jobParameters, $executionId);
 
         $job->execute($jobExecution);
 
         $job->getJobRepository()->updateJobExecution($jobExecution);
 
         $verbose = $input->getOption('verbose');
+
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
-            $nbWarnings = 0;
-            /** @var StepExecution $stepExecution */
-            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                $nbWarnings += count($stepExecution->getWarnings());
-                if ($verbose) {
-                    foreach ($stepExecution->getWarnings() as $warning) {
-                        $output->writeln(sprintf('<comment>%s</comment>', $warning->getReason()));
-                    }
-                }
-            }
+            return $this->getCompleteExitStatus($jobExecution, $jobInstance, $output, $verbose);
+        }
 
-            if (0 === $nbWarnings) {
-                $output->writeln(
-                    sprintf(
-                        '<info>%s %s has been successfully executed.</info>',
-                        ucfirst($jobInstance->getType()),
-                        $jobInstance->getCode()
-                    )
-                );
+        $output->writeln(
+            sprintf(
+                '<error>An error occurred during the %s execution.</error>',
+                $jobInstance->getType()
+            )
+        );
 
-                return self::EXIT_SUCCESS_CODE;
-            } else {
-                $output->writeln(
-                    sprintf(
-                        '<comment>%s %s has been executed with %d warnings.</comment>',
-                        ucfirst($jobInstance->getType()),
-                        $jobInstance->getCode(),
-                        $nbWarnings
-                    )
-                );
+        $this->writeExceptions($output, $jobExecution->getFailureExceptions(), $verbose);
+        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+            $this->writeExceptions($output, $stepExecution->getFailureExceptions(), $verbose);
+        }
 
-                return self::EXIT_WARNING_CODE;
-            }
+        return self::EXIT_ERROR_CODE;
+    }
+
+    /**
+     * @param JobInterface $job
+     * @param JobInstance $jobInstance
+     * @param JobParameters $jobParameters
+     * @param string $executionId
+     *
+     * @return JobExecution|object
+     */
+    private function getConfiguredJobExecution(
+        JobInterface $job,
+        JobInstance $jobInstance,
+        JobParameters $jobParameters,
+        $executionId = null
+    ) {
+        $jobExecution = null;
+
+        if (null === $executionId) {
+            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
         } else {
-            $output->writeln(
+            $jobExecution = $this->getJobManager()->getRepository(JobExecution::class)->find($executionId);
+
+            if (null === $jobExecution) {
+                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
+            }
+
+            $jobExecution->setJobParameters($jobParameters);
+
+            if (!$jobExecution->getStatus()->isStarting()) {
+                throw new \RuntimeException(
+                    sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
+                );
+            }
+
+            if (null === $jobExecution->getExecutionContext()) {
+                $jobExecution->setExecutionContext(new ExecutionContext());
+            }
+        }
+
+
+        $jobExecution->setJobInstance($jobInstance);
+        $jobExecution->setPid(getmypid());
+        $this->getBatchLogHandler()->setSubDirectory($jobExecution->getId());
+
+        return $jobExecution;
+    }
+
+    /**
+     * @param JobInterface $job
+     * @param JobInstance $jobInstance
+     * @param array $config
+     *
+     * @return JobParameters
+     */
+    private function getJobParameters(JobInterface $job, JobInstance $jobInstance, $config = null)
+    {
+        $jobParamsFactory = $this->getJobParametersFactory();
+        $rawParameters = $jobInstance->getRawParameters();
+        if (null !== $config) {
+            $rawParameters = array_merge($rawParameters, $this->decodeConfiguration($config));
+        }
+
+        return $jobParamsFactory->create($job, $rawParameters);
+    }
+
+    /**
+     * @param JobInterface $job
+     * @param JobParameters $jobParameters
+     * @param string $jobInstanceCode
+     */
+    private function validateJobParameters(JobInterface $job, JobParameters $jobParameters, $jobInstanceCode)
+    {
+        $errors = $this->getJobParametersValidator()->validate($job, $jobParameters, ['Default', 'Execution']);
+
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
                 sprintf(
-                    '<error>An error occurred during the %s execution.</error>',
-                    $jobInstance->getType()
+                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
+                    $jobInstanceCode,
+                    $job->getName(),
+                    print_r($jobParameters->all(), true),
+                    $this->getErrorMessages($errors)
                 )
             );
-            $this->writeExceptions($output, $jobExecution->getFailureExceptions(), $verbose);
-            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                $this->writeExceptions($output, $stepExecution->getFailureExceptions(), $verbose);
-            }
-
-            return self::EXIT_ERROR_CODE;
         }
+    }
+
+    /**
+     * @param null $email
+     */
+    private function setupMailOption($email = null)
+    {
+        if (null === $email) {
+            return;
+        }
+
+        // Override mail notifier recipient email
+        $errors = $this->getValidator()->validateValue($email, new Assert\Email());
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
+                sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
+            );
+        }
+
+        $this->getMailNotifier()->setRecipientEmail($email);
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @param JobInstance $jobInstance
+     * @param OutputInterface $output
+     * @param bool $verbose
+     *
+     * @return int
+     */
+    private function getCompleteExitStatus(
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        OutputInterface $output,
+        $verbose = false
+    ) {
+        $nbWarnings = array_reduce($jobExecution->getStepExecutions(), function ($carry, StepExecution $stepExecution) {
+            return $carry + count($stepExecution->getWarnings());
+        }, 0);
+
+        if (0 === $nbWarnings) {
+            $output->writeln(
+                sprintf(
+                    '<info>%s %s has been successfully executed.</info>',
+                    ucfirst($jobInstance->getType()),
+                    $jobInstance->getCode()
+                )
+            );
+
+            return self::EXIT_SUCCESS_CODE;
+        }
+
+        if ($verbose) {
+            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+                foreach ($stepExecution->getWarnings() as $warning) {
+                    $output->writeln(sprintf('<comment>%s</comment>', $warning->getReason()));
+                }
+            }
+        }
+
+        $output->writeln(
+            sprintf(
+                '<comment>%s %s has been executed with %d warnings.</comment>',
+                ucfirst($jobInstance->getType()),
+                $jobInstance->getCode(),
+                $nbWarnings
+            )
+        );
+
+        return self::EXIT_WARNING_CODE;
     }
 
     /**
@@ -251,6 +327,14 @@ class BatchCommand extends ContainerAwareCommand
     protected function getDefaultEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    /**
+     * @return BatchLogHandler
+     */
+    protected function getBatchLogHandler()
+    {
+        return $this->getContainer()->get('akeneo_batch.logger.batch_log_handler');
     }
 
     /**
