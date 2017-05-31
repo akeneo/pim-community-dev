@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -59,6 +60,9 @@ class PublishedProductManager
     /** @var RemoverInterface */
     protected $remover;
 
+    /** @var BulkRemoverInterface */
+    private $bulkRemover;
+
     /**
      * @param ProductRepositoryInterface          $productRepository     the product repository
      * @param PublishedProductRepositoryInterface $repository            the published repository
@@ -69,6 +73,7 @@ class PublishedProductManager
      * @param ObjectManager                       $objectManager         the object manager
      * @param SaverInterface                      $publishedProductSaver the object saver
      * @param RemoverInterface                    $remover
+     * @param BulkRemoverInterface                $bulkRemover
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -79,7 +84,8 @@ class PublishedProductManager
         UnpublisherInterface $unpublisher,
         ObjectManager $objectManager,
         SaverInterface $publishedProductSaver,
-        RemoverInterface $remover
+        RemoverInterface $remover,
+        BulkRemoverInterface $bulkRemover
     ) {
         $this->productRepository = $productRepository;
         $this->repository = $repository;
@@ -90,7 +96,9 @@ class PublishedProductManager
         $this->objectManager = $objectManager;
         $this->publishedProductSaver = $publishedProductSaver;
         $this->remover = $remover;
+        $this->bulkRemover = $bulkRemover;
     }
+
 
     /**
      * Find the published product
@@ -186,21 +194,15 @@ class PublishedProductManager
      * Un publish a product
      *
      * @param PublishedProductInterface $published
-     * @param array                     $publishOptions
      */
-    public function unpublish(PublishedProductInterface $published, array $publishOptions = [])
+    public function unpublish(PublishedProductInterface $published)
     {
         $product = $published->getOriginalProduct();
         $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
         $this->unpublisher->unpublish($published);
-        $this->getObjectManager()->remove($published);
+        $this->remover->remove($published);
 
-        $publishOptions = array_merge(['flush' => true], $publishOptions);
-
-        if (true === $publishOptions['flush']) {
-            $this->getObjectManager()->flush();
-            $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
-        }
+        $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
     }
 
     /**
@@ -237,10 +239,12 @@ class PublishedProductManager
     public function unpublishAll(array $publishedProducts)
     {
         foreach ($publishedProducts as $published) {
-            $this->unpublish($published, ['flush' => false]);
+            $product = $published->getOriginalProduct();
+            $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
+            $this->unpublisher->unpublish($published);
         }
 
-        $this->getObjectManager()->flush();
+        $this->bulkRemover->removeAll($publishedProducts);
     }
 
     /**
