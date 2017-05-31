@@ -35,8 +35,8 @@
     "yamljs": "^0.2.10"
   },
   "scripts": {
-    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js",
-    "webpack-server": "webpack-dev-server --config webpack.dev.config.js",
+    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js --progress",
+    "webpack-server": "webpack --config webpack.dev.config.js && webpack-dev-server --config webpack.dev.config.js --progress",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"

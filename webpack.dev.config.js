@@ -15,19 +15,16 @@ config.entry = [
   path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js')
 ]
 
-config.output = {
-  path: path.resolve('./web/dist/'),
-  publicPath: '/dist/',
-  filename: 'app.min.js',
-  chunkFilename: '[name].bundle.js'
-}
-
 config.devtool = 'source-map'
 
+config.watchOptions = {
+  ignored: /node_modules/
+}
+
 config.devServer = {
-  filename: 'app.min.js',
+  // watchContentBase: false,
   hot: true,
-  contentBase: path.resolve(__dirname, './web/dist/'),
+  // contentBase: path.resolve(__dirname, './src'),
   publicPath: '/dist/',
   port: 4200,
   host: '127.0.0.1',
@@ -35,8 +32,8 @@ config.devServer = {
   disableHostCheck: true
 }
 
-config.plugins.unshift(new webpack.HotModuleReplacementPlugin())
-config.plugins.unshift(new webpack.NamedModulesPlugin())
+config.plugins.push(new webpack.HotModuleReplacementPlugin())
+// config.plugins.push(new webpack.NamedModulesPlugin())
 
-console.log(config)
+// --host 127.0.0.1 --port 4200 --hot --inline
 module.exports = config

@@ -39,6 +39,7 @@ define(
         var initialized = false;
 
         console.log('Add RequirePolyfill', RequirePolyfill)
+        console.log('Start app')
 
         return function () {
             if (initialized) {
