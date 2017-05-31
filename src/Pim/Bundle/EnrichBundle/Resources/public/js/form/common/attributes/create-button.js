@@ -31,7 +31,7 @@ define(
         templateModal,
         Routing,
         FetcherRegistry,
-        router,
+        router
     ) {
         return BaseForm.extend({
             template: _.template(template),

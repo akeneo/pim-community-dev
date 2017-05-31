@@ -11,7 +11,7 @@ define(
         'pim/dialog',
         'pim/page-title',
         'pim/error',
-        'pim/i18n',
+        'pim/i18n'
     ],
     function (
         _,
@@ -23,7 +23,7 @@ define(
         Dialog,
         PageTitle,
         Error,
-        i18n,
+        i18n
     ) {
         return BaseController.extend({
             initialize: function () {

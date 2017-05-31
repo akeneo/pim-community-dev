@@ -21,7 +21,7 @@ define(
         'pim/initselect2',
         'pim/datagrid/state',
         'pim/fetcher-registry',
-        'pim/form-builder',
+        'pim/form-builder'
     ],
     function (
         $,
@@ -33,7 +33,7 @@ define(
         initSelect2,
         DatagridState,
         FetcherRegistry,
-        FormBuilder,
+        FormBuilder
     ) {
         return BaseForm.extend({
             template: _.template(template),
