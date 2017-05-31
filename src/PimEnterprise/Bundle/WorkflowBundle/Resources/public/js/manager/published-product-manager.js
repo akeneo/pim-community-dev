@@ -2,14 +2,12 @@
 
 define([
         'jquery',
-        'config',
         'routing',
         'oro/mediator',
         'pim/cache-invalidator',
         'pim/product-manager'
     ], function (
         $,
-        module,
         Routing,
         mediator,
         CacheInvalidator,
@@ -24,7 +22,7 @@ define([
              * @return {Promise}
              */
             get: function (id) {
-                return $.getJSON(Routing.generate(module.config(__moduleName).urls.get, { id: id }))
+                return $.getJSON(Routing.generate(__moduleConfig.urls.get, { id: id }))
                     .then(function (product) {
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(product);

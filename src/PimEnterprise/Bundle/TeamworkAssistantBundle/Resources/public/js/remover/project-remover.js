@@ -2,11 +2,9 @@
 
 define([
         'jquery',
-        'config',
         'routing'
     ], function (
         $,
-        module,
         Routing
     ) {
         return {
@@ -19,7 +17,7 @@ define([
              * @returns {Promise}
              */
             remove: function (project) {
-                var removeRoute = Routing.generate(module.config(__moduleName).url, {identifier: project.code});
+                var removeRoute = Routing.generate(__moduleConfig.url, {identifier: project.code});
 
                 return $.ajax({url: removeRoute, type: 'DELETE'});
             }

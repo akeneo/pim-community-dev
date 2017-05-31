@@ -10,7 +10,6 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'config',
         'routing',
         'oro/messenger',
         'pim/form',
@@ -22,7 +21,6 @@ define(
         $,
         _,
         Backbone,
-        module,
         Routing,
         messenger,
         BaseForm,
@@ -46,7 +44,7 @@ define(
              * @returns {Promise}
              */
             configure: function () {
-                this.routes = module.config(__moduleName).routes;
+                this.routes = __moduleConfig.routes;
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
