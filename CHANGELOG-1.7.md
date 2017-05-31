@@ -15,6 +15,7 @@
 - PIM-6434: Fix attribute group order in Product Edit Form
 - PIM-6436: Fix attribute group limit in Product Edit Form
 - PIM-6428: Fix usage of unique attributes on Product Edit Form and Family edition
+- PIM-6414: Fix datetime filter display issue
 
 # 1.7.4 (2017-05-10)
 
