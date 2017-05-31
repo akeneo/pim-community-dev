@@ -29,11 +29,14 @@
     "raw-loader": "^0.5.1",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
+    "uglify-js": "^2.8.27",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "2.4.1",
     "yamljs": "^0.2.10"
   },
   "scripts": {
     "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js",
+    "webpack-server": "webpack --display-reasons --display-error-details --config webpack.dev.config.js",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
