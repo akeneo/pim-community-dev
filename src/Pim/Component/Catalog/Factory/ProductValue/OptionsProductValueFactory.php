@@ -130,6 +130,11 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
     /**
      * Gets an attribute option from its code.
      *
+     * @todo TIP-684: When deleting one element of the collection, we will end up throwing the exception.
+     *       Problem is, when loading a product value from single storage, it will be skipped because of
+     *       one option, when the others in the collection could be valid. So the value will not be loaded
+     *       at all, when what we want is the value to be loaded minus the wrong option.
+     *
      * @param AttributeInterface $attribute
      * @param string             $optionCode
      *
