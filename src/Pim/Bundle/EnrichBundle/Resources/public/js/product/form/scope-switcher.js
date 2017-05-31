@@ -23,6 +23,7 @@ define(
             events: {
                 'click li a': 'changeScope'
             },
+            displayInline: false,
 
             /**
              * {@inheritdoc}
@@ -45,7 +46,8 @@ define(
                                     scope.code
                                 ),
                                 catalogLocale: UserContext.get('catalogLocale'),
-                                i18n: i18n
+                                i18n: i18n,
+                                displayInline: this.displayInline
                             })
                         );
 

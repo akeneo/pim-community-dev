@@ -22,6 +22,11 @@ define(
             events: {
                 'click li a': 'changeLocale'
             },
+            displayInline: false,
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
@@ -32,7 +37,8 @@ define(
                             this.template({
                                 locales: locales,
                                 currentLocale: _.findWhere(locales, {code: params.localeCode}),
-                                i18n: i18n
+                                i18n: i18n,
+                                displayInline: this.displayInline
                             })
                         );
                         this.delegateEvents();
