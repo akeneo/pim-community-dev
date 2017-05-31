@@ -1,18 +1,15 @@
 /* eslint-env es6 */
 
-require('colors')
 const webpack = require('webpack')
 const path = require('path')
 const _ = require('lodash')
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const requireConfigPaths = require(path.resolve('web/js/require-paths'))
+const requirePaths = require(path.resolve('web/js/require-paths'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const pathOverrides = require('./frontend/path-overrides')
-const requireUtils = require('./frontend/requirejs-utils')
-
-console.log('→ Begin compiling modules with webpack from'.green, __dirname)
-const importPaths = requireUtils.getAliasPaths(requireConfigPaths, pathOverrides, __dirname)
+const utils = require('./frontend/requirejs-utils')
+const importPaths = utils.getModulePaths(requirePaths, pathOverrides, __dirname)
 
 module.exports = {
     target: 'web',

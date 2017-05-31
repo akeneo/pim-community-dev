@@ -1,61 +1,79 @@
 /* eslint-env es6 */
-const path = require('path')
-const yaml = require('yamljs')
-const fs = require('fs')
-var deepMerge = require('deepmerge')
 const _ = require('lodash')
+const path = require('path')
+const getYaml = require('yamljs')
+const fs = require('fs')
+const deepMerge = require('deepmerge')
 const mkdirp = require('mkdirp')
+const webroot = 'web/dist'
 
-const requireUtils = {
-    exportModule(dest, contents) {
-        const fileName = `web/dist/${dest}`
-        console.log(`    Exporting module to dist - ${fileName}`.grey)
-        fs.writeFileSync(fileName, `module.exports = ${contents}`, 'utf8')
-    },
-    getRequireConfig(requireJSFiles) {
-        let modulePaths = {}
+const utils = {
+    /**
+     * Grab the RequireJS.yaml from each bundle required by the application
+     * and extract the module paths, config, and maps
+     *
+     * @param  {Array} requireYamls An array containing the filenames of each RequireJS.yaml
+     * @return {Object}             Returns an object containing the extracted config, and all the absolute module paths
+     */
+    getRequireConfig(requireYamls) {
+        let paths = {}
         let config = {}
 
-        console.log('→ Grabbing requirejs.yml config from bundles'.green)
-
-        requireJSFiles.forEach((file) => {
+        requireYamls.forEach((yaml) => {
             try {
-                console.log(`    → ${file}`.grey)
-                const contents = fs.readFileSync(file, 'utf8')
-                const parsedFile = yaml.parse(contents)
-                const bundleConfig = parsedFile.config.config || {}
-                const absolutePaths = requireUtils.getAbsolutePaths(
-                    Object.assign(
-                        parsedFile.config.paths || {},
-                        _.get(parsedFile.config, 'map.*')
-                    ), file
-                )
+                const contents = fs.readFileSync(yaml, 'utf8')
+                const parsed = getYaml.parse(contents)
+                const requirePaths = parsed.config.paths || {}
+                const requireMaps = _.get(parsed.config, 'map.*') || {}
+                const mergedPaths = Object.assign(requirePaths, requireMaps)
+                const absolutePaths = utils.getAbsolutePaths(mergedPaths, yaml)
 
-                modulePaths = deepMerge(modulePaths, absolutePaths)
-                config = deepMerge(config, bundleConfig)
+                paths = deepMerge(paths, absolutePaths)
+                config = deepMerge(config, parsed.config.config || {})
             } catch (e) {}
         })
 
-        return { config, modulePaths }
+        return { config, paths }
     },
-    getAbsolutePaths(paths, sourceConfig) {
+
+    /**
+     * Gets the absolute path of a module and returns an object containing a map of module names to paths
+     * Example: pimui/js/pim-formupdatelistener -> {user home}/src/Pim/Bundle/UIBundle/Resources/public/js/pim-formupdatelistener'
+     * @param  {Object} paths    An object containing module/path mapping
+     * @param  {String} yamlFilename The filename of the requirejs.yaml file
+     * @return {Object}          An object containing mapping of module name to absolute file location
+     */
+    getAbsolutePaths(paths, yamlFilename) {
         const absolutePaths = {}
 
         for (let name in paths) {
-            let relative = paths[name].split('/')
+            const relative = paths[name].split('/')
             relative.shift()
-            const bundleDirectory = path.resolve(sourceConfig, '../../')
-            absolutePaths[name] = bundleDirectory + '/public/' + relative.join('/')
+            const sourcePath = path.resolve(yamlFilename, '../../')
+            absolutePaths[name] = `${sourcePath}/public/${relative.join('/')}`
         }
 
         return absolutePaths
     },
-    getAliasPaths(requireJsConfigPaths, pathOverrides, baseDirectory) {
-        const requireConfig = requireUtils.getRequireConfig(requireJsConfigPaths)
 
-        const overrides = _.mapValues(pathOverrides, override => path.resolve(baseDirectory, override))
+    /**
+     * Combines the absolute module paths, path overrides and custom module
+     * paths - it writes them to files to be consumed by the frontend, and
+     * returns the merged paths for the webpack config
+     *
+     * @param  {String} pathSourceFile    Absolute file path of the file dumped by the pim:installer:dump-require-paths command
+     * @param  {Object} overrides     A map of path overrides
+     * @param  {String} baseDirectory The base directory where webpack is run
+     * @return {Object}               An object containing module name to path mapping
+     */
+    getModulePaths(pathSourceFile, overrides, baseDirectory) {
+        const requireConfig = utils.getRequireConfig(pathSourceFile)
 
-        const aliasPaths = Object.assign(requireConfig.modulePaths, overrides, {
+        overrides = _.mapValues( overrides,
+          override => path.resolve(baseDirectory, override)
+        )
+
+        const mergedPaths = Object.assign(requireConfig.paths, overrides, {
             backbone: require.resolve('backbone'),
             routes: path.resolve('web/js/routes'),
             general: path.resolve('web/dist/general'),
@@ -65,14 +83,22 @@ const requireUtils = {
             CodeMirror: path.resolve('node_modules/codemirror/lib/codemirror')
         })
 
-        mkdirp('web/dist', function() {
-            console.log('→ Starting to dump module config to dist'.green)
-            requireUtils.exportModule('general.js', JSON.stringify(requireConfig.config))
-            requireUtils.exportModule('paths.js', JSON.stringify(aliasPaths))
+        mkdirp(webroot, function() {
+          fs.writeFileSync(`${webroot}/general.js`, utils.getModuleString(requireConfig.config), 'utf8')
+          fs.writeFileSync(`${webroot}/paths.js`, utils.getModuleString(mergedPaths), 'utf8')
         })
 
-        return aliasPaths;
+        return mergedPaths;
+    },
+
+    /**
+     * getModuleString
+     * @param  {Object} contents Some json to be stringified
+     * @return {String}          Module contents
+     */
+    getModuleString(contents) {
+      return `module.exports = ${JSON.stringify(contents)}`
     }
 }
 
-module.exports = requireUtils
+module.exports = utils

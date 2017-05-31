@@ -38,8 +38,6 @@ define(
         'use strict';
         var initialized = false;
 
-        console.log(RequirePolyfill)
-
         return function () {
             if (initialized) {
                 return;

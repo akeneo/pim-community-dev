@@ -5,10 +5,9 @@ module.exports = {
     translator: 'src/Pim/Bundle/EnrichBundle/Resources/public/js/translator',
     routing: 'src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper',
     'pim/datagrid-view-fetcher': 'src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher',
-    'require-polyfill': 'frontend/require-polyfill',
     'pim-router': 'src/Pim/Bundle/EnrichBundle/Resources/public/js/router',
     'jquery-setup': 'src/Pim/Bundle/UIBundle/Resources/public/js/jquery-setup.js',
+    'require-polyfill': 'frontend/require-polyfill',
     'require-context': 'frontend/require-context',
     config: 'frontend/module-config',
-    'fos-routing-base': 'vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'
 }
