@@ -23,7 +23,7 @@ config.watchOptions = {
 
 config.output = {
   path: path.resolve('./web/dist/'),
-  publicPath: 'http://localhost:8080/',
+  publicPath: 'http://localhost:8080/web/dist/',
   filename: 'app.min.js',
   chunkFilename: '[name].bundle.js',
   pathinfo: true,
@@ -31,10 +31,8 @@ config.output = {
 }
 
 config.devServer = {
-  filename: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js'),
-  hot: true,
-  contentBase: path.resolve('./'),
-  publicPath: 'http://localhost:8080/',
+  // hot: true,
+  publicPath: 'http://localhost:8080/web/dist/',
   port: 8080,
   host: 'localhost',
   inline: true,
@@ -43,6 +41,5 @@ config.devServer = {
 }
 
 config.plugins.push(new webpack.HotModuleReplacementPlugin())
-// config.plugins.push(new webpack.NamedModulesPlugin())
 
 module.exports = config
