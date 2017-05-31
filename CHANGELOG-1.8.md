@@ -4,6 +4,7 @@
 
 - TIP-718: Update group types form
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
+- GITHUB-5949: Fix the deletion of a job instance (import/export) from the job edit page, cheers @BatsaxIV !
 
 ## Technical improvements
 
