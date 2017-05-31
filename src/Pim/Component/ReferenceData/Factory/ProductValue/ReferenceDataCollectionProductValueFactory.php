@@ -132,6 +132,11 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
     /**
      * Finds a reference data by code.
      *
+     * @todo TIP-684: When deleting one element of the collection, we will end up throwing the exception.
+     *       Problem is, when loading a product value from single storage, it will be skipped because of
+     *       one reference data, when the others in the collection could be valid. So the value will not
+     *       be loaded at all, when what we want is the value to be loaded minus the wrong reference data.
+     *
      * @param AttributeInterface               $attribute
      * @param ReferenceDataRepositoryInterface $repository
      * @param string                           $referenceDataCode

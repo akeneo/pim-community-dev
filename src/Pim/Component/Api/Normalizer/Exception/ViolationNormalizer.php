@@ -135,7 +135,7 @@ class ViolationNormalizer implements NormalizerInterface
     /**
      * Constraints for product values are not displayed correctly.
      * For instance, an error for attribute "a_text" will be displayed like that:
-     *      "values[a_text-fr_FR-ecommerce].varchar"
+     *      "values[a_text-fr_FR-ecommerce].text"
      *
      * In the API, the same error will be:
      * [
@@ -146,7 +146,7 @@ class ViolationNormalizer implements NormalizerInterface
      *    "message": "..."
      * ]
      *
-     * Exception for identifier attribute (which is displayed like "values[sku].varchar"),
+     * Exception for identifier attribute (which is displayed like "values[sku].text"),
      * we will return information like that:
      * [
      *    "field": "identifier",

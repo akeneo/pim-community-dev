@@ -31,23 +31,23 @@ mappings:
                         type: 'keyword'
                         normalizer: 'family_normalizer'
             -
-                text_area:
-                    path_match: 'values.*-text.*'
+                textarea:
+                    path_match: 'values.*-textarea.*'
                     match_mapping_type: 'string'
                     mapping:
                         fields:
                             preprocessed:
                                 type: 'keyword'
-                                normalizer: 'text_normalizer'
+                                normalizer: 'textarea_normalizer'
                         type: 'text'
-                        analyzer: 'text_analyzer'
+                        analyzer: 'textarea_analyzer'
             -
                 text:
-                    path_match: 'values.*-varchar.*'
+                    path_match: 'values.*-text.*'
                     match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
-                        normalizer: 'varchar_normalizer'
+                        normalizer: 'text_normalizer'
             -
                 completeness:
                      path_match: 'completeness.*'
@@ -177,7 +177,7 @@ mappings:
 settings:
     analysis:
         normalizer:
-            text_normalizer:
+            textarea_normalizer:
                 # Value is htmlstripped and newline pattern processed prior to indexing (in the PIM)
                 # ES Normalizers is an experimental feature and they do not support
                 # html_strip and newlinepattern filters yet.
@@ -185,7 +185,7 @@ settings:
                 filter: ['lowercase']
                 char_filter: []
                 type: 'custom'
-            varchar_normalizer:
+            text_normalizer:
                 filter: ['lowercase']
             family_normalizer:
                 filter: ['lowercase']
@@ -197,7 +197,7 @@ settings:
                 type: 'pattern_replace'
                 replacement: ''
         analyzer:
-            text_analyzer:
+            textarea_analyzer:
                 filter: ['lowercase']
                 char_filter: ['html_strip', 'newline_pattern']
                 type: 'custom'

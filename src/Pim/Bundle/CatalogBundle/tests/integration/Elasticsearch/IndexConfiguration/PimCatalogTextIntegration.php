@@ -21,7 +21,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'values.name-varchar.<all_channels>.<all_locales>',
+                            'default_field' => 'values.name-text.<all_channels>.<all_locales>',
                             'query'         => 'an*',
                         ],
                     ],
@@ -41,7 +41,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field'       => 'values.name-varchar.<all_channels>.<all_locales>',
+                            'default_field'       => 'values.name-text.<all_channels>.<all_locales>',
                             'query'               => 'My\ product*',
                             'split_on_whitespace' => true,
                         ],
@@ -62,7 +62,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'values.name-varchar.<all_channels>.<all_locales>',
+                            'default_field' => 'values.name-text.<all_channels>.<all_locales>',
                             'query'         => '*Love*',
                         ],
                     ],
@@ -82,7 +82,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'values.name-varchar.<all_channels>.<all_locales>',
+                            'default_field' => 'values.name-text.<all_channels>.<all_locales>',
                             'query'         => '*Love\\ this*',
                         ],
                     ],
@@ -102,13 +102,13 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'query_string' => [
-                            'default_field' => 'values.name-varchar.<all_channels>.<all_locales>',
+                            'default_field' => 'values.name-text.<all_channels>.<all_locales>',
                             'query'         => '*Love*',
                         ],
                     ],
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.name-varchar.<all_channels>.<all_locales>',
+                            'field' => 'values.name-text.<all_channels>.<all_locales>',
                         ]
                     ]
                 ],
@@ -127,7 +127,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'term' => [
-                            'values.name-varchar.<all_channels>.<all_locales>' => 'I-love.dots',
+                            'values.name-text.<all_channels>.<all_locales>' => 'I-love.dots',
                         ],
                     ],
                 ],
@@ -146,11 +146,11 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'term' => [
-                            'values.name-varchar.<all_channels>.<all_locales>' => 'I-love.dots',
+                            'values.name-text.<all_channels>.<all_locales>' => 'I-love.dots',
                         ],
                     ],
                     'filter'   => [
-                        'exists' => ['field' => 'values.name-varchar.<all_channels>.<all_locales>'],
+                        'exists' => ['field' => 'values.name-text.<all_channels>.<all_locales>'],
                     ],
                 ],
             ],
@@ -170,7 +170,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'query' => [
                     'bool' => [
                         'must_not' => [
-                            'exists' => ['field' => 'values.name-varchar.<all_channels>.<all_locales>'],
+                            'exists' => ['field' => 'values.name-text.<all_channels>.<all_locales>'],
                         ],
                     ],
                 ],
@@ -187,7 +187,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'query' => [
                     'bool' => [
                         'filter' => [
-                            'exists' => ['field' => 'values.name-varchar.<all_channels>.<all_locales>'],
+                            'exists' => ['field' => 'values.name-text.<all_channels>.<all_locales>'],
                         ],
                     ],
                 ],
@@ -209,7 +209,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.name-varchar.<all_channels>.<all_locales>' => [
+                    'values.name-text.<all_channels>.<all_locales>' => [
                         'order'   => 'asc',
                         'missing' => '_last',
                     ],
@@ -233,7 +233,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.name-varchar.<all_channels>.<all_locales>' => [
+                    'values.name-text.<all_channels>.<all_locales>' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -258,7 +258,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_1',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'My product',
                         ],
@@ -268,7 +268,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_2',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Another product',
                         ],
@@ -278,7 +278,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_3',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Yeah, love this name',
                         ],
@@ -291,7 +291,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_5',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'And an uppercase NAME',
                         ],
@@ -301,7 +301,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_6',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Love this product',
                         ],
@@ -311,7 +311,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_7',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'I.love.dots',
                         ],
@@ -321,7 +321,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_8',
                 'values'     => [
-                    'name-varchar' => [
+                    'name-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'I-love.dots',
                         ],

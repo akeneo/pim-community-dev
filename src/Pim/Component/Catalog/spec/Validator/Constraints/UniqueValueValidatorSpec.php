@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueValueValidatorSpec extends ObjectBehavior
 {
-    const PROPERTY_PATH='children[values].children[unique_attribute].children[varchar].data';
+    const PROPERTY_PATH='children[values].children[unique_attribute].children[text].data';
 
     function let(
         ProductUniqueDataRepositoryInterface $uniqueDataRepository,

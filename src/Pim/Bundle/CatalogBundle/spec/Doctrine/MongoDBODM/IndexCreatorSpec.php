@@ -51,7 +51,7 @@ class IndexCreatorSpec extends ObjectBehavior
         ChannelInterface $mobile
     ) {
         $title->getCode()->willReturn('title');
-        $title->getBackendType()->willReturn('varchar');
+        $title->getBackendType()->willReturn('text');
         $title->isLocalizable()->willReturn(false);
         $title->isScopable()->willReturn(true);
         $title->isUseableAsGridFilter()->willReturn(true);
@@ -96,7 +96,7 @@ class IndexCreatorSpec extends ObjectBehavior
         ChannelInterface $ecommerce
     ) {
         $description->getCode()->willReturn('description');
-        $description->getBackendType()->willReturn('varchar');
+        $description->getBackendType()->willReturn('textarea');
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(false);
         $description->isUseableAsGridFilter()->willReturn(true);
@@ -176,7 +176,7 @@ class IndexCreatorSpec extends ObjectBehavior
         AttributeInterface $name
     ) {
         $name->getCode()->willReturn('name');
-        $name->getBackendType()->willReturn('varchar');
+        $name->getBackendType()->willReturn('text');
         $name->isLocalizable()->willReturn(false);
         $name->isScopable()->willReturn(false);
         $name->isUseableAsGridFilter()->willReturn(true);
@@ -202,7 +202,7 @@ class IndexCreatorSpec extends ObjectBehavior
         AttributeInterface $ean
     ) {
         $ean->getCode()->willReturn('ean');
-        $ean->getBackendType()->willReturn('varchar');
+        $ean->getBackendType()->willReturn('text');
         $ean->isLocalizable()->willReturn(false);
         $ean->isScopable()->willReturn(false);
         $ean->isUnique()->willReturn(true);
@@ -229,7 +229,7 @@ class IndexCreatorSpec extends ObjectBehavior
         AttributeInterface $sku
     ) {
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isUseableAsGridFilter()->willReturn(false);
@@ -313,12 +313,10 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_scopable_attribute(
         $namingUtility,
         $collection,
-        AttributeInterface $title,
-        ChannelInterface $ecommerce,
-        ChannelInterface $mobile
+        AttributeInterface $title
     ) {
         $title->getCode()->willReturn('title');
-        $title->getBackendType()->willReturn('varchar');
+        $title->getBackendType()->willReturn('text');
         $title->isLocalizable()->willReturn(false);
         $title->isScopable()->willReturn(true);
         $title->isUseableAsGridFilter()->willReturn(true);
@@ -346,7 +344,7 @@ class IndexCreatorSpec extends ObjectBehavior
         AttributeInterface $description
     ) {
         $description->getCode()->willReturn('description');
-        $description->getBackendType()->willReturn('varchar');
+        $description->getBackendType()->willReturn('textarea');
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(false);
         $description->isUseableAsGridFilter()->willReturn(true);
@@ -369,12 +367,11 @@ class IndexCreatorSpec extends ObjectBehavior
     }
 
     function it_generates_attribute_indexes_when_saving_filterable_scopable_and_localizable_attribute(
-        $collection,
         $namingUtility,
         AttributeInterface $description
     ) {
         $description->getCode()->willReturn('description');
-        $description->getBackendType()->willReturn('varchar');
+        $description->getBackendType()->willReturn('textarea');
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(true);
         $description->isUseableAsGridFilter()->willReturn(true);
@@ -513,8 +510,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $attributeRepository
             ->findBy(['useableAsGridFilter' => true], ['created' => 'ASC'], 64)
             ->willReturn([$name, $description]);
-        $name->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_VARCHAR);
-        $description->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+        $name->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+        $description->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_TEXTAREA);
 
         $namingUtility->getAttributeNormFields($name)->willReturn(['normalizedData.name']);
         $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description']);
@@ -541,7 +538,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $logger
     ) {
         $description->getCode()->willReturn('description');
-        $description->getBackendType()->willReturn('varchar');
+        $description->getBackendType()->willReturn('textarea');
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(false);
         $description->isUseableAsGridFilter()->willReturn(true);

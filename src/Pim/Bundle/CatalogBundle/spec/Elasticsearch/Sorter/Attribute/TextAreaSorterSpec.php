@@ -34,9 +34,9 @@ class TextAreaSorterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $aTextArea->getCode()->willReturn('a_text_area');
-        $aTextArea->getBackendType()->willReturn('text');
+        $aTextArea->getBackendType()->willReturn('textarea');
         $sqb->addSort([
-            'values.a_text_area-text.<all_channels>.<all_locales>.preprocessed' => [
+            'values.a_text_area-textarea.<all_channels>.<all_locales>.preprocessed' => [
                 'order' => 'ASC',
                 'missing' => '_last'
             ]
@@ -51,10 +51,10 @@ class TextAreaSorterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $aTextArea->getCode()->willReturn('a_text_area');
-        $aTextArea->getBackendType()->willReturn('text');
+        $aTextArea->getBackendType()->willReturn('textarea');
 
         $sqb->addSort([
-            'values.a_text_area-text.ecommerce.fr_FR.preprocessed' => [
+            'values.a_text_area-textarea.ecommerce.fr_FR.preprocessed' => [
                 'order' => 'ASC',
                 'missing' => '_last'
             ]
@@ -69,10 +69,10 @@ class TextAreaSorterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $aTextArea->getCode()->willReturn('a_text_area');
-        $aTextArea->getBackendType()->willReturn('text');
+        $aTextArea->getBackendType()->willReturn('textarea');
 
         $sqb->addSort([
-            'values.a_text_area-text.ecommerce.fr_FR.preprocessed' => [
+            'values.a_text_area-textarea.ecommerce.fr_FR.preprocessed' => [
                 'order' => 'DESC',
                 'missing' => '_last'
             ]
@@ -121,7 +121,7 @@ class TextAreaSorterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $textArea->getCode()->willReturn('description');
-        $textArea->getBackendType()->willReturn('text');
+        $textArea->getBackendType()->willReturn('textarea');
         $textArea->isLocaleSpecific()->willReturn(true);
         $textArea->getAvailableLocaleCodes('fr_FR');
 
@@ -148,7 +148,7 @@ class TextAreaSorterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $textArea->getCode()->willReturn('description');
-        $textArea->getBackendType()->willReturn('text');
+        $textArea->getBackendType()->willReturn('textarea');
         $textArea->isScopable()->willReturn(false);
 
         $e = new \LogicException('Attribute "description" does not expect a scope, "ecommerce" given.');

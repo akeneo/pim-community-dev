@@ -67,7 +67,7 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
 
         $serializer->normalize($productValue2, 'indexing', [])->willReturn(
             [
-                'description-text' => [
+                'description-textarea' => [
                     '<all_channels>' => [
                         '<all_locales>' => 'Nice description for phpspec',
                     ],
@@ -82,7 +82,7 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
                         '<all_locales>' => '7',
                     ],
                 ],
-                'description-text'     => [
+                'description-textarea'     => [
                     '<all_channels>' => [
                         '<all_locales>' => 'Nice description for phpspec',
                     ],

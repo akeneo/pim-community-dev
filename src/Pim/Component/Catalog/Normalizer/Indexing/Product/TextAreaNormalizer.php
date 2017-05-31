@@ -21,7 +21,7 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductValueInterface &&
-            AttributeTypes::BACKEND_TYPE_TEXT === $data->getAttribute()->getBackendType() &&
+            AttributeTypes::BACKEND_TYPE_TEXTAREA === $data->getAttribute()->getBackendType() &&
             'indexing' === $format;
     }
 

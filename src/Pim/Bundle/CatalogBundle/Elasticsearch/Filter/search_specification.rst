@@ -32,7 +32,7 @@ As new attributes can be added dynamically to Akeneo, we will use the dynamic ma
 The suffixes are simply equivalent to the attribute's backend type.
 
 For example:
- - description-text: the ``-text`` suffix is applied, meaning that we must apply a specific analyzer for a text area attribute.
+ - description-textarea: the ``-textarea`` suffix is applied, meaning that we must apply a specific analyzer for a text area attribute.
 
 List of fields and their mapping to Akeneo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,9 +44,9 @@ List of attributes and their mapping to Akeneo
 =================================   ==========================
 Akeneo attribute type               Elasticsearch field suffix
 =================================   ==========================
- pim_catalog_identifier              -varchar
- pim_catalog_text                    -varchar
- pim_catalog_textarea                -text
+ pim_catalog_identifier              -text
+ pim_catalog_text                    -text
+ pim_catalog_textarea                -textarea
  pim_catalog_metric                  -metric
  pim_catalog_boolean                 -bool
  pim_catalog_simpleselect            -option
@@ -108,7 +108,7 @@ and filter with a ``bool`` query with ``must`` typed occurence of the following 
             'bool' => [
                 'filter' => [
                     'match_phrase' => [
-                        'description-text.mobile.en_US' => '30 pages'
+                        'description-textarea.mobile.en_US' => '30 pages'
                     ],
                     'match_phrase' => [
                             'name-text.<all_channels>.<all_locales>' => "canon"
@@ -132,7 +132,7 @@ Sorting
 
     [
         'sort' => [
-            'name-varchar.<all_channels>.<all_locales>' => 'asc',
+            'name-text.<all_channels>.<all_locales>' => 'asc',
             'missing' => '_last'
         ]
     ]
@@ -167,7 +167,7 @@ Data model
 
     [
         'values' => [
-            'my_description-text' => [
+            'my_description-textarea' => [
                 'mobile' => [
                     'fr_FR' => 'My description'
                 ]
@@ -190,7 +190,7 @@ STARTS WITH
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
+            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
             'query' => "My*"
         ]
     ]
@@ -204,7 +204,7 @@ Example:
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
+            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
             'query' => 'My\\ description*'
         ]
     ]
@@ -218,7 +218,7 @@ CONTAINS
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
+            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
             'query' => '*cool\\ product*'
         ]
     ]
@@ -234,12 +234,12 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
     'bool' => [
         'must_not' => [
             'query_string' => [
-                'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
+                'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
                 'query' => '*cool\\ product*'
             ]
         ],
         'filter' => [
-            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed'
+            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed'
         ]
     ]
 
@@ -254,7 +254,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>.preprocessed' => 'My full lookup text'
+            'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'My full lookup textarea'
         ]
     ]
 
@@ -269,12 +269,12 @@ Not Equals (!=)
 
     'must_not' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>.preprocessed' => 'My full lookup text'
+            'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'My full lookup textarea'
         ]
     ],
     'filter' => [
         'exists' => [
-            'field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed'
+            'field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed'
         ]
     ]
 
@@ -285,7 +285,7 @@ EMPTY
 
     'must_not' => [
         'exists => [
-            'field' => 'values.description-text.<all_channels>.<all_locales>'
+            'field' => 'values.description-textarea.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -296,14 +296,14 @@ NOT EMPTY
 
     'filter' => [
         'exists => [
-            'field' => 'values.description-text.<all_channels>.<all_locales>'
+            'field' => 'values.description-textarea.<all_channels>.<all_locales>'
         ]
     ]
 
 Sorting
 ~~~~~~~
 
-The sorting operation is made on the preprocessed version of the text.
+The sorting operation is made on the preprocessed version of the textarea.
 
 Operators
 .........
@@ -313,7 +313,7 @@ ASCENDANT
 .. code-block:: php
 
     'sort' => [
-        'values.description-text.<all_channels>.<all_locales>.preprocessed' => [
+        'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => [
             'order' => 'ASC',
             'missing' => '_last'
         ]
@@ -326,7 +326,7 @@ DESCENDANT
 .. code-block:: php
 
     'sort' => [
-        'values.description-text.<all_channels>.<all_locales>.preprocessed' => [
+        'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => [
             'order' => 'DESC',
             'missing' => '_last'
         ]
@@ -390,7 +390,7 @@ Not Equal (!=)
 Sorting
 ~~~~~~~
 
-The sorting operation is made on the preprocessed version of the text.
+The sorting operation is made on the preprocessed version of the textarea.
 
 Operators
 .........
@@ -430,7 +430,7 @@ Data model
 
     [
         'values' => [
-            'name-varchar' => [
+            'name-text' => [
                 'mobile' => [
                     'fr_FR' => 'My product name'
                 ]
@@ -443,7 +443,7 @@ Filtering
 Operators
 .........
 
-All operators except CONTAINS and DOES NOT CONTAINS are the same than with the text_area attributes but apply on the field directly instead of the ``.preprocessed`` subfield.
+All operators except CONTAINS and DOES NOT CONTAINS are the same than with the textarea attributes but apply on the field directly instead of the ``.preprocessed`` subfield.
 
 CONTAINS
 """"""""
@@ -451,7 +451,7 @@ CONTAINS
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'name-varchar',
+            'default_field' => 'name-text',
             'query' => '*my_text*'
         ]
     ]
@@ -470,12 +470,12 @@ Same syntax than the contains but must be include in a ``must_not`` boolean occu
         'bool' => [
             'must_not' => [
                 'query_string' => [
-                    'default_field' => 'name-varchar',
+                    'default_field' => 'name-text',
                     'query' => '*my_text*'
                 ]
             ],
             'filter' => [
-                'exists' => ['field' => 'name-varchar']
+                'exists' => ['field' => 'name-text']
             ]
         ]
     ]
@@ -490,7 +490,7 @@ Ascendant
 .. code-block:: php
 
     'sort' => [
-        'values.name-varchar.<all_channels>.<all_locales>' => [
+        'values.name-text.<all_channels>.<all_locales>' => [
             'order'   => 'ASC',
             'missing' => '_last'
         ]
@@ -502,7 +502,7 @@ Descendant
 .. code-block:: php
 
     'sort' => [
-        'values.name-varchar.<all_channels>.<all_locales>' => [
+        'values.name-text.<all_channels>.<all_locales>' => [
             'order'   => 'DESC',
             'missing' => '_last'
         ]

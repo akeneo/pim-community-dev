@@ -163,7 +163,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('textarea_attribute');
         $attribute->getType()->willReturn('pim_catalog_textarea');
-        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $productValue = $this->create(
@@ -194,7 +194,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('textarea_attribute');
         $attribute->getType()->willReturn('pim_catalog_textarea');
-        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $productValue = $this->create(
@@ -227,7 +227,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('textarea_attribute');
         $attribute->getType()->willReturn('pim_catalog_textarea');
-        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $productValue = $this->create(
@@ -258,7 +258,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('textarea_attribute');
         $attribute->getType()->willReturn('pim_catalog_textarea');
-        $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getBackendType()->willReturn('textarea');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $productValue = $this->create(

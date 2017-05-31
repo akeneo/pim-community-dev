@@ -21,7 +21,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>',
                             'query'         => 'an*',
                         ],
                     ],
@@ -41,7 +41,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
+                            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
                             'query'         => '*My*',
                         ],
                     ],
@@ -61,12 +61,12 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'query_string' => [
-                            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
+                            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
                             'query'         => '*cool\\ product*',
                         ],
                     ],
                     'filter'   => [
-                        'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>'],
+                        'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
                     ],
                 ],
             ],
@@ -84,7 +84,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                     'bool' => [
                         'filter' => [
                             'term' => [
-                                'values.description-text.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
+                                'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
                             ],
                         ],
                     ],
@@ -103,11 +103,11 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                     'bool' => [
                         'must_not' => [
                             'term' => [
-                                'values.description-text.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
+                                'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
                             ],
                         ],
                         'filter'   => [
-                            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed'],
+                            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed'],
                         ],
                     ],
                 ],
@@ -124,7 +124,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'query' => [
                     'bool' => [
                         'must_not' => [
-                            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>'],
+                            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
                         ],
                     ],
                 ],
@@ -141,7 +141,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'query' => [
                     'bool' => [
                         'filter' => [
-                            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>'],
+                            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
                         ],
                     ],
                 ],
@@ -160,7 +160,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.description-text.<all_channels>.<all_locales>.preprocessed' => [
+                    'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => [
                         'order'   => 'asc',
                         'missing' => '_last',
                     ],
@@ -184,7 +184,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.description-text.<all_channels>.<all_locales>.preprocessed' => [
+                    'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -209,7 +209,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_1',
                 'values'     => [
-                    'description-text' => [
+                    'description-textarea' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'My product description',
                         ],
@@ -219,7 +219,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_2',
                 'values'     => [
-                    'description-text' => [
+                    'description-textarea' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Another cool product, great !',
                         ],
@@ -229,7 +229,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_3',
                 'values'     => [
-                    'description-text' => [
+                    'description-textarea' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Yeah, love description',
                         ],
@@ -239,7 +239,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_4',
                 'values'     => [
-                    'description-text' => [
+                    'description-textarea' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'A better <h1>description</h1>',
                         ],
@@ -249,7 +249,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_5',
                 'values'     => [
-                    'description-text' => [
+                    'description-textarea' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'And an uppercase DESCRIPTION',
                         ],

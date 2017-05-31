@@ -29,7 +29,7 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getAttribute()->willReturn($textAttribute);
         $numberValue->getAttribute()->willReturn($numberAttribute);
 
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
         $numberAttribute->getBackendType()->willReturn('decimal');
 
         $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
@@ -50,10 +50,10 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
-            'name-varchar' => [
+            'name-text' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product name',
                 ],
@@ -71,10 +71,10 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getData()->willReturn('<h1>My <strong>ProDucT</strong> is awesome</h1>');
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
-            'name-varchar' => [
+            'name-text' => [
                 '<all_channels>' => [
                     '<all_locales>' => '<h1>My <strong>ProDucT</strong> is awesome</h1>',
                 ],
@@ -92,10 +92,10 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getData()->willReturn(null);
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
-            'name-varchar' => [
+            'name-text' => [
                 '<all_channels>' => [
                     '<all_locales>' => null,
                 ],
@@ -113,10 +113,10 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
-            'name-varchar' => [
+            'name-text' => [
                 '<all_channels>' => [
                     'fr_FR' => 'a product name',
                 ],
@@ -134,10 +134,10 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
-            'name-varchar' => [
+            'name-text' => [
                 'ecommerce' => [
                     '<all_locales>' => 'a product name',
                 ],
@@ -155,10 +155,10 @@ class TextNormalizerSpec extends ObjectBehavior
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getBackendType()->willReturn('varchar');
+        $textAttribute->getBackendType()->willReturn('text');
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
-            'name-varchar' => [
+            'name-text' => [
                 'ecommerce' => [
                     'fr_FR' => 'a product name',
                 ],

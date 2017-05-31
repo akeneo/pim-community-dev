@@ -148,7 +148,7 @@ class ProductIndexingIntegration extends TestCase
                         ],
                     ],
                 ],
-                'a_localized_and_scopable_text_area-text'        => [
+                'a_localized_and_scopable_text_area-textarea'    => [
                     'ecommerce' => [
                         'en_US' => 'a text area for ecommerce in English',
                     ],
@@ -270,17 +270,17 @@ class ProductIndexingIntegration extends TestCase
                         '<all_locales>' => 'optionB',
                     ],
                 ],
-                'a_text-varchar'                                 => [
+                'a_text-text'                                    => [
                     '<all_channels>' => [
                         '<all_locales>' => 'this is a text',
                     ],
                 ],
-                '123-varchar'                                    => [
+                '123-text'                                       => [
                     '<all_channels>' => [
                         '<all_locales>' => 'a text for an attribute with numerical code',
                     ],
                 ],
-                'a_text_area-text'                               => [
+                'a_text_area-textarea'                           => [
                     '<all_channels>' => [
                         '<all_locales>' => 'this is a very very very very very long  text',
                     ],
