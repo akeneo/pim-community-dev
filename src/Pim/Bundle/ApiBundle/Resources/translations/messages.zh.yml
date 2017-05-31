@@ -10,6 +10,7 @@ pim_api:
       list: 列出品类
     channel.list: 列出渠道
     locale.list: 列出本地化语言
+    currency.list: 列出货币
   acl_group:
     attribute: 属性
     attribute_group: 属性组
@@ -17,3 +18,4 @@ pim_api:
     family: 品类
     channel: 渠道
     locale: 本地化语言
+    currency: 货币

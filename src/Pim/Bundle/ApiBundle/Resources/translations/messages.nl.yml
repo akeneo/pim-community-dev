@@ -17,6 +17,7 @@ pim_api:
       list: Families weergeven
     channel.list: Kanalen weergeven
     locale.list: Lokalisaties weergeven
+    currency.list: Valuta weergeven
   acl_group:
     overall_access: Algemene Web API-toegang
     attribute: Attributen
@@ -26,4 +27,5 @@ pim_api:
     family: Families
     channel: Kanalen
     locale: Lokalisaties
+    currency: Valuta
 rights.api: Web API machtigingen

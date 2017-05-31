@@ -433,8 +433,12 @@ class WebUser extends RawMinkContext
      */
     public function theAttributeShouldBeInPosition($attribute, $position)
     {
-        $actual = $this->getCurrentPage()->getAttributePosition($attribute);
-        assertEquals($position, $actual);
+        $this->spin(function () use ($attribute, $position) {
+            $actual = $this->getCurrentPage()->getAttributePosition($attribute);
+            assertEquals($position, $actual);
+
+            return true;
+        }, sprintf('Cannot assert that %s is at position %s', $attribute, $position));
     }
 
     /**
@@ -1115,7 +1119,6 @@ class WebUser extends RawMinkContext
         }
 
         $removeLink->click();
-        $this->wait();
     }
 
     /**

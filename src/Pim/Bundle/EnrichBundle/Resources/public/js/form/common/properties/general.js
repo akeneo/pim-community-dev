@@ -12,6 +12,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
+        'pim/common/property',
         'text!pim/template/form/properties/general',
         'jquery.select2'
     ],
@@ -20,6 +21,7 @@ define([
         __,
         BaseForm,
         FetcherRegistry,
+        propertyAccessor,
         template
     ) {
         return BaseForm.extend({
@@ -37,7 +39,8 @@ define([
                     sectionTitle: __(config.sectionTitle),
                     codeLabel: __(config.codeLabel),
                     formRequired: __(config.formRequired),
-                    inputField: config.inputField
+                    inputField: config.inputField,
+                    hasId: propertyAccessor.accessProperty(this.getFormData(), 'meta.id') !== null
                 }));
 
                 this.$el.find('select.select2').select2({});

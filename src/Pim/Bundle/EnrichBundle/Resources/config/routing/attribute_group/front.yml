@@ -1,0 +1,12 @@
+pim_enrich_attributegroup_index:
+    path: ''
+    defaults: { _controller: pim_enrich.controller.attribute_group:indexAction }
+
+pim_enrich_attributegroup_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.attribute_group:createAction }
+
+pim_enrich_attributegroup_edit:
+    path: /{identifier}/edit
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'

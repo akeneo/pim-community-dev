@@ -7,7 +7,7 @@ extensions:
     pim-channel-index-grid:
         module: pim/form/common/index/grid
         parent: pim-channel-index
-        position: 1000
+        position: 100
         targetZone: content
         config:
             alias: channel-grid

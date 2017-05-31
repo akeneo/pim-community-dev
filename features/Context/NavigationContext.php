@@ -166,9 +166,7 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
         $page   = 'AttributeGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['identifier' => $identifier]);
     }
 
     /**
