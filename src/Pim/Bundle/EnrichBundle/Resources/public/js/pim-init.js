@@ -38,8 +38,7 @@ define(
         'use strict';
         var initialized = false;
 
-        console.log('Add RequirePolyfill', RequirePolyfill)
-        console.log('Start app')
+        // console.log('Add RequirePolyfill', RequirePolyfill)
 
         return function () {
             if (initialized) {

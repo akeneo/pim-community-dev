@@ -7,10 +7,10 @@ const config = require('./webpack.config.js')
 
 // config.plugins.push(new UglifyJSPlugin())
 
-//webpack-dev-server --host 127.0.0.1 --port 4200 --hot --inline --config webpack.dev.config.js --progress
+//webpack-dev-server --host localhost --port 4200 --hot --inline --config webpack.dev.config.js --progress
 
 config.entry = [
-  'webpack-dev-server/client?http://127.0.0.1:4200',
+  'webpack-dev-server/client?http://localhost:8080/',
   'webpack/hot/only-dev-server',
   path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js')
 ]
@@ -21,19 +21,28 @@ config.watchOptions = {
   ignored: /node_modules/
 }
 
+config.output = {
+  path: path.resolve('./web/dist/'),
+  publicPath: 'http://localhost:8080/',
+  filename: 'app.min.js',
+  chunkFilename: '[name].bundle.js',
+  pathinfo: true,
+  devtoolLineToLine: true
+}
+
 config.devServer = {
-  // watchContentBase: false,
+  filename: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js'),
   hot: true,
-  // contentBase: path.resolve(__dirname, './src'),
-  publicPath: '/dist/',
-  port: 4200,
-  host: '127.0.0.1',
+  contentBase: path.resolve('./'),
+  publicPath: 'http://localhost:8080/',
+  port: 8080,
+  host: 'localhost',
   inline: true,
-  disableHostCheck: true
+  disableHostCheck: true,
+  headers: { "Access-Control-Allow-Origin": "*"}
 }
 
 config.plugins.push(new webpack.HotModuleReplacementPlugin())
 // config.plugins.push(new webpack.NamedModulesPlugin())
 
-// --host 127.0.0.1 --port 4200 --hot --inline
 module.exports = config
