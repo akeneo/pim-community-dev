@@ -125,7 +125,7 @@ Its standard format would be the following:
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
-| updated  	    | array          | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
+| updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "products" => [0 => "foo"]]]` | see below                                                                                        |
 
 

@@ -52,7 +52,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry,
-        TranslatableUpdater $translatableUpdater = null
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;

@@ -29,6 +29,7 @@ parameters:
     pim_enrich.controller.rest.family.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController
     pim_enrich.controller.rest.form_extension.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
     pim_enrich.controller.rest.group.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\GroupController
+    pim_enrich.controller.rest.group_type.class:              Pim\Bundle\EnrichBundle\Controller\Rest\GroupTypeController
     pim_enrich.controller.rest.locale.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
@@ -42,6 +43,7 @@ parameters:
     pim_enrich.controller.mass_edit.abstract:                 Pim\Bundle\EnrichBundle\Controller\MassEdit\AbstractMassEditController
     pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
+    pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
 
 services:
     pim_enrich.controller.attribute_group:
@@ -293,6 +295,17 @@ services:
             - '@validator'
             - '@pim_user.context.user'
 
+    pim_enrich.controller.rest.group_type:
+        class: '%pim_enrich.controller.rest.group_type.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.group_type'
+            - '@pim_catalog.updater.group_type'
+            - '@pim_catalog.saver.group_type'
+            - '@validator'
+            - '@pim_user.context.user'
+
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'
         arguments:
@@ -502,3 +515,12 @@ services:
             - '@router'
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.job_execution:
+        class: '%pim_enrich.controller.rest.job_execution.class%'
+        arguments:
+            - '@translator'
+            - '@pim_connector.event_listener.archivist'
+            - '@pim_serializer'
+            - '@akeneo_batch.manager.job_execution'
+            - '@pim_enrich.repository.job_execution'

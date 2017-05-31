@@ -23,14 +23,19 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
     /** @var TranslatedLabelProvider */
     protected $labelProvider;
 
+    /** @var NormalizerInterface */
+    protected $jobInstanceNormalizer;
+
     /**
      * @param TranslatorInterface $translator
-     * @param TranslatedLabelProvider    $labelProvider
+     * @param TranslatedLabelProvider $labelProvider
+     * @param NormalizerInterface $jobInstanceNormalizer
      */
-    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
+    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider, NormalizerInterface $jobInstanceNormalizer)
     {
         $this->translator = $translator;
         $this->labelProvider = $labelProvider;
+        $this->jobInstanceNormalizer = $jobInstanceNormalizer;
     }
 
     /**
@@ -48,7 +53,6 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         }
 
         return [
-            'label'          => $this->labelProvider->getJobLabel($object->getJobInstance()->getJobName()),
             'failures'       => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);
@@ -59,7 +63,8 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             'isRunning'      => $object->isRunning(),
             'status'         => $this->translator->trans(
                 sprintf('pim_import_export.batch_status.%d', $object->getStatus()->getValue())
-            )
+            ),
+            'jobInstance'    => $this->jobInstanceNormalizer->normalize($object->getJobInstance(), 'standard', $context)
         ];
     }
 

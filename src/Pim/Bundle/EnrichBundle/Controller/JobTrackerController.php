@@ -65,8 +65,6 @@ class JobTrackerController extends Controller
     protected $jobSecurityMapping;
 
     /**
-     * TODO To be refactored into Master to change the constructor 'null' parameters
-     *
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
@@ -75,7 +73,7 @@ class JobTrackerController extends Controller
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param SecurityFacade           $securityFacade
-     * @param string                   $jobSecurityMapping
+     * @param array                    $jobSecurityMapping
      */
     public function __construct(
         EngineInterface $templating,
@@ -85,8 +83,8 @@ class JobTrackerController extends Controller
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
-        SecurityFacade $securityFacade = null,
-        $jobSecurityMapping = null
+        SecurityFacade $securityFacade,
+        $jobSecurityMapping
     ) {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -164,8 +162,8 @@ class JobTrackerController extends Controller
         }
 
         return $this->render(
-            'PimEnrichBundle:JobTracker:show.html.twig',
-            ['execution' => $jobExecution]
+            'PimEnrichBundle:JobExecution:show.html.twig',
+            ['id' => $id]
         );
     }
 
@@ -241,21 +239,18 @@ class JobTrackerController extends Controller
     /**
      * Returns if a user has read permission on an import or export
      *
-     * @param JobExecution $jobExecution
+     * @param JobExecution  $jobExecution
+     * @param mixed $object The object
      *
      * @return bool
      */
-    protected function isJobGranted($jobExecution)
+    protected function isJobGranted($jobExecution, $object = null)
     {
-        if ((null === $this->securityFacade) || (null === $this->jobSecurityMapping)) {
-            return true;
-        }
-
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
             return true;
         }
 
-        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType]);
+        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType], $object);
     }
 }

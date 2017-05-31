@@ -43,7 +43,8 @@ define(
                     }
 
                     this.$el.html(this.template({
-                        label: __(this.config.label)
+                        label: __(this.config.label),
+                        iconName: this.config.iconName
                     }));
                 }.bind(this));
 

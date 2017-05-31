@@ -23,4 +23,4 @@ pim_api:
     family: Produktfamilien
     channel: Ausgabekanäle
     locale: Gebietsschemata
-rights.api: Berechtigungen Web-API
+rights.api: Web-API Berechtigungen

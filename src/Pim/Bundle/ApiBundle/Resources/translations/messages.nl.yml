@@ -3,13 +3,13 @@ pim_api:
     rights: Web API machtigingen
     attribute:
       edit: Attributen aanmaken en bijwerken
-      list: Attributen oplijsten
+      list: Attributen weergeven
     attribute_option:
       edit: Attribuutopties aanmaken en bijwerken
       list: Attribuutopties oplijsten
     category:
       edit: Categorieën aanmaken en bijwerken
-      list: Categorieën oplijsten
+      list: Categorieën weergeven
     family:
       edit: Families aanmaken en bijwerken
       list: Families oplijsten

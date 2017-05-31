@@ -14,7 +14,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, '/', 'prod');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, '/', 'prod', '/logs');
     }
 
     function it_is_a_job_launcher()
