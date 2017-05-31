@@ -2,6 +2,7 @@
 
 namespace Context\Page\AttributeGroup;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
 
 /**
@@ -62,7 +63,7 @@ class Creation extends Form
             $label->click();
         }
 
-        $this->getElement('Available attributes add button')->press();
+        return $this->getElement('Available attributes add button')->press();
     }
 
     /**
