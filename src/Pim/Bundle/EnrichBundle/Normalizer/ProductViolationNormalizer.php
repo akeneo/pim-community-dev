@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,7 +16,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 class ProductViolationNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /** @var AttributeRepositoryInterface */
@@ -35,7 +37,16 @@ class ProductViolationNormalizer implements NormalizerInterface
     {
         $propertyPath = $violation->getPropertyPath();
 
-        if (1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $violation->getPropertyPath(), $matches)) {
+        if ('identifier' === $propertyPath) {
+            return [
+                'attribute' => $this->attributeRepository->getIdentifierCode(),
+                'locale'    => null,
+                'scope'     => null,
+                'message'   => $violation->getMessage(),
+            ];
+        }
+
+        if (1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $propertyPath, $matches)) {
             if (!isset($context['product'])) {
                 throw new \InvalidArgumentException('Expects a product context');
             }
@@ -50,13 +61,15 @@ class ProductViolationNormalizer implements NormalizerInterface
                 return [];
             }
 
-            $normalizedViolation = [
+            return [
                 'attribute' => $attributeCode,
                 'locale'    => '<all_locales>' === $attribute[2] ? null : $attribute[2],
                 'scope'     => '<all_channels>' === $attribute[1] ? null : $attribute[1],
                 'message'   => $violation->getMessage(),
             ];
-        } elseif (0 === strpos($propertyPath, 'values[')) {
+        }
+
+        if (0 === strpos($propertyPath, 'values[')) {
             if (!isset($context['product'])) {
                 throw new \InvalidArgumentException('Expects a product context');
             }
@@ -65,27 +78,13 @@ class ProductViolationNormalizer implements NormalizerInterface
             $codeLength = strpos($propertyPath, ']') - $codeStart;
             $attribute = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
 
-            $normalizedViolation = [
+            return [
                 'attribute' => $attribute['code'],
                 'locale'    => $attribute['locale'],
                 'scope'     => $attribute['scope'],
                 'message'   => $violation->getMessage(),
             ];
-        } elseif ('identifier' === $propertyPath) {
-            $normalizedViolation = [
-                'attribute' => $this->attributeRepository->getIdentifierCode(),
-                'locale'    => null,
-                'scope'     => null,
-                'message'   => $violation->getMessage(),
-            ];
-        } else {
-            $normalizedViolation = [
-                'global'  => true,
-                'message' => $violation->getMessage(),
-            ];
         }
-
-        return $normalizedViolation;
     }
 
     /**
@@ -93,6 +92,6 @@ class ProductViolationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ConstraintViolationInterface && in_array($format, $this->supportedFormats);
+        return in_array($format, $this->supportedFormats) && $data instanceof ConstraintViolationInterface;
     }
 }
