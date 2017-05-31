@@ -11,7 +11,6 @@ define(
     [
         'jquery',
         'oro/translator',
-        'config',
         'pim/form',
         'oro/mediator',
         'oro/loading-mask',
@@ -20,7 +19,6 @@ define(
     function (
         $,
         __,
-        module,
         BaseForm,
         mediator,
         LoadingMask,

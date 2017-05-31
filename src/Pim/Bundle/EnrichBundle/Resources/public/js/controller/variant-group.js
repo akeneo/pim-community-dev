@@ -3,12 +3,11 @@
 define(
     [
         'pim/controller/group',
-        'config'
     ],
-    function (BaseController, module) {
+    function (BaseController) {
         return BaseController.extend({
             initialize: function () {
-                this.config = module.config(__moduleName);
+                this.config = __moduleConfig;
             }
         });
     }

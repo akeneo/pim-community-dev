@@ -17,7 +17,6 @@ define(
         'pim/init-translator',
         'oro/init-layout',
         'pimuser/js/init-signin',
-        'config',
         'pim/page-title',
         'pim/template/app',
         'pim/template/header/flash'
@@ -32,7 +31,6 @@ define(
         initTranslator,
         initLayout,
         initSignin,
-        moduleConfig,
         pageTitle,
         template,
         flashTemplate

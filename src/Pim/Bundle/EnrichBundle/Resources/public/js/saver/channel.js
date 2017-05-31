@@ -10,14 +10,12 @@
 define([
         'underscore',
         'pim/saver/base',
-        'config',
         'routing',
         'oro/mediator',
         'jquery'
     ], function (
         _,
         BaseSaver,
-        module,
         Routing,
         mediator,
         $
@@ -28,10 +26,10 @@ define([
              */
             getUrl: function (code) {
                 if (null === code) {
-                    return Routing.generate(module.config(__moduleName).postUrl);
+                    return Routing.generate(__moduleConfig.postUrl);
                 }
 
-                return Routing.generate(module.config(__moduleName).putUrl, {code: code});
+                return Routing.generate(__moduleConfig.putUrl, {code: code});
             },
 
             /**

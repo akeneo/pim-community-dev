@@ -22,7 +22,6 @@ define(
         'pim/datagrid/state',
         'pim/fetcher-registry',
         'pim/form-builder',
-        'config'
     ],
     function (
         $,
@@ -35,7 +34,6 @@ define(
         DatagridState,
         FetcherRegistry,
         FormBuilder,
-        module
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -72,8 +70,8 @@ define(
             configure: function (gridAlias) {
                 this.gridAlias = gridAlias;
 
-                if (_.has(module.config(__moduleName), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config(__moduleName)['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 this.listenTo(this.getRoot(), 'grid:view-selector:view-created', this.onViewCreated.bind(this));

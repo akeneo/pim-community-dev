@@ -2,7 +2,6 @@
 
 define([
         'backbone',
-        'config',
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',
@@ -10,7 +9,6 @@ define([
     ],
     function(
         Backbone,
-        module,
         mediator,
         BaseForm,
         FetcherRegistry,
@@ -34,8 +32,8 @@ define([
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                if (_.has(module.config(__moduleName), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config(__moduleName)['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 return BaseForm.prototype.configure.apply(this, arguments);

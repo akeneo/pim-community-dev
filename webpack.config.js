@@ -31,7 +31,7 @@ module.exports = {
                 test: /\.js$/,
                 use: [
                     {
-                        loader: path.resolve(__dirname, './config-loader'),
+                        loader: path.resolve(__dirname, 'frontend/config-loader'),
                         options: {}
                     }
                 ]

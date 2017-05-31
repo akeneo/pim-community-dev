@@ -8,14 +8,12 @@
 'use strict';
 
 define([
-    'config',
     'jquery',
     'underscore',
     'backbone',
     'pim/form'
 ],
 function (
-    module,
     $,
     _,
     Backbone,

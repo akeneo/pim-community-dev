@@ -1,7 +1,7 @@
 'use strict';
 
-define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'require-context'],
-function (module, $, _, BaseFetcher, requireContext) {
+define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'],
+function ($, _, BaseFetcher, requireContext) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -11,7 +11,7 @@ function (module, $, _, BaseFetcher, requireContext) {
          */
         initialize: function () {
             if (null === this.initializePromise) {
-                var fetcherList = module.config(__moduleName).fetchers
+                var fetcherList = __moduleConfig.fetchers
                 var deferred = $.Deferred();
                 var defaultFetcher = 'pim/base-fetcher'
                 var fetchers = {};

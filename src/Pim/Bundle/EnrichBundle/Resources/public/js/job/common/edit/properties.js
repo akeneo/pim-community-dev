@@ -8,7 +8,6 @@
  */
 define(
     [
-        'config',
         'underscore',
         'oro/translator',
         'pim/template/export/common/edit/properties',
@@ -16,7 +15,6 @@ define(
         'pim/common/property'
     ],
     function (
-        module,
         _,
         __,
         template,

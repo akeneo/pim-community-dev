@@ -12,7 +12,6 @@ define(
         'pim/page-title',
         'pim/error',
         'pim/i18n',
-        'config'
     ],
     function (
         _,
@@ -25,11 +24,10 @@ define(
         PageTitle,
         Error,
         i18n,
-        module
     ) {
         return BaseController.extend({
             initialize: function () {
-                this.config = module.config(__moduleName);
+                this.config = __moduleConfig;
             },
 
             /**

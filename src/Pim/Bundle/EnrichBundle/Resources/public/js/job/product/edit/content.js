@@ -8,7 +8,6 @@
  */
 define(
     [
-        'config',
         'underscore',
         'oro/translator',
         'backbone',
@@ -16,7 +15,6 @@ define(
         'pim/form'
     ],
     function (
-        module,
         _,
         __,
         Backbone,

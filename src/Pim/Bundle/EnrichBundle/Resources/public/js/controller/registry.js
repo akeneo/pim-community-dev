@@ -1,9 +1,9 @@
 'use strict';
 
 define(
-    ['jquery', 'require-context', 'config'],
-    function ($, requireContext, module) {
-        var config            = module.config(__moduleName)
+    ['jquery', 'require-context'],
+    function ($, requireContext) {
+        var config            = __moduleConfig
         var controllers       = config.controllers || {}
         var defaultController = config.defaultController
 

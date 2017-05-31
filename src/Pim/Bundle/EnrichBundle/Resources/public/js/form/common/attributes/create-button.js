@@ -19,7 +19,6 @@ define(
         'routing',
         'pim/fetcher-registry',
         'pim/router',
-        'config',
         'bootstrap-modal'
     ],
     function (
@@ -33,7 +32,6 @@ define(
         Routing,
         FetcherRegistry,
         router,
-        module
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -54,7 +52,7 @@ define(
             createModal: function (attributeTypesMap) {
                 var attributeTypes = this.formatAndSortAttributeTypesByLabel(attributeTypesMap);
 
-                var moduleConfig = module.config(__moduleName);
+                var moduleConfig = __moduleConfig;
 
                 var modal = null;
                 var modalContent = this.templateModal({

@@ -4,7 +4,6 @@ define(
     [
         'jquery',
         'pim/base-fetcher',
-        'config',
         'routing',
         'oro/mediator',
         'pim/cache-invalidator',
@@ -13,7 +12,6 @@ define(
     function (
         $,
         BaseFetcher,
-        module,
         Routing,
         mediator,
         CacheInvalidator,
