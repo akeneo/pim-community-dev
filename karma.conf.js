@@ -18,12 +18,17 @@ module.exports = function(config) {
             stats: 'errors-only'
         },
 
+        captureTimeout: 60000,
+        browserDisconnectTimeout : 10000,
+        browserDisconnectTolerance : 1,
+        browserNoActivityTimeout : 60000,
+
         plugins: [
             require('karma-webpack'),
             require('karma-jasmine'),
             require('karma-es6-shim'),
             require('karma-phantomjs-launcher'),
-            require('karma-spec-reporter')
+            require('karma-spec-reporter'),
         ],
 
         frameworks: [
