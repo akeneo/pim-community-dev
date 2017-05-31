@@ -14,6 +14,15 @@ define([
         additionalViews: {},
 
         /**
+         * {@inheritdoc}
+         */
+        configure: function () {
+            this.on('pim_enrich:form:entity:post_fetch', this.render);
+
+            return BaseEditForm.prototype.configure.apply(this, arguments);
+        },
+
+        /**
          * Sets a view name for an arbitrary key, to be used later for dynamic tree building purpose.
          *
          * @param {String} key

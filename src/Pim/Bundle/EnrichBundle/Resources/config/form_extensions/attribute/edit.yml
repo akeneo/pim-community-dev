@@ -53,6 +53,7 @@ extensions:
             notReadyMessage: pim_enrich.entity.attribute.info.field_not_ready
             url: pim_enrich_attribute_rest_post
             redirectAfter: pim_enrich_attribute_edit
+            identifierParamName: code
             excludedProperties: [empty_value, field_type, filter_types, is_locale_specific]
 
     pim-attribute-edit-form-state:

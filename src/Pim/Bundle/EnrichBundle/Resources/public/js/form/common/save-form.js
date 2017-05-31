@@ -100,7 +100,11 @@ define(
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
 
                         if (this.config.redirectAfter) {
-                            router.redirectToRoute(this.config.redirectAfter, {identifier: entity.code});
+                            var params = {};
+                            var key = this.config.identifierParamName || 'identifier';
+                            params[key] = entity.code;
+
+                            router.redirectToRoute(this.config.redirectAfter, params);
                         }
                     }.bind(this))
                     .fail(this.fail.bind(this))
