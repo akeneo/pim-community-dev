@@ -129,7 +129,6 @@ def runGruntTest() {
                 unstash "project_files_full"
                 sh "npm install --verbose"
                 sh "npm run lint"
-                sh "npm run test"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
