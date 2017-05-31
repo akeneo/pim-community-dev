@@ -17,6 +17,7 @@
 - PIM-6428: Fix usage of unique attributes on Product Edit Form and Family edition
 - PIM-6414: Fix datetime filter display issue
 - PIM-6384: Fix product export builder localisable and scopable fields display issue
+- IM-809: Fix missing shadows behind dialog popins
 
 # 1.7.4 (2017-05-10)
 
