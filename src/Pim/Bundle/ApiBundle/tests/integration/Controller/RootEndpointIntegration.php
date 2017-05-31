@@ -203,6 +203,14 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_channel_partial_update_list": {
                 "route": "/api/rest/v1/channels",
                 "methods": ["PATCH"]
+            },
+            "pim_api_association_type_get": {
+                "route": "/api/rest/v1/association-types/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_association_type_list": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["GET"]
             }
         }
     }

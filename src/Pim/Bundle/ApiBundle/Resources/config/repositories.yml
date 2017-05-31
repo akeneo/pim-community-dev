@@ -80,3 +80,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.currency.class%'
             - '@pim_catalog.repository.currency'
+
+    pim_api.repository.association_type:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.association_type.class%'
+            - '@pim_catalog.repository.association_type'
