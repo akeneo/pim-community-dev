@@ -34,8 +34,7 @@ Feature: Display the attribute group history
       | 2       | label-en_US | My technical group |
 
     When I visit the "Attributes" tab
-    And I add available attributes SKU
-    And I add available attributes Description
+    And I add available attributes SKU, Description
     And I save the group
     And I should see the flash message "Attribute group successfully updated"
     When I visit the "History" tab

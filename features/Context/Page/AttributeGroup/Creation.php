@@ -53,14 +53,19 @@ class Creation extends Form
         $search = $this->getElement('Available attributes search');
         foreach ($attributes as $attributeLabel) {
             $search->setValue($attributeLabel);
-            $label = $this->spin(
+            $this->spin(
                 function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li span:contains("%s")', $attributeLabel));
-                },
-                sprintf('Could not find available attribute "%s".', $attributeLabel)
-            );
+                    $label = $list->find('css', sprintf('li span:contains("%s")', $attributeLabel));
+                    if (null === $label) {
+                        return false;
+                    }
 
-            $label->click();
+                    $label->click();
+
+                    return true;
+                },
+                sprintf('Could not click on available attribute "%s".', $attributeLabel)
+            );
         }
 
         return $this->getElement('Available attributes add button')->press();

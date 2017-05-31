@@ -57,6 +57,7 @@ Feature: Delete many product at once
     Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
+    And I refresh current page
     Then the grid should contain 1 element
     And I should see product sneakers_S43
 
