@@ -64,7 +64,7 @@ extensions:
         targetZone: content
         position: 120
         config:
-            fieldName: min_number
+            fieldName: number_min
 
     pim-attribute-edit-form-metric-validation-params-max-number:
         module: pim/attribute-edit-form/properties/text
@@ -72,4 +72,4 @@ extensions:
         targetZone: content
         position: 130
         config:
-            fieldName: max_number
+            fieldName: number_max

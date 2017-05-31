@@ -6,3 +6,11 @@
 <div class="AknFieldContainer-inputContainer">
     <div class="field-input"></div>
 </div>
+<div class="AknFieldContainer-footer">
+    <% _.each(errors, function(error) { %>
+        <span class="AknFieldContainer-validationError">
+            <i class="icon-warning-sign"></i>
+            <span class="error-message"><%- error.message %></span>
+        </span>
+    <% }) %>
+</div>

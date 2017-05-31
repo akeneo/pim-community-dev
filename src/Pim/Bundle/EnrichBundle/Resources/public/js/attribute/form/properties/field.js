@@ -26,11 +26,13 @@ function (
         elements: {},
         events: {
             'change input,select': function (event) {
+                this.errors = [];
                 this.updateModel(event.target);
                 this.getRoot().render();
             }
         },
         fieldName: null,
+        errors: [],
 
         /**
          * {@inheritdoc}
@@ -45,6 +47,20 @@ function (
             this.fieldName = this.config.fieldName;
 
             BaseForm.prototype.initialize.apply(this, arguments);
+        },
+
+        configure: function () {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
+
+            return BaseForm.prototype.configure.apply(this, arguments);
+        },
+
+        /**
+         * @param {Object} event
+         */
+        onBadRequest: function (event) {
+            this.errors = _.where(event.response, {path: this.fieldName});
+            this.render();
         },
 
         /**
@@ -77,7 +93,8 @@ function (
                 .resolve({
                     fieldLabel: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
                     requiredLabel: __('pim_enrich.form.required'),
-                    fieldName: this.fieldName
+                    fieldName: this.fieldName,
+                    errors: this.errors
                 })
                 .promise();
         },
