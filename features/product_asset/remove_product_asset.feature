@@ -11,6 +11,7 @@ Feature: Remove product assets
       | shirt |
     And I am logged in as "Pamela"
 
+  @skip @info To be fixed in TIP-684
   Scenario: Successfully delete product asset
     Given I am on the "shirt" product page
     And I add available attributes Front view
