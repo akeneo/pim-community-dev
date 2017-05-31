@@ -10,8 +10,7 @@
         "symfony/symfony": "2.1.*",
         "doctrine/data-fixtures": "@dev",
         "doctrine/doctrine-fixtures-bundle": "@dev",
-        "gedmo/doctrine-extensions": "2.3.*",
-        "oro/requirejs-bundle": "dev-master"
+        "gedmo/doctrine-extensions": "2.3.*"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\TranslationBundle": "" }

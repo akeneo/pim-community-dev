@@ -41,8 +41,7 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
     {
         $output->writeln('Generating require.js main config');
 
-        $webRoot = $this->getContainer()->getParameter('oro_require_js.web_root');
-        $config = $this->getContainer()->getParameter('oro_require_js');
+        $webRoot = 'web';
 
         $mainConfigContent = json_encode($this->collectConfigPaths(), JSON_UNESCAPED_SLASHES);
 
