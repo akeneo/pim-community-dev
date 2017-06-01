@@ -121,7 +121,7 @@ define([
 
             if (attribute.scopable) {
                 var scopeSwitcher = new ScopeSwitcher();
-                scopeSwitcher.displayInline = true;
+                scopeSwitcher.setDisplayInline(true);
 
                 this.listenTo(
                     scopeSwitcher,
@@ -149,7 +149,7 @@ define([
 
             if (attribute.localizable) {
                 var localeSwitcher = new LocaleSwitcher();
-                localeSwitcher.displayInline = true;
+                localeSwitcher.setDisplayInline(true);
 
                 this.listenTo(
                     localeSwitcher,

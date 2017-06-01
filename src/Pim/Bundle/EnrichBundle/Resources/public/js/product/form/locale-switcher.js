@@ -67,6 +67,15 @@ define(
                 });
 
                 this.render();
+            },
+
+            /**
+             * Updates the inline display value
+             *
+             * @param {Boolean} value
+             */
+            setDisplayInline: function (value) {
+                this.displayInline = value;
             }
         });
     }
