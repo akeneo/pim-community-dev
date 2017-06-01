@@ -1,4 +1,5 @@
 username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled
+superadmin;Admin;Admin;superadmin@example.com;superadmin;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
 admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
 julia;Julia;Stark;Julia@example.com;julia;en_US;en_US;ecommerce;master;ROLE_CATALOG_MANAGER;Manager;1
 peter;Peter;Williams;Peter@example.com;peter;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
