@@ -124,7 +124,7 @@ config:
                     module: pim/base-fetcher
                     options:
                         urls:
-                            list: pim_enrich_attribute_types_index
+                            list: pim_enrich_attribute_type_index
                 family:
                     module: pim/base-fetcher
                     options:

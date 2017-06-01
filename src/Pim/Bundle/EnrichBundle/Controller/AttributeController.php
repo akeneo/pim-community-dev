@@ -159,29 +159,6 @@ class AttributeController
     }
 
     /**
-     * List attributes
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_attribute_index")
-     *
-     * @return Template
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
-     * Return the attributes types
-     *
-     * @return Response
-     */
-    public function getTypesAction()
-    {
-        return new Response(json_encode($this->registry->getSortedAliases()));
-    }
-
-    /**
      * Create attribute
      *
      * @param Request $request
