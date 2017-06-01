@@ -92,9 +92,9 @@ if (launchIntegrationTests.equals("yes")) {
         tasks["phpunit-5.6-orm"] = {runIntegrationTest("5.6", "orm")}
         tasks["phpunit-7.0-orm"] = {runIntegrationTest("7.0", "orm")}
         tasks["phpunit-7.1-orm"] = {runIntegrationTest("7.1", "orm")}
-        tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
-        tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
-        tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
+        // tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
+        // tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
+        // tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
 
         parallel tasks
     }
@@ -149,7 +149,7 @@ def runPhpSpecTest(phpVersion) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -216,7 +216,7 @@ def runPhpCsFixerTest() {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -248,7 +248,7 @@ def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
             try {
                 sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${storage}\" -e ${esVersion} --exit_on_failure"
             } finally {
-                sh "sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\" app/build/logs/behat/*.xml"
+                sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\""
                 junit 'app/build/logs/behat/*.xml'
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()

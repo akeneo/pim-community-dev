@@ -1,4 +1,16 @@
-# 1.7.x
+# 1.7.4 (2017-05-10)
+
+## Bug fixes
+
+- PIM-6314: Deleting a published product raises an internal error
+
+# 1.7.3 (2017-04-14)
+
+## Bug fixes
+
+- PIM-6315: Fix publish button still clickable after a product is published
+
+# 1.7.2 (2017-04-07)
 
 ## Bug fixes
 
