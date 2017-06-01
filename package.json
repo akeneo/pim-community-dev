@@ -4,6 +4,7 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "devDependencies": {
+    "JSON2": "^0.1.0",
     "backbone": "0.9.10",
     "bundle-loader": "^0.5.5",
     "cheerio": "^0.22.0",

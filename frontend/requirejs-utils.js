@@ -81,7 +81,8 @@ const utils = {
             summernote: path.resolve('node_modules/summernote/dist/summernote.min.js'),
             'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'),
             CodeMirror: path.resolve('node_modules/codemirror/lib/codemirror'),
-            jquery: require.resolve('jquery')
+            jquery: require.resolve('jquery'),
+            json: require.resolve('JSON2')
         })
 
         mkdirp(webroot, function() {
