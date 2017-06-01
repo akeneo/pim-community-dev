@@ -10,6 +10,7 @@ function ($, _, BaseFetcher, requireContext) {
          * @return Promise
          */
         initialize: function () {
+            console.log('start fetcher registry')
             if (null === this.initializePromise) {
                 var fetcherList = __moduleConfig.fetchers
                 var deferred = $.Deferred();

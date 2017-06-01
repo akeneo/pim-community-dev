@@ -19,7 +19,9 @@ const globbedPaths = _.values(importPaths).map(importPath => {
 
 module.exports = {
     target: 'web',
-    entry: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js'),
+    entry: [
+        path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js')
+    ],
     output: {
         path: path.resolve('./web/dist/'),
         publicPath: '/dist/',
@@ -28,6 +30,7 @@ module.exports = {
         pathinfo: true,
         devtoolLineToLine: true
     },
+
     resolve: {
         alias: importPaths
     },

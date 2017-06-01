@@ -6,7 +6,8 @@ const _ = require('lodash')
 
 
 function formatModuleName(name) {
-    if(!name) return
+    if (!name) return
+
     return name.replace('pimcommunity', 'pim')
 }
 
