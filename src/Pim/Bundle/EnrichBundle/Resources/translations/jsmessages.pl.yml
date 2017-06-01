@@ -149,9 +149,6 @@ pim_enrich:
         deletion_failed: Produktu nie można usunąć.
         update_successful: Produkt pomyślnie zaktualizowany.
         update_failed: Produktu nie można zaktualizować.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - pola
       error:
         upload: Wystąpił błąd podczas przekazywania pliku
       meta:

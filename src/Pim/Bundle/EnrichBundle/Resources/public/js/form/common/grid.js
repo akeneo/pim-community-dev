@@ -38,6 +38,13 @@ define([
                 });
                 this.options = options;
 
+                /*
+                 * Removing to be sure that this property will not be used in URLs generated to load the data
+                 * The selection is never used back side to load the data and it can generate an URL too long.
+                 * The rightful usages of the selection are done with the property "this.selection"
+                 */
+                delete this.options.selection;
+
                 mediator.on('datagrid:selectModel:' + this.alias, function (model) {
                     this.addElement(model.get('id'));
                 }.bind(this));

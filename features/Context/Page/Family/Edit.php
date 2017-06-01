@@ -164,10 +164,21 @@ class Edit extends Form
      */
     public function switchAttributeRequirement($attribute, $channel)
     {
-        $cell        = $this->getAttributeRequirementCell($attribute, $channel);
-        $requirement = $cell->find('css', 'i');
+        $this->spin(function () use ($attribute, $channel) {
+            $cell = $this->getAttributeRequirementCell($attribute, $channel);
+            if (null === $cell) {
+                return false;
+            }
 
-        $requirement->click();
+            $requirement = $cell->find('css', 'i');
+            if (null === $requirement) {
+                return false;
+            }
+
+            $requirement->click();
+
+            return true;
+        }, sprintf('Impossible to switch attribute requirement "%s" for "%s"', $attribute, $channel));
     }
 
     /**

@@ -161,9 +161,6 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - campos
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -647,7 +644,6 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
-          attributes: "Buscando en {{ attributeCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
           all_group: Todos los grupos

@@ -35,7 +35,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(null);
 
-        $product->setCreated()->shouldNotBeCalled();
+        $product->setCreated(Argument::type('\DateTime'))->shouldBeCalled();
         $product->setUpdated(Argument::type('\DateTime'))->shouldBeCalled();
 
         $this->updateProductTimestamp($event);
@@ -46,7 +46,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         $product->getId()->willReturn('sku-1');
         $event->getSubject()->willReturn($product);
 
-        $product->setCreated(Argument::type('\DateTime'))->shouldBeCalled();
+        $product->setCreated()->shouldNotBeCalled();
         $product->setUpdated(Argument::type('\DateTime'))->shouldBeCalled();
 
         $this->updateProductTimestamp($event);

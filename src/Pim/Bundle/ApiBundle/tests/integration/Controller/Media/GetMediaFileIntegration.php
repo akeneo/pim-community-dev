@@ -12,9 +12,7 @@ class GetMediaFileIntegration extends AbstractMediaFileTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.jpg')));
-        }
+        $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.jpg')));
     }
 
     public function testGetAMediaFile()

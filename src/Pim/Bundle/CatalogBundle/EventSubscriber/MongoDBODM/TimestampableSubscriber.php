@@ -47,7 +47,7 @@ class TimestampableSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null !== $object->getId()) {
+        if (null === $object->getId()) {
             $object->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
 

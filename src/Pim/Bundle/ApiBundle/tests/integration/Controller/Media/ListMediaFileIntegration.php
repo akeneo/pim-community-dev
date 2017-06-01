@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Media;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,11 +11,9 @@ class ListMediaFileIntegration extends AbstractMediaFileTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.jpg')));
-            $this->createMedia(new \SplFileInfo($this->getFixturePath('ziggy.png')));
-            $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.txt')));
-        }
+        $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.jpg')));
+        $this->createMedia(new \SplFileInfo($this->getFixturePath('ziggy.png')));
+        $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.txt')));
     }
 
     public function testListMediaFiles()
@@ -187,16 +184,5 @@ JSON;
         }
 
         return $data;
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
     }
 }

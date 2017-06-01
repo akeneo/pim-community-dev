@@ -74,9 +74,6 @@ class CategoryFilterIntegration extends AbstractFilterTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 }

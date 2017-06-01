@@ -16,30 +16,28 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_price' => [
-                        ['data' => [['amount' => '10.55', 'currency' => 'EUR']], 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => [['amount' => '25', 'currency' => 'USD']], 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_price' => [
+                    ['data' => [['amount' => '10.55', 'currency' => 'EUR']], 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => [['amount' => '25', 'currency' => 'USD']], 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_price' => [
-                        ['data' => [
-                            ['amount' => '2', 'currency' => 'EUR'],
-                            ['amount' => '2.2', 'currency' => 'USD']
-                        ], 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => [['amount' => '30', 'currency' => 'EUR']], 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_price' => [
+                    ['data' => [
+                        ['amount' => '2', 'currency' => 'EUR'],
+                        ['amount' => '2.2', 'currency' => 'USD']
+                    ], 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => [['amount' => '30', 'currency' => 'EUR']], 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

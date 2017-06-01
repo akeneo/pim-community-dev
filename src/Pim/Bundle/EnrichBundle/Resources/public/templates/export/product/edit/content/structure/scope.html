@@ -6,7 +6,7 @@
 <div class="AknFieldContainer-inputContainer">
     <select class="select2" <%- isEditable ? '' : 'disabled' %> id="pim_enrich.export.product.filter.channel">
         <% _.each(channels, function (channel) { %>
-            <option value="<%- channel.code %>" <%- channel.code === scope ? 'selected' : '' %>><%- channel.labels[locale] %></option>
+            <option value="<%- channel.code %>" <%- channel.code === scope ? 'selected' : '' %>><%- channel.label %></option>
         <% }); %>
     </select>
     <div class="AknFieldContainer-iconsContainer icons-container">

@@ -174,3 +174,21 @@ Feature: Display the completeness of a product
     When I open the "Completeness" panel
     And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
     Then I should be on the "Media" attribute group
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6277
+  Scenario: Display the channel code in the completeness panel
+    Given I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    And I switch the locale to "fr_FR"
+    Then I should see the "fr_FR" completeness in position 1
+    And The completeness "en_US" should be closed
+    Then The label for the "tablet" channel for "fr_FR" locale should be "Tablette"
+    When I am on the "tablet" channel page
+    Then I fill in the following information:
+      | French (France) |  |
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes"
+    When I am on the "sneakers" product page
+    And I open the "Completeness" panel
+    And I switch the locale to "fr_FR"
+    Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"

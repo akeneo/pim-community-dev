@@ -17,36 +17,34 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_metric',
-                'type'                => AttributeTypes::METRIC,
-                'localizable'         => true,
-                'decimals_allowed'    => false,
-                'metric_family'       => 'Length',
-                'default_metric_unit' => 'METER',
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_metric',
+            'type'                => AttributeTypes::METRIC,
+            'localizable'         => true,
+            'decimals_allowed'    => false,
+            'metric_family'       => 'Length',
+            'default_metric_unit' => 'METER',
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_metric' => [
-                        ['data' => ['amount' => 20, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
-                        ['data' => ['amount' => 21, 'unit' => 'METER'], 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_metric' => [
+                    ['data' => ['amount' => 20, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
+                    ['data' => ['amount' => 21, 'unit' => 'METER'], 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_metric' => [
-                        ['data' => ['amount' => 10, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
-                        ['data' => ['amount' => 1, 'unit' => 'METER'], 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_metric' => [
+                    ['data' => ['amount' => 10, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
+                    ['data' => ['amount' => 1, 'unit' => 'METER'], 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()
