@@ -3,7 +3,7 @@
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def ceBranch = "dev-master"
 def ceOwner = "akeneo"
-def phpVersion = "7.0"
+def phpVersion = "7.1"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
 def launchBehatTests = "yes"
@@ -18,7 +18,7 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
+            choice(choices: '7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
 
         ceBranch = userInput['ce_branch']
@@ -62,7 +62,6 @@ if (launchUnitTests.equals("yes")) {
     stage("Unit tests and Code style") {
         def tasks = [:]
 
-        tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
         tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
 
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
@@ -79,7 +78,6 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-7.0"] = {runIntegrationTest("7.0")}
         tasks["phpunit-7.1"] = {runIntegrationTest("7.1")}
 
         parallel tasks
