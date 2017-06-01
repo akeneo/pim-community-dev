@@ -4,6 +4,7 @@ parameters:
     pimee_versioning.normalizer.locale.class:          PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\LocaleNormalizer
     pimee_versioning.normalizer.asset_category.class:  PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\AssetCategoryNormalizer
     pimee_security.normalizer.job_instance.class:      PimEnterprise\Component\Security\Normalizer\Standard\JobInstanceNormalizer
+    pimee_security.normalizer.attribute_group.class:   PimEnterprise\Component\Security\Normalizer\Standard\AttributeGroupNormalizer
 
 services:
     pimee_versioning.normalizer.category:
@@ -43,5 +44,13 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.job_instance'
             - '@pimee_security.manager.job_profile_access'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 110 }
+
+    pimee_security.normalizer.attribute_group:
+        class: '%pimee_security.normalizer.attribute_group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
+            - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: pim_serializer.normalizer, priority: 110 }

@@ -2,10 +2,10 @@
     <% _.each(_.keys(permissions), function (permission) { %>
     <div class="AknFieldContainer">
         <div class="AknFieldContainer-header">
-            <label class="AknFieldContainer-label" for="pim_security_job_instance_permission_<%- permission %>"><%- __('pimee_enrich.form.job_instance.tab.permission.' + permission + '.label') %></label>
+            <label class="AknFieldContainer-label" for="pim_security_permission_<%- permission %>"><%- __('pimee_enrich.form.' + entity + '.tab.permission.' + permission + '.label') %></label>
         </div>
         <div class="AknFieldContainer-inputContainer">
-            <select id="pim_security_job_instance_permission_<%- permission %>" class="select2" multiple data-permission="<%- permission %>" <%- readOnly ? 'readonly disabled' : '' %>>
+            <select id="pim_security_permission_<%- permission %>" class="select2" multiple data-permission="<%- permission %>" <%- readOnly ? 'readonly disabled' : '' %>>
                 <% _.each(userGroups, function (userGroup) { %>
                     <option value="<%- userGroup.name %>" <%- _.contains(permissions[permission], userGroup.name) ? 'selected' : '' %>><%- userGroup.name %></option>
                 <% }) %>
@@ -17,13 +17,13 @@
     <ul>
         <% _.each(changes.added, function (added) { %>
             <li><%- __(
-                'pimee_enrich.form.job_instance.tab.permission.added',
+                'pimee_enrich.form.' + entity + '.tab.permission.added',
                 {group: added.group, permission: added.permission}
             ) %></li>
         <% }) %>
         <% _.each(changes.removed, function (removed) { %>
             <li><%- __(
-                'pimee_enrich.form.job_instance.tab.permission.removed',
+                'pimee_enrich.form.' + entity + '.tab.permission.removed',
                 {group: removed.group, permission: removed.permission}
             ) %></li>
         <% }) %>

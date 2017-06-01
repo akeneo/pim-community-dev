@@ -44,16 +44,18 @@ class AttributeSearchableRepository extends BaseAttributeSearchableRepository
         $qb = parent::findBySearchQb($search, $options);
         $options = $this->resolveOptions($options);
 
-        $qb->leftJoin(
-            $this->attrGpAccessClass,
-            'aga',
-            'WITH',
-            'ag.id = aga.attributeGroup'
-        );
-        $qb->groupBy('a.id');
-        $qb->andWhere('aga.userGroup IN (:userGroupsIds)')
-            ->setParameter('userGroupsIds', $options['user_groups_ids']);
-        $qb->andWhere('aga.viewAttributes = 1');
+        if ($options['rights']) {
+            $qb->leftJoin(
+                $this->attrGpAccessClass,
+                'aga',
+                'WITH',
+                'ag.id = aga.attributeGroup'
+            );
+            $qb->groupBy('a.id');
+            $qb->andWhere('aga.userGroup IN (:userGroupsIds)')
+                ->setParameter('userGroupsIds', $options['user_groups_ids']);
+            $qb->andWhere('aga.viewAttributes = 1');
+        }
 
         return $qb;
     }
