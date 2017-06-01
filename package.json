@@ -36,7 +36,7 @@
     "yamljs": "^0.2.10"
   },
   "scripts": {
-    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js",
+    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js --progress",
     "lint": "eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
   },
