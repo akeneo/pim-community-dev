@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__ .'/OroRequirements.php';
+require_once __DIR__.'/OroRequirements.php';
+
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Akeneo PIM requirements
@@ -14,35 +16,26 @@ require_once __DIR__ .'/OroRequirements.php';
  */
 class PimRequirements extends OroRequirements
 {
-    /**
-     * @staticvar string
-     */
-    const REQUIRED_MYSQL_VERSION = '5.1';
+    const REQUIRED_MYSQL_VERSION = '5.7';
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $directoriesToCheck = array())
+    public function __construct(array $directoriesToCheck = [])
     {
         parent::__construct();
 
-        $this->addPimRequirement(
-            !extension_loaded('php5-mysql'),
-            'Extension php5-mysql should be installed',
-            'Install and enable <strong>php5-mysql</strong>'
-        );
+        $currentMySQLVersion = $this->getMySQLVersion();
 
-        if (extension_loaded('php5-mysql')) {
-            $this->addPimRequirement(
-                version_compare(mysql_get_client_info(), self::REQUIRED_MYSQL_VERSION, '>='),
-                sprintf('MySQL version must be at least %s', self::REQUIRED_MYSQL_VERSION),
-                sprintf(
-                    'Install MySQL %s or newer (installed version is %s)',
-                    self::REQUIRED_MYSQL_VERSION,
-                    mysql_get_client_info()
-                )
-            );
-        }
+        $this->addPimRequirement(
+            version_compare($currentMySQLVersion, self::REQUIRED_MYSQL_VERSION, '>='),
+            sprintf('MySQL version must be at least %s', self::REQUIRED_MYSQL_VERSION),
+            sprintf(
+                'Install MySQL %s or newer (installed version is %s)',
+                self::REQUIRED_MYSQL_VERSION,
+                $currentMySQLVersion
+            )
+        );
 
         $this->addPimRequirement(
             function_exists('exec'),
@@ -106,6 +99,58 @@ class PimRequirements extends OroRequirements
         return array_filter(parent::getMandatoryRequirements(), function ($requirement) {
             return !$requirement instanceof PimRequirement;
         });
+    }
+
+    /**
+     * Gets the MySQL server version thanks to a PDO connection.
+     *
+     * If no connection is reached, or that "parameters.yml" do not exists, an
+     * exception is thrown, then catch. If "parameters_test.yml" do not exists
+     * either, then the exception is thrown again.
+     * If it exits, an attempt to connect is done, and can result in an exception
+     * if no connection is reached.
+     *
+     * @return string
+     */
+    protected function getMySQLVersion()
+    {
+        $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters.yml'));
+
+        try {
+            if (null === $parameters) {
+                throw new RuntimeException(
+                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                );
+            }
+
+            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
+        } catch (RuntimeException $e) {
+            $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters_test.yml'));
+
+            if (null === $parameters) {
+                throw $e;
+            }
+
+            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
+        }
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return PDO
+     */
+    protected function getConnection(array $parameters)
+    {
+        return new PDO(
+            sprintf(
+                'mysql:dbname=%s;host=%s',
+                $parameters['parameters']['database_name'],
+                $parameters['parameters']['database_host']
+            ),
+            $parameters['parameters']['database_user'],
+            $parameters['parameters']['database_password']
+        );
     }
 }
 

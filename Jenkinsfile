@@ -289,7 +289,6 @@ def runBehatTest(edition, features, phpVersion) {
             }
 
             // Configure the PIM
-            sh "cp behat.ci.yml behat.yml"
             sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
             sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch: 9200'#g\" app/config/parameters_test.yml"
