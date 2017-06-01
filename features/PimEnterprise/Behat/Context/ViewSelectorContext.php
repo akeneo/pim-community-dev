@@ -84,7 +84,6 @@ class ViewSelectorContext extends BaseViewSelectorContext
     public function iSwitchViewSelectorTypeTo($viewType)
     {
         $this->getCurrentPage()->switchViewType($viewType);
-        $this->wait();
     }
 
     /**
