@@ -18,6 +18,7 @@
 - PIM-6414: Fix datetime filter display issue
 - PIM-6384: Fix product export builder localisable and scopable fields display issue
 - IM-809: Fix missing shadows behind dialog popins
+- PIM-6423: Fix select2 display on attribute edition
 
 # 1.7.4 (2017-05-10)
 
