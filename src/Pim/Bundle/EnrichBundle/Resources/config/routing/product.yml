@@ -44,7 +44,7 @@ pim_enrich_product_rest_post:
 
 pim_enrich_product_rest_remove:
     path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.rest.product:removeAction }
+    defaults: { _controller: pim_enrich.controller.rest.product:removeAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
     methods: [DELETE]
