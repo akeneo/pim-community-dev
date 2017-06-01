@@ -8,7 +8,8 @@
     "define": true,
     "module": false,
     "__dirname": true,
-    "__moduleConfig": true
+    "__moduleConfig": true,
+    "__contextPlaceholder": true
   },
   "rules": {
     "space-infix-ops": 2,

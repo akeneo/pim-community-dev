@@ -10,7 +10,12 @@ const AddToContextPlugin = require('./frontend/add-context-plugin')
 const pathOverrides = require('./frontend/path-overrides')
 const utils = require('./frontend/requirejs-utils')
 const importPaths = utils.getModulePaths(requirePaths, pathOverrides, __dirname)
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+
+const globToRegex = require('glob-to-regexp');
+const globbedPaths = _.values(importPaths).map(importPath => {
+    return globToRegex(importPath).toString().slice(1, -1);
+})
 
 module.exports = {
     target: 'web',
@@ -29,6 +34,16 @@ module.exports = {
     module: {
         rules: [
             {
+                test: path.resolve(__dirname, 'frontend/require-context'),
+                loader: 'regexp-replace-loader',
+                options: {
+                    match: {
+                        pattern: /__contextPlaceholder/,
+                        flags: 'g'
+                    },
+                    replaceWith: `/^.*(${globbedPaths.join('|')})$/`
+                }
+            }, {
                 test: /\.js$/,
                 use: [
                     {
@@ -87,15 +102,10 @@ module.exports = {
         moduleExtensions: ['-loader']
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            '_': 'underscore',
-            'Backbone': 'backbone',
-            '$': 'jquery',
-            'jQuery': 'jquery'
-        }),
+        new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths)),
-        new UglifyJSPlugin()
+        new AddToContextPlugin(_.values(importPaths))
+        // new UglifyJSPlugin()
     ]
 }
