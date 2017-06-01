@@ -32,6 +32,7 @@
     "uglify-js": "^2.8.27",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "2.4.1",
+    "webpack-dev-server": "^2.4.5",
     "yamljs": "^0.2.10"
   },
   "scripts": {

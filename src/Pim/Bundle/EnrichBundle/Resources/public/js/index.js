@@ -1,7 +1,7 @@
 define(['jquery', 'pim/form-builder'], function ($, formBuilder) {
     if (module.hot) {
-     module.hot.accept();
-   }
+        module.hot.accept();
+    }
 
     formBuilder.build('pim-app')
         .then(function (form) {
