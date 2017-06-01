@@ -756,6 +756,7 @@ config:
         pim/attribute-edit-form/type-specific-form:             pimenrich/js/attribute/form/type-specific-form
         pim/attribute-edit-form/properties/available-locales:   pimenrich/js/attribute/form/properties/available-locales
         pim/attribute-edit-form/properties/boolean:             pimenrich/js/attribute/form/properties/boolean
+        pim/attribute-edit-form/properties/date:                pimenrich/js/attribute/form/properties/date
         pim/attribute-edit-form/properties/default-metric-unit: pimenrich/js/attribute/form/properties/default-metric-unit
         pim/attribute-edit-form/properties/field:               pimenrich/js/attribute/form/properties/field
         pim/attribute-edit-form/properties/group:               pimenrich/js/attribute/form/properties/group
@@ -1030,6 +1031,7 @@ config:
 
         # Attribute
         pim/template/attribute/tab/properties/boolean:      pimenrich/templates/attribute/tab/properties/boolean.html
+        pim/template/attribute/tab/properties/date:         pimenrich/templates/attribute/tab/properties/date.html
         pim/template/attribute/tab/properties/field:        pimenrich/templates/attribute/tab/properties/field.html
         pim/template/attribute/tab/properties/text:         pimenrich/templates/attribute/tab/properties/text.html
         pim/template/attribute/tab/properties/select:       pimenrich/templates/attribute/tab/properties/select.html

@@ -76,17 +76,20 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        $dateMin = (null === $attribute->getDateMin()) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
-        $dateMax = (null === $attribute->getDateMax()) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
+        $dateMin = null === $attribute->getDateMin() ? null : $attribute->getDateMin()->format('Y-m-d');
+        $dateMax = null === $attribute->getDateMax() ? null : $attribute->getDateMax()->format('Y-m-d');
 
-        $normalizedAttribute = $this->normalizer->normalize($attribute, 'standard', $context) + [
-            'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
-            'field_type'         => $this->fieldProvider->getField($attribute),
-            'filter_types'       => $this->filterProvider->getFilters($attribute),
-            'is_locale_specific' => $attribute->isLocaleSpecific(),
-            'date_min'           => $dateMin,
-            'date_max'           => $dateMax,
-        ];
+        $normalizedAttribute = array_merge(
+            $this->normalizer->normalize($attribute, 'standard', $context),
+            [
+                'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
+                'field_type'         => $this->fieldProvider->getField($attribute),
+                'filter_types'       => $this->filterProvider->getFilters($attribute),
+                'is_locale_specific' => $attribute->isLocaleSpecific(),
+                'date_min'           => $dateMin,
+                'date_max'           => $dateMax,
+            ]
+        );
 
         $firstVersion = $this->versionManager->getOldestLogEntry($attribute);
         $lastVersion = $this->versionManager->getNewestLogEntry($attribute);

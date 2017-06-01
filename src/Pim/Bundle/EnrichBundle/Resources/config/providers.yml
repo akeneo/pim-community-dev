@@ -122,7 +122,8 @@ services:
         class: '%pim_enrich.provider.form.attribute.class%'
         arguments:
             -
-                pim_catalog_metric: pim-attribute-edit-form-metric
+                pim_catalog_date:       pim-attribute-edit-form-date
+                pim_catalog_metric:     pim-attribute-edit-form-metric
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
