@@ -3,7 +3,25 @@
   "version": "1.6.0",
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
-  "devDependencies": {
+  "scripts": {
+    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js --progress",
+    "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
+    "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
+    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akeneo/pim-community-dev.git"
+  },
+  "license": "OSL-3.0",
+  "bugs": {
+    "url": "https://github.com/akeneo/pim-community-dev/issues"
+  },
+  "dependencies": {
+    "bundle-loader": "^0.5.5",
+    "karma-es6-shim": "^1.0.0",
+    "merge-objects": "^1.0.5",
+    "pascal-case": "^2.0.1",
     "JSON2": "^0.1.0",
     "backbone": "0.9.10",
     "bundle-loader": "^0.5.5",
@@ -37,25 +55,5 @@
     "underscore": "1.8.3",
     "webpack": "2.4.1",
     "yamljs": "^0.2.10"
-  },
-  "scripts": {
-    "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js --progress",
-    "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
-    "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/akeneo/pim-community-dev.git"
-  },
-  "license": "OSL-3.0",
-  "bugs": {
-    "url": "https://github.com/akeneo/pim-community-dev/issues"
-  },
-  "dependencies": {
-    "bundle-loader": "^0.5.5",
-    "karma-es6-shim": "^1.0.0",
-    "merge-objects": "^1.0.5",
-    "pascal-case": "^2.0.1"
   }
 }
