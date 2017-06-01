@@ -34,7 +34,6 @@ config.devServer = {
     publicPath: 'http://localhost:4200/',
     port: 4200,
     host: 'localhost',
-    contentBase: './',
     inline: true,
     disableHostCheck: true,
     headers: {
