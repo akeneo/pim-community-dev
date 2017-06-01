@@ -69,7 +69,7 @@ const utils = {
     getModulePaths(pathSourceFile, overrides, baseDirectory) {
         const requireConfig = utils.getRequireConfig(pathSourceFile)
 
-        overrides = _.mapValues( overrides,
+        overrides = _.mapValues(overrides,
           override => path.resolve(baseDirectory, override)
         )
 
@@ -80,12 +80,13 @@ const utils = {
             paths: path.resolve('web/dist/paths'),
             summernote: path.resolve('node_modules/summernote/dist/summernote.min.js'),
             'fos-routing-base': path.resolve('vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'),
-            CodeMirror: path.resolve('node_modules/codemirror/lib/codemirror')
+            CodeMirror: path.resolve('node_modules/codemirror/lib/codemirror'),
+            jquery: require.resolve('jquery')
         })
 
         mkdirp(webroot, function() {
-          fs.writeFileSync(`${webroot}/general.js`, utils.getModuleString(requireConfig.config), 'utf8')
-          fs.writeFileSync(`${webroot}/paths.js`, utils.getModuleString(mergedPaths), 'utf8')
+            fs.writeFileSync(`${webroot}/general.js`, utils.getModuleString(requireConfig.config), 'utf8')
+            fs.writeFileSync(`${webroot}/paths.js`, utils.getModuleString(mergedPaths), 'utf8')
         })
 
         return mergedPaths;
@@ -97,7 +98,7 @@ const utils = {
      * @return {String}          Module contents
      */
     getModuleString(contents) {
-      return `module.exports = ${JSON.stringify(contents)}`
+        return `module.exports = ${JSON.stringify(contents)}`
     }
 }
 

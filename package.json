@@ -10,6 +10,7 @@
     "codemirror": "5.25.2",
     "colors": "^1.1.2",
     "deepmerge": "^1.3.2",
+    "dropzone": "^4.0.1",
     "eslint": "^3.19.0",
     "exports-loader": "^0.6.4",
     "expose-loader": "^0.7.3",
@@ -37,7 +38,6 @@
   },
   "scripts": {
     "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js --progress",
-    "webpack-server": "webpack --config webpack.dev.config.js && webpack-dev-server --config webpack.dev.config.js --progress",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"

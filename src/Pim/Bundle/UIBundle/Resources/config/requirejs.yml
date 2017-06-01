@@ -46,8 +46,6 @@ config:
     paths:
         text:                          pimui/lib/text/text
         json:                          pimui/lib/json2/json2
-        base64:                        pimui/lib/base64/base64
-        jquery:                        pimui/lib/jquery/jquery-1.10.2
         jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
