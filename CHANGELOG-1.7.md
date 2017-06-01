@@ -15,6 +15,7 @@
 - PIM-6434: Fix attribute group order in Product Edit Form
 - PIM-6436: Fix attribute group limit in Product Edit Form
 - PIM-6428: Fix usage of unique attributes on Product Edit Form and Family edition
+- PIM-6399: Stores images as PNG instead of JPG
 - PIM-6414: Fix datetime filter display issue
 - PIM-6384: Fix product export builder localisable and scopable fields display issue
 - IM-809: Fix missing shadows behind dialog popins
