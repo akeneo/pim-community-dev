@@ -36,7 +36,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
      */
     public function __construct(
         FormatNegotiator $formatNegotiator,
-        ContentTypeNegotiator $contentTypeNegotiator = null
+        ContentTypeNegotiator $contentTypeNegotiator
     ) {
         $this->formatNegotiator = $formatNegotiator;
         $this->contentTypeNegotiator = $contentTypeNegotiator;
@@ -90,7 +90,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
 
             if (in_array($request->getMethod(), ['PUT', 'PATCH', 'POST'])) {
                 $contentType = trim(strtok($request->headers->get('content-type'), ';'));
-                $allowedContentTypes = null !== $this->contentTypeNegotiator ? $this->contentTypeNegotiator->getContentTypes($request) : [];
+                $allowedContentTypes = $this->contentTypeNegotiator->getContentTypes($request);
 
                 if ('' === $contentType) {
                     throw new UnsupportedMediaTypeHttpException(

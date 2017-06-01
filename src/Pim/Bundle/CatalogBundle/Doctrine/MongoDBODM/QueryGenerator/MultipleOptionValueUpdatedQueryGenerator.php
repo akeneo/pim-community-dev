@@ -28,7 +28,7 @@ class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
         NamingUtility $namingUtility,
         $entityClass,
         $field,
-        NormalizerInterface $attributeOptionNormalizer = null
+        NormalizerInterface $attributeOptionNormalizer
     ) {
         $this->attributeOptionNormalizer = $attributeOptionNormalizer;
 
