@@ -1,0 +1,135 @@
+extensions:
+    pim-attribute-group-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-attribute-group-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-attribute-group-edit-form
+        position: 1000
+
+    pim-attribute-group-edit-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-attribute-group-edit-form
+        targetZone: content
+        position: 90
+
+    pim-attribute-group-edit-form-label:
+        module: pim/form/common/label
+        parent: pim-attribute-group-edit-form
+        targetZone: title
+        position: 110
+
+    pim-attribute-group-edit-form-delete:
+        module: pim/attribute-group-edit-form/delete
+        parent: pim-attribute-group-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_attributegroup_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.attribute_group
+                content: pim_enrich.confirmation.delete_item
+                success: flash.attribute_group.removed
+                fail: error.removing.attribute_group
+            redirect: pim_enrich_attributegroup_index
+
+    pim-attribute-group-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-attribute-group-edit-form
+        targetZone: buttons
+        position: 110
+
+    pim-attribute-group-edit-form-save:
+        module: pim/form/common/save-form
+        parent: pim-attribute-group-edit-form
+        targetZone: buttons
+        position: 0
+        config:
+            updateSuccessMessage: pim_enrich.entity.attribute_group.info.update_successful
+            updateFailureMessage: pim_enrich.entity.attribute_group.info.update_failed
+            notReadyMessage: pim_enrich.entity.attribute_group.info.field_not_ready
+            url: pim_enrich_attributegroup_rest_post
+
+    pim-attribute-group-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-attribute-group-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.attribute_group.title
+
+    pim-attribute-group-edit-form-created:
+        module: pim/form/common/meta/created
+        parent: pim-attribute-group-edit-form
+        targetZone: meta
+        position: 90
+        config:
+            label: pim_enrich.entity.attribute_group.meta.created
+            labelBy: pim_enrich.entity.attribute_group.meta.created_by
+
+    pim-attribute-group-edit-form-updated:
+        module: pim/form/common/meta/updated
+        parent: pim-attribute-group-edit-form
+        targetZone: meta
+        position: 100
+        config:
+            label: pim_enrich.entity.attribute_group.meta.updated
+            labelBy: pim_enrich.entity.attribute_group.meta.updated_by
+
+    pim-attribute-group-edit-form-properties:
+        module: pim/common/tab/properties
+        parent: pim-attribute-group-edit-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: pim_enrich.form.attribute_group.tab.properties.title
+
+    pim-attribute-group-edit-form-properties-general:
+        module: pim/common/properties/general
+        parent: pim-attribute-group-edit-form-properties
+        targetZone: accordion
+        position: 100
+        config:
+          sectionTitle: pim_enrich.form.attribute_group.tab.properties.general
+          codeLabel: pim_enrich.form.attribute_group.tab.properties.code
+          formRequired: pim_enrich.form.required
+          inputField: pim_enrich_attribute_group_form_code
+
+    pim-attribute-group-edit-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-attribute-group-edit-form-properties
+        targetZone: accordion
+        position: 110
+        config:
+            label: pim_enrich.form.attribute_group.tab.properties.label_translations
+            fieldBaseId: pim_enrich_attribute_group_form_label_
+
+    pim-attribute-group-edit-form-attribute:
+        module: pim/attribute-group-form/tab/attribute
+        parent: pim-attribute-group-edit-form-form-tabs
+        targetZone: container
+        position: 120
+        config:
+            title: pim_enrich.form.attribute_group.tab.attribute.title
+            otherGroup: other
+            confirmation:
+                title: pim_enrich.confirmation.delete_item
+                message: pim_enrich.confirmation.delete.attribute_group
+            removeAttributeACL: pim_enrich_attributegroup_remove_attribute
+            addAttributeACL: pim_enrich_attributegroup_add_attribute
+
+    pim-attribute-group-edit-form-attribute-add-attribute:
+        module: pim/attribute-group/add-select/attribute
+        parent: pim-attribute-group-edit-form-attribute
+        targetZone: actions
+        aclResourceId: pim_enrich_attributegroup_add_attribute
+
+    pim-attribute-group-edit-form-history:
+        module: pim/common/tab/history
+        parent: pim-attribute-group-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_attributegroup_history
+        position: 130
+        config:
+            class: attribute_group
+            title: pim_enrich.form.attribute_group.tab.history.title

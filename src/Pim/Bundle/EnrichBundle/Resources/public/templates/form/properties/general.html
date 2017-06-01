@@ -10,7 +10,7 @@
                 </label>
             </div>
             <div class="AknFieldContainer-inputContainer">
-                <input id="<%- inputField %>" class="AknTextField" type="text" readonly disabled required value="<%- model.code %>">
+                <input id="<%- inputField %>" class="AknTextField" type="text" <%- false === hasId ? '' : 'readonly disabled' %> required value="<%- model.code %>">
             </div>
         </div>
     </div>

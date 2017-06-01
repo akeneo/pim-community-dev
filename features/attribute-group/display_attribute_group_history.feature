@@ -34,25 +34,27 @@ Feature: Display the attribute group history
       | 2       | label-en_US | My technical group |
 
     When I visit the "Attributes" tab
-    And I add available attributes Description
-    Then I should see the flash message "Attributes successfully added to the attribute group"
+    And I add available attributes SKU, Description
+    And I save the group
+    And I should see the flash message "Attribute group successfully updated"
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
       | version | property    | value              |
       | 1       | code        | Technical          |
       | 2       | label-en_US | My technical group |
-      | 3       | attributes  | description        |
+      | 3       | attributes  | sku,description    |
 
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
     And I confirm the deletion
-    Then I should see the flash message "Attribute successfully removed from the attribute group"
+    And I save the group
+    And I should see the flash message "Attribute group successfully updated"
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
       | version | property    | value              |
       | 1       | code        | Technical          |
       | 2       | label-en_US | My technical group |
-      | 3       | attributes  | description        |
-      | 4       | attributes  |                    |
+      | 3       | attributes  | sku,description    |
+      | 4       | attributes  | sku                |

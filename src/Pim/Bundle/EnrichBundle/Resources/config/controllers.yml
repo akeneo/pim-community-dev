@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.controller.attribute_group.class:              Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
     pim_enrich.controller.category_tree.class:                Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
     pim_enrich.controller.currency.class:                     Pim\Bundle\EnrichBundle\Controller\CurrencyController
     pim_enrich.controller.family.class:                       Pim\Bundle\EnrichBundle\Controller\FamilyController
@@ -40,25 +39,8 @@ parameters:
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.completeness.class:            Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
-services:
-    pim_enrich.controller.attribute_group:
-        scope: request
-        class: '%pim_enrich.controller.attribute_group.class%'
-        arguments:
-            - '@request'
-            - '@router'
-            - '@form.factory'
-            - '@translator'
-            - '@event_dispatcher'
-            - '@oro_security.security_facade'
-            - '@pim_enrich.form.handler.attribute_group'
-            - '@pim_enrich.form.attribute_group'
-            - '@pim_catalog.manager.attribute_group'
-            - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.remover.attribute_group'
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_catalog.repository.attribute'
 
+services:
     pim_enrich.controller.category_tree.product:
         scope: request
         class: '%pim_enrich.controller.category_tree.class%'
@@ -294,8 +276,17 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_enrich.repository.attribute_group.search'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.remover.attribute_group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.factory.attribute_group'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'

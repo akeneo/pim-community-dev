@@ -34,6 +34,8 @@ flash:
     removed: Typ powiązania został pomyślnie usunięty
   attribute:
     removed: Atrybut został pomyślnie usunięty
+  attribute_group:
+    removed: Grupa atrybutów została pomyślnie usunięta
   family:
     removed: Rodzina produktów została usunięta pomyślnie
   product:
@@ -189,6 +191,9 @@ pim_enrich:
           family: Wybierz rodzinę
           save: Zapisz
           cancel: Anuluj
+    attribute:
+      scopable: Określaj zasięg
+      global: Globalnie
     association_type:
       info:
         field_not_ready:
@@ -272,6 +277,9 @@ pim_enrich:
         product_count: Produkty
         created: Utworzono
         updated: Zaktualizowano
+    attribute_group:
+      info:
+        update_successful: Grupa atrybutów została pomyślnie zaktualizowana
   confirmation:
     leave: Czy na pewno chcesz opuścić tę stronę?
     discard_changes: Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.
@@ -430,6 +438,21 @@ pim_enrich:
           title: Historia
         products:
           title: Produkty
+    attribute_group:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          label_translations: Tłumaczenia etykiety
+        attribute:
+          title: Atrybuty
+          table:
+            name: Nazwa
+            type: Typ
+            scope: Zasięg
+            localizable: Określaj ustawienia regionalne
+        history.title: Historia
     common:
       tab:
         attributes:
@@ -601,6 +624,8 @@ pim_enrich:
       title: Śledzenie procesu
     attribute:
       modal_title: Wybierz typ atrybutu
+    attribute_group:
+      create_btn: Utwórz
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
 page_title:

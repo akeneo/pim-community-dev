@@ -1,0 +1,40 @@
+pim_enrich_attributegroup_rest_index:
+    path: '/'
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:indexAction }
+    methods: [GET]
+
+pim_enrich_attributegroup_rest_search:
+    path: '/'
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:searchAction }
+    methods: [POST]
+
+pim_enrich_attributegroup_rest_create:
+    path: '/'
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:createAction }
+    methods: [PUT]
+
+pim_enrich_attributegroup_rest_sort:
+    path: '/'
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:sortAction }
+    methods: [PATCH]
+
+pim_enrich_attributegroup_rest_get:
+    path: /{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:getAction }
+    methods: [GET]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_attributegroup_rest_post:
+    path: /{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:postAction }
+    methods: [POST]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_attributegroup_rest_remove:
+    path: /{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:removeAction }
+    methods: [DELETE]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
