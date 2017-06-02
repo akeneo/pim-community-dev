@@ -2,6 +2,7 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 **Table of Contents:**
 
 - [Disclaimer](#disclaimer)
@@ -22,28 +23,29 @@
 ## Disclaimer
 
 > Please check that you're using Akeneo PIM v1.6
-
+>
 > We're assuming that you created your project from the standard distribution
-
+>
 > This documentation helps to migrate projects based on the Enterprise Edition
-
+>
 > Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html) and [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/).
-
+>
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
 
 ## Migrate your standard project
+### app/config/parameters.yml + app/config/pim_parameters.yml
 
-1. Download and extract the latest standard archive from the Partner Portal:
+Download and extract the latest standard archive from the Partner Portal:
 
-    ```bash
+```bash
 tar -zxf pim-enterprise-standard.tar.gz
 cd pim-enterprise-standard/
-    ```
+```
 
-2. Copy the following files to your PIM installation:
+Copy the following files to your PIM installation:
 
-    ```bash
+```bash
 export PIM_DIR=/path/to/your/pim/installation
 cp app/SymfonyRequirements.php $PIM_DIR/app
 cp app/PimRequirements.php $PIM_DIR/app
@@ -53,11 +55,12 @@ cp app/config/pim_parameters.yml $PIM_DIR/app/config/
 
 mv $PIM_DIR/composer.json $PIM_DIR/composer.json.bak
 cp composer.json $PIM_DIR/
-    ```
+```
 
-3. Update the configuration of your application `$PIM_DIR/app/config/config.yml` to add these new lines:
+### app/config/config.yml
+Update the configuration of your application `$PIM_DIR/app/config/config.yml` to add these new lines:
 
-    ```YAML
+```YAML
 # FOSOAuthServer Configuration
 fos_oauth_server:
         db_driver:                orm
@@ -67,13 +70,14 @@ fos_oauth_server:
         auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
         service:
             user_provider:        pim_user.provider.user
-    ```
+```
+### app/config/security.yml
 
-4. Update the security configuration `$PIM_DIR/app/config/security.yml`:
+Update the security configuration `$PIM_DIR/app/config/security.yml`:
 
-    Add these new lines under `security.firewalls`:
-   
-    ```YAML
+Add these new lines under `security.firewalls`:
+
+```YAML
 oauth_token:
         pattern:                        ^/api/oauth/v1/token
         security:                       false
@@ -85,18 +89,18 @@ api:
         fos_oauth:                      true
         stateless:                      true
         access_denied_handler:          pim_api.security.access_denied_handler
-    ```
+```
 
-    Add these new lines under `security.access_control`:
-    
-    ```YAML
+Add these new lines under `security.access_control`:
+
+```YAML
 - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 - { path: ^/api/, role: pim_api_overall_access }
-    ```
+```
 
-    Remove these lines under `security.firewalls`:
-    
-    ```YAML
+Remove these lines under `security.firewalls`:
+
+```YAML
 wsse_secured:
         pattern:                        ^/api/(rest|soap).*
         wsse:
@@ -104,103 +108,104 @@ wsse_secured:
             realm:                      "Secured API"
             profile:                    "UsernameToken"
         context:                        main
-    ```
-    
-5. Update your application Kernel `$PIM_DIR/app/AppKernel.php`:
+```
 
-    * Remove the following bundles:
+### app/AppKernel.php
 
-    ```PHP
+Remove the following bundles:
+
+```PHP
 Oro\Bundle\UIBundle\OroUIBundle,
 Oro\Bundle\FormBundle\OroFormBundle,
 Pim\Bundle\WebServiceBundle\PimWebServiceBundle,
 PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle,
-    ```
+```
 
-    * Add the following bundles in the following functions:
+Add the following bundles in the following functions:
 
-        - `getPimDependenciesBundles()`:
+- `getPimDependenciesBundles()`:
 
-          ```PHP
+```PHP
 new FOS\OAuthServerBundle\FOSOAuthServerBundle()
-          ```
+```
 
-        - `getPimBundles()`:
+- `getPimBundles()`:
 
-          ```PHP
+```PHP
 new Pim\Bundle\ApiBundle\PimApiBundle()
-          ```
+```
 
-        - `getPimEnterpriseBundles()`:
-        
-          ```PHP
+- `getPimEnterpriseBundles()`:
+
+```PHP
 new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle()
-          ```
+```
 
-6. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
+Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
 
-    * Remove the following lines:
+* Remove the following lines:
 
-    ```YAML
+```YAML
 pim_webservice:
         resource: "@PimWebServiceBundle/Resources/config/routing.yml"
-    ```
+```
 
-    * Add the following lines:
-    
-    ```YAML
+* Add the following lines:
+
+```YAML
 pimee_teamwork_assistant:
         resource: "@PimEnterpriseTeamworkAssistantBundle/Resources/config/routing/routing.yml"
 
 pim_api:
         resource: "@PimApiBundle/Resources/config/routing.yml"
         prefix: /api
-    ```
+```
 
-7. Then remove your old upgrades folder:
+Then remove your old upgrades folder:
 
-    ```bash
+```bash
 rm -rf $PIM_DIR/upgrades/schema
-    ```
+```
 
-8. Now update your dependencies:
+### Update your dependencies (composer.json)
 
-    * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
+[Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
       You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
 
-        ```JSON
+```JSON
     "require": {
             "your/dependency": "version",
             "your/other-dependency": "version",
     }
-        ```
+```
 
-    * Then run the command to update your dependencies:
 
-        ```bash
+Run the command to update your dependencies:
+
+```bash
 php -d memory_limit=3G composer update
-        ```
+```
 
-        This step will copy the upgrades folder from `pim-enterprise-dev/` to your Pim project root in order to migrate.
-        If you have custom code in your project, this step may raise errors in the "post-script" command.
-        In this case, go to the chapter "Migrate your custom code" before running the database migration.
+This step will copy the upgrades folder from `pim-enterprise-dev/` to your Pim project root in order to migrate.
+If you have custom code in your project, this step may raise errors in the "post-script" command.
+In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
-9. Then you can migrate your database using:
+Migrate your database by using:
 
-    ```bash
+```bash
 php app/console cache:clear --env=prod
 php app/console doctrine:migration:migrate --env=prod
-    ```
+```
 
-    The issues of missing services or missing classes are often due to custom code.
-    Please refer to the [Migrate your custom code](#migrate-your-custom-code) section before continuing with this section.
+The issues of missing services or missing classes are often due to custom code.
+Please refer to the [Migrate your custom code](#migrate-your-custom-code) section before continuing with this section.
 
-10. Then, generate JS translations and re-generate the PIM assets:
+Final step will be to generate JS translations and re-generate PIM assets:
 
-    ```bash
+```bash
 rm -rf $PIM_DIR/web/js/translation/*
 php app/console pim:installer:assets
-    ```
+```
 
 
 ## Migrate your custom code
@@ -316,8 +321,8 @@ has been created. This proxy normalizer will be used instead of `Pim\Component\C
 
 ### Import/export UI migration
 
-With this 1.7 edition, we migrated the old import/export configuration screens to new javascript architecture. It means
-that if you had customized them, you will need to migrate your configuration to the new one.
+With this 1.7 edition, we migrated the old import/export configuration screens to the new javascript architecture. It means
+that if you had customized them, you will need to migrate your configuration.
 
 There are three levels of customization:
 
@@ -356,6 +361,22 @@ services:
 You can find the loaded JS modules of `pim-job-instance-csv-base-import` in
 [view mode](https://github.com/akeneo/pim-community-dev/blob/1.7/src/Pim/Bundle/EnrichBundle/Resources/config/form_extensions/job_instance/csv_base_import_show.yml) and
 [edit mode](https://github.com/akeneo/pim-community-dev/blob/1.7/src/Pim/Bundle/EnrichBundle/Resources/config/form_extensions/job_instance/csv_base_import_edit.yml).
+
+If you used a product export processor, you had to use the `RegisterJobNameVisibilityCheckerPass` to have the "Content" tab
+and to be able to use the export builder. You can now remove this section:
+
+```PHP
+<?php
+// Acme/Bundle/CustomProductExportBundle/AcmeCustomProductExportBundle.php
+
+public function build(ContainerBuilder $container)
+{
+    $container
+        ->addCompilerPass(new RegisterJobNameVisibilityCheckerPass(
+            ['csv_product_export_custom']
+        ));
+}
+ ```
 
 #### You added some fields to your custom job
 
