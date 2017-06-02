@@ -122,14 +122,15 @@ services:
         class: '%pim_enrich.provider.form.attribute.class%'
         arguments:
             -
-                pim_catalog_date:       pim-attribute-edit-form-date
-                pim_catalog_file:       pim-attribute-edit-form-file
-                pim_catalog_identifier: pim-attribute-edit-form-identifier
-                pim_catalog_image:      pim-attribute-edit-form-image
-                pim_catalog_metric:     pim-attribute-edit-form-metric
-                pim_catalog_number:     pim-attribute-edit-form-number
-                pim_catalog_text:       pim-attribute-edit-form-text
-                pim_catalog_textarea:   pim-attribute-edit-form-textarea
+                pim_catalog_date:               pim-attribute-edit-form-date
+                pim_catalog_file:               pim-attribute-edit-form-file
+                pim_catalog_identifier:         pim-attribute-edit-form-identifier
+                pim_catalog_image:              pim-attribute-edit-form-image
+                pim_catalog_metric:             pim-attribute-edit-form-metric
+                pim_catalog_number:             pim-attribute-edit-form-number
+                pim_catalog_price_collection:   pim-attribute-edit-form-price
+                pim_catalog_text:               pim-attribute-edit-form-text
+                pim_catalog_textarea:           pim-attribute-edit-form-textarea
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
