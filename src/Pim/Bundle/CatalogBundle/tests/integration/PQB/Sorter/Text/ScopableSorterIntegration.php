@@ -22,34 +22,32 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_text',
-                'type'                => AttributeTypes::TEXT,
-                'localizable'         => false,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_text',
+            'type'                => AttributeTypes::TEXT,
+            'localizable'         => false,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_text' => [
-                        ['data' => 'cat is beautiful', 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => 'dog is wonderful', 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_text' => [
+                    ['data' => 'cat is beautiful', 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => 'dog is wonderful', 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_text' => [
-                        ['data' => 'dog is wonderful', 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => 'cat is beautiful', 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_text' => [
+                    ['data' => 'dog is wonderful', 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => 'cat is beautiful', 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testSorterAscending()

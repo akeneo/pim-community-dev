@@ -19,10 +19,8 @@ class StatusFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('foo', ['enabled' => true]);
-            $this->createProduct('bar', ['enabled' => false]);
-        }
+        $this->createProduct('foo', ['enabled' => true]);
+        $this->createProduct('bar', ['enabled' => false]);
     }
 
     public function testOperatorEquals()

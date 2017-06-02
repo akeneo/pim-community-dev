@@ -102,81 +102,79 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct(
-                'complex_product_1',
-                [
-                    'family' => 'familyA',
-                    'values' => [
-                        'a_file' => [
-                            [
-                                'locale' => null,
-                                'scope'  => null,
-                                'data'   => $this->getFixturePath('akeneo.txt'),
-                            ],
+        $this->createProduct(
+            'complex_product_1',
+            [
+                'family' => 'familyA',
+                'values' => [
+                    'a_file' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => $this->getFixturePath('akeneo.txt'),
                         ],
+                    ],
 
-                        'a_localizable_image'                => [
-                            [
-                                'locale' => 'en_US',
-                                'scope'  => null,
-                                'data'   => $this->getFixturePath('akeneo.jpg'),
-                            ],
-                            [
-                                'locale' => 'fr_FR',
-                                'scope'  => null,
-                                'data'   => $this->getFixturePath('akeneo.jpg'),
-                            ],
+                    'a_localizable_image'                => [
+                        [
+                            'locale' => 'en_US',
+                            'scope'  => null,
+                            'data'   => $this->getFixturePath('akeneo.jpg'),
                         ],
-                        'a_regexp'                           => [
-                            [
-                                'locale' => null,
-                                'scope'  => null,
-                                'data'   => '\w+ .*',
-                            ],
+                        [
+                            'locale' => 'fr_FR',
+                            'scope'  => null,
+                            'data'   => $this->getFixturePath('akeneo.jpg'),
                         ],
-                        'a_scopable_price'                   => [
-                            [
-                                'locale' => null,
-                                'scope'  => 'ecommerce',
-                                'data'   => [
-                                    [
-                                        'amount'   => 12,
-                                        'currency' => 'EUR',
-                                    ],
-                                    [
-                                        'amount'   => 14,
-                                        'currency' => 'USD',
-                                    ],
+                    ],
+                    'a_regexp'                           => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => '\w+ .*',
+                        ],
+                    ],
+                    'a_scopable_price'                   => [
+                        [
+                            'locale' => null,
+                            'scope'  => 'ecommerce',
+                            'data'   => [
+                                [
+                                    'amount'   => 12,
+                                    'currency' => 'EUR',
+                                ],
+                                [
+                                    'amount'   => 14,
+                                    'currency' => 'USD',
                                 ],
                             ],
                         ],
-                        'a_localized_and_scopable_text_area' => [
-                            [
-                                'locale' => 'fr_FR',
-                                'scope'  => 'ecommerce',
-                                'data'   => 'Mon textarea localisé et scopable ecommerce',
-                            ],
-                            [
-                                'locale' => 'en_US',
-                                'scope'  => 'ecommerce',
-                                'data'   => null,
-                            ],
-                            [
-                                'locale' => 'fr_FR',
-                                'scope'  => 'tablet',
-                                'data'   => 'Mon textarea localisé et scopable tablet',
-                            ],
-                            [
-                                'locale' => 'en_US',
-                                'scope'  => 'tablet',
-                                'data'   => 'My localizable and scopable textearea tablet',
-                            ],
+                    ],
+                    'a_localized_and_scopable_text_area' => [
+                        [
+                            'locale' => 'fr_FR',
+                            'scope'  => 'ecommerce',
+                            'data'   => 'Mon textarea localisé et scopable ecommerce',
+                        ],
+                        [
+                            'locale' => 'en_US',
+                            'scope'  => 'ecommerce',
+                            'data'   => null,
+                        ],
+                        [
+                            'locale' => 'fr_FR',
+                            'scope'  => 'tablet',
+                            'data'   => 'Mon textarea localisé et scopable tablet',
+                        ],
+                        [
+                            'locale' => 'en_US',
+                            'scope'  => 'tablet',
+                            'data'   => 'My localizable and scopable textearea tablet',
                         ],
                     ],
-                ]
-            );
-        }
+                ],
+            ]
+        );
     }
 
     /**

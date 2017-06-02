@@ -17,8 +17,7 @@ class ProductValuesStorageIntegration extends TestCase
     protected function getConfiguration()
     {
         return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
+            [Configuration::getTechnicalSqlCatalogPath()]
         );
     }
 

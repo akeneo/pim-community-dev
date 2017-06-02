@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +66,14 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
 JSON;
 
         $this->assertResponse($client->getResponse(), $expected);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     /**

@@ -19,13 +19,11 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('foo', []);
-            $this->createProduct('bar', []);
-            $this->createProduct('baz', []);
-            $this->createProduct('BARISTA', []);
-            $this->createProduct('BAZAR', []);
-        }
+        $this->createProduct('foo', []);
+        $this->createProduct('bar', []);
+        $this->createProduct('baz', []);
+        $this->createProduct('BARISTA', []);
+        $this->createProduct('BAZAR', []);
     }
 
     public function testOperatorStartsWith()

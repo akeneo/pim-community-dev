@@ -22,41 +22,39 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_number',
-                'type'                => AttributeTypes::NUMBER,
-                'localizable'         => true,
-                'scopable'            => true,
-                'negative_allowed'    => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_number',
+            'type'                => AttributeTypes::NUMBER,
+            'localizable'         => true,
+            'scopable'            => true,
+            'negative_allowed'    => true
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_number' => [
-                        ['data' => '192.103', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => '-16', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_number' => [
+                    ['data' => '192.103', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => '-16', 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_number' => [
-                        ['data' => '-16', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => '192.103', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_number' => [
+                    ['data' => '-16', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => '192.103', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_three', [
-                'values' => [
-                    'a_localizable_scopable_number' => [
-                        ['data' => '52', 'locale' => 'de_DE', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_three', [
+            'values' => [
+                'a_localizable_scopable_number' => [
+                    ['data' => '52', 'locale' => 'de_DE', 'scope' => 'tablet']
                 ]
-            ]);
-        }
+            ]
+        ]);
     }
 
     public function testSorterAscending()

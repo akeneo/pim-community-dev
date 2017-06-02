@@ -21,21 +21,19 @@ class DateTimeSorterWithDifferentTimezoneIntegration extends AbstractProductQuer
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            static::$timezone = ini_get('date.timezone');
+        static::$timezone = ini_get('date.timezone');
 
-            ini_set('date.timezone', 'UTC');
+        ini_set('date.timezone', 'UTC');
 
-            $this->createProduct('foo', []);
-            sleep(2);
+        $this->createProduct('foo', []);
+        sleep(2);
 
-            ini_set('date.timezone', 'Asia/Shanghai');
-            $this->createProduct('bar', []);
-            sleep(2);
+        ini_set('date.timezone', 'Asia/Shanghai');
+        $this->createProduct('bar', []);
+        sleep(2);
 
-            ini_set('date.timezone', 'America/Los_Angeles');
-            $this->createProduct('baz', []);
-        }
+        ini_set('date.timezone', 'America/Los_Angeles');
+        $this->createProduct('baz', []);
     }
 
     public function testSorterAscending()

@@ -55,47 +55,45 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_date',
-                'type'                => AttributeTypes::DATE,
-                'localizable'         => true,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_date',
+            'type'                => AttributeTypes::DATE,
+            'localizable'         => true,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_date' => [
-                        ['data' => '2017-04-11', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_date' => [
+                    ['data' => '2017-04-11', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_date' => [
-                        ['data' => '2016-03-10', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_date' => [
+                    ['data' => '2016-03-10', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('product_three', [
-                'values' => [
-                    'a_localizable_scopable_date' => [
-                        ['data' => '2015-02-09', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
+        $this->createProduct('product_three', [
+            'values' => [
+                'a_localizable_scopable_date' => [
+                    ['data' => '2015-02-09', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('product_four', [
-                'values' => [
-                    'a_localizable_scopable_date' => [
-                        ['data' => '2014-01-08', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ],
+        $this->createProduct('product_four', [
+            'values' => [
+                'a_localizable_scopable_date' => [
+                    ['data' => '2014-01-08', 'locale' => 'en_US', 'scope' => 'tablet'],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 }

@@ -19,12 +19,10 @@ class FamilySorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('fooA', ['family' => 'familyA']);
-            $this->createProduct('fooA1', ['family' => 'familyA1']);
-            $this->createProduct('fooA2', ['family' => 'familyA2']);
-            $this->createProduct('baz', []);
-        }
+        $this->createProduct('fooA', ['family' => 'familyA']);
+        $this->createProduct('fooA1', ['family' => 'familyA1']);
+        $this->createProduct('fooA2', ['family' => 'familyA2']);
+        $this->createProduct('baz', []);
     }
 
     public function testSortCodeDescendant()

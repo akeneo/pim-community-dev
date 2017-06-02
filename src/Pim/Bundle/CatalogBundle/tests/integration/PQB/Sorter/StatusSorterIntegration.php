@@ -19,13 +19,11 @@ class StatusSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('foo', ['enabled' => false]);
-            $this->createProduct('bar', ['enabled' => true]);
-            $this->createProduct('baz', ['enabled' => false]);
-            $this->createProduct('foobar', ['enabled' => true]);
-            $this->createProduct('foobaz', []);
-        }
+        $this->createProduct('foo', ['enabled' => false]);
+        $this->createProduct('bar', ['enabled' => true]);
+        $this->createProduct('baz', ['enabled' => false]);
+        $this->createProduct('foobar', ['enabled' => true]);
+        $this->createProduct('foobaz', []);
     }
 
     public function testSortDescendant()

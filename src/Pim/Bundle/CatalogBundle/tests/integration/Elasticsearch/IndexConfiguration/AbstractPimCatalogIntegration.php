@@ -25,7 +25,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()], false);
+        return new Configuration([Configuration::getMinimalCatalogPath()]);
     }
 
     /**

@@ -21,19 +21,17 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $foo = $this->createProduct('foo', []);
-            $bar = $this->createProduct('bar', []);
-            $baz = $this->createProduct('baz', []);
-            $barista = $this->createProduct('BARISTA', []);
-            $bazar = $this->createProduct('BAZAR', []);
+        $foo = $this->createProduct('foo', []);
+        $bar = $this->createProduct('bar', []);
+        $baz = $this->createProduct('baz', []);
+        $barista = $this->createProduct('BARISTA', []);
+        $bazar = $this->createProduct('BAZAR', []);
 
-            self::$ids['foo'] = (string) $foo->getId();
-            self::$ids['bar'] = (string) $bar->getId();
-            self::$ids['baz'] = (string) $baz->getId();
-            self::$ids['barista'] = (string) $barista->getId();
-            self::$ids['bazar'] = (string) $bazar->getId();
-        }
+        self::$ids['foo'] = (string) $foo->getId();
+        self::$ids['bar'] = (string) $bar->getId();
+        self::$ids['baz'] = (string) $baz->getId();
+        self::$ids['barista'] = (string) $barista->getId();
+        self::$ids['bazar'] = (string) $bazar->getId();
     }
 
     public function testOperatorEquals()

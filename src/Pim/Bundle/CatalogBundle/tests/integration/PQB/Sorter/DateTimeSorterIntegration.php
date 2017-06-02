@@ -19,13 +19,11 @@ class DateTimeSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('foo', []);
-            sleep(2);
-            $this->createProduct('bar', []);
-            sleep(2);
-            $this->createProduct('baz', []);
-        }
+        $this->createProduct('foo', []);
+        sleep(2);
+        $this->createProduct('bar', []);
+        sleep(2);
+        $this->createProduct('baz', []);
     }
 
     public function testSorterAscending()

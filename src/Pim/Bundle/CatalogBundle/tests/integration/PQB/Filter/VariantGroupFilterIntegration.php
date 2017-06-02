@@ -73,19 +73,17 @@ class VariantGroupFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $group = $this->get('pim_catalog.factory.group')->createGroup('VARIANT');
-            $this->get('pim_catalog.updater.group')->update(
-                $group,
-                [
-                    'code' => 'variantC',
-                ]
-            );
-            $this->get('pim_catalog.saver.group')->save($group);
+        $group = $this->get('pim_catalog.factory.group')->createGroup('VARIANT');
+        $this->get('pim_catalog.updater.group')->update(
+            $group,
+            [
+                'code' => 'variantC',
+            ]
+        );
+        $this->get('pim_catalog.saver.group')->save($group);
 
-            $this->createProduct('foo', ['groups' => ['groupA', 'groupB'], 'variant_group' => 'variantA']);
-            $this->createProduct('bar', ['variant_group' => 'variantB']);
-            $this->createProduct('baz', []);
-        }
+        $this->createProduct('foo', ['groups' => ['groupA', 'groupB'], 'variant_group' => 'variantA']);
+        $this->createProduct('bar', ['variant_group' => 'variantB']);
+        $this->createProduct('baz', []);
     }
 }

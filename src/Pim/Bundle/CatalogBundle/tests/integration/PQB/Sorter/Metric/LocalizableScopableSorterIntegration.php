@@ -22,49 +22,47 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_metric',
-                'type'                => AttributeTypes::METRIC,
-                'localizable'         => true,
-                'scopable'            => true,
-                'decimals_allowed'    => true,
-                'metric_family'       => 'Power',
-                'default_metric_unit' => 'WATT'
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_metric',
+            'type'                => AttributeTypes::METRIC,
+            'localizable'         => true,
+            'scopable'            => true,
+            'decimals_allowed'    => true,
+            'metric_family'       => 'Power',
+            'default_metric_unit' => 'WATT'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_metric' => [
-                        ['data' => ['amount' => '10.5', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_metric' => [
+                    ['data' => ['amount' => '10.5', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_metric' => [
-                        ['data' => ['amount' => '15000', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_metric' => [
+                    ['data' => ['amount' => '15000', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_three', [
-                'values' => [
-                    'a_localizable_scopable_metric' => [
-                        ['data' => ['amount' => '-2.5', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_three', [
+            'values' => [
+                'a_localizable_scopable_metric' => [
+                    ['data' => ['amount' => '-2.5', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_four', [
-                'values' => [
-                    'a_localizable_scopable_metric' => [
-                        ['data' => ['amount' => '12', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_four', [
+            'values' => [
+                'a_localizable_scopable_metric' => [
+                    ['data' => ['amount' => '12', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet']
                 ]
-            ]);
-        }
+            ]
+        ]);
     }
 
     public function testSorterAscending()

@@ -22,41 +22,39 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'             => 'a_localizable_number',
-                'type'             => AttributeTypes::NUMBER,
-                'localizable'      => true,
-                'scopable'         => false,
-                'negative_allowed' => true,
-            ]);
+        $this->createAttribute([
+            'code'             => 'a_localizable_number',
+            'type'             => AttributeTypes::NUMBER,
+            'localizable'      => true,
+            'scopable'         => false,
+            'negative_allowed' => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_number' => [
-                        ['data' => '192.103', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => '-16', 'locale' => 'fr_FR', 'scope' => null],
-                    ],
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_number' => [
+                    ['data' => '192.103', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => '-16', 'locale' => 'fr_FR', 'scope' => null],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_number' => [
-                        ['data' => '-16', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => '192.103', 'locale' => 'fr_FR', 'scope' => null],
-                    ],
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_number' => [
+                    ['data' => '-16', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => '192.103', 'locale' => 'fr_FR', 'scope' => null],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('product_three', [
-                'values' => [
-                    'a_localizable_number' => [
-                        ['data' => '52', 'locale' => 'de_DE', 'scope' => null],
-                    ],
+        $this->createProduct('product_three', [
+            'values' => [
+                'a_localizable_number' => [
+                    ['data' => '52', 'locale' => 'de_DE', 'scope' => null],
                 ],
-            ]);
-        }
+            ],
+        ]);
     }
 
     public function testSorterAscending()

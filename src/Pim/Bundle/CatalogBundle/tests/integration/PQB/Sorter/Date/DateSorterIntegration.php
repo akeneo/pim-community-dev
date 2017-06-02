@@ -42,32 +42,30 @@ class DateSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_date' => [
-                        ['data' => '2017-04-11', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_date' => [
+                    ['data' => '2017-04-11', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_date' => [
-                        ['data' => '2016-03-10', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_date' => [
+                    ['data' => '2016-03-10', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_three', [
-                'values' => [
-                    'a_date' => [
-                        ['data' => '2015-02-09', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_three', [
+            'values' => [
+                'a_date' => [
+                    ['data' => '2015-02-09', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 }

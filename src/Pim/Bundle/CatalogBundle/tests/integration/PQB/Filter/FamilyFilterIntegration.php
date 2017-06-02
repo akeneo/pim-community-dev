@@ -87,12 +87,4 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeFilter([['family', Operators::BETWEEN, 'familyA']]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
-    }
 }

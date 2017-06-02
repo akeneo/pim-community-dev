@@ -84,12 +84,4 @@ class GroupsFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeFilter([['groups', Operators::BETWEEN, 'groupB']]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
-    }
 }
