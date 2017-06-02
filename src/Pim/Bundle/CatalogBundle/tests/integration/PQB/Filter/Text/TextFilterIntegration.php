@@ -19,47 +19,45 @@ class TextFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
-                ],
-            ]);
+        $this->createProduct('cat', [
+            'values' => [
+                'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]],
-                ],
-            ]);
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]],
-                ],
-            ]);
+        $this->createProduct('dog', [
+            'values' => [
+                'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
 
-            $this->createProduct('best_dog', [
-                'values' => [
-                    'a_text' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
-                ],
-            ]);
+        $this->createProduct('best_dog', [
+            'values' => [
+                'a_text' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
 
-            // There is no html tags in TEXT attributes usually set in the PIM.
-            // This tests shows that if it's the case they are stored as is and not stripped.
-            $this->createProduct('best_cat', [
-                'values' => [
-                    'a_text' => [
-                        [
-                            'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
-                            'locale' => null,
-                            'scope'  => null,
-                        ],
+        // There is no html tags in TEXT attributes usually set in the PIM.
+        // This tests shows that if it's the case they are stored as is and not stripped.
+        $this->createProduct('best_cat', [
+            'values' => [
+                'a_text' => [
+                    [
+                        'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
+                        'locale' => null,
+                        'scope'  => null,
                     ],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartsWith()

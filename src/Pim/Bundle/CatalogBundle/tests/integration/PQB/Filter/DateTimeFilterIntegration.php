@@ -154,12 +154,4 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeFilter([['updated', Operators::IN_CHILDREN_LIST, ['2016-08-29 00:00:01']]]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
-    }
 }

@@ -23,57 +23,55 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('cat', [
+            'values' => [
+                'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_text_area' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_text_area' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_text_area' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('dog', [
+            'values' => [
+                'a_text_area' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('best_dog', [
-                'values' => [
-                    'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('best_dog', [
+            'values' => [
+                'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('best_cat', [
-                'values' => [
-                    'a_text_area' => [
-                        [
-                            'data' => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
-                            'locale' => null,
-                            'scope' => null,
-                        ],
+        $this->createProduct('best_cat', [
+            'values' => [
+                'a_text_area' => [
+                    [
+                        'data' => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
+                        'locale' => null,
+                        'scope' => null,
                     ],
-                ]
-            ]);
+                ],
+            ]
+        ]);
 
-            $this->createProduct('best_rabbit', [
-                'values' => [
-                    'a_text_area' => [
-                        [
-                            'data' => $this->rabbitNewLineData,
-                            'locale' => null,
-                            'scope' => null,
-                        ],
+        $this->createProduct('best_rabbit', [
+            'values' => [
+                'a_text_area' => [
+                    [
+                        'data' => $this->rabbitNewLineData,
+                        'locale' => null,
+                        'scope' => null,
                     ],
-                ]
-            ]);
+                ],
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartsWith()

@@ -22,43 +22,41 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'        => 'a_localizable_text_area',
-                'type'        => AttributeTypes::TEXTAREA,
-                'localizable' => true,
-                'scopable'    => false,
-            ]);
+        $this->createAttribute([
+            'code'        => 'a_localizable_text_area',
+            'type'        => AttributeTypes::TEXTAREA,
+            'localizable' => true,
+            'scopable'    => false,
+        ]);
 
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_localizable_text_area' => [
-                        ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => 'chat <b>noir</b>', 'locale' => 'fr_FR', 'scope' => null],
-                    ]
+        $this->createProduct('cat', [
+            'values' => [
+                'a_localizable_text_area' => [
+                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => 'chat <b>noir</b>', 'locale' => 'fr_FR', 'scope' => null],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_localizable_text_area' => [
-                        ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => '<h1>cattle</h1>', 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_localizable_text_area' => [
+                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => '<h1>cattle</h1>', 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_localizable_text_area' => [
-                        ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
-                        ['data' => 'juste un chien', 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('dog', [
+            'values' => [
+                'a_localizable_text_area' => [
+                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => null],
+                    ['data' => 'juste un chien', 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testSorterAscending()

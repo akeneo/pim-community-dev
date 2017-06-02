@@ -80,12 +80,4 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeFilter([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
-    }
 }
