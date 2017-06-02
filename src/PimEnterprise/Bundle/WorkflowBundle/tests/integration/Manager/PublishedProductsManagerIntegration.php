@@ -54,10 +54,7 @@ class PublishedProductsManagerIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     public function testPublishProduct()
