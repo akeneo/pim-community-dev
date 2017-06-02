@@ -7,32 +7,41 @@ const _ = require('lodash')
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const requirePaths = require(path.resolve('web/js/require-paths'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
-const pathOverrides = require('./frontend/path-overrides')
 const utils = require('./frontend/requirejs-utils')
-const importPaths = utils.getModulePaths(requirePaths, pathOverrides, __dirname)
+const importPaths = utils.getModulePaths(requirePaths, __dirname)
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-
 const globToRegex = require('glob-to-regexp');
-const globbedPaths = _.values(importPaths).map(importPath => {
-    return globToRegex(importPath).toString().slice(1, -1);
-})
+const customPaths = require('./frontend/custom-paths')
+
+console.log(customPaths)
+
+const contextPaths = [
+    '**web/bundles/pim**/*.js',
+    '**web/bundles/oro**/*.js',
+    '**web/bundles/fosjsrouting/**/*.js',
+    '**web/bundles/pim**/*.html',
+    '**frontend/**/*.js',
+    '**web/dist/**/*.js',
+    '**node_modules/jquery/dist/jquery.js',
+    ..._.values(customPaths).map(custom => `**${custom}`)
+].map(glob => globToRegex(glob).toString().slice(1, -1))
+
+const contextRegex = `/^.*(${contextPaths.join('|')})$/`
 
 module.exports = {
     target: 'web',
     entry: [
-        path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/index.js')
+        path.resolve(__dirname, './web/bundles/pimenrich/js/index.js')
     ],
     output: {
         path: path.resolve('./web/dist/'),
         publicPath: '/dist/',
         filename: 'app.min.js',
-        chunkFilename: '[name].bundle.js',
-        pathinfo: true,
-        devtoolLineToLine: true
+        chunkFilename: '[name].bundle.js'
     },
 
     resolve: {
-        alias: importPaths
+        alias: Object.assign(importPaths, _.mapValues(customPaths, custom => path.resolve(custom)))
     },
     module: {
         rules: [
@@ -44,7 +53,7 @@ module.exports = {
                         pattern: /__contextPlaceholder/,
                         flags: 'g'
                     },
-                    replaceWith: `/^.*(${globbedPaths.join('|')})$/`
+                    replaceWith: contextRegex
                 }
             }, {
                 test: /\.js$/,
