@@ -128,6 +128,8 @@ services:
                 pim_catalog_image:      pim-attribute-edit-form-image
                 pim_catalog_metric:     pim-attribute-edit-form-metric
                 pim_catalog_number:     pim-attribute-edit-form-number
+                pim_catalog_text:       pim-attribute-edit-form-text
+                pim_catalog_textarea:   pim-attribute-edit-form-textarea
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
