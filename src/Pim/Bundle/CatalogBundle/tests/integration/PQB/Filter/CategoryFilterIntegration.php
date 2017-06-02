@@ -19,11 +19,9 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('foo', ['categories' => ['categoryA1', 'categoryB']]);
-            $this->createProduct('bar', []);
-            $this->createProduct('baz', []);
-        }
+        $this->createProduct('foo', ['categories' => ['categoryA1', 'categoryB']]);
+        $this->createProduct('bar', []);
+        $this->createProduct('baz', []);
     }
 
     public function testOperatorIn()
@@ -81,5 +79,13 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorOperatorNotSupported()
     {
         $this->executeFilter([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 }

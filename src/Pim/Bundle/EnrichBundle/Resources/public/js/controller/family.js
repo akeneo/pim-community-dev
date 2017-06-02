@@ -19,8 +19,10 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher('family').fetch(route.params.code, {cached: false})
-                    .then(function (family) {
+                return FetcherRegistry.getFetcher('family').fetch(
+                    route.params.code,
+                    {cached: false, apply_filters: false}
+                ).then(function (family) {
                         if (!this.active) {
                             return;
                         }

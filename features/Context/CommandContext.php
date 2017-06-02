@@ -222,13 +222,19 @@ class CommandContext extends PimContext
     /**
      * Runs app/console $command in the test environment
      *
-     * @When /^I run '([^\']*)'$/
+     * @When /^I run '([^\']*)'( in background)?$/
      *
-     * @param string $command
+     * @param string      $command
+     * @param string|null $command
      */
-    public function iRun($command)
+    public function iRun($command, $background)
     {
         $commandLauncher = $this->getService('pim_catalog.command_launcher');
-        $commandLauncher->executeForeground($this->replacePlaceholders($command));
+
+        if (null === $background) {
+            $commandLauncher->executeForeground($this->replacePlaceholders($command));
+        } else {
+            $commandLauncher->executeBackground($this->replacePlaceholders($command));
+        }
     }
 }

@@ -344,7 +344,7 @@ btn:
     drag_or_upload: Upload per Drag & Drop oder hier klicken
   edit: Bearbeiten
   save: Speichern
-  save and back: Speichern und zurück zur Übersicht
+  save and back: speichern und zurück zur Tabellenansicht
   save and create: Speichern und neuen anlegen
   save and next: Speichern und weiter
   save and finish: Speichern und fertigstellen
@@ -354,7 +354,7 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Übersicht
+  to grid: Zurück zur Tabellenansicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
@@ -506,7 +506,7 @@ Required: Erforderlich
 Unique: Eindeutig
 Not required: Nicht erforderlich
 Translatable: Übersetzbar
-Scopable: Je Ausgabekanal individualisierbar
+Scopable: Wert je Ausgabekanal
 Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
@@ -529,10 +529,10 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar im Raster
+Useable as grid filter: Verwendbar in der Tabellenansicht
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
-Locale specific: Gebietsschema-spezifisch
+Locale specific: Gebietsschemaspezifisch
 default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
@@ -581,7 +581,7 @@ Negative allowed: Negative Werte zulassen
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
-Default metric unit: Standard-Maßeinheit
+Default metric unit: Standardmaßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
 None: Keine
@@ -879,6 +879,6 @@ pim_enrich_attribute_form:
   localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
-  locale_specific: Gebietsschema-spezifisch
+  locale_specific: Gebietsschemaspezifisch
   group: Attributgruppe
-  useableAsGridFilter: Verwendbar im Raster
+  useableAsGridFilter: Verwendbar in der Tabellenansicht

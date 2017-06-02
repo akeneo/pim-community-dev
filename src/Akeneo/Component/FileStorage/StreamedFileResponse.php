@@ -28,11 +28,11 @@ class StreamedFileResponse extends StreamedResponse
         }
 
         $callback = function () use ($resource) {
-            while (!feof($resource)) {
-                $buffer = fread($resource, StreamedFileResponse::CHUNK);
-                echo $buffer;
-                ob_flush();
-            }
+            $out = fopen('php://output', 'wb');
+
+            stream_copy_to_stream($resource, $out);
+
+            fclose($out);
             fclose($resource);
         };
 

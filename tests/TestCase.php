@@ -13,22 +13,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var int Count of executed tests inside the same test class */
-    protected static $count = 0;
-
     /** @var Client */
     protected $esClient;
 
     /** @var Loader */
     protected $esConfigurationLoader;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$count = 0;
-    }
 
     /**
      * @return Configuration
@@ -46,17 +35,12 @@ abstract class TestCase extends KernelTestCase
 
         $this->esClient = $this->get('akeneo_elasticsearch.client');
         $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
+        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
 
-        self::$count++;
+        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
+        $fixturesLoader->load();
 
-        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $this->resetIndex();
-
-            $this->getDatabaseSchemaHandler()->reset();
-
-            $fixturesLoader = $this->getFixturesLoader($configuration);
-            $fixturesLoader->load();
-        }
+        $this->resetIndex();
     }
 
     /**
@@ -99,13 +83,14 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     * @param Configuration $configuration
+     * @param Configuration         $configuration
+     * @param DatabaseSchemaHandler $databaseSchemaHandler
      *
      * @return FixturesLoader
      */
-    protected function getFixturesLoader(Configuration $configuration)
+    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
     {
-        return new FixturesLoader(static::$kernel, $configuration);
+        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
     }
 
     /**

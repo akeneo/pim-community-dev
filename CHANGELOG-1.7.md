@@ -1,23 +1,67 @@
 # 1.7.x
 
+## Bug Fixes
+
+- PIM-6394: Fix email validation when creating a user in order to be less restrictive
+- GITHUB-6161: Fix JobInstance class hardcoded in `Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute`
+- GITHUB-6151: Fix Mongo TimestampableSubscriber to properly update the CreatedAt date of a product
+- PIM-6254: Fix pagination on the API when filters are applied
+- PIM-6196: Fix collection filters used on `Family` screen
+- GITHUB-6069: Fix Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController::getValidationErrors by preventing to fail when no raw parameters are defined for the job, cheers @aistis-!
+- PIM-6392: Fix output buffering error when updating a list of resources from the API
+- PIM-6426: Fix issue when downloading a media file while output buffering is disabled
+- PIM-6413: Fix to ensure that attribute options codes are no longer updated in MongoDB
+- PIM-6285: Fix content type validation in the API
+- PIM-6434: Fix attribute group order in Product Edit Form
+
+# 1.7.4 (2017-05-10)
+
+## Bug Fixes
+
+- PIM-6322: Add output for attribute option form validation
+- PIM-6378: Fix translations for channel labels in export builder
+- PIM-6377: Fix potential notice in price property formatter
+- PIM-6387: Fix HTTP code returned when the token is invalid or expired
+- PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
+- PIM-6381: Fix `Delete` button is visible on channel create screen
+- PIM-6398: Fix Summernote (WYSIWYG) style (backport GITHUB-6101 into 1.7)
+- PIM-6402: Clean attribute properties according to new validation rules during migration
+
+# 1.7.3 (2017-04-14)
+
+## Bug Fixes
+
+- PIM-6277: Use catalogLocale for channel and scopable attribute labels
+- PIM-6324: Fix invalid field focus after creating an attribute with missing data
+- PIM-6286: Fix User repository
+- GITHUB-6061: Fix menu display for big words
+- PIM-5709: Fix clicking date picker also opens date picker in compare panel
+
+# 1.7.2 (2017-04-07)
+
 ## Functional improvements
 
 - PIM-6119: Family mass edit - add attributes by attribute group
 - PIM-6118: Improve attribute add select to avoid performance impact
 - GITHUB-5716: Redo family mass edit form using backbonejs architecture and internal REST API
 
-## Bug Fixes
+## Bug Fixes
 
 - PIM-6270: Fix sequential edit style
 - PIM-6265: Fix user menu navigation
 - GITHUB-5307: Fix sort order in field "Attribute group"
 - PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
 - PIM-6071: Hide add option icon for non-editable fields
+- PIM-6273: Enable removing attributes in mass edit products form
+- PIM-6277: Display channel labels in completeness tab
 - PIM-6275: Fix variations not visible on Variant Group properties tab
 - PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 - PIM-6274: Successfully validate products with a custom validation on identifier
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
-- GITHUB-5949: Fix the deletion of a job instance (import/export) from the job edit page, cheers @BatsaxIV !
+- PIM-6282: Fix attribute menu Firefox bug
+- PIM-6284: Fix display of scopable information for fields
+- PIM-6309: Enlarge the attribute type selection panel
+- PIM-6271: Fix locking fields in mass edit product form
 
 ## BC breaks
 
@@ -31,7 +75,7 @@
 
 # 1.7.1 (2017-03-23)
 
-## Bug Fixes
+## Bug Fixes
 
 - PIM-6085: Association import step is not working with custom column name.
 - PIM-6207: Correctly dismiss "Unsaved changes" message on system configuration.
@@ -158,7 +202,7 @@
 - `Pim\Component\Catalog\Model\AttributeInterface::setAttributeType()` has been deprecated in favor of `Pim\Component\Catalog\Model\AttributeInterface::setType()`
 - `Pim\Component\Catalog\Model\AttributeInterface::getAttributeType()` has been deprecated in favor of `Pim\Component\Catalog\Model\AttributeInterface::getType()`
 
-## BC breaks
+## BC breaks
 
 ### Bundles
 

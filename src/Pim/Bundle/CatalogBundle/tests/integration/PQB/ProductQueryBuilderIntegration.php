@@ -84,10 +84,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 
     /**

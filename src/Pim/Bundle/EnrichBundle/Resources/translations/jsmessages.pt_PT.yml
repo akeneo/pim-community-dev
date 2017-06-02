@@ -148,9 +148,6 @@ pim_enrich:
         deletion_failed: Não foi possível eliminar o produto.
         update_successful: Produto atualizado com sucesso.
         update_failed: O produto não pôde ser atualizado.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - campos
         already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
       error:
         upload: Ocorreu um erro no envio do ficheiro

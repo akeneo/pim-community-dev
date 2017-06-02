@@ -152,7 +152,6 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
     {
         return new Configuration(
             [Configuration::getFunctionalCatalog('footwear')],
-            true,
             [Configuration::getFunctionalFixtures()]
         );
     }

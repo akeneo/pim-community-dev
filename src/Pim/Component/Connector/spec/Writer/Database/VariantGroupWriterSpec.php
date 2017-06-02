@@ -33,9 +33,11 @@ class VariantGroupWriterSpec extends ObjectBehavior
     }
 
     function it_writes_some_variant_groups(
+        $detacher,
+        $groupSaver,
+        $stepExecution,
         GroupInterface $variantGroupOne,
         GroupInterface $variantGroupTwo,
-        $stepExecution,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -52,17 +54,24 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $variantGroupTwo->getProductTemplate()->willReturn(null);
         $variantGroupTwo->getProducts()->willReturn([]);
 
-        $this->write([$variantGroupOne, $variantGroupTwo]);
+        $variantGroups = [$variantGroupOne, $variantGroupTwo];
+
+        $groupSaver->saveAll($variantGroups)->shouldBeCalled();
+        $detacher->detachAll($variantGroups)->shouldBeCalled();
+
+        $this->write($variantGroups);
     }
 
     function it_writes_a_variant_groups_and_copy_values_to_products(
+        $detacher,
+        $groupSaver,
+        $productTplApplier,
+        $stepExecution,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         Collection $productCollection,
         ProductInterface $productOne,
         ProductInterface $productTwo,
-        $productTplApplier,
-        $stepExecution,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -84,17 +93,24 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('update_products', 2)->shouldBeCalled();
 
+        $detacher->detachAll([$productOne, $productTwo])->shouldBeCalled();
+
+        $groupSaver->saveAll([$variantGroup])->shouldBeCalled();
+        $detacher->detachAll([$variantGroup])->shouldBeCalled();
+
         $this->write([$variantGroup]);
     }
 
     function it_writes_a_variant_groups_and_skip_copy_values_for_invalid_products(
+        $detacher,
+        $groupSaver,
+        $stepExecution,
+        $productTplApplier,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         Collection $productCollection,
         ProductInterface $validProduct,
         ProductInterface $invalidProduct,
-        $productTplApplier,
-        $stepExecution,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -118,17 +134,24 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip_products', 1)->shouldBeCalled();
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
+        $detacher->detachAll([$validProduct, $invalidProduct])->shouldBeCalled();
+
+        $groupSaver->saveAll([$variantGroup])->shouldBeCalled();
+        $detacher->detachAll([$variantGroup])->shouldBeCalled();
+
         $this->write([$variantGroup]);
     }
 
     function it_does_not_copy_values_to_products_when_template_is_empty(
+        $detacher,
+        $groupSaver,
+        $productTplApplier,
+        $stepExecution,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         Collection $productCollection,
         ProductInterface $productOne,
         ProductInterface $productTwo,
-        $productTplApplier,
-        $stepExecution,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -146,6 +169,11 @@ class VariantGroupWriterSpec extends ObjectBehavior
 
         $productTplApplier->apply($productTemplate, [$productOne, $productTwo])
             ->shouldNotBeCalled();
+
+        $detacher->detachAll([$productOne, $productTwo])->shouldNotBeCalled();
+
+        $groupSaver->saveAll([$variantGroup])->shouldBeCalled();
+        $detacher->detachAll([$variantGroup])->shouldBeCalled();
 
         $this->write([$variantGroup]);
     }
