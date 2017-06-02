@@ -5,8 +5,8 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Symfony\Component\HttpFoundation\Response;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

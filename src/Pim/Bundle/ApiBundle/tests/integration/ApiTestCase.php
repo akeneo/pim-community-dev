@@ -39,10 +39,10 @@ abstract class ApiTestCase extends WebTestCase
         $configuration = $this->getConfiguration();
         $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
 
-        $this->resetIndex();
-
         $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
         $fixturesLoader->load();
+
+        $this->resetIndex();
     }
 
     /**
