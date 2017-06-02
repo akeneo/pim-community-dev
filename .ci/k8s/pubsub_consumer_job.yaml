@@ -1,0 +1,91 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: JOB_NAME
+spec:
+  completions: JOB_COMPLETIONS
+  parallelism: 0
+  template:
+    spec:
+      initContainers:
+        - name: pim
+          image: PIM_IMAGE
+          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
+          imagePullPolicy: Always
+          volumeMounts:
+            - { mountPath: /home/jenkins, name: pim }
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          env:
+            - { name: MYSQL_ROOT_PASSWORD, value: root }
+            - { name: MYSQL_USER, value: akeneo_pim }
+            - { name: MYSQL_PASSWORD, value: akeneo_pim }
+            - { name: MYSQL_DATABASE, value: akeneo_pim }
+          resources:
+            requests: {cpu: "150m", memory: "300Mi"}
+            limits: {memory: "300Mi"}
+          readinessProbe:
+            timeoutSeconds: 5
+            initialDelaySeconds: 2
+            exec:
+              command: ["mysql", "-proot", "-h", "127.0.0.1", "-e", "SELECT 1"]
+        - name: elasticsearch
+          image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
+          env:
+            - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+          resources:
+            requests: {cpu: "150m", memory: "1000Mi"}
+            limits: {memory: "1000Mi"}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9200
+              httpHeaders:
+                - name: Authorization
+                  value: Basic ZWxhc3RpYzpjaGFuZ2VtZQ==
+            timeoutSeconds: 1
+            initialDelaySeconds: 5
+        - name: php
+          image: eu.gcr.io/akeneo-ci/php:7.1-fpm
+          workingDir: /home/jenkins/pim
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+          resources:
+            requests: {cpu: "400m", memory: "1100Mi"}
+            limits: {memory: "1100Mi"}
+        - name: httpd
+          image: eu.gcr.io/akeneo-ci/httpd:2.4
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+          resources:
+            requests: {cpu: "100m", memory: "100Mi"}
+            limits: {memory: "100Mi"}
+        - name: selenium
+          image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+          resources:
+            requests: {cpu: "400m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
+        - name: pubsub
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.2
+          command: ["gcloud.phar"]
+          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC"]
+          env:
+            - { name: DOCKER_API_VERSION, value: "1.23" }
+            - { name: REDIS_URI, value: "tcp://redis.jenkins-prod:6379" }
+            - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+          volumeMounts:
+            - { name: docker, mountPath: /var/run/docker.sock }
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+          resources:
+            requests: {cpu: "100m", memory: "100Mi"}
+            limits: {memory: "100Mi"}
+      volumes:
+        - { name: pim, emptyDir: {}}
+        - { name: docker, hostPath: {path: /var/run/docker.sock}}
+        - { name: artifacts, emptyDir: {medium: Memory}}
+      restartPolicy: OnFailure
