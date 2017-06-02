@@ -1,0 +1,48 @@
+extensions:
+    pim-attribute-edit-form-number:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/drop-zone
+
+    pim-attribute-edit-form-number-validation-params:
+        module: pim/common/simple-view
+        parent: pim-attribute-edit-form-number
+        targetZone: content
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.attribute.tab.properties.validation
+                dropZone: content
+
+    pim-attribute-edit-form-number-validation-params-negative-allowed:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-number-validation-params
+        targetZone: content
+        position: 100
+        config:
+            fieldName: negative_allowed
+
+    pim-attribute-edit-form-number-validation-params-decimals-allowed:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-number-validation-params
+        targetZone: content
+        position: 110
+        config:
+            fieldName: decimals_allowed
+
+    pim-attribute-edit-form-number-validation-params-number-min:
+        module: pim/attribute-edit-form/properties/text
+        parent: pim-attribute-edit-form-number-validation-params
+        targetZone: content
+        position: 120
+        config:
+            fieldName: number_min
+
+    pim-attribute-edit-form-number-validation-params-number-max:
+        module: pim/attribute-edit-form/properties/text
+        parent: pim-attribute-edit-form-number-validation-params
+        targetZone: content
+        position: 130
+        config:
+            fieldName: number_max
