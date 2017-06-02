@@ -123,6 +123,8 @@ services:
         arguments:
             -
                 pim_catalog_date:       pim-attribute-edit-form-date
+                pim_catalog_file:       pim-attribute-edit-form-file
+                pim_catalog_image:      pim-attribute-edit-form-image
                 pim_catalog_metric:     pim-attribute-edit-form-metric
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }

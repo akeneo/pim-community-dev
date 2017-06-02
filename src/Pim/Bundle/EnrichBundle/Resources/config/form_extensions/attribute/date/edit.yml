@@ -15,7 +15,7 @@ extensions:
                 sectionTitle: pim_enrich.form.attribute.tab.properties.validation
                 dropZone: content
 
-    pim-attribute-edit-form-metric-validation-params-date-min:
+    pim-attribute-edit-form-date-validation-params-date-min:
         module: pim/attribute-edit-form/properties/date
         parent: pim-attribute-edit-form-date-validation-params
         targetZone: content
@@ -23,7 +23,7 @@ extensions:
         config:
             fieldName: date_min
 
-    pim-attribute-edit-form-metric-validation-params-date-max:
+    pim-attribute-edit-form-date-validation-params-date-max:
         module: pim/attribute-edit-form/properties/date
         parent: pim-attribute-edit-form-date-validation-params
         targetZone: content
