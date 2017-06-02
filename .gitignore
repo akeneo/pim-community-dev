@@ -35,7 +35,7 @@ composer.phar
 !/bin/docker/pim-initialize.sh
 !/bin/merge-coverage
 !/bin/console
-behat.yml
+/behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
