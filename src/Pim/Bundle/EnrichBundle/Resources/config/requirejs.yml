@@ -765,6 +765,7 @@ config:
         pim/attribute-edit-form/properties/select:              pimenrich/js/attribute/form/properties/select
         pim/attribute-edit-form/properties/text:                pimenrich/js/attribute/form/properties/text
         pim/attribute-edit-form/properties/type:                pimenrich/js/attribute/form/properties/type
+        pim/attribute-edit-form/properties/validation-regexp:   pimenrich/js/attribute/form/properties/validation-regexp
 
         # Common
         pim/common/grid:                   pimenrich/js/form/common/grid

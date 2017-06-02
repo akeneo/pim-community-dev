@@ -8,11 +8,13 @@
 define([
     'underscore',
     'pim/attribute-edit-form/properties/field',
+    'oro/translator',
     'text!pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
     BaseField,
+    __,
     template
 ) {
     return BaseField.extend({
@@ -36,14 +38,17 @@ function (
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('select.select2').select2();
+            this.$('select.select2').select2({allowClear: true});
         },
 
         /**
          * @param {Array} choices
          */
         formatChoices: function (choices) {
-            return _.object(choices, choices);
+            return Array.isArray(choices) ?
+                _.object(choices, choices) :
+                _.mapObject(choices, __)
+            ;
         },
 
         /**

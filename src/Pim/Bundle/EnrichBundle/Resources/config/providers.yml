@@ -124,6 +124,7 @@ services:
             -
                 pim_catalog_date:       pim-attribute-edit-form-date
                 pim_catalog_file:       pim-attribute-edit-form-file
+                pim_catalog_identifier: pim-attribute-edit-form-identifier
                 pim_catalog_image:      pim-attribute-edit-form-image
                 pim_catalog_metric:     pim-attribute-edit-form-metric
         tags:

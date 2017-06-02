@@ -225,9 +225,6 @@ pim_enrich:
                     family: Choose a family
                     save: Save
                     cancel: Cancel
-        attribute:
-            scopable: Scopable
-            global: Global
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -334,6 +331,8 @@ pim_enrich:
                 update_failed: The job profile could not be updated.
                 update_successful: The job profile has been successfully updated.
         attribute:
+            scopable: Scopable
+            global: Global
             type:
                 pim_catalog_identifier:             Identifier
                 pim_catalog_text:                   Text
@@ -349,6 +348,10 @@ pim_enrich:
                 pim_catalog_metric:                 Metric
                 pim_reference_data_simpleselect:    Reference data simple select
                 pim_reference_data_multiselect:     Reference data multi select
+            validation_rule:
+                email: E-mail
+                regexp: Regular expression
+                url: URL
         attribute_group:
             info:
                 update_failed: Attribute group could not be updated
