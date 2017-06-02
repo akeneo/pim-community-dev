@@ -93,7 +93,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
             if (AttributeTypes::ASSETS_COLLECTION === $attribute->getType()) {
-                $assets = $product->getValue($attribute->getCode(), $locale, $scope)->getAssets();
+                $assets = $product->getValue($attribute->getCode(), $locale, $scope)->getData();
 
                 // TODO: To be reworked on master
                 // We could use PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext but it

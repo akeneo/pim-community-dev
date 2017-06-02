@@ -116,7 +116,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $mainImage->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
-        $productValue->getMedia()->willReturn($fileInfo);
+        $productValue->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
         $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
@@ -184,7 +184,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $assetCollectionAttr->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
-        $productValue->getAssets()->willReturn([$assetA, $assetB]);
+        $productValue->getData()->willReturn([$assetA, $assetB]);
         $assetA->isLocalizable()->willReturn(true);
         $assetB->isLocalizable()->willReturn(false);
         $assetA->getReferences()->willReturn([$refAEn, $refAFr]);
