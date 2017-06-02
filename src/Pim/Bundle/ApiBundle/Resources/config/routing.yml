@@ -42,3 +42,7 @@ fos_oauth_server_token:
 endpoint:
     resource: '@PimApiBundle/Resources/config/routing/endpoint.yml'
     prefix: /rest
+
+measure_family:
+    resource: '@PimApiBundle/Resources/config/routing/measure_families.yml'
+    prefix: /rest/v1
