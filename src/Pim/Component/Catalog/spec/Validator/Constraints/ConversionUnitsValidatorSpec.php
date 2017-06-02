@@ -5,6 +5,8 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeType;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\Constraints\ConversionUnits;
 use Pim\Component\Catalog\Validator\Constraints\ConversionUnitsValidator;
@@ -76,6 +78,33 @@ class ConversionUnitsValidatorSpec extends ObjectBehavior
         $this->validate($conversionUnits, $constraint);
     }
 
+    function it_does_not_validate_a_conversion_with_non_metric_attribute(
+        $attributeRepository,
+        $context,
+        ConversionUnits $constraint,
+        ConstraintViolationBuilderInterface $violation,
+        AttributeInterface $attribute
+    ) {
+        $conversionUnits = [
+            'attributeCode' => 'conversionUnit',
+        ];
+
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+
+        $context->buildViolation(Argument::any(), Argument::any())
+            ->willReturn($violation)
+            ->shouldBeCalled();
+
+        $violation->setParameter('%attributeCode%', Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->addViolation(Argument::any())->shouldBeCalled();
+
+        $this->validate($conversionUnits, $constraint);
+    }
+
     function it_does_not_validate_a_conversion_unit_with_unit_code(
         $attributeRepository,
         $measureManager,
@@ -89,6 +118,7 @@ class ConversionUnitsValidatorSpec extends ObjectBehavior
         ];
 
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::METRIC);
         $attribute->getMetricFamily()->willReturn(Argument::any());
 
         $measureManager->unitCodeExistsInFamily(Argument::any(), Argument::any())
@@ -99,7 +129,10 @@ class ConversionUnitsValidatorSpec extends ObjectBehavior
             ->willReturn($violation)
             ->shouldBeCalled();
 
-        $violation->setParameter('%unitCode%', Argument::any())
+        $violation->setParameters([
+            '%unitCode%'      => 'conversionUnit',
+            '%attributeCode%' => 'attributeCode',
+        ])
             ->shouldBeCalled()
             ->willReturn($violation);
 

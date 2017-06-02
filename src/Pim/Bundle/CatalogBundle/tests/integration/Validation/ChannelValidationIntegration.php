@@ -241,7 +241,34 @@ class ChannelValidationIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame(
-            'Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "attr" given.',
+            'The attribute "attr" does not exist.',
+            $violation->getMessage()
+        );
+        $this->assertSame('conversionUnits', $violation->getPropertyPath());
+    }
+
+    public function testChannelConversionUnitsNotAMetricAttribute()
+    {
+        $channel = $this->createChannel();
+        $this->getUpdater()->update(
+            $channel,
+            [
+                'code'             => 'new_channel',
+                'category_tree'    => 'master',
+                'currencies'       => ['EUR'],
+                'locales'          => ['fr_FR'],
+                'conversion_units' => [
+                    'a_price'   => 'KILOGRAM',
+                ],
+            ]
+        );
+
+        $violations = $this->getValidator()->validate($channel);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'The attribute "a_price" is not a metric attribute.',
             $violation->getMessage()
         );
         $this->assertSame('conversionUnits', $violation->getPropertyPath());
@@ -268,7 +295,7 @@ class ChannelValidationIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame(
-            'Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "KILOWATT" given.',
+            'The unit "KILOWATT" does not exist or does not belong to the default metric family of the given attribute "a_metric_without_decimal".',
             $violation->getMessage()
         );
         $this->assertSame('conversionUnits', $violation->getPropertyPath());
@@ -358,8 +385,7 @@ class ChannelValidationIntegration extends TestCase
     protected function getConfiguration()
     {
         return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
+            [Configuration::getTechnicalCatalogPath()]
         );
     }
 }

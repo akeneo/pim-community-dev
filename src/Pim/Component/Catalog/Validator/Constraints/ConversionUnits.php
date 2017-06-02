@@ -12,11 +12,13 @@ use Symfony\Component\Validator\Constraint;
 class ConversionUnits extends Constraint
 {
     /** @var string */
-    public $invalidAttributeCode = 'Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "%attributeCode%" given.';
+    public $invalidAttributeCode = 'The attribute "%attributeCode%" does not exist.';
 
     /** @var string */
-    public $invalidUnitCode = 'Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "%unitCode%" given.';
+    public $notAMetricAttribute = 'The attribute "%attributeCode%" is not a metric attribute.';
 
+    /** @var string */
+    public $invalidUnitCode = 'The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".';
     /**
      * {@inheritdoc}
      */

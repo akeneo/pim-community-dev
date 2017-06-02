@@ -20,11 +20,16 @@ class ConversionUnitsSpec extends ObjectBehavior
 
     function it_has_invalid_attribute_code_message()
     {
-        $this->invalidAttributeCode->shouldBe('Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "%attributeCode%" given.');
+        $this->invalidAttributeCode->shouldBe('The attribute "%attributeCode%" does not exist.');
+    }
+
+    function it_has_not_a_metric_attribute_message()
+    {
+        $this->notAMetricAttribute->shouldBe('The attribute "%attributeCode%" is not a metric attribute.');
     }
 
     function it_has_invalid_unit_code_message()
     {
-        $this->invalidUnitCode->shouldBe('Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "%unitCode%" given.');
+        $this->invalidUnitCode->shouldBe('The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".');
     }
 }

@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -46,16 +47,32 @@ class ConversionUnitsValidator extends ConstraintValidator
                         ->buildViolation($constraint->invalidAttributeCode)
                         ->setParameter('%attributeCode%', $attributeCode)
                         ->addViolation();
+
+                    return;
                 }
 
-                if (null !== $attribute && !$this->measureManager->unitCodeExistsInFamily(
+                if (AttributeTypes::METRIC !== $attribute->getType()) {
+                    $this->context
+                        ->buildViolation($constraint->notAMetricAttribute)
+                        ->setParameter('%attributeCode%', $attributeCode)
+                        ->addViolation();
+
+                    return;
+                }
+
+                if (!$this->measureManager->unitCodeExistsInFamily(
                         $conversionUnit,
                         $attribute->getMetricFamily()
                     )
                 ) {
                     $this->context
                         ->buildViolation($constraint->invalidUnitCode)
-                        ->setParameter('%unitCode%', $conversionUnit)
+                        ->setParameters(
+                            [
+                                '%unitCode%'      => $conversionUnit,
+                                '%attributeCode%' => $attributeCode,
+                            ]
+                        )
                         ->addViolation();
                 }
             }

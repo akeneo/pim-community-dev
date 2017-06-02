@@ -23,6 +23,7 @@ file.extensions.message:                                                        
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": This type of value expects the use of an arabic decimal separator (٫) to separate decimals.
 "This type of value expects the use of the format {{ date_format }} for dates.": This type of value expects the use of the format {{ date_format }} for dates.
 The category "%category%" has to be a root category.: The category "%category%" has to be a root category.
-Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "%attributeCode%" given.: Property "conversion_units" expects a valid attributeCode. The attribute code for the conversion unit does not exist, "%attributeCode%" given.
-Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "%unitCode%" given.: Property "conversion_units" expects a valid unitCode. The metric unit code for the conversion unit does not exist, "%unitCode%" given.
+The attribute "%attributeCode%" does not exist.: The attribute "%attributeCode%" does not exist.
+The attribute "%attributeCode%" is not a metric attribute.: The attribute "%attributeCode%" is not a metric attribute.
+The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".: The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".
 The currency "%currency%" has to be activated.: The currency "%currency%" has to be activated.
