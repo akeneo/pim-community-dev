@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ci-consumer
+spec:
+  completions: 5
+  template:
+    metadata:
+      labels:
+        name: ci-consumer
+    spec:
+      containers:
+        - name: pull-messages
+          image: eu.gcr.io/akeneo-ci/pubsub:latest
+          command: ["php"]
+          args: ["pull-messages", "akeneo-ci-abo"]
+          env:
+          - name: PUBSUB_PROJECT_ID
+            value: akeneo-ci
+      restartPolicy: Never
