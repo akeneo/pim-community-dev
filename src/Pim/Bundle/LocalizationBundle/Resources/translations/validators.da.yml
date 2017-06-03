@@ -1,0 +1,5 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Denne form for værdi forventer brugen af {{ decimal_separator }} til at adskille decimaler.
+"This type of value expects the use of dot (.) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
+"This type of value expects the use of comma (,) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Denne form for værdi forventer brugen af en arabisk decimalseparator (٫) til at adskille decimaler.
+"This type of value expects the use of the format {{ date_format }} for dates.": Denne form for værdi forventer brug af formatet {{ date_format }} på datoer.

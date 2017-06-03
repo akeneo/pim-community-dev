@@ -1,0 +1,23 @@
+An identifier attribute already exists.: Der findes allerede en id-attribut.
+Attribute code may contain only letters, numbers and underscore: Attributten kode kan indeholde kun bogstaver, tal og understregningstegn
+Attribute code may contain only letters (at least one), numbers and underscores: Attribut koden kan kun indeholde bogstaver (mindst én), tal og understregningstegn
+This attribute type can't be used as a grid filter: Denne attributtype kan ikke bruges som et gitter filter
+This code is not available: Denne kode er ikke tilgængelig
+This attribute type must be required: Denne attributtype er nødvendig
+This attribute type can't be required: Denne attributtype kan ikke anvendes
+This attribute type can't have unique value: Denne attributtype kan ikke have en entydig værdi
+No default value may be specified for this attribute type: Ingen standardværdi kan angives for denne attributtype
+This value should be Yes or No: Denne værdi skal være ja eller nej
+This value should not be blank: Denne værdi må ikke være tom
+Option code may contain only letters, numbers and underscores: Indstillingskoden kan indeholde kun bogstaver, tal og understregningstegn
+Option code may contain only letters (at least one), numbers and underscores: Attribut koden kan kun indeholde bogstaver (mindst én), tal og understregningstegn
+This value should not be a decimal.: Værdien må ikke være en decimal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Filtypen er ikke tilladt (tilladte filtyper: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Værdien %value% benyttes allerede på et andet produkt for entydig attribut %attribute%
+regex.comma_or_semicolon.message: Dette felt må ikke indeholde komma eller semikolon.
+file.extensions.message: 'Filtypen er ikke tilladt (tilladte filtyper: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Denne form for værdi forventer brugen af {{ decimal_separator }} til at adskille decimaler.
+"This type of value expects the use of dot (.) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
+"This type of value expects the use of comma (,) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Denne form for værdi forventer brugen af en arabisk decimalseparator (٫) til at adskille decimaler.
+"This type of value expects the use of the format {{ date_format }} for dates.": Denne form for værdi forventer brug af formatet {{ date_format }} på datoer.
