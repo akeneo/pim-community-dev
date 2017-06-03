@@ -1,0 +1,97 @@
+View the product: Vis produkt
+pimee_enrich.product_history.action.revert: Vend tilbage til version
+permission-changes:
+  category:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne kategori
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne kategori
+  locale:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne landestandard
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne landestandard
+  attribute group:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> af denne attribut gruppe
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> af denne attribut gruppe
+  job profile:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong>
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Publiceret
+        revert: Gendan
+      smart_attribute:
+        come_from: "Denne attribut kan opdateres af en regel:"
+      btn:
+        publish: Offentliggør
+        publish_this_version: Offentliggøre denne version
+        unpublish: Unpublish
+        save_draft: Gem kladde
+      flash:
+        product_unpublished: Produkt blev afpubliseret
+        product_published: Produkt blev publiseret
+        product_not_published: Fejl ved publisering af dette produkt
+        product_not_unpublished: Fejl ved publisering af dette produkt
+        product_reverted: Produkt blev gendannet
+      meta:
+        published: Publiceret version
+        owner_groups: Ejer grupper
+        draft_status: Kladdestatus
+        draft:
+          in_progress: Igangværende
+          sent_for_approval: Venter på godkendelse
+          working_copy: Arbejds kopi
+      tab:
+        proposals:
+          title: Forslag
+          messages:
+            approve:
+              success: Forslaget er blevet anvendt.
+              error:
+                The proposal can't be applied due to the following error:
+                  - fejl
+            reject:
+              success: Forslaget er blevet afvist.
+            remove:
+              success: Forslaget er blevet fjernet.
+      confirmation:
+        revert:
+          title: Gendan bekræftelse
+          content: Er du sikker på at du vil gendanne produktet til denne version?
+        publish:
+          title: Offentliggøre dette produkt
+          content: Er du sikker på du vil offentliggøre dette produkt?
+        unpublish:
+          title: Afpublicer produktet
+          content: Er du sikker på du vil afpublicere dette produkt ?
+      info:
+        update_successful: Produktets arbejdskopi er blevet opdateret
+      copy:
+        source:
+          working_copy: Arbejds kopi
+          draft: Mit udkast
+          draft_of: "{{ author }}'s udkast til"
+    product_draft:
+      info:
+        update_successful: Produkt udkast er blevet gemt
+        update_failed: Produkt kladde kunne ikke opdateres
+        value_modified: Denne værdi er ændret af det nuværende udkast
+      flash:
+        sent_for_approval: Produkt udkast sendt til godkendelse
+        draft_not_sendable: Du kan ikke sende dette udkast til godkendelse
+      btn:
+        send_for_approval: Send til godkendelse
+        sent_for_approval: Sendt til godkendelse
+      modal:
+        accept_proposal: Acceptere forslag
+        accept_selected_proposal: Acceptere valgte forslag(ene)
+        reject_proposal: Afvis forslag
+        reject_selected_proposal: Afvis valgte forslag
+        remove_proposal: Fjern forslag
+        send_for_approval: Send til godkendelse
+        cancel: Annuller
+        confirm: Afsend
+        title: Kommentere dine forslag (valgfri - maks. 255 tegn)
+        characters: tegn.
+      confirmation:
+        discard_changes: Ikke-gemte ændringer vil gå tabt. Er du sikker på du vil sende din udkast til godkendelse uden at gemme dine ændringer?
+        discard_changes_title: Er du sikker på du vil sende dette udkast?
