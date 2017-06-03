@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Beklager, siden ikke blev indlæst korrekt"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Din lokale ændringer vil gå tabt. Er du sikker på at du opdatere siden?"
+"navigation.message.content.outdated": "Indhold af {{title}} side er forældet, venligst <a href='#' data-action='page-refresh'> opdater siden</a>"
+"Content of pinned page is outdated": "Indholdet af den fastgjorte side er forældet"
