@@ -1,0 +1,245 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Berig aktiv
+      create: Opret et aktiv
+      remove: Fjern et aktiv
+      categories_view: Konsultere kategorierne af et aktiv
+      mass_upload: Mass-upload aktiver
+    category_asset_picker:
+      list: List emne kategorier i emne vælgeren
+    category:
+      create: Opret en aktiver-kategori
+      edit: Redigere en aktiver-kategori
+      list: Oplist aktiver-kategorier
+      remove: Fjern en aktiver-kategori
+      manage: Administrere tilladelserne til behandling af aktiver-kategorier
+      history: Se aktiver-kategori historien
+  acl_group:
+    asset: Produkt aktiver
+    category: Aktiver kategorier
+  enrich_asset:
+    button:
+      upload: Upload
+      delete: Slet
+      download: Hent
+      generate_from_reference: Generere via reference
+      reset_variations: Nulstil variationerne
+    confirmation.remove: Er du sikker at du ønsker at fjerne aktivet "%asset%"?
+    grid:
+      edit: Redigere egenskaberne for aktiverne
+    view:
+      title: Produkt aktiver
+      code: Kode
+      description: Beskrivelse
+      end_of_use: Kan ikke benyttes efter
+      reference: Reference
+      filename: Fil navn
+      width: Bredde
+      height: Højde
+      resolution: Opløsning
+      colors: Farverum
+      filesize: Filstørrelse
+      filetype: Filtype
+      actions: Aktioner
+      download: Hent
+      tag: Etiketter
+      no_reference: Ingen reference fil er blevet uploadet endnu.
+      no_variation: Ingen variation fil er blevet genereret endnu.
+    flash:
+      update:
+        success: Aktivet er blevet opdateret.
+        error: Aktivet er ikke blevet opdateret. Der opstod en fejl.
+      create:
+        success: Aktivet er blevet oprettet.
+        error: Aktivet er ikke blevet opdateret. Der opstod en fejl.
+      remove:
+        success: Aktivet er blevet fjernet.
+  enrich_reference:
+    flash:
+      delete:
+        success: Reference filen er blevet slettet.
+        error: Reference filen kunne ikke slettes. Der opstod en fejl.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Umuligt at generere variationen %channel% på grund af ugyldige indstillinger.
+        image_width_error: Umuligt at generere variationen %channel%, fordi den uploadede billede har en bredde mindre end den, der kræves af transformationen.
+        image_height_error: Umuligt at generere variationen %channel%, fordi det indlæste billede har en bredde mindre end den, der kræves af transformationen.
+        not_applicable: Umuligt at generere variation %channel%.
+        non_registered: Ingen %transformation% transformation registreret for MIME-type %mimeType%. Umuligt at generere variation %channel%.
+        error: Umuligt at generere variation %channel%.
+        success: Variations filer er genereret med succes.
+      update:
+        success: Variation filen blev opdateret.
+        error: Variation filen blev ikke slettet. Der opstod en fejl.
+      delete:
+        success: Variation filen blev slettet.
+        error: Variation filen blev ikke slettet. Der opstod en fejl.
+  popin.create:
+    title: Opret et nyt aktiv
+    is_localized: Kan oversættes
+  menu: Aktiver
+  page_tab:
+    title:
+      view: Produkt aktivet %asset.code% | Se
+      edit: Produkt aktivet %asset.code% | Rediger
+      index: Produkt aktiver
+  code:
+    label: Kode
+  thumbnail:
+    label: Miniature
+  status:
+    label: Status
+  description:
+    label: Beskrivelse
+  endOfUse:
+    label: Kan ikke benyttes
+  createdAt:
+    label: Oprettet den
+  updatedAt:
+    label: Sidst opdateret på
+  tags:
+    label: Etiketter
+  tabs:
+    properties.title: Egenskaber
+    variations.title: Variationer
+    categories.title: Kategorier
+  validation:
+    code:
+      not_empty: Koden er påkrævet. Det kan ikke være tom.
+      unique: Koden skal være unik.
+      new_generation: Vi skabt en ny for dig.
+  notAvailable:
+    label: ikke tilgængelig
+  asset:
+    title: Aktiv
+  mass_upload:
+    menu: Indlæs aktiver
+    new: Der oprettes et nyt aktiv
+    add_files: tilføj filer
+    start: Begynd indlæsning
+    cancel: Annuller indlæsning
+    import: Import
+    executed: Masse indlæsning udført
+    error:
+      upload: Der opstod en fejl under upload
+      code: Ugyldig kodeformat for aktiv
+      localizable: Et aktiv eksisterer, men kan ikke lokaliseres
+      invalid_locale: Landestandarden er deaktiveret eller ugyldig
+  category:
+    menu: Aktiver kategorier
+    permissions:
+      view.label: Lov til at se aktiver
+      view.help: Gør det muligt for at se aktiverne i denne kategori
+      edit.label: Tilladelse til at redigere aktiver
+      edit.help: Gør det muligt at redigere produkter i denne kategori (forventer tilladelsen visning)
+      no_access_to_products: Du har ikke adgang til produkter i nogen af de tilgængelige samlinger. Kontakt venligst administratoren
+      apply_on_children.label: Anvend ændringer på underliggende kategorier
+      apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
+  mass_edit_action:
+    asset:
+      page_title: Aktiver
+      page_subtitle: Masse redigere (1 aktiv) | Masse redigere (%count% aktiver)
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg Aktiver
+        second: Konfigurér
+        third: Bekræft
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Flytte aktiver til kategorier
+      description: Aktiver vil blive placeret i følgende kategorier, den nuværende placering er tabt
+      success_flash: Aktiver(ne) er blevet flyttet til udvalgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+    add-tags-to-assets:
+      label: Tilføje tags til aktiver
+      description: Tags vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
+      success_flash: Tag (s) er blevet tilføjet til aktiver(ne)
+      launched_flash: Massehandling "Tilføj tags til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
+      message.error: Det angivne tag findes ikke
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Klassificere
+      add_tags_to_assets: Tilføj Tags
+      delete_assets: Slet fil
+btn.create.asset: Opret et aktiv
+btn.drag_or_upload: Træk og slip en fil eller klik her
+job_execution.summary:
+  variations_not_generated: Variationer ikke genereret
+  pimee_product_asset.mass_upload.new: Aktivet oprettes fra fil
+  pimee_product_asset.mass_upload.updated: Aktiver opdateret
+  error: Fejl på aktiv fil proces
+  skipped_assets: Aktiver sprunget over
+assets_mass_upload.steps:
+  asset_mass_upload.title: Aktiver masse indlæs
+import_asset.steps.channel_configuration_processor.title: Håndter kanel konfigurationer
+mass_upload: Masse indlæs aktiver
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Masse indlæs aktiver
+    perform.label: Masse upload
+  yml_asset_channel_configuration_import:
+    label: Aktiv kanal konfiguration import i Yaml
+    validation.label: Filvalidering
+    import_asset.label: Aktiv kanal konfiguration import i Yaml
+  yml_asset_channel_configuration_export:
+    label: Aktiv kanal konfiguration import i Yaml
+    export.label: Aktiv kanal konfiguration import i Yaml
+  csv_asset_import:
+    label: Aktiv import i CSV-
+    validation.label: Filvalidering
+    import_tags.label: Tag import i CSV-
+    import_asset.label: Aktiv import i CSV-
+  csv_asset_export:
+    label: Aktiver eksport i CSV-
+    export.label: Aktiver eksport i CSV-
+  csv_asset_variation_export:
+    label: Aktiv variationer eksportere i CSV
+    export.label: Aktiv variationer eksportere i CSV
+  csv_tag_import:
+    label: Tag import i CSV-
+    validation.label: Filvalidering
+    import.label: Tag import i CSV-
+  csv_asset_category_import:
+    label: Aktiver kategori import i CSV-
+    validation.label: Filvalidering
+    import_asset_category.label: Aktiver kategori import i CSV-
+  csv_asset_configuration_import:
+    label: Aktiv kanal konfiguration import i Yaml
+    validation.label: Filvalidering
+    import_asset.label: Aktiv kanal konfiguration import i Yaml
+  csv_asset_category_export:
+    label: Aktiver kategori import i CSV-
+    export.label: Aktiver kategori import i CSV-
+  xlsx_tag_import:
+    label: Tag import i XLSX
+    validation.label: Filvalidering
+    import.label: Tag import i XLSX
+  xlsx_asset_import:
+    label: Aktiv import i XLSX
+    validation.label: Filvalidering
+    import_tags.label: Tag import i XLSX
+    import_asset.label: Aktiv import i XLSX
+  xlsx_asset_category_import:
+    label: Aktiver kategori import i XLSX
+    validation.label: Filvalidering
+    import_asset_category.label: Aktiver kategori import i XLSX
+  xlsx_asset_export:
+    label: Aktiv import i XLSX
+    export.label: Aktiv import i XLSX
+  xlsx_asset_category_export:
+    label: Aktiver kategori import i XLSX
+    export.label: Aktiver kategori import i XLSX
+  xlsx_asset_variation_export:
+    label: Aktiver kategori import i XLSX
+    export.label: Aktiver kategori import i XLSX
+  classify_assets:
+    perform.label: Flytte aktiver til kategorier
+  add_tags_to_assets:
+    perform.label: Tilføje tags til aktiver
+pim_analytics:
+  info_type:
+    nb_assets: Antallet af aktiver

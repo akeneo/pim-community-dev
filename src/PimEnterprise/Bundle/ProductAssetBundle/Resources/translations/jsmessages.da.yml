@@ -1,0 +1,76 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Administrer aktiver
+        panel:
+          basket:
+            title: Indkøbskurv
+            empty_basket: Indkøbskurven er tom
+        manage_asset:
+          title: Administrer aktiver
+          cancel: Annuller
+          confirm: Bekræft
+  enrich_asset:
+    grid:
+      edit: Redigere egenskaberne for aktiverne
+  enrich_variation:
+    popin:
+      delete:
+        title: Bekræft sletning
+        message: Er du sikker at du ønsker at slette dette element ?
+      reset:
+        title: Nulstil variationerne
+        message: Er du sikker at du ønsker at nulstille alle variationer?
+  mass_upload:
+    menu: Indlæs aktiver
+    btn:
+      remove_all_files: Fjerne alle filer
+      delete: Slet
+      import: Import
+      upload: Upload
+    success:
+      new: Der oprettes et nyt aktiv
+      imported: Filerne importeres til aktiv behandling
+      canceled: Upload blev annulleret
+      deleted: Den uploadede fil blev slettet
+    error:
+      list: Kan ikke læse filer, der allerede er uploadet
+      upload: Der opstod en fejl under upload
+      delete: Kan ikke slette filen fra serveren
+      import: Der opstod en fejl under import af
+      filename: Ugyldigt filnavn for aktivet
+      code: Ugyldig kodeformat for aktiv
+      locale: Et aktiv eksisterer, men kan ikke lokaliseres
+      invalid_locale: Landestandarden er deaktiveret eller ugyldig
+      exists: En fil med samme navn er allerede importeret
+      conflicts: Fil navne konflikt
+    grid:
+      medias: medier
+      filename: filnavn
+      filetype: filetype
+      status: status
+      progress: fremskridt
+      actions: aktioner
+    action:
+      cancel: Annuller
+      remove: Fjern
+    status:
+      added: Tilføjet
+      queued: Sat i kø
+      uploading: Uploading
+      error: Fejl
+      success: Fuldført
+    drag_and_drop: Træk og slip dine aktiver eller klik her
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Er du sikker på du vil slette valgte aktiver?
+        success: Valgte aktiver blev slettet.
+        error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
+        empty_selection: Ingen aktiv valgt
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Masse upload

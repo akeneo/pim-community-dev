@@ -1,0 +1,140 @@
+View the product: Se produktet
+pimee_enrich.product_history.action.revert: Vend tilbage til version
+permission-changes:
+  category:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne kategori
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne kategori
+  locale:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne landestandard
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne landestandard
+  attribute group:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> af denne attribut gruppe
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> af denne attribut gruppe
+  job profile:
+    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong>
+    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong>
+pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Rettigheder
+          added: Gruppe {{ group }} vil være tilladelse til at {{ permission }} jobprofil
+          execute.label: Tilladt at udføre jobprofil
+          edit.label: Tilladt at redigere jobprofil
+          removed: Gruppe {{ group }} vil  have tilladelse til at {{ permission }} jobprofil
+    channel:
+      tab:
+        asset-transformation:
+          title: Aktiv transformationer
+  entity:
+    product:
+      history:
+        published: Publiceret
+        revert: Gendan
+      smart_attribute:
+        come_from: "Denne attribut kan opdateres af en regel:"
+      btn:
+        publish: Publicér
+        publish_this_version: Offentliggøre denne version
+        unpublish: Afpublisér
+        save_draft: Gem kladde
+      flash:
+        product_unpublished: Produkt blev afpubliseret
+        product_published: Produkt blev publiseret
+        product_not_published: Fejl ved publisering af dette produkt
+        product_not_unpublished: Fejl ved publisering af dette produkt
+        product_reverted: Produkt blev gendannet
+      meta:
+        published: Publiceret version
+        owner_groups: Ejer grupper
+        draft_status: Kladdestatus
+        draft:
+          in_progress: Igangværende
+          sent_for_approval: Venter på godkendelse
+          working_copy: Arbejds kopi
+      tab:
+        proposals:
+          title: Forslag
+          messages:
+            approve:
+              success: Forslaget er blevet anvendt.
+              error:
+                The proposal can't be applied due to the following error:
+                  - fejl
+            reject:
+              success: Forslaget er blevet afvist.
+            remove:
+              success: Forslaget er blevet fjernet.
+      confirmation:
+        revert:
+          title: Gendanne bekræftelse
+          content: Er du sikker på at du vil gendanne produktet til denne version?
+        publish:
+          title: Offentliggøre dette produkt
+          content: Er du sikker på du vil offentliggøre dette produkt?
+        unpublish:
+          title: Afpublicer produktet
+          content: Er du sikker på du vil afpublicere dette produkt ?
+      info:
+        update_successful: Produktets arbejdskopi er blevet opdateret
+      copy:
+        source:
+          working_copy: Arbejds kopi
+          draft: Mit udkast
+          draft_of: "{{ author }}'s udkast til"
+    product_draft:
+      info:
+        update_successful: Produkt udkast er blevet gemt
+        update_failed: Produkt kladde kunne ikke opdateres
+        value_modified: Denne værdi er ændret af det nuværende udkast
+      flash:
+        sent_for_approval: Produkt udkast sendes til godkendelse
+        draft_not_sendable: Du kan ikke sende dette udkast til godkendelse
+      btn:
+        send_for_approval: Send til godkendelse
+        sent_for_approval: Sendt til godkendelse
+      modal:
+        accept_proposal: Acceptere forslag
+        accept_selected_proposal: Acceptere valgte forslag(ene)
+        reject_proposal: Afvis forslag
+        reject_selected_proposal: Afvis valgte forslag(ene)
+        remove_proposal: Fjern forslag
+        send_for_approval: Send til godkendelse
+        cancel: Annuller
+        confirm: Afsend
+        title: Kommentere dine forslag (valgfri - maks. 255 tegn)
+        characters: tegn.
+      confirmation:
+        discard_changes: Ikke-gemte ændringer vil gå tabt. Er du sikker på du vil sende din udkast til godkendelse uden at gemme dine ændringer?
+        discard_changes_title: Er du sikker på du vil sende dette udkast?
+  asset_transformation:
+    not_found: Ingen transformation fundet
+    title:
+      transformation: Transformation
+      options: Muligheder
+    colorspace:
+      title: Farverum
+      options:
+        colorspace: '%value% farverum'
+    resize:
+      title: Skalér
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+    resolution:
+      title: Opløsning
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skaler
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+        ratio: '%value%% forhold'
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'

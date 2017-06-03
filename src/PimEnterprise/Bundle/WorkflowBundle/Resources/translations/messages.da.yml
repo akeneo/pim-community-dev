@@ -1,0 +1,163 @@
+pimee_workflow:
+  product_draft:
+    author: Forfatter
+    created: Foreslået af
+    changes: Ændringer
+    locale: Locale kontext
+    product:
+      label: Produktlabel
+    attribute:
+      label: Attribut
+    status:
+      label: Status
+      working_copy: Arbejds kopi
+      in_progress: Igangværende
+      ready: Venter på godkendelse
+      can_be_partially_reviewed: Kan være delvist revideret
+      can_not_be_approved: Kan ikke revideres
+      can_not_be_deleted: Kan ikke slettes
+    status_message:
+      can_be_partially_reviewed: Du kan revidere dette forslag kun delvist fordi nogle ændringer anvendelse på værdier, du ikke kan redigere. Kontakt din administrator for at få ændret dine rettigheder.
+      can_not_be_approved: Du kan ikke revidere dette forslag, fordi alle ændringer anvendelse på værdier, du ikke kan redigere. Kontakt din administrator for at få ændret dine rettigheder.
+      can_not_be_deleted: Du kan ikke slette dette forslag, fordi alle ændringer anvendelse på værdier, du ikke kan redigere. Kontakt din administrator for at få ændret dine rettigheder.
+      in_progress: Dette forslag er i øjeblikket under udarbejdelse og er ikke sendt endnu.
+    action:
+      approve: Godkend alle
+      refuse: Afvis alle
+      remove: Fjern
+      partial_approve: Godkend ændringer på attributten %attribute% af produktet %product%
+      partial_reject: Afvis ændringer på attributten %attribute% af produktet %product%
+    notification:
+      partial_approve: '%owner% har accepteret værdierne for %attributes% for produktet %product%'
+      partial_approve_number: '%owner% har accepteret værdierne for %attributes_count% attributter for produktet %product%'
+      partial_reject: '%owner% har afvist værdi(erne) for %attributes% for produktet %product%'
+      partial_reject_number: '%owner% har accepteret værdierne for %attributes_count% attributter for produktet %product%'
+      partial_remove: '%owner% har slettet værdierne for %attributes% for produktet %product%'
+      partial_remove_number: '%owner% har slettet værdier for %attributes_count% attributter for produktet %product%'
+      approve: '%owner% har accepteret dit forslag om produktet %product%'
+      refuse: '%owner% har afvist dit forslag til produktet %product%'
+      remove: '%owner% har slettet dit forslag til produktet %product%'
+    mass_review_action:
+      approve: Godkende alle valgte
+      refuse: Afvis alle valgte
+      error:
+        draft_not_ready: Dette forslag er ikke klar til at blive godkendt
+        not_product_owner: Du ejer ikke produktet med hensyn på dette forslag
+        cannot_edit_attributes: Du kan ikke redigere attributterne ændres i forbindelse med dette forslag
+        invalid_draft: Dette forslag kan ikke anvendes på grund af følgende fejl. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% har sendt et forslag om revision af produktet %product.label%'
+    individual_import: '%author.firstname% %author.lastname% har sendt et forslag til gennemgang fra job import'
+    generic_import: Har du forslag til at gennemgå fra job import
+    original_value: Original
+    new_value: Nyt
+    no_diff: Værdien "%value%" af forslaget og arbejdskopien er den samme.
+    draft_in_progress: Et udkast er i gang af %author% for dette produkt.
+  published_product:
+    index: Offentliggjorte produkter
+    title: Offentliggjorte produkt
+  acl.published_product:
+    index: Administrer offentliggjorte produkter
+  product:
+    permission:
+      label: Rettigheder
+      own: Gennemgå / offentliggøre
+      edit: Redigér
+      view: Se
+  steps:
+    product_draft_processor.title: Forslag processor
+    approve.title: Godkend forslag
+    refuse.title: Afvis forslagerne
+  mass_edit_action:
+    published:
+      page_title: Offentliggjorte produkter
+      page_subtitle: Masse redigere (1 offentliggjorte produkt) | Masse redigere (%count% offentliggjort produkter)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på den valgte offentliggjorte produkt| Vælg den handling, du ønsker at udføre på de valgte %count% offentliggjort produkter
+      confirm: Du er ved at opdatere et publiceret produkt med følgende oplysninger,  bekræft venligst. | Du er ved at opdatere %count% udgivne produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg udgivne produkter
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
+pimee_workflow_product_draft_notification_new_proposal: Ny forslag
+pimee_workflow_import_notification_new_proposals: Nye forslag fra import
+btn.publish: Publicér
+btn.unpublish: Afpublisér
+pimee_workflow_product_draft_notification_partial_approve: Forslag delvist godkendt
+pimee_workflow_product_draft_notification_partial_reject: Forslag delvist afvist
+pimee_workflow_product_draft_notification_partial_remove: Forslag delvist slettet
+pimee_workflow_product_draft_notification_approve: Forslag godkendt
+pimee_workflow_product_draft_notification_refuse: Forslag afvist
+pimee_workflow_product_draft_notification_remove: Forslag slettet
+flash:
+  product:
+    published: Produktet er nu publiceret.
+    unpublished: Produktet er nu afpubliceret.
+  product_draft:
+    approve:
+      success: Forslaget er blevet anvendt.
+      error: Dette forslag kan ikke anvendes på grund af følgende fejl. %error%
+    refuse:
+      success: Forslaget er blevet afvist.
+    remove:
+      success: Forslaget er blevet fjernet.
+pim_menu:
+  item:
+    published_product: Offentliggjorte produkter
+    proposal: Forslag
+pim_title:
+  published_product:
+    index: Offentliggjorte produkter
+    view: Offentliggjort produkter %product.sku% | Se
+  product:
+    dispatch: "Produkter %product.sku%"
+    show: "Produkter %product.sku% | Vis"
+  proposal:
+    index: Forslag
+btn.editworkingcopy: Rediger arbejdskopi
+confirmation:
+  product:
+    publish: Er du sikker på at du vil publicere dette produkt ?
+    unpublish: Er du sikker på du vil afpublicere dette produkt ?
+proposal.overview: Forslag
+Attributes.title: Egenskaber
+Completeness.title: Fuldstændighed
+publish_product.steps.publish_product_tasklet.title: Publicer produkter
+unpublish_product.steps.unpublish_product_tasklet.title: Afpublicer af produkter
+approve_product_draft.steps.approve.title: Godkend forslag
+approve_product_draft.steps.refuse.title: Afvis forslag
+job_execution.summary:
+  approved: godkendt
+  refused: afvist
+  mass_published: Produkt publiceret
+  mass_unpublished: Produkt afpubliceret
+  proposal: Forslag oprettet
+  proposal_deleted: slettet forslag
+  proposal_updated: opdaterede forslag
+  proposal_created: oprettede forslag
+  proposal_skipped: oversprunget forslag (ingen forskelle)
+published products: Offentliggjorte produkter
+batch_jobs:
+  csv_published_product_export:
+    label: Offentliggjort produkt eksport i CSV
+    export.label: Offentliggjort produkt eksport
+  csv_product_proposal_import:
+    label: Produkt forslag import som CSV
+    import.label: Produkt forslag import
+  approve_product_draft:
+    label: Godkend forslag
+    perform.label: Godkend forslag
+  refuse_product_draft:
+    label: Afvis forslagerne
+    perform.label: Afvis forslagerne
+  xlsx_published_product_export:
+    label: Publiceret produkt eksport som XLSX
+    export.label: Offentliggjort produkt eksport
+  xlsx_product_proposal_import:
+    label: Produkt forslag import som CSV
+    import.label: Produkt forslag import som CSV
+pim_analytics:
+  info_type:
+    nb_published_products: Antallet af offentliggjorte produkt
+    nb_product_drafts: Antallet af produkt kladder
