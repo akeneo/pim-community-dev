@@ -1,0 +1,29 @@
+job_execution:
+  summary:
+    display_item: Vis element
+    hide_item: Skjul element
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Kategorier udvalg
+          cancel: Annuller
+          confirm: Bekræft
+        label: "{0} alle produkter |{1} én kategori valgt |] 1, Inf [{{ count }} kategorier valgt"
+        edit: Redigér
+        title: Vælg kategorier
+    locales:
+      validation:
+        not_blank: En landestandard skal være valgt, skal du vælge en landestandard til eksport.
+page_title:
+  pim_importexport_export_profile_index: Eksporter profil håndtering
+  pim_importexport_export_profile_edit: Eksportere profiler {{ job.label }} | Rediger
+  pim_importexport_export_profile_show: Eksportere profiler {{ job.label }} | Vis
+  pim_importexport_export_execution_index: Eksporter aktivitets historik
+  pim_importexport_export_execution_show: Eksporter aktiviteter | Detaljer
+  pim_importexport_import_profile_index: Importer profiler håndtering
+  pim_importexport_import_profile_edit: Eksportere profiler {{ job.label }} | Rediger
+  pim_importexport_import_profile_show: Eksportere profiler {{ job.label }} | Vis
+  pim_importexport_import_execution_index: Importer aktivitets historik
+  pim_importexport_import_execution_show: Importer aktiviter | Detaljer
