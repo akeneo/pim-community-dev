@@ -1,0 +1,137 @@
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Produkt eksport til CSV
+      export.title: Produkt eksport
+    csv_category_export:
+      title: Kategori eksport til CSV
+      export.title: Kategori eksport
+    csv_attribute_export:
+      title: Attributten udførsel til CSV
+      export.title: Attribut eksport
+    csv_attribute_option_export:
+      title: Attribut options eksport til CSV
+      export.title: Attribut option eksport
+    csv_association_type_export:
+      title: Association type export in CSV
+      export.title: Association type export
+    csv_group_export:
+      title: Gruppen eksport til CSV
+      export.title: Gruppe eksport
+    csv_variant_group_export:
+      title: Variant gruppe eksporter til CSV
+      export.title: Variant gruppe eksport
+    csv_product_import:
+      title: Produkt eksport fra CSV-fil
+      validation.title: Filvalidering
+      import.title: Produkt import
+      import_associations.title: Association import
+    csv_category_import:
+      title: Kategori eksport fra CSV
+      validation.title: Filvalidering
+      import.title: Kategori import
+    csv_attribute_import:
+      title: Attributten udførsel fra CSV
+      validation.title: Filvalidering
+      import.title: Attribut import
+    csv_attribute_option_import:
+      title: Attribut indstillinger -  import fra CSV
+      validation.title: Filvalidering
+      import.title: Attribut indstilling import
+    csv_association_type_import:
+      title: Association type import fra CSV
+      validation.title: Filvalidering
+      import.title: Association type import
+    csv_group_import:
+      title: Gruppe import fra CSV
+      validation.title: Filvalidering
+      import.title: Gruppe import
+    csv_variant_group_import:
+      title: Variant gruppe importer fra CSV
+      validation.title: Filvalidering
+      import.title: Variant gruppe import
+  steps:
+    dummy_reader.title: Dummy læser
+    product_reader.title: Produkt udvinding
+    entity_reader.title: Enhed udvinding
+    csv_reader:
+      title: CSV-læser
+      invalid_item_columns_count: 'Forventede at have %totalColumnsCount% kolonner, har %itemColumnsCount% i %csvPath%:%lineno%'
+    csv_product_reader.title: CSV-produkt læser
+    csv_category_reader.title: CSV-kategori læser
+    csv_variant_group .title: CSV-variant gruppe læser
+    dummy_processor.title: Dummy processor
+    product_processor.title: Produkt oprettelse
+    variant_group_processor.title: Variant gruppe oprettelse / opdatering
+    category_processor.title: Kategorien oprettelse
+    association_processor.title: Assoationsoprettelse
+    product_association_processor.title: Assoationsoprettelse
+    group_processor.title: Gruppe oprettelsen
+    attribute_processor.title: Attribut oprettelse
+    attribute_option_processor.title: Attribut indstillings oprettelse
+    heterogeneous_processor.title: CSV-produkt serialiseringsfunktionen
+    homogeneous_processor.title: CSV-enhed serialiseringsfunktionen
+    transformer_processor.title: Transformation
+    dummy_writer.title: Dummy forfatter
+    file_writer.title: Output
+    product_writer.title: Produkt opbevaring
+    category_writer.title: Kategori opbevaring
+    variant_group_writer.title: Variant gruppe lager
+    writer.title: Enhed opbevaring
+    csv_writer.title: CSV-Writer
+  export:
+    delimiter:
+      label: Afgrænser
+      help: Ét tegn bruges til at angive feltafgrænseren
+    enclosure:
+      label: Beholder
+      help: Ét tegn bruges til at angive felt-indgrænsningen
+    withHeader:
+      label: Med hoved
+      help: Udskrive kolonnenavn eller ej
+    filePath:
+      label: Fil sti
+      help: Hvor skal den generede fil gemmes
+    channel:
+      label: Kanal
+      help: Den kanal, du vil eksportere
+  import:
+    enabled:
+      label: Aktiver produkt
+      help: Hvorvidt importerede produkt skal aktiveres
+    categoriesColumn:
+      label: Kategori kolonne
+      help: Navnet på kolonnen kategorier
+    familyColumn:
+      label: Familie kolonne
+      help: Navnet på kolonnen familie
+    groupsColumn:
+      label: Grupper kolonne
+      help: Navnet på kolonnen grupper
+    filePath:
+      label: Fil
+      help: CSV-fil til at importere
+    yamlFilePath:
+      label: Fil
+      help: YAML-fil til at importere
+    uploadAllowed:
+      label: Tillad fil upload
+      help: Tilad at uploade filen direkte eller ej
+    delimiter:
+      label: Afgrænser
+      help: Ét tegn bruges til at angive feltafgrænseren
+    enclosure:
+      label: Beholder
+      help: Ét tegn bruges til at angive felt-indgrænsningen
+    escape:
+      label: Forlad
+      help: Ét tegn bruges til at angive felt adskillelse
+    circularRefsChecked:
+      label: Tjek cirkulære referencer
+      help: Hvis ja, vil data blive behandlet for at sikre, at der er ingen cirkulære referencer mellem kategorierne
+    realTimeVersioning:
+      label: Realtid historie opdatering
+      help: Betyder at produkt historien opdateres automatisk, kan slås fra for at forbedre indstillinger
+    copyValuesToProducts:
+      label: Kopiere variant gruppe værdier til produkter
+      help: Betyder, at produkterne opdateres automatisk med variant gruppeværdier. Kan være deaktiveret, så det kun er variant grupper der bliver opdateret

@@ -1,0 +1,95 @@
+Area: Område
+ACRE: Acre
+ARE: Are
+ARPENT: Arpent
+CENTIARE: Centiare
+HECTARE: Hektar
+SQUARE_CENTIMETER: Kvadratcentimeter
+SQUARE_DECIMETER: Kvadrat decimeter
+SQUARE_DEKAMETER: Kvadrat dekameter
+SQUARE_FOOT: Kvadratfod
+SQUARE_FURLONG: Kvadratisk furlong
+SQUARE_HECTOMETER: Kvadrat hectometer
+SQUARE_INCH: Kvadrattomme
+SQUARE_KILOMETER: Kvadrat kilometer
+SQUARE_METER: Kvadratmeter
+SQUARE_MIL: Kvadrat mil
+SQUARE_MILE: Kvadrat mil
+SQUARE_MILLIMETER: Kvadrat millimeter
+SQUARE_YARD: Kvadrat yard
+Binary: Binær
+BIT: Bit
+BYTE: Byte
+KILOBYTE: Kilobyte
+MEGABYTE: Megabyte
+GIGABYTE: Gigabyte
+TERABYTE: Terabyte
+Frequency: Frekvens
+GIGAHERTZ: Gigahertz
+KILOHERTZ: Kilohertz
+MEGAHERTZ: Megahertz
+TERAHERTZ: Terahertz
+HERTZ: Hertz
+Length: Længde
+CENTIMETER: Centimeter
+CHAIN: Kæde
+DECIMETER: Decimeter
+DEKAMETER: Dekameter
+FEET: Fod
+FURLONG: Furlong
+INCH: Tommer
+HECTOMETER: Hectometer
+KILOMETER: Kilometer
+METER: Meter
+MIL: Mil
+MILE: Mil
+MILLIMETER: Millimeter
+YARD: Yard
+Power: Strøm
+GIGAWATT: Gigawatt
+KILOWATT: Kilowatt
+MEGAWATT: Megawatt
+TERAWATT: Terawatt
+WATT: Watt
+Speed: Hastighed
+FOOT_PER_SECOND: Fod pr. sekund
+FOOT_PER_HOUR: Fod pr. time
+KILOMETER_PER_HOUR: Kilometer i timen
+METER_PER_HOUR: Meter i timen
+METER_PER_MINUTE: Meter pr. minut
+METER_PER_SECOND: Meter pr. sekund
+MILE_PER_HOUR: Mile i timen
+YARD_PER_HOUR: Yard i timen
+Temperature: Temperatur
+CELSIUS: Celsius
+FAHRENHEIT: Fahrenheit
+KELVIN: Kelvin
+RANKINE: Rankine
+REAUMUR: Reaumur
+Volume: Volume
+BARREL: Tønde
+CENTILITER: Centiliter
+CUBIC_CENTIMETER: Kubikcentimeter
+CUBIC_DECIMETER: Kubik decimeter
+CUBIC_FOOT: Kubikfod
+CUBIC_INCH: Kubik tommer
+CUBIC_METER: Kubikmeter
+CUBIC_MILLIMETER: Kubikmillimeter
+CUBIC_YARD: Kubik yard
+DECILITER: Deciliter
+GALLON: Gallon
+LITER: Liter
+MILLILITER: Milliliter
+OUNCE: Ounce
+PINT: Pint
+Weight: Vægt
+DENIER: Denier
+GRAIN: Gran
+GRAM: Gram
+KILOGRAM: Kilogram
+LIVRE: Pund
+MARC: Marc
+MILLIGRAM: Milligram
+ONCE: Ounce
+POUND: Pund
+TON: Ton
