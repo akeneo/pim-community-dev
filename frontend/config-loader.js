@@ -22,7 +22,8 @@ module.exports = function(content) {
     if (!hasModule(content)) return content;
 
     const aliases = _.invert(this.options.resolve.alias)
-    let modulePath = this.resourcePath
+
+    let modulePath = this._module.rawRequest
     const moduleExt = path.extname(modulePath)
 
     modulePath = modulePath.replace(moduleExt, '')

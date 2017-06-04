@@ -5,19 +5,20 @@ const webpack = require('webpack')
 const WatchIgnorePlugin = require('webpack').WatchIgnorePlugin;
 
 config.entry = [
-    'webpack-dev-server/client?http://localhost:8081',
+    'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, './web/bundles/pimenrich/js/index.js')
 ]
 
-config.output.publicPath = 'http://localhost:8081/'
+config.output.publicPath = 'http://localhost:8080/'
 config.output.hotUpdateChunkFilename = 'hot/hot-update.js'
 config.output.hotUpdateMainFilename = 'hot/hot-update.json'
+config.resolve.symlinks = true
 
 config.devServer = {
     hot: true,
     inline: true,
-    publicPath: 'http://localhost:8081/',
+    publicPath: 'http://localhost:8080/',
     headers: {
         'Access-Control-Allow-Origin': '*'
     },
