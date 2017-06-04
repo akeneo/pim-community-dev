@@ -19,6 +19,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
+    /** @var array */
+    protected $rawValues;
+
     /** @var \Datetime $created */
     protected $created;
 
@@ -77,6 +80,9 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var array */
     protected $normalizedData;
+
+    /** @var string */
+    protected $identifier;
 
     /**
      * Constructor
@@ -317,6 +323,24 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getRawValues()
+    {
+        return $this->rawValues;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRawValues(array $rawValues)
+    {
+        $this->rawValues = $rawValues;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function hasAttribute(AttributeInterface $attribute)
     {
         $indexedValues = $this->getIndexedValues();
@@ -394,6 +418,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
+        //TODO: drop it
         foreach ($this->values as $value) {
             if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getType()) {
                 return $value;
@@ -401,6 +426,14 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         throw new MissingIdentifierException($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
     }
 
     /**

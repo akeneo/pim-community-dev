@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product saver, define custom logic and options for product saving
@@ -30,19 +31,25 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var NormalizerInterface */
+    private $serializer;
+
     /**
-     * @param ObjectManager                  $om
-     * @param CompletenessManager            $completenessManager
-     * @param EventDispatcherInterface       $eventDispatcher
+     * @param ObjectManager            $om
+     * @param CompletenessManager      $completenessManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param NormalizerInterface      $serializer
      */
     public function __construct(
         ObjectManager $om,
         CompletenessManager $completenessManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        NormalizerInterface $serializer
     ) {
         $this->objectManager = $om;
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -57,6 +64,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
         $this->completenessManager->schedule($product);
+        $this->computeRawValues($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
@@ -113,5 +121,14 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    private function computeRawValues(ProductInterface $product)
+    {
+        $values = $this->serializer->normalize($product->getValues(), 'storage');
+        $product->setRawValues($values);
     }
 }
