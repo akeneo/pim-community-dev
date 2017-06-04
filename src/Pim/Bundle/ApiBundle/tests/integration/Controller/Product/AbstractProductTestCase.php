@@ -84,7 +84,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
     /**
      * @param Response $response
-     * @param array    $expected
+     * @param string   $expected
      */
     protected function assertListResponse(Response $response, $expected)
     {

@@ -129,7 +129,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testFirstPageListProductsWithCount()
@@ -159,7 +159,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -195,7 +195,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -230,7 +230,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -335,7 +335,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -451,7 +451,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -556,7 +556,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -619,7 +619,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -746,7 +746,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithFilteredAttributes()
@@ -866,7 +866,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithChannelLocalesAndAttributesParams()
@@ -975,7 +975,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testTheSecondPageOfTheListOfProductsWithoutCount()
@@ -1035,7 +1035,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testOutOfRangeProductsList()
@@ -1060,7 +1060,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithSearch()
@@ -1117,7 +1117,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithMultiplePQBFilters()
@@ -1140,7 +1140,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithCompletenessPQBFilters()
@@ -1163,7 +1163,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testPaginationLastPageOfTheListOfProducts()
@@ -1194,7 +1194,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testSearchAfterPaginationListProductsWithNextLink()
@@ -1225,7 +1225,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testSearchAfterPaginationLastPageOfTheListOfProducts()
@@ -1252,29 +1252,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
-    }
-
-    /**
-     * @param Response $response
-     * @param array    $expected
-     */
-    private function assertResponse(Response $response, $expected)
-    {
-        $result = json_decode($response->getContent(), true);
-        $expected = json_decode($expected, true);
-
-        foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeDateFields($product);
-            $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
-
-            if (isset($expected['_embedded']['items'][$index])) {
-                $expected['_embedded']['items'][$index] = $this->sanitizeDateFields($expected['_embedded']['items'][$index]);
-                $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
-            }
-        }
-
-        $this->assertEquals($expected, $result);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -1522,30 +1500,5 @@ JSON;
     protected function getConfiguration()
     {
         return new Configuration([Configuration::getTechnicalCatalogPath()]);
-    }
-
-    /**
-     * @param Response $response
-     * @param array    $expected
-     */
-    private function assertResponse(Response $response, $expected)
-    {
-        $result = json_decode($response->getContent(), true);
-        $expected = json_decode($expected, true);
-
-        foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeMediaAttributeData($product);
-            NormalizedProductCleaner::clean($product);
-            $result['_embedded']['items'][$index] = $product;
-
-            if (isset($expected['_embedded']['items'][$index])) {
-                $expectedProduct = $expected['_embedded']['items'][$index];
-                $expectedProduct = $this->sanitizeMediaAttributeData($expectedProduct);
-                NormalizedProductCleaner::clean($expectedProduct);
-                $expected['_embedded']['items'][$index] = $expectedProduct;
-            }
-        }
-
-        $this->assertEquals($expected, $result);
     }
 }
