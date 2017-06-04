@@ -1,0 +1,23 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Kode
+      condition.label: Betingelse
+      action.label: Handling
+      no_rule_yet.label: Ingen regel for nu
+  rule:
+    condition:
+      if.label: hvis
+    action:
+      then.label: så
+      set_value.label: er sat ind i
+      copy_value.label: er blevet kopieret til
+      set.label: er sat ind i
+      copy.label: er blevet kopieret til
+      add.label: er blevet tilføjet i
+confirmation:
+  remove:
+    rule: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen
+flash:
+  rule:
+    removed: Rollen blev slettet
