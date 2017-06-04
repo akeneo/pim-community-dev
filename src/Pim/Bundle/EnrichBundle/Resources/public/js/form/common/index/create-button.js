@@ -15,7 +15,8 @@ define(
         'pim/form',
         'text!pim/template/form/index/create-button',
         'routing',
-        'pim/dialogform'
+        'pim/dialogform',
+        'pim/form-builder'
     ],
     function (
         $,
@@ -24,7 +25,8 @@ define(
         BaseForm,
         template,
         Routing,
-        DialogForm
+        DialogForm,
+        FormBuilder
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -46,9 +48,21 @@ define(
                 this.$el.html(this.template({
                     title: __(this.config.title),
                     iconName: this.config.iconName,
-                    url: Routing.generate(this.config.url)
+                    url: this.config.url ? Routing.generate(this.config.url) : ''
                 }));
 
+                if (this.config.modalForm) {
+                    this.$el.on('click', function () {
+                        FormBuilder.build(this.config.modalForm)
+                            .then(function (modal) {
+                                modal.open();
+                            })
+                    }.bind(this));
+
+                    return this;
+                }
+
+                // TODO-Remove the following line when all entities will be managed (TIP-730 completed)
                 this.dialog = new DialogForm('#create-button-extension');
 
                 return this;

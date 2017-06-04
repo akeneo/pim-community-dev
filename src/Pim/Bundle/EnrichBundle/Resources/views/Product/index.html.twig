@@ -19,10 +19,13 @@
     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
         <script type="text/javascript">
-            require(['jquery', 'pim/product-create'], function ($, ProductCreate) {
+            require(['jquery', 'pim/form-builder'], function ($, FormBuilder) {
                 'use strict';
                 $('.create-product').on('click', function () {
-                    ProductCreate.openProductModal();
+                    FormBuilder.build('pim-product-create-modal')
+                        .then(function (modal) {
+                            modal.open();
+                        })
                 });
             });
         </script>
