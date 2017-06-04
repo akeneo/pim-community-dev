@@ -1,0 +1,29 @@
+"oro_datagrid.no_data_hint %entityHint%": Der findes ingen %entityHint%.
+oro_datagrid.not_found_hint: Ingen resultater fundet. Prøv at ændre dine søgekriterier.
+oro_datagrid.label_add_filter: Administrer filtre
+oro_datagrid.label_loading_mask: Indlæser . . .
+oro.grid.mass_action.selected_rows: Markerede rækker
+oro.grid.mass_action.confirm_title: Bekræftelse af handling
+oro.grid.mass_action.confirm_content: Er du sikker på du ønsker at gøre det?
+oro.grid.mass_action.confirm_ok: Ja, gør det
+oro.grid.mass_action.error_title: Fejl i masse aktionen
+oro.grid.mass_action.error_content: Kan ikke udføre masse handlingen
+oro.grid.mass_action.delete.label: Slet
+oro.grid.mass_action.delete.confirm_title: Masse slet bekræftelse
+oro.grid.mass_action.delete.confirm_content: Er du sikker på at du vil sletter de valgte elementer?
+oro.grid.datagrid.page_size.all: Alle
+oro.grid.mass_action.delete.success_message: "{0} ingen enheder blev fjernet|{1} én enhed blev fjernet|]1, Inf [%count% enheder blev fjernet"
+datagrid_view:
+  columns:
+    min_message: Du skal vælge mindst én datagrid kolonne der skal vises
+  label:
+    unique_message: Etiketten skal være unik
+    not_blank_message: Etiketten må ikke være tom
+grid.view_selector.flash:
+  created: DataGrid visningen er oprettet
+  removed: DataGrid visningen er fjernet
+  not_removable: Du har ikke rettigheder til at fjerne denne visning
+quick_export: Hurtig eksport
+import: Import
+export: Eksport
+mass_edit: Masse Rediger

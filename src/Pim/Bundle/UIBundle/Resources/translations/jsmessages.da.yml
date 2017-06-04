@@ -1,0 +1,117 @@
+Close: Luk
+Update: Opdater
+Selected Rows: Markerede rækker
+"Yes": "Ja"
+"Yes, Delete": "Ja, slet"
+"Yes, I Agree": "Ja, jeg er enig"
+"Yes, do it": "Ja, gør det"
+"No": "Nej"
+"Ok, got it.": "OK, fik det."
+"Cancel": "Annuller"
+"Delete Confirmation": "Slet bekræftelse"
+"Edit": "Redigér"
+"Unexpected error occured. Please contact system administrator.": "Der opstod en uventet fejl. Kontakt systemadministratoren."
+Now: Nu
+Prev: Forrige
+Next: Næste
+Today: I dag
+Wk: Wk
+Done: Udført
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Vælg tidspunkt"
+Time: Tid
+Hour: Time
+Minute: Minut
+Second: Sekund
+Millisecond: Millisekund
+Microsecond: Mikrosekund
+"Time Zone": "Tidszone"
+Localized value: Lokaliseret værdi
+Columns: Kolonner
+Datagrid Configuration: DataGrid konfiguration
+Apply: Anvend
+Action: Handling
+Unit: Enhed
+Currency: Valuta
+jstree:
+  all: Alle produkter
+  unclassified: Ikke-klassificerede produkter
+  product:
+    all: Alle produkter
+    unclassified: Ikke-klassificerede produkter
+  no_tree: Intet træ tilgængeligt
+  include_sub: Inkluder underkategorier
+  loading: Indlæser ...
+datetimepicker:
+  days:
+    Sunday: Søndag
+    Monday: Mandag
+    Tuesday: Tirsdag
+    Wednesday: Onsdag
+    Thursday: Torsdag
+    Friday: Fredag
+    Saturday: Lørdag
+  daysShort:
+    Sun: Søn
+    Mon: Man
+    Tue: Tirs
+    Wed: Ons
+    Thu: Tors
+    Fri: Fre
+    Sat: Lør
+  daysMin:
+    Su: Sø
+    Mo: Ma
+    Tu: Ti
+    We: On
+    Th: To
+    Fr: Fr
+    Sa: Lø
+  months:
+    January: Januar
+    February: Februar
+    March: Marts
+    April: April
+    May: Maj
+    June: Juni
+    July: Juli
+    August: August
+    September: September
+    October: Oktober
+    November: November
+    December: December
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Maj
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dec
+oro_config:
+  form:
+    config:
+      title: Systemkonfiguration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Lokalisering
+          system_locale: Sprog
+        notification:
+          title: Notifikationer
+          system_notification: Notifikation om nye versioner
+        loading_message:
+          title: Indlæser meddelelser
+          label: Aktivere indlæsning af meddelelser
+        loading_messages:
+          label: Tilgængelige indlæsnings meddelelser
