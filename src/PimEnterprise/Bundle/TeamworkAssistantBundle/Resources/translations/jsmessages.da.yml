@@ -1,0 +1,60 @@
+teamwork_assistant:
+  common:
+    required: Påkrævet
+    warning: Bare rolig, projektberegningen kan tage et stykke tid, så dit projekt er muligvis ikke synligt med det samme.
+  grid:
+    view_selector:
+      create: Opret projekt
+      edit: Rediger projekt
+      remove: Slet projekt
+      create_from_view: Oprette et projekt fra denne visning
+      loading: Indlæser...
+      start_new_project: Starte et nyt projekt
+      confirmation:
+        remove: Er du sikker på, du vil slette projektet?
+        delete: Bekræft sletning
+  project:
+    label: Navn
+    locale: Landestandard
+    channel: Kanal
+    label_maxlength: Denne værdi er for lang. Det skal have {{ max }} tegn eller mindre.
+    description: Beskrivelse
+    due_date: Forfaldsdato
+    due_date_past: Du kan ikke vælge en dato i fortiden.
+    leaving_scope: Du forlader projektets omfang.
+  edit_project_modal:
+    saved: Projektet er blevet gemt.
+    title: Rediger projekt
+    confirm: Gem
+    cancel: Annuller
+  create_project_modal:
+    saved: Projektet er blevet gemt, får du besked, når beregningen er færdig.
+    title: Opret projekt
+    confirm: Gem
+    cancel: Annuller
+  widget:
+    no_project: Du har ingen aktuelle projekt
+    no_project_create: Opret et nyt projekt
+    description: Beskrivelse
+    due_date: Forfaldsdato
+    todo: TODO
+    in_progress: I GANG
+    done: GENNEMFØRT
+    all_contributors: Alle bidragydere
+    display_products: Display-produkter
+    placeholder:
+      contributor_selector: Søg bidragyder
+      project_selector: Søg efter projekt
+    completeness:
+      to_start: PRODUKTER TIL START
+      in_progress: PRODUKTER I GANG
+      done: PRODUKTER GJORT
+pim_datagrid:
+  view_selector:
+    project: Projekter
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Teamwork assistent
+        project_calculation: Teamwork assistent
