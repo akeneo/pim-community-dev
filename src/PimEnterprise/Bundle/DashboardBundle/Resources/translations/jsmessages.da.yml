@@ -1,0 +1,8 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Dato
+      author: Forfatter
+      product: Produkt
+      review: Gennemgang
+      empty: Ingen forslag til gennemgang
