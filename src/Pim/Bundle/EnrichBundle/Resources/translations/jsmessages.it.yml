@@ -356,6 +356,7 @@ pim_enrich:
     upload: Si è verificato un errore durante il caricamento del file
   alert:
     error_occured: Si è verificato un errore durante il caricamento della pagina
+    not_allowed: Non sei autorizzato ad accedere a questa pagina
   form:
     required: (richiesto)
     product:
