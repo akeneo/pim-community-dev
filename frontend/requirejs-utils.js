@@ -27,7 +27,6 @@ const utils = {
                 const requireMaps = _.get(parsed.config, 'map.*') || {}
                 const mergedPaths = Object.assign(requirePaths, requireMaps)
                 const absolutePaths = _.mapValues(mergedPaths, (modulePath) => {
-                    console.log(modulePath)
                     return resolve(`${baseDir}/web/bundles/${modulePath}`)
                 })
 

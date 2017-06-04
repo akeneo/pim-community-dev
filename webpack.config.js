@@ -43,6 +43,7 @@ module.exports = {
     },
 
     resolve: {
+        symlinks: false,
         alias: moduleAliases
     },
     module: {
