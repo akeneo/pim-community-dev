@@ -190,7 +190,8 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
-            - ['catalogStorage']
+            - ['catalogStorage', 'tmpStorage']
+            - '%tmp_storage_dir%'
 
     pim_enrich.controller.variant_group:
         scope: request
