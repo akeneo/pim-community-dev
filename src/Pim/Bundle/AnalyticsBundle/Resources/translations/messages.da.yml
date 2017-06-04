@@ -1,0 +1,25 @@
+pim_analytics:
+  new_patch_available: Nye patch tilgængelig
+  system_config:
+    group:
+      notification.title: Notifikationer
+      version_update.title: Version opdateringer
+    form:
+      version_update.label: Notifikation om nye versioner
+      version_update.tooltip: Send anmodningen til en fjern server til at hente oplysninger om frigivelse af nye rettelser
+  system_info:
+    title: Systemoplysninger
+    download: TXT
+  info_type:
+    pim_edition: Udgave
+    pim_version: Version
+    pim_storage_driver: Hukommelse
+    pim_environment: Miljø
+    pim_install_time: Installationstid
+    registered_bundles: Registrerede bundles
+  acl:
+    system_info:
+      index: Systemoplysninger
+pim_menu:
+  item:
+    system_info: Systemoplysninger
