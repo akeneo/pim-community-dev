@@ -1,5 +1,6 @@
 /* eslint-env es6 */
 var fs = require('fs')
+const path = require('path')
 
 module.exports = function(extras) {
     this.extras = extras || [];
@@ -12,7 +13,9 @@ module.exports = function(extras) {
 
                     try {
                         // Make sure the webpack context map uses the symlinked path
-                        request = fs.realpathSync(item.request, 'utf8')
+                        // request = fs.realpathSync(item.request, 'utf8')
+                        request = path.resolve(item.request)
+                        // console.log(path.resolve(item.request))
                     } catch (e) {}
 
                     item.request = request

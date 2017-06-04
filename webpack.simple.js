@@ -5,30 +5,26 @@ const path = require('path')
 const _ = require('lodash')
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
+// const AddToContextPlugin = require('./frontend/add-context-plugin')
 const requirePaths = require(path.resolve('web/js/require-paths'))
-const AddToContextPlugin = require('./frontend/add-context-plugin')
 const utils = require('./frontend/requirejs-utils')
 const importPaths = utils.getModulePaths(requirePaths, __dirname)
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const globToRegex = require('glob-to-regexp');
 const customPaths = require('./frontend/custom-paths')
-
-console.log(customPaths)
+const globToRegex = require('glob-to-regexp');
 
 const contextPaths = [
-    'web/bundles',
     'web/bundles/pim**/*.js',
     'web/bundles/oro**/*.js',
     'web/bundles/fosjsrouting/**/*.js',
     'web/bundles/pim**/*.html',
     'frontend/**/*.js',
     'web/dist/**/*.js',
-    ..._.values(customPaths).map(custom => `${custom}`)
+    'testingshit/**/*.js',
+    'node_modules/**/*.js',
+    ..._.values(customPaths)
 ].map(glob => globToRegex(glob).toString().slice(2, -2))
 
 const contextRegex = `/^.*(${contextPaths.join('|')})$/`
-const moduleAliases = Object.assign(importPaths, _.mapValues(customPaths, custom => path.resolve(custom)))
-
 
 module.exports = {
     target: 'web',
@@ -43,29 +39,24 @@ module.exports = {
     },
 
     resolve: {
-        alias: moduleAliases
+        alias: Object.assign(importPaths, {
+          jquery: require.resolve('jquery')
+        })
     },
     module: {
         rules: [
+          {
+              test: path.resolve(__dirname, 'frontend/require-context'),
+              loader: 'regexp-replace-loader',
+              options: {
+                  match: {
+                      pattern: /__contextPlaceholder/,
+                      flags: 'g'
+                  },
+                  replaceWith: contextRegex
+              }
+          },
             {
-                test: path.resolve(__dirname, 'frontend/require-context'),
-                loader: 'regexp-replace-loader',
-                options: {
-                    match: {
-                        pattern: /__contextPlaceholder/,
-                        flags: 'g'
-                    },
-                    replaceWith: contextRegex
-                }
-            }, {
-                test: /\.js$/,
-                use: [
-                    {
-                        loader: path.resolve(__dirname, 'frontend/config-loader'),
-                        options: {}
-                    }
-                ]
-            }, {
                 test: /\.html$/,
                 use: [
                     {
@@ -89,7 +80,8 @@ module.exports = {
                         options: 'this=>window'
                     }
                 ]
-            }, {
+            },
+            {
                 test: require.resolve('jquery'),
                 use: [
                     {
@@ -100,7 +92,8 @@ module.exports = {
                         options: '$'
                     }
                 ]
-            }, {
+            },
+            {
                 test: path.resolve(__dirname, './frontend/require-polyfill.js'),
                 use: [
                     {
@@ -108,7 +101,16 @@ module.exports = {
                         options: 'require'
                     }
                 ]
-            }
+            },
+            {
+                test: /\.js$/,
+                use: [
+                    {
+                        loader: path.resolve(__dirname, 'frontend/config-loader'),
+                        options: {}
+                    }
+                ]
+            },
 
         ]
     },
@@ -116,10 +118,9 @@ module.exports = {
         moduleExtensions: ['-loader']
     },
     plugins: [
+              // new AddToContextPlugin(_.values(importPaths)),
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths))
-        // new UglifyJSPlugin()
     ]
 }

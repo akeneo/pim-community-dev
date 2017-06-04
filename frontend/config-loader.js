@@ -22,10 +22,11 @@ module.exports = function(content) {
 
     const ext = '.js'
     const aliases = _.invert(this.options.resolve.alias)
+    console.log(aliases)
     const aliasKeys = _.mapKeys(aliases, (alias, key) => key.replace(ext, ''))
     const moduleUrl = this.resourcePath.replace(ext, '')
     const moduleName = aliasKeys[moduleUrl]
-    const moduleConfig = configMap[formatModuleName(moduleName)]
+    const moduleConfig = configMap[formatModuleName(moduleName)] || {}
 
     return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`;
 }
