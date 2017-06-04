@@ -125,7 +125,7 @@ pim_enrich:
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
-      back_to_grid: Zurück zur Tabellenansicht
+      back_to_grid: Zurück zur Übersicht
   entity:
     save:
       label: Speichern
@@ -143,7 +143,7 @@ pim_enrich:
         compare_translate: Vergleichen / Übersetzen
         delete: Löschen
         save: Speichern
-        save_and_back: Speichern und zurück zur Tabellenansicht
+        save_and_back: Speichern und zurück zur Übersicht
       history:
         version: Version
         author: Autor

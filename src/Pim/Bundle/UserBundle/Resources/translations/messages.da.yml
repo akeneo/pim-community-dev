@@ -1,0 +1,157 @@
+pim_user:
+  user:
+    tab:
+      general.title: Generelt
+      additional.title: Yderligere
+      group_and_role.title: Grupper og roller
+      password.title: Adgangskode
+      business_unit.title: Afdelinger
+      email_synchronization.title: Email synkroniseringsindstillinger
+      interfaces.title: Grænseflader
+  group:
+    tab:
+      general.title: Generelt
+      users.title: Brugere
+oro.user.controller:
+  group.message.saved: "Gruppe gemt"
+  role.message.saved: "Rolle gemt"
+  user.message.saved: "Brugeren gemt"
+  status.message.saved: "Status gemt"
+oro.user.grid.users:
+  columns:
+    username: "Brugernavn"
+    email: "E-mail"
+    firstName: "Fornavn"
+    lastName: "Efternavn"
+    createdAt: "Oprettet den"
+    updatedAt: "Opdateret den"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Etiket"
+oro.user.grid.groups:
+  columns:
+    name: "Navn"
+pim_title:
+  user.index: Brugere
+  user_role.index: Roller
+  user_group.index: Grupper
+  system_configuration.index: Konfiguration
+user.title: Bruger
+user.overview: Bruger
+Users Management: Bruger administration
+Create user: Opret bruger
+btn.create.user: Opret bruger
+New user: Ny bruger
+Additional: Yderligere
+Groups and Roles: Grupper og roller
+Username: Brugernavn
+Password: Adgangskode
+Re-enter password: Indtast adgangskode igen
+Name prefix: Navnepræfiks
+First name: Fornavn
+Middle name: Mellemnavn
+Last name: Efternavn
+Name suffix: Navnesuffiks
+Date of birth: Fødselsdato
+Avatar: Avatar
+Additional emails: Yderligere e-mails
+Add another email: Tilføje en anden e-mail
+Catalog locale: Katalog landestandard
+Catalog scope: Katalog anvendelsesområde
+Default tree: Standardtræ
+Business Units: Afdelinger
+Email synchronization settings: Email synkroniseringsindstillinger
+Host: Vært
+Port: Port
+Ssl: SSL
+Last logged in: Sidst logget ind
+Login count: Antal logins
+Additional Information: Yderligere oplysninger
+Interfaces: Grænseflader
+Basic Information: Grundlæggende oplysninger
+Contact Information: Kontaktoplysninger
+User name: Brugernavn
+Birthday: Fødselsdag
+API key: API-nøgle
+Ui locale: UI landestandard
+UI locale: UI landestandard
+User salt: Bruger salt
+Current password: Nuværende adgangskode
+New password: Ny adgangskode
+Repeat new password: Ny adgangskode (gentag)
+Generate key: Generer nøgle
+Primary: primære
+Removed user: Slet bruger
+user:
+  product_grid_filters: Produkt gitter filtre
+  default_product_grid_view:
+    label: Standard produkt gittervisningen
+  default_grid_view:
+    none: Ingen
+Role: Rolle
+Owner: Ejer
+General: Generelt
+Entity: Enhed
+Capabilities: Kapaciteter
+Save and close: Gem og luk
+Has role: Har rolle
+role:
+  title: rolle
+  overview: rolle
+  edit: Rediger rolle
+  create: Opret rolle
+btn.create.role: Opret rolle
+rights:
+  action: Rettigheder
+oro_security:
+  acl_group:
+    user: Brugere
+    role: Roller
+    group: Brugergrupper
+  acl:
+    user:
+      view: Vis brugere
+      create: Opret en bruger
+      edit: Rediger brugere
+      delete: Slet bruger
+    role:
+      view: List roller
+      create: Opret rolle
+      edit: Rediger roller
+      delete: Fjern en rolle
+    group:
+      view: List brugergrupper
+      create: Opret en brugergruppe
+      edit: Rediger brugergrupper
+      delete: Fjern en brugergruppe
+(default): Standardtilladelse på enheder
+VIEW: Se
+CREATE: Opret
+EDIT: Redigér
+DELETE: Slet
+ASSIGN: Tildel
+SHARE: Del
+oro:
+  security:
+    access-level:
+      BASIC: Bruger
+      LOCAL: Afdeling
+      DEEP: Division
+      GLOBAL: Organisation
+      SYSTEM: System
+      NONE: Ingen
+Create group: Opret gruppe
+btn.create.user-group: Opret gruppe
+Has group: Har gruppen
+Save and Close: Gem og luk
+user-group.overview: Grupper
+Log in: Log på
+Remember me on this computer: Husk mig på denne computer
+Forgot your password?: Glemt din adgangskode?
+Username or Email: Brugernavn eller e-mail
+Forgot Password: Glemt adgangskode
+Request: Anmodning
+Check Email: Tjek Email
+password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
+Go to homepage: Gå til hjemmeside
