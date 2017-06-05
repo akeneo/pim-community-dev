@@ -121,7 +121,10 @@ JSON;
             'currencies'       => ['USD', 'EUR'],
             'locales'          => ['en_US'],
             'category_tree'    => 'master',
-            'conversion_units' => [],
+            'conversion_units' => [
+                'a_metric_without_decimal' => 'METER',
+                'a_metric' => 'KILOWATT',
+            ],
             'labels'           => [
                 'en_US' => 'Ecommerce',
                 'fr_FR' => 'Ecommerce',
@@ -153,8 +156,45 @@ JSON;
             'currencies'       => ['USD', 'EUR'],
             'locales'          => ['en_US'],
             'category_tree'    => 'master',
-            'conversion_units' => [],
+            'conversion_units' => [
+                'a_metric_without_decimal' => 'METER',
+                'a_metric'                 => 'KILOWATT',
+            ],
             'labels'           => [
+                'fr_FR' => 'Ecommerce',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.channel');
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame($channelStandard, $normalizer->normalize($channel));
+    }
+
+    public function testChannelPartialUpdateWithEmptyConversionUnits()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+{
+    "conversion_units" : {
+        "a_metric_without_decimal": null
+    }
+}        
+JSON;
+        $client->request('PATCH', '/api/rest/v1/channels/ecommerce', [], [], [], $data);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
+        $channelStandard = [
+            'code'             => 'ecommerce',
+            'currencies'       => ['USD', 'EUR'],
+            'locales'          => ['en_US'],
+            'category_tree'    => 'master',
+            'conversion_units' => [
+                'a_metric' => 'KILOWATT',
+            ],
+            'labels'           => [
+                'en_US' => 'Ecommerce',
                 'fr_FR' => 'Ecommerce',
             ],
         ];

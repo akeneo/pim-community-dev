@@ -282,6 +282,43 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
+    public function testChannelCreateWithNullValueForConversionUnits()
+    {
+        $client = $this->createAuthenticatedClient();
+        $data =
+<<<JSON
+    {
+        "code":"nice_channel",
+        "category_tree": "master",
+        "currencies": ["EUR"],
+        "locales": ["fr_FR"],
+        "conversion_units": {
+            "a_metric_without_decimal": null
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/channels', [], [], [], $data);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('nice_channel');
+
+        $channelStandard = [
+            'code'             => 'nice_channel',
+            'currencies'       => ['EUR'],
+            'locales'          => ['fr_FR'],
+            'category_tree'    => 'master',
+            'conversion_units' => [],
+            'labels'           => [],
+        ];
+
+        $normalizer = $this->get('pim_catalog.normalizer.standard.channel');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($channelStandard, $normalizer->normalize($channel));
+    }
+
     /**
      * {@inheritdoc}
      */
