@@ -37,10 +37,9 @@ module.exports = {
     output: {
         path: path.resolve('./web/dist/'),
         publicPath: '/dist/',
-        filename: 'app.min.js',
+        filename: '[name].min.js',
         chunkFilename: '[name].bundle.js'
     },
-
     resolve: {
         symlinks: false,
         alias: moduleAliases
@@ -128,6 +127,17 @@ module.exports = {
         new LiveReloadPlugin({
           appendScriptTag: true,
           ignore: /node_modules/
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'lib',
+            minChunks: module => module.context && module.context.indexOf('lib') !== -1
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'manifest' //But since there are no more common modules between them we end up with just the runtime code included in the manifest file
         })
         // new UglifyJSPlugin()
     ]
