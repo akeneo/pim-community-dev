@@ -109,8 +109,7 @@ class ProductReverterIntegration extends TestCase
             [
                 Configuration::getTechnicalCatalogPath(),
                 $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical',
-            ],
-            true
+            ]
         );
     }
 
