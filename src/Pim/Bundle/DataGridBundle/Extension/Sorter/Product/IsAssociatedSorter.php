@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 
 /**
@@ -19,6 +20,8 @@ class IsAssociatedSorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $datasource->getProductQueryBuilder()->addSorter('is_associated', $direction);
+        if ($datasource instanceof AssociatedProductDatasource) {
+            $datasource->setSortOrder($direction);
+        }
     }
 }

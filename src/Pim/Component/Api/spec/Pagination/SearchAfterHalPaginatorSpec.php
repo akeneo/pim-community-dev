@@ -25,21 +25,13 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Api\Pagination\PaginatorInterface');
     }
 
-    function it_paginates_in_hal_format($normalizer, $router)
+    function it_paginates_in_hal_format($router)
     {
         // links
         $router
             ->generate(
                 'attribute_option_list_route',
-                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'a_text', 'limit'=> 2],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=a_text');
-
-        $router
-            ->generate(
-                'attribute_option_list_route',
-                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null],
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => null, 'search_before' => null, 'limit'=> 2],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2');
@@ -47,20 +39,26 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $router
             ->generate(
                 'attribute_option_list_route',
-                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'another_text', 'limit'=> 2],
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null, 'search_before' => null],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
-            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=another_text');
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2');
 
-
+        $router
+            ->generate(
+                'attribute_option_list_route',
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'optionB', 'limit'=> 2, 'search_before' => null],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=optionB');
 
         // embedded
         $router
-            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionA', 'search_after' => null], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionA', 'search_after' => null, 'search_before' => null], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionA');
 
         $router
-            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionB', 'search_after' => null], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionB', 'search_after' => null, 'search_before' => null], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionB');
 
         $standardItems = [
@@ -71,15 +69,16 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $expectedItems = [
             '_links'       => [
                 'self'     => [
-                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=a_text',
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2',
                 ],
                 'first'    => [
                     'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2',
                 ],
                 'next'     => [
-                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=another_text',
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=optionB',
                 ],
             ],
+            'current_page' => null,
             '_embedded'    => [
                 'items' => [
                     [
@@ -105,7 +104,7 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $parameters = [
             'uri_parameters'      => ['attributeCode' => 'a_multi_select'],
             'query_parameters'    => ['limit' => 2, 'pagination_type' => 'search_after'],
-            'search_after'        => ['self' => 'a_text', 'next' => 'another_text'],
+            'search_after'        => ['self' => '', 'next' => 'optionB', 'previous' => ''],
             'list_route_name'     => 'attribute_option_list_route',
             'item_route_name'     => 'attribute_option_item_route',
             'item_identifier_key' => 'code',
@@ -114,13 +113,112 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $this->paginate($standardItems, $parameters, null)->shouldReturn($expectedItems);
     }
 
-    function it_paginates_without_next_link_when_last_page($normalizer, $router)
+    function it_paginates_with_previous_and_next_link($router)
     {
         // links
         $router
             ->generate(
                 'attribute_option_list_route',
-                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'a_text', 'limit'=> 2],
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'optionD', 'search_before' => null, 'limit'=> 2],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=optionD');
+
+        $router
+            ->generate(
+                'attribute_option_list_route',
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null, 'search_before' => null],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2');
+
+        $router
+            ->generate(
+                'attribute_option_list_route',
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => null, 'search_before' => 'optionE', 'limit'=> 2],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_before=optionE');
+
+        $router
+            ->generate(
+                'attribute_option_list_route',
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'optionF', 'search_before' => null, 'limit'=> 2],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=optionF');
+
+        // embedded
+        $router
+            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionE', 'search_after' => null, 'search_before' => null], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionE');
+
+        $router
+            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionF', 'search_after' => null, 'search_before' => null], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionF');
+
+        $standardItems = [
+            ['code'   => 'optionE'],
+            ['code'   => 'optionF'],
+        ];
+
+        $expectedItems = [
+            '_links'       => [
+                'self'     => [
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=optionD',
+                ],
+                'first'    => [
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2',
+                ],
+                'previous'     => [
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_before=optionE',
+                ],
+                'next'     => [
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=optionF',
+                ],
+            ],
+            'current_page' => null,
+            '_embedded'    => [
+                'items' => [
+                    [
+                        '_links' => [
+                            'self' => [
+                                'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionE',
+                            ],
+                        ],
+                        'code'   => 'optionE',
+                    ],
+                    [
+                        '_links' => [
+                            'self' => [
+                                'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionF',
+                            ],
+                        ],
+                        'code'   => 'optionF',
+                    ],
+                ],
+            ],
+        ];
+
+        $parameters = [
+            'uri_parameters'      => ['attributeCode' => 'a_multi_select'],
+            'query_parameters'    => ['limit' => 2, 'pagination_type' => 'search_after', 'search_after' => 'optionD'],
+            'search_after'        => ['self' => 'optionD', 'next' => 'optionF', 'previous' => 'optionE'],
+            'list_route_name'     => 'attribute_option_list_route',
+            'item_route_name'     => 'attribute_option_item_route',
+            'item_identifier_key' => 'code',
+        ];
+
+        $this->paginate($standardItems, $parameters, null)->shouldReturn($expectedItems);
+    }
+
+    function it_paginates_without_next_link_when_last_page($router)
+    {
+        // links
+        $router
+            ->generate(
+                'attribute_option_list_route',
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'search_after' => 'a_text', 'search_before' => null, 'limit'=> 2],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=a_text');
@@ -128,15 +226,26 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $router
             ->generate(
                 'attribute_option_list_route',
-                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null],
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null, 'search_before' => 'optionA'],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+            ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_before=optionA');
+
+        $router
+            ->generate(
+                'attribute_option_list_route',
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null, 'search_before' => null],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2');
 
-
         // embedded
         $router
-            ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionA', 'search_after' => null], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->generate(
+                'attribute_option_item_route',
+                ['attributeCode' => 'a_multi_select', 'code' => 'optionA', 'search_after' => null, 'search_before' => null],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options/optionA');
 
         $standardItems = [
@@ -151,7 +260,11 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
                 'first'    => [
                     'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2',
                 ],
+                'previous'    => [
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_before=optionA',
+                ]
             ],
+            'current_page' => null,
             '_embedded'    => [
                 'items' => [
                     [
@@ -168,22 +281,22 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
 
         $parameters = [
             'uri_parameters'      => ['attributeCode' => 'a_multi_select'],
-            'query_parameters'    => ['limit' => 2, 'pagination_type' => 'search_after'],
-            'search_after'        => ['self' => 'a_text', 'next' => 'another_text'],
+            'query_parameters'    => ['limit' => 2, 'pagination_type' => 'search_after', 'search_after' => 'a_text'],
             'list_route_name'     => 'attribute_option_list_route',
             'item_route_name'     => 'attribute_option_item_route',
             'item_identifier_key' => 'code',
+            'search_after'        => ['self' => 'a_text', 'next' => '', 'previous' => 'optionA'],
         ];
 
         $this->paginate($standardItems, $parameters, null)->shouldReturn($expectedItems);
     }
 
-    function it_paginates_with_one_page_when_total_items_equals_zero($normalizer, $router)
+    function it_paginates_with_one_page_when_total_items_equals_zero($router)
     {
         $router
             ->generate(
                 'attribute_option_list_route',
-                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null],
+                ['attributeCode' => 'a_multi_select', 'pagination_type' => 'search_after', 'limit'=> 2, 'search_after' => null, 'search_before' => null],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2');
@@ -197,6 +310,7 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
                     'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2',
                 ],
             ],
+            'current_page' => null,
             '_embedded'    => [
                 'items' => [],
             ],
@@ -205,10 +319,10 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
         $parameters = [
             'uri_parameters'      => ['attributeCode' => 'a_multi_select'],
             'query_parameters'    => ['limit' => 2, 'pagination_type' => 'search_after'],
-            'search_after'        => ['self' => null, 'next' => null],
             'list_route_name'     => 'attribute_option_list_route',
             'item_route_name'     => 'attribute_option_item_route',
             'item_identifier_key' => 'code',
+            'search_after'        => ['self' => '', 'next' => '', 'previous' => ''],
         ];
 
         $this->paginate([], $parameters, null)->shouldReturn($expectedItems);
@@ -223,5 +337,4 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
     {
         $this->shouldThrow(PaginationParametersException::class)->during('paginate', [[], [], null]);
     }
-
 }

@@ -67,9 +67,9 @@ Feature: Edit common attributes of many products at once
     Then I should see a remove link next to the "Name" field
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the english name of "boots" should be "boots"
-    And the english name of "sandals" should be "boots"
-    And the english name of "sneakers" should be "boots"
+    Then the english localizable value name of "boots" should be "boots"
+    And the english localizable value name of "sandals" should be "boots"
+    And the english localizable value name of "sneakers" should be "boots"
 
   Scenario: Successfully update many multi-valued values at once
     Given I am on the products page
@@ -96,8 +96,8 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "boots"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the english name of "pump" should be "boots"
-    And the english name of "sneakers" should be "boots"
+    Then the english localizable value name of "pump" should be "boots"
+    And the english localizable value name of "sneakers" should be "boots"
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
@@ -196,13 +196,13 @@ Feature: Edit common attributes of many products at once
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                                               | ratio |
       | mobile  | en_US  | warning | Name, Price, Size, Color                                                     | 20%   |
-      | tablet  | en_US  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Color | 11%   |
+      | tablet  | en_US  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Color | 11%   |
     And I am on the "sandals" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                           | ratio |
       | mobile  | en_US  | warning | Name, Price, Size, Color                                 | 20%   |
-      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 13%   |
+      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 12%   |
     Then I am on the products page
     And I select rows sandals, sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -224,7 +224,7 @@ Feature: Edit common attributes of many products at once
     And I should see the completeness:
       | channel | locale | state   | missing_values                                            | ratio |
       | mobile  | en_US  | warning | Color                                                     | 80%   |
-      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view, Color | 44%   |
+      | tablet  | en_US  | warning | Weather conditions, Description, Rating, Side view, Color | 44%   |
     And I am on the "sandals" product page
     When I open the "Completeness" panel
     And I should see the completeness:
@@ -260,9 +260,9 @@ Feature: Edit common attributes of many products at once
     And I change the "Comment" to "$(echo "shell_injection" > shell_injection.txt)"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the english name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    Then the english localizable value name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english localizable value name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english localizable value name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
     And the english tablet description of "boots" should be ";`echo \"SHELL_INJECTION\"`"
     And the english tablet description of "sandals" should be ";`echo \"SHELL_INJECTION\"`"
     And the english tablet description of "sneakers" should be ";`echo \"SHELL_INJECTION\"`"

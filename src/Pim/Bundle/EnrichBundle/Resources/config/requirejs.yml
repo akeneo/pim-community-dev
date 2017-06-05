@@ -534,7 +534,6 @@ config:
         pim/attribute-fetcher:       pimenrich/js/fetcher/attribute-fetcher
         pim/attribute-group-fetcher: pimenrich/js/fetcher/attribute-group-fetcher
         pim/locale-fetcher:          pimenrich/js/fetcher/locale-fetcher
-        pim/completeness-fetcher:    pimenrich/js/fetcher/completeness-fetcher
         pim/product-fetcher:         pimenrich/js/fetcher/product-fetcher
         pim/variant-group-fetcher:   pimenrich/js/fetcher/variant-group-fetcher
 

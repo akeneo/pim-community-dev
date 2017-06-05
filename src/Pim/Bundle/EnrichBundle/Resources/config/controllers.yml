@@ -311,18 +311,6 @@ services:
             - '@pim_catalog.factory.channel'
             - '@validator'
 
-    pim_enrich.controller.rest.completeness:
-        class: '%pim_enrich.controller.rest.completeness.class%'
-        arguments:
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.channel'
-            - '@pim_user.context.user'
-            - '@pim_enrich.normalizer.completeness_collection'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog_product_storage_driver%'
-
     pim_enrich.controller.rest.family:
         class: '%pim_enrich.controller.rest.family.class%'
         arguments:

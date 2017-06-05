@@ -1,0 +1,10 @@
+settings:
+    index:
+        number_of_shards: 3
+        number_of_replicas: 2
+
+mappings:
+    an_index_type1:
+        properties:
+            just_another_property: ~
+        just_another_mapping: ~

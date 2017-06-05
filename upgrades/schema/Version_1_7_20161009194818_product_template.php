@@ -39,11 +39,11 @@ class Version_1_7_20161009194818_product_template extends AbstractMigration impl
 
         $attributeCodes = ['metric' => [], 'price' => [], 'image' => []];
         foreach ($attributes as $attribute) {
-            if (AttributeTypes::METRIC === $attribute->getAttributeType()) {
+            if (AttributeTypes::METRIC === $attribute->getType()) {
                 $attributeCodes['metric'][] = $attribute->getCode();
             }
 
-            if (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
+            if (AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
                 $attributeCodes['price'][] = $attribute->getCode();
             }
 

@@ -29,9 +29,6 @@ Feature: Filter products by text field
       | name   | contains         | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
       | name   | starts with      | 5D + EF 24-105 F     |                                                                                             |
       | name   | starts with      | HP                   | HP LA2206xc + WF722A                                                                        |
-      | name   | ends with        | Canon                |                                                                                             |
-      | name   | ends with        | IS                   | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | ends with        | is                   | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
       | name   | does not contain | Canon                | HP LA2206xc + WF722A                                                                        |
       | name   | is equal to      | Canon 5D + EF 24-105 |                                                                                             |
       | name   | contains         | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |

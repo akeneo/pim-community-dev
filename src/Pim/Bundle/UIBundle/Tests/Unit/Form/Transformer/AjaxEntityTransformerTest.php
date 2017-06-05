@@ -15,6 +15,9 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 {
     protected $repository;
 
+    /**
+     * @{@inheritdoc}
+     */
     protected function setUp()
     {
         $this->repository = $this->createMock(

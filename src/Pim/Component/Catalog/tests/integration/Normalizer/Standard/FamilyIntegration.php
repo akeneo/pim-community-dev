@@ -84,7 +84,10 @@ class FamilyIntegration extends AbstractStandardNormalizerTestCase
                     'sku'
                 ]
             ],
-            'labels'                 => []
+            'labels' => [
+                'fr_FR' => 'Une famille A',
+                'en_US' => 'A family A',
+            ]
         ];
 
         $repository = $this->get('pim_catalog.repository.family');

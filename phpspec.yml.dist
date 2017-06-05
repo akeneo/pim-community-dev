@@ -1,4 +1,7 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
+extensions:
+    Akeneo\SkipExampleExtension: ~
+
 suites:
     ## Akeneo Components
     Analytics:
@@ -58,6 +61,11 @@ suites:
         psr4_prefix: Akeneo\Bundle\ClassificationBundle
         spec_path: src/Akeneo/Bundle/ClassificationBundle
         src_path: src/Akeneo/Bundle/ClassificationBundle
+    ElasticsearchBundle:
+        namespace: Akeneo\Bundle\ElasticsearchBundle
+        psr4_prefix: Akeneo\Bundle\ElasticsearchBundle
+        spec_path: src/Akeneo/Bundle/ElasticsearchBundle
+        src_path: src/Akeneo/Bundle/ElasticsearchBundle
     StorageUtilsBundle:
         namespace: Akeneo\Bundle\StorageUtilsBundle
         psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
@@ -68,6 +76,11 @@ suites:
         psr4_prefix: Akeneo\Bundle\MeasureBundle
         spec_path: src/Akeneo/Bundle/MeasureBundle
         src_path: src/Akeneo/Bundle/MeasureBundle
+    StorageUtilsBundle:
+        namespace: Akeneo\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Bundle/StorageUtilsBundle
 
     ## Pim Components
     Api:
@@ -187,11 +200,6 @@ suites:
         psr4_prefix: Pim\Bundle\VersioningBundle
         spec_path: src/Pim/Bundle/VersioningBundle
         src_path: src/Pim/Bundle/VersioningBundle
-    WebServiceBundle:
-        namespace: Pim\Bundle\WebServiceBundle
-        psr4_prefix: Pim\Bundle\WebServiceBundle
-        spec_path: src/Pim/Bundle/WebServiceBundle
-        src_path: src/Pim/Bundle/WebServiceBundle
 
     ## Oro bundles
     OroFilterBundle:

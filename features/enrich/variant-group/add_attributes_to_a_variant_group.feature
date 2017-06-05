@@ -40,7 +40,7 @@ Feature: Add attributes to a variant group
       | sku  | groups            | name-en_US | color | size |
       | boot | caterpillar_boots | foo        | black | 39   |
     And I am on the "caterpillar_boots" variant group page
-    Then the english Name of "boot" should be "foo"
+    Then the english localizable value Name of "boot" should be "foo"
     When I visit the "Attributes" tab
     And I add available attribute Name
     When I save the variant group

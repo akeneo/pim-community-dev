@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -67,6 +66,7 @@ class TextareaAttributeTypeCompletenessIntegration extends AbstractCompletenessP
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_text_area']);
 
         $productDataEmptyString = $this->createProductWithStandardValues(
             $family,
@@ -84,8 +84,10 @@ class TextareaAttributeTypeCompletenessIntegration extends AbstractCompletenessP
             ]
         );
         $this->assertNotComplete($productDataEmptyString);
+        $this->assertMissingAttributeForProduct($productDataEmptyString, ['a_text_area']);
 
         $productWithoutValue = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValue);
+        $this->assertMissingAttributeForProduct($productWithoutValue, ['a_text_area']);
     }
 }

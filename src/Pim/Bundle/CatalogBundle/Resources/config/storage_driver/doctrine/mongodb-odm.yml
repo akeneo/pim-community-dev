@@ -36,7 +36,6 @@ parameters:
     pim_catalog.event_subscriber.mongodb.ensure_indexes.class:                 Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EnsureIndexesSubscriber
     pim_catalog.event_subscriber.mongodb.timestampable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\TimestampableSubscriber
 
-    pim_catalog.event_subscriber.metric_base_values.class:    Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\MetricBaseValuesSubscriber
     pim_catalog.event_subscriber.remove_outdated_products_from_associations.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\RemoveOutdatedProductsFromAssociationsSubscriber
 
     pim_catalog.mongodb_odm_query_generator.abstract_normalized_data.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator

@@ -101,7 +101,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
         if (is_array($target)) {
             throw new \LogicException('No support provided for constraint on many targets');
         } elseif (Constraint::PROPERTY_CONSTRAINT === $target) {
-            $metadata->addPropertyConstraint($attribute->getBackendType(), $constraint);
+            $metadata->addPropertyConstraint('data', $constraint);
         } elseif (Constraint::CLASS_CONSTRAINT === $target) {
             $metadata->addConstraint($constraint);
         }

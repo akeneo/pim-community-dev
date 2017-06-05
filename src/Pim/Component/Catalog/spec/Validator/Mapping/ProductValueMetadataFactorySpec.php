@@ -55,15 +55,14 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
         $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('varchar');
         $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$unique, $validNumber]);
 
         $unique->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
         $validNumber->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
 
-        $metadata->addPropertyConstraint('varchar', $unique)->shouldBeCalled();
-        $metadata->addPropertyConstraint('varchar', $validNumber)->shouldBeCalled();
+        $metadata->addPropertyConstraint('data', $unique)->shouldBeCalled();
+        $metadata->addPropertyConstraint('data', $validNumber)->shouldBeCalled();
 
         $this->getMetadataFor($value);
     }
@@ -74,13 +73,11 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         ClassMetadata $metadata,
         ProductValueInterface $value,
         AttributeInterface $attribute,
-        Constraint $property,
-        Constraint $validNumber
+        Constraint $property
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
         $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('varchar');
         $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$property]);
 
@@ -95,13 +92,11 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         ClassMetadata $metadata,
         ProductValueInterface $value,
         AttributeInterface $attribute,
-        Constraint $class,
-        Constraint $validNumber
+        Constraint $class
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
         $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('varchar');
         $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$class]);
 
@@ -110,19 +105,17 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $this->getMetadataFor($value);
     }
 
-    function it_doesnt_support_multi_targets_constraint(
+    function it_does_not_support_multi_targets_constraint(
         $guesser,
         $factory,
         ClassMetadata $metadata,
         ProductValueInterface $value,
         AttributeInterface $attribute,
-        Constraint $multiTargets,
-        Constraint $validNumber
+        Constraint $multiTargets
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
         $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('varchar');
         $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$multiTargets]);
 

@@ -1,0 +1,204 @@
+mappings:
+    pim_catalog_product:
+        properties:
+            # "completeness" property is handled by the "completeness" dynamic template
+            categories:
+                type: 'keyword'
+            family.code:
+                type: 'keyword'
+            # family labels are handled by the "family" dynamic template
+            id:
+                type: 'keyword'
+            enabled:
+                type: 'boolean'
+            groups:
+                type: 'keyword'
+            variant_group:
+                type: 'keyword'
+            created:
+                type: 'date'
+            updated:
+                type: 'date'
+            identifier:
+                type: 'keyword'
+                normalizer: 'identifier_normalizer'
+        dynamic_templates:
+            -
+                family:
+                    path_match: 'family.labels.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'family_normalizer'
+            -
+                textarea:
+                    path_match: 'values.*-textarea.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        fields:
+                            preprocessed:
+                                type: 'keyword'
+                                normalizer: 'textarea_normalizer'
+                        type: 'text'
+                        analyzer: 'textarea_analyzer'
+            -
+                text:
+                    path_match: 'values.*-text.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                completeness:
+                     path_match: 'completeness.*'
+                     match_mapping_type: 'long'
+                     mapping:
+                         type: 'integer'
+            -
+                decimal:
+                    path_match: 'values.*-decimal.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'double'
+            -
+                option:
+                    path_match: 'values.*-option.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                options:
+                    path_match: 'values.*-options.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                reference_data_option:
+                    path_match: 'values.*-reference_data_option.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                reference_data_options:
+                    path_match: 'values.*-reference_data_options.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                prices:
+                    path_match: 'values.*-prices.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'double'
+            -
+                metric_data:
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+                    path_match: 'values.*-metric.*.data'
+            -
+                metric_base_data:
+                    path_match: 'values.*-metric.*.base_data'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'double'
+            -
+                metric_unit:
+                    path_match: 'values.*-metric.*.unit'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                metric_base_unit:
+                    path_match: 'values.*-metric.*.base_unit'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_extension:
+                    path_match: 'values.*-media.*.extension'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_key:
+                    path_match: 'values.*-media.*.key'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_hash:
+                    path_match: 'values.*-media.*.hash'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_mime_type:
+                    path_match: 'values.*-media.*.mime_type'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_original_filename:
+                    path_match: 'values.*-media.*.original_filename'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                media_size:
+                    path_match: 'values.*-media.*.size'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_storage:
+                    path_match: 'values.*-media.*.storage'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                boolean:
+                    path_match: 'values.*-boolean.*'
+                    match_mapping_type: 'boolean'
+                    mapping:
+                        type: 'boolean'
+            -
+                date:
+                    path_match: 'values.*-date.*'
+                    match_mapping_type: 'date'
+                    mapping:
+                        type: 'date'
+            -
+                in_group:
+                    path_match: 'in_group.*'
+                    match_mapping_type: 'boolean'
+                    mapping:
+                        type: 'boolean'
+settings:
+    analysis:
+        normalizer:
+            textarea_normalizer:
+                # Value is htmlstripped and newline pattern processed prior to indexing (in the PIM)
+                # ES Normalizers is an experimental feature and they do not support
+                # html_strip and newlinepattern filters yet.
+                # see https://www.elastic.co/guide/en/elasticsearch/reference/5.2/analysis-normalizers.html#analysis-normalizers
+                filter: ['lowercase']
+                char_filter: []
+                type: 'custom'
+            text_normalizer:
+                filter: ['lowercase']
+            family_normalizer:
+                filter: ['lowercase']
+            identifier_normalizer:
+                filter: ['lowercase']
+        char_filter:
+            newline_pattern:
+                pattern: '\\n'
+                type: 'pattern_replace'
+                replacement: ''
+        analyzer:
+            textarea_analyzer:
+                filter: ['lowercase']
+                char_filter: ['html_strip', 'newline_pattern']
+                type: 'custom'
+                tokenizer: 'standard'

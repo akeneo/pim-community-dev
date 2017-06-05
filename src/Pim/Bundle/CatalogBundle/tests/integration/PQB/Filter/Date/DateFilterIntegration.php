@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Date;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,9 +10,12 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateFilterIntegration extends AbstractFilterTestCase
+class DateFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
@@ -37,82 +40,82 @@ class DateFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['a_date', Operators::LOWER_THAN, '2017-02-06']]);
+        $result = $this->executeFilter([['a_date', Operators::LOWER_THAN, '2017-02-06']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_date', Operators::LOWER_THAN, '2017-02-07']]);
+        $result = $this->executeFilter([['a_date', Operators::LOWER_THAN, '2017-02-07']]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_date', Operators::LOWER_THAN, '2017-02-28']]);
+        $result = $this->executeFilter([['a_date', Operators::LOWER_THAN, '2017-02-28']]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_date', Operators::LOWER_THAN, new \DateTime('2017-02-28T00:00:00')]]);
+        $result = $this->executeFilter([['a_date', Operators::LOWER_THAN, new \DateTime('2017-02-28T00:00:00')]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_date', Operators::EQUALS, '2017-02-01']]);
+        $result = $this->executeFilter([['a_date', Operators::EQUALS, '2017-02-01']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_date', Operators::EQUALS, '2017-02-06']]);
+        $result = $this->executeFilter([['a_date', Operators::EQUALS, '2017-02-06']]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['a_date', Operators::GREATER_THAN, '2017-03-05']]);
+        $result = $this->executeFilter([['a_date', Operators::GREATER_THAN, '2017-03-05']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_date', Operators::GREATER_THAN, '2017-02-05']]);
+        $result = $this->executeFilter([['a_date', Operators::GREATER_THAN, '2017-02-05']]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_date', Operators::IS_EMPTY, []]]);
+        $result = $this->executeFilter([['a_date', Operators::IS_EMPTY, []]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_date', Operators::IS_NOT_EMPTY, []]]);
+        $result = $this->executeFilter([['a_date', Operators::IS_NOT_EMPTY, []]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_date', Operators::NOT_EQUAL, '2017-02-20']]);
+        $result = $this->executeFilter([['a_date', Operators::NOT_EQUAL, '2017-02-20']]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorBetween()
     {
-        $result = $this->execute([['a_date', Operators::BETWEEN, ['2017-02-03', '2017-02-06']]]);
+        $result = $this->executeFilter([['a_date', Operators::BETWEEN, ['2017-02-03', '2017-02-06']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_date', Operators::BETWEEN, ['2017-02-03', '2017-02-05']]]);
+        $result = $this->executeFilter([['a_date', Operators::BETWEEN, ['2017-02-03', '2017-02-05']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_date', Operators::BETWEEN, ['2017-02-06', '2017-02-27']]]);
+        $result = $this->executeFilter([['a_date', Operators::BETWEEN, ['2017-02-06', '2017-02-27']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_date', Operators::BETWEEN, ['2016-02-06', '2017-02-05']]]);
+        $result = $this->executeFilter([['a_date', Operators::BETWEEN, ['2016-02-06', '2017-02-05']]]);
         $this->assert($result, []);
     }
 
     public function testOperatorNotBetween()
     {
-        $result = $this->execute([['a_date', Operators::NOT_BETWEEN, ['2017-02-03', '2017-02-06']]]);
+        $result = $this->executeFilter([['a_date', Operators::NOT_BETWEEN, ['2017-02-03', '2017-02-06']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_date', Operators::NOT_BETWEEN, ['2017-02-03', '2017-02-05']]]);
+        $result = $this->executeFilter([['a_date', Operators::NOT_BETWEEN, ['2017-02-03', '2017-02-05']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_date', Operators::NOT_BETWEEN, ['2017-02-06', '2017-02-27']]]);
+        $result = $this->executeFilter([['a_date', Operators::NOT_BETWEEN, ['2017-02-06', '2017-02-27']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_date', Operators::NOT_BETWEEN, ['2016-02-06', '2017-02-05']]]);
+        $result = $this->executeFilter([['a_date', Operators::NOT_BETWEEN, ['2016-02-06', '2017-02-05']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
@@ -122,7 +125,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformedWithEmptyArray()
     {
-        $this->execute([['a_date', Operators::BETWEEN, []]]);
+        $this->executeFilter([['a_date', Operators::BETWEEN, []]]);
     }
 
     /**
@@ -131,7 +134,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformedWithISODate()
     {
-        $this->execute([['a_date', Operators::BETWEEN, '2016-12-12T00:00:00']]);
+        $this->executeFilter([['a_date', Operators::EQUALS, '2016-12-12T00:00:00']]);
     }
 
     /**
@@ -140,6 +143,6 @@ class DateFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['a_date', Operators::CONTAINS, '2017-02-07']]);
+        $this->executeFilter([['a_date', Operators::CONTAINS, '2017-02-07']]);
     }
 }

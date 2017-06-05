@@ -2,7 +2,7 @@
     <p>
         <%- _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>
     </p>
-<% } else if (_.isEmpty(completenesses)) { %>
+<% } else if (_.isEmpty(completenesses) || hasFamilyChanged) { %>
     <p>
         <%- _.__('pim_enrich.form.product.panel.completeness.info.no_completeness') %>
     </p>

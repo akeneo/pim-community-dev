@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductPdfRenderer implements RendererInterface
 {
+    /** @var string */
     const PDF_FORMAT = 'pdf';
 
     const THUMBNAIL_FILTER = 'thumbnail';
@@ -168,7 +169,7 @@ class ProductPdfRenderer implements RendererInterface
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
             if (AttributeTypes::IMAGE === $attribute->getType()) {
-                $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
+                $media = $product->getValue($attribute->getCode(), $locale, $scope)->getData();
 
                 if (null !== $media && null !== $media->getKey()) {
                     $imagePaths[] = $media->getKey();

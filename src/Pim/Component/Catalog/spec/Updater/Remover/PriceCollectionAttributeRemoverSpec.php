@@ -5,7 +5,9 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -17,11 +19,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         CurrencyRepositoryInterface $currencyRepository,
+        ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
             $currencyRepository,
+            $productBuilder,
             ['pim_catalog_price_collection']
         );
     }
@@ -42,31 +46,17 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_checks_locale_and_scope_when_removing_an_attribute_data(
-        $attrValidatorHelper,
-        $currencyRepository,
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-
-        $attribute->getCode()->willReturn('price');
-        $product->getValue('price', 'fr_FR', 'mobile')->willReturn(null);
-
-        $data = [['amount' => 123.2, 'currency' => 'EUR']];
-        $this->removeAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
     function it_removes_an_attribute_data_price_collection_value_to_a_product_value(
         $currencyRepository,
+        $productBuilder,
         AttributeInterface $attribute,
         ProductInterface $penProduct,
         ProductInterface $bookProduct,
-        ProductValueInterface $productValue,
+        ProductValueInterface $priceValue,
+        PriceCollectionInterface $priceCollection,
         ProductPriceInterface $priceEUR,
-        ProductPriceInterface $priceUSD
+        ProductPriceInterface $priceUSD,
+        \ArrayIterator $pricesIterator
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -76,14 +66,27 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $penProduct->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $penProduct->getValue('attributeCode', $locale, $scope)->willReturn($priceValue);
         $bookProduct->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $productValue->getPrice('EUR')->willReturn($priceEUR);
-        $productValue->getPrice('USD')->willReturn($priceUSD);
+        $priceValue->getData()->willReturn($priceCollection);
 
-        $productValue->removePrice($priceEUR)->shouldBeCalledTimes(1);
-        $productValue->removePrice($priceUSD)->shouldBeCalledTimes(1);
+        $priceCollection->getIterator()->willReturn($pricesIterator);
+        $pricesIterator->rewind()->shouldBeCalled();
+        $pricesIterator->valid()->willReturn(true, true, false);
+        $pricesIterator->current()->willReturn($priceEUR, $priceUSD);
+        $pricesIterator->next()->shouldBeCalled();
+
+        $priceEUR->getData()->willReturn(123.2);
+        $priceEUR->getCurrency()->willReturn('EUR');
+        $priceUSD->getData()->willReturn(42);
+        $priceUSD->getCurrency()->willReturn('USD');
+
+        $productBuilder
+            ->addOrReplaceProductValue($penProduct, $attribute, $locale, $scope, [])
+            ->shouldBeCalled();
+
+        $productBuilder->addOrReplaceProductValue($bookProduct, Argument::cetera())->shouldNotBeCalled();
 
         $this->removeAttributeData($penProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->removeAttributeData($bookProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);

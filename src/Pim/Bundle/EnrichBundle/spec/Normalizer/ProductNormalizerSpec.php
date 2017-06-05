@@ -11,6 +11,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AssociationInterface;
@@ -39,7 +40,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
         $storageDriver,
-        UserContext $userContext
+        UserContext $userContext,
+        CompletenessCalculatorInterface $completenessCalculator
     ) {
         $this->beConstructedWith(
         $productNormalizer,
@@ -56,7 +58,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $collectionFilter,
         $completenessCollectionNormalizer,
         $storageDriver,
-        $userContext
+        $userContext,
+        $completenessCalculator
         );
     }
 
@@ -148,6 +151,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $upsell->getGroups()->willReturn($groups);
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
+
+        $mug->getCompletenesses()->willReturn(new ArrayCollection(['']));
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');

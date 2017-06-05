@@ -61,6 +61,12 @@ class FormatterExtension extends AbstractExtension
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
         $rows = (array)$result->offsetGetOr('data', []);
+
+        if (isset($rows['totalRecords'])) {
+            $result->offsetSet('totalRecords', $rows['totalRecords']);
+            $rows = $rows['data'];
+        }
+
         $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
         $toProcess = array_merge($columns, $properties);

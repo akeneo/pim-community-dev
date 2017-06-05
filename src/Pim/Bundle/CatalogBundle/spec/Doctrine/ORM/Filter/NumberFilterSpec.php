@@ -41,7 +41,7 @@ class NumberFilterSpec extends ObjectBehavior
 
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
-        $number->getBackendType()->willReturn('varchar');
+        $number->getBackendType()->willReturn('text');
         $number->isLocalizable()->willReturn(false);
         $number->isScopable()->willReturn(false);
 
@@ -60,7 +60,7 @@ class NumberFilterSpec extends ObjectBehavior
 
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
-        $number->getBackendType()->willReturn('varchar');
+        $number->getBackendType()->willReturn('text');
         $number->isLocalizable()->willReturn(false);
         $number->isScopable()->willReturn(false);
 
@@ -84,7 +84,7 @@ class NumberFilterSpec extends ObjectBehavior
 
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
-        $number->getBackendType()->willReturn('varchar');
+        $number->getBackendType()->willReturn('text');
         $number->isLocalizable()->willReturn(false);
         $number->isScopable()->willReturn(false);
 
@@ -112,7 +112,7 @@ class NumberFilterSpec extends ObjectBehavior
 
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
-        $number->getBackendType()->willReturn('varchar');
+        $number->getBackendType()->willReturn('text');
         $number->isLocalizable()->willReturn(false);
         $number->isScopable()->willReturn(false);
 

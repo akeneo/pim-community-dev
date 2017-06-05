@@ -66,7 +66,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('navigation', new NavigationContext($parameters['base_url']));
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
-        $this->useContext('technical', new TechnicalContext());
 
         $this->useContext('domain-attribute-tab', new AttributeTabContext());
         $this->useContext('domain-completeness', new CompletenessContext());

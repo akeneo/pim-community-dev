@@ -19,9 +19,7 @@ datagrid:
             is_associated:
                 label:         Is associated
                 data_name:     is_associated
-                type:          twig
-                template:      PimDataGridBundle:Property:boolean.html.twig
-                frontend_type: html
+                frontend_type: boolean-label
                 primary:       true
             code:
                 label: Code

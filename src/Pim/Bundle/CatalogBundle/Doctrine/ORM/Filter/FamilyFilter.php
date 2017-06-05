@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -16,20 +15,12 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var ObjectIdResolverInterface */
-    protected $objectIdResolver;
-
     /**
-     * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedFields
-     * @param array                     $supportedOperators
+     * @param string[] $supportedFields
+     * @param string[] $supportedOperators
      */
-    public function __construct(
-        ObjectIdResolverInterface $objectIdResolver,
-        array $supportedFields = [],
-        array $supportedOperators = []
-    ) {
-        $this->objectIdResolver = $objectIdResolver;
+    public function __construct(array $supportedFields = [], array $supportedOperators = [])
+    {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -41,10 +32,6 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
     {
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
-
-            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
-            }
         }
 
         $rootAlias = $this->qb->getRootAlias();
@@ -54,24 +41,24 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
         switch ($operator) {
             case Operators::IN_LIST:
                 $this->qb->andWhere(
-                    $this->qb->expr()->in($entityAlias . '.id', $value)
+                    $this->qb->expr()->in($entityAlias . '.code', $value)
                 );
                 break;
             case Operators::NOT_IN_LIST:
                 $this->qb->andWhere(
                     $this->qb->expr()->orX(
-                        $this->qb->expr()->notIn($entityAlias . '.id', $value),
-                        $this->qb->expr()->isNull($entityAlias . '.id')
+                        $this->qb->expr()->notIn($entityAlias . '.code', $value),
+                        $this->qb->expr()->isNull($entityAlias . '.code')
                     )
                 );
                 break;
             case Operators::IS_EMPTY:
                 $this->qb->andWhere(
-                    $this->qb->expr()->isNull($entityAlias . '.id')
+                    $this->qb->expr()->isNull($entityAlias . '.code')
                 );
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->qb->andWhere($this->qb->expr()->isNotNull($entityAlias . '.id'));
+                $this->qb->andWhere($this->qb->expr()->isNotNull($entityAlias . '.code'));
                 break;
         }
 

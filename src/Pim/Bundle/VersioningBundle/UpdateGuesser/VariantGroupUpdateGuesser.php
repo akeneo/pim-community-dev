@@ -15,15 +15,13 @@ use Pim\Component\Catalog\Model\ProductTemplateInterface;
  */
 class VariantGroupUpdateGuesser implements UpdateGuesserInterface
 {
-    /** @var ManagerRegistry */
+    /** @var SmartManagerRegistry */
     protected $registry;
 
     /** @var string */
     protected $groupClass;
 
     /**
-     * Constructor
-     *
      * @param SmartManagerRegistry $registry
      * @param string               $groupClass
      */

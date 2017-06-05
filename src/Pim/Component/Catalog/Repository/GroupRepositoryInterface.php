@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
 /**
@@ -19,15 +18,6 @@ use Pim\Component\Catalog\Model\ProductTemplateInterface;
 interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * Get ordered groups associative array id to label
-     *
-     * @param GroupTypeInterface $type
-     *
-     * @return array
-     */
-    public function getChoicesByType(GroupTypeInterface $type);
-
-    /**
      * Return the number of groups containing the provided attribute
      *
      * @param AttributeInterface $attribute
@@ -35,13 +25,6 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @return int
      */
     public function countVariantGroupAxis(AttributeInterface $attribute);
-
-    /**
-     * Return the number of variant groups
-     *
-     * @return int
-     */
-    public function countVariantGroups();
 
     /**
      * @return mixed
@@ -71,33 +54,6 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @return array
      */
     public function getAllVariantGroups();
-
-    /**
-     * Get all variant groups with ids $whereIn $variantGroupIds
-     * If $whereIn is set to false, it makes a NOT IN request.
-     *
-     * @param array $variantGroupIds
-     * @param bool  $whereIn
-     *
-     * @return array
-     */
-    public function getVariantGroupsByIds(array $variantGroupIds, $whereIn = true);
-
-    /**
-     * Get all variant group ids
-     *
-     * @return array
-     */
-    public function getAllVariantGroupIds();
-
-    /**
-     * Get variant groups where all their attributes are in $attributeIds
-     *
-     * @param array $attributeIds
-     *
-     * @return array
-     */
-    public function getVariantGroupsByAttributeIds(array $attributeIds);
 
     /**
      * Get the variant group where its ProductTemplate is $productTemplate

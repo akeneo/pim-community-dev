@@ -110,7 +110,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->updateProduct($product, $filteredItem);
         } catch (PropertyException $exception) {
             $this->detachProduct($product);
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+            $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
+            $this->skipItemWithMessage($item, $message, $exception);
         }
 
         $violations = $this->validateProduct($product);

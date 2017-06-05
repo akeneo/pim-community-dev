@@ -24,7 +24,10 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractCompletenessIntegration
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
@@ -128,8 +131,8 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
             ]
         );
         $this->assertCompleteOnChannel($productCompleteEcommerce, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productCompleteEcommerce, 'print');
-        $this->assertNotCompleteOnChannel($productCompleteEcommerce, 'tablet');
+        $this->assertNotCompleteOnChannel($productCompleteEcommerce, 'print', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productCompleteEcommerce, 'tablet', ['a_price_collection']);
 
         $productCompletePrint = $this->createProductWithStandardValues(
             $family,
@@ -151,9 +154,9 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
                 ],
             ]
         );
-        $this->assertNotCompleteOnChannel($productCompletePrint, 'ecommerce');
+        $this->assertNotCompleteOnChannel($productCompletePrint, 'ecommerce', ['a_price_collection']);
         $this->assertCompleteOnChannel($productCompletePrint, 'print');
-        $this->assertNotCompleteOnChannel($productCompletePrint, 'tablet');
+        $this->assertNotCompleteOnChannel($productCompletePrint, 'tablet', ['a_price_collection']);
     }
 
     public function testNotCompletePriceCollection()
@@ -161,9 +164,9 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('another_family');
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
-        $this->assertNotCompleteOnChannel($productWithoutValues, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productWithoutValues, 'print');
-        $this->assertNotCompleteOnChannel($productWithoutValues, 'tablet');
+        $this->assertNotCompleteOnChannel($productWithoutValues, 'ecommerce', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productWithoutValues, 'print', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productWithoutValues, 'tablet', ['a_price_collection']);
 
         $productAmountsNull = $this->createProductWithStandardValues(
             $family,
@@ -189,9 +192,9 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
                 ],
             ]
         );
-        $this->assertNotCompleteOnChannel($productAmountsNull, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productAmountsNull, 'print');
-        $this->assertNotCompleteOnChannel($productAmountsNull, 'tablet');
+        $this->assertNotCompleteOnChannel($productAmountsNull, 'ecommerce', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productAmountsNull, 'print', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productAmountsNull, 'tablet', ['a_price_collection']);
 
         $productAmountNull = $this->createProductWithStandardValues(
             $family,
@@ -218,36 +221,8 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
             ]
         );
         $this->assertCompleteOnChannel($productAmountNull, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productAmountNull, 'print');
-        $this->assertNotCompleteOnChannel($productAmountNull, 'tablet');
-
-        $productCurrencyEmptyString = $this->createProductWithStandardValues(
-            $family,
-            'product_currency_empty_string',
-            [
-                'values' => [
-                    'a_price_collection' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => [
-                                [
-                                    'amount'   => 7,
-                                    'currency' => 'USD',
-                                ],
-                                [
-                                    'amount'   => 87,
-                                    'currency' => '',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertCompleteOnChannel($productCurrencyEmptyString, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productCurrencyEmptyString, 'print');
-        $this->assertNotCompleteOnChannel($productCurrencyEmptyString, 'tablet');
+        $this->assertNotCompleteOnChannel($productAmountNull, 'print', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productAmountNull, 'tablet', ['a_price_collection']);
 
         $productMissingPrice = $this->createProductWithStandardValues(
             $family,
@@ -270,8 +245,9 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
             ]
         );
         $this->assertCompleteOnChannel($productMissingPrice, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productMissingPrice, 'print');
-        $this->assertNotCompleteOnChannel($productMissingPrice, 'tablet');    }
+        $this->assertNotCompleteOnChannel($productMissingPrice, 'print', ['a_price_collection']);
+        $this->assertNotCompleteOnChannel($productMissingPrice, 'tablet', ['a_price_collection']);
+    }
 
     /**
      * @param string $channelCode
@@ -328,11 +304,9 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
      * @param ProductInterface $product
      * @param string           $channelCode
      */
-    protected function assertCompleteOnChannel(ProductInterface $product, $channelCode)
+    private function assertCompleteOnChannel(ProductInterface $product, $channelCode)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(3, $completenesses);
+        $this->assertCompletenessesCount($product, 3);
 
         $completeness = $this->getCompletenessByChannel($product, $channelCode);
 
@@ -343,6 +317,7 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals(2, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
     }
 
     /**
@@ -351,12 +326,11 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
      *
      * @param ProductInterface $product
      * @param string           $channelCode
+     * @param string[]         $expectedAttributeCodes
      */
-    protected function assertNotCompleteOnChannel(ProductInterface $product, $channelCode)
+    private function assertNotCompleteOnChannel(ProductInterface $product, $channelCode, array $expectedAttributeCodes)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(3, $completenesses);
+        $this->assertCompletenessesCount($product, 3);
 
         $completeness = $this->getCompletenessByChannel($product, $channelCode);
 
@@ -367,6 +341,7 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
         $this->assertEquals(50, $completeness->getRatio());
         $this->assertEquals(2, $completeness->getRequiredCount());
         $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
     }
 
     /**
@@ -376,7 +351,7 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
      * @throws \Exception
      * @return CompletenessInterface
      */
-    protected function getCompletenessByChannel(ProductInterface $product, $channelCode)
+    private function getCompletenessByChannel(ProductInterface $product, $channelCode)
     {
         $completenesses = $product->getCompletenesses()->toArray();
 

@@ -55,3 +55,7 @@ parameters:
 
     # Maximum number of resources when updating a list of resources
     api_input_max_resources_number: 100
+
+    # Files used as configuration for the Elasticsearch index
+    elasticsearch_index_configuration_files:
+        - '%kernel.root_dir%/../src/Pim/Bundle/CatalogBundle/Resources/elasticsearch/index_configuration.yml'

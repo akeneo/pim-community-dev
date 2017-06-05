@@ -75,7 +75,7 @@ class Version implements VersionInterface
         $this->resourceId = $resourceId;
         $this->author = $author;
         $this->context = $context;
-        $this->loggedAt = new \DateTime('now');
+        $this->loggedAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->pending = true;
     }
 

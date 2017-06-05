@@ -93,7 +93,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
 
         if (null === $product) {
             throw new NotFoundHttpException(

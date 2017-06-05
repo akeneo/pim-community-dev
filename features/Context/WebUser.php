@@ -298,6 +298,7 @@ class WebUser extends RawMinkContext
     public function iSwitchTheLocaleTo($locale)
     {
         $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
+        $this->wait();
     }
 
     /**
@@ -2363,11 +2364,17 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $family
+     *
      * @Then /^I change the family of the product to "([^"]*)"$/
      */
     public function iChangeTheFamilyOfTheProductTo($family)
     {
-        $this->getCurrentPage()->changeFamily($family);
+        $this->spin(function () use ($family) {
+            $this->getCurrentPage()->changeFamily($family);
+
+            return true;
+        }, sprintf('Cannot change the product family to %s', $family));
     }
 
     /**

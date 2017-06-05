@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Boolean;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,9 +10,12 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BooleanFilterIntegration extends AbstractFilterTestCase
+class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
@@ -31,19 +34,19 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_yes_no', Operators::EQUALS, true]]);
+        $result = $this->executeFilter([['a_yes_no', Operators::EQUALS, true]]);
         $this->assert($result, ['yes']);
 
-        $result = $this->execute([['a_yes_no', Operators::EQUALS, false]]);
+        $result = $this->executeFilter([['a_yes_no', Operators::EQUALS, false]]);
         $this->assert($result, ['no']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_yes_no', Operators::NOT_EQUAL, true]]);
+        $result = $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, true]]);
         $this->assert($result, ['no']);
 
-        $result = $this->execute([['a_yes_no', Operators::NOT_EQUAL, false]]);
+        $result = $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, false]]);
         $this->assert($result, ['yes']);
     }
 
@@ -53,7 +56,7 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['a_yes_no', Operators::NOT_EQUAL, 'string']]);
+        $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, 'string']]);
     }
 
     /**
@@ -62,7 +65,7 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsNull()
     {
-        $this->execute([['a_yes_no', Operators::NOT_EQUAL, null]]);
+        $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, null]]);
     }
 
     /**
@@ -71,6 +74,6 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['a_yes_no', Operators::CONTAINS, true]]);
+        $this->executeFilter([['a_yes_no', Operators::CONTAINS, true]]);
     }
 }

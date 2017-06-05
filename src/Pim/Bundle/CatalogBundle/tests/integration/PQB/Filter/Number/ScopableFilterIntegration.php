@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Number;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,9 +11,12 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopableFilterIntegration extends AbstractFilterTestCase
+class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
@@ -47,64 +50,64 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['a_scopable_number', Operators::LOWER_THAN, -14, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::LOWER_THAN, -14, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_scopable_number', Operators::LOWER_THAN, -14, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::LOWER_THAN, -14, ['scope' => 'tablet']]]);
         $this->assert($result, []);
     }
 
     public function testOperatorInferiorOrEqual()
     {
-        $result = $this->execute([['a_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -15, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -15, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -14, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -14, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_scopable_number', Operators::EQUALS, -15, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::EQUALS, -15, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['a_scopable_number', Operators::GREATER_THAN, -14.0001, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::GREATER_THAN, -14.0001, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_scopable_number', Operators::GREATER_THAN, -14, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::GREATER_THAN, -14, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_two']);
     }
 
     public function testOperatorSuperiorOrEqual()
     {
-        $result = $this->execute([['a_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -14, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -14, ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -14, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -14, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_scopable_number', Operators::IS_EMPTY, 0, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::IS_EMPTY, 0, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_two', 'empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_scopable_number', Operators::IS_NOT_EMPTY, 0, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::IS_NOT_EMPTY, 0, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_scopable_number', Operators::NOT_EQUAL, 15, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, 15, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_scopable_number', Operators::NOT_EQUAL, -15, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, -15, ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
     }
 
@@ -114,7 +117,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorScopable()
     {
-        $this->execute([['a_scopable_number', Operators::NOT_EQUAL, 12]]);
+        $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, 12]]);
     }
 
     /**
@@ -123,6 +126,6 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_scopable_number', Operators::NOT_EQUAL, 12, ['scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, 12, ['scope' => 'NOT_FOUND']]]);
     }
 }

@@ -24,15 +24,21 @@
         <!-- Legacy PIM phpunit unit tests -->
         <testsuite name="PIM_Unit_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/tests/Unit</directory>
         </testsuite>
 
         <!-- Complete suite for PIM integration tests -->
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Akeneo/Bundle/*Bundle/tests/integration</directory>
         </testsuite>
 
         <!-- Set of small suites for PIM integration tests -->
+        <testsuite name="Akeneo_Integration_Test">
+            <directory suffix="Integration.php">../src/Akeneo/Bundle/*/tests/integration</directory>
+        </testsuite>
+
         <testsuite name="PIM_Api_Base_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Component/Api/tests/integration</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/EventSubscriber</directory>
@@ -71,6 +77,9 @@
 
         <testsuite name="PIM_Catalog_PQB_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Elasticsearch</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/ReferenceDataBundle/tests/integration/PQB</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/EnrichBundle/Tests/integration/PQB</directory>
         </testsuite>
 
     </testsuites>

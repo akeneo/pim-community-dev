@@ -234,7 +234,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Object}
          */
         parse: function(resp, options) {
-            this.state.totalRecords = resp.options.totalRecords;
+            this.state.totalRecords = 'undefined' !== typeof(resp.totalRecords) ? resp.totalRecords : resp.options.totalRecords;
             this.state = this._checkState(this.state);
             return resp.data;
         },

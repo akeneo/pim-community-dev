@@ -21,5 +21,5 @@ Feature: Import partial product information
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And the english name of "caterpillar-boots" should be "Caterpillar boots"
+    And the english localizable value name of "caterpillar-boots" should be "Caterpillar boots"
     And family of "caterpillar-boots" should be "boots"

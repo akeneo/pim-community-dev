@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -54,7 +55,6 @@ class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
         $productRepository,
         $paginatorFactory,
         $stepExecution,
-        ProductInterface $product,
         $pqbFactory,
         ProductQueryBuilder $pqb,
         ProductQueryBuilder $pqb2,
@@ -64,7 +64,8 @@ class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $groupRepository,
         GroupInterface $variantGroup,
         AttributeInterface $axe,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        CursorInterface $eligibleProductsToVariant
     ) {
         $configuration = [
             'filters' => [
@@ -87,7 +88,7 @@ class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
         $variantGroup->getId()->willReturn(42);
         $axe->getCode()->willReturn('axe');
 
-        $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([]);
+        $productRepository->getEligibleProductsForVariantGroup(42)->willReturn($eligibleProductsToVariant);
 
         $pqbFactory->create(['filters' => $configuration['filters']])->willReturn($pqb);
         $pqb->execute()->willReturn($cursor);

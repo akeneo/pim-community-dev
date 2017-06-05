@@ -14,10 +14,10 @@ interface CursorFactoryInterface
     /**
      * Create the cursor with the correct implementation
      *
-     * @param mixed    $queryBuilder Query builder
-     * @param int|null $pageSize     Optional page size for reading data
+     * @param mixed $queryBuilder Query builder
+     * @param array $options      Options to build cursor
      *
      * @return CursorInterface
      */
-    public function createCursor($queryBuilder, $pageSize = null);
+    public function createCursor($queryBuilder, array $options = []);
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,9 +11,12 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableFilterIntegration extends AbstractFilterTestCase
+class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
@@ -49,76 +52,76 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 21.0001, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 21.0001, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorInferiorOrEquals()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_localizable_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_localizable_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::EQUALS, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::EQUALS, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_metric', Operators::EQUALS, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::EQUALS, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 9, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 9, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorSuperiorOrEquals()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 25, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 25, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::IS_EMPTY, [], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::IS_EMPTY, [], ['locale' => 'en_US']]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_two']);
     }
 
@@ -128,7 +131,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorMetricLocalizable()
     {
-        $this->execute([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
+        $this->executeFilter([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
     }
 
     /**
@@ -137,6 +140,6 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
      */
     public function testLocaleNotFound()
     {
-        $this->execute([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'KILOWATT'], ['locale' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'KILOWATT'], ['locale' => 'NOT_FOUND']]]);
     }
 }

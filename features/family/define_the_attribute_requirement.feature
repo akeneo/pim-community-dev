@@ -44,7 +44,7 @@ Feature: Define the attribute requirement
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                     | ratio |
       | mobile  | en_US  | success |                                                    | 100%  |
-      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view | 56%   |
+      | tablet  | en_US  | warning | Weather conditions, Description, Rating, Side view | 55%   |
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "rating" requirement in channel "mobile"
@@ -61,4 +61,4 @@ Feature: Define the attribute requirement
     Then I should see the completeness:
       | channel | locale | state   | missing_values                             | ratio |
       | mobile  | en_US  | success |                                            | 100%  |
-      | tablet  | en_US  | warning | Description, Weather conditions, Side view | 63%   |
+      | tablet  | en_US  | warning | Description, Weather conditions, Side view | 62%   |

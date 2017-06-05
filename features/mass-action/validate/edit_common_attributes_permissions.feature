@@ -22,4 +22,4 @@ Feature: Edit common attributes with permissions
     And I change the "Name" to "boots"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    And the english name of "boots" should be "boots"
+    And the english localizable value name of "boots" should be "boots"

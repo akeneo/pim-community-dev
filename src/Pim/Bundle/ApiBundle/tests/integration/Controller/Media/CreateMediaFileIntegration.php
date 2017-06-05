@@ -57,9 +57,9 @@ class CreateMediaFileIntegration extends ApiTestCase
         // check if product value has been created
         $product = $this->productRepository->findOneByIdentifier('foo');
         $this->assertCount(2, $product->getValues());
-        $this->assertSame('foo', $product->getValues()->first()->getData());
+        $this->assertSame('foo', $product->getIdentifier());
 
-        $productValueFile = $product->getValues()->next();
+        $productValueFile = $product->getValues()->getByCodes('an_image');
         $this->assertInstanceOf(FileInfoInterface::class, $productValueFile->getData());
         $this->assertSame($productValueFile->getData(), $fileInfo);
 

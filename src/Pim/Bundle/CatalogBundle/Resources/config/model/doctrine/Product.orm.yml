@@ -12,6 +12,14 @@ Pim\Component\Catalog\Model\Product:
         enabled:
             type: boolean
             column: is_enabled
+        identifier:
+            type: string
+            length: 255
+            unique: true
+            nullable: false
+        rawValues:
+            type: native_json
+            column: raw_values
         created:
             type: datetime
         updated:
@@ -56,17 +64,16 @@ Pim\Component\Catalog\Model\Product:
                 - persist
                 - refresh
                 - detach
-        values:
-            targetEntity: Pim\Component\Catalog\Model\ProductValueInterface
-            orphanRemoval: true
-            mappedBy: entity
+        completenesses:
+            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+            mappedBy: product
             cascade:
                 - remove
                 - persist
                 - refresh
                 - detach
-        completenesses:
-            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+        uniqueData:
+            targetEntity: Pim\Component\Catalog\Model\ProductUniqueDataInterface
             mappedBy: product
             cascade:
                 - remove

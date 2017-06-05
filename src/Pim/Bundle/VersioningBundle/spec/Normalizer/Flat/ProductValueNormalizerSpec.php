@@ -117,7 +117,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
-        $simpleAttribute->getBackendType()->willReturn('varchar');
+        $simpleAttribute->getBackendType()->willReturn('text');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'my data']);
     }
 
@@ -230,7 +230,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $value->getScope()->willReturn('mobile');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
-        $simpleAttribute->getBackendType()->willReturn('varchar');
+        $simpleAttribute->getBackendType()->willReturn('text');
         $simpleAttribute->isScopable()->willReturn(true);
 
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-mobile' => '12']);
@@ -244,7 +244,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $value->getLocale()->willReturn('fr_FR');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
-        $simpleAttribute->getBackendType()->willReturn('varchar');
+        $simpleAttribute->getBackendType()->willReturn('text');
         $simpleAttribute->isLocalizable()->willReturn(true);
 
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-fr_FR' => '12']);
@@ -259,7 +259,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getLocale()->willReturn('fr_FR');
         $value->getScope()->willReturn('mobile');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
-        $simpleAttribute->getBackendType()->willReturn('varchar');
+        $simpleAttribute->getBackendType()->willReturn('text');
         $simpleAttribute->isLocalizable()->willReturn(true);
         $simpleAttribute->isScopable()->willReturn(true);
 

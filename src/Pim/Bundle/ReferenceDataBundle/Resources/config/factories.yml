@@ -1,0 +1,24 @@
+parameters:
+    pim_reference_data.factory.product_value.reference_data.class:            Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory
+    pim_reference_data.factory.product_value.reference_data_collection.class: Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory
+
+services:
+    pim_reference_data.factory.product_value.reference_data:
+        class: '%pim_reference_data.factory.product_value.reference_data.class%'
+        public: false
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+            - '%pim_reference_data.product_value.reference_data.class%'
+            - 'pim_reference_data_simpleselect'
+        tags:
+            - { name: pim_catalog.factory.product_value }
+
+    pim_reference_data.factory.product_value.reference_data_collection:
+        class: '%pim_reference_data.factory.product_value.reference_data_collection.class%'
+        public: false
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+            - '%pim_reference_data.product_value.reference_data_collection.class%'
+            - 'pim_reference_data_multiselect'
+        tags:
+            - { name: pim_catalog.factory.product_value }

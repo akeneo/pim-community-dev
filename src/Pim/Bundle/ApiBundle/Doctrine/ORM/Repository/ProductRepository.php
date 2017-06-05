@@ -4,9 +4,7 @@ namespace Pim\Bundle\ApiBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\UnexpectedResultException;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface as CatalogProductRepositoryInterface;
 
 /**
@@ -37,68 +35,6 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
     public function findOneByIdentifier($identifier)
     {
         return $this->productRepository->findOneByIdentifier($identifier);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function searchAfterOffset(ProductQueryBuilderInterface $pqb, $limit, $offset)
-    {
-        $qb = clone $pqb->getQueryBuilder();
-
-        $rootAlias = $qb->getRootAliases()[0];
-
-        return $qb
-            ->orderBy(sprintf('%s.id', $rootAlias), 'ASC')
-            ->groupBy(sprintf('%s.id', $rootAlias))
-            ->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function searchAfterIdentifier(ProductQueryBuilderInterface $pqb, $limit, $searchAfterIdentifier)
-    {
-        $qb = clone $pqb->getQueryBuilder();
-
-        $rootAlias = $qb->getRootAliases()[0];
-
-        if (null !== $searchAfterIdentifier) {
-            $qb->andWhere(sprintf('%s.id > :id', $rootAlias))
-                ->setParameter(':id', $searchAfterIdentifier);
-        }
-
-        return $qb
-            ->orderBy(sprintf('%s.id', $rootAlias), 'ASC')
-            ->groupBy(sprintf('%s.id', $rootAlias))
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count(ProductQueryBuilderInterface $pqb)
-    {
-        try {
-            $qb = clone $pqb->getQueryBuilder();
-
-            $rootAlias = $qb->getRootAliases()[0];
-
-            return (int) $qb
-                ->select(sprintf('COUNT(DISTINCT %s.id)', $rootAlias))
-                ->setMaxResults(null)
-                ->setFirstResult(null)
-                ->resetDQLParts(['orderBy', 'groupBy'])
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (UnexpectedResultException $e) {
-            return 0;
-        }
     }
 
     /**

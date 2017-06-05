@@ -38,8 +38,11 @@ abstract class ApiTestCase extends WebTestCase
 
         $configuration = $this->getConfiguration();
         $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
+
         $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
         $fixturesLoader->load();
+
+        $this->resetIndex();
     }
 
     /**
@@ -220,5 +223,20 @@ abstract class ApiTestCase extends WebTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    /**
+     * Resets the index used for the integration tests query
+     */
+    private function resetIndex()
+    {
+        $esClient = $this->get('akeneo_elasticsearch.client');
+        $conf = $this->get('akeneo_elasticsearch.index_configuration.loader')->load();
+
+        if ($esClient->hasIndex()) {
+            $esClient->deleteIndex();
+        }
+
+        $esClient->createIndex($conf->buildAggregated());
     }
 }

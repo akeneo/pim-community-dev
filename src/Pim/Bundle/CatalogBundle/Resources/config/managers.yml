@@ -27,15 +27,15 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.doctrine.completeness_generator'
-            - '@pim_catalog.completeness.checker.chained'
-            - '%pim_catalog.entity.completeness.class%'
+            - '@pim_catalog.completeness.generator'
+            - '@pim_catalog.remover.completeness'
+            - '@pim_catalog.completeness.checker'
 
     pim_catalog.manager.product_template_media:
         class: '%pim_catalog.manager.product_template_media.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@pim_serializer'
+            - '@pim_catalog.factory.product_value'
 
     pim_catalog.applier.product_template:
         class: '%pim_catalog.applier.product_template.class%'

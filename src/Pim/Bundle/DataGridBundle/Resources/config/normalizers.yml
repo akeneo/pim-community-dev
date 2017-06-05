@@ -1,0 +1,69 @@
+parameters:
+    pim_datagrid.normalizer.product.class: Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer
+    pim_datagrid.normalizer.product_association.class: Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer
+    pim_datagrid.normalizer.product.product_values.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer
+    pim_datagrid.normalizer.product.product_value.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValueNormalizer
+    pim_datagrid.normalizer.product.option.class: Pim\Bundle\DataGridBundle\Normalizer\Product\OptionNormalizer
+    pim_datagrid.normalizer.product.options.class: Pim\Bundle\DataGridBundle\Normalizer\Product\OptionsNormalizer
+    pim_datagrid.normalizer.product.file.class: Pim\Bundle\DataGridBundle\Normalizer\Product\FileNormalizer
+    pim_datagrid.normalizer.datetime.class: Pim\Bundle\DataGridBundle\Normalizer\DateTimeNormalizer
+    pim_datagrid.normalizer.group_product.class: Pim\Bundle\DataGridBundle\Normalizer\GroupProductNormalizer
+
+services:
+    pim_datagrid.normalizer.product:
+        class: '%pim_datagrid.normalizer.product.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product_association:
+        class: '%pim_datagrid.normalizer.product_association.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.option:
+        class: '%pim_datagrid.normalizer.product.option.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.options:
+        class: '%pim_datagrid.normalizer.product.options.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.product_values:
+        class: '%pim_datagrid.normalizer.product.product_values.class%'
+        arguments:
+            - '@pim_catalog.localization.presenter.registry'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.datetime:
+        class: '%pim_datagrid.normalizer.datetime.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.datetime'
+            - '@pim_catalog.localization.presenter.date'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.file:
+        class: '%pim_datagrid.normalizer.product.file.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.product_value:
+        class: '%pim_datagrid.normalizer.product.product_value.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_value'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_datagrid.normalizer.group_product:
+        class: '%pim_datagrid.normalizer.group_product.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_serializer.normalizer }

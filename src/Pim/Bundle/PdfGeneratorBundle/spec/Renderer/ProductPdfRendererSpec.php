@@ -93,7 +93,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getAttributes()->willReturn([$mainImage]);
         $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
 
-        $productValue->getMedia()->willReturn($fileInfo);
+        $productValue->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
         $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);

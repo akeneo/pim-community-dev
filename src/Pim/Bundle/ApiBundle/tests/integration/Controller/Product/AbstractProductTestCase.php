@@ -5,6 +5,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,12 +18,18 @@ abstract class AbstractProductTestCase extends ApiTestCase
     /**
      * @param string $identifier
      * @param array  $data
+     *
+     * @return ProductInterface
      */
     protected function createProduct($identifier, array $data = [])
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->get('akeneo_elasticsearch.client')->refreshIndex();
+
+        return $product;
     }
 
     /**
@@ -62,7 +69,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
                 foreach ($values as $index => $value) {
                     $sanitizedData = ['data' => MediaSanitizer::sanitize($value['data'])];
                     if (isset($value['_links']['download']['href'])) {
-                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize($value['_links']['download']['href']);
+                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize(
+                            $value['_links']['download']['href']
+                        );
                     }
 
                     $data['values'][$attributeCode][$index] = array_replace($value, $sanitizedData);
@@ -75,7 +84,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
     /**
      * @param Response $response
-     * @param array    $expected
+     * @param string   $expected
      */
     protected function assertListResponse(Response $response, $expected)
     {

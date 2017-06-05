@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Prophecy\Argument;
 
 class PriceCompleteCheckerSpec extends ObjectBehavior
 {
@@ -20,17 +21,19 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
 
     public function it_suports_price_collection_attribute(
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getType()->willReturn('pim_catalog_price_collection');
-        $this->supportsValue($productValue)->shouldReturn(true);
+        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
 
         $attribute->getType()->willReturn('other');
-        $this->supportsValue($productValue)->shouldReturn(false);
+        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(false);
     }
 
-    public function it_succesfully_checks_complete_price_collection(
+    public function it_successfully_checks_complete_price_collection(
         ProductValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -41,6 +44,8 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
         ProductPriceInterface $price2
     ) {
         $channel->getCurrencies()->willReturn($arrayCollection);
+        $arrayCollection->map(Argument::any())->willReturn(['USD', 'EUR']);
+
         $arrayCollection->toArray()->willReturn([$currency1, $currency2]);
 
         $currency1->getCode()->willReturn('USD');
@@ -55,7 +60,7 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
         $this->isComplete($value, $channel, $locale)->shouldReturn(true);
     }
 
-    public function it_succesfully_checks_incomplete_price_collection(
+    public function it_successfully_checks_incomplete_price_collection(
         ProductValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -65,7 +70,7 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
         ProductPriceInterface $price1
     ) {
         $channel->getCurrencies()->willReturn($arrayCollection);
-        $arrayCollection->toArray()->willReturn([$currency1, $currency2]);
+        $arrayCollection->map(Argument::any())->willReturn(['USD', 'EUR']);
 
         $currency1->getCode()->willReturn('USD');
 

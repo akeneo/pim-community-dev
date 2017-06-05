@@ -8,3 +8,5 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
     installer_data:    PimInstallerBundle:minimal
+    index_name:        akeneo_pim
+    index_hosts:       'localhost: 9200'
