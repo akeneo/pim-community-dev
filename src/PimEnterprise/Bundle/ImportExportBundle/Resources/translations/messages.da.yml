@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Tilladt at udføre jobprofil
+  edit.label: Tilladt at redigere jobprofil
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Rettigheder
