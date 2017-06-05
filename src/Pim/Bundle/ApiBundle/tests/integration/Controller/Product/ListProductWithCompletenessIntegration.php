@@ -66,17 +66,18 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
+        $encryptedId = urlencode($this->getEncryptedId('product_complete_en_locale'));
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
         $searchEncoded = urlencode($search);
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "first": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "next": {"href": "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"}
+        "self": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "first": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}&search_after=${encryptedId}"}
     },
-    "current_page" : 1,
+    "current_page" : null,
     "_embedded"    : {
 		"items": [
 		    {
@@ -160,5 +161,19 @@ JSON;
     protected function getConfiguration()
     {
         return new Configuration([Configuration::getTechnicalCatalogPath()]);
+    }
+
+
+    /**
+     * @param string $productIdentifier
+     */
+    private function getEncryptedId($productIdentifier)
+    {
+        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
+        $productRepository = $this->get('pim_catalog.repository.product');
+
+        $product = $productRepository->findOneByIdentifier($productIdentifier);
+
+        return $encrypter->encrypt($product->getId());
     }
 }
