@@ -1,0 +1,11 @@
+pimee_enrich.acl.locale.edit_permissions: Administrere landestandard tilladelser
+pimee_enrich.acl.category.edit_permissions: Administrer kategori tilladelser
+pimee_enrich.acl.attribute_group.edit_permissions: Administrer attribut gruppe tilladelser
+pimee_importexport.acl.export_profile.edit_permissions: Administrer eksport profil tilladelser
+pimee_importexport.acl.import_profile.edit_permissions: Administrer import profil tilladelser
+pimee_enrich.groups.label: Ejer grupper
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Antal adgange med brugerdefinerede landestandarder
+    nb_custom_category_accesses: Antal adgange med brugerdefineret kategori
+    nb_custom_attribute_group_accesses: Antallet af brugerdefineret attribut gruppe adgangsveje
