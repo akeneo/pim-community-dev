@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6429: Improve the loading of the completeness widget on dashboard in ORM
+- PIM-6399: Stores images as PNG instead of JPG
 
 # 1.5.22 (2017-05-22)
 
@@ -117,10 +118,6 @@
 
 - PIM-5767: Issue with filter "in list" when SKU contains dashes (-)
 - PIM-5896: Fix reference data name validation when creating a reference data simple/multi-select attribute
-
-## Technical improvements
-
-- Add a duplicated product values cleaning command
 
 ## Technical improvements
 
