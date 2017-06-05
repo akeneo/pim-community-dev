@@ -1,8 +1,7 @@
 /* eslint-env es6 */
-
+const utils = require('loader-utils');
 const path = require('path')
 const hasModule = (content) => content.indexOf('module') >= 0;
-const configMap = require('../web/dist/general.js')
 const _ = require('lodash')
 
 
@@ -18,6 +17,8 @@ function formatModuleName(name) {
  * @return {String}         Returns a string with the original content and the injected config
  */
 module.exports = function(content) {
+    const options = utils.getOptions(this);
+
     this.cacheable()
     if (!hasModule(content)) return content;
 
@@ -29,7 +30,7 @@ module.exports = function(content) {
     modulePath = modulePath.replace(moduleExt, '')
 
     const moduleName = aliases[modulePath]
-    const moduleConfig = configMap[formatModuleName(moduleName)] || {}
+    const moduleConfig = options.configMap[formatModuleName(moduleName)] || {}
 
     return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`;
 }

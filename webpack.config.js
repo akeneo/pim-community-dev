@@ -10,7 +10,7 @@ const AddToContextPlugin = require('./frontend/add-context-plugin')
 const utils = require('./frontend/requirejs-utils')
 
 const rootDir = process.cwd();
-const importPaths = utils.getModulePaths(requirePaths, rootDir)
+const moduleConfig = utils.getModulePaths(requirePaths, rootDir)
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const globToRegex = require('glob-to-regexp');
 const customPaths = require('./frontend/custom-paths')
@@ -28,7 +28,7 @@ const contextPaths = [
 ].map(glob => globToRegex(glob).toString().slice(2, -2))
 
 const contextRegex = `/^.*(${contextPaths.join('|')})$/`
-const moduleAliases = Object.assign(importPaths,
+const moduleAliases = Object.assign(moduleConfig.paths,
    _.mapValues(customPaths, custom => path.resolve(rootDir, custom)),
    {
      'require-polyfill': path.resolve(__dirname, './frontend/require-polyfill.js'),
@@ -41,7 +41,7 @@ console.log('Start webpack from', rootDir)
 module.exports = {
     target: 'web',
     entry: [
-        path.resolve(__dirname, './web/bundles/pimenrich/js/index.js')
+        path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')
     ],
     output: {
         path: path.resolve('./web/dist/'),
@@ -71,7 +71,9 @@ module.exports = {
                 use: [
                     {
                         loader: path.resolve(__dirname, 'frontend/config-loader'),
-                        options: {}
+                        options: {
+                            configMap: moduleConfig.config
+                        }
                     }
                 ]
             }, {
@@ -139,7 +141,7 @@ module.exports = {
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths), rootDir),
+        new AddToContextPlugin(_.values(moduleConfig.paths), rootDir),
         new webpack.WatchIgnorePlugin([
             path.resolve(rootDir, './node_modules'),
             path.resolve(rootDir, './app'),

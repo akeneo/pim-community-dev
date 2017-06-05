@@ -50,13 +50,14 @@ const utils = {
      */
     getModulePaths(pathSourceFile, baseDir) {
         const requireConfig = utils.getRequireConfig(pathSourceFile, baseDir)
+        const { paths, config } = requireConfig
 
         mkdirp(webroot, function() {
-            fs.writeFileSync(`${webroot}/general.js`, utils.getModuleString(requireConfig.config), 'utf8')
-            fs.writeFileSync(`${webroot}/paths.js`, utils.getModuleString(requireConfig.paths), 'utf8')
+            fs.writeFileSync(`${webroot}/general.js`, utils.getModuleString(config), 'utf8')
+            fs.writeFileSync(`${webroot}/paths.js`, utils.getModuleString(paths), 'utf8')
         })
 
-        return requireConfig.paths;
+        return { paths, config }
     },
 
     /**
