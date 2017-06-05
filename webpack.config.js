@@ -12,8 +12,7 @@ const importPaths = utils.getModulePaths(requirePaths, __dirname)
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const globToRegex = require('glob-to-regexp');
 const customPaths = require('./frontend/custom-paths')
-
-console.log(customPaths)
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 const contextPaths = [
     'web/bundles',
@@ -120,7 +119,16 @@ module.exports = {
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths))
+        new AddToContextPlugin(_.values(importPaths)),
+        new webpack.WatchIgnorePlugin([
+            path.resolve(__dirname, './node_modules'),
+            path.resolve(__dirname, './app'),
+            path.resolve(__dirname, './vendor'),
+        ]),
+        new LiveReloadPlugin({
+          appendScriptTag: true,
+          ignore: /node_modules/
+        })
         // new UglifyJSPlugin()
     ]
 }

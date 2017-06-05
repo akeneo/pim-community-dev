@@ -5,7 +5,7 @@
   "homepage": "http://www.akeneo.com",
   "scripts": {
     "webpack": "webpack --display-reasons --display-error-details --config webpack.config.js --progress",
-    "webpack-serve": "webpack --progress --config webpack.dev.js && webpack-dev-server --config webpack.dev.js --progress",
+    "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
@@ -54,6 +54,8 @@
     "underscore": "1.8.3",
     "webpack": "2.4.1",
     "webpack-dev-server": "^2.4.5",
+    "webpack-livereload-plugin": "^0.11.0",
+    "write-file-webpack-plugin": "^4.0.2",
     "yamljs": "^0.2.10"
   }
 }
