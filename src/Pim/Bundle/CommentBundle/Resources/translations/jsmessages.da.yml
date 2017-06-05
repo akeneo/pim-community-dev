@@ -8,7 +8,7 @@ confirmation:
 flash:
   comment:
     create:
-      success: Din kommentar er blevet oprettet.
+      success: Din kommentar er blevet oprettet med succes.
       error: Der opstod en fejl under oprettelsen af din kommentar.
     delete:
       success: Din kommentar er blevet slettet.

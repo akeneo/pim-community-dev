@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: Oversigtspanel
+  title: Kontrolpanel
   version: Version
   link.label:
     product: Administrere produkter

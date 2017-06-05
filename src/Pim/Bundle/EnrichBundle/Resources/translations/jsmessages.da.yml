@@ -1,6 +1,6 @@
 confirmation:
   remove:
-    item: Er du sikker på du at vil slette dette element?
+    item: Er du sikker på at du vil slette dette emne?
     association type: Er du sikker på du vil slette denne associationstype?
     attribute: Er du sikker på du vil slette attributten?
     family: Er du sikker på at du vil slette denne familie?
@@ -15,8 +15,6 @@ confirmation:
     role: Er du sikker på du vil slette denne rolle?
 pim_datagrid:
   mass_action_group:
-    bulk_actions:
-      label: Massehandlinger
     quick_export:
       label: Hurtig eksport
   mass_action:
@@ -28,27 +26,27 @@ flash:
   item:
     removed: Vare fjernet succesfuldt
   association type:
-    removed: Associationstypen blev slettet
+    removed: Sammenhængstypen blev slettet
   attribute:
     removed: Attributten blev slettet
   family:
-    removed: Familien blev slettet
+    removed: Familien fjernet
   product:
-    removed: Produkt blev slettet
+    removed: Produktet blev fjernet
   channel:
-    removed: Kanalen blev slettet
+    removed: Kanalen fjernet
   group:
     removed: Gruppen blev slettet
   variant group:
-    removed: Variant group blev slettet
+    removed: Variantgruppen blev slettet
   group type:
-    removed: Gruppetypen blev slettet
+    removed: Gruppetypen fjernet
   import profile:
     removed: Importer profil blev slettet
   export profile:
     removed: Eksport profil blev slettet
   user:
-    removed: Brugeren blev slettet
+    removed: Brugeren blev fjernet
   role:
     removed: Rollen blev slettet
 error:
@@ -69,7 +67,6 @@ error:
     attribute_option: Fejl under sletning af attribut indstillingen
   saving:
     attribute_option: Kan ikke gemme attribut indstilling
-    export_profile: Kan ikke gemme eksportprofil. Kontroller, at alle filtre er udfyldt korrekt
 alert:
   attribute_option:
     error_occured_during_submission: Der opstod en fejl under formular modtagelsen på serveren
@@ -84,25 +81,17 @@ label:
   attribute_option:
     add_option: Tilføje en mulighed
 Code: Kode
-Edit: Rediger
+Edit: Redigér
 Delete: Slet
 Edit attributes of the product: Rediger attributterne for produktet
 Classify the product: Klassificere produktet
 Delete the product: Slet produktet
 Change status: Skift status
 Toggle status: Skift status
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (alle attributter)
-        csv_grid_context: CSV (gitter kontekst)
-        xlsx_all: Excel (alle attributter)
-        xlsx_grid_context: Excel (gitter kontekst)
-      delete: Slet produkter
-      mass_edit: Ændre produktinformation
-      category_edit: Flytte produkter i kategorier
-      sequential_edit: Redigere produkter sekventielt
+pim.grid.mass_action.quick_export.csv_all: CSV (alle attributter)
+pim.grid.mass_action.delete: Slet
+pim.grid.mass_action.mass_edit: Masse Rediger
+pim.grid.mass_action.sequential_edit: Sekventiel redigering
 jstree.create: Opret
 switch_on: "Ja"
 switch_off: "Nej"
@@ -143,7 +132,7 @@ pim_enrich:
         less: Mindre
         from: Fra
         modified: Ændret
-        property: Egenskab
+        property: Ejendom
         old_values: Gamle værdier
         new_values: Nye værdier
         actions: Aktioner
@@ -191,41 +180,15 @@ pim_enrich:
         channel_locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for landestandard'{{ locale }}' og '{{ channel }}'-kanal
       media:
         upload: Træk og slip for at indlæse eller klik her
-      create_popin:
-        title: Opret et nyt produkt
-        labels:
-          family: Vælg familie
-          save: Gem
-          cancel: Annuller
     attribute_option:
       code: Kode
       label: Etiket
-    variant_group:
-      title: Variantgrupper
-      info:
-        deletion_successful: Variant gruppen slettet.
-        deletion_failed: Variantgruppen kunne ikke slettes.
-        update_successful: Variantgruppe opdateret
-        update_failed: Variantgruppen kunne ikke opdateres.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - felter
-        already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
-        no_attributes: Denne variant gruppe har ingen attributter endnu
-      btn:
-        save: Gem
-      meta:
-        product_count: Produkter
-        created: Oprettet
-        created_by: Oprettet af
-        updated: Opdateret
-        updated_by: opdateret af
   confirmation:
     leave: Er du sikker på du vil forlade denne side?
     discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
     delete_item: Bekræft sletning
     delete:
-      attribute: Er du sikker på du vil slette denne attribut fra produktet?
+      product_attribute: Er du sikker på du vil slette denne attribut fra produktet?
   info:
     not_applicable: Ikke tilgængelig
     entity:
@@ -236,7 +199,6 @@ pim_enrich:
     not_allowed: Du har ikke adgang til denne side
     error_occured: Der opstod en fejl under indlæsning af siden
   form:
-    required: (Påkrævet)
     product:
       tab:
         associations:
@@ -282,7 +244,7 @@ pim_enrich:
       change_family:
         modal:
           title: Ændre produktfamilien
-          merge_attributes: Aktuelle attributter flettes sammen med dem i den nye familie.
+          merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
           empty_selection: Vælg familie
@@ -294,7 +256,7 @@ pim_enrich:
     attribute_option:
       flash:
         option_created: Attribut tilvalg oprettet
-        error_creating_option: Der opstod en fejl under oprettelsen af attribut egenskaben
+        error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
       add_option_modal:
         title: Tilføj attribut tilvalg
         confirm: Tilføj
@@ -303,166 +265,8 @@ pim_enrich:
       switch:
         "no": "Nej"
         "yes": "Ja"
-    variant_group:
-      tab:
-        properties:
-          title: Egenskaber
-          general: Generelle egenskaber
-          code: Kode
-          type: Type
-          axis: Akse
-          label_translations: Etiket oversættelser
-        history:
-          title: Historik
-        products:
-          title: Produkter
-        attributes:
-          title: Egenskaber
-    common:
-      tab:
-        attributes:
-          btn:
-            add: Tilføj
-            add_attributes: Tilføj egenskab
-          info:
-            search_attributes: Søg...
-            no_available_attributes: Der er ikke flere attributter at tilføje
-  export:
-    product:
-      data:
-        title: Filtrer produkter
-      structure:
-        title: Filtrere data
-        attributes:
-          title: Attributter
-      filter:
-        channel:
-          title: Kanal
-          help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
-        locales:
-          title: Landestandarder
-          help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
-        attributes:
-          title: Attributter
-          edit: Redigér
-          label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske attributter.'
-          empty: Alle attributter vil blive eksporteret
-          modal:
-            apply: Anvend
-            cancel: Annuller
-            title: Valg af attributter
-        attributes_selector:
-          attribute_group: Attributgrupper
-          attributes: "Søg i {{ attributeCount }} attributter"
-          selected: "Valgte attributter"
-          clear: Nustil
-          all_group: Alle grupper
-          empty_selection: Alle attributter vil blive eksporteret
-        family:
-          title: Familie
-          help: 'Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler.'
-          operators:
-            IN: I listen
-            "NOT IN": Ikke på listen
-            EMPTY: Produkter, der ikke har en familie
-            "NOT EMPTY": Produkter, der har en familie
-          empty_selection: Ingen betingelse på familier
-        updated:
-          title: Tid tilstand
-          operators:
-            ALL: Ingen dato tilstand
-            "SINCE LAST N DAYS": Opdaterede varer i løbet af de sidste n dage (f.eks. 6)
-            ">": Opdaterede produkter siden denne dato
-            "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
-        enabled:
-          title: Status
-          help: 'Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status.'
-          value:
-            all: Alle
-            enabled: Aktiveret
-            disabled: Deaktiveret
-        completeness:
-          title: Fuldstændighed
-          help: Vælg produkterne, der eksporteres efter deres fuldstændighed.
-          operators:
-            ALL: Ingen betingelse på fuldstændighed
-            ">=": Komplet på mindst én valgte landestandard
-            "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
-            LOWER THAN ON ALL LOCALES: Ikke komplet på nogle af de valgte landestandarder
-          empty_selection: Vælg en familie
-        category:
-          title: Kategori
-          help: Brug produktkategorierne i træet (defineret af kanalen ovenfor) til at vælge produkter til eksport
-        identifier:
-          title: Identifikator
-          help: Id'er for produkter, du ønsker at eksportere adskilt af kommaer, mellemrum eller linjeskift
-        metric:
-          operators:
-            "=": er lig med
-            "!=": Er ikke lig med
-            ">=": Større end eller lig med
-            ">": større end
-            "<=": Mindre end eller lig med
-            "<": mindre end
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
-        string:
-          operators:
-            ALL: Alle
-            CONTAINS: Indeholder
-            DOES NOT CONTAIN: Indeholder ikke
-            "=": er lig med
-            STARTS WITH: Starter med
-            ENDS WITH: Ender med
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
-        price-collection:
-          operators:
-            "=": er lig med
-            "!=": Er ikke lig med
-            ">=": Større end eller lig med
-            ">": større end
-            "<=": Mindre end eller lig med
-            "<": mindre end
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
-        multi_select:
-          operators:
-            IN: I listen
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
-        media:
-          operators:
-            CONTAINS: Indeholder
-            DOES NOT CONTAIN: Indeholder ikke
-            "=": er lig med
-            STARTS WITH: Starter med
-            ENDS WITH: Ender med
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
-        date:
-          operators:
-            ">": større end
-            "<": mindre end
-            "=": er lig med
-            "!=": Er ikke lig med
-            BETWEEN: Mellem
-            NOT BETWEEN: ikke mellem
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
-        number:
-          operators:
-            "=": er lig med
-            "!=": Er ikke lig med
-            ">=": Større end eller lig med
-            ">": større end
-            "<=": Mindre end eller lig med
-            "<": mindre end
-            EMPTY: Er tom
-            NOT EMPTY: er ikke tom
   mass_edit_action:
     edit_common_attributes:
       description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard <span class="highlight">{{ locale }}</span> og den kanal <span class="highlight">{{ channel }}</span>, valgt i gitteret produkter.
 pim_enrich.error:
-  exception.title: Beklager! Der opstod en {{ status_code }} fejl...
+  exception.title: Beklager! Der opstod en {{ status_code }}...

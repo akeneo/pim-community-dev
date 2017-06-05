@@ -1,25 +1,22 @@
 Job: Job
 Connector: Connector
 pim_import_export:
-  job: Job
-  connector: Connector
   status:
     - Klar
   batch_status:
     1: AFSLUTTET
     2: STARTER
-    3: STARTEDE
+    3: STARTET
     4: STOPPER
     5: STOPPET
-    6: MISLYKKEDES
+    6: FEJLEDE
     7: OPGIVET
     8: UKENDT
   download_archive:
     archive: Download genereret arkiv | download genererede arkiver
-    output: hent genererede fil|hent genererede filer
-    input: hent læs file|hent læse filer
-    invalid_xlsx: download ugyldige data
-    invalid_csv: download ugyldige data
+    output: download genererede fil|download genererede filer
+    input: download læs file|download læse filer
+    invalid: download ugyldige data
   notification:
     export:
       error: Eksport af <strong>%label%</strong> mislykkedes
@@ -30,12 +27,7 @@ pim_import_export:
       warning: Import af <strong>%label%</strong> blev gennemført med advarsler
       success: Eksport af <strong>%label%</strong> mislykkedes
   list: Vælg et job
-  job_profile:
-    tab:
-      property.title: Generelle egenskaber
-      history.title: Historik
-      job_content.title: Indhold
-pim_title.export_profile.index: Eksporter profil håndtering
+pim_title.export_profile.index: Eksport profiler håndtering
 pim_title.export_profile.edit: Eksporter profiler %job.label% | Rediger
 pim_title.export_profile.show: Eksporter profiler %job.label% | Vis
 pim_title.export_execution.index: Eksporter aktivitets historik
@@ -68,11 +60,7 @@ pim_importexport:
       edit: Rediger en eksportprofil
       remove: Fjern en eksportprofil
       launch: Iværksæt en eksportprofil
-      property_edit: Redigere ksport profilens generelle egenskaber
-      property_show: Redigere eksport profilens generelle egenskaber
       history: Se eksport profil historik
-      content_edit: Redigere ksport profilindhold
-      content_show: Vis eksport profilindhold
     import_profile:
       index: Se import profillisten
       create: Opret import profil
@@ -89,8 +77,8 @@ pim_importexport:
     import_execution:
       index: Se import rapport liste
       show: Se import rapportdetaljer
-      dl_log: Hent import rapport log
-      dl_files: Hent importerede filer
+      dl_log: Download import rapport log
+      dl_files: Download importerede filer
   acl_group:
     export: Eksport profiler
     import: Import profiler
@@ -98,6 +86,7 @@ btn:
   create:
     export profile: opret eksportprofil
     import profile: opret import profil
+Upload and import: Indlæs og Importer
 Upload and import now: Indlæs og importer nu
 import now: Importer nu
 export now: Eksporter nu
@@ -127,7 +116,6 @@ History: Historik
 pane.accordion:
   properties: Egenskaber
   global_settings: Globale indstillinger
-  filters: Filtre
 popin.create:
   export_profile.title: Opret en ny eksportprofil
   import_profile.title: Opret en ny importprofil
@@ -158,10 +146,9 @@ End: Slut
 set_attribute_requirements: Indstil attribut krav
 COMPLETED: AFSLUTTET
 STARTING: STARTER
-STARTED: STARTEDE
+STARTED: STARTET
 STOPPING: STOPPER
 STOPPED: STOPPET
-FAILED: MISLYKKEDES
+FAILED: FEJLEDE
 ABANDONED: OPGIVET
 UNKNOWN: UKENDT
-warning.label: Advarsel

@@ -12,7 +12,3 @@ pim_dashboard:
         export: Eksport
         mass_edit: Masse Rediger
         quick_export: Hurtig eksport
-    completeness:
-      load_more: 'Indlæs mere...'
-    header:
-      view_all: Se alle

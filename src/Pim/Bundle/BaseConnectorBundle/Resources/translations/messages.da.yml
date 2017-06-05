@@ -1,4 +1,4 @@
-pim_connector:
+pim_base_connector:
   jobs:
     csv_product_export:
       title: Produkt eksport til CSV
@@ -19,8 +19,11 @@ pim_connector:
       title: Gruppen eksport til CSV
       export.title: Gruppe eksport
     csv_variant_group_export:
-      title: Variant gruppe eksporter til CSV
+      title: Variant gruppe eksport i CSV
       export.title: Variant gruppe eksport
+    csv_family_export:
+      title: Familie eksport i CSV
+      export.title: Familie eksport
     csv_product_import:
       title: Produkt eksport fra CSV-fil
       validation.title: Filvalidering
@@ -42,16 +45,12 @@ pim_connector:
       title: Association type import fra CSV
       validation.title: Filvalidering
       import.title: Association type import
-    csv_family_import:
-      title: Familie import i CSV
-      validation.title: Filvalidering
-      import.title: Familie import
     csv_group_import:
       title: Gruppe import fra CSV
       validation.title: Filvalidering
       import.title: Gruppe import
     csv_variant_group_import:
-      title: Variant gruppe importer fra CSV
+      title: Variant gruppe import i CSV
       validation.title: Filvalidering
       import.title: Variant gruppe import
   steps:
@@ -63,7 +62,7 @@ pim_connector:
       invalid_item_columns_count: 'Forventede at have %totalColumnsCount% kolonner, har %itemColumnsCount% i %csvPath%:%lineno%'
     csv_product_reader.title: CSV-produkt læser
     csv_category_reader.title: CSV-kategori læser
-    csv_variant_group .title: CSV-variant gruppe læser
+    csv_variant_group .title: CSV-variant gruppe reader
     dummy_processor.title: Dummy processor
     product_processor.title: Produkt oprettelse
     variant_group_processor.title: Variant gruppe oprettelse / opdatering
@@ -80,7 +79,7 @@ pim_connector:
     file_writer.title: Output
     product_writer.title: Produkt opbevaring
     category_writer.title: Kategori opbevaring
-    variant_group_writer.title: Variant gruppe lager
+    variant_group_writer.title: Variant gruppe opbevaring
     writer.title: Enhed opbevaring
     csv_writer.title: CSV-Writer
   export:
@@ -99,8 +98,12 @@ pim_connector:
     channel:
       label: Kanal
       help: Den kanal, du vil eksportere
-    header:
-      label: Overskrift
+    decimalSeparator:
+      label: Decimalseparator
+      help: Bestem decimal separator
+    dateFormat:
+      label: Dato format
+      help: Bestem formatet af dato felterne
   import:
     enabled:
       label: Aktiver produkt
@@ -125,7 +128,7 @@ pim_connector:
       help: Tilad at uploade filen direkte eller ej
     delimiter:
       label: Afgrænser
-      help: Et tegn, der bruges til at indstille feltafgrænser for CSV-fil
+      help: Ét tegn bruges til at angive feltafgrænseren
     enclosure:
       label: Indgrænse
       help: Ét tegn bruges til at angive felt-indgrænsningen
@@ -140,29 +143,4 @@ pim_connector:
       help: Betyder at produkt historien opdateres automatisk, kan slås fra for at forbedre indstillinger
     copyValuesToProducts:
       label: Kopiere variant gruppe værdier til produkter
-      help: Betyder, at produkterne opdateres automatisk med variant gruppeværdier. Kan være deaktiveret, så det kun er variant grupper der bliver opdateret
-    enabledComparison:
-      label: Sammenlign værdier
-      help: Aktiver sammenligning mellem original og importerede værdier. Kan fremskynde import, hvis importerede værdier er meget lig den oprindelige værdier
-    decimalSeparator:
-      label: Decimalseparator
-      help: Ét tegn bruges til at indstille feltseparator til decimal
-    dateFormat:
-      label: Dato format
-      help: Angiv formatet for datokolonner i filen, f.eks her DD/MM/ÅÅÅÅ for en 31/04/2014 format.
-job_execution.summary:
-  read: læs
-  read_lines: læs linjer
-  write: gemt
-  skip: sprunget over
-  create: oprettet
-  process: færdig
-  update_products: opdaterede produkter
-  process_products: bearbejdede produkter
-  skip_products: produkter sprunget over
-  displayed: første advarsel vist
-  charset_validator:
-    title: 'Fil kodning:'
-    skipped: ignoreret, udvidelse i hvidlisten
-  product_skipped_no_diff: produkter sprunget over (ingen forskel)
-  product_skipped_no_associations: produkter sprunget over (ingen sammekædning)
+      help: Betyder, at produkterne opdateres automatisk med variant gruppeværdier. Kan være slukket til, så at kun variant grupper bliver opdateret

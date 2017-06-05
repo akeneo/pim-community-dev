@@ -54,7 +54,7 @@ Avatar: Avatar
 Additional emails: Yderligere e-mails
 Add another email: Tilføje en anden e-mail
 Catalog locale: Catalog locale
-Catalog scope: Catalog scope
+Catalog scope: Katalog anvendelsesområde
 Default tree: Standardtræ
 Business Units: Afdelinger
 Email synchronization settings: Email synkroniseringsindstillinger
@@ -123,8 +123,8 @@ oro_security:
       delete: Fjern en brugergruppe
 (default): Standardtilladelse på enheder
 VIEW: Se
-CREATE: Oprette
-EDIT: Rediger
+CREATE: Opret
+EDIT: Redigér
 DELETE: Slet
 ASSIGN: Tildel
 SHARE: Del
