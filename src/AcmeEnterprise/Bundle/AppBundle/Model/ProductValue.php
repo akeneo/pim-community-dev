@@ -71,7 +71,9 @@ class ProductValue extends PimProductValue
      */
     public function addFabric(Fabric $fabric)
     {
-        $this->fabrics->add($fabric);
+        if (!$this->fabrics->contains($fabric)) {
+            $this->fabrics->add($fabric);
+        }
     }
 
     /**
