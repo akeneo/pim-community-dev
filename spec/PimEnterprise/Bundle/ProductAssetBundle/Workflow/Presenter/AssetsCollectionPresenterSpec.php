@@ -51,7 +51,6 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
         VariationInterface $leatherVariation,
         VariationInterface $neopreneVariation,
         VariationInterface $kevlarVariation,
-        ArrayCollection $collection,
         ChannelInterface $ecommerce,
         LocaleInterface $en,
         $router
@@ -101,8 +100,7 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
             'localeCode' => 'en_US'
         ])->willReturn('kevlar/assetUrl');
 
-        $productValue->getData()->willReturn($collection);
-        $collection->toArray()->willReturn([$leather, $neoprene]);
+        $productValue->getData()->willReturn([$leather, $neoprene]);
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('media');
         $this->present($productValue, ['data' => ['leather', 'kevlar']])->shouldReturn(

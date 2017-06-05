@@ -64,10 +64,10 @@ class ProductCategoryAccessSubscriberSpec extends ObjectBehavior
         $event->getDatagrid()->willReturn($datagrid);
         $tokenStorage->getToken()->willreturn($token);
         $token->getUser()->willReturn($user);
-        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([2, 3]);
+        $accessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn(['tees', 'sweats']);
         $datasource->getProductQueryBuilder()->willReturn($pqb);
 
-        $pqb->addFilter('categories.id', 'IN OR UNCLASSIFIED', [2, 3])->shouldBeCalled();
+        $pqb->addFilter('categories', 'IN OR UNCLASSIFIED', ['tees', 'sweats'])->shouldBeCalled();
 
         $this->filter($event);
     }

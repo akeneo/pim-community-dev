@@ -1,7 +1,7 @@
 Feature: Approve draft
   In order to update products
   As a product manager
-  I need to be able to approve a proposal
+  I need to be able to approve a proposal via the command line
 
   Background:
     Given a "clothing" catalog configuration

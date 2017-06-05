@@ -1,0 +1,12 @@
+parameters:
+    pimee_catalog.event_subscriber.index_products.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber
+
+services:
+    # CE override
+    pim_catalog.event_subscriber.index_products:
+        class: '%pimee_catalog.event_subscriber.index_products.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.product_indexer'
+            - '@pim_catalog.elasticsearch.published_product_indexer'
+        tags:
+            - { name: kernel.event_subscriber }

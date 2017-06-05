@@ -1,0 +1,7 @@
+services:
+    pim_catalog.elasticsearch.published_product_indexer:
+        class: '%pim_catalog.elasticsearch.product_indexer.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@akeneo_elasticsearch.client'
+            - 'pimee_workflow_published_product'

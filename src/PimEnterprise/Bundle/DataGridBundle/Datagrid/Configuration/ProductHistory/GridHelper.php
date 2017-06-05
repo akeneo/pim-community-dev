@@ -49,7 +49,7 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneById($record->getValue('resourceId'));
+            $product = $this->productRepository->find($record->getValue('resourceId'));
             $ownershipGranted = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
             return [

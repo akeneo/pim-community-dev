@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProductRepository;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProductRepositoryInterface;
@@ -10,7 +11,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
@@ -18,7 +18,7 @@ use PimEnterprise\Component\Security\Attributes;
 class ProductRepositorySpec extends ObjectBehavior
 {
     function let(
-        ProductQueryBuilderFactory $productQueryBuilderFactory,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         CategoryAccessRepository $categoryAccessRepository
     ) {
         $this->beConstructedWith($productQueryBuilderFactory, $categoryAccessRepository);
@@ -64,9 +64,9 @@ class ProductRepositorySpec extends ObjectBehavior
         $productQueryBuilder->addFilter('name', '=', 'Gibson Les Paul')->shouldBeCalled();
 
         $project->getOwner()->willReturn($user);
-        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([42, 65]);
-        $productQueryBuilder->addFilter('categories.id', 'IN OR UNCLASSIFIED', [42, 65])->shouldBeCalled();
-        $productQueryBuilder->addFilter('family.id', 'NOT EMPTY', null)->shouldBeCalled();
+        $categoryAccessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn(['foo', 'bar']);
+        $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', ['foo', 'bar'])->shouldBeCalled();
+        $productQueryBuilder->addFilter('family', 'NOT EMPTY', null)->shouldBeCalled();
 
         $productQueryBuilder->execute()->willReturn($products);
 

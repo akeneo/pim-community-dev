@@ -1,13 +1,28 @@
 parameters:
     pimee_workflow.builder.draft.class: PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder
+    pimee_workflow.builder.published_product.class: Pim\Component\Catalog\Builder\ProductBuilder
 
 services:
     pimee_workflow.builder.draft:
         class: '%pimee_workflow.builder.draft.class%'
         arguments:
-            - '@pim_catalog.object_manager.product'
             - '@pim_serializer'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'
+            - '@pim_catalog.factory.product_value_collection'
+            - '@pim_catalog.factory.product_value'
+
+    pimee_workflow.builder.published_product:
+        class: '%pimee_workflow.builder.published_product.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.association_type'
+            - '@event_dispatcher'
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.factory.product_value'
+            - {'product': '%pimee_workflow.entity.published_product.class%', 'association': '%pimee_workflow.entity.published_product_association.class%'}
+

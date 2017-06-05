@@ -1,15 +1,7 @@
 parameters:
-    pimee_product_asset.extension.selector.orm.product_asset.class:            PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Selector\Orm\ProductValue\AssetsSelector
     pimee_product_asset.datagrid.extension.selector.orm.asset_thumbnail.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Selector\Orm\Asset\ThumbnailSelector
 
 services:
-    pimee_product_asset.extension.selector.orm.product_asset:
-        class: '%pimee_product_asset.extension.selector.orm.product_asset.class%'
-        arguments:
-            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: pim_assets_collection }
-
     pimee_product_asset.datagrid.extension.selector.orm.asset_thumbnail:
         class: '%pimee_product_asset.datagrid.extension.selector.orm.asset_thumbnail.class%'
         tags:

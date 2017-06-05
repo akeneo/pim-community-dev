@@ -49,10 +49,10 @@ class AssetsCollectionProperty extends TwigProperty
      */
     protected function format($value)
     {
-        if (isset($value['assets']) && !empty($value['assets'])) {
+        if (isset($value['data']) && !empty($value['data'])) {
             return $this->getTemplate()->render(
                 [
-                    'code'        => $value['assets'][0]['code'],
+                    'code'        => $value['data'],
                     'channelCode' => $this->getCurrentChannelCode(),
                     'localeCode'  => $this->getCurrentLocaleCode()
                 ]

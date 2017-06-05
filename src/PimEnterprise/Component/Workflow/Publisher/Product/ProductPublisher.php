@@ -11,22 +11,27 @@
 
 namespace PimEnterprise\Component\Workflow\Publisher\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product publisher
+ * Product publisher.
+ * At this step, completenesses of the published product are not calculated.
+ * They will be calculated once the published will be saved.
+ * This is automatically done via the {@link PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager}
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ProductPublisher implements PublisherInterface
 {
-    /** @var string */
-    protected $publishClassName;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /** @var PublisherInterface */
     protected $publisher;
@@ -37,28 +42,34 @@ class ProductPublisher implements PublisherInterface
     /** @var VersionManager */
     protected $versionManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
 
     /**
-     * @param string                      $publishClassName
+     * @param ProductBuilderInterface     $productBuilder
      * @param PublisherInterface          $publisher
      * @param RelatedAssociationPublisher $associationPublisher
      * @param VersionManager              $versionManager
-     * @param CompletenessManager         $completenessManager
+     * @param NormalizerInterface         $normalizer
+     * @param ObjectUpdaterInterface      $productUpdater
      */
     public function __construct(
-        $publishClassName,
+        ProductBuilderInterface $productBuilder,
         PublisherInterface $publisher,
         RelatedAssociationPublisher $associationPublisher,
         VersionManager $versionManager,
-        CompletenessManager $completenessManager
+        NormalizerInterface $normalizer,
+        ObjectUpdaterInterface $productUpdater
     ) {
-        $this->publishClassName = $publishClassName;
         $this->publisher = $publisher;
         $this->associationPublisher = $associationPublisher;
         $this->versionManager = $versionManager;
-        $this->completenessManager = $completenessManager;
+        $this->normalizer = $normalizer;
+        $this->productUpdater = $productUpdater;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -66,60 +77,28 @@ class ProductPublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
+        if (!$object instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('The object to be published is not a product, "%s" given', ClassUtils::getClass($object))
+            );
+        }
         $options = array_merge(['with_associations' => true], $options);
-        $this->completenessManager->generateMissingForProduct($object);
-        $published = $this->createNewPublishedProduct();
-        $published->setOriginalProduct($object);
-        $published->setEnabled($object->isEnabled());
-        $this->copyFamily($object, $published);
-        $this->copyGroups($object, $published);
-        $this->copyCategories($object, $published);
-        $this->copyCompletenesses($object, $published);
-        $this->copyValues($object, $published);
-        $this->setVersion($object, $published);
+        $standardProduct = $this->normalizer->normalize($object, 'standard');
+        unset($standardProduct['associations']);
+
+        $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
+        $publishedProduct = $this->productBuilder->createProduct($object->getIdentifier(), $familyCode);
+        $this->productUpdater->update($publishedProduct, $standardProduct);
+
+        $publishedProduct->setOriginalProduct($object);
+        $this->setVersion($object, $publishedProduct);
+
         if (true === $options['with_associations']) {
-            $this->copyAssociations($object, $published);
-            $this->updateRelatedAssociations($published);
+            $this->copyAssociations($object, $publishedProduct);
+            $this->updateRelatedAssociations($publishedProduct);
         }
 
-        return $published;
-    }
-
-    /**
-     * Copy the family
-     *
-     * @param ProductInterface          $product
-     * @param PublishedProductInterface $published
-     */
-    protected function copyFamily(ProductInterface $product, PublishedProductInterface $published)
-    {
-        $published->setFamily($product->getFamily());
-    }
-
-    /**
-     * Copy the groups
-     *
-     * @param ProductInterface          $product
-     * @param PublishedProductInterface $published
-     */
-    protected function copyGroups(ProductInterface $product, PublishedProductInterface $published)
-    {
-        foreach ($product->getGroups() as $group) {
-            $published->addGroup($group);
-        }
-    }
-
-    /**
-     * Copy the categories
-     *
-     * @param ProductInterface          $product
-     * @param PublishedProductInterface $published
-     */
-    protected function copyCategories(ProductInterface $product, PublishedProductInterface $published)
-    {
-        foreach ($product->getCategories() as $category) {
-            $published->addCategory($category);
-        }
+        return $publishedProduct;
     }
 
     /**
@@ -133,36 +112,6 @@ class ProductPublisher implements PublisherInterface
         foreach ($product->getAssociations() as $association) {
             $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
             $published->addAssociation($copiedAssociation);
-        }
-    }
-
-    /**
-     * Copy the completeness
-     *
-     * @param ProductInterface          $product
-     * @param PublishedProductInterface $published
-     */
-    protected function copyCompletenesses(ProductInterface $product, PublishedProductInterface $published)
-    {
-        $copiedData = new ArrayCollection();
-        foreach ($product->getCompletenesses() as $completeness) {
-            $copiedCompleteness = $this->publisher->publish($completeness, ['published' => $published]);
-            $copiedData->add($copiedCompleteness);
-        }
-        $published->setCompletenesses($copiedData);
-    }
-
-    /**
-     * Copy the product values
-     *
-     * @param ProductInterface          $product
-     * @param PublishedProductInterface $published
-     */
-    protected function copyValues(ProductInterface $product, PublishedProductInterface $published)
-    {
-        foreach ($product->getValues() as $originalValue) {
-            $publishedValue = $this->publisher->publish($originalValue);
-            $published->addValue($publishedValue);
         }
     }
 
@@ -205,13 +154,5 @@ class ProductPublisher implements PublisherInterface
     public function supports($object)
     {
         return $object instanceof ProductInterface;
-    }
-
-    /**
-     * @return PublishedProductInterface
-     */
-    protected function createNewPublishedProduct()
-    {
-        return new $this->publishClassName();
     }
 }

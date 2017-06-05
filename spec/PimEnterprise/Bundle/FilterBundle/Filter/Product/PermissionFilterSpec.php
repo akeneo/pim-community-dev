@@ -4,11 +4,13 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -21,25 +23,37 @@ class PermissionFilterSpec extends ObjectBehavior
         CategoryAccessRepository $accessRepository,
         TokenInterface $token,
         UserInterface $user,
-        ProductCategoryRepositoryInterface $productRepository,
         TokenStorageInterface $tokenStorage
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($factory, $utility, $tokenStorage, $productRepository, $accessRepository);
+        $this->beConstructedWith($factory, $utility, $tokenStorage, $accessRepository);
     }
 
     function it_applies_a_filter_on_owned_products_with_granted_categories(
-        FilterDatasourceAdapterInterface $datasource,
         $accessRepository,
-        $productRepository,
         $user,
-        $qb
+        ProductQueryBuilderInterface $pqb,
+        OrmFilterProductDatasourceAdapter $datasource
     ) {
-        $accessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS)->willReturn([42, 19]);
-        $datasource->getQueryBuilder()->willReturn($qb);
-        $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, [42, 19])->shouldBeCalled();
+        $accessRepository->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS)->willReturn(['bar', 'baz']);
+        $datasource->getProductQueryBuilder()->willReturn($pqb);
+
+        $pqb->getRawFilters()->willReturn([[
+            'field'    => 'categories',
+            'operator' => Operators::IN_LIST_OR_UNCLASSIFIED,
+            'value'    => ['foobar'],
+            'context'  => [],
+        ]]);
+        $pqb->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['foo'], [])->shouldNotBeCalled();
+
+        $pqb->addFilter(
+            'categories',
+            Operators::IN_LIST_OR_UNCLASSIFIED,
+            ['bar', 'baz']
+        )->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -51,15 +65,28 @@ class PermissionFilterSpec extends ObjectBehavior
     }
 
     function it_applies_a_filter_on_owned_products_without_granted_categories(
-        FilterDatasourceAdapterInterface $datasource,
         $accessRepository,
-        $productRepository,
         $user,
-        $qb
+        ProductQueryBuilderInterface $pqb,
+        OrmFilterProductDatasourceAdapter $datasource
     ) {
-        $accessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS)->willReturn([]);
-        $datasource->getQueryBuilder()->willReturn($qb);
-        $productRepository->applyFilterByUnclassified($qb)->shouldBeCalled();
+        $accessRepository->getGrantedCategoryCodes($user, Attributes::OWN_PRODUCTS)->willReturn([]);
+        $datasource->getProductQueryBuilder()->willReturn($pqb);
+
+        $pqb->getRawFilters()->willReturn([[
+            'field'    => 'categories',
+            'operator' => Operators::IN_LIST_OR_UNCLASSIFIED,
+            'value'    => ['foobar'],
+            'context'  => [],
+        ]]);
+        $pqb->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['foo'], [])->shouldNotBeCalled();
+
+        $pqb->addFilter(
+            'categories',
+            Operators::UNCLASSIFIED,
+            ''
+        )->shouldBeCalled();
 
         $this->apply(
             $datasource,

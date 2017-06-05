@@ -258,6 +258,7 @@ Feature: Import rules
                 - type:   set
                   field:  description
                   value:  A beautiful description
+                  scope:  tablet
         sony_beautiful_description:
             conditions:
                 - field:    name
@@ -267,6 +268,7 @@ Feature: Import rules
                 - type:   set
                   field:  description
                   value:  Another beautiful description
+                  scope:  tablet
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |

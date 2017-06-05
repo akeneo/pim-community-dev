@@ -90,15 +90,6 @@ interface AssetRepositoryInterface extends
     public function countCompleteAssets(array $assetIds, $localeId, $channelId);
 
     /**
-     * Retrieve products linked to an asset
-     *
-     * @param AssetInterface $asset
-     *
-     * @return ProductInterface[]
-     */
-    public function findProducts(AssetInterface $asset);
-
-    /**
      * @param \DateTime $now
      * @param int       $delay
      *

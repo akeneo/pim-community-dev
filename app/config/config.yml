@@ -44,6 +44,17 @@ assetic:
     filters:
         cssrewrite: ~
 
+# Doctrine Cache Configuration
+doctrine_cache:
+    providers:
+        pim_apcu:
+            apcu: ~
+        pim_array:
+            array: ~
+        pim:
+            chain:
+                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -58,6 +69,9 @@ doctrine:
                 user:         "%database_user%"
                 password:     "%database_password%"
                 charset:      UTF8
+                server_version: 5.7
+                mapping_types:
+                    json: string
             session:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
@@ -69,6 +83,9 @@ doctrine:
                 charset:      UTF8
         types:
             datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
+            native_json:
+                class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
+                commented: true
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:                true
@@ -105,14 +122,10 @@ pim_reference_data:
 akeneo_storage_utils:
     mapping_overrides:
         -
-            original: Pim\Component\Catalog\Model\ProductValue
-            override: PimEnterprise\Component\Catalog\Model\ProductValue
-        -
-            original: PimEnterprise\Component\Catalog\Model\ProductValue
-            override: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
-        -
-            original: PimEnterprise\Component\Workflow\Model\PublishedProductValue
-            override: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue
-        -
             original: Pim\Bundle\UserBundle\Entity\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
+
+akeneo_elasticsearch:
+    index_name: "%index_name%"
+    hosts: "%index_hosts%"
+    configuration_files: "%elasticsearch_index_configuration_files%"

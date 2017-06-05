@@ -44,12 +44,8 @@ services:
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.comparator.filter.product'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.completeness_collection'
-            - '%pim_catalog_product_storage_driver%'
+            - '@pim_catalog.completeness.calculator'
 
     pimee_enrich.controller.rule_relation:
         class: '%pimee_enrich.controller.rule_relation.class%'

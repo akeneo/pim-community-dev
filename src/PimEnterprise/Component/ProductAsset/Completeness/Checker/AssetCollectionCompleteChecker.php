@@ -16,8 +16,6 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
-use PimEnterprise\Component\Catalog\Model\ProductValueInterface as EnterpriseProductValueInterface;
-use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
@@ -25,9 +23,6 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
  */
 class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInterface
 {
-    /** @var AssetFinderInterface */
-    protected $assetFinder;
-
     /**
      * @param ProductValueInterface $productValue
      * @param ChannelInterface|null $channel
@@ -37,18 +32,10 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      */
     public function isComplete(
         ProductValueInterface $productValue,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
-        if (!$productValue instanceof EnterpriseProductValueInterface) {
-            $message = sprintf(
-                'Product value must implement %s, %s provided',
-                'PimEnterprise\\Component\\Catalog\\Model\\ProductValueInterface',
-                get_class($productValue)
-            );
-            throw new \InvalidArgumentException($message);
-        }
-        $assets = $productValue->getAssets();
+        $assets = $productValue->getData();
 
         if (null === $assets) {
             return false;
@@ -66,16 +53,16 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
     /**
      * Check if asset is complete for a tuple channel/locale
      *
-     * @param AssetInterface       $asset
-     * @param ChannelInterface     $channel
-     * @param LocaleInterface|null $locale
+     * @param AssetInterface   $asset
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
      *
      * @return bool
      */
     protected function checkAssetByLocaleAndChannel(
         AssetInterface $asset,
         ChannelInterface $channel,
-        LocaleInterface $locale = null
+        LocaleInterface $locale
     ) {
         $variations = $asset->getVariations();
 
@@ -91,8 +78,11 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
     /**
      * {@inheritdoc}
      */
-    public function supportsValue(ProductValueInterface $productValue)
-    {
+    public function supportsValue(
+        ProductValueInterface $productValue,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
         return AttributeTypes::ASSETS_COLLECTION === $productValue->getAttribute()->getType();
     }
 }

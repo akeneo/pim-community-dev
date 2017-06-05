@@ -21,7 +21,9 @@ use PimEnterprise\Component\Security\Attributes;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AttributeViewRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
+class AttributeViewRightFilter extends AbstractAuthorizationFilter implements
+    CollectionFilterInterface,
+    ObjectFilterInterface
 {
     /** @var array */
     protected $authorizations = [];

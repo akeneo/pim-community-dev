@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\Security\Attributes;
 
@@ -28,6 +29,20 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
     /**
      * {@inheritdoc}
      */
+    public function filterCollection($collection, $type, array $options = [])
+    {
+        foreach ($collection as $productValue) {
+            if ($this->filterObject($productValue, $type, $options)) {
+                $collection->remove($productValue);
+            }
+        }
+
+        return $collection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function filterObject($productValue, $type, array $options = [])
     {
         if (!$this->supportsObject($productValue, $type, $options)) {
@@ -38,6 +53,14 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
             Attributes::VIEW_ATTRIBUTES,
             $productValue->getAttribute()->getGroup()
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return $collection instanceof ProductValueCollectionInterface && null !== $this->tokenStorage->getToken();
     }
 
     /**

@@ -68,10 +68,10 @@ class AttributeGroupAccessRepositorySpec extends ObjectBehavior
         $filterableIds
     ) {
         $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('aga')->willReturn($qb);
-        $qb->select('ag.id')->willReturn($qb);
-        $qb->select('a.id')->willReturn($qb);
-        $qb->from('PimEnterprise\Bundle\SecurityBundle\Entity', 'aga')->willReturn($qb);
+        $qb->select('aga', null)->willReturn($qb);
+        $qb->select('ag.id', null)->willReturn($qb);
+        $qb->select('a.id', null)->willReturn($qb);
+        $qb->from('PimEnterprise\Bundle\SecurityBundle\Entity', 'aga', null)->willReturn($qb);
         $qb->innerJoin('aga.attributeGroup', 'ag', 'ag.id')->willReturn($qb);
         $qb->innerJoin('ag.attributes', 'a')->willReturn($qb);
         $qb->andWhere(null)->willReturn($qb);

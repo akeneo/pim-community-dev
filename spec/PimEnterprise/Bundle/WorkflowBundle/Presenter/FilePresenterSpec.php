@@ -34,7 +34,7 @@ class FilePresenterSpec extends ObjectBehavior
     function it_does_not_presents_original_if_original_is_empty(
         ProductValueInterface $value
     ) {
-        $value->getMedia()->willReturn(null);
+        $value->getData()->willReturn(null);
 
         $this
             ->present($value, ['data' => 'key/of/the/change.jpg'])
@@ -45,7 +45,7 @@ class FilePresenterSpec extends ObjectBehavior
         ProductValueInterface $value,
         FileInfoInterface $media
     ) {
-        $value->getMedia()->willReturn($media);
+        $value->getData()->willReturn($media);
 
         $this
             ->present($value, ['data' => null])
@@ -64,7 +64,7 @@ class FilePresenterSpec extends ObjectBehavior
         $changedMedia->getHash()->willReturn('different_hash');
         $changedMedia->getOriginalFilename()->willReturn('changed_media.jpg');
 
-        $value->getMedia()->willReturn($media);
+        $value->getData()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/original/media.jpg');
         $media->getHash()->willReturn('hash');
         $media->getOriginalFilename()->willReturn('media.jpg');

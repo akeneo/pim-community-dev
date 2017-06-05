@@ -6,6 +6,19 @@ services:
     pimee_workflow.saver.working_copy_product:
         alias: pim_catalog.saver.product
 
+    pimee_workflow.saver.published_product:
+        class: '%pim_catalog.saver.product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pimee_workflow.manager.completeness'
+            - '@event_dispatcher'
+            - '@pimee_workflow.synchronizer.published_product_unique_data'
+
+    pimee_workflow.synchronizer.published_product_unique_data:
+        class: '%pim_catalog.synchronizer.product_unique_data.class%'
+        arguments:
+            - '@pimee_workflow.factory.published_product_unique_data'
+
     # product draft saver
     pimee_workflow.saver.product_draft:
         class: '%akeneo_storage_utils.saver.base.class%'
@@ -26,3 +39,4 @@ services:
             - '@security.token_storage'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.remover.product_draft'
+            - '@pim_catalog.synchronizer.product_unique_data'

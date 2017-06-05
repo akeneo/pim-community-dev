@@ -23,12 +23,12 @@ class AttributeRepositorySpec extends ObjectBehavior
 
         $this->beConstructedWith($em, $attributeFilter, 'attributeClass');
     }
-    
+
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository');
     }
-    
+
     function it_is_translated_label_provider()
     {
         $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
@@ -38,7 +38,7 @@ class AttributeRepositorySpec extends ObjectBehavior
     {
         $this->shouldHaveType('Doctrine\ORM\EntityRepository');
     }
-    
+
     function it_provides_translated_labels(
         $em,
         $attributeFilter,
@@ -54,7 +54,7 @@ class AttributeRepositorySpec extends ObjectBehavior
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('a')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute', 'a', null)->willReturn($queryBuilder);
         $queryBuilder->where($expr)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->execute()->willReturn($attributes);

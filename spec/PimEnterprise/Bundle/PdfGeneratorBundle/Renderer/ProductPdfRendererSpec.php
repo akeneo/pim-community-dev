@@ -14,9 +14,9 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -107,13 +107,16 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getValue('main_image', 'en_US', 'ecommerce')->willReturn($productValue);
 
         $productValue->getAttribute()->willReturn($mainImage);
+        $productValue->getData()->willReturn($fileInfo);
+
+        $mainImage->getGroup()->willReturn($media);
         $mainImage->getCode()->willReturn('main_image');
         $mainImage->getType()->willReturn('pim_catalog_image');
 
         $mainImage->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
-        $productValue->getMedia()->willReturn($fileInfo);
+        $productValue->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
         $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
@@ -181,7 +184,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $assetCollectionAttr->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
-        $productValue->getAssets()->willReturn([$assetA, $assetB]);
+        $productValue->getData()->willReturn([$assetA, $assetB]);
         $assetA->isLocalizable()->willReturn(true);
         $assetB->isLocalizable()->willReturn(false);
         $assetA->getReferences()->willReturn([$refAEn, $refAFr]);

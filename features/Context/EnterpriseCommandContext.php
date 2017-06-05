@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Context\Spin\SpinCapableTrait;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -24,6 +25,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class EnterpriseCommandContext extends CommandContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string $product
      *
@@ -310,10 +313,7 @@ class EnterpriseCommandContext extends CommandContext
         $getCommand->setContainer($this->getMainContext()->getContainer());
         $getCommandTester = new CommandTester($getCommand);
 
-        $subcontext = $this->getMainContext()->getSubcontext('hook');
-
         foreach ($updates->getHash() as $update) {
-            $subcontext->clearUOW();
             $username = isset($update['username']) ? $update['username'] : null;
 
             $draftCommandTester->execute(
@@ -368,6 +368,8 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
+     * @param TableNode $filters
+     *
      * @Then /^I should get the following published products results for the given filters:$/
      */
     public function iShouldGetTheFollowingPublishedProductsResultsForTheGivenFilters(TableNode $filters)
@@ -377,18 +379,21 @@ class EnterpriseCommandContext extends CommandContext
 
         $command = $application->find('pim:published-product:query');
         $command->setContainer($this->getMainContext()->getContainer());
-        $commandTester = new CommandTester($command);
 
         foreach ($filters->getHash() as $filter) {
-            $commandTester->execute(
-                ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
-            );
+            $this->spin(function () use ($filter, $command) {
+                $commandTester = new CommandTester($command);
+                $commandTester->execute(
+                    ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
+                );
 
-            $expected = json_decode($filter['result']);
-            $actual   = json_decode($commandTester->getDisplay());
-            sort($expected);
-            sort($actual);
-            assertEquals($expected, $actual);
+                $expected = json_decode($filter['result']);
+                $actual   = json_decode($commandTester->getDisplay());
+
+                assertEquals($expected, $actual);
+
+                return true;
+            }, sprintf('Impossible to assert result "%s" for filter "%s"', $filter['result'], $filter['filter']));
         }
     }
 

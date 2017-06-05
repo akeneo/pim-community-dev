@@ -72,13 +72,13 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
             ));
         }
 
-        $grantedCategories = $this->accessRepository->getGrantedCategoryIds(
+        $grantedCategories = $this->accessRepository->getGrantedCategoryCodes(
             $this->tokenStorage->getToken()->getUser(),
             Attributes::VIEW_ITEMS
         );
 
         $dataSource->getProductQueryBuilder()->addFilter(
-            'categories.id',
+            'categories',
             Operators::IN_LIST_OR_UNCLASSIFIED,
             $grantedCategories
         );

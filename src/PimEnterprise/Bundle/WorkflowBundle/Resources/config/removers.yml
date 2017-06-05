@@ -5,3 +5,19 @@ services:
             - '@pimee_workflow.object_manager.product_draft'
             - '@event_dispatcher'
             - '%pimee_workflow.model.product_draft.class%'
+
+    pimee_workflow.remover.published_product:
+        class: '%akeneo_storage_utils.remover.base.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@event_dispatcher'
+            - '%pimee_workflow.entity.published_product.class%'
+
+    pimee_workflow.remover.completeness:
+        class: '%pim_catalog.remover.completeness.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.elasticsearch.published_product_indexer'
+            - 'pimee_workflow_published_product_completeness'
+

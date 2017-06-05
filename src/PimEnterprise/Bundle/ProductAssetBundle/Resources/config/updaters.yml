@@ -2,7 +2,7 @@ parameters:
     pimee_product_asset.updater.files.class:                                 PimEnterprise\Component\ProductAsset\Updater\FilesUpdater
     pimee_product_asset.updater.tag.class:                                   PimEnterprise\Component\ProductAsset\Updater\TagUpdater
     pimee_product_asset.updater.asset.class:                                 PimEnterprise\Component\ProductAsset\Updater\AssetUpdater
-    pimee_product_asset.updater.setter.product_asset_collection_value.class: Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter
+    pimee_product_asset.updater.setter.product_asset_collection_value.class: Pim\Component\Catalog\Updater\Setter\AttributeSetter
     pimee_product_asset.updater.copier.product_asset_collection_value.class: Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier
 
 services:
@@ -10,7 +10,6 @@ services:
         class: '%pimee_product_asset.updater.setter.product_asset_collection_value.class%'
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - '@pim_reference_data.repository_resolver'
             - ['pim_assets_collection']
         tags:
             - { name: 'pim_catalog.updater.setter' }

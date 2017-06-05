@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\AttributeFactory;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
@@ -39,9 +39,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var AttributeFactory */
     protected $attributeFactory;
 
@@ -51,24 +48,27 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var \Twig_Environment */
     protected $twig;
 
+    /** @var ProductValueFactory */
+    protected $valueFactory;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param RendererInterface                     $renderer
      * @param TranslatorInterface                   $translator
-     * @param ProductBuilderInterface               $productBuilder
+     * @param ProductValueFactory                   $valueFactory
      * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ProductBuilderInterface $productBuilder,
+        ProductValueFactory $valueFactory,
         AttributeFactory $attributeFactory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->renderer = $renderer;
         $this->translator = $translator;
-        $this->productBuilder = $productBuilder;
+        $this->valueFactory = $valueFactory;
         $this->attributeFactory = $attributeFactory;
     }
 
@@ -200,13 +200,8 @@ class ProductDraftChangesExtension extends \Twig_Extension
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
         $newAttribute = $this->attributeFactory->createAttribute($attribute->getType());
         $newAttribute->setCode($code);
-        $value = $this->productBuilder->createProductValue($newAttribute);
-
-        if (null !== $attribute->getReferenceDataName()) {
-            $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
-        }
-
-        $value->setAttribute($newAttribute);
+        $newAttribute->setMetricFamily($attribute->getMetricFamily());
+        $value = $this->valueFactory->create($newAttribute, null, null, null);
 
         return $value;
     }
