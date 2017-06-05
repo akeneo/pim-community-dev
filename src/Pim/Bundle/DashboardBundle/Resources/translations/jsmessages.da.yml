@@ -1,0 +1,21 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Ingen, handlinger fundet
+      status: Status
+      date: Dato
+      type: Type
+      profile_name: Profilnavn
+      details: Detaljer
+      warning_count: Advarsler
+      job_type:
+        import: Import
+        export: Eksport
+        mass_edit: Masse Rediger
+        quick_export: Hurtig eksport
+    completeness:
+      load_more: 'Indlæs mere...'
+    header:
+      view_all: Vis alle
+page_title:
+  pim_dashboard_index: Kontrolpanel

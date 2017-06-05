@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: Kontrolpanel
+  version: Version
+  link.label:
+    product: Administrere produkter
+    category: Administrer kategorier
+    attribute: Administrere attributter
+    family: Administrere familier
+  widget:
+    error:
+      title: Fejl under indlæsning af widget
+      message: Widget '%alias%' findes ikke
+    completeness:
+      title: Færdiggørelse af kanaler og lande
+    last_operations:
+      title: Seneste handlinger
+      empty: Ingen, handlinger fundet
+      status: Status
+      date: Dato
+      type: Type
+      "profile name": Profilnavn
+      details: Detaljer
+      job_type:
+        import: Import
+        export: Eksport
+        mass_edit: Masse Rediger
+        quick_export: Hurtig eksport

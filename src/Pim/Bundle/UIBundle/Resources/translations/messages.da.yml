@@ -1,0 +1,48 @@
+User: Bruger
+Run demo: Kør demo
+Product: Produkt
+Attribute list: Attribut liste
+Attribute Group list: Attribut gruppe liste
+Users: Brugere
+Roles: Roller
+Groups: Grupper
+Configuration: Konfiguration
+Currency list: Valuta liste
+Locale list: Lande liste
+Logged in as: Logget ind som
+Logout: Log ud
+Login: Login
+Previous: Forrige
+Next: Næste
+Channel list: Kanalliste
+Select file: Vælg fil
+Change file: Skift fil
+Remove file: Fjern fil
+Delete: Slet
+Save: Gem
+Cancel: Annuller
+Get help: Få hjælp
+My User: Min konto
+oro.form.choose_value: Vælg en værdi...
+Read more: Læs mere
+oro.form.click_here_to_select: Klik her for at vælge...
+Add: Tilføj
+"Learn how to use this space": "Lær at bruge denne plads"
+"How To Use Pinbar": "Sådan bruges Pinbar"
+Pinbar: Pinbar
+Favorites: Favoritter
+Most Viewed: Mest sete
+"Add this page to favorites": "Føj denne side til favoritter"
+"Minimize the window to the pinbar": "Minimere vindue til pinbar"
+"Loading ...": "Indlæser ..."
+"Yes": "Ja"
+"No": "Nej"
+required: (Påkrævet)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Aktivere indlæsning af meddelelser
+    loading_message_enabled.tooltip: Vis brugervenlige beskeder mens siden indlæses
+    loading_messages.label: Tilgængelige indlæsnings meddelelser
+    loading_messages.tooltip: Alle tilgængelige indlæsnings meddelelser adskilt med linjeskift
+  group:
+    loading_message.title: Indlæser meddelelser
