@@ -2,7 +2,7 @@
 var fs = require('fs')
 const path = require('path')
 
-module.exports = function(extras) {
+module.exports = function(extras, dir) {
     this.extras = extras || [];
 
     this.apply = function(compiler) {

@@ -1,5 +1,5 @@
 /* eslint-env es6 */
-
+const process = require('process')
 const webpack = require('webpack')
 const path = require('path')
 const _ = require('lodash')
@@ -8,7 +8,9 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const requirePaths = require(path.resolve('web/js/require-paths'))
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const utils = require('./frontend/requirejs-utils')
-const importPaths = utils.getModulePaths(requirePaths, __dirname)
+
+const rootDir = process.cwd();
+const importPaths = utils.getModulePaths(requirePaths, rootDir)
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const globToRegex = require('glob-to-regexp');
 const customPaths = require('./frontend/custom-paths')
@@ -22,11 +24,19 @@ const contextPaths = [
     'web/bundles/pim**/*.html',
     'frontend/**/*.js',
     'web/dist/**/*.js',
-    ..._.values(customPaths).map(custom => `${custom}`)
+    ..._.values(customPaths)
 ].map(glob => globToRegex(glob).toString().slice(2, -2))
 
 const contextRegex = `/^.*(${contextPaths.join('|')})$/`
-const moduleAliases = Object.assign(importPaths, _.mapValues(customPaths, custom => path.resolve(custom)))
+const moduleAliases = Object.assign(importPaths,
+   _.mapValues(customPaths, custom => path.resolve(rootDir, custom)),
+   {
+     'require-polyfill': path.resolve(__dirname, './frontend/require-polyfill.js'),
+     'require-context': path.resolve(__dirname, './frontend/require-context.js')
+   }
+ )
+
+console.log('Start webpack from', rootDir)
 
 module.exports = {
     target: 'web',
@@ -43,6 +53,7 @@ module.exports = {
         symlinks: false,
         alias: moduleAliases
     },
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -72,7 +83,7 @@ module.exports = {
                     }
                 ]
             }, {
-                test: require.resolve('backbone'),
+                test: /node_modules\/backbone\/backbone.js/,
                 use: [
                     {
                         loader: 'expose-loader',
@@ -80,7 +91,7 @@ module.exports = {
                     }
                 ]
             }, {
-                test: require.resolve('backbone'),
+                test: /node_modules\/backbone\/backbone.js/,
                 use: [
                     {
                         loader: 'imports-loader',
@@ -88,7 +99,7 @@ module.exports = {
                     }
                 ]
             }, {
-                test: require.resolve('jquery'),
+                test: /node_modules\/jquery\/dist\/jquery.js/,
                 use: [
                     {
                         loader: 'expose-loader',
@@ -128,11 +139,11 @@ module.exports = {
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(importPaths)),
+        new AddToContextPlugin(_.values(importPaths), rootDir),
         new webpack.WatchIgnorePlugin([
-            path.resolve(__dirname, './node_modules'),
-            path.resolve(__dirname, './app'),
-            path.resolve(__dirname, './vendor'),
+            path.resolve(rootDir, './node_modules'),
+            path.resolve(rootDir, './app'),
+            path.resolve(rootDir, './vendor'),
         ]),
         new LiveReloadPlugin({
           appendScriptTag: true,

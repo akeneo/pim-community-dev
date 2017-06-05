@@ -27,7 +27,7 @@ const utils = {
                 const requireMaps = _.get(parsed.config, 'map.*') || {}
                 const mergedPaths = Object.assign(requirePaths, requireMaps)
                 const absolutePaths = _.mapValues(mergedPaths, (modulePath) => {
-                    return resolve(`${baseDir}/web/bundles/${modulePath}`)
+                    return resolve(baseDir, `./web/bundles/${modulePath}`)
                 })
 
                 paths = deepMerge(paths, absolutePaths)
