@@ -1197,6 +1197,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group todo
+     */
     public function testSearchAfterPaginationListProductsWithNextLink()
     {
         $standardizedProducts = $this->getStandardizedProducts();
@@ -1204,6 +1207,7 @@ JSON;
 
         $id = [
             'simple'                   => urlencode($this->getEncryptedId('simple')),
+            'localizable'              => urlencode($this->getEncryptedId('localizable')),
             'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
         ];
 
@@ -1213,7 +1217,8 @@ JSON;
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['simple']}"},
         "first" : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['localizable_and_scopable']}"}
+        "next"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['localizable_and_scopable']}"},
+        "previous" : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_before={$id['localizable']}"}
     },
     "_embedded"    : {
         "items" : [
@@ -1221,7 +1226,8 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']}
         ]
-    }
+    },
+    "current_page": null
 }
 JSON;
 
@@ -1234,13 +1240,15 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $scopableEncryptedId = urlencode($this->getEncryptedId('scopable'));
+        $localizableAndScopableEncryptedId = urlencode($this->getEncryptedId('localizable_and_scopable'));
 
         $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
         $expected = <<<JSON
 {
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after&search_after={$scopableEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after"}
+        "first" : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after"},
+        "previous"  : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
     },
     "_embedded"    : {
         "items" : [
@@ -1248,7 +1256,8 @@ JSON;
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category']}
         ]
-    }
+    },
+    "current_page": null
 }
 JSON;
 
