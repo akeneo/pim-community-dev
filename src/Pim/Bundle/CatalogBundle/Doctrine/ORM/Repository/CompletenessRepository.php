@@ -38,18 +38,29 @@ class CompletenessRepository implements CompletenessRepositoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * The request selects at first in an optimised subquery all the enabled product for a given channel.
+     * It eliminates duplicates in this subquery for performance concern, by using DISTINCT instead of GROUP BY, which is faster in that case.
+     * After that, it joins with the table channel to get the label. It does not get the label in the subquery for performance concern.
      */
     public function getProductsCountPerChannels($localeCode)
     {
         $sql = <<<SQL
-SELECT t.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
-    JOIN pim_catalog_channel_translation t ON t.foreign_key = ch.id
-    JOIN %category_table% ca ON ca.root = ch.category_id
-    JOIN %category_join_table% cp ON cp.category_id = ca.id
-    JOIN %product_table% p ON p.id = cp.product_id
-    WHERE p.is_enabled = 1
-    AND t.locale = '%locale%'
-    GROUP BY ch.id, t.label
+        SELECT co.label, co.total FROM
+        (
+            SELECT ch.id, ch.label, COUNT(p.id) as total
+            FROM (
+                SELECT DISTINCT ch.id as channel_id, p.id FROM pim_catalog_channel ch
+                JOIN pim_catalog_channel_translation t ON t.foreign_key = ch.id
+                JOIN %category_table% ca ON ca.root = ch.category_id
+                JOIN %category_join_table% cp ON cp.category_id = ca.id
+                JOIN %product_table% p ON p.id = cp.product_id
+                WHERE p.is_enabled = 1
+                AND t.locale = '%locale%'
+            ) as p
+            JOIN pim_catalog_channel ch on ch.id = p.channel_id
+            GROUP BY ch.id, ch.label
+        ) as co;
 SQL;
 
         $sql = $this->applyTableNames($sql);
@@ -63,22 +74,33 @@ SQL;
 
     /**
      * {@inheritdoc}
+     *
+     * The request selects at first in an optimised subquery all the enabled product for a given channel.
+     * It eliminates duplicates in this subquery for performance concern, by using DISTINCT instead of GROUP BY, which is faster in that case.
+     * After that, it joins with the other tables to get the locale code, the channel label, and filter to get only the complete products.
      */
     public function getCompleteProductsCountPerChannels($localeCode)
     {
         $sql = <<<SQL
-    SELECT t.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
-    JOIN pim_catalog_channel_translation t ON t.foreign_key = ch.id
-    JOIN %category_table% ca ON ca.root = ch.category_id
-    JOIN %category_join_table% cp ON cp.category_id = ca.id
-    JOIN %product_table% p ON p.id = cp.product_id
-    JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
-    JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
-    LEFT JOIN pim_catalog_completeness co
-        ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
-    WHERE p.is_enabled = 1
-    AND t.locale = '%locale%'
-    GROUP BY ch.id, lo.id, t.label, lo.code
+        SELECT co.label, co.code as locale, co.total FROM (
+            SELECT ch.id as channel_id, lo.id as locale_id, ch.label, lo.code, COUNT(co.product_id) as total 
+            FROM 
+            (
+                SELECT DISTINCT ch.id as channel_id, p.id FROM pim_catalog_channel ch
+                JOIN pim_catalog_channel_translation t ON t.foreign_key = ch.id
+                JOIN %category_table% ca ON ca.root = ch.category_id
+                JOIN %category_join_table% cp ON cp.category_id = ca.id
+                JOIN %product_table% p ON p.id = cp.product_id
+                WHERE p.is_enabled = 1
+                AND t.locale = '%locale%'
+            ) as p 
+            JOIN pim_catalog_channel ch on ch.id = p.channel_id
+            JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
+            JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
+            LEFT JOIN pim_catalog_completeness co
+            ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
+            GROUP BY ch.id, lo.id, ch.label, lo.code 
+        ) as co;
 SQL;
         $sql = $this->applyTableNames($sql);
         $sql = $this->applyParameters($sql, $localeCode);
