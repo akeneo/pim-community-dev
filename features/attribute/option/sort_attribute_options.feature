@@ -47,5 +47,4 @@ Feature: Sort attribute options
     And I press the "Save" button in the popin
     And I should be on the product "a_product" edit page
     And I add available attributes size
-    And I should see the ordered choices [large_size], [medium_size], [small_size] in size
-    
+    Then I should see the ordered choices [large_size], [medium_size], [small_size] in size

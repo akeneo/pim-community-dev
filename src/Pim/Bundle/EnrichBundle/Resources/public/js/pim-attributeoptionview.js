@@ -290,10 +290,8 @@ define(
                     code_label: __('Code')
                 }));
 
-
-
                 _.each(_.sortBy(this.collection.models, function (attributeOptionItem) {
-                    return !this.sortable ? attributeOptionItem.attributes.code : 0;
+                    return this.sortable ? 0 : attributeOptionItem.attributes.code;
                 }.bind(this)), function (attributeOptionItem) {
                     this.addItem({item: attributeOptionItem});
                 }.bind(this));

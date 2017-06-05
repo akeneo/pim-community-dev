@@ -500,7 +500,6 @@ class Form extends Base
      */
     public function checkFieldChoices($label, array $choices, $isExpected = true, $strict = false)
     {
-
         $select2 = $this->spin(function () use ($label) {
             $labelElement = $this->extractLabelElement($label);
             $container = $this->getClosest($labelElement, 'AknFieldContainer');
@@ -513,16 +512,15 @@ class Form extends Base
         $select2 = $this->decorate($select2, [Select2Decorator::class]);
         $selectChoices = $select2->getAvailableValues();
 
-        if ($isExpected) {
-            if ($strict) {
-                if ($selectChoices !== $choices) {
-                    throw new ExpectationException(sprintf(
-                        'Expecting to see exactly %s, %s found',
-                        json_encode($choices),
-                        json_encode($selectChoices)
-                    ), $this->getSession());
-                }
+        if ($isExpected && true === $strict) {
+            if ($selectChoices !== $choices) {
+                throw new ExpectationException(sprintf(
+                    'Expecting to see exactly %s, %s found',
+                    json_encode($choices),
+                    json_encode($selectChoices)
+                ), $this->getSession());
             }
+        } elseif ($isExpected) {
             foreach ($choices as $choice) {
                 if (!in_array($choice, $selectChoices)) {
                     throw new ExpectationException(sprintf(
