@@ -49,7 +49,11 @@ define(
                 this.trigger('tab:register', {
                     code: this.code,
                     isVisible: function () {
-                        return this.getFormData().meta.is_owner;
+                        return _.result(
+                            _.result(this.getFormData(), 'meta', {}),
+                            'is_owner',
+                            false
+                        );
                     }.bind(this),
                     label: _.__('pimee_enrich.entity.product.tab.proposals.title')
                 });

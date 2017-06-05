@@ -11,7 +11,11 @@ define(['pim/product-edit-form/associations'],
              * {@inheritdoc}
              */
             isVisible: function () {
-                return this.getFormData().meta.is_owner;
+                return _.result(
+                    _.result(this.getFormData(), 'meta', {}),
+                    'is_owner',
+                    false
+                );
             }
         });
     }
