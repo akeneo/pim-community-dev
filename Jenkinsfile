@@ -69,7 +69,7 @@ stage("Checkout") {
             docker.image('node').inside {
                 unstash "pim_community_dev_full"
 
-                sh "npm install --verbose"
+                sh "npm install"
                 sh "npm run webpack"
 
                 stash "pim_community_dev_full"
@@ -95,7 +95,7 @@ stage("Checkout") {
                 docker.image('node').inside {
                     unstash "pim_enterprise_dev_full"
 
-                    sh "npm install --verbose"
+                    sh "npm install"
                     sh "npm run webpack"
 
                     stash "pim_enterprise_dev_full"
@@ -187,7 +187,7 @@ def runGruntTest() {
         try {
             docker.image('node').inside("") {
                 unstash "pim_community_dev_full"
-                sh "npm install --verbose"
+                sh "npm install"
                 sh "npm run lint"
                 sh "npm run webpack-jasmine"
             }

@@ -53,7 +53,7 @@ module.exports = {
         symlinks: false,
         alias: moduleAliases
     },
-    devtool: 'inline-source-map',
+    // devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -68,6 +68,7 @@ module.exports = {
                 }
             }, {
                 test: /\.js$/,
+                exclude: /node_modules|spec/,
                 use: [
                     {
                         loader: path.resolve(__dirname, 'frontend/config-loader'),

@@ -33,13 +33,11 @@ define(
         LastOperationsWidget,
         CompletenessWidget,
         PatchFetcher
-        // ,
-        // RequirePolyfill
     ) {
         'use strict';
         var initialized = false;
-
         return function () {
+
             if (initialized) {
                 return;
             }

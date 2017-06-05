@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2017 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -19,10 +10,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Dump a file called require-paths containing all requirejs.yml config files for reach registered bundle
  *
  * @author Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class DumpRequirePathsCommand extends ContainerAwareCommand
 {
-
     const MAIN_CONFIG_FILE_NAME = 'js/require-paths.js';
     /**
      * {@inheritdoc}
@@ -48,12 +40,16 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
         $mainConfigContent = 'module.exports = ' . $mainConfigContent;
         $mainConfigContent = str_replace(',', ",\n", $mainConfigContent);
         $mainConfigFilePath = $webRoot . DIRECTORY_SEPARATOR . self::MAIN_CONFIG_FILE_NAME;
-        if (false === @file_put_contents($mainConfigFilePath, $mainConfigContent)) {
+        if (false === file_put_contents($mainConfigFilePath, $mainConfigContent)) {
             throw new \RuntimeException('Unable to write file ' . $mainConfigFilePath);
         }
     }
 
-    public function collectConfigPaths()
+    /**
+     * Collect an array of requirejs.yml paths for each bundle
+     * @return [Array] Array of paths
+     */
+    protected function collectConfigPaths()
     {
         $kernel = $this->getApplication()->getKernel();
         $bundles = $this->getContainer()->getParameter('kernel.bundles');
