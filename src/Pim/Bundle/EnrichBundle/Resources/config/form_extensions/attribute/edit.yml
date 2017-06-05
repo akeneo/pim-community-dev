@@ -176,3 +176,13 @@ extensions:
         parent: pim-attribute-edit-form-properties
         targetZone: accordion
         position: 110
+
+    pim-attribute-edit-form-history:
+        module: pim/common/tab/history
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_channel_history
+        position: 110
+        config:
+            class: attribute
+            title: pim_enrich.form.attribute.tab.history.title
