@@ -136,5 +136,8 @@ abstract class TestCase extends KernelTestCase
         }
 
         $this->esClient->createIndex($conf->buildAggregated());
+
+        $products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->get('pim_catalog.elasticsearch.product_indexer')->indexAll($products);
     }
 }
