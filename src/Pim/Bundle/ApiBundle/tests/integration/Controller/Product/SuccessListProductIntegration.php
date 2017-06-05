@@ -696,7 +696,7 @@ JSON;
                     "a_scopable_price" : [
                         {
                             "locale" : null,
-                            "scope"  : "ecommerce",
+                            "scope"  : "tablet",
                             "data"   : [
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"},
@@ -705,7 +705,7 @@ JSON;
                         },
                         {
                             "locale" : null,
-                            "scope"  : "tablet",
+                            "scope"  : "ecommerce",
                             "data"   : [
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"},
@@ -730,8 +730,8 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localized_and_scopable_text_area" : [
-                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
                         {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
+                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
                         {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "hum..."}
                     ]
                 },
@@ -1211,9 +1211,9 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3&search_after={$id['simple']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=3&search_after={$id['localizable_and_scopable']}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['simple']}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after"},
+        "next"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['localizable_and_scopable']}"}
     },
     "_embedded"    : {
         "items" : [
@@ -1239,8 +1239,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=4&search_after={$scopableEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=4"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after&search_after={$scopableEncryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after"}
     },
     "_embedded"    : {
         "items" : [
@@ -1372,7 +1372,7 @@ JSON;
     "values": {
         "a_scopable_price": [{
             "locale": null,
-            "scope": "ecommerce",
+            "scope": "tablet",
             "data": [{
                 "amount": "10.50",
                 "currency": "EUR"
@@ -1385,7 +1385,7 @@ JSON;
             }]
         }, {
             "locale": null,
-            "scope": "tablet",
+            "scope": "ecommerce",
             "data": [{
                 "amount": "10.50",
                 "currency": "EUR"
@@ -1420,20 +1420,20 @@ JSON;
     "values": {
         "a_localized_and_scopable_text_area": [{
             "locale": "en_US",
-            "scope": "ecommerce",
-            "data": "Big description"
-        }, {
-            "locale": "en_US",
             "scope": "tablet",
             "data": "Medium description"
         }, {
             "locale": "fr_FR",
-            "scope": "ecommerce",
-            "data": "Grande description"
-        }, {
-            "locale": "fr_FR",
             "scope": "tablet",
             "data": "Description moyenne"
+        }, {
+            "locale": "en_US",
+            "scope": "ecommerce",
+            "data": "Big description"
+        }, {
+            "locale": "fr_FR",
+            "scope": "ecommerce",
+            "data": "Grande description"
         }, {
             "locale": "zh_CN",
             "scope": "ecommerce_china",
