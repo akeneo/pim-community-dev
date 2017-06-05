@@ -24,21 +24,19 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            static::$createdDates['before_first'] = new \DateTime('now', new \DateTimeZone('UTC'));
-            sleep(2);
-            $this->createProduct('foo', []);
-            sleep(2);
-            static::$createdDates['before_second'] = new \DateTime('now', new \DateTimeZone('UTC'));
-            sleep(2);
-            $this->createProduct('bar', []);
-            sleep(2);
-            static::$createdDates['before_third'] = new \DateTime('now', new \DateTimeZone('UTC'));
-            sleep(2);
-            $this->createProduct('baz', []);
-            sleep(2);
-            static::$createdDates['after_all'] = new \DateTime('now', new \DateTimeZone('UTC'));
-        }
+        static::$createdDates['before_first'] = new \DateTime('now', new \DateTimeZone('UTC'));
+        sleep(2);
+        $this->createProduct('foo', []);
+        sleep(2);
+        static::$createdDates['before_second'] = new \DateTime('now', new \DateTimeZone('UTC'));
+        sleep(2);
+        $this->createProduct('bar', []);
+        sleep(2);
+        static::$createdDates['before_third'] = new \DateTime('now', new \DateTimeZone('UTC'));
+        sleep(2);
+        $this->createProduct('baz', []);
+        sleep(2);
+        static::$createdDates['after_all'] = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     public function testOperatorInferior()
@@ -154,6 +152,6 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->executeFilter([['updated', Operators::IN_CHILDREN_LIST, '2016-08-29 00:00:01']]);
+        $this->executeFilter([['updated', Operators::IN_CHILDREN_LIST, ['2016-08-29 00:00:01']]]);
     }
 }

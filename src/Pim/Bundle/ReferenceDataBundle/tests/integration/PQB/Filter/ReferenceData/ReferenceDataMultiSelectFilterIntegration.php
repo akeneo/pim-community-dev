@@ -20,63 +20,61 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct(
-                'product_one',
-                [
-                    'values' => [
-                        'a_ref_data_multi_select' => [
-                            [
-                                'data'   => [
-                                    'aertex',
-                                    'ballisticnylon',
-                                ],
-                                'scope'  => null,
-                                'locale' => null,
+        $this->createProduct(
+            'product_one',
+            [
+                'values' => [
+                    'a_ref_data_multi_select' => [
+                        [
+                            'data'   => [
+                                'aertex',
+                                'ballisticnylon',
                             ],
+                            'scope'  => null,
+                            'locale' => null,
                         ],
                     ],
-                ]
-            );
+                ],
+            ]
+        );
 
-            $this->createProduct(
-                'product_two',
-                [
-                    'values' => [
-                        'a_ref_data_multi_select' => [
-                            [
-                                'data'   => [
-                                    'argentanlace',
-                                    'ballisticnylon',
-                                ],
-                                'scope'  => null,
-                                'locale' => null,
+        $this->createProduct(
+            'product_two',
+            [
+                'values' => [
+                    'a_ref_data_multi_select' => [
+                        [
+                            'data'   => [
+                                'argentanlace',
+                                'ballisticnylon',
                             ],
+                            'scope'  => null,
+                            'locale' => null,
                         ],
                     ],
-                ]
-            );
+                ],
+            ]
+        );
 
-            $this->createProduct(
-                'product_three',
-                [
-                    'values' => [
-                        'a_ref_data_multi_select' => [
-                            [
-                                'data'   => [
-                                    'betacloth',
-                                    'bobbinet',
-                                ],
-                                'scope'  => null,
-                                'locale' => null,
+        $this->createProduct(
+            'product_three',
+            [
+                'values' => [
+                    'a_ref_data_multi_select' => [
+                        [
+                            'data'   => [
+                                'betacloth',
+                                'bobbinet',
                             ],
+                            'scope'  => null,
+                            'locale' => null,
                         ],
                     ],
-                ]
-            );
+                ],
+            ]
+        );
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorIn()
@@ -142,8 +140,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     protected function getConfiguration()
     {
         return new Configuration(
-            [Configuration::getTechnicalCatalogPath(), Configuration::getReferenceDataFixtures()],
-            false
+            [Configuration::getTechnicalCatalogPath(), Configuration::getReferenceDataFixtures()]
         );
     }
 }

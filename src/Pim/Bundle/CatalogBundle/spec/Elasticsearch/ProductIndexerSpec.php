@@ -111,6 +111,13 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->indexAll([$product1, $product2]);
     }
 
+    function it_does_not_bulk_index_empty_arrays_of_products($normalizer, $indexer)
+    {
+        $indexer->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
+
+        $this->indexAll([]);
+    }
+
     function it_deletes_products_from_elasticsearch_index($indexer)
     {
         $indexer->delete('an_index_type_for_test_purpose', 40)->shouldBeCalled();

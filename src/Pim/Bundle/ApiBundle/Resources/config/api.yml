@@ -5,3 +5,9 @@ pim_api:
     input:
         buffer_size: '%api_input_buffer_size%'
         max_resources_number: '%api_input_max_resources_number%'
+    content_type_negotiator:
+        rules:
+            - { path: '^/api/rest/v\d+/media-files', methods: ['POST'], content_types:['multipart/form-data']}
+            - { path: '^/api/rest/v\d+/(products|families|categories|attributes|attribute-groups)$', methods: ['PATCH'], content_types:['application/vnd.akeneo.collection+json'] }
+            - { path: '^/api', content_types:['application/json'] }
+            - { path: '', stop: true }

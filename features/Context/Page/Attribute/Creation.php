@@ -136,6 +136,25 @@ class Creation extends Form
     }
 
     /**
+     * Edit an attribute option
+     *
+     * @param string $code
+     * @param array  $labels
+     */
+    public function editOption($code, array $labels = [])
+    {
+        $row = $this->getOptionElement($code);
+
+        $row->find('css', '.edit-row')->click();
+
+        foreach ($labels as $locale => $value) {
+            $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($value);
+        }
+
+        $row->find('css', '.update-row')->click();
+    }
+
+    /**
      * Count the number of attribute options
      *
      * @return int

@@ -8,14 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 class DeleteProductIntegration extends AbstractProductTestCase
 {
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     public function testDeleteAProduct()

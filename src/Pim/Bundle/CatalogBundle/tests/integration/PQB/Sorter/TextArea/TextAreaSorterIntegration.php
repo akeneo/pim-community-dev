@@ -25,45 +25,43 @@ class TextAreaSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
-                ],
-            ]);
+        $this->createProduct('cat', [
+            'values' => [
+                'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
 
-            $this->createProduct('best_cat', [
-                'values' => [
-                    'a_text_area' => [
-                        [
-                            'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
-                            'locale' => null,
-                            'scope'  => null,
-                        ],
+        $this->createProduct('best_cat', [
+            'values' => [
+                'a_text_area' => [
+                    [
+                        'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
+                        'locale' => null,
+                        'scope'  => null,
                     ],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('super_dog', [
-                'values' => [
-                    'a_text_area' => [
-                        [
-                            'data'   => $this->superDog,
-                            'locale' => null,
-                            'scope'  => null,
-                        ],
+        $this->createProduct('super_dog', [
+            'values' => [
+                'a_text_area' => [
+                    [
+                        'data'   => $this->superDog,
+                        'locale' => null,
+                        'scope'  => null,
                     ],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('best_dog', [
-                'values' => [
-                    'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
-                ],
-            ]);
+        $this->createProduct('best_dog', [
+            'values' => [
+                'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testSorterAscending()

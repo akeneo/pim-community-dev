@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -14,17 +15,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 abstract class AbstractProductTestCase extends ApiTestCase
 {
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
-    }
-
     /**
      * @param string $identifier
      * @param array  $data
@@ -40,6 +30,25 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $this->get('akeneo_elasticsearch.client')->refreshIndex();
 
         return $product;
+    }
+
+    /**
+     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function sanitizeDateFields(array $data)
+    {
+        if (isset($data['created'])) {
+            $data['created'] = DateSanitizer::sanitize($data['created']);
+        }
+        if (isset($data['updated'])) {
+            $data['updated'] = DateSanitizer::sanitize($data['updated']);
+        }
+
+        return $data;
     }
 
     /**
@@ -71,5 +80,27 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
 
         return $data;
+    }
+
+    /**
+     * @param Response $response
+     * @param string   $expected
+     */
+    protected function assertListResponse(Response $response, $expected)
+    {
+        $result = json_decode($response->getContent(), true);
+        $expected = json_decode($expected, true);
+
+        foreach ($result['_embedded']['items'] as $index => $product) {
+            $product = $this->sanitizeDateFields($product);
+            $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
+
+            if (isset($expected['_embedded']['items'][$index])) {
+                $expected['_embedded']['items'][$index] = $this->sanitizeDateFields($expected['_embedded']['items'][$index]);
+                $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
+            }
+        }
+
+        $this->assertEquals($expected, $result);
     }
 }

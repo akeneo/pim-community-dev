@@ -15,19 +15,17 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $family = $this->get('pim_catalog.factory.family')->create();
-            $this->get('pim_catalog.updater.family')->update($family, ['code' => 'familyB']);
-            $this->get('pim_catalog.saver.family')->save($family);
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, ['code' => 'familyB']);
+        $this->get('pim_catalog.saver.family')->save($family);
 
-            $this->createProduct('foo', ['family' => 'familyA']);
-            $this->createProduct('bar', []);
-            $this->createProduct('baz', []);
-        }
+        $this->createProduct('foo', ['family' => 'familyA']);
+        $this->createProduct('bar', []);
+        $this->createProduct('baz', []);
     }
 
     public function testOperatorIn()

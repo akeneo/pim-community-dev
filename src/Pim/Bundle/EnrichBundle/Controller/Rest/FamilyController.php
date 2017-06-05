@@ -129,15 +129,22 @@ class FamilyController
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(Request $request, $identifier)
     {
         $family = $this->familyRepository->findOneByIdentifier($identifier);
+        $applyFilters = $request->query->getBoolean('apply_filters', true);
 
         if (null === $family) {
             throw new NotFoundHttpException(sprintf('Family with code "%s" not found', $identifier));
         }
 
-        return new JsonResponse($this->normalizer->normalize($family, 'internal_api'));
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $family,
+                'internal_api',
+                ['apply_filters' => $applyFilters]
+            )
+        );
     }
 
     /**

@@ -22,31 +22,29 @@ class ReferenceDataSimpleSelectSorterIntegration extends AbstractProductQueryBui
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct(
-                'product_one',
-                [
-                    'values' => [
-                        'a_ref_data_simple_select' => [
-                            ['data' => 'acid-green', 'scope' => null, 'locale' => null],
-                        ],
+        $this->createProduct(
+            'product_one',
+            [
+                'values' => [
+                    'a_ref_data_simple_select' => [
+                        ['data' => 'acid-green', 'scope' => null, 'locale' => null],
                     ],
-                ]
-            );
+                ],
+            ]
+        );
 
-            $this->createProduct(
-                'product_two',
-                [
-                    'values' => [
-                        'a_ref_data_simple_select' => [
-                            ['data' => 'blue', 'scope' => null, 'locale' => null],
-                        ],
+        $this->createProduct(
+            'product_two',
+            [
+                'values' => [
+                    'a_ref_data_simple_select' => [
+                        ['data' => 'blue', 'scope' => null, 'locale' => null],
                     ],
-                ]
-            );
+                ],
+            ]
+        );
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorAscendant()
@@ -76,8 +74,7 @@ class ReferenceDataSimpleSelectSorterIntegration extends AbstractProductQueryBui
     protected function getConfiguration()
     {
         return new Configuration(
-            [Configuration::getTechnicalCatalogPath(), Configuration::getReferenceDataFixtures()],
-            false
+            [Configuration::getTechnicalCatalogPath(), Configuration::getReferenceDataFixtures()]
         );
     }
 }

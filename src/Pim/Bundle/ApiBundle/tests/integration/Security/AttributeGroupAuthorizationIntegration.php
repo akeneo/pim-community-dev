@@ -129,7 +129,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', '/api/rest/v1/attribute-groups/fashion', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/attribute-groups/attributeGroupA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
@@ -141,7 +141,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', '/api/rest/v1/attribute-groups/fashion', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/attribute-groups/attributeGroupA', [], [], [], $data);
 
         $expectedResponse =
 <<<JSON
@@ -167,7 +167,9 @@ JSON;
 {"code": "attributeGroupB","sort_order": 8}
 JSON;
 
+        ob_start(function() { return ''; });
         $client->request('PATCH', '/api/rest/v1/attribute-groups', [], [], [], $data);
+        ob_end_flush();
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -204,9 +206,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

@@ -32,58 +32,56 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
      *      - "Ecommerce China" are complete because this channel requires only the "sku"
      *      - completeness is not calculated on "no_family" has it has obviously no family
      */
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $family = $this->get('pim_catalog.factory.family')->create();
-            $this->get('pim_catalog.updater.family')->update($family, [
-                'code'                   => 'familyB',
-                'attributes'             => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
-                'attribute_requirements' => [
-                    'tablet'    => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
-                    'ecommerce' => ['sku', 'a_metric', 'a_scopable_price'],
-                ]
-            ]);
-            $this->get('pim_catalog.saver.family')->save($family);
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, [
+            'code'                   => 'familyB',
+            'attributes'             => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
+            'attribute_requirements' => [
+                'tablet'    => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
+                'ecommerce' => ['sku', 'a_metric', 'a_scopable_price'],
+            ]
+        ]);
+        $this->get('pim_catalog.saver.family')->save($family);
 
-            $this->createProduct('product_one', [
-                'family' => 'familyB',
-                'categories' => ['categoryA1'],
-                'values' => [
-                    'a_metric' => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('product_one', [
+            'family' => 'familyB',
+            'categories' => ['categoryA1'],
+            'values' => [
+                'a_metric' => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'family' => 'familyB',
-                'categories' => ['categoryA2', 'categoryA1'],
-                'values' => [
-                    'a_metric'                           => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]],
-                    'a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'tablet']],
-                    'a_scopable_price'                   => [
-                        [
-                            'data'      => [
-                                ['amount' => 15, 'currency' => 'EUR'],
-                                ['amount' => 15.5, 'currency' => 'USD']
-                            ], 'locale' => null, 'scope' => 'tablet'
-                        ]
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_two', [
+            'family' => 'familyB',
+            'categories' => ['categoryA2', 'categoryA1'],
+            'values' => [
+                'a_metric'                           => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]],
+                'a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'tablet']],
+                'a_scopable_price'                   => [
+                    [
+                        'data'      => [
+                            ['amount' => 15, 'currency' => 'EUR'],
+                            ['amount' => 15.5, 'currency' => 'USD']
+                        ], 'locale' => null, 'scope' => 'tablet'
+                    ]
+                ],
+            ]
+        ]);
 
-            $this->createProduct('empty_product', [
-                'family' => 'familyB',
-                'categories' => ['categoryA2', 'categoryA1']
-            ]);
+        $this->createProduct('empty_product', [
+            'family' => 'familyB',
+            'categories' => ['categoryA2', 'categoryA1']
+        ]);
 
-            $this->createProduct('no_family', [
-                'values' => [
-                    'a_metric' => [['data' => ['amount' => 10, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
-                ]
-            ]);
-        }
+        $this->createProduct('no_family', [
+            'values' => [
+                'a_metric' => [['data' => ['amount' => 10, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
+            ]
+        ]);
     }
 
     public function testOperatorIsEmpty()

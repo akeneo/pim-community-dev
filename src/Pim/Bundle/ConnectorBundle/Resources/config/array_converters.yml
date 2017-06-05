@@ -289,6 +289,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
 
     # product value converters
     pim_connector.array_converter.flat_to_standard.product.value_converter.registry:

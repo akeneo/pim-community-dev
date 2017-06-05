@@ -13,12 +13,12 @@ use Akeneo\Test\Integration\TestCase;
  */
 class MediaAttributeSetterIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 
     public function testLocalizableMedia()

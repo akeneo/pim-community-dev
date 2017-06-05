@@ -116,9 +116,9 @@ class ReferenceDataMultiAttributeTypeCompletenessIntegration extends AbstractCom
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getMinimalCatalogPath(), Configuration::getReferenceDataFixtures()],
-            true
-        );
+        return new Configuration([
+            Configuration::getMinimalCatalogPath(),
+            Configuration::getReferenceDataFixtures()
+        ]);
     }
 }

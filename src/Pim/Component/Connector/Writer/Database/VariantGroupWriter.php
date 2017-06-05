@@ -83,6 +83,7 @@ class VariantGroupWriter implements ItemWriterInterface, StepExecutionAwareInter
                 if ($nbSkipped > 0) {
                     $this->incrementSkippedProductsCount($skippedMessages, $nbSkipped);
                 }
+                $this->bulkDetacher->detachAll($products->toArray());
             }
         }
     }

@@ -58,6 +58,10 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      */
     public function indexAll(array $products, array $options = [])
     {
+        if (empty($products)) {
+            return;
+        }
+
         $normalizedProducts = [];
         foreach ($products as $product) {
             $this->validateProduct($product);

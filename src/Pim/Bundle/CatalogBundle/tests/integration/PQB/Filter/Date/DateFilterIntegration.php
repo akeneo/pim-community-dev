@@ -19,25 +19,23 @@ class DateFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_date' => [
-                        ['data' => '2017-02-06', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_date' => [
+                    ['data' => '2017-02-06', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_date' => [
-                        ['data' => '2017-02-27', 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_date' => [
+                    ['data' => '2017-02-27', 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

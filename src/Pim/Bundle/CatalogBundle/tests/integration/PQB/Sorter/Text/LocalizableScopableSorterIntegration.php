@@ -22,34 +22,32 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'        => 'a_localizable_scopable_text',
-                'type'        => AttributeTypes::TEXT,
-                'localizable' => true,
-                'scopable'    => true,
-            ]);
+        $this->createAttribute([
+            'code'        => 'a_localizable_scopable_text',
+            'type'        => AttributeTypes::TEXT,
+            'localizable' => true,
+            'scopable'    => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_text' => [
-                        ['data' => 'cat is beautiful', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'dog is wonderful', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_text' => [
+                    ['data' => 'cat is beautiful', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'dog is wonderful', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_text' => [
-                        ['data' => 'dog is wonderful', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'cat is beautiful', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_text' => [
+                    ['data' => 'dog is wonderful', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'cat is beautiful', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ],
-            ]);
+            ],
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testSorterAscending()

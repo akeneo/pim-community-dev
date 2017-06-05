@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,85 +19,83 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
-            // no locale, no scope, 1 category
-            $this->createProduct('simple', [
-                'categories' => ['master'],
-                'values'     => [
-                    'a_metric' => [
-                        ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
+        // no locale, no scope, 1 category
+        $this->createProduct('simple', [
+            'categories' => ['master'],
+            'values'     => [
+                'a_metric' => [
+                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
+                ],
+                'a_text' => [
+                    ['data' => 'Text', 'locale' => null, 'scope' => null]
+                ]
+            ]
+        ]);
+
+        // localizable, categorized in 1 tree (master)
+        $this->createProduct('localizable', [
+            'categories' => ['categoryB'],
+            'values'     => [
+                'a_localizable_image' => [
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
+                ]
+            ]
+        ]);
+
+        // scopable, categorized in 1 tree (master)
+        $this->createProduct('scopable', [
+            'categories' => ['categoryA1', 'categoryA2'],
+            'values'     => [
+                'a_scopable_price' => [
+                    [
+                        'locale' => null,
+                        'scope'  => 'ecommerce',
+                        'data'   => [
+                            ['amount' => '10.50', 'currency' => 'EUR'],
+                            ['amount' => '11.50', 'currency' => 'USD'],
+                            ['amount' => '78.77', 'currency' => 'CNY']
+                        ]
                     ],
-                    'a_text' => [
-                        ['data' => 'Text', 'locale' => null, 'scope' => null]
-                    ]
-                ]
-            ]);
-
-            // localizable, categorized in 1 tree (master)
-            $this->createProduct('localizable', [
-                'categories' => ['categoryB'],
-                'values'     => [
-                    'a_localizable_image' => [
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
-                    ]
-                ]
-            ]);
-
-            // scopable, categorized in 1 tree (master)
-            $this->createProduct('scopable', [
-                'categories' => ['categoryA1', 'categoryA2'],
-                'values'     => [
-                    'a_scopable_price' => [
-                        [
-                            'locale' => null,
-                            'scope'  => 'ecommerce',
-                            'data'   => [
-                                ['amount' => '10.50', 'currency' => 'EUR'],
-                                ['amount' => '11.50', 'currency' => 'USD'],
-                                ['amount' => '78.77', 'currency' => 'CNY']
-                            ]
-                        ],
-                        [
-                            'locale' => null,
-                            'scope'  => 'tablet',
-                            'data'   => [
-                                ['amount' => '10.50', 'currency' => 'EUR'],
-                                ['amount' => '11.50', 'currency' => 'USD'],
-                                ['amount' => '78.77', 'currency' => 'CNY']
-                            ]
+                    [
+                        'locale' => null,
+                        'scope'  => 'tablet',
+                        'data'   => [
+                            ['amount' => '10.50', 'currency' => 'EUR'],
+                            ['amount' => '11.50', 'currency' => 'USD'],
+                            ['amount' => '78.77', 'currency' => 'CNY']
                         ]
                     ]
                 ]
-            ]);
+            ]
+        ]);
 
-            // localizable & scopable, categorized in 2 trees (master and master_china)
-            $this->createProduct('localizable_and_scopable', [
-                'categories' => ['categoryA', 'master_china'],
-                'values'     => [
-                    'a_localized_and_scopable_text_area' => [
-                        ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                        ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
-                    ]
+        // localizable & scopable, categorized in 2 trees (master and master_china)
+        $this->createProduct('localizable_and_scopable', [
+            'categories' => ['categoryA', 'master_china'],
+            'values'     => [
+                'a_localized_and_scopable_text_area' => [
+                    ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_china', [
-                'categories' => ['master_china']
-            ]);
+        $this->createProduct('product_china', [
+            'categories' => ['master_china']
+        ]);
 
-            $this->createProduct('product_without_category', [
-                'values' => [
-                    'a_yes_no' => [
-                        ['data' => true, 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_without_category', [
+            'values' => [
+                'a_yes_no' => [
+                    ['data' => true, 'locale' => null, 'scope' => null]
                 ]
-            ]);
-        }
+            ]
+        ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();
     }
@@ -130,7 +129,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testFirstPageListProductsWithCount()
@@ -160,7 +159,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -196,7 +195,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -231,7 +230,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -336,7 +335,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -452,7 +451,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -557,7 +556,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -620,7 +619,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -697,7 +696,7 @@ JSON;
                     "a_scopable_price" : [
                         {
                             "locale" : null,
-                            "scope"  : "ecommerce",
+                            "scope"  : "tablet",
                             "data"   : [
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"},
@@ -706,7 +705,7 @@ JSON;
                         },
                         {
                             "locale" : null,
-                            "scope"  : "tablet",
+                            "scope"  : "ecommerce",
                             "data"   : [
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"},
@@ -731,8 +730,8 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localized_and_scopable_text_area" : [
-                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
                         {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
+                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
                         {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "hum..."}
                     ]
                 },
@@ -747,7 +746,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithFilteredAttributes()
@@ -867,7 +866,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithChannelLocalesAndAttributesParams()
@@ -976,7 +975,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testTheSecondPageOfTheListOfProductsWithoutCount()
@@ -1036,7 +1035,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testOutOfRangeProductsList()
@@ -1061,7 +1060,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithSearch()
@@ -1118,7 +1117,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithMultiplePQBFilters()
@@ -1141,7 +1140,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testListProductsWithCompletenessPQBFilters()
@@ -1164,7 +1163,7 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     public function testPaginationLastPageOfTheListOfProducts()
@@ -1195,32 +1194,74 @@ JSON;
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
-     * @param Response $response
-     * @param array    $expected
+     * @group todo
      */
-    private function assertResponse(Response $response, $expected)
+    public function testSearchAfterPaginationListProductsWithNextLink()
     {
-        $result = json_decode($response->getContent(), true);
-        $expected = json_decode($expected, true);
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
 
-        foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeMediaAttributeData($product);
-            NormalizedProductCleaner::clean($product);
-            $result['_embedded']['items'][$index] = $product;
+        $id = [
+            'simple'                   => urlencode($this->getEncryptedId('simple')),
+            'localizable'              => urlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
+        ];
 
-            if (isset($expected['_embedded']['items'][$index])) {
-                $expectedProduct = $expected['_embedded']['items'][$index];
-                $expectedProduct = $this->sanitizeMediaAttributeData($expectedProduct);
-                NormalizedProductCleaner::clean($expectedProduct);
-                $expected['_embedded']['items'][$index] = $expectedProduct;
-            }
-        }
+        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=3&search_after=%s', $id['simple']));
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['simple']}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after"},
+        "next"  : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_after={$id['localizable_and_scopable']}"},
+        "previous" : {"href": "http://localhost/api/rest/v1/products?limit=3&pagination_type=search_after&search_before={$id['localizable']}"}
+    },
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']}
+        ]
+    },
+    "current_page": null
+}
+JSON;
 
-        $this->assertEquals($expected, $result);
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testSearchAfterPaginationLastPageOfTheListOfProducts()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $scopableEncryptedId = urlencode($this->getEncryptedId('scopable'));
+        $localizableAndScopableEncryptedId = urlencode($this->getEncryptedId('localizable_and_scopable'));
+
+        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after&search_after={$scopableEncryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after"},
+        "previous"  : {"href": "http://localhost/api/rest/v1/products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
+    },
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
+        ]
+    },
+    "current_page": null
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -1340,7 +1381,7 @@ JSON;
     "values": {
         "a_scopable_price": [{
             "locale": null,
-            "scope": "ecommerce",
+            "scope": "tablet",
             "data": [{
                 "amount": "10.50",
                 "currency": "EUR"
@@ -1353,7 +1394,7 @@ JSON;
             }]
         }, {
             "locale": null,
-            "scope": "tablet",
+            "scope": "ecommerce",
             "data": [{
                 "amount": "10.50",
                 "currency": "EUR"
@@ -1388,20 +1429,20 @@ JSON;
     "values": {
         "a_localized_and_scopable_text_area": [{
             "locale": "en_US",
-            "scope": "ecommerce",
-            "data": "Big description"
-        }, {
-            "locale": "en_US",
             "scope": "tablet",
             "data": "Medium description"
         }, {
             "locale": "fr_FR",
-            "scope": "ecommerce",
-            "data": "Grande description"
-        }, {
-            "locale": "fr_FR",
             "scope": "tablet",
             "data": "Description moyenne"
+        }, {
+            "locale": "en_US",
+            "scope": "ecommerce",
+            "data": "Big description"
+        }, {
+            "locale": "fr_FR",
+            "scope": "ecommerce",
+            "data": "Grande description"
         }, {
             "locale": "zh_CN",
             "scope": "ecommerce_china",
@@ -1461,5 +1502,12 @@ JSON;
 JSON;
 
         return $standardizedProducts;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

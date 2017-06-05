@@ -14,12 +14,12 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class MediaAttributeCopierIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 
     public function testCopyToMediaWithLocale()

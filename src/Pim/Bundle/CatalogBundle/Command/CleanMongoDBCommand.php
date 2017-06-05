@@ -35,6 +35,9 @@ class CleanMongoDBCommand extends ContainerAwareCommand
     /** @var array $missingEntities */
     protected $missingEntities;
 
+    /** @var array */
+    protected $referenceDataFields;
+
     /**
      * {@inheritdoc}
      */
@@ -227,7 +230,7 @@ class CleanMongoDBCommand extends ContainerAwareCommand
     {
         $referenceDataFields = $this->getReferenceDataFields();
         foreach ($referenceDataFields as $name => $referenceData) {
-            if (isset($product[$valueIndex][$referenceData])) {
+            if (isset($product['values'][$valueIndex][$referenceData['field']])) {
                 $product = $this->checkReferenceDataField($referenceData, $product, $valueIndex);
             }
         }
@@ -253,7 +256,7 @@ class CleanMongoDBCommand extends ContainerAwareCommand
                 $this->addMissingEntity($referenceData['class'], $referenceDataField);
             }
 
-            unset($product['values'][$valueIndex][$referenceData['field']]);
+            unset($product['values'][$valueIndex]);
         } else {
             foreach ($referenceDataField as $key => $referenceDataId) {
                 if (null !== $this->findEntity($referenceData['class'], $referenceDataId)) {
@@ -263,6 +266,8 @@ class CleanMongoDBCommand extends ContainerAwareCommand
                 unset($product['values'][$valueIndex][$referenceData['field']][$key]);
             }
         }
+
+        return $product;
     }
 
     /**
@@ -497,34 +502,36 @@ class CleanMongoDBCommand extends ContainerAwareCommand
      */
     protected function getReferenceDataFields()
     {
-        $valueClass = $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
-        $manager = $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
+        if (null === $this->referenceDataFields) {
+            $valueClass = $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
+            $manager = $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
 
-        $metadata = $manager->getClassMetadata($valueClass);
-        $fields = [];
-        foreach ($this->getReferenceDataConfiguration() as $referenceData) {
-            $referenceDataName = $referenceData->getName();
-            if (ConfigurationInterface::TYPE_MULTI === $referenceData->getType()) {
-                $fieldName = $metadata->getFieldMapping($referenceDataName);
+            $metadata = $manager->getClassMetadata($valueClass);
+            $this->referenceDataFields = [];
+            foreach ($this->getReferenceDataConfiguration() as $referenceData) {
+                $referenceDataName = $referenceData->getName();
+                if (ConfigurationInterface::TYPE_MULTI === $referenceData->getType()) {
+                    $fieldName = $metadata->getFieldMapping($referenceDataName);
 
-                if (!isset($fieldName['idsField'])) {
-                    throw new \LogicException(
-                        sprintf(
-                            'No field name defined for reference data "%s"',
-                            $referenceDataName
-                        )
-                    );
+                    if (!isset($fieldName['idsField'])) {
+                        throw new \LogicException(
+                            sprintf(
+                                'No field name defined for reference data "%s"',
+                                $referenceDataName
+                            )
+                        );
+                    }
+
+                    $idField = $fieldName['idsField'];
+                } else {
+                    $idField = $referenceDataName;
                 }
 
-                $idField = $fieldName['idsField'];
-            } else {
-                $idField = $referenceDataName;
+                $this->referenceDataFields[$referenceDataName] = ['field' => $idField, 'class' => $referenceData->getClass()];
             }
-
-            $fields[$referenceDataName] = ['field' => $idField, 'class' => $referenceData->getClass()];
         }
 
-        return $fields;
+        return $this->referenceDataFields;
     }
 
     /**

@@ -31,3 +31,28 @@ Feature: Edit an attribute group
     When I fill in the following information:
       | English (United States) | My media |
     Then I should see "There are unsaved changes."
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
+  Scenario: Successfully display attribute groups in the right order
+    Given the following CSV file to import:
+      """
+      code;attributes;sort_order
+      Z;sole_fabric;100
+      Y;size;300
+      X;side_view;200
+      """
+    And the following job "csv_footwear_attribute_group_import" configuration:
+      | filePath | %file to import% |
+    And I am on the "csv_footwear_attribute_group_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_attribute_group_import" job to finish
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | a_boot |
+      | family | Boots  |
+    And I press the "Save" button in the popin
+    And I wait to be on the "a_boot" product page
+    When I add available attributes Sole fabric, Size, Side view
+    Then I should see the text "[Z] [X] [Y]"
+
