@@ -2,9 +2,7 @@
 define(['backgrid', 'oro/datagrid/cell-formatter'],
 function(Backgrid, CellFormatter) {
     'use strict';
-
-    Backgrid = Backgrid.Backgrid;
-
+    
     /**
      * String column cell. Added missing behaviour.
      *

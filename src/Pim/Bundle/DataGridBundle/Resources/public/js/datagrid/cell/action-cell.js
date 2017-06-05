@@ -3,8 +3,6 @@ define(
     function($, _, Backgrid) {
         'use strict';
 
-        Backgrid = Backgrid.Backgrid;
-
         /**
          * Cell for grid actions
          *
