@@ -122,7 +122,7 @@ module.exports = {
             },
             {
               test: /\.js$/,
-              include: /web\/bundles/,
+              include: /(web\/bundles|frontend|spec)/,
               exclude: /lib/,
               use: {
                 loader: 'babel-loader',

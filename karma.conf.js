@@ -1,6 +1,9 @@
 const webpack = require('./webpack.config.js')
 const path = require('path')
+const _ = require('lodash')
 const runnerPath = path.resolve(__dirname, 'frontend/jasmine-runner.js')
+
+webpack.plugins = _.dropRight(webpack.plugins, 4)
 
 module.exports = function(config) {
     config.set({
@@ -27,6 +30,7 @@ module.exports = function(config) {
             require('karma-webpack'),
             require('karma-jasmine'),
             require('karma-es6-shim'),
+            require('karma-chrome-launcher'),
             require('karma-phantomjs-launcher'),
             require('karma-spec-reporter'),
         ],
@@ -38,6 +42,6 @@ module.exports = function(config) {
 
         autoWatch: false,
         reporters: ['progress', 'spec'],
-        browsers: ['PhantomJS']
+        browsers: ['Chrome', 'PhantomJS']
     });
 };

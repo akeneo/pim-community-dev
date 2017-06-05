@@ -40,6 +40,7 @@
     "jasmine-webpack-plugin": "^0.1.1",
     "jquery": "1.11.0",
     "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.1.1",
     "karma-es6-shim": "^1.0.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
