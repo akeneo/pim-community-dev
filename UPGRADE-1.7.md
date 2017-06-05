@@ -36,7 +36,7 @@
 
 1. Download and extract the latest standard archive,
 
-    * Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
+  * Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
 ```bash
 wget http://download.akeneo.com/pim-community-standard-v1.7-latest.tar.gz
@@ -63,13 +63,13 @@ cp composer.json $PIM_DIR/
 ```YAML
 # FOSOAuthServer Configuration
 fos_oauth_server:
-        db_driver:                orm
-        client_class:             Pim\Bundle\ApiBundle\Entity\Client
-        access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
-        refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
-        auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
-        service:
-            user_provider:        pim_user.provider.user
+    db_driver:                orm
+    client_class:             Pim\Bundle\ApiBundle\Entity\Client
+    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
+    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
+    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
+    service:
+        user_provider:        pim_user.provider.user
 ```
 
 4. Update the security configuration `$PIM_DIR/app/config/security.yml`:
@@ -78,70 +78,70 @@ fos_oauth_server:
    
 ```YAML
 oauth_token:
-        pattern:                        ^/api/oauth/v1/token
-        security:                       false
+    pattern:                        ^/api/oauth/v1/token
+    security:                       false
 api_index:
-        pattern:                        ^/api/rest/v1$
-        security:                       false
+    pattern:                        ^/api/rest/v1$
+    security:                       false
 api:
-        pattern:                        ^/api
-        fos_oauth:                      true
-        stateless:                      true
-        access_denied_handler:          pim_api.security.access_denied_handler
+    pattern:                        ^/api
+    fos_oauth:                      true
+    stateless:                      true
+    access_denied_handler:          pim_api.security.access_denied_handler
 ```
 
-    Add these new lines under `security.access_control`:
+  Add these new lines under `security.access_control`:
     
 ```YAML
 - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 - { path: ^/api/, role: pim_api_overall_access }
 ```
 
-    Remove these lines under `security.firewalls`:
+  Remove these lines under `security.firewalls`:
     
 ```YAML
 wsse_secured:
-        pattern:                        ^/api/(rest|soap).*
-        wsse:
-            lifetime:                   3600
-            realm:                      "Secured API"
-            profile:                    "UsernameToken"
-        context:                        main
+    pattern:                        ^/api/(rest|soap).*
+    wsse:
+        lifetime:                   3600
+        realm:                      "Secured API"
+        profile:                    "UsernameToken"
+    context:                        main
 ```
 
 5. Update your application Kernel `$PIM_DIR/app/AppKernel.php`:
 
-    * Remove the following bundles:
+  * Remove the following bundles:
 
 ```PHP
 Oro\Bundle\UIBundle\OroUIBundle,
 Oro\Bundle\FormBundle\OroFormBundle,
 Pim\Bundle\WebServiceBundle\PimWebServiceBundle,
 ```
-
-    * Add the following bundles in the following functions:
-
-        - `getPimDependenciesBundles()`:
+  * Add `FOSOAuthServerBundle` in the following function:
+   
+    - `getPimDependenciesBundles()`:
 ```PHP
 new FOS\OAuthServerBundle\FOSOAuthServerBundle()
 ```
 
-        - `getPimBundles()`:
-
+  * And add `PimApiBundle` in the following function:
+   
+    - `getPimBundles()`:
 ```PHP
 new Pim\Bundle\ApiBundle\PimApiBundle()
 ```
 
 6. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
 
-    * Remove the following lines:
+  * Remove the following lines:
 
 ```YAML
 pim_webservice:
-        resource: "@PimWebServiceBundle/Resources/config/routing.yml"
+    resource: "@PimWebServiceBundle/Resources/config/routing.yml"
 ```
 
-    * Add the following lines:
+  * Add the following lines:
 
 ```YAML
 pim_api:
@@ -157,24 +157,24 @@ rm -rf $PIM_DIR/upgrades/schema
 
 8. Now update your dependencies:
 
-    * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
-      You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
+  * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
+    You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
 
 ```JSON
-    "require": {
-            "your/dependency": "version",
-            "your/other-dependency": "version",
-    }
+"require": {
+    "your/dependency": "version",
+    "your/other-dependency": "version",
+}
 ```
 
-    * Then run the command to update your dependencies:
+  * Then run the command to update your dependencies:
 ```bash
 php -d memory_limit=3G composer update
 ```
 
-        This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.
-        If you have custom code in your project, this step may raise errors in the "post-script" command.
-        In this case, go to the chapter "Migrate your custom code" before running the database migration.
+  This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.
+  If you have custom code in your project, this step may raise errors in the "post-script" command.
+  In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
 9. Then you can migrate your database using:
 
