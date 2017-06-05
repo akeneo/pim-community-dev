@@ -3,6 +3,7 @@ web/media/*
 web/css/*
 web/js/*
 web/dist/*
+web/cache/*
 app/archive/*
 app/cache/*
 app/config/parameters.yml
