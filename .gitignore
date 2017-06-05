@@ -3,6 +3,7 @@ web/media/*
 web/css/*
 web/js/*
 web/dist/*
+web/cache/
 web/app_local.php
 app/AppKernel_local.php
 app/console_local

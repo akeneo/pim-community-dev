@@ -28,7 +28,6 @@ const contextPaths = [
 const contextRegex = `/^.*(${contextPaths.join('|')})$/`
 const moduleAliases = Object.assign(importPaths, _.mapValues(customPaths, custom => path.resolve(custom)))
 
-
 module.exports = {
     target: 'web',
     entry: [
@@ -107,8 +106,19 @@ module.exports = {
                         options: 'require'
                     }
                 ]
+            },
+            {
+              test: /\.js$/,
+              include: /web\/bundles/,
+              exclude: /lib/,
+              use: {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['es2017'],
+                  cacheDirectory: 'web/cache'
+                }
+              }
             }
-
         ]
     },
     resolveLoader: {
@@ -137,7 +147,7 @@ module.exports = {
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         }),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest' //But since there are no more common modules between them we end up with just the runtime code included in the manifest file
+            name: 'manifest'
         })
         // new UglifyJSPlugin()
     ]

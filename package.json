@@ -20,6 +20,10 @@
   },
   "dependencies": {
     "JSON2": "^0.1.0",
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
     "backbone": "0.9.10",
     "bundle-loader": "^0.5.5",
     "codemirror": "5.25.2",
@@ -52,10 +56,10 @@
     "uglify-js": "^2.8.27",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "underscore": "1.8.3",
-    "webpack": "2.4.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-livereload-plugin": "^0.11.0",
     "write-file-webpack-plugin": "^4.0.2",
-    "yamljs": "^0.2.10"
+    "yamljs": "^0.2.10",
+    "webpack": "^2.4.1"
   }
 }
