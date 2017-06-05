@@ -1,0 +1,956 @@
+confirmation:
+  remove:
+    item: Er du sikker på at du vil slette dette emne?
+    association_type: Er du sikker på du vil slette denne associationstype?
+    attribute: Er du sikker på du vil slette attributten?
+    attribute_group: Er du sikker på du vil slette denne attributgruppe?
+    family: Er du sikker på at du vil slette denne familie?
+    product: Er du sikker på du vil slette dette produkt?
+    channel: Er du sikker på du vil slette denne kanal?
+    group: Er du sikker på du vil slette denne gruppe?
+    variant group: Er du sikker på du vil slette denne variant gruppe?
+    group_type: Er du sikker på du vil slette denne gruppe type?
+    import profile: Er du sikker på du vil slette denne import profil?
+    export profile: Er du sikker på du vil slette denne eksportprofil?
+    user: Er du sikker på du vil slette denne bruger?
+    role: Er du sikker på du vil slette denne rolle?
+    job_instance: Er du sikker på du vil slette dette job?
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Massehandlinger
+    quick_export:
+      label: Hurtig eksport
+  mass_action:
+    delete:
+      confirm_content: Er du sikker på du vil slette de valgte produkter?
+      success: Udvalgte produkter blev slettet.
+      error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
+  view_selector:
+    view: Visninger
+    create_view_modal:
+      confirm: OK
+      cancel: Annuller
+flash:
+  item:
+    removed: Vare fjernet succesfuldt
+  association_type:
+    removed: Sammenhængstypen blev slettet
+  attribute:
+    removed: Attributten blev slettet
+  attribute_group:
+    removed: Attributgruppe fjernet
+  family:
+    removed: Familien fjernet
+  product:
+    removed: Produktet blev fjernet
+  channel:
+    removed: Kanalen blev fjernet
+  group:
+    removed: Gruppen blev slettet
+  variant group:
+    removed: Variantgruppen blev slettet
+  group_type:
+    removed: Gruppetypen fjernet
+  import profile:
+    removed: Importer profil blev slettet
+  export profile:
+    removed: Eksport profil blev slettet
+  user:
+    removed: Brugeren blev fjernet
+  role:
+    removed: Rollen blev slettet
+  job_instance:
+    removed: Jobbet fjernet
+error:
+  common: Der er opstået en fejl
+  creating:
+    product: Ingen attribut er konfigureret som et produkt-id, eller du har ikke rettigheder til at redigere den.
+  removing:
+    item: Kan ikke slette denne post
+    association_type: Kan ikke slette denne association type
+    attribute: Kan ikke slette denne attribut
+    family: Kan ikke slette denne familie
+    product: Kan ikke slette dette produkt
+    channel: Kan ikke slette denne kanal
+    group: Kan ikke slette denne gruppe
+    variant group: Kan ikke slette denne variant gruppe
+    group type: Kan ikke slette denne gruppetype
+    import profile: Kan ikke slette denne import profil
+    export profile: Kan ikke slette denne eksportprofil
+    user: Kan ikke slette denne bruger
+    role: Kan ikke slette denne rolle
+    attribute_option: Fejl under sletning af attribut indstillingen
+  saving:
+    attribute_option: Kan ikke gemme attribut indstilling
+    export_profile: Kan ikke gemme eksportprofil. Kontroller, at alle filtre er udfyldt korrekt
+alert:
+  attribute_option:
+    error_occured_during_submission: Der opstod en fejl under formular modtagelsen på serveren
+    save_before_edit_other: Registrer dine ændringer på andre rækker før du redigerer denne ene
+  session_storage:
+    not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Advarsel, du vil miste ikke gemte data. Er du sikker på du vil annullere ændringen af denne nye indstilling ?
+    cancel_edition_on_new_option_title: Annullere ændringer
+label:
+  attribute_option:
+    add_option: Tilføje en mulighed
+Code: Kode
+Edit: Redigér
+Delete: Slet
+Edit attributes of the product: Rediger attributterne for produktet
+Classify the product: Klassificere produktet
+Delete the product: Slet produktet
+Change status: Skift status
+Toggle status: Skift status
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (alle attributter)
+        csv_grid_context: CSV (gitter kontekst)
+        xlsx_all: Excel (alle attributter)
+        xlsx_grid_context: Excel (gitter kontekst)
+      delete: Slet produkter
+      mass_edit: Ændre produktinformation
+      category_edit: Flytte produkter i kategorier
+      sequential_edit: Redigere produkter sekventielt
+jstree.create: Opret
+switch_on: "Ja"
+switch_off: "Nej"
+pim_enrich:
+  item:
+    list:
+      delete.label: Slet
+      delete.error: Fejl under sletning af elementet
+    delete:
+      confirm.content: Er du sikker på du vil slette denne {{ itemName }}? Det er ikke muligt at fortryde denne handling
+      confirm.title: Slet denne {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: tilbage til liste
+  entity:
+    save:
+      label: Gem
+    info:
+      update_failed: Opdateringen fejlede
+      update_successful: Opdatering lykkedes
+    product:
+      title: produkt
+      btn:
+        enable: Aktivér
+        enabled: Aktiveret
+        disable: Deaktivér
+        disabled: Deaktiveret
+        download_pdf: PDF
+        compare_translate: Sammenlign / oversætte
+        delete: Slet
+        save: Gem
+        save_and_back: gem og tilbage til liste
+      history:
+        version: Version
+        author: Forfatter
+        logged_at: Logget af
+        more: Mere
+        less: Mindre
+        from: Fra
+        modified: Ændret
+        property: Ejendom
+        old_values: Gamle værdier
+        new_values: Nye værdier
+        actions: Aktioner
+      info:
+        deletion_successful: Produkt slettet.
+        deletion_failed: Produktet kunne ikke slettes.
+        update_successful: Produktet blev opdateret.
+        update_failed: Produktet kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
+      error:
+        upload: Der opstod en fejl under fil indlæsningen
+      meta:
+        created: Oprettet
+        created_by: Af
+        updated_by: Af
+        updated: Sidst opdateret
+        family:
+          title: Familie
+          none: Ingen
+        groups:
+          title: Grupper
+          modal:
+            title: Gruppe {{ group }}
+            view_group: Se gruppe
+            group_label: Etiket
+            more_products: '{{ count }} flere produkter...'
+            close: Luk
+      copy:
+        select: Vælg
+        all: Alle
+        all_visible: Alle synlige
+        none: Ingen
+        copy: Kopier
+      variant_group:
+        updated_by: Opdateret af variant gruppe
+        switch:
+          "yes": "Ja"
+          "no": "Nej"
+      optional_attribute:
+        remove: Fjern denne attribut
+      locale_specific_attribute:
+        unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
+      localizable:
+        channel_locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for landestandard'{{ locale }}' og '{{ channel }}'-kanal
+      media:
+        upload: Træk og slip for at indlæse eller klik her
+      create_popin:
+        title: Opret et nyt produkt
+        labels:
+          family: Vælg familie
+          save: Gem
+          cancel: Annuller
+    attribute:
+      scopable: Omfangbar
+      global: Global
+    association_type:
+      info:
+        deletion_successful: Sammenhængs type slettet.
+        deletion_failed: Sammenhængs type kunne ikke slettes.
+        update_successful: Sammenhængstype opdateret
+        update_failed: Sammenhængs type kunne ikke opdateres.
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - felter
+      meta:
+        created: Oprettet
+        created_by: Oprettet af
+        updated: Opdateret
+        updated_by: opdateret af
+      btn:
+        save: Gem
+      title: sammenhængstype
+    group_type:
+      info:
+        deletion_successful: Gruppen type slettet.
+        deletion_failed: Gruppetypen kunne ikke slettes.
+        update_successful: Gruppetypen opdateret
+        update_failed: Gruppetypen kunne ikke opdateres.
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - felter
+      meta:
+        created: Oprettet
+        created_by: Oprettet af
+        updated: Opdateret
+        updated_by: opdateret af
+      btn:
+        save: Gem
+      title: gruppetype
+    channel:
+      title: kanal
+      info:
+        deletion_successful: Kanalen blev slettet.
+        deletion_failed: Kanal kunne ikke slettes.
+        update_successful: Kanalen blev opdateret.
+        update_failed: Kanalen kunne ikke opdateres.
+        create_successful: Kanal oprettet.
+        create_failed: Kanalen kunne ikke opdateres.
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - felter
+      meta:
+        created: Oprettet
+        created_by: Oprettet af
+        updated: Opdateret
+        updated_by: opdateret af
+      btn:
+        save: Gem
+    family:
+      title: familie
+      info:
+        update_successful: Familien opdateret
+        create_successful: Kanal oprettet.
+        update_failed: Der opstod en fejl under opdatering af familie.
+        cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
+        attribute_edit_permission_is_not_granted: Du har ingen rettigheder til at redigere denne families attributter
+      meta:
+        created: Oprettet
+        created_by: Oprettet af
+        updated: Opdateret
+        updated_by: opdateret af
+      btn:
+        save: Gem
+    attribute_label:
+      pim_catalog_identifier: Identifikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Tekstområde
+      pim_catalog_number: Tal
+      pim_catalog_price_collection: Pris
+      pim_catalog_multiselect: Multi Select
+      pim_catalog_simpleselect: Simple select
+      pim_catalog_file: Fil
+      pim_catalog_image: Billede
+      pim_catalog_boolean: "Ja / Nej"
+      pim_catalog_date: Dato
+      pim_catalog_metric: Metrisk
+      pim_reference_data_simpleselect: Referencedata simpel valg
+      pim_reference_data_multiselect: Reference data multi valg
+    attribute_option:
+      code: Kode
+      label: Etiket
+      actions: Aktioner
+    variant_group:
+      title: Variantgrupper
+      info:
+        deletion_successful: Variant gruppen slettet.
+        deletion_failed: Variantgruppen kunne ikke slettes.
+        update_successful: Variantgruppe opdateret
+        update_failed: Variantgruppen kunne ikke opdateres.
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - felter
+        already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
+        no_attributes: Denne variant gruppe har ingen attributter endnu
+      btn:
+        save: Gem
+      meta:
+        product_count: Produkter
+        created: Oprettet
+        created_by: Oprettet af
+        updated: Opdateret
+        updated_by: opdateret af
+    group:
+      title: Gruppe
+      info:
+        deletion_successful: Gruppen blev slettet.
+        deletion_failed: Gruppen kunne ikke slettes.
+        update_successful: Gruppe opdateret
+        update_failed: Gruppen kunne ikke opdateres.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - felter
+      btn:
+        save: Gem
+      meta:
+        product_count: Produkter
+        created: Oprettet
+        created_by: Oprettet af
+        updated: Opdateret
+        updated_by: opdateret af
+    job_instance:
+      title: jobprofil
+      info:
+        update_failed: Jobprofil kunne ikke opdateres.
+        update_successful: Jobprofil er blevet opdateret.
+    attribute_group:
+      info:
+        update_failed: Attributgruppe kunne ikke opdateres
+        update_successful: Attributgruppe opdateret
+  confirmation:
+    leave: Er du sikker på du vil forlade denne side?
+    discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
+    delete_item: Bekræft sletning
+    delete:
+      attribute: Er du sikker på du vil slette denne attribut fra produktet?
+      attribute_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
+  info:
+    not_applicable: Ikke tilgængelig
+    entity:
+      updated: Der er ikke-gemte ændringer.
+  error:
+    upload: Der opstod en fejl under indlæsning af filen
+  alert:
+    not_allowed: Du har ikke adgang til denne side
+    error_occured: Der opstod en fejl under indlæsning af siden
+  form:
+    required: (Påkrævet)
+    product:
+      tab:
+        associations:
+          title: Tilknytninger
+          info:
+            none_exist: Der findes ingen sammenhængstype.
+            show_products: Vis produkter
+            show_groups: Vis grupper
+            number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
+        attributes:
+          title: Egenskaber
+          btn:
+            add: Tilføj
+            add_attributes: Tilføj egenskab
+          info:
+            search_attributes: Søg...
+            no_available_attributes: Der er ikke flere attributter at tilføje
+            attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
+            no_match: Ingen fundet
+            load_more: Indlæs flere resultater...
+        categories:
+          title: Kategorier
+      panel:
+        completeness:
+          title: Fuldstændighed
+          info:
+            no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
+            no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
+          missing_values: Manglende værdier
+        history:
+          title: Historik
+      switch:
+        "no": "Nej"
+        "yes": "Ja"
+      sequential_edit:
+        info:
+          products: produkter
+          previous: Springe tilbage til {{ product }} uden at gemme.
+          next: Spring til {{ product }} uden at gemme.
+        btn:
+          save_and_next: Gem og næste
+          save_and_finish: Gem og afslut
+      change_family:
+        modal:
+          title: Ændre produktfamilien
+          merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
+          keep_attributes: Ingen attributter vil blive fjernet.
+          change_family_to: Ændre familien til
+          empty_selection: Vælg familie
+      flash:
+        attribute_deletion_error: Der opstod en fejl under attribut sletning
+      mass_edit:
+        select_attributes: Vælg attributter
+        select: Vælg
+    association_type:
+      tab:
+        properties:
+          title: Egenskaber
+          general: Generelle egenskaber
+          code: Kode
+          label_translations: Etiket oversættelser
+        history:
+          title: Historik
+    group_type:
+      tab:
+        properties:
+          title: Egenskaber
+          general: Generelle egenskaber
+          code: Kode
+          label_translations: Etiket oversættelser
+        history:
+          title: Historik
+    channel:
+      tab:
+        history:
+          title: Historik
+        properties:
+          title: Egenskaber
+          general: Generelt
+          code: Kode
+          currencies: Valutaer
+          locales: Landestandarder
+          category_tree: Kategoritræstrukturen
+          label_translations: Etiket oversættelser
+          label_conversion_units: Vælge en konvertering enhed for hver metriske attribut, der skal bruges under produkt eksport
+          conversion_unit:
+            do_not_convert: Konvertér ikke
+    family:
+      tab:
+        properties:
+          title: Egenskaber
+          general: Generelt
+          code: Kode
+          attribute_as_label: Attributten anvendes som etiket
+          label_translations: Etiket oversættelser
+        attributes:
+          title: Egenskaber
+          label_label: Etiket
+          toolbox:
+            select_attributes_by_groups: Tilføj efter gruppe
+            select_attributes: Tilføj egenskab
+            add: Tilføj
+            attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
+          not_required_label: Ikke påkrævet
+          required_label: Påkrævet
+        history:
+          title: Historik
+    attribute_option:
+      flash:
+        option_created: Attribut tilvalg oprettet
+        error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
+      add_option_modal:
+        title: Tilføj attribut tilvalg
+        confirm: Tilføj
+        cancel: Annuller
+    entity:
+      switch:
+        "no": "Nej"
+        "yes": "Ja"
+    variant_group:
+      tab:
+        properties:
+          title: Egenskaber
+          general: Generelle egenskaber
+          code: Kode
+          type: Type
+          axis: Akse
+          label_translations: Etiket oversættelser
+        history:
+          title: Historik
+        products:
+          title: Produkter
+        attributes:
+          title: Egenskaber
+    group:
+      tab:
+        properties:
+          title: Egenskaber
+          general: Generelle egenskaber
+          code: Kode
+          type: Type
+          label_translations: Etiket oversættelser
+        history:
+          title: Historik
+        products:
+          title: Produkter
+    attribute_group:
+      tab:
+        properties:
+          title: Egenskaber
+          general: Generelle egenskaber
+          code: Kode
+          label_translations: Etiket oversættelser
+        attribute:
+          title: Egenskaber
+          table:
+            name: Navn
+            type: Type
+            scope: Omfang
+            localizable: Kan oversættes
+        history.title: Historik
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Tilføj
+            add_attributes: Tilføj egenskab
+          info:
+            search_attributes: Søg...
+            no_available_attributes: Der er ikke flere attributter at tilføje
+    job_execution:
+      loading: Indlæser...
+      title.details: udførelse detaljer
+      refreshBtn.title: Opdatér
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Vis profil
+        download_log.title: Download log
+        download_file.title: Download genererede fil
+        download_archive.title: Download genereret Arkiv
+      summary:
+        fetching: Indsamling af data om job udførelse...
+        warning: Advarsel
+        header.step: Trin
+        header.status: Status
+        header.warnings: Advarsler
+        header.summary: Opsummering
+        header.start: Start
+        header.end: Slut
+    job_instance:
+      fail:
+        launch: Undladt at lancere jobprofil. Sørg for det er gyldig og at du har ret til at lancere det.
+        save: Kunne ikke gemme jobprofil. Sørg for at du har ret til at redigere den.
+      title:
+        import: Import profiler
+        export: Eksport profiler
+      button:
+        edit.title: Redigér
+        export.title: Eksporter nu
+        import.launch: Importer nu
+        import.upload: Indlæs og importer nu
+      meta:
+        job: Job
+        connector: Connector
+      tab:
+        content:
+          title: Indhold
+        properties:
+          title: Generelle egenskaber
+          code:
+            title: Kode
+          label:
+            title: Etiket
+          decimal_separator:
+            title: Decimalseparator
+            help: Bestem decimal separator
+          date_format:
+            title: Dato format
+            help: Bestem formatet af dato felterne
+          file_path:
+            title: Fil sti
+            help: Hvor skal den generede fil gemmes
+          delimiter:
+            title: Afgrænser
+            help: Ét tegn bruges til at angive feltafgrænseren
+          enclosure:
+            title: Beholder
+            help: Ét tegn bruges til at angive felt-indgrænsningen
+          with_header:
+            title: Med hoved
+            help: Udskrive kolonnenavn eller ej
+          with_media:
+            title: Eksportere filer og billeder
+            help: Hvorvidt eller ikke at eksportere produktfiler og billeder
+          lines_per_file:
+            title: Antal linjer pr. fil
+            help: Definere antallet af linier pr. fil
+          upload_allowed:
+            title: Tillad fil upload
+            help: Tilad at uploade filen direkte eller ej
+          categories_column:
+            title: Kategori kolonne
+            help: Navnet på kolonnen kategorier
+          escape:
+            title: Forlad
+            help: Ét tegn bruges til at angive felt adskillelse
+          family_column:
+            title: Familie kolonne
+            help: Navnet på kolonnen familie
+          groups_column:
+            title: Grupper kolonne
+            help: Navnet på kolonnen grupper
+          enabled:
+            title: Aktiver produkt
+            help: Hvorvidt importerede produkt skal aktiveres
+          enabled_comparison:
+            title: Sammenlign værdier
+            help: Aktiver sammenligning mellem original og importerede værdier. Kan fremskynde import, hvis importerede værdier er meget lig den oprindelige værdier
+          real_time_versioning:
+            title: Realtid historie opdatering
+            help: Betyder at produkt historien opdateres automatisk, kan slås fra for at forbedre indstillinger
+        history:
+          title: Historik
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiket
+          toolbox:
+            select_attributes_by_groups: Tilføj efter gruppe
+            select_attributes: Tilføj egenskab
+            add: Tilføj
+            attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
+  job:
+    upload: Træk og slip en fil eller klik her
+  export:
+    product:
+      data:
+        title: Filtrer produkter
+      structure:
+        title: Filtrere data
+        attributes:
+          title: Egenskaber
+      filter:
+        channel:
+          title: Kanal
+          help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
+        locales:
+          title: Landestandarder
+          help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
+        attributes:
+          title: Egenskaber
+          edit: Redigér
+          label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
+          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske egenskaber.'
+          empty: Alle attributter vil blive eksporteret
+          modal:
+            apply: Anvend
+            cancel: Annuller
+            title: Valg af attributter
+        attributes_selector:
+          attribute_group: Attributgrupper
+          attributes: "Søg i {{ itemsCount }} attributter"
+          selected: "Valgte attributter"
+          clear: Nustil
+          all_group: Alle grupper
+          empty_selection: Alle attributter vil blive eksporteret
+        family:
+          title: Familie
+          help: 'Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler.'
+          operators:
+            IN: I listen
+            "NOT IN": Ikke på listen
+            EMPTY: Produkter, der ikke har en familie
+            "NOT EMPTY": Produkter, der har en familie
+          empty_selection: Ingen betingelse på familier
+        updated:
+          title: Tid tilstand
+          operators:
+            ALL: Ingen dato tilstand
+            "SINCE LAST N DAYS": Opdaterede varer i løbet af de sidste n dage (f.eks. 6)
+            ">": Opdaterede produkter siden denne dato
+            "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
+        enabled:
+          title: Status
+          help: 'Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status.'
+          value:
+            all: Alle
+            enabled: Aktiveret
+            disabled: Deaktiveret
+        completeness:
+          title: Fuldstændighed
+          help: Vælg produkterne, der eksporteres efter deres fuldstændighed.
+          operators:
+            ALL: Ingen betingelse på fuldstændighed
+            ">=": Komplet på mindst én valgte landestandard
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
+            LOWER THAN ON ALL LOCALES: Ikke komplet på nogle af de valgte landestandarder
+          empty_selection: Vælg en familie
+        category:
+          title: Kategori
+          help: Brug produktkategorierne i træet (defineret af kanalen ovenfor) til at vælge produkter til eksport
+        identifier:
+          title: Identifikator
+          help: Brug produkt-id'erne til at eksportere adskilt af kommaer, mellemrum eller linjeskift
+        metric:
+          operators:
+            "=": er lig med
+            "!=": Er ikke lig med
+            ">=": Større end eller lig med
+            ">": større end
+            "<=": Mindre end eller lig med
+            "<": mindre end
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+        string:
+          operators:
+            ALL: Alle
+            CONTAINS: Indeholder
+            DOES NOT CONTAIN: Indeholder ikke
+            "=": er lig med
+            STARTS WITH: Starter med
+            ENDS WITH: Ender med
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+        price-collection:
+          operators:
+            "=": er lig med
+            "!=": Er ikke lig med
+            ">=": Større end eller lig med
+            ">": større end
+            "<=": Mindre end eller lig med
+            "<": mindre end
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+        multi_select:
+          operators:
+            IN: I listen
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+        media:
+          operators:
+            CONTAINS: Indeholder
+            DOES NOT CONTAIN: Indeholder ikke
+            "=": er lig med
+            STARTS WITH: Starter med
+            ENDS WITH: Ender med
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+        date:
+          operators:
+            ">": større end
+            "<": mindre end
+            "=": er lig med
+            "!=": Er ikke lig med
+            BETWEEN: Mellem
+            NOT BETWEEN: ikke mellem
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+        number:
+          operators:
+            "=": er lig med
+            "!=": Er ikke lig med
+            ">=": Større end eller lig med
+            ">": større end
+            "<=": Mindre end eller lig med
+            "<": mindre end
+            EMPTY: Er tom
+            NOT EMPTY: er ikke tom
+      properties:
+        title: Egenskaber
+      global_settings:
+        title: Globale indstillinger
+  mass_edit_action:
+    edit_common_attributes:
+      description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard <span class="highlight">{{ locale }}</span> og den kanal <span class="highlight">{{ channel }}</span>, valgt i gitteret produkter.
+  index:
+    association_type:
+      title: sammenhængstype oversigt
+      create_btn: opret sammenhængstype
+    import_profiles:
+      title: import profil oversigt
+      create_btn: opret import profil
+    import_history:
+      title: importer rapporter
+    variant_group:
+      title: variantgruppe oversigt
+      create_btn: opret variantgruppe
+    group:
+      title: Gruppe oversigt
+      create_btn: Opret gruppe
+    export_profiles:
+      title: eksporter profil oversigt
+      create_btn: opret eksportprofil
+    export_history:
+      title: eksportere rapporterne
+    family:
+      title: familie oversigt
+      create_btn: opret familie
+    grouptype:
+      title: gruppetype oversigt
+      create_btn: opret gruppetype
+    currency:
+      title: valuta oversigt
+    locale:
+      title: landestandard oversigt
+    user:
+      title: Bruger
+      create_btn: Opret bruger
+    user_role:
+      title: Rolle
+      create_btn: Opret rolle
+    user_group:
+      title: Grupper
+      create_btn: Opret gruppe
+    process_tracker:
+      title: Process overvågning
+    channel:
+      title: kanaloversigt
+      create_btn: opret kanal
+    attribute:
+      title: attribut oversigt
+      create_btn: opret attribut
+      modal_title: Vælg attributtype
+    attribute_group:
+      title: attributgruppe oversigt
+      create_btn: Opret
+pim_enrich.error:
+  exception.title: Beklager! Der opstod en {{ status_code }}...
+  http:
+    403: Forbudt. Du har ikke adgang til denne side
+page_title:
+  oro_default: Kontrolpanel
+  pim_enrich_attributegroup_index: Attributgrupper
+  pim_enrich_attributegroup_create: Attribut grupper | Oprette
+  pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
+  pim_enrich_categorytree_index: Kategoritræstrukturen
+  pim_enrich_categorytree_create: Kategori træer | Oprette
+  pim_enrich_categorytree_edit: Kategori træer {{ category.label }} | Rediger
+  pim_enrich_categorytree_create_tree: Kategori træer | Oprette
+  pim_enrich_attribute_index: Egenskaber
+  pim_enrich_attribute_create: Attributter | Oprette
+  pim_enrich_attribute_edit: Attributter {{ attribute.label }} | Rediger
+  pim_enrich_product_index: Produkter
+  pim_enrich_product_edit: Produkter {{ product.sku }} | Rediger
+  pim_enrich_family_index: Familier
+  pim_enrich_family_edit: Familier {{ family.label }} | Rediger
+  pim_enrich_channel_index: Kanaler
+  pim_enrich_channel_create: Kanaler | Oprette
+  pim_enrich_channel_edit: Kanaler {{ channel.label }} | Rediger
+  pim_enrich_currency_index: Valutaer
+  pim_enrich_locale_index: Landestandarder
+  pim_enrich_group_index: Grupper
+  pim_enrich_group_edit: Grupper {{ group.label }} | Rediger
+  pim_enrich_variant_group_index: Variantgrupper
+  pim_enrich_variant_group_edit: Variant grupper {{ group.label }} | Rediger
+  pim_enrich_associationtype_index: Sammenhængstyper
+  pim_enrich_associationtype_edit: Foreningen typer {{ association type.label }} | Rediger
+  pim_enrich_grouptype_index: Gruppetyper
+  pim_enrich_grouptype_edit: Gruppe typer {{ group type.label }} | Rediger
+  pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
+  pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
+  pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
+  pim_enrich_job_tracker_index: Process overvågning
+  pim_enrich_job_tracker_show: Process overvågning | Vis job
+batch_jobs:
+  add_product_value:
+    label: Tilføj produktværdi
+    perform:
+      label: Tilføj produktværdi
+  update_product_value:
+    label: Opdatere produktets værdi
+    perform:
+      label: Opdatere produktets værdi
+  edit_common_attributes:
+    label: Rediger fælles attributter
+    perform:
+      label: Rediger fælles attributter
+    cleaner:
+      label: Rens filer til fælles attributter
+  set_attribute_requirements:
+    label: Indstil attribut krav
+    perform:
+      label: Indstil attribut krav
+  csv_product_quick_export:
+    quick_export.label: CSV-produkt hurtig eksport
+    perform:
+      label: CSV-produkt hurtig eksport
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV-produkt gitter sammenhæng hurtig eksport
+    perform:
+      label: CSV-produkt gitter sammenhæng hurtig eksport
+  xlsx_product_quick_export:
+    quick_export.label: XSLX produkt hurtig eksport
+    perform:
+      label: XSLX produkt hurtig eksport
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Xlsx-produkt gitter sammenhæng hurtig eksport
+    perform:
+      label: Xlsx-produkt gitter sammenhæng hurtig eksport
+  add_to_variant_group:
+    label: Tilføj til variant gruppe
+    perform:
+      label: Tilføj til variant gruppe
+job_tracker:
+  download_archive:
+    archive: Download genereret Arkiv
+    output: Download genererede fil
+    input: Download læse filer
+    invalid_xlsx: download ugyldige data
+    invalid_csv: download ugyldige data
+pim_menu:
+  tab:
+    collect: Indsamle
+    enrich: Berige
+    settings: Indstillinger
+    system: System
+    spread: Distribuer
+  item:
+    association_type: Sammenhængstyper
+    attribute: Attributter
+    attribute_group: Attributgrupper
+    category: Kategorier
+    channel: Kanaler
+    currency: Valutaer
+    family: Familier
+    group: Grupper
+    group_type: Gruppetyper
+    locale: Landestandarder
+    product: Produkter
+    variant_group: Variantgrupper
+    export_history: Eksport historik
+    export_profile: Eksport profiler
+    import_history: Import historik
+    import_profile: Import profiler
+    configuration: Konfiguration
+    user_management: Bruger administration
+    user: Brugere
+    user_group: Grupper
+    user_role: Roller
+    info: Systemoplysninger
+    job_tracker: Process overvågning
+pim_header:
+  user:
+    logout: Log ud
+    user_account: Min konto
+pim_notification:
+  mark_all_as_read: Markér alle som læst

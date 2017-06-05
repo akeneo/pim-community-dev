@@ -16,8 +16,8 @@ This value should not be a decimal.: Este valor não deve ser um decimal.
 "The value %value% is already set on another product for the unique attribute %attribute%": O Valor %value% já está em uso por outro produto para o atributo unico %attribute%
 regex.comma_or_semicolon.message: Esse campo não deve conter vírgula ou ponto e vírgula.
 file.extensions.message: 'A extensão do arquivo não é permitida (extensões permitidas: %extensions%).'
-"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Este tipo de valor espera a utilização de {{ decimal_separator }} para separar casas decimais.
-"This type of value expects the use of dot (.) to separate decimals.": Este tipo de valor espera a utilização de um ponto final (.) para separar casas decimais.
-"This type of value expects the use of comma (,) to separate decimals.": Este tipo de valor espera a utilização de uma vírgula (,) para separar casas decimais.
-"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Este tipo de valor espera a utilização de um separador decimal arábico (,) para separar casas decimais.
-"This type of value expects the use of the format {{ date_format }} for dates.": Este tipo de valor espera a utilização do formato {{ date_format }} para datas.
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Neste tipo de valor deve utilizar {{ decimal_separator }} para separar as casas decimais.
+"This type of value expects the use of dot (.) to separate decimals.": Neste tipo de valor deve utilizar o ponto (.) para separar as casas decimais.
+"This type of value expects the use of comma (,) to separate decimals.": Neste tipo de valor deve utilizar a vírgula (,) para separar as casas decimais.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Neste tipo de valor deve utilizar o separador decimal árabe (٫) para separar as casas decimais.
+"This type of value expects the use of the format {{ date_format }} for dates.": Neste tipo de valor deve utilizar o formato {{ date_format }} para datas.
