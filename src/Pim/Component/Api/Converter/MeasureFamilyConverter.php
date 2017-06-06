@@ -37,7 +37,7 @@ class MeasureFamilyConverter implements ArrayConverterInterface
     protected function convertUnits(array $units)
     {
         if (!array_key_exists('units', $units)) {
-            throw new \Exception('The "units" array key is missing');
+            return [];
         }
 
         $convertedUnits = [];
