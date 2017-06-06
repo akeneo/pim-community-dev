@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Api\Normalizer;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Api\Normalizer\CategoryNormalizer;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior
