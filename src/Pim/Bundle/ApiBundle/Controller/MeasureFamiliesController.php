@@ -53,12 +53,17 @@ class MeasureFamiliesController
      */
     public function getAction($code)
     {
-        if (!array_key_exists($code, $this->measuresConfig)) {
+        $measuresConfig = [];
+        foreach ($this->measuresConfig as $key => $value) {
+            $measuresConfig[strtolower($key)] = $value;
+        }
+
+        if (!array_key_exists(strtolower($code), $measuresConfig)) {
             throw new NotFoundHttpException(sprintf('Measure family with code "%s" does not exist.', $code));
         }
 
         $normalizedFamily = $this->measureFamilyConverter->convert(
-            ['family_code' => $code, 'units' => $this->measuresConfig[$code]]
+            ['family_code' => $code, 'units' => $measuresConfig[strtolower($code)]]
         );
 
         return new JsonResponse($normalizedFamily);
