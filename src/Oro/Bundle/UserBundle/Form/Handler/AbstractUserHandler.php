@@ -6,6 +6,7 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class AbstractUserHandler
 {
@@ -15,9 +16,9 @@ abstract class AbstractUserHandler
     protected $form;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var UserManager
@@ -27,13 +28,13 @@ abstract class AbstractUserHandler
     /**
      *
      * @param FormInterface $form
-     * @param Request       $request
+     * @param RequestStack  $requestStack
      * @param UserManager   $manager
      */
-    public function __construct(FormInterface $form, Request $request, UserManager $manager)
+    public function __construct(FormInterface $form, RequestStack $requestStack, UserManager $manager)
     {
         $this->form = $form;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->manager = $manager;
     }
 
@@ -58,6 +59,16 @@ abstract class AbstractUserHandler
         }
 
         return false;
+    }
+
+    /**
+     * Get Request
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**

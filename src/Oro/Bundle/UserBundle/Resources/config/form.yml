@@ -82,43 +82,37 @@ services:
 
     oro_user.form.handler.user:
         class:                        '%oro_user.form.handler.user.class%'
-        scope:                        request
-        arguments:                    ["@oro_user.form.user", "@request", "@oro_user.manager"]
+        arguments:                    ["@oro_user.form.user", "@request_stack", "@oro_user.manager"]
         tags:
             - { name: oro_tag.tag_manager }
 
     oro_user.form.handler.user.api:
         class:                        '%oro_user.form.handler.user.class%'
-        scope:                        request
-        arguments:                    ["@oro_user.form.user.api", "@request", "@oro_user.manager"]
+        arguments:                    ["@oro_user.form.user.api", "@request_stack", "@oro_user.manager"]
         tags:
             - { name: oro_tag.tag_manager }
 
     oro_user.form.handler.role.api:
         class:                        '%oro_user.form.handler.role.class%'
-        scope:                        request
-        arguments:                    ["@oro_user.form.role.api", "@request", "@doctrine.orm.entity_manager"]
+        arguments:                    ["@oro_user.form.role.api", "@request_stack", "@doctrine.orm.entity_manager"]
 
     oro_user.form.handler.group:
         class:                        '%oro_user.form.handler.group.class%'
-        scope:                        request
-        arguments:                    ["@oro_user.form.group", "@request", "@doctrine.orm.entity_manager"]
+        arguments:                    ["@oro_user.form.group", "@request_stack", "@doctrine.orm.entity_manager"]
 
     oro_user.form.handler.group.api:
         class:                        '%oro_user.form.handler.group.class%'
-        scope:                        request
-        arguments:                    ["@oro_user.form.group.api", "@request", "@doctrine.orm.entity_manager"]
+        arguments:                    ["@oro_user.form.group.api", "@request_stack", "@doctrine.orm.entity_manager"]
 
     oro_user.form.handler.reset:
         class:                        '%oro_user.form.handler.reset.class%'
-        scope:                        request
-        arguments:                    ["@oro_user.form.reset", "@request", "@oro_user.manager"]
+        arguments:                    ["@oro_user.form.reset", "@request_stack", "@oro_user.manager"]
 
     oro_user.form.handler.acl_role:
         class:                        '%oro_user.form.handler.acl_role.class%'
-        scope:                        prototype
+        shared:                       false
         arguments:                    ["@form.factory", '%oro_user.privileges%']
         calls:
                     - [setAclManager, ["@oro_security.acl.manager"]]
                     - [setEntityManager, ["@doctrine.orm.entity_manager"]]
-                    - [setRequest, ["@request"]]
+                    - [setRequest, ["@=service('request_stack').getCurrentRequest()"]]
