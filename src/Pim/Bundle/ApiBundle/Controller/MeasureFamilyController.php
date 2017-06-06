@@ -83,11 +83,10 @@ class MeasureFamilyController
         $parameters = [
             'query_parameters'    => [
                 'page'       => 1,
-                'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
-                'with_count' => 'false',
+                'limit'      => count($this->measuresConfig),
             ],
-            'list_route_name'     => 'pim_api_measure_family_list',
-            'item_route_name'     => 'pim_api_measure_family_get',
+            'list_route_name' => 'pim_api_measure_family_list',
+            'item_route_name' => 'pim_api_measure_family_get',
         ];
 
         $paginatedMeasureFamilies = $this->paginator->paginate(

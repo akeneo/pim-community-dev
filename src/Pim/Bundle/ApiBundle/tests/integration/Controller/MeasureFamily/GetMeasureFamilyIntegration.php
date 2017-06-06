@@ -12,7 +12,7 @@ class GetMeasureFamilyIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/measure-family/Area');
+        $client->request('GET', 'api/rest/v1/measure-families/Area');
 
         $standardAttribute = <<<JSON
 {
@@ -158,7 +158,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/measure-family/not_found');
+        $client->request('GET', 'api/rest/v1/measure-families/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
