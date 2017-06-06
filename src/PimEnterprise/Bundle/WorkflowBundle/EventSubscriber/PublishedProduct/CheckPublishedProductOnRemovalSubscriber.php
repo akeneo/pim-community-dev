@@ -21,6 +21,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -89,6 +90,10 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     private function isSubjectRelatedToPublished($subject)
     {
         if (!is_object($subject)) {
+            return false;
+        }
+
+        if ($subject instanceof PublishedProductInterface) {
             return false;
         }
 

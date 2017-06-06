@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterProjectRemoverPass;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -119,6 +119,19 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findCodesByIdentifiers(array $referenceDataCodes)
+    {
+        return $this->createQueryBuilder($this->getAlias())
+            ->select($this->getAlias() . '.code')
+            ->andWhere($this->getAlias() . '.code IN (:reference_data_codes)')
+            ->setParameter('reference_data_codes', $referenceDataCodes)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find entities with search and search options
      *
      * @param string|null  $search
@@ -238,23 +251,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
             ->setParameter('identifiers', $identifiers);
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findProducts(AssetInterface $asset, $hydrationMode = Query::HYDRATE_OBJECT)
-    {
-        $qb = $this->_em->createQueryBuilder();
-
-        $qb->select('p')
-            ->from($this->getProductClass(), 'p')
-            ->join('p.values', 'v')
-            ->join('v.assets', 'a')
-            ->where('a.id = :assetId')
-            ->setParameter(':assetId', $asset->getId(), \PDO::PARAM_INT);
-
-        return $qb->getQuery()->getResult($hydrationMode);
     }
 
     /**

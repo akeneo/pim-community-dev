@@ -14,7 +14,9 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -39,32 +41,24 @@ class PermissionFilter extends OroChoiceFilter
     /* @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var ProductCategoryRepositoryInterface $repository */
-    protected $productRepository;
-
     /** @var CategoryAccessRepository $repository */
     protected $accessRepository;
 
     /**
-     * Constructor
-     *
-     * @param FormFactoryInterface               $factory
-     * @param FilterUtility                      $util
-     * @param TokenStorageInterface              $tokenStorage
-     * @param ProductCategoryRepositoryInterface $productRepository
-     * @param CategoryAccessRepository           $accessRepository
+     * @param FormFactoryInterface     $factory
+     * @param FilterUtility            $util
+     * @param TokenStorageInterface    $tokenStorage
+     * @param CategoryAccessRepository $accessRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         TokenStorageInterface $tokenStorage,
-        ProductCategoryRepositoryInterface $productRepository,
         CategoryAccessRepository $accessRepository
     ) {
         parent::__construct($factory, $util);
 
         $this->tokenStorage = $tokenStorage;
-        $this->productRepository = $productRepository;
         $this->accessRepository = $accessRepository;
     }
 
@@ -82,13 +76,14 @@ class PermissionFilter extends OroChoiceFilter
 
         $level = $data['type'];
         $user = $this->tokenStorage->getToken()->getUser();
-        $qb = $ds->getQueryBuilder();
+        $pqb = $ds->getProductQueryBuilder();
+        $this->removeCategoryInListOrUnclassified($pqb);
 
-        $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, $level);
-        if (count($grantedCategoryIds) > 0) {
-            $this->productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
+        $grantedCategoryCodes = $this->accessRepository->getGrantedCategoryCodes($user, $level);
+        if (count($grantedCategoryCodes) > 0) {
+            $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategoryCodes);
         } else {
-            $this->productRepository->applyFilterByUnclassified($qb);
+            $pqb->addFilter('categories', Operators::UNCLASSIFIED, '');
         }
 
         return true;
@@ -118,5 +113,30 @@ class PermissionFilter extends OroChoiceFilter
         $data['type'] = $mapping[$data['value']];
 
         return $data;
+    }
+
+    /**
+     * Removes previous filter clauses on categories.
+     *
+     * They can already be filter clauses on categories to prevent users to see
+     * products they're not allowed to. The permission filter will add more
+     * restrictive clauses.
+     * However, category clauses "IN_LIST_OR_UNCLASSIFIED" is an Elasticsearch
+     * "should" clauses (basically a "OR"), so if several are added, the less
+     * restrictive one will win. As a result, the permission filter, which is
+     * more restrictive, is never applied.
+     *
+     * @param ProductQueryBuilderInterface $pqb
+     */
+    protected function removeCategoryInListOrUnclassified(ProductQueryBuilderInterface $pqb)
+    {
+        $rawFilters = $pqb->getRawFilters();
+
+        $pqb->setQueryBuilder(new SearchQueryBuilder());
+        foreach ($rawFilters as $filter) {
+            if ('categories' !== $filter['field'] && Operators::IN_LIST_OR_UNCLASSIFIED !== $filter['operator']) {
+                $pqb->addFilter($filter['field'], $filter['operator'], $filter['value'], $filter['context']);
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@ services:
     pimee_product_asset.event_subscriber.asset_event:
         class: '%pimee_product_asset.event_subscriber.asset_event.class%'
         arguments:
-            - '@pimee_workflow.doctrine.query.published_product_query_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber }

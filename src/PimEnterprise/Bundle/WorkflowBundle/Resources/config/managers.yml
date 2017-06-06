@@ -13,6 +13,9 @@ services:
             - '@pimee_workflow.publisher.chained'
             - '@pimee_workflow.unpublisher.product'
             - '@pim_catalog.object_manager.product'
+            - '@pimee_workflow.saver.published_product'
+            - '@pimee_workflow.remover.published_product'
+            - '@pimee_workflow.remover.published_product'
 
     pimee_workflow.manager.product_draft:
         class: '%pimee_workflow.manager.product_draft.class%'
@@ -26,3 +29,13 @@ services:
             - '@pimee_workflow.saver.product_draft'
             - '@pimee_workflow.remover.product_draft'
             - '@pim_enrich.filter.product_values_edit_data'
+
+    pimee_workflow.manager.completeness:
+        class: '%pim_catalog.manager.completeness.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pimee_workflow.completeness.generator'
+            - '@pimee_workflow.remover.completeness'
+            - '@pim_catalog.completeness.checker'

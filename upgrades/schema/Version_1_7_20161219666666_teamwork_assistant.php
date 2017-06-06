@@ -58,10 +58,10 @@ SQL;
             $sql .= <<<'SQL'
 CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
-    `channel_id` INT NOT NULL, 
-    `product_id` INT NOT NULL, 
-    `attribute_group_id` INT NOT NULL, 
-    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL, 
+    `channel_id` INT NOT NULL,
+    `product_id` INT NOT NULL,
+    `attribute_group_id` INT NOT NULL,
+    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL,
     `is_complete` TINYINT(1) NOT NULL,
     `calculated_at` DATETIME NOT NULL,
     PRIMARY KEY(`locale_id`, `channel_id`, `product_id`, `attribute_group_id`),
@@ -89,10 +89,10 @@ SQL;
             $sql .= <<<'SQL'
 CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
-    `channel_id` INT NOT NULL, 
-    `product_id` VARCHAR(36) NOT NULL, 
-    `attribute_group_id` INT NOT NULL, 
-    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL, 
+    `channel_id` INT NOT NULL,
+    `product_id` VARCHAR(36) NOT NULL,
+    `attribute_group_id` INT NOT NULL,
+    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL,
     `is_complete` TINYINT(1) NOT NULL,
     `calculated_at` DATETIME NOT NULL,
     PRIMARY KEY(`locale_id`, `channel_id`, `product_id`, `attribute_group_id`),

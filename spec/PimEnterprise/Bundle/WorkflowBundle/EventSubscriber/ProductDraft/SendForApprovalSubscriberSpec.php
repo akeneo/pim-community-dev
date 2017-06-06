@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
@@ -47,21 +48,25 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         UserInterface $owner2,
         UserInterface $owner3,
         UserInterface $author,
-        NotificationInterface $notification
+        NotificationInterface $notification,
+        LocaleInterface $catalogLocale
     ) {
 
         $event->getSubject()->willReturn($productDraft);
         $event->getArgument('comment')->willReturn('comment');
 
         $product->getId()->willReturn(666);
-        $product->getLabel()->willReturn('Light Saber');
+        $product->getLabel('en_US')->willReturn('Light Saber');
 
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('mary');
 
+        $catalogLocale->getCode()->willReturn('en_US');
+
         $author->getFirstName()->willReturn('Mary');
         $author->getLastName()->willReturn('Chobu');
         $author->getUsername()->willReturn('mary');
+        $author->getCatalogLocale()->willReturn($catalogLocale);
 
         $owner1->hasProposalsToReviewNotification()->willReturn(true);
         $owner2->hasProposalsToReviewNotification()->willReturn(false);

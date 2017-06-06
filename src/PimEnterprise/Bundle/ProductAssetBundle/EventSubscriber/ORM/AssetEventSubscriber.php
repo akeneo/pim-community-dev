@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
@@ -74,7 +75,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
             foreach ($attributeCodes as $attributeCode) {
                 $pqb = $this->pqbFactory->create();
                 $publishedProducts = $pqb
-                    ->addFilter($attributeCode . '.id', 'IN', [$asset->getId()])
+                    ->addFilter($attributeCode, Operators::IN_LIST, [$asset->getCode()])
                     ->execute();
 
                 if ($publishedProducts->count() > 0) {

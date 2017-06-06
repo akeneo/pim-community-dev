@@ -12,11 +12,12 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -27,11 +28,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductReverter
 {
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
     /** @var ManagerRegistry */
     protected $registry;
+
+    /** @var  ObjectUpdaterInterface*/
+    protected $productUpdater;
 
     /** @var SaverInterface */
     protected $productSaver;
@@ -42,25 +43,31 @@ class ProductReverter
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var ArrayConverterInterface */
+    protected $converter;
+
     /**
-     * @param ManagerRegistry       $registry
-     * @param DenormalizerInterface $denormalizer
-     * @param SaverInterface        $productSaver
-     * @param ValidatorInterface    $validator
-     * @param TranslatorInterface   $translator
+     * @param ManagerRegistry         $registry
+     * @param ObjectUpdaterInterface  $productUpdater
+     * @param SaverInterface          $productSaver
+     * @param ValidatorInterface      $validator
+     * @param TranslatorInterface     $translator
+     * @param ArrayConverterInterface $converter
      */
     public function __construct(
         ManagerRegistry $registry,
-        DenormalizerInterface $denormalizer,
+        ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         ValidatorInterface $validator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ArrayConverterInterface $converter
     ) {
         $this->registry = $registry;
-        $this->denormalizer = $denormalizer;
+        $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
         $this->validator = $validator;
         $this->translator = $translator;
+        $this->converter = $converter;
     }
 
     /**
@@ -73,7 +80,6 @@ class ProductReverter
     public function revert(Version $version)
     {
         $class = $version->getResourceName();
-        $data = $version->getSnapshot();
         $resourceId = $version->getResourceId();
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
@@ -84,14 +90,12 @@ class ProductReverter
             );
         }
 
-        $revertedObject = $this->denormalizer->denormalize(
-            $data,
-            $class,
-            'csv',
-            [ 'entity' => $currentObject ]
-        );
+        $currentObject->getValues()->clear();
 
-        $violationsList = $this->validator->validate($revertedObject);
+        $standardProduct = $this->converter->convert($version->getSnapshot());
+        $this->productUpdater->update($currentObject, $standardProduct);
+
+        $violationsList = $this->validator->validate($currentObject);
         if ($violationsList->count() > 0) {
             throw new RevertException(
                 $this->translator->trans(
@@ -100,7 +104,7 @@ class ProductReverter
             );
         }
 
-        $this->productSaver->save($revertedObject);
+        $this->productSaver->save($currentObject);
     }
 
     /**

@@ -134,6 +134,6 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function getCompletenessGenerator()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.completeness_generator');
+        return $this->getContainer()->get('pim_catalog.completeness.generator');
     }
 }

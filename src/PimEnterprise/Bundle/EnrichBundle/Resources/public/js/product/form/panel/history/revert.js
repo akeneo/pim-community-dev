@@ -71,7 +71,9 @@ define(
                         ).fail(
                             function (response) {
                                 loadingMask.hide().$el.remove();
-                                messenger.notificationFlashMessage('error', response.responseJSON.error);
+                                var message = response.responseJSON ? response.responseJSON.error : __('error.common');
+
+                                messenger.notificationFlashMessage('error', message);
                             }
                         );
                     }.bind(this)

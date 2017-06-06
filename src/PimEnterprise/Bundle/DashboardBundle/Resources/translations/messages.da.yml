@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Forslag til gennemgang
+      date: Dato
+      author: Forfatter
+      product: Produkt
+      review: Gennemgang
+      empty: Ingen produkt kladder til gennemgang
+  version:
+    community_edition: CE
+    enterprise_edition: EE

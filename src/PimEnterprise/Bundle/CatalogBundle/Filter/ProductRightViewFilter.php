@@ -21,7 +21,9 @@ use PimEnterprise\Component\Security\Attributes;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductRightViewFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductRightViewFilter extends AbstractAuthorizationFilter implements
+    CollectionFilterInterface,
+    ObjectFilterInterface
 {
     /**
      * {@inheritdoc}

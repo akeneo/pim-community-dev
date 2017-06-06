@@ -349,7 +349,7 @@ class ProductDraftController
      */
     protected function findProductOr404($productId)
     {
-        $product = $this->productRepository->findOneById($productId);
+        $product = $this->productRepository->find($productId);
         if (null === $product) {
             throw new NotFoundHttpException(sprintf('Product with id %s not found', $productId));
         }

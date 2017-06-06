@@ -1,3 +1,15 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6400: Fix MongoDB query done to remove an asset from normalized data
+
+# 1.5.21 (2017-04-28)
+
+## Bug fixes
+
+- PIM-6316: Fix an issue where we cannot scroll locales on asset page when too many locales activated
+
 # 1.5.20 (2017-02-09)
 
 ## Bug fixes
@@ -135,7 +147,7 @@
 # 1.5.0-ALPHA1 (2016-01-26)
 
 ## Technical improvements
-- PIM-5450: MongoDb ODM bundle in dev requirements 
+- PIM-5450: MongoDb ODM bundle in dev requirements
 
 ## Bug fixes
 

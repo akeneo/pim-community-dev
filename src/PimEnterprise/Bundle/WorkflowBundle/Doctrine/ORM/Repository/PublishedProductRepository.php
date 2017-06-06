@@ -22,6 +22,8 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -31,6 +33,28 @@ use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterf
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /**
+     * @param ChannelRepositoryInterface $channelRepository
+     */
+    public function setChannelRepository(ChannelRepositoryInterface $channelRepository)
+    {
+        $this->channelRepository = $channelRepository;
+    }
+
+    /**
+     * @param LocaleRepositoryInterface $localeRepository
+     */
+    public function setLocaleRepository($localeRepository)
+    {
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -118,7 +142,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForFamily(FamilyInterface $family)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter('family.code', Operators::IN_LIST, [$family->getCode()]);
+        $productQb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
 
         return $productQb->execute()->count();
     }
@@ -129,7 +153,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForCategory(CategoryInterface $category)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter('categories.code', Operators::IN_CHILDREN_LIST, [$category->getCode()]);
+        $productQb->addFilter('categories', Operators::IN_CHILDREN_LIST, [$category->getCode()]);
 
         return $productQb->execute()->count();
     }
@@ -139,10 +163,13 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForAttribute(AttributeInterface $attribute)
     {
-        $qb = $this->createQueryBuilder('pp');
-        $qb->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.attribute', $attribute->getId()));
+        if (!$attribute->isLocalizable()) {
+            $count = $this->countPublishedProductsForNonLocalizableAttribute($attribute);
+        } else {
+            $count = $this->countPublishedProductsForLocalizableAttribute($attribute);
+        }
 
-        return $this->getCountFromQB($qb);
+        return $count;
     }
 
     /**
@@ -151,7 +178,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForGroup(GroupInterface $group)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter('groups.code', Operators::IN_LIST, [$group->getCode()]);
+        $productQb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
 
         return $productQb->execute()->count();
     }
@@ -179,6 +206,81 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $productQb->addFilter($option->getAttribute()->getCode(), Operators::IN_LIST, [$option->getCode()]);
 
         return $productQb->execute()->count();
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return int
+     */
+    protected function countPublishedProductsForNonLocalizableAttribute(AttributeInterface $attribute)
+    {
+        if ($attribute->isScopable()) {
+            $count = 0;
+            $channelCodes = $this->channelRepository->getChannelCodes();
+
+            foreach ($channelCodes as $channelCode) {
+                $productQb = $this->queryBuilderFactory->create();
+                $productQb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, '', ['scope'  => $channelCode]);
+
+                $count += $productQb->execute()->count();
+            }
+        } else {
+            $productQb = $this->queryBuilderFactory->create();
+            $productQb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, '');
+
+            $count = $productQb->execute()->count();
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return int
+     */
+    protected function countPublishedProductsForLocalizableAttribute(AttributeInterface $attribute)
+    {
+        $count = 0;
+
+        if ($attribute->isLocaleSpecific()) {
+            $localeCodes = $attribute->getAvailableLocaleCodes();
+        } else {
+            $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        }
+
+        if (!$attribute->isScopable()) {
+            foreach ($localeCodes as $localeCode) {
+                $productQb = $this->queryBuilderFactory->create();
+                $productQb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, '', ['locale'  => $localeCode]);
+
+                $count += $productQb->execute()->count();
+            }
+        } else {
+            $channels = $this->channelRepository->findAll();
+
+            foreach ($channels as $channel) {
+                foreach ($channel->getLocaleCodes() as $localeCode) {
+                    if (in_array($localeCode, $localeCodes)) {
+                        $productQb = $this->queryBuilderFactory->create();
+                        $productQb->addFilter(
+                            $attribute->getCode(),
+                            Operators::IS_NOT_EMPTY,
+                            '',
+                            [
+                                'locale' => $localeCode,
+                                'scope'  => $channel->getCode(),
+                            ]
+                        );
+
+                        $count += $productQb->execute()->count();
+                    }
+                }
+            }
+        }
+
+        return $count;
     }
 
     /**

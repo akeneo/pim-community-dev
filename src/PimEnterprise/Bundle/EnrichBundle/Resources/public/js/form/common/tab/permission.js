@@ -66,6 +66,7 @@ define([
                         this.$el.html(this.template({
                             userGroups: userGroups,
                             __: __,
+                            entity: this.config.entity,
                             permissions: this.getFormData().permissions,
                             changes: this.computeChanges(this.originalPermissions, this.getFormData().permissions),
                             readOnly: this.config.readOnly

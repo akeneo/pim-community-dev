@@ -20,6 +20,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * finding for pim_assets_collection attribute type.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
+ *
+ * @deprecated Will be removed in 1.8
  */
 class ImageExtension extends BaseImageExtension
 {
@@ -36,7 +38,7 @@ class ImageExtension extends BaseImageExtension
 
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
 
-        foreach ($productValue->getAssets() as $asset) {
+        foreach ($productValue->getData() as $asset) {
             foreach ($asset->getReferences() as $reference) {
                 if (null !== $reference->getFileInfo() && null !== $reference->getFileInfo()->getKey()) {
                     return sprintf('media/cache/thumbnail_small/%s', $reference->getFileInfo()->getKey());

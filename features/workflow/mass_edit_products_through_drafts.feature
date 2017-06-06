@@ -44,8 +44,8 @@ Feature: Mass edit products through product draft
     And I display the Name attribute
     And I change the "Name" to "A jacket"
     And I move on to the next step
-    Then the english name of "my-first-jacket" should be "First jacket"
-    And the english name of "my-second-jacket" should be "Second jacket"
+    Then the english localizable value name of "my-first-jacket" should be "First jacket"
+    And the english localizable value name of "my-second-jacket" should be "Second jacket"
     But Mary should have proposed the following values for products my-first-jacket and my-second-jacket:
       | attribute | value    |
       | Name      | A jacket |

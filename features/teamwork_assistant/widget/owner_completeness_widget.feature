@@ -83,7 +83,7 @@ Feature: Follow project completeness
     And the following projects:
       | label                                | owner | due_date   | description                                         | channel   | locale | product_filters                                                               |
       | Collection Summer 2030               | julia | 2030-10-28 | Please do your best to finish before Summer.        | ecommerce | en_US  | []                                                                            |
-      | Collection Winter 2030               | julia | 2030-08-28 | Please do your best to finish before Winter.        | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}]               |
+      | Collection Winter 2030               | julia | 2030-08-28 | Please do your best to finish before Winter.        | ecommerce | en_US  | [{"field":"family", "operator":"IN", "value": ["tshirt"]}]                    |
       | Collection SpaceSuits so trendy 2030 | julia | 2030-08-28 | Please we need to go on Mars before the end of 2030 | ecommerce | en_US  | [{"field":"sku", "operator":"=", "value": "product-that-does-not-exist-yet"}] |
     And I am logged in as "Julia"
 

@@ -1,9 +1,0 @@
-PimEnterprise\Component\Workflow\Model\PublishedProductPrice:
-    type: embeddedDocument
-    fields:
-        id:
-            id: true
-        data:
-            type: float
-        currency:
-            type: string

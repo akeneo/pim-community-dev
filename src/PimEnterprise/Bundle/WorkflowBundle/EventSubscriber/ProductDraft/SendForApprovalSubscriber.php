@@ -92,6 +92,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
 
         if (!empty($usersToNotify)) {
             $author = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
+            $authorCatalogLocale = $author->getCatalogLocale()->getCode();
 
             $gridParameters = [
                 'f' => [
@@ -113,7 +114,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                 ->setMessage('pimee_workflow.proposal.to_review')
                 ->setMessageParams(
                     [
-                        '%product.label%'    => $product->getLabel(),
+                        '%product.label%'    => $product->getLabel($authorCatalogLocale),
                         '%author.firstname%' => $author->getFirstName(),
                         '%author.lastname%'  => $author->getLastName()
                     ]

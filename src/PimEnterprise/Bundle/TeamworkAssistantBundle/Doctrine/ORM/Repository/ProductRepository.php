@@ -60,13 +60,13 @@ class ProductRepository implements ProductRepositoryInterface
             $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);
         }
 
-        $categoriesIds = $this->categoryAccessRepository->getGrantedCategoryIds(
+        $categoriesCodes = $this->categoryAccessRepository->getGrantedCategoryCodes(
             $project->getOwner(),
             Attributes::VIEW_ITEMS
         );
 
-        $productQueryBuilder->addFilter('categories.id', 'IN OR UNCLASSIFIED', $categoriesIds);
-        $productQueryBuilder->addFilter('family.id', 'NOT EMPTY', null);
+        $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', $categoriesCodes);
+        $productQueryBuilder->addFilter('family', 'NOT EMPTY', null);
 
         return $productQueryBuilder->execute();
     }

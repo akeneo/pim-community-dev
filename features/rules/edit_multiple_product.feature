@@ -122,7 +122,7 @@ Feature: Update multiple product by applying rules
       copy_name:
         priority: 10
         conditions:
-          - field:    family.code
+          - field:    family
             operator: NOT EMPTY
             value:    ~
         actions:

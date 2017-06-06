@@ -10,4 +10,4 @@ Feature: Sort product assets
     And I am on the assets page
 
   Scenario: Successfully sort product assets
-    And I should be able to sort the rows by Code, Description, End of use, Created at and Last updated at
+    And I should be able to naturally sort the rows by Code, Description, End of use, Created at and Last updated at

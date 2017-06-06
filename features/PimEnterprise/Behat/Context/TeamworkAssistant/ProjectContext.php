@@ -109,7 +109,7 @@ class ProjectContext extends PimContext
         foreach ($table->getHash() as $field => $data) {
             if (!isset($data['datagrid_view'])) {
                 $data['datagrid_view']['columns'] = 'sku,enable';
-                $data['datagrid_view']['filters'] = '/filters';
+                $data['datagrid_view']['filters'] = '/filters?key=value';
             }
 
             $data['product_filters'] = json_decode($data['product_filters'], true);

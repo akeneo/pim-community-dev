@@ -29,6 +29,12 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: Transformacions de recurs
+    attribute_group:
+      tab:
+        permission:
+          title: Permisos
+          view.label: Permet veure els atributs
+          edit.label: Permet editar els atributs
   entity:
     product:
       history:

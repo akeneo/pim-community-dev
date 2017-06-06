@@ -50,7 +50,7 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             /** @var \PimEnterprise\Component\Workflow\Model\PublishedProductInterface $published */
-            $published = $this->publishedRepository->findOneById($record->getValue('id'));
+            $published = $this->publishedRepository->find($record->getValue('id'));
             $product = $published->getOriginalProduct();
             $ownershipGranted = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 

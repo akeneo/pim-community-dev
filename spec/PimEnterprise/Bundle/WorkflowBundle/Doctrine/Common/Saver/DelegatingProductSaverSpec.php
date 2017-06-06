@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -29,7 +30,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         ProductDraftBuilderInterface $productDraftBuilder,
         TokenStorageInterface $tokenStorage,
         ProductDraftRepositoryInterface $productDraftRepo,
-        RemoverInterface $productDraftRemover
+        RemoverInterface $productDraftRemover,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -39,7 +41,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             $productDraftBuilder,
             $tokenStorage,
             $productDraftRepo,
-            $productDraftRemover
+            $productDraftRemover,
+            $uniqueDataSynchronizer
         );
     }
 
@@ -59,6 +62,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $eventDispatcher,
         $authorizationChecker,
         $tokenStorage,
+        $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(42);
@@ -70,6 +74,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();

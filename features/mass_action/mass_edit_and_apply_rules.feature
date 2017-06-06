@@ -29,7 +29,7 @@ Feature: Apply rules after a mass edit have run
       """
     And I am logged in as "Julia"
 
-  Scenario: Successfully apply rules after a mas edit operation only on edited products
+  Scenario: Successfully apply rules after a mass edit operation only on edited products
     When I am on the products page
     And I select rows tshirt-github, tshirt-docker
     And I press "Change product information" on the "Bulk Actions" dropdown button

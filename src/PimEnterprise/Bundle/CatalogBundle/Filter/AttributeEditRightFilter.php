@@ -21,7 +21,9 @@ use PimEnterprise\Component\Security\Attributes;
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-class AttributeEditRightFilter extends AbstractAuthorizationFilter implements CollectionFilterInterface, ObjectFilterInterface
+class AttributeEditRightFilter extends AbstractAuthorizationFilter implements
+    CollectionFilterInterface,
+    ObjectFilterInterface
 {
     /**
      * {@inheritdoc}

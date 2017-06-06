@@ -12,6 +12,14 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
         enabled:
             type: boolean
             column: is_enabled
+        identifier:
+            type: string
+            length: 255
+            unique: true
+            nullable: false
+        rawValues:
+            type: native_json
+            column: raw_values
         created:
             type: datetime
         updated:
@@ -25,7 +33,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                     onDelete: 'SET NULL'
     manyToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Pim\Component\Catalog\Model\GroupInterface
             joinTable:
                 name: pimee_workflow_group_published_product
                 joinColumns:
@@ -56,17 +64,16 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 - persist
                 - refresh
                 - detach
-        values:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface
-            orphanRemoval: true
-            mappedBy: entity
+        completenesses:
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
+            mappedBy: product
             cascade:
                 - remove
                 - persist
                 - refresh
                 - detach
-        completenesses:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
+        uniqueData:
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductUniqueDataInterface
             mappedBy: product
             cascade:
                 - remove

@@ -52,7 +52,7 @@ class RulesExecutor implements ItemWriterInterface
             $products,
             function ($carry, ProductInterface $product) {
                 if (null !== $product->getId()) {
-                    $carry[] = $product->getId();
+                    $carry[] = (string) $product->getId();
                 }
 
                 return $carry;
