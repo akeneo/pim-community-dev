@@ -11,10 +11,6 @@ define(
     'pim/ui',
     'oro/loading-mask',
     'pim/router',
-    'pim/dashboard/widget-container',
-    'pim/dashboard/last-operations-widget',
-    'pim/dashboard/completeness-widget',
-    'pim/patch-fetcher',
     'require-polyfill'
 ],
     function (
@@ -28,14 +24,11 @@ define(
         loadTab,
         UI,
         LoadingMask,
-        router,
-        WidgetContainer,
-        LastOperationsWidget,
-        CompletenessWidget,
-        PatchFetcher
+        router
     ) {
         'use strict';
         var initialized = false;
+
         return function () {
 
             if (initialized) {

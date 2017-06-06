@@ -1,3 +1,5 @@
+/*eslint-env es6*/
+
 const webpack = require('./webpack.config.js')
 const path = require('path')
 const _ = require('lodash')

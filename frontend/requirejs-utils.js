@@ -1,10 +1,10 @@
 /* eslint-env es6 */
-const _ = require('lodash')
+const { values, get, mapValues } = require('lodash')
 const { resolve } = require('path')
-const getYaml = require('yamljs')
-const fs = require('fs')
+const { parse } = require('yamljs')
+const { readFileSync } = require('fs')
+
 const deepMerge = require('deepmerge')
-const path = require('path')
 const globToRegex = require('glob-to-regexp');
 const customPaths = require('./custom-paths')
 const allowedPaths = [
@@ -15,7 +15,7 @@ const allowedPaths = [
     'web/bundles/pim**/*.html',
     'frontend/**/*.js',
     'web/dist/**/*.js',
-    ..._.values(customPaths)
+    ...values(customPaths)
 ]
 
 
@@ -33,12 +33,12 @@ const utils = {
 
         requireYamls.forEach((yaml) => {
             try {
-                const contents = fs.readFileSync(yaml, 'utf8')
-                const parsed = getYaml.parse(contents)
+                const contents = readFileSync(yaml, 'utf8')
+                const parsed = parse(contents)
                 const requirePaths = parsed.config.paths || {}
-                const requireMaps = _.get(parsed.config, 'map.*') || {}
+                const requireMaps = get(parsed.config, 'map.*') || {}
                 const mergedPaths = Object.assign(requirePaths, requireMaps)
-                const absolutePaths = _.mapValues(mergedPaths, (modulePath) => {
+                const absolutePaths = mapValues(mergedPaths, (modulePath) => {
                     return resolve(baseDir, `./web/bundles/${modulePath}`)
                 })
 
@@ -55,9 +55,10 @@ const utils = {
      * paths - it writes them to files to be consumed by the frontend, and
      * returns the merged paths for the webpack config
      *
-     * @param  {String} pathSourceFile    Absolute file path of the file dumped by the pim:installer:dump-require-paths command
+     * @param  {String} pathSourceFile    File dumped by the pim:installer:dump-require-paths command
      * @param  {Object} overrides     A map of path overrides
-     * @param  {String} baseDirectory The base directory where webpack is run
+     * @param  {String} baseDir  The base directory where webpack is run
+     * @param  {String} sourceDir The directory executing webpack
      * @return {Object}               An object containing module name to path mapping
      */
     getModulePaths(pathSourceFile, baseDir, sourceDir) {
@@ -67,10 +68,10 @@ const utils = {
         const context = `/^.*(${contextPaths.join('|')})$/`
         const aliases = Object.assign(
             paths,
-            _.mapValues(customPaths, custom => path.resolve(baseDir, custom)
+            mapValues(customPaths, custom => resolve(baseDir, custom)
         ), {
-            'require-polyfill': path.resolve(sourceDir, './frontend/require-polyfill.js'),
-            'require-context': path.resolve(sourceDir, './frontend/require-context.js')
+            'require-polyfill': resolve(sourceDir, './frontend/require-polyfill.js'),
+            'require-context': resolve(sourceDir, './frontend/require-context.js')
         })
 
         return { paths, config, context, aliases }
@@ -83,13 +84,7 @@ const utils = {
      */
     getModuleString(contents) {
         return `module.exports = ${JSON.stringify(contents)}`
-    },
-
-    getAllowedContexts() {
-
-    },
-
-
+    }
 }
 
 module.exports = utils

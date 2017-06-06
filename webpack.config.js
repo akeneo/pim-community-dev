@@ -1,56 +1,56 @@
 /* eslint-env es6 */
 const process = require('process')
-const rootDir = process.cwd();
+const rootDir = process.cwd()
 const webpack = require('webpack')
-const path = require('path')
-const _ = require('lodash')
+const { resolve } = require('path')
+const { values } = require('lodash')
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const utils = require('./frontend/requirejs-utils')
-
-const requirePaths = require(path.resolve(rootDir, 'web/js/require-paths'))
-const config = utils.getModulePaths(requirePaths, rootDir, __dirname)
-const LiveReloadPlugin = require('webpack-livereload-plugin');
+const { getModulePaths } = require('./frontend/requirejs-utils')
+const requirePaths = require(resolve(rootDir, 'web/js/require-paths'))
+const { aliases, context, config, paths} = getModulePaths(requirePaths, rootDir, __dirname)
+const AddToContextPlugin = require('./frontend/add-context-plugin')
+const LiveReloadPlugin = require('webpack-livereload-plugin')
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 console.log('Start webpack from', rootDir)
 
 module.exports = {
     target: 'web',
-    entry: [path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')],
+    entry: [resolve(rootDir, './web/bundles/pimenrich/js/index.js')],
     output: {
-        path: path.resolve('./web/dist/'),
+        path: resolve('./web/dist/'),
         publicPath: '/dist/',
         filename: '[name].min.js',
         chunkFilename: '[name].bundle.js'
     },
     resolve: {
         symlinks: false,
-        alias: config.aliases
+        alias: aliases
     },
     // devtool: 'inline-source-map',
     module: {
         rules: [
             {
-                test: path.resolve(__dirname, 'frontend/require-context'),
+                test: resolve(__dirname, 'frontend/require-context'),
                 loader: 'regexp-replace-loader',
                 options: {
                     match: {
                         pattern: /__contextPlaceholder/,
                         flags: 'g'
                     },
-                    replaceWith: config.context
+                    replaceWith: context
                 }
             },
             {
-                test: path.resolve(__dirname, 'frontend/require-context'),
+                test: resolve(__dirname, 'frontend/require-context'),
                 loader: 'regexp-replace-loader',
                 options: {
                     match: {
                         pattern: /__contextPaths/,
                         flags: 'g'
                     },
-                    replaceWith: JSON.stringify(config.paths)
+                    replaceWith: JSON.stringify(paths)
                 }
             },
             {
@@ -58,9 +58,9 @@ module.exports = {
                 exclude: /node_modules|spec/,
                 use: [
                     {
-                        loader: path.resolve(__dirname, 'frontend/config-loader'),
+                        loader: resolve(__dirname, 'frontend/config-loader'),
                         options: {
-                            configMap: config.config
+                            configMap: config
                         }
                     }
                 ]
@@ -101,7 +101,7 @@ module.exports = {
                     }
                 ]
             }, {
-                test: path.resolve(__dirname, './frontend/require-polyfill.js'),
+                test: resolve(__dirname, './frontend/require-polyfill.js'),
                 use: [
                     {
                         loader: 'expose-loader',
@@ -128,15 +128,15 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
-        new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new require('./frontend/add-context-plugin')(
-            _.values(config.paths),
+        new ContextReplacementPlugin(/.\/dynamic/, resolve('./')),
+        new AddToContextPlugin(
+            values(paths),
             rootDir
         ),
         new webpack.WatchIgnorePlugin([
-            path.resolve(rootDir, './node_modules'),
-            path.resolve(rootDir, './app'),
-            path.resolve(rootDir, './vendor')
+            resolve(rootDir, './node_modules'),
+            resolve(rootDir, './app'),
+            resolve(rootDir, './vendor')
         ]),
         new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
         new webpack.optimize.CommonsChunkPlugin({
