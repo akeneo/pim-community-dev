@@ -1,3 +1,13 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6433: Fix product import reference data multi with duplicate code options
+
+# 1.6.16 (2017-05-24)
+
+# 1.6.15 (2017-05-18)
+
 # 1.6.14 (2017-04-21)
 
 ## Bug fixes
