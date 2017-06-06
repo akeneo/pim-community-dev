@@ -85,6 +85,8 @@ class AttributeColumnsResolver
      *
      * @param array $value
      * @param array $currencyCodes
+     *
+     * @return array
      */
     protected function resolveAttributeField(array $value, array $currencyCodes)
     {
