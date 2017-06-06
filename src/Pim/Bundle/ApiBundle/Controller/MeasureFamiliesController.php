@@ -80,14 +80,12 @@ class MeasureFamiliesController
                 ->convert(['family_code' => $familyCode, 'units' => $units]);
         }
 
-        $defaultParameters = [
-            'page'       => 1,
-            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
-            'with_count' => 'false',
-        ];
-
         $parameters = [
-            'query_parameters'    => $defaultParameters,
+            'query_parameters'    => [
+                'page'       => 1,
+                'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+                'with_count' => 'false',
+            ],
             'list_route_name'     => 'pim_api_measure_families_list',
             'item_route_name'     => 'pim_api_measure_families_get',
         ];

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetMeasureFamiliesIntegration extends ApiTestCase
 {
-    public function testGetAnMeasureFamily()
+    public function testGetAMeasureFamily()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -154,7 +154,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($standardAttribute, $response->getContent());
     }
 
-    public function testNotFoundAnMeasureFamily()
+    public function testNotFoundAMeasureFamily()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -173,9 +173,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }
