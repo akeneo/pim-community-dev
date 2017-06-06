@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-TIP-613-unified",
+        "akeneo/pim-community-dev": "dev-master",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
@@ -52,7 +52,7 @@
     "repositories": {
         "pim-community-dev": {
             "type": "vcs",
-            "url": "https://github.com/jjanvier/pim-community-dev.git",
+            "url": "https://github.com/akeneo/pim-community-dev.git",
             "branch": "master"
         }
     },
