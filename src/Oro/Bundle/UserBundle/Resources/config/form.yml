@@ -13,44 +13,37 @@ parameters:
 services:
     oro_user.form.user:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["pim_user_user_form", "pim_user_user", null]
 
     oro_user.form.user.api:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["user", "user", null]
 
     oro_user.form.role:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["oro_user_role_form", "oro_user_role"]
 
     oro_user.form.role.api:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["role", "role", null]
 
     oro_user.form.group:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["oro_user_group_form", "oro_user_group"]
 
     oro_user.form.group.api:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["group", "group", null]
 
     oro_user.form.reset:
         class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
+        methods:                      ['@form.factory', 'createNamed']
         arguments:                    ["oro_user_reset_form", "oro_user_reset", null, { validation_groups: [ResetPassword, Default] }]
 
     oro_user.form.type.change_password:
