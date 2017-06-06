@@ -7,6 +7,8 @@ const { readFileSync } = require('fs')
 const deepMerge = require('deepmerge')
 const globToRegex = require('glob-to-regexp');
 const customPaths = require('./custom-paths')
+
+// Only modules inside one of these folders can be dynamically required
 const allowedPaths = [
     'web/bundles',
     'web/bundles/pim**/*.js',
@@ -17,7 +19,6 @@ const allowedPaths = [
     'web/dist/**/*.js',
     ...values(customPaths)
 ]
-
 
 const utils = {
     /**
@@ -55,13 +56,14 @@ const utils = {
      * paths - it writes them to files to be consumed by the frontend, and
      * returns the merged paths for the webpack config
      *
-     * @param  {String} pathSourceFile    File dumped by the pim:installer:dump-require-paths command
      * @param  {Object} overrides     A map of path overrides
      * @param  {String} baseDir  The base directory where webpack is run
      * @param  {String} sourceDir The directory executing webpack
-     * @return {Object}               An object containing module name to path mapping
+     * @return {Object}               An object requirejs paths and config, allowed context and module aliases
      */
-    getModulePaths(pathSourceFile, baseDir, sourceDir) {
+    getModulePaths(baseDir, sourceDir) {
+        // File dumped by the pim:installer:dump-require-paths command
+        const pathSourceFile = require(resolve(baseDir, 'web/js/require-paths'))
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir)
 
         const contextPaths = allowedPaths.map(glob => globToRegex(glob).toString().slice(2, -2))

@@ -4,16 +4,15 @@ const rootDir = process.cwd()
 const webpack = require('webpack')
 const { resolve } = require('path')
 const { values } = require('lodash')
+const { getModulePaths } = require('./frontend/requirejs-utils')
+const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const { getModulePaths } = require('./frontend/requirejs-utils')
-const requirePaths = require(resolve(rootDir, 'web/js/require-paths'))
-const { aliases, context, config, paths} = getModulePaths(requirePaths, rootDir, __dirname)
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
-console.log('Start webpack from', rootDir)
+console.log('Starting webpack from', rootDir)
 
 module.exports = {
     target: 'web',
@@ -28,9 +27,10 @@ module.exports = {
         symlinks: false,
         alias: aliases
     },
-    // devtool: 'inline-source-map',
     module: {
         rules: [
+
+            // Inject a regex that contains a list of the allowed paths to grab modules from
             {
                 test: resolve(__dirname, 'frontend/require-context'),
                 loader: 'regexp-replace-loader',
@@ -42,6 +42,8 @@ module.exports = {
                     replaceWith: context
                 }
             },
+
+            // Inject the hash of absolute module paths mapped to module name
             {
                 test: resolve(__dirname, 'frontend/require-context'),
                 loader: 'regexp-replace-loader',
@@ -53,6 +55,8 @@ module.exports = {
                     replaceWith: JSON.stringify(paths)
                 }
             },
+
+            // Inject the module config (to replace module.config() from requirejs)
             {
                 test: /\.js$/,
                 exclude: /node_modules|spec/,
@@ -64,7 +68,10 @@ module.exports = {
                         }
                     }
                 ]
-            }, {
+            },
+
+            // Load html without needing to prefix the requires with 'text!'
+            {
                 test: /\.html$/,
                 exclude: /node_modules|spec/,
                 use: [
@@ -73,7 +80,10 @@ module.exports = {
                         options: {}
                     }
                 ]
-            }, {
+            },
+
+            // Expose the Backbone variable to window
+            {
                 test: /node_modules\/backbone\/backbone.js/,
                 use: [
                     {
@@ -81,7 +91,8 @@ module.exports = {
                         options: 'Backbone'
                     }
                 ]
-            }, {
+            },
+            {
                 test: /node_modules\/backbone\/backbone.js/,
                 use: [
                     {
@@ -89,7 +100,10 @@ module.exports = {
                         options: 'this=>window'
                     }
                 ]
-            }, {
+            },
+
+            // Expose jQuery to window
+            {
                 test: /node_modules\/jquery\/dist\/jquery.js/,
                 use: [
                     {
@@ -100,7 +114,10 @@ module.exports = {
                         options: '$'
                     }
                 ]
-            }, {
+            },
+
+            // Expose the require-polyfill to window
+            {
                 test: resolve(__dirname, './frontend/require-polyfill.js'),
                 use: [
                     {
@@ -108,7 +125,11 @@ module.exports = {
                         options: 'require'
                     }
                 ]
-            }, {
+            },
+
+
+            // Process the pim frontend files with babel
+            {
                 test: /\.js$/,
                 include: /(web\/bundles|frontend|spec)/,
                 exclude: /lib/,
@@ -116,29 +137,42 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['es2017'],
+                        // Cache speeds up the incremental builds
                         cacheDirectory: 'web/cache'
                     }
                 }
             }
         ]
     },
+
+    // Support old loader declarations
     resolveLoader: {
         moduleExtensions: ['-loader']
     },
     plugins: [
+        // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
+
+        // This is for the summernote lib (until it's updated to the latest version)
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
+
+        // When we dynamically require modules, replace the context with the root directory
         new ContextReplacementPlugin(/.\/dynamic/, resolve('./')),
-        new AddToContextPlugin(
-            values(paths),
-            rootDir
-        ),
+
+        // A custom plugin to use absolute paths for webpack context map
+        new AddToContextPlugin(values(paths), rootDir),
+
+        // Ignore these directories when webpack watches for changes
         new webpack.WatchIgnorePlugin([
             resolve(rootDir, './node_modules'),
             resolve(rootDir, './app'),
             resolve(rootDir, './vendor')
         ]),
+
+        // Inject live reload to auto refresh the page (hmr not compatible with our app)
         new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
+
+        // Split the app into chunks for performance
         new webpack.optimize.CommonsChunkPlugin({
             name: 'lib',
             minChunks: module => module.context && module.context.indexOf('lib') !== -1
@@ -148,6 +182,8 @@ module.exports = {
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         }),
         new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
+
+        // Uglyify plugin can decrease performance
         // new UglifyJSPlugin()
     ]
 }
