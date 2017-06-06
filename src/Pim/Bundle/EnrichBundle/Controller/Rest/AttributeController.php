@@ -166,6 +166,40 @@ class AttributeController
 
     /**
      * @param Request $request
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pim_enrich_attribute_create")
+     */
+    public function createAction(Request $request)
+    {
+        $attribute = $this->factory->create();
+
+        $data = json_decode($request->getContent(), true);
+        $this->updater->update($attribute, $data);
+
+        $violations = $this->validator->validate($attribute);
+        if (0 < $violations->count()) {
+            $errors = $this->normalizer->normalize(
+                $violations,
+                'internal_api'
+            );
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($attribute);
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $attribute,
+                'internal_api'
+            )
+        );
+    }
+
+    /**
+     * @param Request $request
      * @param string $identifier
      *
      * @return JsonResponse

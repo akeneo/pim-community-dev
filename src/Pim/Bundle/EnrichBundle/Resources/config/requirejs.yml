@@ -224,10 +224,10 @@ config:
                     config:
                         entity: association-type
                 pim_enrich_attribute_create:
-                    module: pim/controller/attribute
+                    module: pim/controller/attribute/create
                     aclResourceId: pim_enrich_attribute_create
                 pim_enrich_attribute_edit:
-                    module: pim/controller/attribute
+                    module: pim/controller/attribute/edit
                     aclResourceId: pim_enrich_attribute_edit
                 pim_enrich_attributegroup_create:
                     module: pim/controller/attribute-group/create
@@ -466,6 +466,35 @@ config:
                     module: pim/controller/job-execution
                 oro_config_configuration_system:
                     module: pim/controller/system
+        pim/attribute-edit-form/type-specific-form-registry:
+            formNames:
+                pim_catalog_date:
+                    create: pim-attribute-form-date
+                    edit:   pim-attribute-form-date
+                pim_catalog_file:
+                    create: pim-attribute-form-file
+                    edit:   pim-attribute-form-file
+                pim_catalog_identifier:             pim-attribute-edit-form-identifier
+                pim_catalog_image:
+                    create: pim-attribute-form-image
+                    edit:   pim-attribute-form-image
+                pim_catalog_metric:
+                    create: pim-attribute-form-metric-create
+                    edit:   pim-attribute-form-metric-edit
+                pim_catalog_number:
+                    create: pim-attribute-form-number
+                    edit:   pim-attribute-form-number
+                pim_catalog_price_collection:
+                    create: pim-attribute-form-price
+                    edit:   pim-attribute-form-price
+                pim_catalog_text:
+                    create: pim-attribute-form-text
+                    edit:   pim-attribute-form-text
+                pim_catalog_textarea:
+                    create: pim-attribute-form-textarea
+                    edit:   pim-attribute-form-textarea
+                pim_reference_data_multiselect:     pim-attribute-edit-form-ref-data
+                pim_reference_data_simpleselect:    pim-attribute-edit-form-ref-data
 
     paths:
         pim/app:                            pimenrich/js/app
@@ -504,7 +533,8 @@ config:
         pim/controller/user:                   pimenrich/js/controller/user
         pim/controller/attribute-group/edit:   pimenrich/js/controller/attribute-group/edit
         pim/controller/attribute-group/create: pimenrich/js/controller/attribute-group/create
-        pim/controller/attribute:              pimenrich/js/controller/attribute
+        pim/controller/attribute/edit:         pimenrich/js/controller/attribute/edit
+        pim/controller/attribute/create:       pimenrich/js/controller/attribute/create
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector

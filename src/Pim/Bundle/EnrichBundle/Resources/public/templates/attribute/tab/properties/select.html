@@ -4,6 +4,7 @@
     name="<%- fieldName %>"
     data-placeholder="<%- labels.defaultLabel %>"
     <% if (multiple) { %> multiple<% } %>
+    <% if (readOnly) { %> readonly disabled<% } %>
 >
     <option value=""<% if (!value) { %> selected<% } %>></option>
     <% _.each(choices, function (choiceLabel, choiceValue) { %>

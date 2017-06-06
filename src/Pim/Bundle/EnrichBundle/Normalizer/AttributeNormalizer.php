@@ -5,8 +5,6 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Form\NoCompatibleFormProviderFoundException;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -41,9 +39,6 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var FormProviderInterface */
-    private $formProvider;
-
     /**
      * @param NormalizerInterface         $normalizer
      * @param FieldProviderInterface      $fieldProvider
@@ -51,7 +46,6 @@ class AttributeNormalizer implements NormalizerInterface
      * @param FilterProviderInterface     $filterProvider
      * @param VersionManager              $versionManager
      * @param NormalizerInterface         $versionNormalizer
-     * @param FormProviderInterface       $formProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -59,8 +53,7 @@ class AttributeNormalizer implements NormalizerInterface
         EmptyValueProviderInterface $emptyValueProvider,
         FilterProviderInterface $filterProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer,
-        FormProviderInterface $formProvider
+        NormalizerInterface $versionNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->fieldProvider = $fieldProvider;
@@ -68,7 +61,6 @@ class AttributeNormalizer implements NormalizerInterface
         $this->filterProvider = $filterProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
-        $this->formProvider = $formProvider;
     }
 
     /**
@@ -105,16 +97,7 @@ class AttributeNormalizer implements NormalizerInterface
             'id'      => $attribute->getId(),
             'created' => $firstVersion,
             'updated' => $lastVersion,
-            'form'    => 'pim-attribute-edit-form',
         ];
-
-        try {
-            $additionalForm = $this->formProvider->getForm($attribute);
-        } catch (NoCompatibleFormProviderFoundException $e) {
-            $additionalForm = null;
-        }
-
-        $normalizedAttribute['meta']['additional_form'] = $additionalForm;
 
         return $normalizedAttribute;
     }

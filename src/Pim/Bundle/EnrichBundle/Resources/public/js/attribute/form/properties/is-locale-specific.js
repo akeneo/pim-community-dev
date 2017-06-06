@@ -15,7 +15,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        updateModel: function (field) {
+        updateModel: function (value) {
             BaseField.prototype.updateModel.apply(this, arguments);
 
             if (false === this.getFormData().is_locale_specific) {

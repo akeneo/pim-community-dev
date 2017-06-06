@@ -27,7 +27,7 @@ function (
         events: {
             'change input,select': function (event) {
                 this.errors = [];
-                this.updateModel(event.target);
+                this.updateModel(this.getFieldValue(event.target));
                 this.getRoot().render();
             }
         },
@@ -94,7 +94,8 @@ function (
                     fieldLabel: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
                     requiredLabel: __('pim_enrich.form.required'),
                     fieldName: this.fieldName,
-                    errors: this.errors
+                    errors: this.errors,
+                    readOnly: this.config.readOnly || false
                 })
                 .promise();
         },
@@ -121,11 +122,11 @@ function (
         },
 
         /**
-         * @param {Object} field
+         * @param {*} value
          */
-        updateModel: function (field) {
+        updateModel: function (value) {
             var newData = {};
-            newData[this.fieldName] = this.getFieldValue(field);
+            newData[this.fieldName] = value;
 
             this.setData(newData);
         },

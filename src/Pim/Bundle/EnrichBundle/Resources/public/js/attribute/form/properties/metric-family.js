@@ -90,7 +90,7 @@ function (
          *
          * Override to reset the default metric unit each time the metric family changes.
          */
-        updateModel: function (field) {
+        updateModel: function (value) {
             BaseField.prototype.updateModel.apply(this, arguments);
 
             this.setData({default_metric_unit: null}, {silent: true});
