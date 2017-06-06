@@ -32,11 +32,10 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Generating require.js main config');
+        $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
+        $webRoot = realpath($rootDir . '/../web');
 
-        $webRoot = 'web';
-
-        $mainConfigContent = json_encode($this->collectConfigPaths(), JSON_UNESCAPED_SLASHES);
-
+        $mainConfigContent = json_encode($this->collectConfigPaths($rootDir), JSON_UNESCAPED_SLASHES);
         $mainConfigContent = 'module.exports = ' . $mainConfigContent;
         $mainConfigContent = str_replace(',', ",\n", $mainConfigContent);
         $mainConfigFilePath = $webRoot . DIRECTORY_SEPARATOR . self::MAIN_CONFIG_FILE_NAME;
@@ -47,14 +46,11 @@ class DumpRequirePathsCommand extends ContainerAwareCommand
 
     /**
      * Collect an array of requirejs.yml paths for each bundle
-     * @return [Array] Array of paths
+     * @return array
      */
     protected function collectConfigPaths()
     {
-        $kernel = $this->getApplication()->getKernel();
         $bundles = $this->getContainer()->getParameter('kernel.bundles');
-        $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
-
         $paths = array();
 
         foreach ($bundles as $bundle) {

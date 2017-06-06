@@ -1,11 +1,13 @@
 /* eslint-env es6 */
+require('colors')
+const { assign } = Object
 const { values, get, mapValues } = require('lodash')
 const { resolve } = require('path')
 const { parse } = require('yamljs')
-const { readFileSync } = require('fs')
+const { readFileSync, existsSync } = require('fs')
 
 const deepMerge = require('deepmerge')
-const globToRegex = require('glob-to-regexp');
+const globToRegex = require('glob-to-regexp')
 const customPaths = require('./custom-paths')
 
 // Only modules inside one of these folders can be dynamically required
@@ -38,7 +40,7 @@ const utils = {
                 const parsed = parse(contents)
                 const requirePaths = parsed.config.paths || {}
                 const requireMaps = get(parsed.config, 'map.*') || {}
-                const mergedPaths = Object.assign(requirePaths, requireMaps)
+                const mergedPaths = assign(requirePaths, requireMaps)
                 const absolutePaths = mapValues(mergedPaths, (modulePath) => {
                     return resolve(baseDir, `./web/bundles/${modulePath}`)
                 })
@@ -52,24 +54,29 @@ const utils = {
     },
 
     /**
-     * Combines the absolute module paths, path overrides and custom module
-     * paths - it writes them to files to be consumed by the frontend, and
-     * returns the merged paths for the webpack config
+     * Combines the absolute module paths and custom module
+     * paths and allowed contexts and returns an object
      *
-     * @param  {Object} overrides     A map of path overrides
      * @param  {String} baseDir  The base directory where webpack is run
      * @param  {String} sourceDir The directory executing webpack
      * @return {Object}               An object requirejs paths and config, allowed context and module aliases
      */
     getModulePaths(baseDir, sourceDir) {
+        const sourcePath = resolve(baseDir, 'web/js/require-paths.js')
+
+        if (!existsSync(sourcePath)) {
+            throw new Error(`The web/js/require-paths.js module does not exist - You need to run
+            "app/console pim:install" or "app/console pim:installer:dump-require-paths" before
+            running webpack \n`.red)
+        }
+
         // File dumped by the pim:installer:dump-require-paths command
-        const pathSourceFile = require(resolve(baseDir, 'web/js/require-paths'))
+        const pathSourceFile = require(sourcePath)
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir)
 
         const contextPaths = allowedPaths.map(glob => globToRegex(glob).toString().slice(2, -2))
         const context = `/^.*(${contextPaths.join('|')})$/`
-        const aliases = Object.assign(
-            paths,
+        const aliases = assign(paths,
             mapValues(customPaths, custom => resolve(baseDir, custom)
         ), {
             'require-polyfill': resolve(sourceDir, './frontend/require-polyfill.js'),
@@ -77,15 +84,6 @@ const utils = {
         })
 
         return { paths, config, context, aliases }
-    },
-
-    /**
-     * getModuleString
-     * @param  {Object} contents Some json to be stringified
-     * @return {String}          Module contents
-     */
-    getModuleString(contents) {
-        return `module.exports = ${JSON.stringify(contents)}`
     }
 }
 
