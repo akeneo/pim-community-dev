@@ -82,6 +82,24 @@ class TreeContext extends PimContext
     }
 
     /**
+     * @param string $tree
+     *
+     * @Then /^The tree "([^"]*)" should be open$/
+     */
+    public function theTreeShouldBeOpen($tree)
+    {
+        $categoryTree = $this->getCurrentPage()
+            ->getElement('Category tree');
+        $openTree = $categoryTree->findOpenTree();
+
+        if ($openTree !== $tree) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf('Expecting to see tree "%s" open, found "%s".', $tree, $openTree)
+            );
+        }
+    }
+
+    /**
      * @Given /^I blur the category node$/
      */
     public function iBlurTheNode()

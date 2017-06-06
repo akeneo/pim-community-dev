@@ -28,6 +28,18 @@ class JsTreeDecorator extends ElementDecorator
     }
 
     /**
+     * @return string
+     */
+    public function findOpenTree()
+    {
+        $tree = $this->spin(function () {
+            return $this->find('css', sprintf('.jstree-tree-toolbar .select2-choice .select2-chosen'));
+        }, 'Cannot find the open tree');
+
+        return $tree->getText();
+    }
+
+    /**
      * This method is spinned because the refresh of the tree result in a WebDriver\Exception\NoSuchElement
      * exception if the tree was found then immediately refreshed.
      *
