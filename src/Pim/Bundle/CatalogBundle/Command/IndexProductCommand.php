@@ -50,12 +50,12 @@ class IndexProductCommand extends ContainerAwareCommand
 
         $output->writeln(sprintf('<info>%s products to index</info>', $totalElements));
 
-        for($currentPage = 1; $currentPage <= $numberOfPage; $currentPage++) {
+        for ($currentPage = 1; $currentPage <= $numberOfPage; $currentPage++) {
             $offset = $pageSize * ($currentPage - 1);
             $output->writeln(
                 sprintf(
                     'Indexing products %d to %d',
-                    $offset,
+                    $offset + 1,
                     ($offset + $pageSize) < $totalElements ? ($offset + $pageSize) : $totalElements
                 )
             );

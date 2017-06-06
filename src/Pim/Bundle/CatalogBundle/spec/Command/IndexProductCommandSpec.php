@@ -45,8 +45,8 @@ class IndexProductCommandSpec extends ObjectBehavior
         $productRepository->findAllWithOffsetAndSize(5, 5)->willReturn([]);
 
         $output->writeln('<info>6 products to index</info>')->shouldBeCalled();
-        $output->writeln('Indexing products 0 to 5')->shouldBeCalled();
-        $output->writeln('Indexing products 5 to 6')->shouldBeCalled();
+        $output->writeln('Indexing products 1 to 5')->shouldBeCalled();
+        $output->writeln('Indexing products 6 to 6')->shouldBeCalled();
         $output->writeln('<info>6 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
