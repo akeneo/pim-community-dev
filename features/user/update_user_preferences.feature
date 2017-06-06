@@ -38,4 +38,3 @@ Feature: Update user preferences
     And I am logged in as "Peter"
     When I edit the "Peter" user
     Then I should see the text "Edit user"
-    And I should see the text "Login count"

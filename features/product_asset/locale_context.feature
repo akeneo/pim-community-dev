@@ -22,8 +22,8 @@ Feature: Keep context on product assets
     Then I should be on the "chicagoskyline" asset edit page
     And the locale "en_US" should be selected
     When I switch the locale to "fr_FR"
-    And I click back to grid
-    Then I should be on the assets page
+    And I click on the Akeneo logo
+    When I am on the assets page
     Then the locale "fr_FR" should be selected
 
   Scenario: Keep locale when editing a non localizable asset
@@ -31,6 +31,6 @@ Feature: Keep context on product assets
     And I switch the locale to "fr_FR"
     And I click on the "paint" row
     Then I should be on the "paint" asset edit page
-    And I click back to grid
-    Then I should be on the assets page
+    And I click on the Akeneo logo
+    When I am on the assets page
     Then the locale "fr_FR" should be selected

@@ -45,7 +45,7 @@ Feature: Remove a product
   Scenario: Not being able to delete a published product
     Given I am on the "jean" product page
     And I publish the product "jean"
-    When I press the "Delete" button
+    When I press the secondary action "Delete"
     And I confirm the removal
     Then I should see the text "Impossible to remove a published product"
     When I am on the products page
