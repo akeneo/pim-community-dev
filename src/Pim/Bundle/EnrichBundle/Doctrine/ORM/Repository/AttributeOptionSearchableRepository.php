@@ -3,9 +3,12 @@
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * AttributeOption searchable repository
@@ -22,14 +25,24 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     /** @var string */
     protected $entityName;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param ObjectManager $entityManager
-     * @param string $entityName
+     * TODO Remove null default on last parameter on master branch
+     *
+     * @param ObjectManager                $entityManager
+     * @param string                       $entityName
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
-    {
-        $this->entityManager = $entityManager;
-        $this->entityName    = $entityName;
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        $entityName,
+        AttributeRepositoryInterface $attributeRepository = null
+    ) {
+        $this->entityManager       = $entityManager;
+        $this->entityName          = $entityName;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -47,8 +60,13 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             ->leftJoin('o.optionValues', 'v')
             ->leftJoin('o.attribute', 'a')
             ->andWhere('a.code = :attributeCode')
-            ->orderBy('o.sortOrder')
             ->setParameter('attributeCode', $options['identifier']);
+
+        if ($this->isAttributeAutoSorted($options['identifier'])) {
+            $qb->orderBy('v.value, o.code');
+        } else {
+            $qb->orderBy('o.sortOrder');
+        }
 
         if ($search) {
             $qb->andWhere('v.value like :search OR o.code LIKE :search')
@@ -86,5 +104,20 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         }
 
         return $qb;
+    }
+
+    /**
+     * @param string $attributeIdentifier
+     *
+     * @returns boolean
+     */
+    protected function isAttributeAutoSorted($attributeIdentifier)
+    {
+        if (null === $this->attributeRepository) {
+            return false;
+        }
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
+
+        return $attribute->getProperties()['autoOptionSorting'];
     }
 }

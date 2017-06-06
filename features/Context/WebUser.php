@@ -712,14 +712,15 @@ class WebUser extends RawMinkContext
 
     /**
      * @param string $not
+     * @param string $ordered
      * @param string $choices
      * @param string $label
      *
-     * @Then /^I should(?P<not> not)? see the choices? (?P<choices>.+) in (?P<label>.+)$/
+     * @Then /^I should(?P<not> not)? see the(?P<ordered> ordered)? choices? (?P<choices>.+) in (?P<label>.+)$/
      */
-    public function iShouldSeeTheChoicesInField($not, $choices, $label)
+    public function iShouldSeeTheChoicesInField($not, $choices, $label, $ordered = null)
     {
-        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not);
+        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not, $ordered !== null);
     }
 
     /**
@@ -1202,22 +1203,19 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^I should see reorder handles$/
+     * @param string|null $not
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should( not)? see reorder handles$/
      */
-    public function iShouldSeeReorderHandles()
+    public function iShouldSeeReorderHandles($not = null)
     {
-        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
-            throw $this->createExpectationException('No reorder handle found');
-        }
-    }
-
-    /**
-     * @Then /^I should not see reorder handles$/
-     */
-    public function iShouldNotSeeReorderHandles()
-    {
-        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
-            throw $this->createExpectationException('Reorder handle was not expected');
+        $count = $this->getCurrentPage()->countOrderableOptions();
+        if ((null === $not && $count <= 0) || (null !== $not && $count > 0)) {
+            throw $this->createExpectationException(
+                sprintf("Expected to%s see reorder handle, %d found", $not, $count)
+            );
         }
     }
 

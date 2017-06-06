@@ -139,3 +139,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute_option.class%'
+            - '@pim_catalog.repository.attribute'

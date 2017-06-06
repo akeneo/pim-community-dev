@@ -153,6 +153,9 @@ define(
                             this.model.set(editedModel.attributes);
                             this.clean();
                             this.stopEditItem();
+                            if (!this.parent.sortable) {
+                                this.parent.render();
+                            }
                         }.bind(this),
                         error: this.showValidationErrors.bind(this)
                     }
@@ -223,7 +226,7 @@ define(
 
         var ItemCollectionView = Backbone.View.extend({
             tagName: 'table',
-            className: 'AknGrid table attribute-option-view',
+            className: 'AknGrid AknGrid--unclickable table attribute-option-view',
             template: _.template(
                 '<!-- Pim/Bundle/EnrichBundle/Resources/public/js/pim-attributeoptionview.js -->' +
                 '<colgroup>' +
@@ -287,7 +290,9 @@ define(
                     code_label: __('Code')
                 }));
 
-                _.each(this.collection.models, function (attributeOptionItem) {
+                _.each(_.sortBy(this.collection.models, function (attributeOptionItem) {
+                    return this.sortable ? 0 : attributeOptionItem.attributes.code;
+                }.bind(this)), function (attributeOptionItem) {
                     this.addItem({item: attributeOptionItem});
                 }.bind(this));
 
@@ -498,6 +503,7 @@ define(
 
             mediator.on('attribute:auto_option_sorting:changed', function (autoSorting) {
                 itemCollectionView.updateSortableStatus(!autoSorting);
+                itemCollectionView.render();
             }.bind(this));
         };
     }
