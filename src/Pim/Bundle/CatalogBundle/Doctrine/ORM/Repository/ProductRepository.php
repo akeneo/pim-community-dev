@@ -280,6 +280,21 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
+     * @param int $offset
+     * @param int $size
+     *
+     * @return array
+     */
+    public function findAllWithOffsetAndSize($offset = 0, $size = 100)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->setFirstResult($offset)
+            ->setMaxResults($size);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @param GroupInterface $variantGroup
      * @param array          $criteria
      *
