@@ -11,11 +11,11 @@ pim_notification_notification_mark_viewed:
     defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, id: ~ }
     requirements:
         id: \d+
-        _method: POST
+        methods: [POST]
 
 pim_notification_notification_remove:
     path: /notification/remove/{id}
     defaults: { _controller: pim_notification.controller.notification:removeAction }
     requirements:
         id: \d+
-        _method: DELETE
+        methods: [DELETE]
