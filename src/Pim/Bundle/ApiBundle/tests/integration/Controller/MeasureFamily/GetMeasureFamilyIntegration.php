@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\MeasureFamilies;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\MeasureFamily;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetMeasureFamiliesIntegration extends ApiTestCase
+class GetMeasureFamilyIntegration extends ApiTestCase
 {
     public function testGetAMeasureFamily()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/measure-families/Area');
+        $client->request('GET', 'api/rest/v1/measure-family/Area');
 
         $standardAttribute = <<<JSON
 {
@@ -158,7 +158,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/measure-families/not_found');
+        $client->request('GET', 'api/rest/v1/measure-family/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());

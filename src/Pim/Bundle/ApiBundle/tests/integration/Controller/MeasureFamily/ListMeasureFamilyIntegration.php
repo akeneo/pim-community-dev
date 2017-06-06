@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\MeasureFamilies;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\MeasureFamily;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListMeasureFamiliesIntegration extends ApiTestCase
+class ListMeasureFamilyIntegration extends ApiTestCase
 {
-    public function testListMeasureFamilies()
+    public function testListMeasureFamily()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/measure-families');
+        $client->request('GET', 'api/rest/v1/measure-family');
 
         $expected = <<<JSON
 {
@@ -20,7 +20,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Area"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Area"
         }
       },
       "code": "Area",
@@ -157,7 +157,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Binary"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Binary"
         }
       },
       "code": "Binary",
@@ -210,7 +210,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Decibel"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Decibel"
         }
       },
       "code": "Decibel",
@@ -228,7 +228,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Frequency"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Frequency"
         }
       },
       "code": "Frequency",
@@ -274,7 +274,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Length"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Length"
         }
       },
       "code": "Length",
@@ -383,7 +383,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Power"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Power"
         }
       },
       "code": "Power",
@@ -429,7 +429,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Voltage"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Voltage"
         }
       },
       "code": "Voltage",
@@ -489,7 +489,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Intensity"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Intensity"
         }
       },
       "code": "Intensity",
@@ -549,7 +549,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Resistance"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Resistance"
         }
       },
       "code": "Resistance",
@@ -616,7 +616,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Speed"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Speed"
         }
       },
       "code": "Speed",
@@ -688,7 +688,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/ElectricCharge"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/ElectricCharge"
         }
       },
       "code": "ElectricCharge",
@@ -762,7 +762,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Duration"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Duration"
         }
       },
       "code": "Duration",
@@ -829,7 +829,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Temperature"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Temperature"
         }
       },
       "code": "Temperature",
@@ -878,7 +878,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Volume"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Volume"
         }
       },
       "code": "Volume",
@@ -998,7 +998,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Weight"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Weight"
         }
       },
       "code": "Weight",
@@ -1087,7 +1087,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Pressure"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Pressure"
         }
       },
       "code": "Pressure",
@@ -1154,7 +1154,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Energy"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/Energy"
         }
       },
       "code": "Energy",
@@ -1193,7 +1193,7 @@ class ListMeasureFamiliesIntegration extends ApiTestCase
     {
       "_links": {
         "self": {
-          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/CaseBox"
+          "href": "http:\/\/localhost\/api\/rest\/v1\/measure-family\/CaseBox"
         }
       },
       "code": "CaseBox",
@@ -1230,9 +1230,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }
