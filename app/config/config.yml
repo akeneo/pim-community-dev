@@ -69,11 +69,3 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
-
-akeneo_storage_utils:
-    mapping_overrides: ~
-
-akeneo_elasticsearch:
-    index_name: "%index_name%"
-    hosts: "%index_hosts%"
-    configuration_files: "%elasticsearch_index_configuration_files%"
