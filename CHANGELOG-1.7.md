@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6420: Fix autosorting of attribute options
+
 # 1.7.5 (2017-06-02)
 
 ## Bug Fixes
