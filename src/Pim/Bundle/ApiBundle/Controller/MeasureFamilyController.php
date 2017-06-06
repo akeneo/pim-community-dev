@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MeasureFamiliesController
+class MeasureFamilyController
 {
     /** @var array */
     protected $measuresConfig;
@@ -86,8 +86,8 @@ class MeasureFamiliesController
                 'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
                 'with_count' => 'false',
             ],
-            'list_route_name'     => 'pim_api_measure_families_list',
-            'item_route_name'     => 'pim_api_measure_families_get',
+            'list_route_name'     => 'pim_api_measure_family_list',
+            'item_route_name'     => 'pim_api_measure_family_get',
         ];
 
         $paginatedMeasureFamilies = $this->paginator->paginate(
@@ -96,6 +96,6 @@ class MeasureFamiliesController
             null
         );
 
-        return new JsonResponse($paginatedMeasureFamilies['_embedded']);
+        return new JsonResponse($paginatedMeasureFamilies);
     }
 }

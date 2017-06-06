@@ -184,12 +184,12 @@ class RootEndpointIntegration extends ApiTestCase
                 "route": "/api/rest/v1/currencies",
                 "methods": ["GET"]
             },
-            "pim_api_measure_families_list": {
-                "route": "/api/rest/v1/measure-families",
+            "pim_api_measure_family_list": {
+                "route": "/api/rest/v1/measure-family",
                 "methods": ["GET"]
             },
-            "pim_api_measure_families_get": {
-                "route": "/api/rest/v1/measure-families/{code}",
+            "pim_api_measure_family_get": {
+                "route": "/api/rest/v1/measure-family/{code}",
                 "methods": ["GET"]
             }
         }

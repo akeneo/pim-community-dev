@@ -44,5 +44,5 @@ endpoint:
     prefix: /rest
 
 measure_family:
-    resource: '@PimApiBundle/Resources/config/routing/measure_families.yml'
+    resource: '@PimApiBundle/Resources/config/routing/measure_family.yml'
     prefix: /rest/v1
