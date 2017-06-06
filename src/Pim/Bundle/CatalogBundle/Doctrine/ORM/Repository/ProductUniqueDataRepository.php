@@ -35,7 +35,7 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
 
         if (null !== $product->getId()) {
             $queryBuilder->andWhere('ud.product != :product');
-            $parameters['product'] = $product;
+            $parameters['product'] = $product->getId()->getBytes();
         }
 
         $queryBuilder->setParameters($parameters);

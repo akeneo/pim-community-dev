@@ -20,6 +20,7 @@ doctrine:
                 server_version: 5.7
                 mapping_types:
                     json: string
+                    uuid_binary: binary
             session:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
@@ -34,7 +35,8 @@ doctrine:
             native_json:
                 class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
                 commented: true
-
+            uuid_binary: Ramsey\Uuid\Doctrine\UuidBinaryType
+            
 doctrine_cache:
     providers:
         pim_apcu:

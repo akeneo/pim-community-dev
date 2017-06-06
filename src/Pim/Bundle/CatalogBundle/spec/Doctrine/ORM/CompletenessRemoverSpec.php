@@ -19,6 +19,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\UuidInterface;
 
 class CompletenessRemoverSpec extends ObjectBehavior
 {
@@ -43,9 +44,11 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $connection,
         ProductInterface $product,
         Collection $completenesses,
-        Statement $statement
+        Statement $statement,
+        UuidInterface $id
     ) {
-        $product->getId()->willReturn(42);
+        $id->getBytes()->willReturn(42);
+        $product->getId()->willReturn($id);
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->clear()->shouldBeCalled();
 
@@ -68,10 +71,15 @@ class CompletenessRemoverSpec extends ObjectBehavior
         Collection $completenesses1,
         Collection $completenesses2,
         FamilyInterface $family,
-        CursorInterface $products
+        CursorInterface $products,
+        UuidInterface $id1,
+        UuidInterface $id2
     ) {
-        $product1->getId()->willReturn(21);
-        $product2->getId()->willReturn(42);
+        $id1->getBytes()->willReturn(21);
+        $id2->getBytes()->willReturn(42);
+
+        $product1->getId()->willReturn($id1);
+        $product2->getId()->willReturn($id2);
 
         $products->rewind()->shouldBeCalled();
         $products->valid()->willReturn(true, true, false);
@@ -120,10 +128,15 @@ class CompletenessRemoverSpec extends ObjectBehavior
         LocaleInterface $locale,
         CursorInterface $products,
         CompletenessInterface $completeness1,
-        CompletenessInterface $completeness2
+        CompletenessInterface $completeness2,
+        UuidInterface $id1,
+        UuidInterface $id2
     ) {
-        $product1->getId()->willReturn(21);
-        $product2->getId()->willReturn(42);
+        $id1->getBytes()->willReturn(21);
+        $id2->getBytes()->willReturn(42);
+
+        $product1->getId()->willReturn($id1);
+        $product2->getId()->willReturn($id2);
 
         $products->rewind()->shouldBeCalled();
         $products->valid()->willReturn(true, true, false);

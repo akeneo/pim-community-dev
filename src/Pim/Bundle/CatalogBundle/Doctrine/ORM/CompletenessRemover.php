@@ -68,7 +68,7 @@ class CompletenessRemover implements CompletenessRemoverInterface
             FROM %s c
             WHERE c.product_id = :productId
         ', $this->completenessTable));
-        $statement->bindValue('productId', $product->getId());
+        $statement->bindValue('productId', $product->getId()->getBytes());
         $statement->execute();
 
         $product->getCompletenesses()->clear();
@@ -130,7 +130,7 @@ class CompletenessRemover implements CompletenessRemoverInterface
 
         foreach ($products as $product) {
             $bulkedProducts[] = $product;
-            $productIds[] = $product->getId();
+            $productIds[] = $product->getId()->getBytes();
 
             if (self::BULK_SIZE === $bulkCounter) {
                 $this->entityManager->getConnection()->executeQuery(

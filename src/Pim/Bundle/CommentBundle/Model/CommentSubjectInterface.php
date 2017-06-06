@@ -13,7 +13,7 @@ namespace Pim\Bundle\CommentBundle\Model;
 interface CommentSubjectInterface
 {
     /**
-     * @return string|int
+     * @return mixed
      */
     public function getId();
 }
