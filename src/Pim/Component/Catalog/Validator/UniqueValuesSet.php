@@ -38,29 +38,29 @@ class UniqueValuesSet
      * Return true if value has been added, else if value already exists inside the set
      *
      * @param ProductValueInterface $productValue
+     * @param ProductInterface $product
      *
      * @return bool
      */
-    public function addValue(ProductValueInterface $productValue)
+    public function addValue(ProductValueInterface $productValue, ProductInterface $product)
     {
-        $product = $productValue->getProduct();
-        $productIdentifier = $this->getProductIdentifier($product);
-        $productValueData = $this->getValueData($productValue);
-        $uniqueValueCode = $this->getUniqueValueCode($productValue);
+        $identifier = $this->getProductId($product);
+        $data = $productValue->__toString();
+        $attributeCode = $productValue->getAttribute()->getCode();
 
-        if (isset($this->uniqueValues[$uniqueValueCode][$productValueData])) {
-            $storedIdentifier = $this->uniqueValues[$uniqueValueCode][$productValueData];
-            if ($storedIdentifier !== $productIdentifier) {
+        if (isset($this->uniqueValues[$attributeCode][$data])) {
+            $storedIdentifier = $this->uniqueValues[$attributeCode][$data];
+            if ($storedIdentifier !== $identifier) {
                 return false;
             }
         }
 
-        if (!isset($this->uniqueValues[$uniqueValueCode])) {
-            $this->uniqueValues[$uniqueValueCode] = [];
+        if (!isset($this->uniqueValues[$attributeCode])) {
+            $this->uniqueValues[$attributeCode] = [];
         }
 
-        if (!isset($this->uniqueValues[$uniqueValueCode][$productValueData])) {
-            $this->uniqueValues[$uniqueValueCode][$productValueData] = $productIdentifier;
+        if (!isset($this->uniqueValues[$attributeCode][$data])) {
+            $this->uniqueValues[$attributeCode][$data] = $identifier;
         }
 
         return true;
@@ -81,37 +81,8 @@ class UniqueValuesSet
      *
      * @return string
      */
-    protected function getProductIdentifier(ProductInterface $product)
+    protected function getProductId(ProductInterface $product)
     {
-        $identifier = $product->getId() ? $product->getId() : spl_object_hash($product);
-
-        return $identifier;
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     *
-     * @return string
-     */
-    protected function getUniqueValueCode(ProductValueInterface $productValue)
-    {
-        $attributeCode = $productValue->getAttribute()->getCode();
-        $uniqueValueCode = $attributeCode;
-        $uniqueValueCode .= (null !== $productValue->getLocale()) ? $productValue->getLocale() : '';
-        $uniqueValueCode .= (null !== $productValue->getScope()) ? $productValue->getScope() : '';
-
-        return $uniqueValueCode;
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     *
-     * @return string
-     */
-    protected function getValueData(ProductValueInterface $productValue)
-    {
-        $data = $productValue->getData();
-
-        return ($data instanceof \DateTime) ? $data->format('Y-m-d') : (string) $data;
+        return $product->getId() ? $product->getId() : spl_object_hash($product);
     }
 }

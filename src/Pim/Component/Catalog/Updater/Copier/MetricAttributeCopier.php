@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Copy a metric value attribute in other metric value attribute
@@ -17,25 +17,26 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MetricAttributeCopier extends AbstractAttributeCopier
 {
-    /** @var MetricFactory */
-    protected $metricFactory;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param MetricFactory            $metricFactory
+     * @param NormalizerInterface      $normalizer
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        MetricFactory $metricFactory,
+        NormalizerInterface $normalizer,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->metricFactory = $metricFactory;
+
+        $this->normalizer = $normalizer;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -73,6 +74,8 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
+     * Copy single value
+     *
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
@@ -94,20 +97,14 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $fromData = $fromValue->getData();
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
-            if (null === $metric = $toValue->getMetric()) {
-                $metric = $this->metricFactory->createMetric($fromData->getFamily());
-            }
-
-            $metric->setUnit($fromData->getUnit());
-            $metric->setData($fromData->getData());
-
-            $toValue->setMetric($metric);
+            $standardData = $this->normalizer->normalize($fromValue, 'standard');
+            $this->productBuilder->addOrReplaceProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $standardData['data']
+            );
         }
     }
 }

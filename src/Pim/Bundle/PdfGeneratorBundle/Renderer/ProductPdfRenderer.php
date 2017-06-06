@@ -25,11 +25,10 @@ class ProductPdfRenderer implements RendererInterface
     /** @var string */
     const PDF_FORMAT = 'pdf';
 
+    const THUMBNAIL_FILTER = 'thumbnail';
+
     /** @var EngineInterface */
     protected $templating;
-
-    /** @var string */
-    protected $template;
 
     /** @var PdfBuilderInterface */
     protected $pdfBuilder;
@@ -42,6 +41,15 @@ class ProductPdfRenderer implements RendererInterface
 
     /** @var FilterManager */
     protected $filterManager;
+
+    /** @var string */
+    protected $template;
+
+    /** @var string */
+    protected $uploadDirectory;
+
+    /** @var string */
+    protected $customFont;
 
     /**
      * @param EngineInterface     $templating
@@ -64,13 +72,13 @@ class ProductPdfRenderer implements RendererInterface
         $customFont = null
     ) {
         $this->templating = $templating;
-        $this->template = $template;
         $this->pdfBuilder = $pdfBuilder;
-        $this->uploadDirectory = $uploadDirectory;
-        $this->customFont = $customFont;
         $this->dataManager = $dataManager;
         $this->cacheManager = $cacheManager;
         $this->filterManager = $filterManager;
+        $this->template = $template;
+        $this->uploadDirectory = $uploadDirectory;
+        $this->customFont = $customFont;
     }
 
     /**
@@ -81,19 +89,20 @@ class ProductPdfRenderer implements RendererInterface
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
 
+        $imagePaths = $this->getImagePaths($object, $context['locale'], $context['scope']);
         $params = array_merge(
             $context,
             [
                 'product'           => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
-                'imageAttributes'   => $this->getImageAttributes($object, $context['locale'], $context['scope']),
+                'imagePaths'        => $imagePaths,
                 'customFont'        => $this->customFont
             ]
         );
 
-        $resolver->resolve($params);
+        $params = $resolver->resolve($params);
 
-        $params['uploadDir'] = $this->uploadDirectory . DIRECTORY_SEPARATOR;
+        $this->generateThumbnailsCache($imagePaths, $params['filter']);
 
         return $this->pdfBuilder->buildPdfOutput(
             $this->templating->render($this->template, $params)
@@ -146,7 +155,7 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
-     * Get all image attributes
+     * Get all image paths
      *
      * @param ProductInterface $product
      * @param string           $locale
@@ -154,44 +163,39 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @return AttributeInterface[]
      */
-    protected function getImageAttributes(ProductInterface $product, $locale, $scope)
+    protected function getImagePaths(ProductInterface $product, $locale, $scope)
     {
-        $attributes = [];
+        $imagePaths = [];
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
             if (AttributeTypes::IMAGE === $attribute->getType()) {
-                $attributes[$attribute->getCode()] = $attribute;
+                $media = $product->getValue($attribute->getCode(), $locale, $scope)->getData();
+
+                if (null !== $media && null !== $media->getKey()) {
+                    $imagePaths[] = $media->getKey();
+                }
             }
         }
 
-        $this->generateThumbnailsCache($product, $attributes, $locale, $scope);
-
-        return $attributes;
+        return $imagePaths;
     }
 
     /**
      * Generate media thumbnails cache used by the PDF document
      *
-     * @param ProductInterface     $product
-     * @param AttributeInterface[] $imageAttributes
-     * @param string               $locale
-     * @param string               $scope
+     * @param string[] $imagePaths
+     * @param string   $filter
      */
-    protected function generateThumbnailsCache(ProductInterface $product, array $imageAttributes, $locale, $scope)
+    protected function generateThumbnailsCache(array $imagePaths, $filter)
     {
-        foreach ($imageAttributes as $attribute) {
-            $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
-            if (null !== $media && null !== $media->getKey()) {
-                $path = $media->getKey();
-                $filter = 'thumbnail';
-                if (!$this->cacheManager->isStored($path, $filter)) {
-                    $binary = $this->dataManager->find($filter, $path);
-                    $this->cacheManager->store(
-                        $this->filterManager->applyFilter($binary, $filter),
-                        $path,
-                        $filter
-                    );
-                }
+        foreach ($imagePaths as $path) {
+            if (!$this->cacheManager->isStored($path, $filter)) {
+                $binary = $this->dataManager->find($filter, $path);
+                $this->cacheManager->store(
+                    $this->filterManager->applyFilter($binary, $filter),
+                    $path,
+                    $filter
+                );
             }
         }
     }
@@ -203,14 +207,15 @@ class ProductPdfRenderer implements RendererInterface
      */
     protected function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['locale', 'scope', 'product']);
-        $resolver->setDefaults(
-            [
-                'groupedAttributes' => [],
-                'imageAttributes'   => [],
-                'renderingDate'     => new \DateTime(),
-                'customFont'        => null
-            ]
-        );
+        $resolver
+            ->setRequired(['locale', 'scope', 'product'])
+            ->setDefaults(
+                [
+                    'renderingDate' => new \DateTime(),
+                    'filter'        => static::THUMBNAIL_FILTER,
+                ]
+            )
+            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont'])
+        ;
     }
 }

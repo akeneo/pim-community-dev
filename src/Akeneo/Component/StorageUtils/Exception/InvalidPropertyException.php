@@ -23,9 +23,6 @@ class InvalidPropertyException extends PropertyException
     const VALID_DATA_EXPECTED_CODE = 305;
 
     /** @var string */
-    protected $propertyName;
-
-    /** @var string */
     protected $propertyValue;
 
     /** @var string */
@@ -66,7 +63,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" does not expect an empty value.';
 
-        return new self(
+        return new static(
             $propertyName,
             null,
             $className,
@@ -90,7 +87,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" expects a valid %s. %s, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -113,7 +110,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" expects a string with the format "%s" as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -136,7 +133,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" expects a valid group type. %s, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -159,7 +156,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" expects a valid group. %s, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -181,7 +178,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" expects %s.';
 
-        return new self(
+        return new static(
             $propertyName,
             null,
             $className,
@@ -203,7 +200,7 @@ class InvalidPropertyException extends PropertyException
     {
         $message = 'Property "%s" expects a valid pathname as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -223,7 +220,7 @@ class InvalidPropertyException extends PropertyException
      */
     public static function expectedFromPreviousException($propertyName, $className, \Exception $exception)
     {
-        return new self(
+        return new static(
             $propertyName,
             null,
             $className,
@@ -231,14 +228,6 @@ class InvalidPropertyException extends PropertyException
             $exception->getCode(),
             $exception
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getPropertyName()
-    {
-        return $this->propertyName;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Option;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,83 +11,84 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
+class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_simple_select',
-                'type'                => AttributeTypes::OPTION_SIMPLE_SELECT,
-                'localizable'         => true,
-                'scopable'            => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_simple_select',
+            'type'                => AttributeTypes::OPTION_SIMPLE_SELECT,
+            'localizable'         => true,
+            'scopable'            => true
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_localizable_scopable_simple_select',
-                'code'      => 'orange'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_localizable_scopable_simple_select',
+            'code'      => 'orange'
+        ]);
 
-            $this->createAttributeOption([
-                'attribute' => 'a_localizable_scopable_simple_select',
-                'code'      => 'black'
-            ]);
+        $this->createAttributeOption([
+            'attribute' => 'a_localizable_scopable_simple_select',
+            'code'      => 'black'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_simple_select' => [
-                        ['data' => 'orange', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'orange', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'black', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_simple_select' => [
+                    ['data' => 'orange', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'orange', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'black', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_simple_select' => [
-                        ['data' => 'black', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'black', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_simple_select' => [
+                    ['data' => 'black', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'black', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'black', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorIn()
     {
-        $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange', 'black'], ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange', 'black'], ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IS_EMPTY, [], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IS_EMPTY, [], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorNotIn()
     {
-        $result = $this->execute([['a_localizable_scopable_simple_select', Operators::NOT_IN_LIST, ['black'], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::NOT_IN_LIST, ['black'], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
     }
 
@@ -97,7 +98,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOptionLocalizable()
     {
-        $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
+        $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
     }
 
     /**
@@ -106,7 +107,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOptionScopable()
     {
-        $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR']]]);
+        $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR']]]);
     }
 
     /**
@@ -115,7 +116,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testLocaleNotFound()
     {
-        $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -124,6 +125,6 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
     }
 }

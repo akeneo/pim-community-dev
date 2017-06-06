@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -21,10 +22,45 @@ abstract class AbstractCompletenessIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getMinimalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getMinimalCatalogPath()]);
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return CompletenessInterface
+     */
+    protected function getCurrentCompleteness(ProductInterface $product)
+    {
+        $completenesses = $product->getCompletenesses()->toArray();
+
+        return current($completenesses);
+    }
+
+    /**
+     * @param CompletenessInterface $completeness
+     * @param string[]              $expectedAttributeCodes
+     */
+    protected function assertMissingAttributeCodes(CompletenessInterface $completeness, array $expectedAttributeCodes)
+    {
+        $missingAttributes = $completeness->getMissingAttributes();
+
+        $missingAttributeCodes = array_map(function (AttributeInterface $missingAttribute) {
+            return $missingAttribute->getCode();
+        }, $missingAttributes->toArray());
+
+        $this->assertEquals(sort($expectedAttributeCodes), sort($missingAttributeCodes));
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param int              $expectedNumberOfCompletenesses
+     */
+    protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
+    {
+        $completenesses = $product->getCompletenesses()->toArray();
+        $this->assertNotNull($completenesses);
+        $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 
     /**

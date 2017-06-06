@@ -38,9 +38,9 @@ Feature: Execute a job
       | price | 50.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see "Please specify a valid currency: 12 invalid"
+    And I should see "price: Property \"currency\" expects a valid code. The currency does not exist, \"invalid\" given."
     And I should see "This value should be a valid number.: gruik EUR"
-    And I should see "Please specify a valid currency: 90 gruik"
+    And I should see "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   Scenario: Skip new products with invalid prices during an import
     Given the following CSV file to import:
@@ -55,8 +55,8 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "skipped 2"
-    And I should see "This value should be a valid number.: the mouette"
-    And I should see "Please specify a valid currency: the mouette"
+    And I should see "This value should be a valid number.: EUR"
+    And I should see "price: Property \"currency\" expects a valid code. The currency does not exist, \"mouette\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
@@ -105,9 +105,9 @@ Feature: Execute a job
       | price | 8.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see "Please specify a valid currency: 12 invalid"
+    And I should see "price: Property \"currency\" expects a valid code. The currency does not exist, \"invalid\" given."
     And I should see "This value should be a valid number.: gruik EUR"
-    And I should see "Please specify a valid currency: 90 gruik"
+    And I should see "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid metrics during an import

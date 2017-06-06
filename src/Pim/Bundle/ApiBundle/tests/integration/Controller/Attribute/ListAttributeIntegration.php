@@ -240,7 +240,7 @@ JSON;
     "date_min"               : "2005-05-25T00:00:00+02:00",
     "date_max"               : "2050-12-31T00:00:00+01:00",
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 2,
     "localizable"            : false,
     "scopable"               : false,
@@ -580,9 +580,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Factory;
 
+use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

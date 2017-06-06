@@ -19,6 +19,7 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - ['product-grid']
 
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
@@ -72,6 +73,8 @@ services:
 
     pim_datagrid.extension.mass_action.handler.product_delete:
         class: '%pim_datagrid.extension.mass_action.handler.product_delete.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.product_indexer'
         parent: pim_datagrid.extension.mass_action.handler.delete
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }

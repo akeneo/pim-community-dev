@@ -7,7 +7,7 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
- * Resolver for pager : determine which pager should be used depending on the grid and the storage driver.
+ * Resolver for pager : determine which pager should be used depending on the grid.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -15,55 +15,40 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  */
 class PagerResolver
 {
-    /** @var DatasourceSupportResolver */
-    protected $supportResolver;
-
     /** @var PagerInterface */
     protected $ormPager;
 
     /** @var PagerInterface */
-    protected $mongodbPager;
+    protected $dummyPager;
+
+    /** @var array */
+    protected $gridsWithDummyPager;
 
     /**
-     * @param DatasourceSupportResolver $supportResolver
-     * @param PagerInterface            $ormPager
+     * @param PagerInterface $ormPager
+     * @param PagerInterface $dummyPager
+     * @param array          $gridsWithDummyPager
      */
-    public function __construct(DatasourceSupportResolver $supportResolver, PagerInterface $ormPager)
+    public function __construct(PagerInterface $ormPager, PagerInterface $dummyPager, array $gridsWithDummyPager)
     {
-        $this->supportResolver = $supportResolver;
         $this->ormPager = $ormPager;
+        $this->dummyPager = $dummyPager;
+        $this->gridsWithDummyPager = $gridsWithDummyPager;
     }
 
     /**
-     * @param string $datasourceType
+     * @param string $datagridName
      *
      * @throws InvalidConfigurationException
      *
      * @return PagerInterface
      */
-    public function getPager($datasourceType)
+    public function getPager($datagridName)
     {
-        if (DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM ===
-            $this->supportResolver->getSupport($datasourceType)
-        ) {
-            return $this->ormPager;
-        } elseif (null === $this->mongodbPager) {
-            throw new InvalidConfigurationException('The MongoDB pager should be registered.');
-        }
-
-        if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
-            $this->supportResolver->getSupport($datasourceType)) {
-            return $this->mongodbPager;
+        if (in_array($datagridName, $this->gridsWithDummyPager)) {
+            return $this->dummyPager;
         }
 
         return $this->ormPager;
-    }
-
-    /**
-     * @param PagerInterface $mongodbPager
-     */
-    public function setMongodbPager(PagerInterface $mongodbPager)
-    {
-        $this->mongodbPager = $mongodbPager;
     }
 }

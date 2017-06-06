@@ -39,3 +39,11 @@ Feature: Create an attribute
       | Code | short_description |
     And I save the attribute
     Then I should see validation error "This value should not be blank."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6324
+  Scenario: Successfully switch to tab with an invalid field
+      Given I visit the "Values" tab
+      And I save the attribute
+      Then I should see the Code field
+      Then I should be on the "Parameters" tab
+      And I should see validation error "This value should not be blank."

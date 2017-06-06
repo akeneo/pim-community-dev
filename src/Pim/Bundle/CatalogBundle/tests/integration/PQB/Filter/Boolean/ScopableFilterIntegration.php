@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Boolean;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,58 +11,59 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopableFilterIntegration extends AbstractFilterTestCase
+class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_yes_no',
-                'type'                => AttributeTypes::BOOLEAN,
-                'localizable'         => false,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_yes_no',
+            'type'                => AttributeTypes::BOOLEAN,
+            'localizable'         => false,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_yes_no' => [
-                        ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => false, 'scope' => 'tablet', 'locale' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_yes_no' => [
+                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => false, 'scope' => 'tablet', 'locale' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_yes_no' => [
-                        ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => true, 'scope' => 'tablet', 'locale' => null],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_yes_no' => [
+                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => true, 'scope' => 'tablet', 'locale' => null],
                 ]
-            ]);
-        }
+            ]
+        ]);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_scopable_yes_no', Operators::EQUALS, false, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_yes_no', Operators::EQUALS, false, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one']);
     }
 
@@ -72,7 +73,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorScopable()
     {
-        $this->execute([['a_scopable_yes_no', Operators::NOT_EQUAL, true]]);
+        $this->executeFilter([['a_scopable_yes_no', Operators::NOT_EQUAL, true]]);
     }
 
     /**
@@ -81,6 +82,6 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'NOT_FOUND']]]);
     }
 }

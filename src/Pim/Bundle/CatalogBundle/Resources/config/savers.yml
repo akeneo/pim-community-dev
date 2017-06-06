@@ -5,6 +5,7 @@ parameters:
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.attribute.class:                     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver
+    pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 
 services:
     pim_catalog.saver.group_type:
@@ -17,9 +18,15 @@ services:
     pim_catalog.saver.product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
-            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
+            - '@pim_catalog.synchronizer.product_unique_data'
+
+    pim_catalog.synchronizer.product_unique_data:
+        class: '%pim_catalog.synchronizer.product_unique_data.class%'
+        arguments:
+            - '@pim_catalog.factory.product_unique_data'
 
     pim_catalog.saver.group:
         class: '%pim_catalog.saver.group.class%'

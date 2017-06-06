@@ -46,22 +46,6 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', 'IN', ['foo', 'bar']);
     }
 
-    function it_adds_a_filter_on_category_codes($qb, $itemRepo, $objectIdResolver)
-    {
-        $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();
-        $objectIdResolver->getIdsFromCodes('category', ['foo', 'bar'])->willReturn([42, 84]);
-
-        $this->addFieldFilter('categories.code', 'IN', ['foo', 'bar']);
-    }
-
-    function it_adds_a_filter_on_category_ids($qb, $itemRepo, $objectIdResolver)
-    {
-        $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();
-        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
-
-        $this->addFieldFilter('categories.id', 'IN', [42, 84]);
-    }
-
     function it_adds_a_in_filter_on_categories_in_the_query($qb, $itemRepo, $objectIdResolver)
     {
         $itemRepo->applyFilterByCategoryIds($qb, [42, 84], true)->shouldBeCalled();

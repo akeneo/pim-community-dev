@@ -25,13 +25,13 @@ class CommandContext extends PimContext
      */
     public function iLaunchedTheCompletenessCalculator()
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-
         $commandLauncher = $this->getService('pim_catalog.command_launcher');
         $commandLauncher->executeForeground('pim:completeness:calculate');
     }
 
     /**
+     * @param TableNode $filters
+     *
      * @Then /^I should get the following results for the given filters:$/
      */
     public function iShouldGetTheFollowingResultsForTheGivenFilters(TableNode $filters)
@@ -222,13 +222,19 @@ class CommandContext extends PimContext
     /**
      * Runs app/console $command in the test environment
      *
-     * @When /^I run '([^\']*)'$/
+     * @When /^I run '([^\']*)'( in background)?$/
      *
-     * @param string $command
+     * @param string      $command
+     * @param string|null $command
      */
-    public function iRun($command)
+    public function iRun($command, $background)
     {
         $commandLauncher = $this->getService('pim_catalog.command_launcher');
-        $commandLauncher->executeForeground($this->replacePlaceholders($command));
+
+        if (null === $background) {
+            $commandLauncher->executeForeground($this->replacePlaceholders($command));
+        } else {
+            $commandLauncher->executeBackground($this->replacePlaceholders($command));
+        }
     }
 }

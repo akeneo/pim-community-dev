@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,51 +11,52 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
+class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_localizable_metric',
-                'type'                => AttributeTypes::METRIC,
-                'localizable'         => true,
-                'scopable'            => true,
-                'decimals_allowed'    => true,
-                'metric_family'       => 'Power',
-                'default_metric_unit' => 'KILOWATT'
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_localizable_metric',
+            'type'                => AttributeTypes::METRIC,
+            'localizable'         => true,
+            'scopable'            => true,
+            'decimals_allowed'    => true,
+            'metric_family'       => 'Power',
+            'default_metric_unit' => 'KILOWATT'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_localizable_metric' => [
-                        ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => ['amount' => '14', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => ['amount' => '100', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_localizable_metric' => [
+                    ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => ['amount' => '14', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => ['amount' => '100', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                ],
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_localizable_metric' => [
-                        ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => ['amount' => '10', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                        ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_localizable_metric' => [
+                    ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => ['amount' => '10', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::LOWER_THAN,
             ['amount' => 10, 'unit' => 'KILOWATT'],
@@ -63,7 +64,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::LOWER_THAN,
             ['amount' => 10.0001, 'unit' => 'KILOWATT'],
@@ -71,7 +72,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::LOWER_THAN,
             ['amount' => 80, 'unit' => 'KILOWATT'],
@@ -82,7 +83,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferiorOrEquals()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::LOWER_OR_EQUAL_THAN,
             ['amount' => 10, 'unit' => 'KILOWATT'],
@@ -90,7 +91,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::LOWER_OR_EQUAL_THAN,
             ['amount' => 100, 'unit' => 'KILOWATT'],
@@ -101,7 +102,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::EQUALS,
             ['amount' => -5, 'unit' => 'KILOWATT'],
@@ -109,7 +110,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::EQUALS,
             ['amount' => -5, 'unit' => 'KILOWATT'],
@@ -120,7 +121,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::GREATER_THAN,
             ['amount' => -5, 'unit' => 'KILOWATT'],
@@ -128,7 +129,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::GREATER_THAN,
             ['amount' => -5.0001, 'unit' => 'KILOWATT'],
@@ -139,7 +140,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorSuperiorOrEquals()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::GREATER_OR_EQUAL_THAN,
             ['amount' => -5, 'unit' => 'KILOWATT'],
@@ -147,7 +148,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::GREATER_OR_EQUAL_THAN,
             ['amount' => 80, 'unit' => 'KILOWATT'],
@@ -158,19 +159,19 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_scopable_localizable_metric', Operators::IS_EMPTY, [], ['locale' => 'en_US', 'scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_localizable_metric', Operators::IS_EMPTY, [], ['locale' => 'en_US', 'scope' => 'tablet']]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_scopable_localizable_metric', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US', 'scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_localizable_metric', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US', 'scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::NOT_EQUAL,
             ['amount' => 10, 'unit' => 'WATT'],
@@ -178,7 +179,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_metric',
             Operators::NOT_EQUAL,
             ['amount' => 10, 'unit' => 'KILOWATT'],
@@ -193,7 +194,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorMetricLocalizable()
     {
-        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
+        $this->executeFilter([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
     }
 
     /**
@@ -202,7 +203,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorMetricScopable()
     {
-        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'fr_FR']]]);
+        $this->executeFilter([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'fr_FR']]]);
     }
 
     /**
@@ -211,7 +212,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testLocaleNotFound()
     {
-        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -220,6 +221,6 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
     }
 }

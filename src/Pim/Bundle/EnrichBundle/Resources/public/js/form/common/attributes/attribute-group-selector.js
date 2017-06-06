@@ -95,7 +95,7 @@ define(
 
                     this.$el.html(this.template({
                         current: this.getCurrent(),
-                        elements: this.getElements(),
+                        elements: _.sortBy(this.getElements(), 'sort_order'),
                         badges: this.badges,
                         locale: UserContext.get('catalogLocale'),
                         toFillAttributeGroups: toFillAttributeGroups,

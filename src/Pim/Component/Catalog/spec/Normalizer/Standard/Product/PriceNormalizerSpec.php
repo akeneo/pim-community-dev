@@ -27,14 +27,8 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
-    function it_normalizes_price_in_standard_format_only_with_decimal_allowed(
-        ProductPriceInterface $price,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $price->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-
+    function it_normalizes_price_in_standard_format_only_with_decimal_allowed(ProductPriceInterface $price)
+    {
         $price->getCurrency()->willReturn('EUR');
         $price->getData()->willReturn('125.99');
 
@@ -44,14 +38,8 @@ class PriceNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_price_in_standard_format_only_with_decimal_disallowed(
-        ProductPriceInterface $price,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $price->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-
+    function it_normalizes_price_in_standard_format_only_with_decimal_disallowed(ProductPriceInterface $price)
+    {
         $price->getCurrency()->willReturn('USD');
         $price->getData()->willReturn('125.00');
 
@@ -61,15 +49,8 @@ class PriceNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_data_if_it_is_not_a_numeric(
-        ProductPriceInterface $price,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $price->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(false);
-
+    function it_returns_data_if_it_is_not_a_numeric(ProductPriceInterface $price)
+    {
         $price->getCurrency()->willReturn('EUR');
         $price->getData()->willReturn('a_price_data');
 
@@ -79,4 +60,3 @@ class PriceNormalizerSpec extends ObjectBehavior
         ]);
     }
 }
-

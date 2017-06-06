@@ -104,7 +104,7 @@ class IsAssociatedFilter extends BooleanFilter
         if (!$productId) {
             throw new \LogicException('The current product type must be configured');
         }
-        $product = $this->productRepository->findOneByWithValues($productId);
+        $product = $this->productRepository->find($productId);
 
         return $product;
     }
@@ -122,10 +122,10 @@ class IsAssociatedFilter extends BooleanFilter
 
         if ($association) {
             foreach ($association->getProducts() as $product) {
-                $productIds[] = $product->getId();
+                $productIds[] = (string) $product->getId();
             }
         }
 
-        return $productIds ?: [0];
+        return $productIds ?: ['0'];
     }
 }

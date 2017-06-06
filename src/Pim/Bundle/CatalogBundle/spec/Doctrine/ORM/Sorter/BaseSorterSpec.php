@@ -64,7 +64,7 @@ class BaseSorterSpec extends ObjectBehavior
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('varchar');
+        $sku->getBackendType()->willReturn('text');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
@@ -76,7 +76,7 @@ class BaseSorterSpec extends ObjectBehavior
 
         $condition = "sorterVsku.attribute = 42";
         $qb->leftJoin('p.values', 'sorterVsku', 'WITH', $condition)->shouldBeCalled();
-        $qb->addOrderBy('sorterVsku.varchar', 'DESC')->shouldBeCalled();
+        $qb->addOrderBy('sorterVsku.text', 'DESC')->shouldBeCalled();
 
         $qb->getRootAlias()->willReturn('p');
         $qb->addOrderBy("p.id")->shouldBeCalled();

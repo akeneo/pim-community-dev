@@ -60,6 +60,7 @@ services:
             - '@pim_enrich.normalizer.completeness_collection'
             - '%pim_catalog_product_storage_driver%'
             - '@pim_user.context.user'
+            - '@pim_catalog.completeness.calculator'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -172,6 +173,8 @@ services:
 
     pim_enrich.normalizer.product_violation:
         class: '%pim_enrich.normalizer.product_violation.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

@@ -41,7 +41,6 @@ Feature: Filter products
       | sku     | starts with      | boo           | book and book2                              |
       | sku     | starts with      | 0             | 01234                                       |
       | sku     | is equal to      | book          | book                                        |
-      | sku     | ends with        | book          | book and ebook                              |
       | sku     | in list          | book          | book                                        |
       | sku     | in list          | postit, book2 | postit and book2                            |
       | name    | is empty         |               |                                             |

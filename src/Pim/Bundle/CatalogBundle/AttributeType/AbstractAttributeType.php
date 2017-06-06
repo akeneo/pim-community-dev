@@ -16,11 +16,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
     /**
-     * Field backend type, "varchar" by default, the doctrine mapping field, getter / setter to use for binding
+     * Field backend type, "text" by default, the doctrine mapping field, getter / setter to use for binding
      *
      * @var string
      */
-    protected $backendType = AttributeTypes::BACKEND_TYPE_VARCHAR;
+    protected $backendType = AttributeTypes::BACKEND_TYPE_TEXT;
 
     /**
      * Form type alias, "text" by default

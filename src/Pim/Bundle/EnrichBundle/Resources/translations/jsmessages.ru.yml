@@ -159,9 +159,6 @@ pim_enrich:
         deletion_failed: Не удалось удалить продукт.
         update_successful: Продукт успешно обновлен.
         update_failed: Не удалось обновить продукт.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - поля
         already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
       error:
         upload: Произошла ошибка при загрузке файла
@@ -614,7 +611,6 @@ pim_enrich:
             title: Выбор атрибутов
         attributes_selector:
           attribute_group: Группы атрибутов
-          attributes: "Поиск в {{ attributeCount }} атрибутах"
           selected: "Выбранные атрибуты"
           clear: Очистить
           all_group: Все группы

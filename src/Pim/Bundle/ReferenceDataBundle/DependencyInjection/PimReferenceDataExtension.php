@@ -30,13 +30,16 @@ class PimReferenceDataExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid/filters.yml');
-        $loader->load('datagrid/formatters.yml');
+        $loader->load('datagrid/normalizers.yml');
         $loader->load('datagrid/query_builders.yml');
-        $loader->load('datagrid/selectors.yml');
         $loader->load('datagrid/sorters.yml');
+        $loader->load('factories.yml');
         $loader->load('models.yml');
+        $loader->load('product_values.yml');
         $loader->load('providers.yml');
+        $loader->load('query_builders.yml');
         $loader->load('serializers.yml');
+        $loader->load('serializers_indexing.yml');
         $loader->load('services.yml');
         $loader->load('updaters.yml');
 

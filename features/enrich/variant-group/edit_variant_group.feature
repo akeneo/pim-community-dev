@@ -43,7 +43,7 @@ Feature: Edit a variant group
     When I add available attributes Description
     And I visit the "Products" tab
     And I save the variant group
-    And I should see the text "89%"
+    And I should see the text "88%"
     And I check the row "sneakers"
     And I save the variant group
-    Then I should see the text "78%"
+    Then I should see the text "77%"

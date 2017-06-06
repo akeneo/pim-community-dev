@@ -240,7 +240,7 @@ class AssertionContext extends RawMinkContext
             if (!$field) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
             }
-            if (!$field->hasAttribute('disabled')) {
+            if (!$field->hasAttribute('disabled') && !$field->hasAttribute('readonly')) {
                 throw $this->createExpectationException(sprintf('Expecting field "%s" to be disabled.', $fieldName));
             }
         }

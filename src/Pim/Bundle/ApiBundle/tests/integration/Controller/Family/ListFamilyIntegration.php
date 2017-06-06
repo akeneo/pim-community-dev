@@ -52,7 +52,10 @@ class ListFamilyIntegration extends ApiTestCase
                         "a_text", "a_text_area", "a_yes_no", "an_image", "sku"
                     ]
                 },
-                "labels": {}
+                "labels": {
+                    "fr_FR" : "Une famille A",
+                    "en_US" : "A family A"
+                }
             },
             {
                 "_links": {
@@ -68,7 +71,9 @@ class ListFamilyIntegration extends ApiTestCase
                     "ecommerce_china": ["sku"],
                     "tablet": ["a_file", "a_localizable_image", "sku"]
                 },
-                "labels": {}
+                "labels": {
+                    "en_US" : "A family A1"
+                }
             },
             {
                 "_links": {
@@ -152,9 +157,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

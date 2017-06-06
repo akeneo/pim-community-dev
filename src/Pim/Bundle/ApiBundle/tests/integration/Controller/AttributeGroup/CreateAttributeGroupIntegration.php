@@ -276,7 +276,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "code":"technical"
+        "code":"attributeGroupA"
     }
 JSON;
 
@@ -529,9 +529,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

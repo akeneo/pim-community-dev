@@ -81,7 +81,7 @@ Feature: Execute a job
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
     Then I should see "2 products and 1 groups"
-    And the english name of "SKU-001" should be "Before"
+    And the english localizable value name of "SKU-001" should be "Before"
 
   Scenario: Successfully skip associations without modification
     Given the following product:

@@ -161,9 +161,7 @@ pim_enrich:
         deletion_failed: Il prodotto non può essere eliminato.
         update_successful: Prodotto aggiornato correttamente.
         update_failed: Il prodotto non può essere aggiornato.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - campi
+        field_not_ready: 'Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
         already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
       error:
         upload: Si è verificato un errore durante il caricamento del file
@@ -662,7 +660,7 @@ pim_enrich:
             title: Selezione attributi
         attributes_selector:
           attribute_group: Gruppi di attributi
-          attributes: "Cerca tra {{ attributeCount }} attributi"
+          attributes: "Cerca tra {{ itemsCount }} attributi"
           selected: "Attributi selezionati"
           clear: Ripulisci
           all_group: Tutti i gruppi

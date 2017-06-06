@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\ProductEvents;
@@ -26,12 +28,14 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         DeleteMassAction $massAction,
         ActionConfiguration $options,
-        ProductMassActionRepositoryInterface $massActionRepo
+        ProductMassActionRepositoryInterface $massActionRepo,
+        BulkRemoverInterface $indexRemover
     ) {
         $this->beConstructedWith(
             $hydrator,
             $translator,
-            $eventDispatcher
+            $eventDispatcher,
+            $indexRemover
         );
 
         $translator->trans('qux')->willReturn('qux');
@@ -45,13 +49,19 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
     }
 
-    function it_dispatches_events($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
-    {
-        $objectIds = ['foo', 'bar', 'baz'];
-        $countRemoved = count($objectIds);
-
-        $datasource->getResults()->willReturn($objectIds);
-        $massActionRepo->deleteFromIds($objectIds)->willReturn($countRemoved);
+    function it_dispatches_events(
+        $eventDispatcher,
+        $datasource,
+        $massActionRepo,
+        $datagrid,
+        $massAction,
+        $indexRemover,
+        ResultRecord $resultRecord
+    ) {
+        $resultRecord->getValue('id')->willReturn('foo');
+        $objectIds = ['foo'];
+        $datasource->getResults()->willReturn(['data' => [$resultRecord]]);
+        $massActionRepo->deleteFromIds($objectIds)->willReturn(1);
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
@@ -69,6 +79,8 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
             ProductEvents::POST_MASS_REMOVE,
             new GenericEvent($objectIds)
         )->shouldBeCalled();
+
+        $indexRemover->removeAll(['foo'])->shouldBeCalled();
 
         $this->handle($datagrid, $massAction);
     }

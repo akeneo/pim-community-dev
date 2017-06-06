@@ -72,8 +72,8 @@ class IsStringValidatorSpec extends ObjectBehavior
     ) {
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('varchar');
-        $productValue->getVarchar()->willReturn('bar');
+        $attribute->getBackendType()->willReturn('text');
+        $productValue->getData()->willReturn('bar');
 
         $context
             ->buildViolation(Argument::cetera())
@@ -92,7 +92,7 @@ class IsStringValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('integer');
-        $productValue->getInteger()->willReturn(666);
+        $productValue->getData()->willReturn(666);
 
         $context
             ->buildViolation(

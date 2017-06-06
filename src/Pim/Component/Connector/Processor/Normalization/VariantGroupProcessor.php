@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -36,25 +35,19 @@ class VariantGroupProcessor implements ItemProcessorInterface, StepExecutionAwar
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /** @var ObjectUpdaterInterface */
-    protected $variantGroupUpdater;
-
     /**
      * @param NormalizerInterface     $normalizer
      * @param ObjectDetacherInterface $objectDetacher
      * @param BulkMediaFetcher        $mediaFetcher
-     * @param ObjectUpdaterInterface  $variantGroupUpdater
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ObjectDetacherInterface $objectDetacher,
-        BulkMediaFetcher $mediaFetcher,
-        ObjectUpdaterInterface $variantGroupUpdater
+        BulkMediaFetcher $mediaFetcher
     ) {
         $this->normalizer = $normalizer;
         $this->objectDetacher = $objectDetacher;
         $this->mediaFetcher = $mediaFetcher;
-        $this->variantGroupUpdater = $variantGroupUpdater;
     }
 
     /**
@@ -102,7 +95,6 @@ class VariantGroupProcessor implements ItemProcessorInterface, StepExecutionAwar
         }
 
         $identifier = $variantGroup->getCode();
-        $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
 
         $this->mediaFetcher->fetchAll($productTemplate->getValues(), $directory, $identifier);
 

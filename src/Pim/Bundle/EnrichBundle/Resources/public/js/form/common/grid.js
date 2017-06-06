@@ -40,12 +40,21 @@ define([
                 });
                 this.options = options;
 
+                var selectionIdentifier = options.selectionIdentifier || 'id';
+
+                /*
+                 * Removing to be sure that this property will not be used in URLs generated to load the data
+                 * The selection is never used back side to load the data and it can generate an URL too long.
+                 * The rightful usages of the selection are done with the property "this.selection"
+                 */
+                delete this.options.selection;
+
                 mediator.on('datagrid:selectModel:' + this.alias, function (model) {
-                    this.addElement(model.get('id'));
+                    this.addElement(model.get(selectionIdentifier));
                 }.bind(this));
 
                 mediator.on('datagrid:unselectModel:' + this.alias, function (model) {
-                    this.removeElement(model.get('id'));
+                    this.removeElement(model.get(selectionIdentifier));
                 }.bind(this));
             },
 

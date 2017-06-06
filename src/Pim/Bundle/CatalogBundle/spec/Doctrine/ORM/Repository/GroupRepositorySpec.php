@@ -42,7 +42,7 @@ class GroupRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($queryBuilder1);
 
         $queryBuilder1->select('g')->willReturn($queryBuilder1);
-        $queryBuilder1->from(Argument::any(), 'g')->willReturn($queryBuilder1);
+        $queryBuilder1->from(Argument::any(), 'g', null)->willReturn($queryBuilder1);
         $queryBuilder1->leftJoin('g.axisAttributes', 'a')->willReturn($queryBuilder1);
         $queryBuilder1->leftJoin('g.type', 't')->willReturn($queryBuilder1);
         $queryBuilder1->where('g.id IN (:ids)')->willReturn($queryBuilder1);
@@ -71,7 +71,7 @@ class GroupRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->will(new ReturnPromise([$queryBuilder1, $queryBuilder2]));
 
         $queryBuilder1->select('g')->willReturn($queryBuilder1);
-        $queryBuilder1->from(Argument::any(), 'g')->willReturn($queryBuilder1);
+        $queryBuilder1->from(Argument::any(), 'g', null)->willReturn($queryBuilder1);
         $queryBuilder1->leftJoin('g.axisAttributes', 'a')->willReturn($queryBuilder1);
         $queryBuilder1->leftJoin('g.type', 't')->willReturn($queryBuilder1);
         $queryBuilder1->where('g.id IN (:ids)')->willReturn($queryBuilder1);
@@ -89,7 +89,7 @@ class GroupRepositorySpec extends ObjectBehavior
 
         $queryBuilder2->select('g')->willReturn($queryBuilder2);
         $queryBuilder2->select('pt.valuesData')->willReturn($queryBuilder2);
-        $queryBuilder2->from(Argument::any(), 'g')->willReturn($queryBuilder2);
+        $queryBuilder2->from(Argument::any(), 'g', null)->willReturn($queryBuilder2);
         $queryBuilder2->leftJoin('g.type', 't')->willReturn($queryBuilder2);
         $queryBuilder2->leftJoin('g.productTemplate', 'pt')->willReturn($queryBuilder2);
         $queryBuilder2->where('g.id IN (:ids)')->willReturn($queryBuilder2);

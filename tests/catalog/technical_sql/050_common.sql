@@ -37,7 +37,7 @@ INSERT INTO `acme_reference_data_fabric` VALUES (5,'fabricA',1,'fabricA',NULL),(
 --
 
 /*!40000 ALTER TABLE `akeneo_file_storage_file_info` DISABLE KEYS */;
-INSERT INTO `akeneo_file_storage_file_info` VALUES (35,'8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt','fileA.txt','text/plain',1048576,'txt','6545089471ba53d660d22d7b8dc8dd67904b1e28','catalogStorage'),(36,'3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg','imageA.jpg','text/plain',1048576,'jpg','a9453e6ce89dbfd776ecae609e1c23e9cfad8277','catalogStorage'),(37,'7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg','imageB-en_US.jpg','text/plain',1048576,'jpg','16850b6741c6e0d7622edb29465488571a2e63df','catalogStorage'),(38,'0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg','imageB-fr_FR.jpg','text/plain',1048576,'jpg','058c6f380b0888afadf7341f8baaf58b538e5774','catalogStorage');
+INSERT INTO `akeneo_file_storage_file_info` VALUES (35,'8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt','fileA.txt','text/plain',1048576,'txt','6545089471ba53d660d22d7b8dc8dd67904b1e28','catalogStorage'),(36,'3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg','imageA.jpg','image/jpeg',1048576,'jpg','a9453e6ce89dbfd776ecae609e1c23e9cfad8277','catalogStorage'),(37,'7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg','imageB-en_US.jpg','image/jpeg',1048576,'jpg','16850b6741c6e0d7622edb29465488571a2e63df','catalogStorage'),(38,'0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg','imageB-fr_FR.jpg','image/jpeg',1048576,'jpg','058c6f380b0888afadf7341f8baaf58b538e5774','catalogStorage');
 /*!40000 ALTER TABLE `akeneo_file_storage_file_info` ENABLE KEYS */;
 
 --
@@ -71,7 +71,7 @@ INSERT INTO `pim_catalog_attribute_group` VALUES (593,'other',100,'2016-08-04 14
 DELETE FROM `pim_catalog_attribute`;
 /*!40000 ALTER TABLE `pim_catalog_attribute` DISABLE KEYS */;
 INSERT INTO `pim_catalog_attribute` VALUES
-(2523,594,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,1,1,0,0,'sku','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_identifier','varchar','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
+(2523,594,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,1,1,0,0,'sku','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_identifier','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
 (2524,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_date','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_date','date','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
 (2525,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_file','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_file','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
 (2526,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'an_image','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_image','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
@@ -84,17 +84,18 @@ INSERT INTO `pim_catalog_attribute` VALUES
 (2533,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_ref_data_multi_select','Pim\\Component\\Catalog\\Model\\Product','pim_reference_data_multiselect','reference_data_options','a:1:{s:19:\"reference_data_name\";s:7:\"fabrics\";}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
 (2534,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_ref_data_simple_select','Pim\\Component\\Catalog\\Model\\Product','pim_reference_data_simpleselect','reference_data_option','a:1:{s:19:\"reference_data_name\";s:5:\"color\";}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
 (2535,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_simple_select','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_simpleselect','option','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
-(2536,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_text','varchar','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
-(2537,594,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text_area','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_textarea','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
+(2536,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_text','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
+(2537,594,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text_area','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_textarea','textarea','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
 (2538,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_yes_no','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_boolean','boolean','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
 (2539,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,0,'a_localizable_image','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_image','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
 (2540,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,1,'a_scopable_price','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
-(2541,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,1,'a_localized_and_scopable_text_area','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_textarea','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
+(2541,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,1,'a_localized_and_scopable_text_area','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_textarea','textarea','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50'),
 (2542,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,'Length','METER',NULL,'',NULL,0,0,0,0,'a_metric_without_decimal','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2543,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',NULL,0,0,0,0,'a_metric_without_decimal_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2544,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',NULL,0,0,0,0,'a_metric_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2545,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_price_without_decimal','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
-(2546,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_integer_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49');
+(2546,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_integer_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
+(2547,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'123','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_text','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50');
 /*!40000 ALTER TABLE `pim_catalog_attribute` ENABLE KEYS */;
 
 
@@ -144,6 +145,13 @@ DELETE FROM `pim_catalog_channel`;
 INSERT INTO `pim_catalog_channel` VALUES (209,895,'ecommerce','a:0:{}'),(210,895,'tablet','a:0:{}');
 /*!40000 ALTER TABLE `pim_catalog_channel` ENABLE KEYS */;
 
+--
+-- Dumping data for table `pim_catalog_currency`
+--
+
+/*!40000 ALTER TABLE `pim_catalog_channel_currency` DISABLE KEYS */;
+INSERT INTO `pim_catalog_currency` VALUES (10101,'USD',1),(10102,'EUR',1);
+/*!40000 ALTER TABLE `pim_catalog_channel_currency` ENABLE KEYS */;
 
 --
 -- Dumping data for table `pim_catalog_channel_currency`
@@ -172,6 +180,18 @@ DELETE FROM `pim_catalog_family`;
 INSERT INTO `pim_catalog_family` VALUES (466,2523,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50');
 /*!40000 ALTER TABLE `pim_catalog_family` ENABLE KEYS */;
 
+
+--
+-- Dumping data for table `pim_catalog_family_translation`
+--
+
+/*!40000 ALTER TABLE `pim_catalog_family_translation` DISABLE KEYS */;
+DELETE FROM `pim_catalog_family_translation`;
+INSERT INTO `pim_catalog_family_translation` (`id`, `foreign_key`, `label`, `locale`)
+VALUES
+	(1,466,'Une famille A','fr_FR'),
+	(2,466,'A family A','en_US');
+/*!40000 ALTER TABLE `pim_catalog_family_translation` ENABLE KEYS */;
 
 --
 -- Dumping data for table `pim_catalog_family_attribute`

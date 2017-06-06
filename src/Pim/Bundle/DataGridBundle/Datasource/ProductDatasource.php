@@ -3,13 +3,14 @@
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product datasource, allows to prepare query builder from repository
+ * Product datasource, execute elasticsearch query
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,19 +21,25 @@ class ProductDatasource extends Datasource
     /** @var ProductQueryBuilderInterface */
     protected $pqb;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $factory;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param ObjectManager                       $om
-     * @param HydratorInterface                   $hydrator
      * @param ProductQueryBuilderFactoryInterface $factory
+     * @param NormalizerInterface                 $normalizer
      */
     public function __construct(
         ObjectManager $om,
-        HydratorInterface $hydrator,
-        ProductQueryBuilderFactoryInterface $factory
+        ProductQueryBuilderFactoryInterface $factory,
+        NormalizerInterface $normalizer
     ) {
         $this->om = $om;
-        $this->hydrator = $hydrator;
         $this->factory = $factory;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -40,20 +47,23 @@ class ProductDatasource extends Datasource
      */
     public function getResults()
     {
-        $options = [
-            'locale_code'              => $this->getConfiguration('locale_code'),
-            'scope_code'               => $this->getConfiguration('scope_code'),
-            'attributes_configuration' => $this->getConfiguration('attributes_configuration'),
-            'current_group_id'         => $this->getConfiguration('current_group_id', false),
-            'association_type_id'      => $this->getConfiguration('association_type_id', false),
-            'current_product'          => $this->getConfiguration('current_product', false)
+        $productCursor = $this->pqb->execute();
+        $context = [
+            'locales'             => [$this->getConfiguration('locale_code')],
+            'channels'            => [$this->getConfiguration('scope_code')],
+            'data_locale'         => $this->getParameters()['dataLocale'],
+            'association_type_id' => $this->getConfiguration('association_type_id', false),
+            'current_group_id'    => $this->getConfiguration('current_group_id', false),
         ];
+        $rows = ['totalRecords' => $productCursor->count(), 'data' => []];
 
-        if (method_exists($this->qb, 'setParameters')) {
-            QueryBuilderUtility::removeExtraParameters($this->qb);
+        foreach ($productCursor as $product) {
+            $normalizedProduct = array_merge(
+                $this->normalizer->normalize($product, 'datagrid', $context),
+                ['id' => $product->getId(), 'dataLocale' => $this->getParameters()['dataLocale']]
+            );
+            $rows['data'][] = new ResultRecord($normalizedProduct);
         }
-
-        $rows = $this->hydrator->hydrate($this->qb, $options);
 
         return $rows;
     }
@@ -78,6 +88,9 @@ class ProductDatasource extends Datasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
+        $factoryConfig['limit'] = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM);
+        $factoryConfig['from'] = null !== $this->getConfiguration('from', false) ?
+            (int)$this->getConfiguration('from', false) : 0;
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();

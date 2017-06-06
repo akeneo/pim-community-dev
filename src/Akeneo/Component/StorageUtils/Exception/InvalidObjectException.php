@@ -39,7 +39,7 @@ class InvalidObjectException extends \LogicException
      */
     public static function objectExpected($objectClassName, $expectedClassName)
     {
-        return new self(
+        return new static(
             $objectClassName,
             $expectedClassName,
             sprintf(

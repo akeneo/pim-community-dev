@@ -2,31 +2,18 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Prophecy\Argument;
+use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
 
 class MultiSelectAttributeAdderSpec extends ObjectBehavior
 {
-    function let(
-        ProductBuilderInterface $builder,
-        IdentifiableObjectRepositoryInterface $attrOptionRepository,
-        AttributeValidatorHelper $attrValidatorHelper
-    ) {
-        $this->beConstructedWith(
-            $builder,
-            $attrValidatorHelper,
-            $attrOptionRepository,
-            ['pim_catalog_multiselect']
-        );
+    function let(ProductBuilderInterface $builder)
+    {
+        $this->beConstructedWith($builder, ['pim_catalog_multiselect']);
     }
 
     function it_is_a_adder()
@@ -34,7 +21,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Updater\Adder\AdderInterface');
     }
 
-    function it_supports_multiselect_attributes(
+    function it_supports_multi_select_attributes(
         AttributeInterface $multiSelectAttribute,
         AttributeInterface $textareaAttribute
     ) {
@@ -45,108 +32,49 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_checks_locale_and_scope_when_setting_an_attribute_data(
-        $attrValidatorHelper,
-        $attrOptionRepository,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        AttributeOptionInterface $red,
-        ProductValueInterface $colorValue
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $red->getCode()->willReturn('red');
-        $attribute->getCode()->willReturn('color');
-        $product->getValue('color', 'fr_FR', 'mobile')->willReturn($colorValue);
-
-        $attrOptionRepository
-            ->findOneByIdentifier('color.red')
-            ->shouldBeCalledTimes(1)
-            ->willReturn($red);
-
-        $colorValue->getOptions()->willReturn([]);
-        $colorValue->addOption($red)->shouldBeCalled();
-
-        $this->addAttributeData($product, $attribute, ['red'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_throws_an_error_if_attribute_data_is_not_an_array_of_option_codes(
+    function it_throws_an_error_if_attribute_data_is_not_an_array(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['foo' => ['bar' => 'baz']];
+        $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidPropertyTypeException::validArrayStructureExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
-                'one of the option codes is not a string, "array" given',
                 'Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder',
                 $data
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_an_option_code_is_unknown_on_attribute_data_set(
-        $attrOptionRepository,
-        ProductInterface $product,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = ['unknown code'];
-
-        $attrOptionRepository
-            ->findOneByIdentifier('attributeCode.unknown code')
-            ->shouldBeCalledTimes(1)
-            ->willReturn(null);
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'attributeCode',
-                'option code',
-                'The option does not exist',
-                'Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder',
-                'unknown code'
-            )
-        )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_adds_attribute_data_on_multiselect_value_to_a_product_value(
         $builder,
-        $attrOptionRepository,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        ProductValueInterface $productValue,
-        AttributeOptionInterface $attributeOption
+        OptionsProductValueInterface $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $attributeOption->getCode()->willReturn('attributeOptionCode');
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $attrOptionRepository
-            ->findOneByIdentifier('attributeCode.attributeOptionCode')
-            ->shouldBeCalledTimes(3)
-            ->willReturn($attributeOption);
-
-        $productValue->addOption($attributeOption)->shouldBeCalled();
+        $productValue->getOptionCodes()->willReturn(['optionCode', 'previousOptionCode']);
 
         $builder
-            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
+            ->addOrReplaceProductValue($product1, $attribute, $locale, $scope, ['optionCode', 'previousOptionCode'])
+            ->shouldBeCalled();
 
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $builder
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope, ['optionCode'])
+            ->shouldBeCalled();
 
-        $this->addAttributeData($product1, $attribute, ['attributeOptionCode'], ['locale' => $locale, 'scope' => $scope]);
-        $this->addAttributeData($product2, $attribute, ['attributeOptionCode'], ['locale' => $locale, 'scope' => $scope]);
-        $this->addAttributeData($product3, $attribute, ['attributeOptionCode'], ['locale' => $locale, 'scope' => $scope]);
+        $this->addAttributeData($product1, $attribute, ['optionCode'], ['locale' => $locale, 'scope' => $scope]);
+        $this->addAttributeData($product2, $attribute, ['optionCode'], ['locale' => $locale, 'scope' => $scope]);
     }
 }

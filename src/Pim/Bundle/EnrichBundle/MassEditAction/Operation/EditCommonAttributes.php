@@ -346,7 +346,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
     {
-        $identifierPath = sprintf('values[%s]', $this->attributeRepository->getIdentifierCode());
+        $identifierPath = sprintf('values[%s-', $this->attributeRepository->getIdentifierCode());
         foreach ($violations as $offset => $violation) {
             if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
                 $violations->remove($offset);

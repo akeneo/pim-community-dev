@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -87,6 +86,7 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_metric']);
 
         $productAmountNull = $this->createProductWithStandardValues(
             $family,
@@ -104,6 +104,7 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productAmountNull);
+        $this->assertMissingAttributeForProduct($productAmountNull, ['a_metric']);
 
         $productAmountAndUnitNull = $this->createProductWithStandardValues(
             $family,
@@ -121,8 +122,13 @@ class MetricAttributeTypeCompletenessIntegration extends AbstractCompletenessPer
             ]
         );
         $this->assertNotComplete($productAmountAndUnitNull);
+        $this->assertMissingAttributeForProduct($productAmountAndUnitNull, ['a_metric']);
     }
 
+    /**
+     * @param string $code
+     * @param string $metricFamily
+     */
     private function configureMetricFamilyForAttribute($code, $metricFamily)
     {
         $metric = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);

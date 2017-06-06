@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Price;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,135 +10,147 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceFilterIntegration extends AbstractFilterTestCase
+class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_price' => [
-                        ['data' => [
-                            ['amount' => '10.55', 'currency' => 'EUR'],
-                            ['amount' => '11', 'currency' => 'USD']
-                        ], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_price' => [
+                    ['data' => [
+                        ['amount' => '10.55', 'currency' => 'EUR'],
+                        ['amount' => '11', 'currency' => 'USD']
+                    ], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_price' => [
-                        ['data' => [['amount' => '15', 'currency' => 'EUR']], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_price' => [
+                    ['data' => [['amount' => '15', 'currency' => 'EUR']], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['a_price', Operators::LOWER_THAN, ['amount' => 10.55, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_THAN, ['amount' => 10.55, 'currency' => 'EUR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_price', Operators::LOWER_THAN, ['amount' => 11, 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_THAN, ['amount' => 11, 'currency' => 'USD']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_price', Operators::LOWER_THAN, ['amount' => 10.5501, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_THAN, ['amount' => 10.5501, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_price', Operators::LOWER_THAN, ['amount' => 16, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_THAN, ['amount' => 16, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_price', Operators::LOWER_THAN, ['amount' => 16, 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_THAN, ['amount' => 16, 'currency' => 'USD']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorInferiorOrEquals()
     {
-        $result = $this->execute([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.4999, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.4999, 'currency' => 'EUR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.55, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.55, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 11, 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 11, 'currency' => 'USD']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 15, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 15, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_price', Operators::EQUALS, ['amount' => 10.5501, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::EQUALS, ['amount' => 10.5501, 'currency' => 'EUR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_price', Operators::EQUALS, ['amount' => 10.55, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::EQUALS, ['amount' => 10.55, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_price', Operators::EQUALS, ['amount' => 11, 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::EQUALS, ['amount' => 11, 'currency' => 'USD']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['a_price', Operators::GREATER_THAN, ['amount' => 15, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_THAN, ['amount' => 15, 'currency' => 'EUR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_price', Operators::GREATER_THAN, ['amount' => 10.4999, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_THAN, ['amount' => 10.4999, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_price', Operators::GREATER_THAN, ['amount' => 10.9999, 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_THAN, ['amount' => 10.9999, 'currency' => 'USD']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperiorOrEquals()
     {
-        $result = $this->execute([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15.01, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15.01, 'currency' => 'EUR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 10.55, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 10.55, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 11, 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 11, 'currency' => 'USD']]]);
         $this->assert($result, ['product_one']);
     }
 
-    public function testOperatorEmpty()
+    public function testOperatorEmptyOnAllCurrencies()
     {
-        $result = $this->execute([['a_price', Operators::IS_EMPTY, []]]);
+        $result = $this->executeFilter([['a_price', Operators::IS_EMPTY, []]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['a_price', Operators::IS_EMPTY, ['amount' => '', 'currency' => '']]]);
+        $result = $this->executeFilter([['a_price', Operators::IS_EMPTY_ON_ALL_CURRENCIES, []]]);
         $this->assert($result, ['empty_product']);
     }
 
-    public function testOperatorNotEmpty()
+    public function testOperatorEmptyForCurrency()
     {
-        $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::IS_EMPTY_FOR_CURRENCY, ['currency' => 'USD']]]);
+        $this->assert($result, ['empty_product', 'product_two']);
+
+        $result = $this->executeFilter([['a_price', Operators::IS_EMPTY_FOR_CURRENCY, ['currency' => 'EUR']]]);
+        $this->assert($result, ['empty_product']);
+    }
+
+    public function testOperatorNotEmptyOnAtLeastOneCurrency(){
+        $result = $this->executeFilter([['a_price', Operators::IS_NOT_EMPTY, []]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => 'USD']]]);
+        $result = $this->executeFilter([['a_price', Operators::IS_NOT_EMPTY_ON_AT_LEAST_ONE_CURRENCY, []]]);
+        $this->assert($result, ['product_one', 'product_two']);
+    }
+
+    public function testOperatorNotEmptyForCurrency()
+    {
+        $result = $this->executeFilter([['a_price', Operators::IS_NOT_EMPTY_FOR_CURRENCY, ['currency' => 'USD']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => '']]]);
-        $this->assert($result, []);
-
-        $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, []]]);
-        $this->assert($result, []);
+        $result = $this->executeFilter([['a_price', Operators::IS_NOT_EMPTY_FOR_CURRENCY, ['currency' => 'EUR']]]);
+        $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_price', Operators::NOT_EQUAL, ['amount' => 15, 'currency' => 'EUR']]]);
+        $result = $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['amount' => 15, 'currency' => 'EUR']]]);
         $this->assert($result, ['product_one']);
     }
 
@@ -148,7 +160,7 @@ class PriceFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['a_price', Operators::NOT_EQUAL, 'string']]);
+        $this->executeFilter([['a_price', Operators::NOT_EQUAL, 'string']]);
     }
 
     /**
@@ -157,7 +169,7 @@ class PriceFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorAmountIsMissing()
     {
-        $this->execute([['a_price', Operators::NOT_EQUAL, ['currency' => 'USD']]]);
+        $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['currency' => 'USD']]]);
     }
 
     /**
@@ -166,7 +178,7 @@ class PriceFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorCurrencyIsMissing()
     {
-        $this->execute([['a_price', Operators::NOT_EQUAL, ['amount' => '']]]);
+        $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['amount' => 2]]]);
     }
 
     /**
@@ -175,7 +187,7 @@ class PriceFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorCurrencyNotFound()
     {
-        $this->execute([['a_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -184,6 +196,6 @@ class PriceFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['a_price', Operators::BETWEEN, ['amount' => 15, 'currency' => 'EUR']]]);
+        $this->executeFilter([['a_price', Operators::BETWEEN, ['amount' => 15, 'currency' => 'EUR']]]);
     }
 }

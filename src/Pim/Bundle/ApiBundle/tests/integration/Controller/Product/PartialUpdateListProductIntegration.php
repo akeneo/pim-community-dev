@@ -4,6 +4,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductIntegration extends AbstractProductTestCase
@@ -358,26 +359,22 @@ JSON;
     protected function assertSameProducts(array $expectedProduct, $identifier)
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $normalizer = $this->get('pim_catalog.normalizer.standard.product');
-        $standardizedProduct = $normalizer->normalize($product);
-
-        $standardizedProduct = static::sanitizeDateFields($standardizedProduct);
-        $expectedProduct = static::sanitizeDateFields($expectedProduct);
+        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
         $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
         $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
+
+        NormalizedProductCleaner::clean($standardizedProduct);
+        NormalizedProductCleaner::clean($expectedProduct);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

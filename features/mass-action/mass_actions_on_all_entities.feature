@@ -42,8 +42,6 @@ Feature: Apply a mass action on all entities
     When I select all entities
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change the family of products" operation
-    And I press the "Back" button
-    And I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
     And I move on to the next step
     And I wait for the "change-family" mass-edit job to finish

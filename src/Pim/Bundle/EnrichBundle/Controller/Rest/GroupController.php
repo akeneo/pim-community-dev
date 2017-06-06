@@ -63,6 +63,7 @@ class GroupController
      * @param ValidatorInterface         $validator
      * @param NormalizerInterface        $violationNormalizer
      * @param SaverInterface             $saver
+     * @param RemoverInterface           $remover
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,

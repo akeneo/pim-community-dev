@@ -159,9 +159,6 @@ pim_enrich:
         deletion_failed: Proizvod se ne može izbrisati.
         update_successful: Proizvod je uspješno ažuriran.
         update_failed: Proizvod ne može se ažurirati.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - polja
         already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
       error:
         upload: Došlo je do pogreške tijekom prijenosa datoteke
@@ -618,7 +615,6 @@ pim_enrich:
             title: Odabir atributa
         attributes_selector:
           attribute_group: Grupe atributa
-          attributes: "Pretraži unutar {{ attributeCount }} atributa"
           selected: "Odabrani atributi"
           clear: Obriši
           all_group: Sve grupe

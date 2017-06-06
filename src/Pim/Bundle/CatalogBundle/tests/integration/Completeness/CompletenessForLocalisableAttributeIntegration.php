@@ -58,7 +58,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
         );
 
         $this->assertComplete($product, 'en_US', 2);
-        $this->assertNotComplete($product, 'fr_FR', 2);
+        $this->assertNotComplete($product, 'fr_FR', 2, ['a_text']);
     }
 
     public function testNotCompleteLocaleSpecificNoLocale()
@@ -79,7 +79,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
             $family,
             'product_locale_specific_no_locale'
         );
-        $this->assertNotComplete($productLocaleSpecificNoLocale, 'fr_FR', 2);
+        $this->assertNotComplete($productLocaleSpecificNoLocale, 'fr_FR', 2, ['a_text']);
         $this->assertComplete($productLocaleSpecificNoLocale, 'en_US', 1);
     }
 
@@ -112,7 +112,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
                 ]
             ]
         );
-        $this->assertNotComplete($productLocaleSpecificLocaleEmpty, 'fr_FR', 2);
+        $this->assertNotComplete($productLocaleSpecificLocaleEmpty, 'fr_FR', 2, ['a_text']);
         $this->assertComplete($productLocaleSpecificLocaleEmpty, 'en_US', 1);
     }
 
@@ -167,10 +167,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getMinimalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getMinimalCatalogPath()]);
     }
 
     /**
@@ -197,14 +194,18 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      * @param ProductInterface $product
      * @param string           $localeCode
      * @param int              $requiredCount
+     * @param array            $expectedAttributeCodes
      */
-    private function assertNotComplete(ProductInterface $product, $localeCode, $requiredCount)
-    {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(2, $completenesses);
+    private function assertNotComplete(
+        ProductInterface $product,
+        $localeCode,
+        $requiredCount,
+        array $expectedAttributeCodes
+    ) {
+        $this->assertCompletenessesCount($product, 2);
 
         $completeness = $this->getCompletenessByLocaleCode($product, $localeCode);
+
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals($localeCode, $completeness->getLocale()->getCode());
         $this->assertNotNull($completeness->getChannel());
@@ -212,6 +213,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
         $this->assertEquals(50, $completeness->getRatio());
         $this->assertEquals($requiredCount, $completeness->getRequiredCount());
         $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
     }
 
     /**
@@ -221,11 +223,10 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      */
     private function assertComplete(ProductInterface $product, $localeCode, $requiredCount)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(2, $completenesses);
+        $this->assertCompletenessesCount($product, 2);
 
         $completeness = $this->getCompletenessByLocaleCode($product, $localeCode);
+
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals($localeCode, $completeness->getLocale()->getCode());
         $this->assertNotNull($completeness->getChannel());
@@ -233,5 +234,6 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals($requiredCount, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
     }
 }

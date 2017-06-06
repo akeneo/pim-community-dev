@@ -49,8 +49,8 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "boots" should have the following values:
-      | name-en_US         | Product      |
-      | weather_conditions | [wet], [cold] |
+      | name-en_US         | Product       |
+      | weather_conditions | [cold], [wet] |
     And the product "highheels" should have the following values:
       | name-en_US | Product  |
 

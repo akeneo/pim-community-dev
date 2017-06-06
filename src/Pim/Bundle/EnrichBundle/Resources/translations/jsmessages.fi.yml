@@ -159,9 +159,6 @@ pim_enrich:
         deletion_failed: Tuotetta ei voi poistaa.
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - kentät
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
@@ -614,7 +611,6 @@ pim_enrich:
             title: Attribuuttivalinta
         attributes_selector:
           attribute_group: Attribuuttiryhmät
-          attributes: "Etsi {{ attributeCount }} attribuutista"
           selected: "Valitut attribuutit"
           clear: Tyhjennä
           all_group: Kaikki ryhmät

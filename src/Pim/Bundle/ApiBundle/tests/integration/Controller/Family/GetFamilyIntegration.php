@@ -83,7 +83,10 @@ class GetFamilyIntegration extends ApiTestCase
             "sku"
         ]
     },
-    "labels": {}
+    "labels": {
+        "fr_FR" : "Une famille A",
+        "en_US" : "A family A"
+    }
 }
 JSON;
         $response = $client->getResponse();
@@ -110,9 +113,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

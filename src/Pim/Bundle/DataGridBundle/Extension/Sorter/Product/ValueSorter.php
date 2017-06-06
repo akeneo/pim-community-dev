@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Product value sorter
@@ -14,11 +15,34 @@ use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
  */
 class ValueSorter implements SorterInterface
 {
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $datasource->getProductQueryBuilder()->addSorter($field, $direction);
+        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+
+        $context = [];
+        if (null !== $attribute) {
+            if (!$attribute->isScopable()) {
+                $context['scope'] = null;
+            }
+            if (!$attribute->isLocalizable()) {
+                $context['locale'] = null;
+            }
+        }
+
+        $datasource->getProductQueryBuilder()->addSorter($field, $direction, $context);
     }
 }

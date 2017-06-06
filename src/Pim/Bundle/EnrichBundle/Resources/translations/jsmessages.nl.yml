@@ -159,9 +159,6 @@ pim_enrich:
         deletion_failed: Het product kon niet worden verwijderd.
         update_successful: Product succesvol bijgewerkt.
         update_failed: Het product kon niet geüpdatet worden.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - velden
         already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
       error:
         upload: Er deed zich een fout voor tijdens het uploaden van dit bestand
@@ -621,7 +618,6 @@ pim_enrich:
             title: Attribuut selectie
         attributes_selector:
           attribute_group: Attribuutgroepen
-          attributes: "Zoek in {{ attributeCount }} attributen"
           selected: "Selecteer attributen"
           clear: Opruimen
           all_group: Alle groepen

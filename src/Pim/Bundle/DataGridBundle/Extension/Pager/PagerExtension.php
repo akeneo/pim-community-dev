@@ -126,8 +126,6 @@ class PagerExtension extends AbstractExtension
      */
     protected function getPager(DatagridConfiguration $config)
     {
-        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-
-        return $this->pagerResolver->getPager($datasourceType);
+        return $this->pagerResolver->getPager($config->getName());
     }
 }

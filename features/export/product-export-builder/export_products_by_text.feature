@@ -52,25 +52,6 @@ Feature: Export products according to text attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Comment
-    And I filter by "comment" with operator "Ends with" and value "product"
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
-    And I press "Save"
-    And I should not see the text "There are unsaved changes"
-    When I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should contain:
-    """
-    sku;categories;enabled;family;groups;comment
-    SNKRS-1R;summer_collection;1;rangers;;Awesome product
-    """
-
-  Scenario: Export products by text values using the UI
-    Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
-    When I am on the "csv_footwear_product_export" export job edit page
-    And I visit the "Content" tab
-    And I add available attributes Comment
     And I filter by "comment" with operator "Contains" and value "Awesome"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
@@ -101,7 +82,6 @@ Feature: Export products according to text attribute filter
     sku;categories;enabled;family;groups;comment;name-en_US
     SNKRS-1B;summer_collection;1;rangers;;Awesome;
     SNKRS-1Z;summer_collection;1;rangers;;This is nice;Ranger 1Z
-    SNKRS-1N;summer_collection;1;rangers;;;
     """
 
   Scenario: Export products by text values using the UI

@@ -7,8 +7,6 @@ use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -48,9 +46,6 @@ class ProductBuilder implements ProductBuilderInterface
     protected $productClass;
 
     /** @var string */
-    protected $productPriceClass;
-
-    /** @var string */
     protected $associationClass;
 
     /** @var ProductValueFactory */
@@ -86,7 +81,6 @@ class ProductBuilder implements ProductBuilderInterface
         $this->valuesResolver = $valuesResolver;
         $this->productValueFactory = $productValueFactory;
         $this->productClass = $classes['product'];
-        $this->productPriceClass = $classes['product_price'];
         $this->associationClass = $classes['association'];
     }
 
@@ -97,11 +91,9 @@ class ProductBuilder implements ProductBuilderInterface
     {
         $product = new $this->productClass();
 
-        $identifierAttribute = $this->attributeRepository->getIdentifier();
-        $productValue = $this->addOrReplaceProductValue($product, $identifierAttribute, null, null);
-
         if (null !== $identifier) {
-            $productValue->setData($identifier);
+            $identifierAttribute = $this->attributeRepository->getIdentifier();
+            $this->addOrReplaceProductValue($product, $identifierAttribute, null, null, $identifier);
         }
 
         if (null !== $familyCode) {
@@ -133,7 +125,13 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addOrReplaceProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
+            $this->addOrReplaceProductValue(
+                $product,
+                $attributes[$value['attribute']],
+                $value['locale'],
+                $value['scope'],
+                null
+            );
         }
 
         $this->addMissingPricesToProduct($product);
@@ -166,55 +164,8 @@ class ProductBuilder implements ProductBuilderInterface
         $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
-            $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope']);
+            $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], null);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount = null)
-    {
-        if (!$this->hasPriceForCurrency($value, $currency)) {
-            $value->addPrice(new $this->productPriceClass(null, $currency));
-        }
-
-        $price = $this->getPriceForCurrency($value, $currency);
-        $price->setData($amount);
-
-        return $price;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount)
-    {
-        return $this->addPriceForCurrency($value, $currency, $amount);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
-    {
-        foreach ($value->getPrices() as $price) {
-            if (!in_array($price->getCurrency(), $currencies)) {
-                $value->removePrice($price);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
-    ) {
-        return $this->addOrReplaceProductValue($product, $attribute, $locale, $scope);
     }
 
     /**
@@ -223,80 +174,24 @@ class ProductBuilder implements ProductBuilderInterface
     public function addOrReplaceProductValue(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
+        $locale,
+        $scope,
+        $data
     ) {
-        $productValue = $this->productValueFactory->create($attribute, $scope, $locale);
+        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null !== $productValue) {
+            $product->removeValue($productValue);
+        }
+
+        $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
         $product->addValue($productValue);
 
+        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $product->setIdentifier($productValue);
+        }
+
         return $productValue;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
-    {
-        return $this->productValueFactory->create($attribute, $locale, $scope);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addMissingPrices(ProductValueInterface $value)
-    {
-        if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getType()) {
-            $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
-            $prices = $value->getPrices();
-
-            foreach ($activeCurrencyCodes as $currencyCode) {
-                if (null === $value->getPrice($currencyCode)) {
-                    $this->addPriceForCurrency($value, $currencyCode);
-                }
-            }
-
-            foreach ($prices as $price) {
-                if (!in_array($price->getCurrency(), $activeCurrencyCodes)) {
-                    $value->removePrice($price);
-                }
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     *
-     * @return bool
-     */
-    protected function hasPriceForCurrency(ProductValueInterface $value, $currency)
-    {
-        foreach ($value->getPrices() as $price) {
-            if ($currency === $price->getCurrency()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     *
-     * @return null|ProductPriceInterface
-     */
-    protected function getPriceForCurrency(ProductValueInterface $value, $currency)
-    {
-        foreach ($value->getPrices() as $price) {
-            if ($currency === $price->getCurrency()) {
-                return $price;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -321,16 +216,6 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         return $attributes;
-    }
-
-    /**
-     * Get product value class
-     *
-     * @return string
-     */
-    protected function getProductValueClass()
-    {
-        return $this->productValueClass;
     }
 
     /**
@@ -363,8 +248,27 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function addMissingPricesToProduct(ProductInterface $product)
     {
+        $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
+
         foreach ($product->getValues() as $value) {
-            $this->addMissingPrices($value);
+            $attribute = $value->getAttribute();
+            if (AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
+                $prices = [];
+
+                foreach ($value->getData() as $price) {
+                    if (in_array($price->getCurrency(), $activeCurrencyCodes)) {
+                        $prices[] = ['amount' => $price->getData(), 'currency' => $price->getCurrency()];
+                    }
+                }
+
+                foreach ($activeCurrencyCodes as $currencyCode) {
+                    if (null === $value->getPrice($currencyCode)) {
+                        $prices[] = ['amount' => null, 'currency' => $currencyCode];
+                    }
+                }
+
+                $this->addOrReplaceProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
+            }
         }
     }
 
@@ -392,9 +296,7 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $productValue = $this->productValueFactory->create($attribute, $value['scope'], $value['locale']);
-                    $productValue->setBoolean(false);
-                    $product->addValue($productValue);
+                    $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], false);
                 }
             }
         }

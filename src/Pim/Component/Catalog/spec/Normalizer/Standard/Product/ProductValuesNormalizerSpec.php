@@ -4,7 +4,11 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -29,11 +33,24 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_supports_standard_format_and_collection_values()
     {
-        $collection = new ArrayCollection();
+        $attribute = new Attribute();
+        $attribute->setCode('attribute');
+        $attribute->setBackendType('text');
+        $realValue = new ScalarProductValue($attribute, null, null, null);
 
-        $this->supportsNormalization($collection, 'standard')->shouldReturn(true);
+        $valuesCollection = new ProductValueCollection([$realValue]);
+        $valuesArray = [$realValue];
+        $emptyValuesCollection = new ProductValueCollection();
+        $randomCollection = new ArrayCollection([new \stdClass()]);
+        $randomArray = [new \stdClass()];
+
+        $this->supportsNormalization($valuesCollection, 'standard')->shouldReturn(true);
+        $this->supportsNormalization($valuesArray, 'standard')->shouldReturn(false);
+        $this->supportsNormalization($emptyValuesCollection, 'standard')->shouldReturn(true);
+        $this->supportsNormalization($randomCollection, 'standard')->shouldReturn(false);
+        $this->supportsNormalization($randomArray, 'standard')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
-        $this->supportsNormalization($collection, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization($valuesCollection, 'other_format')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
@@ -42,8 +59,16 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         ProductValueInterface $textValue,
         AttributeInterface $text,
         ProductValueInterface $priceValue,
-        AttributeInterface $price
+        AttributeInterface $price,
+        ProductValueCollectionInterface $values,
+        \ArrayIterator $valuesIterator
     ) {
+        $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($textValue, $priceValue);
+        $valuesIterator->next()->shouldBeCalled();
+
         $textValue->getAttribute()->willReturn($text);
         $priceValue->getAttribute()->willReturn($price);
         $text->getCode()->willReturn('text');
@@ -63,7 +88,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
             ]]);
 
         $this
-            ->normalize([$textValue, $priceValue], 'standard')
+            ->normalize($values, 'standard')
             ->shouldReturn(
                 [
                     'text' => [

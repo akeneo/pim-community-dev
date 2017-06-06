@@ -61,20 +61,23 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn('pim_catalog_text');
 
+        $renderingDate = new \DateTime();
+
         $templating->render(self::TEMPLATE_NAME, [
             'product'           => $blender,
             'locale'            => 'en_US',
             'scope'             => 'ecommerce',
             'groupedAttributes' => ['Design' => ['color' => $color]],
-            'imageAttributes'   => [],
-            'uploadDir'         => '/tmp/' . DIRECTORY_SEPARATOR,
-            'customFont'        => null
+            'imagePaths'        => [],
+            'customFont'        => null,
+            'filter'            => 'thumbnail',
+            'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
 
         $this->render(
             $blender,
             'pdf',
-            ['locale' => 'en_US', 'scope' => 'ecommerce']
+            ['locale' => 'en_US', 'scope' => 'ecommerce', 'renderingDate' => $renderingDate]
         );
     }
 
@@ -90,7 +93,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getAttributes()->willReturn([$mainImage]);
         $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
 
-        $productValue->getMedia()->willReturn($fileInfo);
+        $productValue->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
         $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
@@ -101,6 +104,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $mainImage->getCode()->willReturn('main_image');
         $mainImage->getType()->willReturn('pim_catalog_image');
 
+        $renderingDate = new \DateTime();
+
         $templating->render(
             self::TEMPLATE_NAME,
             [
@@ -108,16 +113,17 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'locale'            => 'en_US',
                 'scope'             => 'ecommerce',
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
-                'imageAttributes'   => ['main_image' => $mainImage],
-                'uploadDir'         => '/tmp/' . DIRECTORY_SEPARATOR,
-                'customFont'        => null
+                'imagePaths'        => ['fookey'],
+                'customFont'        => null,
+                'filter'            => 'thumbnail',
+                'renderingDate'     => $renderingDate,
             ]
         )->shouldBeCalled();
 
         $this->render(
             $blender,
             'pdf',
-            ['locale' => 'en_US', 'scope' => 'ecommerce']
+            ['locale' => 'en_US', 'scope' => 'ecommerce', 'renderingDate' => $renderingDate]
         );
     }
 }

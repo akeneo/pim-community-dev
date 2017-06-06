@@ -161,9 +161,7 @@ pim_enrich:
         deletion_failed: Das Produkt konnte nicht gelöscht werden.
         update_successful: Produkt erfolgreich aktualisiert.
         update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - Felder
+        field_not_ready: 'Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}'
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
@@ -663,7 +661,7 @@ pim_enrich:
             title: Attribut wählen
         attributes_selector:
           attribute_group: Attributgruppen
-          attributes: "Suche in {{ attributeCount }} Attributen"
+          attributes: "Suche in {{ itemsCount }} Attributen"
           selected: "Ausgewählte Attribute"
           clear: Zurücksetzen
           all_group: Alle Gruppen

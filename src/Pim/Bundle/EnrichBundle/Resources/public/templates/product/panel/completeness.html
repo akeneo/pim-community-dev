@@ -2,7 +2,7 @@
     <p>
         <%- _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>
     </p>
-<% } else if (_.isEmpty(completenesses)) { %>
+<% } else if (_.isEmpty(completenesses) || hasFamilyChanged) { %>
     <p>
         <%- _.__('pim_enrich.form.product.panel.completeness.info.no_completeness') %>
     </p>
@@ -24,7 +24,9 @@
                 <% _.each(locale['channels'], function(channelCompleteness) { %>
                     <% if (channelCompleteness.completeness) { %>
                         <div class="AknCompletenessBlock-channel">
-                            <span class="AknCompletenessBlock-channelTitle channel" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- channelCompleteness.completeness['channel_labels'][catalogLocale] %></span>
+                            <span class="AknCompletenessBlock-channelTitle channel" data-channel="<%- channelCompleteness.completeness.channel %>">
+                                <%- i18n.getLabel(_.findWhere(channels, {code: channelCompleteness.completeness.channel}).labels, catalogLocale, channelCompleteness.completeness.channel) %>
+                            </span>
                             <div class="AknCompletenessBlock-progressContainer">
                                 <div class="AknCompletenessBlock-progress AknProgress progress <%- channelCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
                                     <div class="AknProgress-bar bar" data-ratio="<%- channelCompleteness.completeness.ratio %>" style="width: <%- channelCompleteness.completeness.ratio %>%;"></div>
@@ -37,7 +39,7 @@
                                         <span class="missing-attributes">
                                             <% _.each(channelCompleteness.missing, function(missing, i) { %>
                                                 <% if (0 !== i) { %> | <% } %>
-                                                <a href="javascript:void(0);" data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></a>
+                                                <a href="javascript:void(0);" data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness.channel %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></a>
                                             <% }) %>
                                         </span>
                                     <% } %>

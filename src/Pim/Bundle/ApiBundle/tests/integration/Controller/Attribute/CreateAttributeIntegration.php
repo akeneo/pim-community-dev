@@ -668,9 +668,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

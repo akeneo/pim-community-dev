@@ -16,6 +16,9 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class VariantGroupValuesValidator extends ConstraintValidator
 {
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      */
@@ -27,13 +30,12 @@ class VariantGroupValuesValidator extends ConstraintValidator
     /**
      * Don't allow having axis or identifier as value in the product template
      *
-     * @param object     $group
-     * @param Constraint $constraint
+     * {@inheritdoc}
      */
     public function validate($group, Constraint $constraint)
     {
         if ($group instanceof GroupInterface && $group->getType()->isVariant()) {
-            if ($group->getProductTemplate() !== null) {
+            if (null !== $group->getProductTemplate()) {
                 $this->validateProductTemplateValues($group, $constraint);
             }
         }
@@ -47,15 +49,15 @@ class VariantGroupValuesValidator extends ConstraintValidator
      */
     protected function validateProductTemplateValues(GroupInterface $variantGroup, Constraint $constraint)
     {
-        $template = $variantGroup->getProductTemplate();
-        $valuesData = $template->getValuesData();
-
         $forbiddenAttrCodes = $this->attributeRepository->findUniqueAttributeCodes();
         foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
             $forbiddenAttrCodes[] = $axisAttribute->getCode();
         }
 
-        $invalidAttrCodes = array_intersect($forbiddenAttrCodes, array_keys($valuesData));
+        $invalidAttrCodes = array_intersect(
+            $forbiddenAttrCodes,
+            $variantGroup->getProductTemplate()->getValues()->getAttributesKeys()
+        );
 
         if (count($invalidAttrCodes) > 0) {
             $this->context->buildViolation(

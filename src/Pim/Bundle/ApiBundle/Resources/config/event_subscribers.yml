@@ -6,5 +6,6 @@ services:
         class: '%pim_api.event_subscriber.check_headers_request.class%'
         arguments:
             - '@fos_rest.format_negotiator'
+            - '@pim_api.negotiator.content_type_negotiator'
         tags:
             - { name: kernel.event_subscriber, event: kernel.request, method: onKernelRequest }

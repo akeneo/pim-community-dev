@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 
 class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 {
@@ -20,13 +21,15 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        AssociationColumnsResolver $assoColumnResolver
     ) {
-        $this->beConstructedWith($attributeRepository, $channelRepository, $localeRepository);
+        $this->beConstructedWith($attributeRepository, $channelRepository, $localeRepository, $assoColumnResolver);
     }
 
     function it_returns_attribute_informations_from_field_name(
         $attributeRepository,
+        $assoColumnResolver,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -34,6 +37,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('bar');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         $this->extractColumnInfo('foo')->shouldReturn(
             [
@@ -45,9 +49,11 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
     }
 
     function it_returns_null_attribute_informations_from_unknown_field_name(
-        $channelRepository
+        $channelRepository,
+        $assoColumnResolver
     ) {
         $channelRepository->findOneByIdentifier('foo')->willReturn(null);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         $this->extractColumnInfo('foo')->shouldReturn(null);
     }
@@ -56,6 +62,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attributeRepository,
         $channelRepository,
         $localeRepository,
+        $assoColumnResolver,
         AttributeInterface $attribute,
         LocaleInterface $locale,
         ChannelInterface $channel
@@ -69,6 +76,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('ecommerce')->shouldBeCalled()->willReturn($channel);
         $localeRepository->findOneByIdentifier('en_US')->shouldBeCalled()->willReturn($locale);
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
 
@@ -116,6 +124,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 
     function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
         $attributeRepository,
+        $assoColumnResolver,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -123,6 +132,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('bar');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         // Test only scopable attribute
         $this->extractColumnInfo('foo-ecommerce')->shouldReturn(
@@ -147,6 +157,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 
     function it_returns_attribute_informations_from_field_name_with_price_attribute(
         $attributeRepository,
+        $assoColumnResolver,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -154,6 +165,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         $this->extractColumnInfo('foo-USD')->shouldReturn(
             [
@@ -167,6 +179,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
         $attributeRepository,
+        $assoColumnResolver,
         AttributeInterface $attribute
     ) {
         // global with extra locale
@@ -175,6 +188,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('text');
         $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
             ->duringExtractColumnInfo('sku-fr_FR');
@@ -200,10 +214,27 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
             ->duringExtractColumnInfo('cost');
     }
 
+    function it_doesnt_hrow_exception_when_the_field_is_an_association_column(
+        $attributeRepository,
+        $assoColumnResolver,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('cost');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('cost')->willReturn($attribute);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn(['cost-products', 'cost-groups']);
+
+        $this->shouldNotThrow(new \InvalidArgumentException())
+            ->duringExtractColumnInfo('cost-products');
+    }
+
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_channel_locale(
         $attributeRepository,
         $channelRepository,
         $localeRepository,
+        $assoColumnResolver,
         AttributeInterface $attribute,
         LocaleInterface $locale,
         ChannelInterface $channel
@@ -225,6 +256,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
         $channelRepository->findOneByIdentifier($attributeInfos['scope_code'])->shouldBeCalled()->willReturn($channel);
         $localeRepository->findOneByIdentifier($attributeInfos['locale_code'])->shouldBeCalled()->willReturn($locale);
+        $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(false);
 

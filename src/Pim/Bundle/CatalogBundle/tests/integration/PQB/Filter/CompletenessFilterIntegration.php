@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -9,188 +10,269 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessFilterIntegration extends AbstractFilterTestCase
+class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
-     * +-----------------------------------------------+
-     * |               |   Ecommerce   |     Tablet    |
-     * |               | fr_FR | en_US | fr_FR | en_US |
-     * +---------------+-------+-------+-------+-------+
-     * | empty_product |   -   |  33%  |  25%  | 25%   |
-     * | product_one   |   -   |  67%  |  50%  | 50%   |
-     * | product_two   |   -   |  67%  |  75%  | 100%  |
-     * +-----------------------------------------------+
+     * {@inheritdoc}
      *
-     * Note: completeness is not calculated for ecommerce-fr_FR because locale is not activated for this channel
+     * +-------------------------------------------------------------------------+
+     * |               |   Ecommerce   |     Tablet            | Ecommerce China |
+     * |               | fr_FR | en_US | fr_FR | en_US | de_DE | en_US | zh_CN   |
+     * +---------------+-------+-------+-------+---------------------------------+
+     * | empty_product |   -   |  33%  |  25%  | 25%   |  25%  | 100%  | 100%    |
+     * | product_one   |   -   |  66%  |  50%  | 50%   |  50%  | 100%  | 100%    |
+     * | product_two   |   -   |  66%  |  75%  | 100%  |  75%  | 100%  | 100%    |
+     * | no_family     |   -   |  -    |   -   |   -   |   -   |   -   |   -     |
+     * +-------------------------------------------------------------------------+
+     *
+     * Notes:
+     *      - =, >, >=, < and <= operators checks the completeness on all the locales of a channel (we talked about this
+     *        expected behavior with Delphine)
+     *      - completeness is not calculated for ecommerce-fr_FR because locale is not activated for this channel
+     *      - "Ecommerce China" are complete because this channel requires only the "sku"
+     *      - completeness is not calculated on "no_family" has it has obviously no family
      */
     public function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $family = $this->get('pim_catalog.factory.family')->create();
-            $this->get('pim_catalog.updater.family')->update($family, [
-                'code'                   => 'familyB',
-                'attributes'             => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
-                'attribute_requirements' => [
-                    'tablet'    => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
-                    'ecommerce' => ['sku', 'a_metric', 'a_scopable_price'],
-                ]
-            ]);
-            $this->get('pim_catalog.saver.family')->save($family);
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, [
+            'code'                   => 'familyB',
+            'attributes'             => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
+            'attribute_requirements' => [
+                'tablet'    => ['sku', 'a_metric', 'a_localized_and_scopable_text_area', 'a_scopable_price'],
+                'ecommerce' => ['sku', 'a_metric', 'a_scopable_price'],
+            ]
+        ]);
+        $this->get('pim_catalog.saver.family')->save($family);
 
-            $this->createProduct('product_one', [
-                'family' => 'familyB',
-                'values' => [
-                    'a_metric' => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('product_one', [
+            'family' => 'familyB',
+            'categories' => ['categoryA1'],
+            'values' => [
+                'a_metric' => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'family' => 'familyB',
-                'values' => [
-                    'a_metric'                           => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]],
-                    'a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'tablet']],
-                    'a_scopable_price'                   => [
-                        [
-                            'data'      => [
-                                ['amount' => 15, 'currency' => 'EUR'],
-                                ['amount' => 15.5, 'currency' => 'USD']
-                            ], 'locale' => null, 'scope' => 'tablet'
-                        ]
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_two', [
+            'family' => 'familyB',
+            'categories' => ['categoryA2', 'categoryA1'],
+            'values' => [
+                'a_metric'                           => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]],
+                'a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'tablet']],
+                'a_scopable_price'                   => [
+                    [
+                        'data'      => [
+                            ['amount' => 15, 'currency' => 'EUR'],
+                            ['amount' => 15.5, 'currency' => 'USD']
+                        ], 'locale' => null, 'scope' => 'tablet'
+                    ]
+                ],
+            ]
+        ]);
 
-            $this->createProduct('empty_product', [
-                'family' => 'familyB',
-            ]);
+        $this->createProduct('empty_product', [
+            'family' => 'familyB',
+            'categories' => ['categoryA2', 'categoryA1']
+        ]);
 
-            $this->createProduct('no_family', [
-                'values' => [
-                    'a_metric' => [['data' => ['amount' => 10, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
-                ]
-            ]);
-        }
+        $this->createProduct('no_family', [
+            'values' => [
+                'a_metric' => [['data' => ['amount' => 10, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
+            ]
+        ]);
     }
 
-    public function testOperatorInferior()
+    public function testOperatorIsEmpty()
     {
-        $result = $this->execute([['completeness', Operators::LOWER_THAN, 100, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', Operators::IS_EMPTY, null]]);
+        $this->assert($result, ['no_family']);
+    }
+
+    public function testOperatorLowerThan()
+    {
+        $this->doTestOperatorInferior(Operators::LOWER_THAN);
+    }
+
+    public function testOperatorLowerThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorInferior(Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
+
+    private function doTestOperatorInferior($operator)
+    {
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN, 100, ['scope' => 'tablet', 'locale' => 'en_US']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet', 'locale' => 'en_US']]]);
         $this->assert($result, ['product_one', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN, 100, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN, 100, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN, 50, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'tablet']]]);
         $this->assert($result, ['empty_product']);
     }
 
-    public function testOperatorInferiorOrEqual()
+    public function testOperatorLowerOrEqualThan()
     {
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUAL_THAN, 100, ['scope' => 'tablet']]]);
+        $this->doTestOperatorInferiorOrEqual(Operators::LOWER_OR_EQUAL_THAN);
+    }
+
+    public function testOperatorLowerOrEqualThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorInferiorOrEqual(Operators::LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
+
+    private function doTestOperatorInferiorOrEqual($operator)
+    {
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUAL_THAN, 100, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUAL_THAN, 50, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'empty_product']);
     }
 
-    public function testOperatorEqual()
+    public function testOperatorEquals()
     {
-        $result = $this->execute([['completeness', Operators::EQUALS, 100, ['scope' => 'tablet']]]);
+        $this->doTestOperatorSame(Operators::EQUALS);
+    }
+
+    public function testOperatorEqualsOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorSame(Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE);
+    }
+
+    private function doTestOperatorSame($operator)
+    {
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 100, ['scope' => 'tablet', 'locale' => 'en_US']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet', 'locale' => 'en_US']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 100, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 100, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 50, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 75, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['completeness', $operator, 75, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 25, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['completeness', $operator, 25, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['completeness', Operators::EQUALS, 67, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['completeness', $operator, 66, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    public function testOperatorSuperior()
+    public function testOperatorGreaterThan()
     {
-        $result = $this->execute([['completeness', Operators::GREATER_THAN, 100, ['scope' => 'ecommerce']]]);
+        $this->doTestOperatorSuperior(Operators::GREATER_THAN);
+    }
+
+    public function testOperatorGreaterThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorSuperior(Operators::GREATER_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
+
+    private function doTestOperatorSuperior($operator)
+    {
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::GREATER_THAN, 100, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::GREATER_THAN, 50, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_THAN, 50, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    public function testOperatorSuperiorOrEqual()
+    public function testOperatorGreaterOrEqualThan()
     {
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUAL_THAN, 100, ['scope' => 'ecommerce']]]);
+        $this->doTestOperatorSuperiorOrEqual(Operators::GREATER_OR_EQUAL_THAN);
+    }
+
+    public function testOperatorGreaterOrEqualThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorSuperiorOrEqual(Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
+
+    private function doTestOperatorSuperiorOrEqual($operator)
+    {
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUAL_THAN, 100, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUAL_THAN, 50, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUAL_THAN, 50, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    public function testOperatorDifferent()
+    public function testOperatorNotEqual()
     {
-        $result = $this->execute([['completeness', Operators::NOT_EQUAL, 100, ['scope' => 'ecommerce']]]);
+        $this->doTestOperatorDifferent(Operators::NOT_EQUAL);
+    }
+
+    public function testOperatorNotEqualOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorDifferent(Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE);
+    }
+
+    private function doTestOperatorDifferent($operator)
+    {
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::NOT_EQUAL, 50, ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['completeness', $operator, 50, ['scope' => 'tablet']]]);
         $this->assert($result, ['product_two', 'empty_product']);
+
+        $result = $this->executeFilter([['completeness', $operator, 75, ['scope' => 'tablet']]]);
+        $this->assert($result, ['product_two', 'product_one', 'empty_product']);
+
+        $result = $this->executeFilter([['completeness', $operator, 33, ['scope' => 'ecommerce']]]);
+        $this->assert($result, ['product_two', 'product_one']);
     }
 
     public function testOperatorGreaterThanAllLocales()
     {
-        $result = $this->execute([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR']
         ]]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'tablet',
             'locales' => ['en_US']
         ]]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'tablet',
             'locales' => ['en_US', 'fr_FR']
         ]]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US', 'fr_FR']
         ]]]);
@@ -199,37 +281,37 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorGreaterOrEqualThanAllLocales()
     {
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR']
         ]]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
             'scope'   => 'tablet',
             'locales' => ['en_US']
         ]]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
             'scope'   => 'tablet',
             'locales' => ['en_US', 'fr_FR']
         ]]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 80, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US', 'fr_FR']
         ]]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'tablet',
             'locales' => ['en_US', 'fr_FR']
         ]]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 0, [
+        $result = $this->executeFilter([['completeness', Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES, 0, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US', 'fr_FR']
         ]]]);
@@ -238,25 +320,25 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorLowerThanAllLocales()
     {
-        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US']
         ]]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 75, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 75, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
@@ -265,37 +347,37 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorLowerOrEqualThanAllLocales()
     {
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US']
         ]]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 50, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 50, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
         $this->assert($result, ['product_one', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 100, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 100, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
         $this->assert($result, ['product_one', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, [
+        $result = $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, [
             'scope'   => 'tablet',
             'locales' => ['fr_FR']
         ]]]);
@@ -304,8 +386,17 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorAll()
     {
-        $result = $this->execute([['completeness', 'ALL', 0]]);
+        $result = $this->executeFilter([['completeness', 'ALL', 0]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product', 'no_family']);
+    }
+
+    public function testOperatorEqualsWithAnotherFilter()
+    {
+        $result = $this->executeFilter([
+            ['completeness', '=', 100, ['scope' => 'tablet', 'locale' => 'en_US']],
+            ['categories', 'IN OR UNCLASSIFIED', ['categoryA1']]
+        ]);
+        $this->assert($result, ['product_two']);
     }
 
     /**
@@ -314,7 +405,7 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorLocalesIsMissing()
     {
-        $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, ['scope' => 'ecommerce']]]);
+        $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, ['scope' => 'ecommerce']]]);
     }
 
     /**
@@ -323,7 +414,7 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorLocalesIsMalformed()
     {
-        $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, ['scope' => 'ecommerce', 'locales' => 'string']]]);
+        $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75, ['scope' => 'ecommerce', 'locales' => 'string']]]);
     }
 
     /**
@@ -332,7 +423,7 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorScopeIsMissing()
     {
-        $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75]]);
+        $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 75]]);
     }
 
     /**
@@ -341,6 +432,6 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsNotAnNumeric()
     {
-        $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 'string']]);
+        $this->executeFilter([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 'string']]);
     }
 }

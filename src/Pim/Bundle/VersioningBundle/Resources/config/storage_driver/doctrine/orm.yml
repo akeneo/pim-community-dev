@@ -10,8 +10,6 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: ['%pim_versioning.entity.version.class%']
-        calls:
-            - [ setCursorFactory, ['@pim_versioning.factory.version_cursor']]
         tags:
             - { name: 'pim_repository' }
 

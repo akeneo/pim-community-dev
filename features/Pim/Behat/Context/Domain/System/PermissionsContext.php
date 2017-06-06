@@ -84,7 +84,7 @@ class PermissionsContext extends PimContext
         }
 
         foreach ($this->listToArray($acls) as $acl) {
-            $permissionElement->$method($acl);
+            assertTrue($permissionElement->$method($acl));
         }
     }
 }

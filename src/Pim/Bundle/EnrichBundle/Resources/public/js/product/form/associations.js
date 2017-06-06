@@ -74,8 +74,8 @@ define(
                         getParamValue: function (associationType) {
                             return _.findWhere(state.associationTypes, {code: associationType}).id;
                         }.bind(this),
-                        getModelIdentifier: function (model, identifierAttribute) {
-                            return model.get(identifierAttribute.code);
+                        getModelIdentifier: function (model) {
+                            return model.get('identifier');
                         }
                     },
                     groups: {
@@ -128,10 +128,7 @@ define(
                     return;
                 }
 
-                $.when(
-                    this.loadAssociationTypes(),
-                    FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                ).then(function (associationTypes, identifierAttribute) {
+                this.loadAssociationTypes().then(function (associationTypes) {
                     var currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
 
                     if (null === this.getCurrentAssociationType()) {
@@ -140,7 +137,6 @@ define(
 
                     state.currentAssociationType = currentAssociationType;
                     state.associationTypes       = associationTypes;
-                    this.identifierAttribute     = identifierAttribute;
 
                     this.$el.html(
                         this.template({
@@ -371,7 +367,7 @@ define(
                 var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = this.getCurrentAssociations(datagrid);
 
-                currentAssociations.push(datagrid.getModelIdentifier(model, this.identifierAttribute));
+                currentAssociations.push(datagrid.getModelIdentifier(model));
                 currentAssociations = _.uniq(currentAssociations);
 
                 this.updateFormDataAssociations(currentAssociations, assocType, assocTarget);
@@ -382,7 +378,7 @@ define(
                 var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = _.uniq(this.getCurrentAssociations(datagrid));
 
-                var index = currentAssociations.indexOf(datagrid.getModelIdentifier(model, this.identifierAttribute));
+                var index = currentAssociations.indexOf(datagrid.getModelIdentifier(model));
                 if (-1 !== index) {
                     currentAssociations.splice(index, 1);
                 }

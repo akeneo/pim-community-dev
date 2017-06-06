@@ -2,16 +2,20 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\FileStorage;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -23,22 +27,16 @@ use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupUpdater implements ObjectUpdaterInterface
+class VariantGroupUpdater extends GroupUpdater
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var ProductValueFactory */
+    protected $productValueFactory;
 
-    /** @var GroupTypeRepositoryInterface */
-    protected $groupTypeRepository;
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $productQueryBuilderFactory;
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /** @var string */
     protected $productTemplateClass;
@@ -46,71 +44,27 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param ProductBuilderInterface             $productBuilder
-     * @param ObjectUpdaterInterface              $productUpdater
+     * @param ProductValueFactory                 $productValueFactory
+     * @param FileInfoRepositoryInterface         $fileInfoRepository
+     * @param FileStorerInterface                 $fileStorer
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param string                              $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductBuilderInterface $productBuilder,
-        ObjectUpdaterInterface $productUpdater,
+        ProductValueFactory $productValueFactory,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->groupTypeRepository = $groupTypeRepository;
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        parent::__construct($groupTypeRepository, $attributeRepository, $productQueryBuilderFactory);
+
+        $this->productValueFactory = $productValueFactory;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->fileStorer = $fileStorer;
         $this->productTemplateClass = $productTemplateClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Expected input format :
-     * {
-     *     "code": "mycode",
-     *     "labels": {
-     *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau"
-     *     }
-     *     "axes": ["main_color", "secondary_color"],
-     *     "type": "VARIANT",
-     *     "values": {
-     *         "main_color": "white",
-     *         "tshirt_style": ["turtleneck","sportwear"],
-     *         "description": [
-     *              {
-     *                  "locale": "fr_FR",
-     *                  "scope": "ecommerce",
-     *                  "data": "<p>description</p>",
-     *              },
-     *              {
-     *                  "locale": "en_US",
-     *                  "scope": "ecommerce",
-     *                  "data": "<p>description</p>",
-     *              }
-     *          ]
-     *     }
-     * }
-     */
-    public function update($variantGroup, array $data, array $options = [])
-    {
-        if (!$variantGroup instanceof GroupInterface) {
-            throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($variantGroup),
-                GroupInterface::class
-            );
-        }
-
-        foreach ($data as $field => $item) {
-            $this->setData($variantGroup, $field, $item);
-        }
-
-        return $this;
     }
 
     /**
@@ -124,39 +78,15 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     protected function setData(GroupInterface $variantGroup, $field, $data)
     {
         switch ($field) {
-            case 'code':
-                $this->setCode($variantGroup, $data);
-                break;
-
-            case 'type':
-                $this->setType($variantGroup, $data);
-                break;
-
-            case 'labels':
-                $this->setLabels($variantGroup, $data);
-                break;
-
             case 'axes':
                 $this->setAxes($variantGroup, $data);
                 break;
-
             case 'values':
                 $this->setValues($variantGroup, $data);
                 break;
-
-            case 'products':
-                $this->setProducts($variantGroup, $data);
-                break;
+            default:
+                parent::setData($variantGroup, $field, $data);
         }
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param string         $code
-     */
-    protected function setCode(GroupInterface $variantGroup, $code)
-    {
-        $variantGroup->setCode($code);
     }
 
     /**
@@ -183,19 +113,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
     /**
      * @param GroupInterface $variantGroup
-     * @param array          $labels
-     */
-    protected function setLabels(GroupInterface $variantGroup, array $labels)
-    {
-        foreach ($labels as $localeCode => $label) {
-            $variantGroup->setLocale($localeCode);
-            $translation = $variantGroup->getTranslation();
-            $translation->setLabel($label);
-        }
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
      * @param array          $axes
      *
      * @throws ImmutablePropertyException
@@ -208,25 +125,15 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 throw ImmutablePropertyException::immutableProperty(
                     'axes',
                     implode(',', $axes),
-                    static::class,
-                    'variant group'
+                    static::class
                 );
             }
         }
 
         foreach ($axes as $axis) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($axis);
-            if (null !== $attribute) {
-                $variantGroup->addAxisAttribute($attribute);
-            } else {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'axes',
-                    'attribute code',
-                    'The attribute does not exist',
-                    static::class,
-                    $axis
-                );
-            }
+            $attribute = $this->getAttributeOrThrowException($axis);
+
+            $variantGroup->addAxisAttribute($attribute);
         }
     }
 
@@ -234,124 +141,89 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param array          $newValues
      */
-    public function setValues(GroupInterface $variantGroup, array $newValues)
+    protected function setValues(GroupInterface $variantGroup, array $newValues)
     {
         $template = $this->getProductTemplate($variantGroup);
-        $originalValues = $template->getValuesData();
-        $mergedValuesData = $this->mergeValues($originalValues, $newValues);
+        $templateProductValues = $template->getValues();
 
-        $mergedValues = $this->transformArrayToValues($mergedValuesData);
-        $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
+        if (null === $templateProductValues) {
+            $templateProductValues = new ProductValueCollection();
+        }
+        $mergedValues = $this->updateTemplateValues($templateProductValues, $newValues);
 
         $template->setValues($mergedValues);
-        $template->setValuesData($mergedValuesData);
 
         $variantGroup->setProductTemplate($template);
     }
 
     /**
-     * Merges original and new values (keeping original ones if missing in the new ones)
-     * Iterates on every new attribute and then on every localized and/or scoped value to compare it
-     * with the original values.
+     * Update the values of the variant group product template.
      *
-     * Example :
+     * New values respect the standard format, so we can use the product updater
+     * on a temporary product.
      *
-     * Given $originalValues =
-     *     "description": [
-     *          {
-     *              "locale": "fr_FR",
-     *              "scope": "ecommerce",
-     *              "data": "original description fr_FR",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "original descriptionen_US",
-     *          }
-     *      ]
+     * @param ProductValueCollectionInterface $templateProductValues
+     * @param array                           $newValues
      *
-     * And $newValues =
-     *     "description": [
-     *          {
-     *              "locale": "de_DE",
-     *              "scope": "ecommerce",
-     *              "data": "new description de_DE",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "new descriptionen_US",
-     *          }
-     *      ]
-     *
-     * Then $mergedValues will be =
-     *     "description": [
-     *          {
-     *              "locale": "fr_FR",
-     *              "scope": "ecommerce",
-     *              "data": "original description fr_FR",
-     *          },
-     *          {
-     *              "locale": "de_DE",
-     *              "scope": "ecommerce",
-     *              "data": "new description de_DE",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "new descriptionen_US",
-     *          }
-     *      ]
-     *
-     * @param  array $originalValues
-     * @param  array $newValues
-     *
-     * @return array
+     * @return ProductValueCollectionInterface
      */
-    protected function mergeValues(array $originalValues, array $newValues)
+    protected function updateTemplateValues(ProductValueCollectionInterface $templateProductValues, array $newValues)
     {
-        $mergedValues = $originalValues;
+        foreach ($newValues as $attributeCode => $newValue) {
+            $attribute = $this->getAttributeOrThrowException($attributeCode);
 
-        foreach ($newValues as $newValueCode => $newValueArray) {
-            foreach ($newValueArray as $newValue) {
-                $originalValueFound = false;
-
-                if (isset($originalValues[$newValueCode])) {
-                    foreach ($originalValues[$newValueCode] as $originalValueIndex => $originalValue) {
-                        if ($newValue['locale'] === $originalValue['locale'] &&
-                            $newValue['scope'] === $originalValue['scope']
-                        ) {
-                            $originalValueFound = true;
-                            $mergedValues[$newValueCode][$originalValueIndex]['data'] = $newValue['data'];
-                        }
+            foreach ($newValue as $standardValue) {
+                if (AttributeTypes::BACKEND_TYPE_MEDIA === $attribute->getBackendType()) {
+                    $file = $this->fileInfoRepository->findOneByIdentifier($standardValue['data']);
+                    if (null === $file) {
+                        $file = $this->storeFile($attribute, $standardValue['data']);
                     }
+
+                    $standardValue['data'] = $file->getKey();
                 }
 
-                if (!$originalValueFound) {
-                    $mergedValues[$newValueCode][] = $newValue;
-                }
+                $newProductValue = $this->productValueFactory->create(
+                    $attribute,
+                    $standardValue['scope'],
+                    $standardValue['locale'],
+                    $standardValue['data']
+                );
+
+                $templateProductValues->add($newProductValue);
             }
         }
 
-        return $mergedValues;
+        return $templateProductValues;
     }
 
     /**
-     * Transform an array of values to ProductValues
+     * TODO: inform the user that this could take some time.
      *
-     * @param array $arrayValues
+     * @param AttributeInterface $attribute
+     * @param string             $data
      *
-     * @return ArrayCollection
+     * @throws InvalidPropertyException If an invalid filePath is provided
+     * @return FileInfoInterface|null
      */
-    protected function transformArrayToValues(array $arrayValues)
+    protected function storeFile(AttributeInterface $attribute, $data)
     {
-        $product = $this->productBuilder->createProduct();
-        $this->productUpdater->update($product, ['values' => $arrayValues]);
+        if (null === $data) {
+            return null;
+        }
 
-        $values = $product->getValues();
-        $values->removeElement($product->getIdentifier());
+        $rawFile = new \SplFileInfo($data);
 
-        return $values;
+        if (!$rawFile->isFile()) {
+            throw InvalidPropertyException::validPathExpected(
+                $attribute->getCode(),
+                static::class,
+                $data
+            );
+        }
+
+        $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $file;
     }
 
     /**
@@ -386,54 +258,24 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * Replace media local paths by stored paths in the merged values data as
-     * the file has already been stored during the construction of the product values
-     * (in the method transformArrayToValues).
+     * @param string $attributeCode
      *
-     * @param Collection $mergedValues
-     * @param array      $mergedValuesData
-     *
-     * @return array
+     * @return AttributeInterface
      */
-    protected function replaceMediaLocalPathsByStoredPaths(Collection $mergedValues, array $mergedValuesData)
+    protected function getAttributeOrThrowException($attributeCode)
     {
-        foreach ($mergedValues as $value) {
-            if (null !== $value->getMedia()) {
-                $attributeCode = $value->getAttribute()->getCode();
-                foreach ($mergedValuesData[$attributeCode] as $index => $mergedValuesDataValues) {
-                    if ($value->getLocale() === $mergedValuesDataValues['locale'] &&
-                        $value->getScope() === $mergedValuesDataValues['scope']
-                    ) {
-                        $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
-                    }
-                }
-            }
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+        if (null === $attribute) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'axes',
+                'attribute code',
+                'The attribute does not exist',
+                static::class,
+                $attributeCode
+            );
         }
 
-        return $mergedValuesData;
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $productIds
-     */
-    protected function setProducts(GroupInterface $variantGroup, array $productIds)
-    {
-        foreach ($variantGroup->getProducts() as $product) {
-            $variantGroup->removeProduct($product);
-        }
-
-        if (empty($productIds)) {
-            return;
-        }
-
-        $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('id', 'IN', $productIds);
-
-        $products = $pqb->execute();
-
-        foreach ($products as $product) {
-            $variantGroup->addProduct($product);
-        }
+        return $attribute;
     }
 }

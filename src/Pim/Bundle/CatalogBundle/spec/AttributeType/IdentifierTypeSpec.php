@@ -16,7 +16,7 @@ class IdentifierTypeSpec extends ObjectBehavior
     {
         $value->getAttribute()->willReturn($sku);
 
-        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_VARCHAR, 'text', $guesser);
+        $this->beConstructedWith(AttributeTypes::BACKEND_TYPE_TEXT, 'text', $guesser);
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, $sku)

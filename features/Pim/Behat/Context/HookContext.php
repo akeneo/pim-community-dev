@@ -5,18 +5,12 @@ namespace Pim\Behat\Context;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
-use Behat\Behat\Hook\Annotation\AfterFeature;
-use Behat\Behat\Hook\Annotation\AfterScenario;
-use Behat\Behat\Hook\Annotation\AfterStep;
-use Behat\Behat\Hook\Annotation\BeforeScenario;
-use Behat\Behat\Hook\Annotation\BeforeStep;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Parser;
 
 /**
  * Class HookContext
@@ -68,6 +62,8 @@ class HookContext extends PimContext
         foreach ($purgers as $purger) {
             $purger->purge();
         }
+
+        $this->resetElasticsearchIndex();
     }
 
     /**
@@ -302,5 +298,20 @@ class HookContext extends PimContext
     private function getSmartRegistry()
     {
         return $this->getService('akeneo_storage_utils.doctrine.smart_manager_registry');
+    }
+
+    /**
+     * Resets the elasticsearch index
+     */
+    private function resetElasticsearchIndex()
+    {
+        $esClient = $this->getService('akeneo_elasticsearch.client');
+        $conf = $this->getService('akeneo_elasticsearch.index_configuration.loader')->load();
+
+        if ($esClient->hasIndex()) {
+            $esClient->deleteIndex();
+        }
+
+        $esClient->createIndex($conf->buildAggregated());
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -16,20 +15,12 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var ObjectIdResolverInterface */
-    protected $objectIdResolver;
-
     /**
-     * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedFields
-     * @param array                     $supportedOperators
+     * @param string[] $supportedFields
+     * @param string[] $supportedOperators
      */
-    public function __construct(
-        ObjectIdResolverInterface $objectIdResolver,
-        array $supportedFields = [],
-        array $supportedOperators = []
-    ) {
-        $this->objectIdResolver = $objectIdResolver;
+    public function __construct(array $supportedFields = [], array $supportedOperators = [])
+    {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -41,10 +32,6 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
     {
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($field, $value);
-
-            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('group', $value);
-            }
         }
 
         $rootAlias = $this->qb->getRootAlias();
@@ -54,19 +41,19 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
         switch ($operator) {
             case Operators::IN_LIST:
                 $this->qb->andWhere(
-                    $this->qb->expr()->in($entityAlias . '.id', $value)
+                    $this->qb->expr()->in($entityAlias . '.code', $value)
                 );
                 break;
             case Operators::NOT_IN_LIST:
                 $this->qb->andWhere($this->qb->expr()->notIn(
-                    $rootAlias . '.id',
+                    $rootAlias . '.code',
                     $this->getNotInSubquery(FieldFilterHelper::getCode($field), $value)
                 ));
                 break;
             case Operators::IS_EMPTY:
             case Operators::IS_NOT_EMPTY:
                 $this->qb->andWhere(
-                    $this->prepareCriteriaCondition($entityAlias . '.id', $operator, null)
+                    $this->prepareCriteriaCondition($entityAlias . '.code', $operator, null)
                 );
                 break;
         }
@@ -89,13 +76,13 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
         $notInAlias = $this->getUniqueAlias('productsNotIn');
         $joinAlias = $this->getUniqueAlias('filter' . $field);
 
-        $notInQb->select($notInAlias . '.id')
-            ->from($rootEntity, $notInAlias, $notInAlias . '.id')
+        $notInQb->select($notInAlias . '.code')
+            ->from($rootEntity, $notInAlias, $notInAlias . '.code')
             ->innerJoin(
                 sprintf('%s.%s', $notInQb->getRootAlias(), $field),
                 $joinAlias
             )
-            ->where($notInQb->expr()->in($joinAlias . '.id', $value));
+            ->where($notInQb->expr()->in($joinAlias . '.code', $value));
 
         return $notInQb->getDQL();
     }

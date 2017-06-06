@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
@@ -11,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueChannelFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /**
      * {@inheritdoc}
@@ -33,8 +34,30 @@ class ProductValueChannelFilter extends AbstractFilter implements CollectionFilt
     /**
      * {@inheritdoc}
      */
+    public function filterCollection($objects, $type, array $options = [])
+    {
+        foreach ($objects as $key => $object) {
+            if ($this->filterObject($object, $type, $options)) {
+                $objects->removeKey($key);
+            }
+        }
+
+        return $objects;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supportsObject($object, $type, array $options = [])
     {
         return $object instanceof ProductValueInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return $collection instanceof ProductValueCollectionInterface;
     }
 }

@@ -30,14 +30,14 @@ Feature: Execute a job
     And product "SKU-002" should be enabled
     And the product "SKU-001" should have the following values:
       | heel_color               | Red        |
-      | sole_fabric              | PVC, Nylon |
+      | sole_fabric              | Nylon, PVC |
       | lace_fabric-en_US-tablet |            |
       | lace_fabric-en_US-mobile | Kevlar     |
     And the product "SKU-002" should have the following values:
       | heel_color               |               |
       | sole_fabric              |               |
-      | lace_fabric-en_US-tablet | Spandex, Jute |
-      | lace_fabric-en_US-mobile | Wool, Kevlar  |
+      | lace_fabric-en_US-tablet | Jute, Spandex |
+      | lace_fabric-en_US-mobile | Kevlar, Wool  |
     And the product "SKU-003" should have the following values:
       | heel_color               | Magenta  |
       | sole_fabric              | Neoprene |
@@ -67,5 +67,5 @@ Feature: Execute a job
     And the product "SKU-001" should have the following values:
       | heel_color               | Magenta      |
       | sole_fabric              |              |
-      | lace_fabric-en_US-tablet | Kevlar, Jute |
-      | lace_fabric-en_US-mobile | Kevlar, Jute |
+      | lace_fabric-en_US-tablet | Jute, Kevlar |
+      | lace_fabric-en_US-mobile | Jute, Kevlar |

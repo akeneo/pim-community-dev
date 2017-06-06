@@ -43,7 +43,7 @@ class MeasureConverterSpec extends ObjectBehavior
             WeightFamilyInterface::KILOGRAM,
             WeightFamilyInterface::MILLIGRAM,
             1
-        )->shouldReturn((double) 1000000);
+        )->shouldReturn('1000000.000000000000');
     }
 
     public function it_converts_a_value_to_a_standard_unit()
@@ -52,7 +52,7 @@ class MeasureConverterSpec extends ObjectBehavior
         $this->convertBaseToStandard(
             WeightFamilyInterface::MILLIGRAM,
             1000
-        )->shouldReturn((double) 1);
+        )->shouldReturn('1.000');
     }
 
     public function it_converts_a_standard_value_to_a_final_unit()
@@ -61,7 +61,7 @@ class MeasureConverterSpec extends ObjectBehavior
         $this->convertStandardToResult(
             WeightFamilyInterface::KILOGRAM,
             10
-        )->shouldReturn((double) 0.01);
+        )->shouldReturn('0.010000000000');
     }
 
     public function it_throws_an_exception_if_the_unit_measure_does_not_exist()

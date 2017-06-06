@@ -73,10 +73,10 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'sku'        => 'sku-001',
                 'family'     => 'shoes',
                 'groups'     => 'group1,group2,variant_group_1',
                 'categories' => 'nice shoes,converse',
+                'sku'        => 'sku-001',
                 'enabled'    => 1,
             ]
         );
@@ -139,15 +139,15 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'sku'        => 'sku-001',
-                'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
-                'categories' => 'nice shoes,converse',
-                'cross_sell-groups' => '',
+                'family'              => 'shoes',
+                'groups'              => 'group1,group2,variant_group_1',
+                'categories'          => 'nice shoes,converse',
+                'cross_sell-groups'   => '',
                 'cross_sell-products' => '',
-                'up_sell-groups' => 'associated_group1,associated_group2',
-                'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
-                'enabled'    => 1,
+                'up_sell-groups'      => 'associated_group1,associated_group2',
+                'up_sell-products'    => 'sku_assoc_product1,sku_assoc_product2',
+                'sku'                 => 'sku-001',
+                'enabled'             => 1,
             ]
         );
     }
@@ -195,11 +195,11 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'sku'        => 'sku-001',
                 'family'     => 'shoes',
                 'groups'     => '',
                 'categories' => '',
                 'colors'     => 'red, blue',
+                'sku'        => 'sku-001',
                 'enabled'    => 1,
             ]
         );
@@ -230,7 +230,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $prices->add($productPrice);
 
-        $price->getPrices()->willReturn($prices);
+        $price->getData()->willReturn($prices);
 
         $product->getIdentifier()->willReturn($price);
         $product->getFamily()->willReturn($family);
@@ -250,10 +250,10 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
             [
-                'price-EUR'  => '356.00',
                 'family'     => 'shoes',
                 'groups'     => 'group1,group2,variant_group_1',
                 'categories' => 'nice shoes,converse',
+                'price-EUR'  => '356.00',
                 'enabled'    => 1,
             ]
         );

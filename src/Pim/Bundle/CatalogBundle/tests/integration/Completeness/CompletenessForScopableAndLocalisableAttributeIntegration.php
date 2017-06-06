@@ -39,6 +39,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(40, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(3, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['name', 'price', 'size']);
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'en_US');
         $this->assertNotNull($completeness->getLocale());
@@ -48,6 +49,10 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(25, $completeness->getRatio());
         $this->assertEquals(8, $completeness->getRequiredCount());
         $this->assertEquals(6, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes(
+            $completeness,
+            ['name', 'price', 'size', 'description', 'rating', 'side_view']
+        );
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -57,6 +62,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(60, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(2, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['price', 'size']);
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -66,6 +72,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(50, $completeness->getRatio());
         $this->assertEquals(8, $completeness->getRequiredCount());
         $this->assertEquals(4, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['price', 'size', 'rating', 'side_view']);
     }
 
     public function testProductCompleteOnOneChannel()
@@ -90,15 +97,17 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'en_US');
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals('en_US', $completeness->getLocale()->getCode());
         $this->assertNotNull($completeness->getChannel());
         $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(89, $completeness->getRatio());
+        $this->assertEquals(88, $completeness->getRatio());
         $this->assertEquals(9, $completeness->getRequiredCount());
         $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['side_view']);
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -108,15 +117,17 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals('fr_FR', $completeness->getLocale()->getCode());
         $this->assertNotNull($completeness->getChannel());
         $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(78, $completeness->getRatio());
+        $this->assertEquals(77, $completeness->getRatio());
         $this->assertEquals(9, $completeness->getRequiredCount());
         $this->assertEquals(2, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['description', 'side_view']);
     }
 
     /**
@@ -141,7 +152,6 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
     {
         return new Configuration(
             [Configuration::getFunctionalCatalog('footwear')],
-            true,
             [Configuration::getFunctionalFixtures()]
         );
     }
@@ -151,8 +161,8 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
      * @param string           $channelCode
      * @param string           $localeCode
      *
-     * @return CompletenessInterface
      * @throws \Exception
+     * @return CompletenessInterface
      */
     private function getCompletenessByChannelAndLocaleCodes(ProductInterface $product, $channelCode, $localeCode)
     {
@@ -172,6 +182,9 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         ));
     }
 
+    /**
+     * @return array
+     */
     private function getSandalStandardValues()
     {
         return [
@@ -204,6 +217,9 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getSneakerStandardValues()
     {
         return [

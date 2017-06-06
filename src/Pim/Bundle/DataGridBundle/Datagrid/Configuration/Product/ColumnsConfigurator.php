@@ -122,7 +122,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 ];
 
                 if (AttributeTypes::IDENTIFIER === $attributeType) {
-                    $this->identifierColumn[$attributeCode] = $columnConfig;
+                    $this->identifierColumn['identifier'] = $columnConfig;
                 } else {
                     $this->attributesColumns[$attributeCode] = $columnConfig;
                 }

@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -195,26 +195,15 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_multi_select(
         SerializerInterface $serializer,
-        ProductValueInterface $productValue,
+        OptionsProductValueInterface $productValue,
         AttributeInterface $attribute,
-        AttributeOptionInterface $multiSelect,
-        ArrayCollection $values,
-        \ArrayIterator $iterator
+        AttributeOptionInterface $multiSelect
     ) {
         $multiSelect->getCode()->willReturn('optionA');
         $serializer->normalize($multiSelect, null, [])->shouldNotBeCalled();
         $this->setSerializer($serializer);
 
-        $values->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($multiSelect);
-        $valueCount = 1;
-        $iterator->valid()->will(
-            function () use (&$valueCount) {
-                return $valueCount-- > 0;
-            }
-        );
-        $iterator->current()->willReturn($multiSelect);
-        $iterator->next()->willReturn(null);
+        $values = [$multiSelect];
 
         $productValue->getData()->willReturn($values);
         $productValue->getLocale()->willReturn(null);

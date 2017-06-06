@@ -26,9 +26,6 @@ class InvalidPropertyTypeException extends PropertyException
     const ARRAY_OF_ARRAYS_EXPECTED_CODE = 202;
     const ARRAY_KEY_EXPECTED_CODE = 203;
 
-    /** @var string */
-    protected $propertyName;
-
     /** @var mixed */
     protected $propertyValue;
 
@@ -70,7 +67,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects a scalar as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -92,7 +89,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects a boolean as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -114,7 +111,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects a float as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -136,7 +133,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects an integer as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -158,7 +155,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects a numeric as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -180,7 +177,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects a string as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -202,7 +199,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects an array as data, "%s" given.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -226,7 +223,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects an array with valid data, %s.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -248,7 +245,7 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects an array of arrays as data.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
@@ -271,21 +268,13 @@ class InvalidPropertyTypeException extends PropertyException
     {
         $message = 'Property "%s" expects an array with the key "%s" as data.';
 
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
             sprintf($message, $propertyName, $key),
             self::ARRAY_KEY_EXPECTED_CODE
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getPropertyName()
-    {
-        return $this->propertyName;
     }
 
     /**
