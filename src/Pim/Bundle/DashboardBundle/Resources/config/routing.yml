@@ -1,8 +1,7 @@
 pim_dashboard_widget_data:
     path: /widget/{alias}
     defaults: { _controller: pim_dashboard.controller.widget:dataAction }
-    requirements:
-        methods: [GET]
+    methods: [GET]
 
 pim_dashboard_index:
     path: /dashboard

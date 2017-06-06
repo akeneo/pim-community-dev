@@ -1,5 +1,5 @@
 pim_datagrid_load:
     path: /{alias}/load
     defaults: { _controller: pim_datagrid.controller.datagrid:loadAction }
-    requirements:
-        methods: [GET]
+    methods: ['GET']
+
