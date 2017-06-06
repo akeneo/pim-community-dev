@@ -26,7 +26,7 @@ Feature: Delete import
 
   Scenario: Successfully delete a CSV import job from the job edit page
     Given I am on the "csv_footwear_product_import" import job edit page
-    When I press the "Delete" button
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Job instance successfully removed"
     And the grid should contain 26 elements

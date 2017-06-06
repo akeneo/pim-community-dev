@@ -93,7 +93,7 @@ define(
             displayError: function (event) {
                 _.each(event.response, function (error) {
                     if (error.global) {
-                        messenger.notificationFlashMessage('error', error.message);
+                        messenger.notify('error', error.message);
                     }
                 })
             }
