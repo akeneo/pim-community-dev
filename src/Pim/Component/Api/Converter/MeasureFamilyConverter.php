@@ -5,6 +5,8 @@ namespace Pim\Component\Api\Converter;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
+ * Converts measure config array into api standard array.
+ *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -29,9 +31,15 @@ class MeasureFamilyConverter implements ArrayConverterInterface
      * @param array $units
      *
      * @return array
+     *
+     * @throws \Exception
      */
     protected function convertUnits(array $units)
     {
+        if (!array_key_exists('units', $units)) {
+            throw new \Exception('The "units" array key is missing');
+        }
+
         $convertedUnits = [];
         foreach ($units['units'] as $code => $unit) {
             $convertedUnits[] = [
