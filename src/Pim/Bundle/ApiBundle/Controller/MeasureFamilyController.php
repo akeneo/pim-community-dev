@@ -81,9 +81,9 @@ class MeasureFamilyController
         }
 
         $parameters = [
-            'query_parameters'    => [
-                'page'       => 1,
-                'limit'      => count($this->measuresConfig),
+            'query_parameters' => [
+                'page'  => 1,
+                'limit' => count($this->measuresConfig) + 1,
             ],
             'list_route_name' => 'pim_api_measure_family_list',
             'item_route_name' => 'pim_api_measure_family_get',
@@ -94,6 +94,8 @@ class MeasureFamilyController
             $parameters,
             null
         );
+
+        unset($paginatedMeasureFamilies['_links']['next']);
 
         return new JsonResponse($paginatedMeasureFamilies);
     }
