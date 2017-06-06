@@ -1,0 +1,25 @@
+version: "2"
+
+services:
+    app:
+        environment:
+            PIM_DATABASE_HOST: db
+            PIM_DATABASE_PORT: 3306
+            PIM_INSTALLER_DATA: PimInstallerBundle:minimal
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - db
+        volumes:
+            - .:/app
+        ports:
+            - 8000:80
+
+    db:
+        image: mysql:5.6
+        environment:
+            MYSQL_ROOT_PASSWORD: akeneo_pim
+            MYSQL_DATABASE: akeneo_pim
+            MYSQL_USER: akeneo_pim
+            MYSQL_PASSWORD: akeneo_pim
