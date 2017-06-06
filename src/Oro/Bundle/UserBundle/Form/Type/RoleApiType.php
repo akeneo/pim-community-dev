@@ -73,7 +73,7 @@ class RoleApiType extends AclRoleType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'role';
     }

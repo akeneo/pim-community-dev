@@ -32,7 +32,7 @@ class MetricFilterType extends AbstractType
      */
     public function getParent()
     {
-        return NumberFilterType::NAME;
+        return NumberFilterType::class;
     }
 
     /**

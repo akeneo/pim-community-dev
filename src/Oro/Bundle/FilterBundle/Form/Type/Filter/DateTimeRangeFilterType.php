@@ -51,7 +51,7 @@ class DateTimeRangeFilterType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'field_type' => DateTimeRangeType::NAME
+                'field_type' => DateTimeRangeType::class
             ]
         );
     }

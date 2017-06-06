@@ -4,6 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DateTimeRangeType extends AbstractType
@@ -33,7 +34,7 @@ class DateTimeRangeType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'field_type'    => 'datetime',
+                'field_type'    => DateTimeType::class,
                 'field_options' => [
                     'format'        => LocalizerInterface::DEFAULT_DATETIME_FORMAT,
                     'view_timezone' => null,

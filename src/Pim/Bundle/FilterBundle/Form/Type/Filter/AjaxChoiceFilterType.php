@@ -36,7 +36,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
      */
     public function getParent()
     {
-        return ChoiceFilterType::NAME;
+        return ChoiceFilterType::class;
     }
 
     /**

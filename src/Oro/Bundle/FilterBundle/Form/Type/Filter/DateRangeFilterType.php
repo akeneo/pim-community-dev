@@ -67,7 +67,7 @@ class DateRangeFilterType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'field_type'       => DateRangeType::NAME,
+                'field_type'       => DateRangeType::class,
                 'operator_choices' => $operatorChoices,
                 'widget_options'   => [],
                 'type_values'      => $typeValues

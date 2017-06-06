@@ -27,7 +27,7 @@ class CategoryFilterType extends NumberFilterType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -37,7 +37,7 @@ class CategoryFilterType extends NumberFilterType
      */
     public function getParent()
     {
-        return NumberFilterType::NAME;
+        return NumberFilterType::class;
     }
 
     /**
