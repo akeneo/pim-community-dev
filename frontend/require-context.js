@@ -1,6 +1,6 @@
-define(['paths'], function(paths) {
+define([], function() {
     return function(moduleName) {
-        var modulePath = paths[moduleName]
+        var modulePath = __contextPaths[moduleName]
         var grab = require.context('./dynamic/', true, __contextPlaceholder)
         if (!modulePath.endsWith('.js')) modulePath += '.js'
 

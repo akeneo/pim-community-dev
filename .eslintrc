@@ -9,7 +9,8 @@
     "module": false,
     "__dirname": true,
     "__moduleConfig": true,
-    "__contextPlaceholder": true
+    "__contextPlaceholder": true,
+    "__contextPaths": true
   },
   "rules": {
     "space-infix-ops": 2,

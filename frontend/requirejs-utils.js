@@ -4,8 +4,20 @@ const { resolve } = require('path')
 const getYaml = require('yamljs')
 const fs = require('fs')
 const deepMerge = require('deepmerge')
-const mkdirp = require('mkdirp')
-const webroot = 'web/dist'
+const path = require('path')
+const globToRegex = require('glob-to-regexp');
+const customPaths = require('./custom-paths')
+const allowedPaths = [
+    'web/bundles',
+    'web/bundles/pim**/*.js',
+    'web/bundles/oro**/*.js',
+    'web/bundles/fosjsrouting/**/*.js',
+    'web/bundles/pim**/*.html',
+    'frontend/**/*.js',
+    'web/dist/**/*.js',
+    ..._.values(customPaths)
+]
+
 
 const utils = {
     /**
@@ -48,16 +60,20 @@ const utils = {
      * @param  {String} baseDirectory The base directory where webpack is run
      * @return {Object}               An object containing module name to path mapping
      */
-    getModulePaths(pathSourceFile, baseDir) {
-        const requireConfig = utils.getRequireConfig(pathSourceFile, baseDir)
-        const { paths, config } = requireConfig
+    getModulePaths(pathSourceFile, baseDir, sourceDir) {
+        const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir)
 
-        mkdirp(webroot, function() {
-            fs.writeFileSync(`${webroot}/general.js`, utils.getModuleString(config), 'utf8')
-            fs.writeFileSync(`${webroot}/paths.js`, utils.getModuleString(paths), 'utf8')
+        const contextPaths = allowedPaths.map(glob => globToRegex(glob).toString().slice(2, -2))
+        const context = `/^.*(${contextPaths.join('|')})$/`
+        const aliases = Object.assign(
+            paths,
+            _.mapValues(customPaths, custom => path.resolve(baseDir, custom)
+        ), {
+            'require-polyfill': path.resolve(sourceDir, './frontend/require-polyfill.js'),
+            'require-context': path.resolve(sourceDir, './frontend/require-context.js')
         })
 
-        return { paths, config }
+        return { paths, config, context, aliases }
     },
 
     /**
@@ -67,7 +83,13 @@ const utils = {
      */
     getModuleString(contents) {
         return `module.exports = ${JSON.stringify(contents)}`
-    }
+    },
+
+    getAllowedContexts() {
+
+    },
+
+
 }
 
 module.exports = utils

@@ -1,48 +1,23 @@
 /* eslint-env es6 */
 const process = require('process')
+const rootDir = process.cwd();
 const webpack = require('webpack')
 const path = require('path')
 const _ = require('lodash')
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const requirePaths = require(path.resolve('web/js/require-paths'))
-const AddToContextPlugin = require('./frontend/add-context-plugin')
 const utils = require('./frontend/requirejs-utils')
 
-const rootDir = process.cwd();
-const moduleConfig = utils.getModulePaths(requirePaths, rootDir)
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const globToRegex = require('glob-to-regexp');
-const customPaths = require('./frontend/custom-paths')
+const requirePaths = require(path.resolve(rootDir, 'web/js/require-paths'))
+const config = utils.getModulePaths(requirePaths, rootDir, __dirname)
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-
-const contextPaths = [
-    'web/bundles',
-    'web/bundles/pim**/*.js',
-    'web/bundles/oro**/*.js',
-    'web/bundles/fosjsrouting/**/*.js',
-    'web/bundles/pim**/*.html',
-    'frontend/**/*.js',
-    'web/dist/**/*.js',
-    ..._.values(customPaths)
-].map(glob => globToRegex(glob).toString().slice(2, -2))
-
-const contextRegex = `/^.*(${contextPaths.join('|')})$/`
-const moduleAliases = Object.assign(moduleConfig.paths,
-   _.mapValues(customPaths, custom => path.resolve(rootDir, custom)),
-   {
-     'require-polyfill': path.resolve(__dirname, './frontend/require-polyfill.js'),
-     'require-context': path.resolve(__dirname, './frontend/require-context.js')
-   }
- )
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 console.log('Start webpack from', rootDir)
 
 module.exports = {
     target: 'web',
-    entry: [
-        path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')
-    ],
+    entry: [path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')],
     output: {
         path: path.resolve('./web/dist/'),
         publicPath: '/dist/',
@@ -51,7 +26,7 @@ module.exports = {
     },
     resolve: {
         symlinks: false,
-        alias: moduleAliases
+        alias: config.aliases
     },
     // devtool: 'inline-source-map',
     module: {
@@ -64,21 +39,34 @@ module.exports = {
                         pattern: /__contextPlaceholder/,
                         flags: 'g'
                     },
-                    replaceWith: contextRegex
+                    replaceWith: config.context
                 }
-            }, {
+            },
+            {
+                test: path.resolve(__dirname, 'frontend/require-context'),
+                loader: 'regexp-replace-loader',
+                options: {
+                    match: {
+                        pattern: /__contextPaths/,
+                        flags: 'g'
+                    },
+                    replaceWith: JSON.stringify(config.paths)
+                }
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules|spec/,
                 use: [
                     {
                         loader: path.resolve(__dirname, 'frontend/config-loader'),
                         options: {
-                            configMap: moduleConfig.config
+                            configMap: config.config
                         }
                     }
                 ]
             }, {
                 test: /\.html$/,
+                exclude: /node_modules|spec/,
                 use: [
                     {
                         loader: 'raw-loader',
@@ -120,18 +108,17 @@ module.exports = {
                         options: 'require'
                     }
                 ]
-            },
-            {
-              test: /\.js$/,
-              include: /(web\/bundles|frontend|spec)/,
-              exclude: /lib/,
-              use: {
-                loader: 'babel-loader',
-                options: {
-                  presets: ['es2017'],
-                  cacheDirectory: 'web/cache'
+            }, {
+                test: /\.js$/,
+                include: /(web\/bundles|frontend|spec)/,
+                exclude: /lib/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['es2017'],
+                        cacheDirectory: 'web/cache'
+                    }
                 }
-              }
             }
         ]
     },
@@ -142,16 +129,16 @@ module.exports = {
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
         new ContextReplacementPlugin(/.\/dynamic/, path.resolve('./')),
-        new AddToContextPlugin(_.values(moduleConfig.paths), rootDir),
+        new require('./frontend/add-context-plugin')(
+            _.values(config.paths),
+            rootDir
+        ),
         new webpack.WatchIgnorePlugin([
             path.resolve(rootDir, './node_modules'),
             path.resolve(rootDir, './app'),
-            path.resolve(rootDir, './vendor'),
+            path.resolve(rootDir, './vendor')
         ]),
-        new LiveReloadPlugin({
-          appendScriptTag: true,
-          ignore: /node_modules/
-        }),
+        new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'lib',
             minChunks: module => module.context && module.context.indexOf('lib') !== -1
@@ -160,9 +147,7 @@ module.exports = {
             name: 'vendor',
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest'
-        })
+        new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
         // new UglifyJSPlugin()
     ]
 }
