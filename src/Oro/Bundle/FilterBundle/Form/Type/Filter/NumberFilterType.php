@@ -3,6 +3,7 @@
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -64,7 +65,7 @@ class NumberFilterType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'field_type'        => 'number',
+                'field_type'        => NumberType::class,
                 'operator_choices'  => $operatorChoices,
                 'data_type'         => self::DATA_INTEGER,
                 'formatter_options' => []

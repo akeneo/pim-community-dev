@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,7 +33,7 @@ class EntityFilterType extends AbstractChoiceType
     {
         $resolver->setDefaults(
             [
-                'field_type'    => 'entity',
+                'field_type'    => EntityType::class,
                 'field_options' => [],
                 'translatable'  => false,
             ]
