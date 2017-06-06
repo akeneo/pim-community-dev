@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,7 +24,7 @@ class AclPermissionType extends AbstractType
         );
         $builder->add(
             'name',
-            'hidden',
+            HiddenType::class,
             [
                 'required' => false,
             ]
@@ -32,7 +34,7 @@ class AclPermissionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oro_acl_permission';
     }
@@ -44,7 +46,7 @@ class AclPermissionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
+                'data_class'        => AclPermission::class,
                 'privileges_config' => []
             ]
         );

@@ -67,7 +67,7 @@ class AssociationType extends AbstractType
         $builder
             ->add(
                 'associationType',
-                'pim_object_identifier',
+                ObjectIdentifierType::class,
                 [
                     'repository' => $this->assocTypeRepository,
                     'multiple'   => false
@@ -130,7 +130,7 @@ class AssociationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_association';
     }

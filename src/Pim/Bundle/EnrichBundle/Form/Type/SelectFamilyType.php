@@ -33,7 +33,7 @@ class SelectFamilyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'select_family_type';
     }

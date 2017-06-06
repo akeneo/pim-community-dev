@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -19,7 +20,7 @@ class OptionsType extends AbstractType
      */
     public function getParent()
     {
-        return 'collection';
+        return CollectionType::class;
     }
 
     /**
@@ -40,7 +41,7 @@ class OptionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_options';
     }

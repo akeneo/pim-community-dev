@@ -10,6 +10,9 @@ use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -86,7 +89,7 @@ class JobInstanceFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_import_export_jobInstance';
     }
@@ -145,7 +148,7 @@ class JobInstanceFormType extends AbstractType
     protected function addCodeField(FormBuilderInterface $builder)
     {
         $builder
-            ->add('code', 'text')
+            ->add('code', TextType::class)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         return $this;
@@ -177,7 +180,7 @@ class JobInstanceFormType extends AbstractType
         $builder
             ->add(
                 'connector',
-                'hidden',
+                HiddenType::class,
                 [
                     'required'     => true,
                     'by_reference' => false,
@@ -207,7 +210,7 @@ class JobInstanceFormType extends AbstractType
         $builder
             ->add(
                 'jobName',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices'      => $choices,
                     'required'     => true,

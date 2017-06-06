@@ -90,7 +90,7 @@ class ClassifyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return $this->formName;
     }

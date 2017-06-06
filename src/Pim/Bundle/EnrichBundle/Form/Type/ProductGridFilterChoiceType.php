@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -61,7 +62,7 @@ class ProductGridFilterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_product_grid_filter_choice';
     }
@@ -71,7 +72,7 @@ class ProductGridFilterChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**

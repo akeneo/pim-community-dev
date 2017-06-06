@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;

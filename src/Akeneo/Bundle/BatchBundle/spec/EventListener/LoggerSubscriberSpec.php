@@ -4,9 +4,9 @@ namespace spec\Akeneo\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
+use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use PhpSpec\ObjectBehavior;
 
 class LoggerSubscriberSpec extends ObjectBehavior
 {

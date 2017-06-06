@@ -31,7 +31,7 @@ class DateTimeRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -41,7 +41,7 @@ class DateTimeRangeFilterType extends AbstractType
      */
     public function getParent()
     {
-        return DateRangeFilterType::NAME;
+        return DateRangeFilterType::class;
     }
 
     /**

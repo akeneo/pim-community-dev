@@ -3,6 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,7 +48,7 @@ class AttributeOptionType extends AbstractType
      */
     protected function addFieldId(FormBuilderInterface $builder)
     {
-        $builder->add('id', 'hidden');
+        $builder->add('id', HiddenType::class);
     }
 
     /**
@@ -55,7 +58,7 @@ class AttributeOptionType extends AbstractType
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', ['required' => true]);
+        $builder->add('code', TextType::class, ['required' => true]);
     }
 
     /**
@@ -67,7 +70,7 @@ class AttributeOptionType extends AbstractType
     {
         $builder->add(
             'optionValues',
-            'collection',
+            CollectionType::class,
             [
                 'type'         => 'pim_enrich_attribute_option_value',
                 'allow_add'    => true,
@@ -93,7 +96,7 @@ class AttributeOptionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attribute_option';
     }
