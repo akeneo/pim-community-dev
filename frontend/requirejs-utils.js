@@ -10,19 +10,6 @@ const deepMerge = require('deepmerge')
 const globToRegex = require('glob-to-regexp')
 const customPaths = require('./custom-paths')
 
-// Only modules inside one of these folders can be dynamically required
-const allowedPaths = [
-    'web/bundles',
-    'web/bundles/**/*.js',
-    'web/bundles/pim**/*.js',
-    'web/bundles/oro**/*.js',
-    'web/bundles/fosjsrouting/**/*.js',
-    'web/bundles/pim**/*.html',
-    'frontend/**/*.js',
-    'web/dist/**/*.js',
-    ...values(customPaths)
-]
-
 const utils = {
     /**
      * Grab the RequireJS.yaml from each bundle required by the application
@@ -75,14 +62,16 @@ const utils = {
         const pathSourceFile = require(sourcePath)
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir)
 
-        const contextPaths = allowedPaths.map(glob => globToRegex(glob).toString().slice(2, -2))
-        const context = `/^.*(${contextPaths.join('|')})$/`
         const aliases = assign(paths,
             mapValues(customPaths, custom => resolve(baseDir, custom)
         ), {
             'require-polyfill': resolve(sourceDir, './frontend/require-polyfill.js'),
             'require-context': resolve(sourceDir, './frontend/require-context.js')
         })
+
+        // Derive the allowed context paths from all the paths in all the requirejs.yml files
+        const contextPaths = values(aliases).map(alias => globToRegex(alias.replace('.js', '')).toString().slice(2, -2))
+        const context = `/^.*(${contextPaths.join('|')})$/`
 
         return { paths, config, context, aliases }
     }
