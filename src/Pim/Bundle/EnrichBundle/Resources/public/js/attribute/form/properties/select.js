@@ -55,7 +55,9 @@ function (
          * {@inheritdoc}
          */
         getFieldValue: function (field) {
-            return $(field).val();
+            var value = $(field).val();
+
+            return this.config.isMultiple && null === value ? [] : value;
         }
     });
 });

@@ -45,7 +45,7 @@ function (
                 choices: this.formatChoices(this.measures),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_enrich.entity.attribute.metric_family.default_value')
+                    defaultLabel: __('pim_enrich.entity.attribute.metric_family.default_label')
                 }
             }));
         },

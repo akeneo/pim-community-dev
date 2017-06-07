@@ -493,8 +493,6 @@ config:
                 pim_catalog_textarea:
                     create: pim-attribute-form-textarea
                     edit:   pim-attribute-form-textarea
-                pim_reference_data_multiselect:     pim-attribute-edit-form-ref-data
-                pim_reference_data_simpleselect:    pim-attribute-edit-form-ref-data
 
     paths:
         pim/app:                            pimenrich/js/app

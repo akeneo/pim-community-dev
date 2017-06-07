@@ -49,7 +49,7 @@ function (
                 choices: this.formatChoices(this.attributeGroups, UserContext.get('catalogLocale')),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_enrich.entity.attribute.group.default_value')
+                    defaultLabel: __('pim_enrich.entity.attribute.group.default_label')
                 }
             }));
         },
