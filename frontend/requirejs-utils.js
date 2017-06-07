@@ -13,6 +13,7 @@ const customPaths = require('./custom-paths')
 // Only modules inside one of these folders can be dynamically required
 const allowedPaths = [
     'web/bundles',
+    'web/bundles/**/*.js',
     'web/bundles/pim**/*.js',
     'web/bundles/oro**/*.js',
     'web/bundles/fosjsrouting/**/*.js',
