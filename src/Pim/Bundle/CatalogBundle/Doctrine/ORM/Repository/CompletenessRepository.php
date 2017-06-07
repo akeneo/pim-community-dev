@@ -96,7 +96,7 @@ SQL;
             JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
             LEFT JOIN pim_catalog_completeness co
             ON co.locale_id = lo.id AND co.channel_id = t.foreign_key AND co.product_id = p.id AND co.ratio = 100
-            WHERE t.locale = 'en_US'
+            WHERE t.locale = '%locale%'
             GROUP BY t.foreign_key, lo.id, t.label, lo.code
         ) as co;
 SQL;
