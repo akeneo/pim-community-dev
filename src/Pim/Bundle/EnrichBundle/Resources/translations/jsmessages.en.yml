@@ -234,7 +234,7 @@ pim_enrich:
                 deletion_failed: Association type could not be deleted.
                 update_successful: Association type successfully updated.
                 update_failed: The association type could not be updated.
-                field_not_ready: The association type cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -249,7 +249,7 @@ pim_enrich:
                 deletion_failed: Group type could not be deleted.
                 update_successful: Group type successfully updated.
                 update_failed: The group type could not be updated.
-                field_not_ready: The group type cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -267,7 +267,7 @@ pim_enrich:
                 update_failed: The channel could not be updated.
                 create_successful: Channel successfully created.
                 create_failed: The channel could not be created.
-                field_not_ready: The channel cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The channel cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -316,7 +316,7 @@ pim_enrich:
                 deletion_failed: The variant group could not be deleted.
                 update_successful: Variant group successfully updated.
                 update_failed: The variant group could not be updated.
-                field_not_ready: The variant group cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The variant group cannot be saved right now. The following fields are not ready: {{ fields }}"
                 already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
                 no_attributes: This variant group has no attributes yet
             btn:
@@ -334,7 +334,7 @@ pim_enrich:
                 deletion_failed: Group could not be deleted.
                 update_successful: Group successfully updated.
                 update_failed: The group could not be updated.
-                field_not_ready: The group cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
             btn:
                 save: Save
             meta:
