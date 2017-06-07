@@ -26,8 +26,8 @@ class Md5Extension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            'md5'       => new \Twig_Filter_Method($this, 'md5'),
-            'objectMd5' => new \Twig_Filter_Method($this, 'objectMd5'),
+            new \Twig_SimpleFilter('md5', [$this, 'md5']),
+            new \Twig_SimpleFilter('objectMd5', [$this, 'objectMd5']),
         ];
     }
 

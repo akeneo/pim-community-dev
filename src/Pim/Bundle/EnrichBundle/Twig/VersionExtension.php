@@ -19,7 +19,7 @@ class VersionExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'version' => new \Twig_Function_Method($this, 'version'),
+            new \Twig_SimpleFunction('version', [$this, 'version']),
         ];
     }
 

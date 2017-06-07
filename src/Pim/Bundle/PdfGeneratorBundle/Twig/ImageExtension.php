@@ -22,7 +22,7 @@ class ImageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'image_path' => new \Twig_Function_Method($this, 'getImagePath'),
+            new \Twig_SimpleFunction('image_path', [$this, 'getImagePath']),
         ];
     }
 

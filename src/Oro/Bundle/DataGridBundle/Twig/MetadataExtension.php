@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig_Extension;
-use Twig_Function_Method;
+use Twig_SimpleFunction;
 
 class MetadataExtension extends Twig_Extension
 {
@@ -38,8 +38,8 @@ class MetadataExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            'oro_datagrid_data'     => new Twig_Function_Method($this, 'getGridData', ['needs_environment' => true]),
-            'oro_datagrid_metadata' => new Twig_Function_Method($this, 'getGridMetadata')
+            new Twig_SimpleFunction('oro_datagrid_data', [$this, 'getGridData'], ['needs_environment' => true]),
+            new Twig_SimpleFunction('oro_datagrid_metadata', [$this, 'getGridMetadata']),
         ];
     }
 
