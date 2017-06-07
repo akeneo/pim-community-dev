@@ -22,6 +22,7 @@
     "JSON2": "^0.1.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-eslint": "^6.1.2",
     "babel-loader": "^7.0.0",
     "babel-preset-es2017": "^6.24.1",
     "backbone": "0.9.10",
