@@ -220,6 +220,7 @@ def runIntegrationTest(phpVersion, storage, testSuiteName) {
                         sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
+                        sh "sed -i \"s@installer_data:    PimInstallerBundle:minimal@installer_data: '%kernel.root_dir%/../features/Context/catalog/footwear'@\" app/config/parameters_test.yml"
 
                         // Activate MongoDB if needed
                         if ('odm' == storage) {
