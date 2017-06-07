@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\Command;
 
 use OAuth2\OAuth2;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -46,6 +47,13 @@ class CreateClientCommand extends ContainerAwareCommand
                 InputOption::VALUE_REQUIRED,
                 'Sets a label to ease the administration of client ids.'
             )
+            ->addOption(
+                'format',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The output format (txt, json or xml)',
+                'txt'
+            )
         ;
     }
 
@@ -66,17 +74,59 @@ class CreateClientCommand extends ContainerAwareCommand
 
         $clientManager->updateClient($client);
 
-        $output->writeln([
-            'A new client has been added.',
-            sprintf('client_id: <info>%s</info>', $client->getPublicId()),
-            sprintf('secret: <info>%s</info>', $client->getSecret()),
-        ]);
-
-        $label = $client->getLabel();
-        if (null !== $label) {
-            $output->writeln(sprintf('label: <info>%s</info>', $label));
-        }
+        $this->displayOutput($output, $client, $input->getOption('format'));
 
         return 0;
+    }
+
+
+    /**
+     * Returns the output into the selected format.
+     * @param OutputInterface $output
+     * @param ClientInterface $client
+     * @param string $format
+     */
+    private function displayOutput(OutputInterface $output, ClientInterface $client, $format)
+    {
+        $serializer = $this->getContainer()->get('pim_serializer');
+        $credentials = [
+            'client_id' => $client->getPublicId(),
+            'secret'    => $client->getSecret()
+        ];
+
+
+        if ($hasLabel = (null !== $client->getLabel())) {
+            $credentials['label'] = addslashes($client->getLabel());
+        }
+
+        switch ($format) {
+            case 'xml':
+                $xmlContent = $serializer->encode(
+                    $credentials,
+                    'xml' ,
+                    [
+                        'xml_root_node_name' => 'credentials',
+                        'xml_encoding' => 'UTF-8'
+                    ]
+                );
+
+                $output->writeln($xmlContent);
+                break;
+            case 'json':
+                $jsonContent = $serializer->encode($credentials, 'json');
+
+                $output->writeln($jsonContent);
+                break;
+            default:
+                $output->writeln([
+                    'A new client has been added.',
+                    sprintf('client_id: <info>%s</info>', $credentials['client_id']),
+                    sprintf('secret: <info>%s</info>', $credentials['secret']),
+                ]);
+
+                if ($hasLabel) {
+                    $output->writeln(sprintf('label: <info>%s</info>', $credentials['label']));
+                }
+        }
     }
 }
