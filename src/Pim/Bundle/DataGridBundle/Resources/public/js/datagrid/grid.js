@@ -5,7 +5,7 @@ define(
         'jquery',
         'underscore',
         'backgrid',
-        'translator',
+        'translator-lib',
         'oro/translator',
         'oro/mediator',
         'oro/loading-mask',

@@ -2,11 +2,9 @@
 
 define([
         'jquery',
-        'module',
         'oro/mediator'
     ], function (
         $,
-        module,
         mediator
     ) {
         return {

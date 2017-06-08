@@ -13,8 +13,8 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/tab/associations',
-        'text!pim/template/product/tab/association-panes',
+        'pim/template/product/tab/associations',
+        'pim/template/product/tab/association-panes',
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/user-context',
@@ -22,7 +22,8 @@ define(
         'oro/mediator',
         'oro/datagrid-builder',
         'oro/pageable-collection',
-        'pim/datagrid/state'
+        'pim/datagrid/state',
+        'require-context'
     ],
     function (
         $,
@@ -38,7 +39,8 @@ define(
         mediator,
         datagridBuilder,
         PageableCollection,
-        DatagridState
+        DatagridState,
+        requireContext
     ) {
         var state = {};
 
@@ -318,9 +320,12 @@ define(
 
                     var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
-                    require(gridModules, function () {
-                        datagridBuilder(_.toArray(arguments));
-                    });
+
+                    var resolvedModules = []
+                    _.each(gridModules, function(module) {
+                        resolvedModules.push(requireContext(module));
+                    })
+                    datagridBuilder(resolvedModules)
                 }.bind(this));
             },
             setListenerSelectors: function () {

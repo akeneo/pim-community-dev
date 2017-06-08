@@ -15,15 +15,15 @@ define(
         'backbone',
         'pim/form',
         'routing',
-        'text!pim/template/product/meta/groups',
-        'text!pim/template/product/meta/group-modal',
+        'pim/template/product/meta/groups',
+        'pim/template/product/meta/group-modal',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/group-manager',
         'pim/router',
         'pim/i18n',
         'oro/loading-mask',
-        'backbone/bootstrap-modal'
+        'bootstrap-modal'
     ],
     function (
         $,

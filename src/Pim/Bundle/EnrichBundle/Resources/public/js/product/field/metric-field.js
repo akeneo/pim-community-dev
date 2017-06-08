@@ -12,7 +12,7 @@ define([
     'pim/field',
     'underscore',
     'pim/fetcher-registry',
-    'text!pim/template/product/field/metric',
+    'pim/template/product/field/metric',
     'pim/initselect2'
 ], function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
     return Field.extend({

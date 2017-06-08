@@ -6,8 +6,8 @@ define(
         'routing',
         'pim/notification-list',
         'pim/indicator',
-        'text!pim/template/notification/notification',
-        'text!pim/template/notification/notification-footer'
+        'pim/template/notification/notification',
+        'pim/template/notification/notification-footer'
     ],
     function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';

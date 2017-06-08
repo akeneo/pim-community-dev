@@ -12,7 +12,8 @@ define(
         'pim/controller-registry',
         'oro/mediator',
         'pim/error',
-        'pim/security-context'
+        'pim/security-context',
+        'pim/controller/template'
     ],
     function (
         $,
@@ -79,15 +80,15 @@ define(
                 }
 
                 this.showLoadingMask();
-
                 this.triggerStart(route);
+
                 ControllerRegistry.get(route.name).done(function (controller) {
                     if (this.currentController) {
                         this.currentController.remove();
                     }
 
                     $('#container').empty();
-                    var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
+                    var $view = $('<div class="view"/>').appendTo($('#container'));
 
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.hideLoadingMask();

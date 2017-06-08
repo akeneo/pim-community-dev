@@ -4,7 +4,7 @@ define(
         'underscore',
         'oro/datafilter/number-filter',
         'oro/app',
-        'text!pim/template/datagrid/filter/metric-filter'
+        'pim/template/datagrid/filter/metric-filter'
     ],
     function ($, _, NumberFilter, app, template) {
         'use strict';

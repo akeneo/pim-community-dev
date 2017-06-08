@@ -88,7 +88,6 @@
     "replace": {
         "oro/translation-bundle": "1.0-dev",
         "oro/navigation-bundle": "1.0-dev",
-        "oro/requirejs-bundle": "1.0-dev",
         "oro/security-bundle": "1.0-dev",
         "oro/assetic-bundle": "1.0-dev",
         "oro/filter-bundle": "1.0-dev",

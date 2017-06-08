@@ -12,7 +12,7 @@ define(
         'jquery',
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/date',
+        'pim/template/product/field/date',
         'datepicker',
         'pim/date-context'
     ],

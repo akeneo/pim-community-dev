@@ -8,7 +8,7 @@ define(
         'datepicker',
         'pim/date-context',
         'pim/formatter/date',
-        'text!pim/template/datagrid/filter/date-filter'
+        'pim/template/datagrid/filter/date-filter'
     ],
 function(
     $,

@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/meta/family',
+        'pim/template/product/meta/family',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n'

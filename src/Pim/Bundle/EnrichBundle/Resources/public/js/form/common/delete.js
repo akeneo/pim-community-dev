@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/delete',
+        'pim/template/form/delete',
         'pim/router',
         'oro/loading-mask',
         'oro/messenger',
@@ -85,6 +85,7 @@ define(
              * Send a request to the backend in order to delete the element
              */
             doDelete: function () {
+                var config = this.config;
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
@@ -95,8 +96,7 @@ define(
                     }.bind(this))
                     .fail(function (xhr) {
                         var message = xhr.responseJSON && xhr.responseJSON.message ?
-                            xhr.responseJSON.message :
-                            __(this.config.trans.fail);
+                            xhr.responseJSON.message : __(config.trans.failed);
 
                         messenger.notificationFlashMessage('error', message);
                     }.bind(this))

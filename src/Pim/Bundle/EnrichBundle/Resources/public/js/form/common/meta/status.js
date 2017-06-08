@@ -12,7 +12,7 @@ define(
         'oro/translator',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/form/meta/status',
+        'pim/template/form/meta/status',
         'pim/common/property'
     ],
     function (_, __, BaseForm, mediator, formTemplate, propertyAccessor) {

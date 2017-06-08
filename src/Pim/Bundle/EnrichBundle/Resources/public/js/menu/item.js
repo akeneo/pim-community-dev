@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'pim/form',
         'pim/router',
-        'text!pim/template/menu/item'
+        'pim/template/menu/item'
     ],
     function (
         _,

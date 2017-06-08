@@ -11,7 +11,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'text!pim/template/product/field/field',
+        'pim/template/product/field/field',
         'pim/attribute-manager',
         'pim/i18n',
         'oro/mediator'
@@ -175,7 +175,6 @@ define([
              */
             setValues: function (values) {
                 if (_.isUndefined(values) || values.length === 0) {
-                    /*global console: true */
                     console.error('Value array is empty');
                 }
 

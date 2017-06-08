@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/download-file',
+        'pim/template/form/download-file',
         'routing',
         'pim/user-context',
         'pim/common/property'

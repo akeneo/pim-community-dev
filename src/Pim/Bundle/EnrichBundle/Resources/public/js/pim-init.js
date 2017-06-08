@@ -1,11 +1,36 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/messenger', 'pim/dialog',
-     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask', 'pim/router'],
-    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask, router) {
+    [
+    'jquery',
+    'underscore',
+    'backbone',
+    'oro/mediator',
+    'oro/messenger',
+    'pim/dialog',
+    'pim/saveformstate',
+    'pim/asynctab',
+    'pim/ui',
+    'oro/loading-mask',
+    'pim/router',
+    'require-polyfill'
+],
+    function (
+        $,
+        _,
+        Backbone,
+        mediator,
+        messenger,
+        Dialog,
+        saveformstate,
+        loadTab,
+        UI,
+        LoadingMask,
+        router
+    ) {
         'use strict';
         var initialized = false;
 
         return function () {
+
             if (initialized) {
                 return;
             }

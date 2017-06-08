@@ -5,7 +5,7 @@ define(
         'underscore',
         'routing',
         'pim/router',
-        'text!pim/template/notification/notification-list'
+        'pim/template/notification/notification-list'
     ],
     function (Backbone, $, _, Routing, router, template) {
         'use strict';

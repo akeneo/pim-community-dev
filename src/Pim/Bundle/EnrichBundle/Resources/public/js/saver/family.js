@@ -10,12 +10,10 @@
 define([
         'underscore',
         'pim/saver/base',
-        'module',
         'routing'
     ], function (
         _,
         BaseSaver,
-        module,
         Routing
     ) {
         return _.extend({}, BaseSaver, {
@@ -23,7 +21,7 @@ define([
              * {@inheritdoc}
              */
             getUrl: function (code) {
-                return Routing.generate(module.config().putUrl, {code: code});
+                return Routing.generate(__moduleConfig.putUrl, {code: code});
             }
         });
     }

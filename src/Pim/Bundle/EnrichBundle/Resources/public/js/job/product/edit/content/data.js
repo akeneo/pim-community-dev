@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'text!pim/template/export/product/edit/content/data',
+        'pim/template/export/product/edit/content/data',
         'pim/form',
         'pim/fetcher-registry',
         'pim/form-builder',

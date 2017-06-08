@@ -17,12 +17,11 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text!pim/template/grid/view-selector',
+        'pim/template/grid/view-selector',
         'pim/initselect2',
         'pim/datagrid/state',
         'pim/fetcher-registry',
-        'pim/form-builder',
-        'module'
+        'pim/form-builder'
     ],
     function (
         $,
@@ -34,8 +33,7 @@ define(
         initSelect2,
         DatagridState,
         FetcherRegistry,
-        FormBuilder,
-        module
+        FormBuilder
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -72,8 +70,8 @@ define(
             configure: function (gridAlias) {
                 this.gridAlias = gridAlias;
 
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 this.listenTo(this.getRoot(), 'grid:view-selector:view-created', this.onViewCreated.bind(this));

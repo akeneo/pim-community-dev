@@ -13,7 +13,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/channel/tab/properties/conversion-unit',
+        'pim/template/channel/tab/properties/conversion-unit',
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'

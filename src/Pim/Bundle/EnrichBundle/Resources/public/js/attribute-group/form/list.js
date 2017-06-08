@@ -18,7 +18,7 @@ define([
         'pim/router',
         'pim/user-context',
         'pim/i18n',
-        'text!pim/template/form/attribute-group/list'
+        'pim/template/form/attribute-group/list'
     ],
     function (
         $,

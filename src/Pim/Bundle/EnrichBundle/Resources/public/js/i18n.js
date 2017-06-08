@@ -1,7 +1,7 @@
 'use strict';
 
 define(
-    ['underscore', 'text!pim/template/i18n/flag'],
+    ['underscore', 'pim/template/i18n/flag'],
     function (_, template) {
         return {
             flagTemplate: _.template(template),

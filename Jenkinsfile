@@ -51,11 +51,21 @@ stage("Checkout") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "app/console oro:requirejs:generate-config"
                 sh "app/console assets:install"
+                sh "app/console pim:installer:dump-require-paths"
 
                 stash "pim_community_dev_full"
             }
+
+            docker.image('node').inside {
+                unstash "pim_community_dev_full"
+
+                sh "npm install"
+                sh "npm run webpack"
+
+                stash "pim_community_dev_full"
+            }
+
             deleteDir()
         }
     }
@@ -67,11 +77,21 @@ stage("Checkout") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                    sh "app/console oro:requirejs:generate-config"
                     sh "app/console assets:install"
+                    sh "app/console pim:installer:dump-require-paths"
 
                     stash "pim_enterprise_dev_full"
                 }
+
+                docker.image('node').inside {
+                    unstash "pim_enterprise_dev_full"
+
+                    sh "npm install"
+                    sh "npm run webpack"
+
+                    stash "pim_enterprise_dev_full"
+                }
+
                 deleteDir()
             }
         }
@@ -141,11 +161,11 @@ def runGruntTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
+            docker.image('node').inside("") {
                 unstash "pim_community_dev_full"
                 sh "npm install"
-
-                sh "grunt"
+                sh "npm run lint"
+                sh "npm run webpack-jasmine"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"

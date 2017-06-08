@@ -11,7 +11,7 @@ define([
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/form/properties/translation'
+        'pim/template/form/properties/translation'
     ],
     function (
         _,

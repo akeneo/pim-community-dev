@@ -10,12 +10,10 @@
 define([
         'underscore',
         'pim/saver/base',
-        'module',
         'routing'
     ], function (
         _,
         BaseSaver,
-        module,
         Routing
     ) {
         return _.extend({}, BaseSaver, {

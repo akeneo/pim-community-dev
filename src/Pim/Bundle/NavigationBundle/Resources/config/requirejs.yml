@@ -1,15 +1,11 @@
 config:
     shim:
-        routing:
-            exports: window.Routing
         jquery.form:
             deps:
                 - jquery
         url:
             exports: Url
     paths:
-        routing:                          fosjsrouting/js/router
         jquery.form:                      pimnavigation/lib/jquery-form/jquery.form
-        url:                              pimnavigation/lib/url/url.min
         oro/navigation/collection:        pimnavigation/js/navigation/collection
         oro/navigation/model:             pimnavigation/js/navigation/model

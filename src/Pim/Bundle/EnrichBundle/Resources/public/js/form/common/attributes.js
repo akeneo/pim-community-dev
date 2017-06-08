@@ -21,7 +21,7 @@ define(
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/form/tab/attributes',
+        'pim/template/form/tab/attributes',
         'pim/dialog',
         'oro/messenger',
         'pim/i18n'

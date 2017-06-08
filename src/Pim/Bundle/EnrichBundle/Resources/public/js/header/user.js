@@ -15,7 +15,7 @@ define(
         'pim/router',
         'pim/user-context',
         'pim/notifications',
-        'text!pim/template/header/user'
+        'pim/template/header/user'
     ],
     function (
         _,

@@ -8,9 +8,9 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'pim/dialog',
-        'text!pim/template/attribute-option/index',
-        'text!pim/template/attribute-option/edit',
-        'text!pim/template/attribute-option/show',
+        'pim/template/attribute-option/index',
+        'pim/template/attribute-option/edit',
+        'pim/template/attribute-option/show',
         'jquery-ui'
     ],
     function (
@@ -301,6 +301,12 @@ define(
                     this.rendered = true;
                 }
 
+                this.setSortable();
+                this.updateSortableStatus(this.sortable);
+
+                return this;
+            },
+            setSortable: function() {
                 this.$el.sortable({
                     items: 'tbody tr',
                     axis: 'y',
@@ -319,10 +325,6 @@ define(
                         this.updateSorting();
                     }.bind(this)
                 });
-
-                this.updateSortableStatus(this.sortable);
-
-                return this;
             },
             load: function () {
                 this.itemViews = [];
@@ -496,6 +498,7 @@ define(
             });
 
             mediator.on('attribute:auto_option_sorting:changed', function (autoSorting) {
+                itemCollectionView.setSortable();
                 itemCollectionView.updateSortableStatus(!autoSorting);
             }.bind(this));
         };

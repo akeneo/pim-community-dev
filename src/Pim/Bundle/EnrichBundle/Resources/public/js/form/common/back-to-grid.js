@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/back-to-grid',
+        'pim/template/form/back-to-grid',
         'pim/router',
         'pim/user-context'
     ],

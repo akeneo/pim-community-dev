@@ -1,0 +1,4 @@
+src/**/lib/**/*.js
+src/**/DataGridBundle/**/*.js
+src/**/NavigationBundle/**/*.js
+src/Oro/**/**/*.js

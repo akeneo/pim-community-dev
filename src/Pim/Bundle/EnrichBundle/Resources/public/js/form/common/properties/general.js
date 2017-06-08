@@ -13,7 +13,7 @@ define([
         'pim/form',
         'pim/fetcher-registry',
         'pim/common/property',
-        'text!pim/template/form/properties/general',
+        'pim/template/form/properties/general',
         'jquery.select2'
     ],
     function (

@@ -1,5 +1,5 @@
-define(['underscore'],
-function (_) {
+define(['underscore', 'require-context'],
+function (_, requireContext) {
     'use strict';
 
     /**
@@ -14,14 +14,16 @@ function (_) {
          * @param {function (Object)} callback
          */
         loadModules: function (modules, callback) {
+            var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
-            // load all dependencies and build grid
-            require(requirements, function () {
+
+            require.ensure([], function() {
                 _.each(modules, _.bind(function (value, key) {
-                    modules[key] = this[value];
-                }, _.object(requirements, _.toArray(arguments))));
+                    var module = requireContext(value)
+                    modules[key] = module
+                }, arrayArguments));
                 callback(modules);
-            });
+            })
         }
     };
 });

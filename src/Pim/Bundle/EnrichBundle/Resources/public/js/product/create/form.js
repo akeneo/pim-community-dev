@@ -13,8 +13,8 @@ define(
         'oro/loading-mask',
         'pim/fetcher-registry',
         'pim/initselect2',
-        'text!pim/template/product-create-popin',
-        'text!pim/template/product-create-error',
+        'pim/template/product-create-popin',
+        'pim/template/product-create-error',
         'jquery.select2'
     ],
     function (

@@ -4,8 +4,8 @@ define(
         'underscore',
         'pim/router',
         'pim/dashboard/abstract-widget',
-        'text!pim/dashboard/template/last-operations-widget',
-        'text!pim/dashboard/template/view-all-btn'
+        'pim/dashboard/template/last-operations-widget',
+        'pim/dashboard/template/view-all-btn'
     ],
     function ($, _, router, AbstractWidget, template, viewAllBtnTemplate) {
         'use strict';

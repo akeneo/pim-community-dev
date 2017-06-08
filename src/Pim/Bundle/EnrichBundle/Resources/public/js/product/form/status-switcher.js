@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/status-switcher'
+        'pim/template/product/status-switcher'
     ],
     function (
         _,

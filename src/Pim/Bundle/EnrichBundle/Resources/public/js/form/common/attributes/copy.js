@@ -14,7 +14,7 @@ define(
         'underscore',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/form/tab/attribute/copy',
+        'pim/template/form/tab/attribute/copy',
         'pim/form/common/attributes/copy-field',
         'pim/field-manager',
         'pim/attribute-manager',

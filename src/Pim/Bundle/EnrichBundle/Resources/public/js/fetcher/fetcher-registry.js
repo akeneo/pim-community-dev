@@ -1,6 +1,7 @@
 'use strict';
 
-define(['module', 'jquery', 'underscore'], function (module, $, _) {
+define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'],
+function ($, _, BaseFetcher, requireContext) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -10,23 +11,26 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
          */
         initialize: function () {
             if (null === this.initializePromise) {
+                var fetcherList = __moduleConfig.fetchers
                 var deferred = $.Deferred();
+                var defaultFetcher = 'pim/base-fetcher'
                 var fetchers = {};
 
-                _.each(module.config().fetchers, function (config, name) {
+                _.each(fetcherList, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
-                    config.options = config.options || {};
+                    config.options = config.options || { };
                     fetchers[name] = config;
                 });
 
-                require(_.pluck(fetchers, 'module'), function () {
-                    _.each(fetchers, function (fetcher) {
-                        fetcher.loadedModule = new (require(fetcher.module))(fetcher.options);
-                    });
+                for (var fetcher in fetcherList) {
+                    var moduleName = fetcherList[fetcher].module || defaultFetcher
+                    var ResolvedModule = requireContext(moduleName);
+                    fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
+                    fetchers[fetcher].options = fetcherList[fetcher].options
+                }
 
-                    this.fetchers = fetchers;
-                    deferred.resolve();
-                }.bind(this));
+                this.fetchers = fetchers;
+                deferred.resolve();
 
                 this.initializePromise = deferred.promise();
             }
@@ -42,7 +46,9 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
          * @return Fetcher
          */
         getFetcher: function (entityType) {
-            return (this.fetchers[entityType] || this.fetchers.default).loadedModule;
+            var fetcher = (this.fetchers[entityType] || this.fetchers.default)
+
+            return fetcher.loadedModule;
         },
 
         /**

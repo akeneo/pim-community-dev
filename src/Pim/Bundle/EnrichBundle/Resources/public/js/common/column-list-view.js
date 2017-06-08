@@ -5,7 +5,7 @@ define([
     'underscore',
     'oro/translator',
     'backbone',
-    'text!pim/template/datagrid/configure-columns-action'
+    'pim/template/datagrid/configure-columns-action'
 ], function (
     $,
     _,

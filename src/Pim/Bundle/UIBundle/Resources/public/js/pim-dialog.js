@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/router', 'backbone/bootstrap-modal'],
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/router', 'bootstrap-modal'],
     function ($, _, Backbone, __, router) {
         'use strict';
 

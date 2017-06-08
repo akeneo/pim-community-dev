@@ -16,7 +16,7 @@ define(
         'pim/router',
         'pim/common/property',
         'oro/messenger',
-        'text!pim/template/export/common/edit/launch'
+        'pim/template/export/common/edit/launch'
     ],
     function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, template) {
         return BaseForm.extend({

@@ -15,7 +15,7 @@ define(
         'pim/field-manager',
         'pim/fetcher-registry',
         'oro/mediator',
-        'text!pim/template/product/tab/attribute/variant-group'
+        'pim/template/product/tab/attribute/variant-group'
     ],
     function ($, _, BaseForm, FieldManager, FetcherRegistry, mediator, variantGroupTemplate) {
         return BaseForm.extend({

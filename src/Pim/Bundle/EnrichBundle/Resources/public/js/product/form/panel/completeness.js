@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'pim/form',
-        'text!pim/template/product/panel/completeness',
+        'pim/template/product/panel/completeness',
         'pim/fetcher-registry',
         'pim/i18n',
         'pim/user-context'

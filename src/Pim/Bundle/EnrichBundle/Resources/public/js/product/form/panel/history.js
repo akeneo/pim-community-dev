@@ -13,13 +13,13 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/panel/history',
+        'pim/template/product/panel/history',
         'routing',
         'oro/mediator',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n',
-        'backbone/bootstrap-modal'
+        'bootstrap-modal'
     ],
     function ($, _, Backbone, BaseForm, template, Routing, mediator, FetcherRegistry, UserContext, i18n) {
         return BaseForm.extend({

@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-config-provider'],
-    function ($, _, ConfigProvider) {
+    ['jquery', 'underscore', 'pim/form-config-provider', 'require-context'],
+    function ($, _, ConfigProvider, requireContext) {
         var getForm = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form     = _.first(_.where(extensionMap, { code: formName }));
@@ -14,9 +14,8 @@ define(
                     );
                 }
 
-                require([form.module], function (Form) {
-                    deferred.resolve(Form);
-                });
+                var ResolvedModule = requireContext(form.module);
+                deferred.resolve(ResolvedModule)
 
                 return deferred.promise();
             });

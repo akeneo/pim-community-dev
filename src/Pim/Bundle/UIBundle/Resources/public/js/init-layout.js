@@ -1,8 +1,8 @@
 'use strict';
 
 define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
-    'oro/delete-confirmation', 'oro/messenger', 'bootstrap'
-    ], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
+        'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-setup'
+], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
 
 
     /* ============================================================

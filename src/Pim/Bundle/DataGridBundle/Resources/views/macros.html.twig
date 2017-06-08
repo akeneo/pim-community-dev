@@ -8,9 +8,9 @@
          {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
          data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
-        require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
-        function ($, datagridBuilder) {
-            var builders = _.toArray(arguments).slice(2);
+        require(['jquery', 'oro/datagrid-builder', 'underscore'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        function ($, datagridBuilder, _) {
+            var builders = _.toArray(arguments).slice(3);
             $(function () {
                 datagridBuilder(builders);
             });
@@ -28,7 +28,7 @@
             [
                 'underscore',
                 'jquery',
-                'routing',
+                'pim-router',
                 'oro/datagrid-builder',
                 'oro/pageable-collection',
                 'pim/datagrid/state',
@@ -170,12 +170,12 @@
 
                             var modules = resp.metadata.requireJSModules;
                             modules.push('pim/datagrid/state-listener');
-                            require(modules, function () {
-                                var builders = _.toArray(arguments);
-                                $(function () {
-                                    datagridBuilder(builders);
-                                });
-                            });
+                            var resolvedModules = []
+                            _.each(modules, function(module) {
+                              var resolvedModule = require(module)
+                              resolvedModules.push(resolvedModule)
+                            })
+                            datagridBuilder(resolvedModules);
                         });
                     };
                 });
