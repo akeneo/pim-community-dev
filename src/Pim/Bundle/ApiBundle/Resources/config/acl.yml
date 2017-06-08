@@ -63,3 +63,8 @@ pim_api_currency_list:
     type: action
     label: pim_api.acl.currency.list
     group_name: pim_api.acl_group.currency
+
+pim_api_association_type_list:
+    type: action
+    label: pim_api.acl.association_type.list
+    group_name: pim_api.acl_group.association_type

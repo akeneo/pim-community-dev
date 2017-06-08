@@ -12,6 +12,7 @@ parameters:
     pim_api.normalizer.locale.class: Pim\Component\Api\Normalizer\LocaleNormalizer
     pim_api.normalizer.file.class: Pim\Component\Api\Normalizer\FileNormalizer
     pim_api.normalizer.currency.class: Pim\Component\Api\Normalizer\CurrencyNormalizer
+    pim_api.normalizer.association_type.class: Pim\Component\Api\Normalizer\AssociationTypeNormalizer
 
 services:
     fos_rest.serializer:
@@ -112,5 +113,12 @@ services:
         class: '%pim_api.normalizer.currency.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.currency'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.association_type:
+        class: '%pim_api.normalizer.association_type.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

@@ -25,3 +25,6 @@ pim_api.acl_group.attribute_group:
 pim_api.acl_group.currency:
     order: 20
     permission_group: api
+pim_api.acl_group.association_type:
+    order: 20
+    permission_group: api

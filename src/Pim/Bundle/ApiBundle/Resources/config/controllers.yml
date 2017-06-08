@@ -12,6 +12,7 @@ parameters:
     pim_api.controller.media_file.class: Pim\Bundle\ApiBundle\Controller\MediaFileController
     pim_api.controller.currency.class: Pim\Bundle\ApiBundle\Controller\CurrencyController
     pim_api.controller.measure_family.class: Pim\Bundle\ApiBundle\Controller\MeasureFamilyController
+    pim_api.controller.association_type.class: Pim\Bundle\ApiBundle\Controller\AssociationTypeController
 
 services:
     pim_api.controller.category:
@@ -175,4 +176,13 @@ services:
             - '@pim_api.converter.measure_family'
             - '@pim_api.pagination.offset_hal_paginator'
             - '%akeneo_measure.measures_config%'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.association_type:
+        class: '%pim_api.controller.association_type.class%'
+        arguments:
+            - '@pim_api.repository.association_type'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '%pim_api.configuration%'
