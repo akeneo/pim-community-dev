@@ -12,3 +12,4 @@ services:
             - '@security.authorization_checker'
             - '@logger'
             - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'

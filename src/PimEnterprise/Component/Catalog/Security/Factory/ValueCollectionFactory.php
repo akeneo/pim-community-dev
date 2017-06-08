@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Factory;
 
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Log\LoggerInterface;
@@ -10,7 +10,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Decorates the CE factory to be able to filter values to return only attributes and locales viewable by the user
+ * Decorates the CE factory to be able to get only granted values. On a value, permission can be added on:
+ *  - an attribute. You cannot see an attribute if it belongs to a not granted attribute group
+ *  - a locale. Permission can be added directly on it
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -22,36 +24,42 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     private $valueCollectionFactory;
 
     /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    private $tokenStorage;
 
     /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
     /** @var LoggerInterface */
-    protected $logger;
+    private $logger;
 
-    /** @var CachedObjectRepositoryInterface */
-    protected $attributeRepository;
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
 
     /**
-     * @param ValueCollectionFactoryInterface $productValueCollectionFactory
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param LoggerInterface                 $logger
-     * @param CachedObjectRepositoryInterface $attributeRepository
+     * @param ValueCollectionFactoryInterface       $valueCollectionFactory
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param LoggerInterface                       $logger
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
      */
     public function __construct(
         ValueCollectionFactoryInterface $valueCollectionFactory,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         LoggerInterface $logger,
-        CachedObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->valueCollectionFactory = $valueCollectionFactory;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->logger = $logger;
         $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -68,25 +76,76 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
         $rawValuesFiltered = [];
         foreach ($rawValues as $attributeCode => $values) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if (null === $attribute) {
-                $this->logger->warning(
-                    sprintf(
-                        'Tried to load a product value with the attribute "%s" that does not exist.',
-                        $attributeCode
-                    )
-                );
+            $isGrantedAttribute = $this->isGrantedAttribute($attributeCode);
+            if ($isGrantedAttribute) {
+                $grantedValues = $this->getGrantedProductValueLocalizable($values);
 
-                continue;
+                if (!empty($grantedValues)) {
+                    $rawValuesFiltered[$attributeCode] = $grantedValues;
+                }
             }
-
-            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)) {
-                continue;
-            }
-
-            $rawValuesFiltered[$attributeCode] = $values;
         }
 
         return $this->valueCollectionFactory->createFromStorageFormat($rawValuesFiltered);
+    }
+
+    /**
+     * Get only granted localizable product values (so at least viewable) or non localizable product values
+     *
+     * @param array $values
+     *
+     * @return array
+     */
+    private function getGrantedProductValueLocalizable(array $values)
+    {
+        foreach ($values as $channelCode => $localeRawValue) {
+            foreach ($localeRawValue as $localeCode => $data) {
+                if ('<all_locales>' !== $localeCode) {
+                    $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+                    if (null === $locale) {
+                        $this->logger->warning(
+                            sprintf(
+                                'Tried to load a product value with the locale "%s" that does not exist.',
+                                $localeCode
+                            )
+                        );
+
+                        unset($values[$channelCode][$localeCode]);
+                    } elseif (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+                        unset($values[$channelCode][$localeCode]);
+                    }
+                }
+            }
+
+            if (empty($values[$channelCode])) {
+                unset($values[$channelCode]);
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * Check if attribute is granted
+     *
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    private function isGrantedAttribute($attributeCode)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (null === $attribute) {
+            $this->logger->warning(
+                sprintf(
+                    'Tried to load a product value with the attribute "%s" that does not exist.',
+                    $attributeCode
+                )
+            );
+
+            return false;
+        }
+
+        return $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute);
     }
 }
