@@ -10,7 +10,6 @@ const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 console.log('Starting webpack from', rootDir)
 
@@ -23,6 +22,7 @@ module.exports = {
         filename: '[name].min.js',
         chunkFilename: '[name].bundle.js'
     },
+    devtool: 'cheap-source-map',
     resolve: {
         symlinks: false,
         alias: aliases
@@ -182,8 +182,5 @@ module.exports = {
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         }),
         new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
-
-        // Uglyify plugin can decrease performance
-        // new UglifyJSPlugin()
     ]
 }
