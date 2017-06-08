@@ -1,5 +1,6 @@
 parameters:
     pimee_catalog.event_subscriber.index_products.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber
+    pimee_catalog.event_subscriber.filter_not_granted_product_data.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductDataSubscriber
 
 services:
     # CE override
@@ -10,3 +11,10 @@ services:
             - '@pim_catalog.elasticsearch.published_product_indexer'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_catalog.event_subscriber.filter_not_granted_product_data:
+        class: '%pimee_catalog.event_subscriber.filter_not_granted_product_data.class%'
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: doctrine.event_subscriber }
