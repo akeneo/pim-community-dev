@@ -60,6 +60,7 @@ TODO
 Oro\Bundle\NavigationBundle\OroNavigationBundle
 Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle
 APY\JsFormValidationBundle\APYJsFormValidationBundle
+Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
 ```
 
 4. Then remove your old upgrades folder:
@@ -107,3 +108,69 @@ TODO
 
 TODO
 
+## Building the front-end with webpack
+
+1. Install the latest npm and nodejs https://nodejs.org/en/download/package-manager/
+2. Run `php app/console pim:installer:dump-require-paths`
+3. Run `php app/console assets:install --symlink`
+4. Create a file in your project root called `package.json` with the following contents:
+
+```js
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "description": "your-project-description",
+  "scripts": {
+    "install": "npm install vendor/akeneo/pim-community-dev",
+    "webpack": "webpack --display-error-details --config vendor/akeneo/pim-community-dev/webpack.config.js --progress --display-modules",
+    "webpack-watch": "webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch"
+  }
+}
+```
+
+5. Run `npm install` inside your project root
+6. Run `npm run webpack`
+7. Run `php app/console cache:clear`
+8. Add to your .gitignore the following lines:
+
+```
+  node_modules
+  web/dist/*
+  web/cache/*
+  npm-debug.log
+```
+
+If you have any custom Javascript you will need to make the following changes:
+
+When you require a html template, you no longer have to use the `text!` prefix.
+
+Before:
+
+```javascript
+  define([
+     'text!oro/template/system/tab/system'
+  ],
+```
+
+After:
+```javascript
+  define([
+     'oro/template/system/tab/system'
+  ],
+```
+
+Instead of using `module.config()` to access module configuration, you must instead use `__moduleConfig`.
+
+Before:
+```javascript
+   Routing.generate(module.config().url, {identifier: datagridView.id});
+```
+
+After:
+  ```javascript
+    Routing.generate(__moduleConfig.url, {identifier: datagridView.id});
+  ```
+
+You can now write custom Javascript using es2017 (es2015 and above) syntax. We use babel to transpile the JS during the webpack build step. Check out the full guide here - https://babeljs.io/learn-es2015/
+
+While you are developing custom Javscript, you can run `npm run webpack-watch` to automatically compile and refresh your changes. Otherwise, you can run `npm run webpack` without refresh to see your changes.
