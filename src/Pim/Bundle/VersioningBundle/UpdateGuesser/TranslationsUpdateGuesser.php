@@ -6,6 +6,7 @@ use Akeneo\Component\Localization\Model\TranslationInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 
 /**
  * Translation update guesser
@@ -38,7 +39,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
      */
     public function supportAction($action)
     {
-        return $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY;
+        return in_array($action, [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]);
     }
 
     /**
@@ -49,6 +50,12 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
         $pendings = [];
         if ($entity instanceof TranslationInterface) {
             $translatedEntity = $entity->getForeignKey();
+            $state = $em->getUnitOfWork()->getEntityState($translatedEntity);
+
+            if (UnitOfWork::STATE_REMOVED === $state) {
+                return [];
+            }
+
             if ($translatedEntity instanceof VersionableInterface ||
                 in_array(ClassUtils::getClass($translatedEntity), $this->versionableEntities)) {
                 $pendings[] = $translatedEntity;
