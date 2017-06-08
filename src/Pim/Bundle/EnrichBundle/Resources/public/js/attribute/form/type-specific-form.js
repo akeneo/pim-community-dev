@@ -16,24 +16,37 @@ define([
     'backbone',
     'oro/translator',
     'pim/form',
-    'pim/form-builder'
+    'pim/form-builder',
+    'pim/attribute-edit-form/type-specific-form-registry'
 ], function (
     $,
     _,
     Backbone,
     __,
     BaseForm,
-    FormBuilder
+    FormBuilder,
+    FormRegistry
 ) {
     return BaseForm.extend({
+        config: {},
+
+        /**
+         * {@inheritdoc}
+         */
+        initialize: function (config) {
+            this.config = config.config;
+
+            BaseForm.prototype.initialize.apply(this, arguments);
+        },
+
         /**
          * {@inheritdoc}
          */
         configure: function () {
-            var typeSpecificFormName = this.getRoot().getAdditionalView('type-specific');
+            var formName = FormRegistry.initialize().getFormName(this.getRoot().getType(), this.config.mode);
 
-            if (undefined !== typeSpecificFormName && null !== typeSpecificFormName) {
-                return FormBuilder.buildForm(typeSpecificFormName)
+            if (undefined !== formName && null !== formName) {
+                return FormBuilder.buildForm(formName)
                     .then(function (form) {
                         this.addExtension(
                             form.code,

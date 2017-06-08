@@ -160,3 +160,5 @@ extensions:
         parent: pim-attribute-create-form-properties
         targetZone: accordion
         position: 110
+        config:
+            mode: create

@@ -11,7 +11,7 @@ define([
     BaseEditForm
 ) {
     return BaseEditForm.extend({
-        additionalViews: {},
+        type: null,
 
         /**
          * {@inheritdoc}
@@ -23,24 +23,21 @@ define([
         },
 
         /**
-         * Sets a view name for an arbitrary key, to be used later for dynamic tree building purpose.
+         * Sets the attribute type for dynamic tree building purpose at configuration time.
          *
-         * @param {String} key
-         * @param {String} viewName
+         * @param {String} type
          */
-        setAdditionalView: function (key, viewName) {
-            this.additionalViews[key] = viewName;
+        setType: function (type) {
+            this.type = type;
         },
 
         /**
          * Returns the view name associated to the key.
          *
-         * @param {String} key
-         *
          * @return {String}
          */
-        getAdditionalView: function (key) {
-            return this.additionalViews[key];
+        getType: function () {
+            return this.type;
         }
     });
 });

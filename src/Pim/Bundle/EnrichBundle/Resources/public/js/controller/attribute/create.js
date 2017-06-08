@@ -8,10 +8,9 @@
 define([
     'underscore',
     'pim/controller/base',
-    'pim/form-builder',
-    'pim/attribute-edit-form/type-specific-form-registry'
+    'pim/form-builder'
 ],
-function (_, BaseController, FormBuilder, FormRegistry) {
+function (_, BaseController, FormBuilder) {
     return BaseController.extend({
         /**
          * {@inheritdoc}
@@ -25,10 +24,7 @@ function (_, BaseController, FormBuilder, FormRegistry) {
 
             return FormBuilder.buildForm('pim-attribute-create-form')
                 .then(function (form) {
-                    form.setAdditionalView(
-                        'type-specific',
-                        FormRegistry.initialize().getFormName(type, 'create')
-                    );
+                    form.setType(type);
 
                     return form.configure().then(function () {
                         return form;

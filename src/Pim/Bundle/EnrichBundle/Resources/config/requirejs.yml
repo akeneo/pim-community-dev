@@ -481,12 +481,18 @@ config:
                 pim_catalog_metric:
                     create: pim-attribute-form-metric-create
                     edit:   pim-attribute-form-metric-edit
+                pim_catalog_multiselect:
+                    create: pim-attribute-form-select
+                    edit:   pim-attribute-form-select
                 pim_catalog_number:
                     create: pim-attribute-form-number
                     edit:   pim-attribute-form-number
                 pim_catalog_price_collection:
                     create: pim-attribute-form-price
                     edit:   pim-attribute-form-price
+                pim_catalog_simpleselect:
+                    create: pim-attribute-form-select
+                    edit:   pim-attribute-form-select
                 pim_catalog_text:
                     create: pim-attribute-form-text
                     edit:   pim-attribute-form-text
@@ -780,8 +786,10 @@ config:
 
         # Attribute
         pim/attribute-edit-form:                                pimenrich/js/attribute/form/edit-form
+        pim/attribute-edit-form/tab/choices:                    pimenrich/js/attribute/form/choices
         pim/attribute-edit-form/delete:                         pimenrich/js/attribute/form/delete
         pim/attribute-edit-form/type-specific-form:             pimenrich/js/attribute/form/type-specific-form
+        pim/attribute-edit-form/type-specific-form-registry:    pimenrich/js/attribute/form/type-specific-form-registry
         pim/attribute-edit-form/properties/available-locales:   pimenrich/js/attribute/form/properties/available-locales
         pim/attribute-edit-form/properties/boolean:             pimenrich/js/attribute/form/properties/boolean
         pim/attribute-edit-form/properties/date:                pimenrich/js/attribute/form/properties/date
@@ -794,6 +802,7 @@ config:
         pim/attribute-edit-form/properties/text:                pimenrich/js/attribute/form/properties/text
         pim/attribute-edit-form/properties/type:                pimenrich/js/attribute/form/properties/type
         pim/attribute-edit-form/properties/validation-regexp:   pimenrich/js/attribute/form/properties/validation-regexp
+        pim/attribute-edit-form/choices/options-grid:           pimenrich/js/attribute/form/choices/options-grid
 
         # Common
         pim/common/grid:                   pimenrich/js/form/common/grid
@@ -1065,6 +1074,8 @@ config:
         pim/template/attribute/tab/properties/field:        pimenrich/templates/attribute/tab/properties/field.html
         pim/template/attribute/tab/properties/text:         pimenrich/templates/attribute/tab/properties/text.html
         pim/template/attribute/tab/properties/select:       pimenrich/templates/attribute/tab/properties/select.html
+        pim/template/attribute/tab/choices:                 pimenrich/templates/attribute/tab/choices.html
+        pim/template/attribute/tab/choices/options-grid:    pimenrich/templates/attribute/tab/choices/options-grid.html
 
         # Order last
         pim/form: pimenrich/js/product/form

@@ -13,8 +13,7 @@ define([
     'pim/user-context',
     'pim/page-title',
     'pim/error',
-    'pim/i18n',
-    'pim/attribute-edit-form/type-specific-form-registry'
+    'pim/i18n'
 ],
 function (
     _,
@@ -24,8 +23,7 @@ function (
     UserContext,
     PageTitle,
     Error,
-    i18n,
-    FormRegistry
+    i18n
 ) {
     return BaseController.extend({
         /**
@@ -50,10 +48,7 @@ function (
 
                     return FormBuilder.buildForm('pim-attribute-edit-form')
                         .then(function (form) {
-                            form.setAdditionalView(
-                                'type-specific',
-                                FormRegistry.initialize().getFormName(attribute.type, 'edit')
-                            );
+                            form.setType(attribute.type);
 
                             return form.configure().then(function () {
                                 return form;

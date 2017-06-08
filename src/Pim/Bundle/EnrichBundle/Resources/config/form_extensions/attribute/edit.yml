@@ -177,13 +177,39 @@ extensions:
         parent: pim-attribute-edit-form-properties
         targetZone: accordion
         position: 110
+        config:
+            mode: edit
+
+    pim-attribute-edit-form-choices:
+        module: pim/attribute-edit-form/tab/choices
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: pim_enrich.form.attribute.tab.choices.title
+            activeForTypes: [pim_catalog_multiselect, pim_catalog_simpleselect]
+
+    pim-attribute-edit-form-choices-auto-sorting:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-choices
+        targetZone: form-container
+        position: 100
+        config:
+            fieldName: auto_option_sorting
+            defaultValue: false
+
+    pim-attribute-edit-form-choices-options-grid:
+        module: pim/attribute-edit-form/choices/options-grid
+        parent: pim-attribute-edit-form-choices
+        targetZone: bottom
+        position: 100
 
     pim-attribute-edit-form-history:
         module: pim/common/tab/history
         parent: pim-attribute-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_channel_history
-        position: 110
+        position: 120
         config:
             class: attribute
             title: pim_enrich.form.attribute.tab.history.title
