@@ -70,7 +70,10 @@ const utils = {
         })
 
         // Derive the allowed context paths from all the paths in all the requirejs.yml files
-        const contextPaths = values(aliases).map(alias => globToRegex(alias.replace('.js', '')).toString().slice(2, -2))
+        const contextPaths = values(aliases).map(alias => {
+          const filename = alias.replace(/.js$/, '')
+          return globToRegex(filename).toString().slice(2, -2)
+        })
         const context = `/^.*(${contextPaths.join('|')})$/`
 
         return { paths, config, context, aliases }
