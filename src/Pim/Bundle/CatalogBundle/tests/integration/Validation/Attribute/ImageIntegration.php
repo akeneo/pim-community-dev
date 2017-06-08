@@ -55,6 +55,11 @@ class ImageIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveAReferenceDataName('pim_catalog_image');
     }
 
+    public function testImageShouldNotHaveAutoOptionSorting()
+    {
+        $this->assertDoesNotHaveAutoOptionSorting('pim_catalog_image');
+    }
+
     public function testImageShouldNotHaveMaxCharacters()
     {
         $this->assertDoesNotHaveMaxCharacters('pim_catalog_image');
