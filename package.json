@@ -1,20 +1,15 @@
 {
   "name": "pim-enterprise-dev",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Akeneo PIM Enterprise Application",
   "homepage": "http://www.akeneo.com",
   "private": true,
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "grunt": "~0.4.5",
-    "grunt-contrib-jasmine": "~1.0.0",
-    "grunt-eslint": "^19.0.0",
-    "grunt-recess": "~1.0.1",
-    "grunt-template-jasmine-requirejs": "~0.2.3",
-    "time-grunt": "~1.1.0"
-  },
   "scripts": {
-    "test": "grunt test"
+    "install": "npm install vendor/akeneo/pim-community-dev",
+    "webpack": "webpack --display-error-details --config vendor/akeneo/pim-community-dev/webpack.config.js --progress --display-modules",
+    "webpack-watch": "webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch",
+    "lint": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet",
+    "lint-fix": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet --fix"
   },
   "repository": {
     "type": "git",

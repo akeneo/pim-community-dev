@@ -8,7 +8,6 @@
  */
 define(
     [
-        'module',
         'jquery',
         'underscore',
         'backbone',
@@ -16,7 +15,6 @@ define(
         'pim/form'
     ],
     function (
-        module,
         $,
         _,
         Backbone,
@@ -30,8 +28,8 @@ define(
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);

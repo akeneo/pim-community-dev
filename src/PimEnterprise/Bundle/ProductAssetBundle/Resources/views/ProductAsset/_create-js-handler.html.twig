@@ -12,7 +12,7 @@
             'use strict';
             $(function() {
                 var checkNextCode = function (event, dialog, codeInput) {
-                    if (_.isUndefined(event.bubbles)) {
+                    if (typeof event.bubbles === 'undefined') {
                         return false;
                     }
                     var iconDiv = codeInput.closest('.AknFieldContainer').find('.icons-container');
@@ -45,7 +45,7 @@
                     $.ajax({
                         url: Routing.generate('pimee_product_asset_next_code', { code: codeInput.val() })
                     }).done(function (data) {
-                        if (!_.isUndefined(data.nextCode)) {
+                        if (typeof data.nextCode === 'undefined') {
                             codeInput.val(data.nextCode);
                             iconDiv.empty().append(icon);
                             icon.tooltip({

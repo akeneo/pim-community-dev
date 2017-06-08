@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/grid/view-selector/selector',
+        'pimcommunity/grid/view-selector/selector',
         'pim/datagrid/state',
         'pim/fetcher-registry'
     ],

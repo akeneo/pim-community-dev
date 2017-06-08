@@ -7,13 +7,14 @@ define(
         'backbone',
         'routing',
         'pim/form',
-        'text!pimee/template/picker/asset-grid',
-        'text!pimee/template/picker/basket',
+        'pimee/template/picker/asset-grid',
+        'pimee/template/picker/basket',
         'oro/datagrid-builder',
         'oro/mediator',
         'pim/fetcher-registry',
         'pim/user-context',
-        'oro/datafilter/product_category-filter'
+        'oro/datafilter/product_category-filter',
+        'require-context'
     ],
     function (
         $,
@@ -27,7 +28,8 @@ define(
         mediator,
         FetcherRegistry,
         UserContext,
-        CategoryFilter
+        CategoryFilter,
+        requireContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -110,10 +112,12 @@ define(
                         { 'metadata': response.metadata, 'data': JSON.parse(response.data) }
                     );
 
-                    require(response.metadata.requireJSModules, function () {
-                        datagridBuilder(_.toArray(arguments));
-                    });
+                    var resolvedModules = []
+                    response.metadata.requireJSModules.forEach(function(module) {
+                        resolvedModules.push(requireContext(module))
+                    })
 
+                    datagridBuilder(resolvedModules);
                 }.bind(this));
             },
 

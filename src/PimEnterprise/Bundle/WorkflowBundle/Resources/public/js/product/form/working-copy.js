@@ -11,7 +11,7 @@ define(
         'backbone',
         'pim/form',
         'pim/attribute-manager',
-        'text!pimee/template/product/tab/attribute/modified-by-draft'
+        'pimee/template/product/tab/attribute/modified-by-draft'
     ],
     function (
         $,

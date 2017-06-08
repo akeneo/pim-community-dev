@@ -10,19 +10,17 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'module',
         'routing',
         'oro/messenger',
         'pim/form',
         'pim/product-manager',
-        'text!pimee/template/product/submit-draft',
+        'pimee/template/product/submit-draft',
         'pim/form-modal'
     ],
     function (
         $,
         _,
         Backbone,
-        module,
         Routing,
         messenger,
         BaseForm,
@@ -46,7 +44,7 @@ define(
              * @returns {Promise}
              */
             configure: function () {
-                this.routes = module.config().routes;
+                this.routes = __moduleConfig.routes;
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 

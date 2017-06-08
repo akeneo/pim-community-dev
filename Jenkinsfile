@@ -49,11 +49,21 @@ stage("Checkout") {
             unstash "project_files"
 
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-            sh "app/console oro:requirejs:generate-config"
             sh "app/console assets:install"
+            sh "app/console pim:installer:dump-require-paths"
 
             stash "project_files_full"
         }
+
+        docker.image('node').inside {
+            unstash "project_files_full"
+
+            sh "npm install"
+            sh "npm run webpack"
+
+            stash "project_files_full"
+        }
+
         deleteDir()
     }
 }
@@ -100,11 +110,10 @@ def runGruntTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
+            docker.image('node').inside("") {
                 unstash "project_files_full"
                 sh "npm install"
-
-                sh "grunt"
+                sh "npm run lint"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"

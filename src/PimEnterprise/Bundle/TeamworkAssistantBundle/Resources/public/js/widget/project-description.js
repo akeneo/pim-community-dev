@@ -12,7 +12,7 @@ define(
         'oro/translator',
         'pim/form',
         'backbone',
-        'text!teamwork-assistant/templates/widget/project-description'
+        'teamwork-assistant/templates/widget/project-description'
     ],
     function ($, _, __, BaseForm, Backbone, template) {
         return BaseForm.extend({

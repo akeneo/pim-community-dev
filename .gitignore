@@ -2,6 +2,8 @@ web/bundles/*
 web/media/*
 web/css/*
 web/js/*
+web/dist/*
+web/cache/*
 app/archive/*
 app/cache/*
 app/config/parameters.yml
@@ -24,3 +26,14 @@ composer.lock
 node_modules/
 phpspec.yml
 .grunt
+
+web/dist
+web/dist/app.min.js
+web/dist/paths.js
+web/dist/general.js
+npm-debug.log
+
+web/dist/0.bundle.js
+web/dist/app.min.js
+
+web/dist/general.js

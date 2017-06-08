@@ -15,8 +15,8 @@ define(
         'pim/i18n',
         'pim/fetcher-registry',
         'pim/user-context',
-        'text!teamwork-assistant/templates/widget/project-selector',
-        'text!teamwork-assistant/templates/widget/project-selector-line'
+        'teamwork-assistant/templates/widget/project-selector',
+        'teamwork-assistant/templates/widget/project-selector-line'
     ],
     function ($, _, __, BaseForm, Backbone, i18n, FetcherRegistry, UserContext, template, lineTemplate) {
         return BaseForm.extend({

@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!teamwork-assistant/templates/grid/view-selector/remove-project',
+        'teamwork-assistant/templates/grid/view-selector/remove-project',
         'pim/dialog',
         'pim/user-context',
         'pim/fetcher-registry',

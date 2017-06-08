@@ -12,7 +12,7 @@ define([
         'pim/form',
         'pim/fetcher-registry',
         'pim/common/property',
-        'text!pimee/template/form/tab/permission'
+        'pimee/template/form/tab/permission'
     ],
     function (
         _,
@@ -41,6 +41,7 @@ define([
              * {@inheritdoc}
              */
             configure: function () {
+
                 this.trigger('tab:register', {
                     code: this.config.tabCode ? this.config.tabCode : this.code,
                     label: __(this.config.title)

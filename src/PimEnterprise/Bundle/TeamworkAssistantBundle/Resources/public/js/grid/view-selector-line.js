@@ -14,12 +14,12 @@ define(
         'underscore',
         'oro/translator',
         'pim/i18n',
-        'pim/grid/view-selector/line',
+        'pimcommunity/grid/view-selector/line',
         'pim/user-context',
         'pim/date-context',
         'pim/formatter/date',
-        'text!pim/template/grid/view-selector/line',
-        'text!teamwork-assistant/templates/grid/view-selector/line-project'
+        'pim/template/grid/view-selector/line',
+        'teamwork-assistant/templates/grid/view-selector/line-project'
     ],
     function (
         $,

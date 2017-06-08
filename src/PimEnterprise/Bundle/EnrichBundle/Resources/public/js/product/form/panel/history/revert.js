@@ -7,7 +7,7 @@ define(
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pimee/template/product/panel/history/revert',
+        'pimee/template/product/panel/history/revert',
         'pim/router',
         'oro/messenger',
         'oro/loading-mask',

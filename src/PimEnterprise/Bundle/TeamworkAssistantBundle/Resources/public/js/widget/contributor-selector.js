@@ -14,8 +14,8 @@ define(
         'backbone',
         'pim/user-context',
         'pim/fetcher-registry',
-        'text!teamwork-assistant/templates/widget/contributor-selector',
-        'text!teamwork-assistant/templates/widget/contributor-selector-line'
+        'teamwork-assistant/templates/widget/contributor-selector',
+        'teamwork-assistant/templates/widget/contributor-selector-line'
     ],
     function ($, _, __, BaseForm, Backbone, UserContext, FetcherRegistry, template, lineTemplate) {
         return BaseForm.extend({

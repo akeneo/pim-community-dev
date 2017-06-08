@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pimee/template/product/meta/draft-status'
+        'pimee/template/product/meta/draft-status'
     ],
     function (
         _,

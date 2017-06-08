@@ -6,8 +6,8 @@ define(
         'underscore',
         'pim/router',
         'pim/dashboard/abstract-widget',
-        'text!pimee/templates/dashboard/proposal-widget',
-        'text!pim/dashboard/template/view-all-btn'
+        'pimee/templates/dashboard/proposal-widget',
+        'pim/dashboard/template/view-all-btn'
     ],
     function ($, _, router, AbstractWidget, widgetTemplate, widgetTemplateHeader) {
         return AbstractWidget.extend({

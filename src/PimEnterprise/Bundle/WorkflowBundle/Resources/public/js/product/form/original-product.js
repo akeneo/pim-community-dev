@@ -9,15 +9,13 @@
 define(
     [
         'underscore',
-        'module',
         'pim/form',
-        'text!pimee/template/product/original-product',
+        'pimee/template/product/original-product',
         'pim/router',
         'pim/user-context'
     ],
     function (
         _,
-        module,
         BaseForm,
         template,
         router,
@@ -46,7 +44,7 @@ define(
             },
             goToOriginalProduct: function () {
                 router.redirectToRoute(
-                    module.config().urls.product_edit,
+                    __moduleConfig.urls.product_edit,
                     {
                         id: this.getFormData().meta.original_product_id,
                         dataLocale: UserContext.get('catalogLocale')

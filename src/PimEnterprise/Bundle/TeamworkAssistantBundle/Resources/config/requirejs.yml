@@ -21,15 +21,9 @@ config:
 
     map:
         '*':
-            pim/grid/view-selector/selector: teamwork-assistant/grid/view-selector/selector
-            pim/grid/view-selector/line: teamwork-assistant/grid/view-selector/line
-            pim/grid/view-selector/current: teamwork-assistant/grid/view-selector/current
-        teamwork-assistant/grid/view-selector/selector:
-            pim/grid/view-selector/selector: pim/grid/view-selector/selector
-        teamwork-assistant/grid/view-selector/line:
-            pim/grid/view-selector/line: pim/grid/view-selector/line
-        teamwork-assistant/grid/view-selector/current:
-            pim/grid/view-selector/current: pim/grid/view-selector/current
+            pim/grid/view-selector/selector: pimenterpriseteamworkassistant/js/grid/view-selector
+            pim/grid/view-selector/line: pimenterpriseteamworkassistant/js/grid/view-selector-line
+            pim/grid/view-selector/current: pimenterpriseteamworkassistant/js/grid/view-selector-current
 
     paths:
         # Forms

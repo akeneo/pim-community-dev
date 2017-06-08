@@ -5,7 +5,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pimee/template/product/panel/history/published'
+        'pimee/template/product/panel/history/published'
     ],
     function (_, Backbone, BaseForm, publishedTemplate) {
         return BaseForm.extend({

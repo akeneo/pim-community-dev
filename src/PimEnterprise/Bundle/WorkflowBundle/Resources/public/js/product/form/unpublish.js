@@ -9,7 +9,7 @@
 define(
     [
         'underscore',
-        'text!pimee/template/product/unpublish',
+        'pimee/template/product/unpublish',
         'routing',
         'pimee/product-edit-form/publish',
         'pim/router'

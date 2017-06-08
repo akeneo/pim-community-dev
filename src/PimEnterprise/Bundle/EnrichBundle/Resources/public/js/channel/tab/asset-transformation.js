@@ -11,7 +11,7 @@ define([
         'underscore',
         'pim/form',
         'routing',
-        'text!pimee/template/channel/tab/asset-transformation',
+        'pimee/template/channel/tab/asset-transformation',
         'oro/translator'
     ],
     function (

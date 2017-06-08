@@ -15,7 +15,7 @@ define(
         'routing',
         'pim/fetcher-registry',
         'pim/user-context',
-        'text!teamwork-assistant/templates/widget/project-completeness-data'
+        'teamwork-assistant/templates/widget/project-completeness-data'
     ],
     function ($, _, __, BaseForm, Backbone, Routing, FetcherRegistry, UserContext, template) {
         return BaseForm.extend({
