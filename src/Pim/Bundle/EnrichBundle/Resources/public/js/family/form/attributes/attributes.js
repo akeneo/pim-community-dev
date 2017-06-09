@@ -94,7 +94,7 @@ define([
                 }
 
                 var data = this.getFormData();
-                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'));
+                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group'));
 
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
@@ -104,9 +104,7 @@ define([
                     )
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-                    var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                        return attribute.group;
-                    });
+                    var groupedAttributes = _.groupBy(data.attributes, 'group');
 
                     _.sortBy(groupedAttributes, function (attributes, group) {
                         return _.findWhere(attributeGroups, {code: group}).sort_order;
@@ -127,7 +125,7 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: attributeGroups,
+                        attributeGroups: this.attributeGroups,
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
@@ -300,8 +298,7 @@ define([
                             options: {
                                 identifiers: event.codes,
                                 limit: event.codes.length
-                            },
-                            apply_filters: false
+                            }
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {

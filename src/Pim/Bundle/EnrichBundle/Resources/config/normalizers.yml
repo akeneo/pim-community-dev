@@ -89,12 +89,11 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
-
     pim_enrich.normalizer.family:
         class: '%pim_enrich.normalizer.family.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.family'
-            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_enrich.normalizer.attribute'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
             - '@pim_versioning.manager.version'
