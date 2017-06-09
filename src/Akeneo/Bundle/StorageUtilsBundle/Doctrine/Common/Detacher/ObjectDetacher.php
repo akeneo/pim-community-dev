@@ -11,6 +11,9 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 use Doctrine\ORM\UnitOfWork;
+use Pim\Component\Catalog\Model\Completeness;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductUniqueData;
 
 /**
  * Detacher, detaches an object from its ObjectManager
@@ -47,6 +50,10 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         if ($objectManager instanceof DocumentManager) {
             $this->doDetach($object, $visited);
         } else {
+            if ($object instanceof ProductInterface) {
+                $objectManager->clear(Completeness::class);
+                $objectManager->clear(ProductUniqueData::class);
+            }
             $objectManager->detach($object);
             $this->doDetachScheduled($object, $visited);
         }

@@ -202,3 +202,6 @@ settings:
                 char_filter: ['html_strip', 'newline_pattern']
                 type: 'custom'
                 tokenizer: 'standard'
+    mapping:
+        total_fields:
+            limit: 1000000
