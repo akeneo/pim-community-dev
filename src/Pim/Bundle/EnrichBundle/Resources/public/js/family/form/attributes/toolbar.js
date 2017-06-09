@@ -22,7 +22,7 @@ define([
         return BaseForm.extend({
             className: 'AknGridToolbar',
             template: _.template(template),
-            errors: [],
+            readOnly: false,
 
             /**
              * {@inheritdoc}
@@ -36,8 +36,27 @@ define([
             /**
              * {@inheritdoc}
              */
+            configure: function (config) {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', function (readOnly) {
+                    this.readOnly = readOnly;
+
+                    this.render();
+                }.bind(this));
+
+                BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured) {
+                    return this;
+                }
+
+                if (this.readOnly) {
+                    this.$el.empty();
+
                     return this;
                 }
 

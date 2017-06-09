@@ -23,9 +23,9 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.triggerModelUpdate);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.triggerModelUpdate);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.triggerModelUpdate);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -37,30 +37,22 @@ define(
              * We can't directly delete them as the structure (scope/channel) is used for validation.
              * These unused values will be removed later in the back office.
              */
-            render: function () {
-                var selectedLocale = UserContext.get('catalogLocale');
-                var selectedChannel = UserContext.get('catalogScope');
-                var data = this.getFormData().values;
-
-                data = _.mapObject(data, function (attributeValues) {
+            triggerModelUpdate: function () {
+                var values = _.mapObject(this.getFormData().values, function (attributeValues) {
                     return _.map(attributeValues, function (value) {
-                        if (null !== value.locale && selectedLocale !== value.locale) {
+                        if (null !== value.locale && UserContext.get('catalogLocale') !== value.locale) {
                             value.data = null;
                         }
-                        if (null !== value.scope && selectedChannel !== value.scope) {
+                        if (null !== value.scope && UserContext.get('catalogScope') !== value.scope) {
                             value.data = null;
                         }
 
                         return value;
                     });
                 });
+                this.setData({values: values}, {silent: true});
 
-                this.setData({values: data}, {silent: true});
-
-                var stringData = JSON.stringify(data, null, 0);
-                $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData);
-                $('#pim_enrich_mass_edit_choose_action_operation_attribute_locale').val(selectedLocale);
-                $('#pim_enrich_mass_edit_choose_action_operation_attribute_channel').val(selectedChannel);
+                this.getRoot().trigger('pim_enrich:mass_edit:model_updated', {values: values});
 
                 return this;
             }

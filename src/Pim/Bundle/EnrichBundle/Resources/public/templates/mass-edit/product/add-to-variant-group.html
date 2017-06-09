@@ -1,0 +1,5 @@
+<select class="groups" <%- readOnly ? 'readonly disabled' : '' %>>
+<% _.each(groups, function (group) { %>
+    <option value="<%- group.code %>" <%- value === group.code ? 'selected' : '' %>><%- i18n.getLabel(group.labels, locale, group.code) %></option>
+<% }) %>
+</select>

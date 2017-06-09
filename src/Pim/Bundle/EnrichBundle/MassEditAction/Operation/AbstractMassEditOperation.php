@@ -11,7 +11,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  */
 abstract class AbstractMassEditOperation implements
     MassEditOperationInterface,
-    ConfigurableOperationInterface,
     BatchableOperationInterface
 {
     /** @var array */
@@ -94,19 +93,5 @@ abstract class AbstractMassEditOperation implements
     public function getJobInstanceCode()
     {
         return $this->jobInstanceCode;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function finalize()
-    {
     }
 }

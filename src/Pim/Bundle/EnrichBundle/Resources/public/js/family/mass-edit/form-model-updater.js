@@ -19,8 +19,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.triggerModelUpdate);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.triggerModelUpdate);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -28,13 +28,12 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function () {
+            triggerModelUpdate: function () {
                 var data = this.getFormData();
                 data.attributes = _.pluck(data.attributes, 'code');
                 delete data.meta;
 
-                var stringifiedData = JSON.stringify(data, null, 0);
-                $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringifiedData);
+                this.getRoot().trigger('pim_enrich:mass_edit:model_updated', data);
 
                 return this;
             }

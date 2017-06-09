@@ -72,9 +72,9 @@ class MassActionDispatcher
      *
      * @return MassActionResponseInterface
      */
-    public function dispatch(Request $request)
+    public function dispatch(array $parameters)
     {
-        $parameters = $this->prepareMassActionParameters($request);
+        $parameters = $this->prepareMassActionParameters($parameters);
         $datagrid = $parameters['datagrid'];
         $massAction = $parameters['massAction'];
 
@@ -92,9 +92,9 @@ class MassActionDispatcher
      *
      * @return array
      */
-    public function getRawFilters(Request $request)
+    public function getRawFilters(array $parameters)
     {
-        $parameters = $this->prepareMassActionParameters($request);
+        $parameters = $this->prepareMassActionParameters($parameters);
         $datagrid = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
 
@@ -144,28 +144,25 @@ class MassActionDispatcher
      *
      * @return array
      */
-    protected function prepareMassActionParameters(Request $request)
+    protected function prepareMassActionParameters(array $parameters)
     {
-        $parameters = $this->parametersParser->parse($request);
         $inset = $this->prepareInsetParameter($parameters);
         $values = $this->prepareValuesParameter($parameters);
         $filters = $this->prepareFiltersParameter($parameters);
 
-        $actionName = $request->get('actionName');
         if ($inset && empty($values)) {
-            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
+            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $parameters['actionName']));
         }
 
-        $datagridName = $request->get('gridName');
-        $datagrid = $this->manager->getDatagrid($datagridName);
-        $massAction = $this->getMassActionByName($actionName, $datagrid);
+        $datagrid = $this->manager->getDatagrid($parameters['gridName']);
+        $massAction = $this->getMassActionByName($parameters['actionName'], $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-        if (self::FAMILY_GRID_NAME === $datagridName) {
+        if (self::FAMILY_GRID_NAME === $parameters['gridName']) {
             $qbLocaleParameter = $qb->getParameter('localeCode');
             if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
-                $qb->setParameter('localeCode', $request->query->get('dataLocale'));
+                $qb->setParameter('localeCode', $parameters['dataLocale']);
             }
         }
 

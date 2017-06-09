@@ -949,6 +949,48 @@ pim_enrich:
         attribute_group:
             title:       Attribute group overview
             create_btn:  Create
+    mass_edit:
+        next: Next
+        previous: Previous
+        cancel: Cancel
+        confirm: Confirm
+        product:
+            title: Product / Mass Edit ({{ itemsCount }} products)
+            step:
+                select:
+                    label: Choose products
+                choose:
+                    label: Choose operation
+                    title: Mass edit ({{ itemsCount }} products)
+                configure:
+                    label: Configure
+                confirm:
+                    label: Confirm
+            operation:
+                change_status:
+                    label: Change status (enable / disable)
+                    description: The selected products will be enabled or disabled.
+                edit_common:
+                    label: Edit common attributes
+                    description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
+                change_family:
+                    label: Change the family of products
+                    description: The family of the selected products will be changed to the chosen family
+                add_to_group:
+                    label: Add to groups
+                    description: Select the groups in which to add the selected products
+                add_to_variant_group:
+                    label: Add to a variant group
+                    description: Select the variant group in which to add the selected products
+                add_to_category:
+                    label: Classify products in categories
+                    description: The products will be positioned into following categories, the existing placement is kept.
+                move_to_category:
+                    label: Move products to categories
+                    description: The products will be positioned into following categories, the existing placement is lost.
+                remove_from_category:
+                    label: Remove products from categories
+                    description: The products will be removed from the following categories.
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

@@ -1,0 +1,104 @@
+extensions:
+    pim-mass-product-edit:
+        module: pim/mass-edit-form/form
+        config:
+            backRoute: pim_enrich_product_index
+            selectLabel: pim_enrich.mass_edit.product.step.select.label
+            chooseLabel: pim_enrich.mass_edit.product.step.choose.label
+            configureLabel: pim_enrich.mass_edit.product.step.configure.label
+            confirmLabel: pim_enrich.mass_edit.product.step.confirm.label
+            title: pim_enrich.mass_edit.product.title
+
+    pim-mass-product-edit-choose:
+        module: pim/mass-edit-form/choose
+        parent: pim-mass-product-edit
+        position: 100
+        targetZone: choose
+        config:
+            title: pim_enrich.mass_edit.product.step.choose.title
+
+    pim-mass-product-edit-configure-change-status:
+        module: pim/mass-edit-form/product/change-status
+        parent: pim-mass-product-edit
+        position: 110
+        config:
+            label: pim_enrich.mass_edit.product.operation.change_status.label
+            description: pim_enrich.mass_edit.product.operation.change_status.description
+            code: change_status
+            jobInstanceCode: update_product_value
+
+    pim-mass-product-edit-configure-edit-common:
+        module: pim/mass-edit-form/product/edit-common-attributes
+        parent: pim-mass-product-edit
+        position: 120
+        config:
+            label: pim_enrich.mass_edit.product.operation.edit_common.label
+            description: pim_enrich.mass_edit.product.operation.edit_common.description
+            code: edit_common
+            jobInstanceCode: edit_common_attributes
+
+    pim-mass-product-edit-configure-change-family:
+        module: pim/mass-edit-form/product/change-family
+        parent: pim-mass-product-edit
+        position: 130
+        config:
+            label: pim_enrich.mass_edit.product.operation.change_family.label
+            description: pim_enrich.mass_edit.product.operation.change_family.description
+            code: change_family
+            jobInstanceCode: update_product_value
+
+    pim-mass-product-edit-configure-add-to-group:
+        module: pim/mass-edit-form/product/add-to-group
+        parent: pim-mass-product-edit
+        position: 140
+        config:
+            label: pim_enrich.mass_edit.product.operation.add_to_group.label
+            description: pim_enrich.mass_edit.product.operation.add_to_group.description
+            code: add_to_group
+            jobInstanceCode: add_product_value
+
+    pim-mass-product-edit-configure-add-to-variant-group:
+        module: pim/mass-edit-form/product/add-to-variant-group
+        parent: pim-mass-product-edit
+        position: 150
+        config:
+            label: pim_enrich.mass_edit.product.operation.add_to_variant_group.label
+            description: pim_enrich.mass_edit.product.operation.add_to_variant_group.description
+            code: add_to_variant_group
+            jobInstanceCode: add_to_variant_group
+
+    pim-mass-product-edit-configure-add-to-category:
+        module: pim/mass-edit-form/product/category
+        parent: pim-mass-product-edit
+        position: 160
+        config:
+            label: pim_enrich.mass_edit.product.operation.add_to_category.label
+            description: pim_enrich.mass_edit.product.operation.add_to_category.description
+            code: add_to_category
+            jobInstanceCode: add_product_value
+            listRoute: pim_enrich_product_listcategories
+            childrenRoute: pim_enrich_categorytree_children
+
+    pim-mass-product-edit-configure-move-to-category:
+        module: pim/mass-edit-form/product/category
+        parent: pim-mass-product-edit
+        position: 170
+        config:
+            label: pim_enrich.mass_edit.product.operation.move_to_category.label
+            description: pim_enrich.mass_edit.product.operation.move_to_category.description
+            code: move_to_category
+            jobInstanceCode: update_product_value
+            listRoute: pim_enrich_product_listcategorieslue
+            childrenRoute: pim_enrich_categorytree_children
+
+    pim-mass-product-edit-configure-remove-from-category:
+        module: pim/mass-edit-form/product/category
+        parent: pim-mass-product-edit
+        position: 180
+        config:
+            label: pim_enrich.mass_edit.product.operation.remove_from_category.label
+            description: pim_enrich.mass_edit.product.operation.remove_from_category.description
+            code: remove_from_category
+            jobInstanceCode: remove_product_value
+            listRoute: pim_enrich_product_listcategorieslue
+            childrenRoute: pim_enrich_categorytree_children

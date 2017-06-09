@@ -24,8 +24,8 @@ class Wizard extends Form
             $this->elements,
             [
                 'Available attributes form' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'],
-                'Next'                      => ['css' => '.configuration .AknButton--apply'],
-                'Confirm'                   => ['css' => '.confirmation .AknButton--apply'],
+                'Next'                      => ['css' => '.AknButtonList .AknButton--apply'],
+                'Confirm'                   => ['css' => '.AknButtonList .AknButton--apply'],
             ]
         );
     }
@@ -37,7 +37,9 @@ class Wizard extends Form
      */
     public function next()
     {
-        $this->getElement('Next')->click();
+        $this->spin(function () {
+            return $this->getElement('Next')->click();
+        }, 'Cannot got to the next step');
 
         return $this->currentStep;
     }
@@ -49,7 +51,9 @@ class Wizard extends Form
      */
     public function confirm()
     {
-        $this->getElement('Confirm')->click();
+        $this->spin(function () {
+            return $this->getElement('Confirm')->click();
+        }, 'Cannot confirm the wizard');
 
         return $this->currentStep;
     }

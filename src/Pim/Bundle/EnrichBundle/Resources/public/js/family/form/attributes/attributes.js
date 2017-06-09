@@ -51,6 +51,7 @@ define([
                 'click .attribute-requirement i': 'toggleAttribute',
                 'click .remove-attribute': 'onRemoveAttribute'
             },
+            readOnly: false,
 
             /**
              * {@inheritdoc}
@@ -68,6 +69,11 @@ define([
                     'pim_enrich:form:entity:post_fetch',
                     this.render
                 );
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', function (readOnly) {
+                    this.readOnly = readOnly;
+
+                    this.render();
+                }.bind(this));
 
                 this.listenTo(
                     this.getRoot(),
@@ -128,7 +134,8 @@ define([
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
-                        catalogLocale: this.catalogLocale
+                        catalogLocale: this.catalogLocale,
+                        readOnly: this.readOnly
                     }));
 
                     $(this.$el).find('[data-original-title]').tooltip();
@@ -144,7 +151,6 @@ define([
              * @param {Object} event
              */
             toggleGroup: function (event) {
-                event.preventDefault();
                 var target = event.currentTarget;
 
                 $(target).parent().find('tr:not(.group)').toggle();
@@ -159,7 +165,6 @@ define([
              * @param {Object} event
              */
             toggleAttribute: function (event) {
-                event.preventDefault();
                 var target = event.currentTarget;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
@@ -167,6 +172,10 @@ define([
                 }
 
                 if (!this.isAttributeEditable(target.dataset.type)) {
+                    return this;
+                }
+
+                if (this.readOnly) {
                     return this;
                 }
 

@@ -59,12 +59,12 @@ datagrid:
                             multiple: true
                             choices:  '@pim_enrich.repository.attribute->findTranslatedLabels'
         mass_actions:
-            mass_edit:
+            family_edit:
                 type: edit
                 label: pim.grid.mass_action.mass_edit
-                route: pim_enrich_mass_edit_family_action_choose
+                route: pim_enrich_mass_edit_action
                 route_parameters:
-                    operationGroup: mass-edit
+                    actionName: family-edit
                 acl_resource: pim_enrich_family_edit_attributes
                 icon: pencil
                 className: AknActionButton

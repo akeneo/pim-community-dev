@@ -12,12 +12,9 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/fetcher-registry',
         'pim/product-manager',
         'pim/template/product/meta/change-family-modal',
-        'pim/user-context',
-        'pim/i18n',
-        'routing',
+        'pim/common/select2/family',
         'pim/initselect2',
         'bootstrap-modal',
         'jquery.select2'
@@ -26,12 +23,9 @@ define(
         _,
         Backbone,
         BaseForm,
-        FetcherRegistry,
         ProductManager,
         modalTemplate,
-        UserContext,
-        i18n,
-        Routing,
+        Select2Configurator,
         initSelect2
     ) {
         return BaseForm.extend({
@@ -71,58 +65,8 @@ define(
                 }.bind(this));
 
                 familyModal.open();
-                var self = this;
 
-                var options = {
-                    allowClear: true,
-                    ajax: {
-                        url: Routing.generate('pim_enrich_family_rest_index'),
-                        quietMillis: 250,
-                        cache: true,
-                        data: function (term, page) {
-                            return {
-                                search: term,
-                                options: {
-                                    limit: 20,
-                                    page: page,
-                                    locale: UserContext.get('catalogLocale')
-                                }
-                            };
-                        },
-                        results: function (families) {
-                            var data = {
-                                more: 20 === _.keys(families).length,
-                                results: []
-                            };
-                            _.each(families, function (value, key) {
-                                data.results.push({
-                                    id: key,
-                                    text: i18n.getLabel(value.labels, UserContext.get('catalogLocale'), value.code)
-                                });
-                            });
-
-                            return data;
-                        }
-                    },
-                    initSelection: function (element, callback) {
-                        var productFamily = self.getFormData().family;
-                        if (null !== productFamily) {
-                            FetcherRegistry.getFetcher('family')
-                                .fetch(self.getFormData().family)
-                                .then(function (family) {
-                                    callback({
-                                        id: family.code,
-                                        text: i18n.getLabel(
-                                            family.labels,
-                                            UserContext.get('catalogLocale'),
-                                            family.code
-                                        )
-                                    });
-                                });
-                        }
-
-                    }
-                };
+                var options = Select2Configurator.getConfig(this.getFormData().family);
 
                 initSelect2.init(familyModal.$('.family-select2'), options).select2('val', []);
             }

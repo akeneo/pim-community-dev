@@ -5,8 +5,6 @@ parameters:
     pim_enrich.controller.family.class:                       Pim\Bundle\EnrichBundle\Controller\FamilyController
     pim_enrich.controller.attribute_option.class:             Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
-    pim_enrich.controller.product.mass_edit_action.class:     Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController
-    pim_enrich.controller.family.mass_edit_action.class:      Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController
     pim_enrich.controller.association.class:                  Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
@@ -31,11 +29,12 @@ parameters:
     pim_enrich.controller.rest.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController
     pim_enrich.controller.rest.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupAttributeController
     pim_enrich.controller.rest.versioning.class:              Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
-    pim_enrich.controller.mass_edit.abstract:                 Pim\Bundle\EnrichBundle\Controller\MassEdit\AbstractMassEditController
     pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.completeness.class:            Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController
+    pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
+    pim_enrich.controller.rest.product_template.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
 
 services:
@@ -106,25 +105,16 @@ services:
             - '@pim_catalog.builder.product'
             - '@templating'
 
-    pim_enrich.controller.product.mass_edit_action:
-        class: '%pim_enrich.controller.product.mass_edit_action.class%'
-        parent: pim_enrich.controller.mass_edit.abtsract
-
-    pim_enrich.controller.family.mass_edit_action:
-        class: '%pim_enrich.controller.family.mass_edit_action.class%'
-        parent: pim_enrich.controller.mass_edit.abtsract
-
-    pim_enrich.controller.mass_edit.abtsract:
-        class: '%pim_enrich.controller.mass_edit.abstract%'
-        abstract: true
+    pim_enrich.controller.group:
+        class: '%pim_enrich.controller.group.class%'
         arguments:
-            - '@router'
+            - '@request_stack'
             - '@templating'
-            - '@oro_datagrid.mass_action.parameters_parser'
-            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_enrich.mass_edit_action.form_resolver'
-            - '@pim_enrich.mass_edit_action.operation.registry'
-            - '@pim_enrich.mass_edit_action.operation_job_launcher'
+            - '@router'
+            - '@pim_catalog.repository.group_type'
+            - '@pim_enrich.form.handler.group'
+            - '@pim_enrich.form.group'
+            - '@pim_catalog.factory.group'
 
     pim_enrich.controller.association_type:
         class: '%pim_enrich.controller.association_type.class%'
@@ -157,6 +147,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_internal_api_serializer'
             - '@pim_enrich.saver.sequential_edit'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pim_enrich.controller.job_tracker:
         class: '%pim_enrich.controller.job_tracker.class%'
@@ -256,6 +247,37 @@ services:
             - '@pim_catalog.remover.channel'
             - '@pim_catalog.factory.channel'
             - '@validator'
+
+    pim_enrich.controller.rest.completeness:
+        class: '%pim_enrich.controller.rest.completeness.class%'
+        arguments:
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_user.context.user'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog_product_storage_driver%'
+
+    pim_enrich.controller.rest.mass_edit:
+        class: '%pim_enrich.controller.rest.mass_edit.class%'
+        arguments:
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_enrich.mass_edit_action.operation_job_launcher'
+
+    pim_enrich.controller.rest.product_template:
+        class: '%pim_enrich.controller.rest.product_template.class%'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_user.context.user'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.family:
         class: '%pim_enrich.controller.rest.family.class%'
