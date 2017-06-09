@@ -11,6 +11,11 @@ use Doctrine\ORM\UnitOfWork;
 /**
  * Translation update guesser
  *
+ * Add UpdateGuesserInterface::ACTION_DELETE in support action, since we introduce TranslatableUpdater in
+ * Updaters, doctrine doesn't consider a label transaltion remove as an `update_entity` action on the parent entity,
+ * we have to add `delete` action, but doctrine try to delete an already deleted entity, so we have to check the status
+ * of entity in guessUpdates method.
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
