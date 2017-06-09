@@ -152,6 +152,8 @@ services:
 
     pim_catalog.updater.association_type:
         class: '%pim_catalog.updater.association_type.class%'
+        arguments:
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.variant_group:
         class: '%pim_catalog.updater.variant_group.class%'

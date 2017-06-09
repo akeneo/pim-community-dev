@@ -21,7 +21,9 @@ pim_api:
             list: List channels
         locale.list: List locales
         currency.list: List currencies
-        association_type.list: List association types
+        association_type:
+            edit: Create and update association types
+            list: List association types
     acl_group:
         overall_access: Overall Web API access
         attribute: Attributes

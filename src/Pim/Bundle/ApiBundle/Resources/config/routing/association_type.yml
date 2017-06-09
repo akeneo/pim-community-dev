@@ -7,3 +7,8 @@ pim_api_association_type_get:
     path: /association-types/{code}
     defaults: { _controller: pim_api.controller.association_type:getAction, _format: json }
     methods: [GET]
+
+pim_api_association_type_create:
+    path: /association-types
+    defaults: { _controller: pim_api.controller.association_type:createAction, _format: json }
+    methods: [POST]

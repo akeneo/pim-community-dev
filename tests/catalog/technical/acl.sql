@@ -35,7 +35,8 @@ INSERT INTO `acl_classes` VALUES
     (13,'pim_api_attribute_group_edit'),
     (14,'pim_api_currency_list'),
     (15,'pim_api_channel_edit'),
-    (16,'pim_api_association_type_list')
+    (16,'pim_api_association_type_list'),
+    (17,'pim_api_association_type_edit')
 ;
 /*!40000 ALTER TABLE `acl_classes` ENABLE KEYS */;
 
@@ -60,7 +61,8 @@ INSERT INTO `acl_entries` VALUES
     (13,13,NULL,2,NULL,0,0,1,'all',0,0),
     (14,14,NULL,2,NULL,0,0,1,'all',0,0),
     (15,15,NULL,2,NULL,0,0,1,'all',0,0),
-    (16,16,NULL,2,NULL,0,0,1,'all',0,0)
+    (16,16,NULL,2,NULL,0,0,1,'all',0,0),
+    (17,17,NULL,2,NULL,0,0,1,'all',0,0)
 ;
 /*!40000 ALTER TABLE `acl_entries` ENABLE KEYS */;
 
@@ -85,7 +87,8 @@ INSERT INTO `acl_object_identities` VALUES
     (13,NULL,13,'action',1),
     (14,NULL,14,'action',1),
     (15,NULL,15,'action',1),
-    (16,NULL,16,'action',1)
+    (16,NULL,16,'action',1),
+    (17,NULL,17,'action',1)
 ;
 /*!40000 ALTER TABLE `acl_object_identities` ENABLE KEYS */;
 
@@ -110,7 +113,8 @@ INSERT INTO `acl_object_identity_ancestors` VALUES
     (13,13),
     (14,14),
     (15,15),
-    (16,16)
+    (16,16),
+    (17,17)
 ;
 /*!40000 ALTER TABLE `acl_object_identity_ancestors` ENABLE KEYS */;
 
