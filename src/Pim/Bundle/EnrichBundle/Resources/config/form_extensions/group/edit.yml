@@ -96,13 +96,23 @@ extensions:
         targetZone: accordion
         position: 100
 
-    pim-group-edit-form-properties-translation:
-        module: pim/common/properties/translation
+    pim-group-edit-form-properties-translation-section:
+        module: pim/common/simple-view
         parent: pim-group-edit-form-properties
         targetZone: accordion
         position: 110
         config:
-            label: 'pim_enrich.form.group.tab.properties.label_translations'
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.group.tab.properties.label_translations
+                dropZone: content
+
+    pim-group-edit-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-group-edit-form-properties-translation-section
+        targetZone: content
+        position: 100
+        config:
             fieldBaseId: 'pim_enrich_group_form_label_'
 
     pim-group-edit-form-history:

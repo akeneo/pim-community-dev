@@ -160,3 +160,27 @@ extensions:
         position: 110
         config:
             mode: create
+
+    pim-attribute-create-form-labels-tab:
+        module: pim/common/tab
+        parent: pim-attribute-create-form-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: pim_enrich.form.attribute.tab.labels.title
+
+    pim-attribute-create-form-labels-container:
+        module: pim/common/simple-view
+        parent: pim-attribute-create-form-labels-tab
+        targetZone: self
+        position: 100
+        config:
+            template: pim/template/common/form-container
+
+    pim-group-type-create-form-labels-translation:
+        module: pim/common/properties/translation
+        parent: pim-attribute-create-form-labels-container
+        targetZone: form-container
+        position: 100
+        config:
+            fieldBaseId: 'pim_enrich_attribute_form_label_'

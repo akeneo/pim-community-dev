@@ -893,6 +893,7 @@ config:
 
         # Templates
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
+        pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
@@ -1074,7 +1075,6 @@ config:
         pim/template/attribute/tab/properties/field:        pimenrich/templates/attribute/tab/properties/field.html
         pim/template/attribute/tab/properties/text:         pimenrich/templates/attribute/tab/properties/text.html
         pim/template/attribute/tab/properties/select:       pimenrich/templates/attribute/tab/properties/select.html
-        pim/template/attribute/tab/choices:                 pimenrich/templates/attribute/tab/choices.html
         pim/template/attribute/tab/choices/options-grid:    pimenrich/templates/attribute/tab/choices/options-grid.html
 
         # Order last

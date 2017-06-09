@@ -235,7 +235,7 @@ define(
                 }
 
                 if (!this.zones[code]) {
-                    throw new Error('Zone "' + code + '" does not exist');
+                    throw new Error('Zone "' + code + '" does not exist for view ' + this.code);
                 }
 
                 return this.zones[code];

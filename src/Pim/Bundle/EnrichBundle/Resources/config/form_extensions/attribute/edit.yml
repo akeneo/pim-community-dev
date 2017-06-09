@@ -202,12 +202,36 @@ extensions:
         targetZone: bottom
         position: 100
 
+    pim-attribute-edit-form-labels-tab:
+        module: pim/common/tab
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 120
+        config:
+            label: pim_enrich.form.attribute.tab.labels.title
+
+    pim-attribute-edit-form-labels-container:
+        module: pim/common/simple-view
+        parent: pim-attribute-edit-form-labels-tab
+        targetZone: self
+        position: 100
+        config:
+            template: pim/template/common/form-container
+
+    pim-group-type-edit-form-labels-translation:
+        module: pim/common/properties/translation
+        parent: pim-attribute-edit-form-labels-container
+        targetZone: form-container
+        position: 100
+        config:
+            fieldBaseId: 'pim_enrich_attribute_form_label_'
+
     pim-attribute-edit-form-history:
         module: pim/common/tab/history
         parent: pim-attribute-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_channel_history
-        position: 120
+        position: 130
         config:
             class: attribute
             title: pim_enrich.form.attribute.tab.history.title
