@@ -67,13 +67,20 @@ extensions:
         config:
             entity: pim_enrich.entity.family.title
 
-    pim-family-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-family-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-family-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: 'pim_enrich.form.family.tab.properties.title'
+
+    pim-family-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-family-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-family-edit-form-properties-general:
         module: pim/family-edit-form/properties/general

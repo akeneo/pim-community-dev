@@ -72,13 +72,20 @@ extensions:
         config:
             entity: pim_enrich.entity.group_type.title
 
-    pim-group-type-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-group-type-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-group-type-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: pim_enrich.form.group_type.tab.properties.title
+
+    pim-group-type-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-group-type-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-group-type-edit-form-properties-general:
         module: pim/common/properties/general

@@ -22,6 +22,7 @@ define([
 ) {
     return BaseForm.extend({
         config: {},
+        template: null,
 
         /**
          * {@inheritdoc}
@@ -34,22 +35,39 @@ define([
 
         /**
          * {@inheritdoc}
+         *
+         * Waiting for the template to be required.
          */
-        render: function () {
+        configure: function () {
             if (undefined === this.config.template) {
                 throw new Error('The view "' + this.code + '" must be configured with a template.');
             }
 
+            var promise = $.Deferred();
+
             require(['text!' + this.config.template], function (template) {
-                var templateParams = this.config.templateParams || {};
-                templateParams = _.extend({}, templateParams, {__: __});
-
-                this.$el.html(
-                    _.template(template)(templateParams)
-                );
-
-                this.renderExtensions();
+                this.template = template;
+                promise.resolve().promise();
             }.bind(this));
+
+            return $.when(
+                promise,
+                BaseForm.prototype.configure.apply(this, arguments)
+            );
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        render: function () {
+            var templateParams = this.config.templateParams || {};
+            templateParams = _.extend({}, {__: __}, templateParams);
+
+            this.$el.html(
+                _.template(this.template)(templateParams)
+            );
+
+            this.renderExtensions();
         }
     });
 });

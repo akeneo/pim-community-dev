@@ -41,13 +41,20 @@ extensions:
         config:
             entity: pim_enrich.entity.channel.title
 
-    pim-channel-create-form-properties:
-        module: pim/common/tab/properties
+    pim-channel-create-form-properties-tab:
+        module: pim/common/tab
         parent: pim-channel-create-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: 'pim_enrich.form.channel.tab.properties.title'
+
+    pim-channel-create-form-properties:
+        module: pim/common/simple-view
+        parent: pim-channel-create-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-channel-create-form-properties-general:
         module: pim/create/properties/general

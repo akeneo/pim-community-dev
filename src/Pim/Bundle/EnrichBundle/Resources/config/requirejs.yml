@@ -898,8 +898,8 @@ config:
         pim/template/form/save:                                   pimenrich/templates/form/save.html
         pim/template/form/delete:                                 pimenrich/templates/form/delete.html
         pim/template/form/tab/history:                            pimenrich/templates/form/tab/history.html
-        pim/template/form/tab/properties:                         pimenrich/templates/form/tab/properties.html
         pim/template/form/tab/section:                            pimenrich/templates/form/tab/section.html
+        pim/template/form/tab/sections:                           pimenrich/templates/form/tab/sections.html
         pim/template/form/grid:                                   pimenrich/templates/form/grid.html
         pim/template/form/add-select/select:                      pimenrich/templates/form/add-select/select.html
         pim/template/form/add-select/line:                        pimenrich/templates/form/add-select/line.html

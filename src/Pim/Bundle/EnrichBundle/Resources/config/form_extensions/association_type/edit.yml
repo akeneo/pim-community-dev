@@ -72,13 +72,20 @@ extensions:
         config:
             entity: pim_enrich.entity.association_type.title
 
-    pim-association-type-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-association-type-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-association-type-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: pim_enrich.form.association_type.tab.properties.title
+
+    pim-association-type-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-association-type-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-association-type-edit-form-properties-general:
         module: pim/common/properties/general

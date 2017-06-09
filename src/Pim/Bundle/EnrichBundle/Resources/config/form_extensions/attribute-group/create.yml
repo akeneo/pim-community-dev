@@ -46,13 +46,20 @@ extensions:
         config:
             entity: pim_enrich.entity.attribute_group.title
 
-    pim-attribute-group-create-form-properties:
-        module: pim/common/tab/properties
+    pim-attribute-group-create-form-properties-tab:
+        module: pim/common/tab
         parent: pim-attribute-group-create-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: pim_enrich.form.attribute_group.tab.properties.title
+
+    pim-attribute-group-create-form-properties:
+        module: pim/common/simple-view
+        parent: pim-attribute-group-create-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-attribute-group-create-form-properties-general:
         module: pim/create/properties/general

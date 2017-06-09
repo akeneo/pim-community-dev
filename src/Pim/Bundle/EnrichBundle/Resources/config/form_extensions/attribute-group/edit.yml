@@ -76,13 +76,20 @@ extensions:
             label: pim_enrich.entity.attribute_group.meta.updated
             labelBy: pim_enrich.entity.attribute_group.meta.updated_by
 
-    pim-attribute-group-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-attribute-group-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-attribute-group-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: pim_enrich.form.attribute_group.tab.properties.title
+
+    pim-attribute-group-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-attribute-group-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-attribute-group-edit-form-properties-general:
         module: pim/common/properties/general

@@ -154,13 +154,20 @@ extensions:
         targetZone: context-selectors
         position: 110
 
-    pim-variant-group-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-variant-group-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: 'pim_enrich.form.variant_group.tab.properties.title'
+
+    pim-variant-group-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-variant-group-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-variant-group-edit-form-properties-general:
         module: pim/variant-group-edit-form/properties/general

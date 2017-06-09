@@ -75,13 +75,20 @@ extensions:
         config:
             productCountLabel: pim_enrich.entity.group.meta.product_count
 
-    pim-group-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-group-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-group-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: 'pim_enrich.form.group.tab.properties.title'
+
+    pim-group-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-group-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-group-edit-form-properties-general:
         module: pim/group-edit-form/properties/general
