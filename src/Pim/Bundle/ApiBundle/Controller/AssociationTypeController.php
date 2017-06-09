@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -60,6 +61,9 @@ class AssociationTypeController
     /** @var SaverInterface */
     protected $saver;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -73,6 +77,7 @@ class AssociationTypeController
      * @param ValidatorInterface          $validator
      * @param RouterInterface             $router
      * @param SaverInterface              $saver
+     * @param StreamResourceResponse      $partialUpdateStreamResource
      * @param array                       $apiConfiguration
      */
     public function __construct(
@@ -85,6 +90,7 @@ class AssociationTypeController
         ValidatorInterface $validator,
         RouterInterface $router,
         SaverInterface $saver,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
@@ -96,6 +102,7 @@ class AssociationTypeController
         $this->validator = $validator;
         $this->router = $router;
         $this->saver = $saver;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -230,6 +237,22 @@ class AssociationTypeController
         return $response;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_association_type_edit")
+     */
+    public function partialUpdateListAction(Request $request)
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+
+        return $response;
+    }
 
     /**
      * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
@@ -312,7 +335,7 @@ class AssociationTypeController
 
     /**
      * Throw an exception if the code provided in the url and the code provided in the request body
-     * are not equals when creating a channel with a PATCH method.
+     * are not equals when creating an association type with a PATCH method.
      *
      * The code in the request body is optional when we create a resource with PATCH.
      *
@@ -333,5 +356,4 @@ class AssociationTypeController
             );
         }
     }
-
 }

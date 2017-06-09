@@ -196,4 +196,5 @@ services:
             - '@validator'
             - '@router'
             - '@pim_catalog.saver.association_type'
+            - '@pim_api.stream.association_type_partial_update_stream'
             - '%pim_api.configuration%'

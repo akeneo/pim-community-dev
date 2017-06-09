@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Security;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -149,6 +150,51 @@ JSON;
 
         $expectedResponse =
 <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update association types."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAListOfAssociationType()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "X_SELL"}
+{"code": "UPSELL"}
+JSON;
+
+        ob_start(function() { return ''; });
+        $client->request('PATCH', '/api/rest/v1/association-types', [], [], [], $data);
+        ob_end_flush();
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAListOfAssociationType()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data =
+<<<JSON
+{"code": "X_SELL"}
+{"code": "UPSELL"}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/association-types', [], [], [], $data);
+
+        $expectedResponse =
+            <<<JSON
 {
     "code": 403,
     "message": "Access forbidden. You are not allowed to create or update association types."
