@@ -162,7 +162,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      *
      * @return ObjectManager
      */
-    protected function getObjectManager($object)
+    public function getObjectManager($object)
     {
         return $this->managerRegistry->getManagerForClass(ClassUtils::getClass($object));
     }
