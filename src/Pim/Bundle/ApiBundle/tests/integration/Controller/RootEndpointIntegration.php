@@ -215,6 +215,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_association_type_create": {
                 "route": "/api/rest/v1/association-types",
                 "methods": ["POST"]
+            },
+            "pim_api_association_type_partial_update": {
+                "route": "/api/rest/v1/association-types/{code}",
+                "methods": ["PATCH"]
             }
         }
     }
