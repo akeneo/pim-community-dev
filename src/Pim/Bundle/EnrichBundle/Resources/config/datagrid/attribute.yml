@@ -31,9 +31,9 @@ datagrid:
                     - code
             delete_link:
                 type: url
-                route: pim_enrich_attribute_remove
+                route: pim_enrich_attribute_rest_remove
                 params:
-                    - id
+                    - code
         actions:
             edit:
                 type:      navigate

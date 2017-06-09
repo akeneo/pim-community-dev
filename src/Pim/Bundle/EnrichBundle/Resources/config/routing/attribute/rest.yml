@@ -23,7 +23,7 @@ pim_enrich_attribute_rest_post:
     methods: [POST]
 
 pim_enrich_attribute_rest_remove:
-    path: /{identifier}
+    path: /{code}
     defaults: { _controller: pim_enrich.controller.rest.attribute:removeAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'

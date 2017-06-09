@@ -235,15 +235,15 @@ class AttributeController
     }
 
     /**
-     * @param $identifier
+     * @param $code
      *
      * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_attribute_remove")
      */
-    public function removeAction($identifier)
+    public function removeAction($code)
     {
-        $attribute = $this->getAttributeOr404($identifier);
+        $attribute = $this->getAttributeOr404($code);
 
         $this->remover->remove($attribute);
 
