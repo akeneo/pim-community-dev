@@ -63,7 +63,7 @@ jobs:
             filePath: association_types.csv
 
     fixtures_attribute_csv:
-        order: 40
+        order: 35
         connector: Data fixtures
         alias:     fixtures_attribute_csv
         label:     Attributes data fixtures

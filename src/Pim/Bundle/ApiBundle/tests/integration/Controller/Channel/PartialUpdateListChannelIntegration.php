@@ -1,42 +1,28 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Channel;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListProductIntegration extends AbstractProductTestCase
+class PartialUpdateListChannelIntegration extends ApiTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->createProduct('product_family', [
-            'family' => 'familyA2',
-        ]);
-    }
-
-    public function testCreateAndUpdateAListOfProducts()
+    public function testCreateAndUpdateAListOfChannels()
     {
         $data =
 <<<JSON
-    {"identifier": "product_family", "family": "familyA1"}
-    {"identifier": "my_identifier", "family": "familyA2"}
+{"code": "ecommerce","currencies": ["EUR"]}
+{"code": "ecommerce_ch","category_tree": "master", "currencies": ["EUR"], "locales": ["fr_FR"]}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"product_family","status_code":204}
-{"line":2,"identifier":"my_identifier","status_code":201}
+{"line":1,"code":"ecommerce","status_code":204}
+{"line":2,"code":"ecommerce_ch","status_code":201}
 JSON;
-
-
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -44,61 +30,53 @@ JSON;
         $this->assertArrayHasKey('content-type', $httpResponse->headers->all());
         $this->assertSame(StreamResourceResponse::CONTENT_TYPE, $httpResponse->headers->get('content-type'));
 
-        $expectedProducts = [
-            'product_family' => [
-                'identifier'    => 'product_family',
-                'family'        => 'familyA1',
-                'groups'        => [],
-                'variant_group' => null,
-                'categories'    => [],
-                'enabled'       => true,
-                'values'        => [
-                    'sku' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'product_family'],
-                    ],
+        $expectedChannels = [
+            'ecommerce' => [
+                'code'             => 'ecommerce',
+                'currencies'       => ['EUR'],
+                'locales'          => ['en_US'],
+                'category_tree'    => 'master',
+                'conversion_units' => [
+                    'a_metric_without_decimal' => 'METER',
+                    'a_metric'                 => 'KILOWATT',
                 ],
-                'created'       => '2016-06-14T13:12:50+02:00',
-                'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [],
+                'labels'           => [
+                    'en_US' => 'Ecommerce',
+                    'fr_FR' => 'Ecommerce',
+                ],
             ],
-            'my_identifier'  => [
-                'identifier'    => 'my_identifier',
-                'family'        => 'familyA2',
-                'groups'        => [],
-                'variant_group' => null,
-                'categories'    => [],
-                'enabled'       => true,
-                'values'        => [
-                    'sku' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'my_identifier'],
-                    ],
-                ],
-                'created'       => '2016-06-14T13:12:50+02:00',
-                'updated'       => '2016-06-14T13:12:50+02:00',
-                'associations'  => [],
+            'ecommerce_ch'       => [
+                'code'       => 'ecommerce_ch',
+                'currencies'       => ['EUR'],
+                'locales'          => ['fr_FR'],
+                'category_tree'    => 'master',
+                'conversion_units' => [],
+                'labels'           => [],
             ],
         ];
 
-        $this->assertSameProducts($expectedProducts['product_family'], 'product_family');
-        $this->assertSameProducts($expectedProducts['my_identifier'], 'my_identifier');
+        $ecommerce = $this->getNormalizedChannel('ecommerce');
+        $ecommerceCh = $this->getNormalizedChannel('ecommerce_ch');
+
+        $this->assertSame($expectedChannels['ecommerce'], $ecommerce);
+        $this->assertSame($expectedChannels['ecommerce_ch'], $ecommerceCh);
     }
 
-    public function testCreateAndUpdateSameProduct()
+    public function testCreateAndUpdateSameChannel()
     {
         $data =
 <<<JSON
-    {"identifier": "my_identifier"}
-    {"identifier": "my_identifier"}
+{"code": "ecommerce_ch","category_tree": "master", "currencies": ["EUR"], "locales": ["fr_FR"]}
+{"code": "ecommerce_ch", "locales": ["en_US"]}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"my_identifier","status_code":201}
-{"line":2,"identifier":"my_identifier","status_code":204}
+{"line":1,"code":"ecommerce_ch","status_code":201}
+{"line":2,"code":"ecommerce_ch","status_code":204}
 JSON;
 
-
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -110,16 +88,16 @@ JSON;
         $maxNumberResources = $this->getMaxNumberResources();
 
         for ($i = 0; $i < $maxNumberResources; $i++) {
-            $data[] = sprintf('{"identifier": "my_identifier_%s"}', $i);
+            $data[] = sprintf('{"code": "my_code_%s","category_tree": "master", "currencies": ["EUR"], "locales": ["fr_FR"]}', $i);
         }
         $data = implode(PHP_EOL, $data);
 
         for ($i = 0; $i < $maxNumberResources; $i++) {
-            $expectedContent[] = sprintf('{"line":%s,"identifier":"my_identifier_%s","status_code":201}', $i + 1, $i);
+            $expectedContent[] = sprintf('{"line":%s,"code":"my_code_%s","status_code":201}', $i + 1, $i);
         }
         $expectedContent = implode(PHP_EOL, $expectedContent);
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -134,7 +112,7 @@ JSON;
         $maxNumberResources = $this->getMaxNumberResources();
 
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
-            $data[] = sprintf('{"identifier": "my_identifier_%s"}', $i);
+            $data[] = sprintf('{"identifier": "my_code_%s","category_tree": "master", "currencies": ["EUR"], "locales": ["fr_FR"]}', $i);
         }
         $data = implode(PHP_EOL, $data);
 
@@ -146,7 +124,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/channels', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
@@ -159,8 +137,8 @@ JSON;
             'invalid_json_1'  => str_repeat('a', $this->getBufferSize() - 1),
             'invalid_json_2'  => str_repeat('a', $this->getBufferSize()),
             'invalid_json_3'  => '',
-            'line_too_long_1' => '{"identifier":"foo"}' . str_repeat('a', $this->getBufferSize()),
-            'line_too_long_2' => '{"identifier":"foo"}' . str_repeat(' ', $this->getBufferSize()),
+            'line_too_long_1' => '{"code":"foo"}' . str_repeat('a', $this->getBufferSize()),
+            'line_too_long_2' => '{"code":"foo"}' . str_repeat(' ', $this->getBufferSize()),
             'line_too_long_3' => str_repeat('a', $this->getBufferSize() + 1),
             'line_too_long_4' => str_repeat('a', $this->getBufferSize() + 2),
             'line_too_long_5' => str_repeat('a', $this->getBufferSize() * 2),
@@ -196,7 +174,7 @@ JSON;
 {"line":10,"status_code":400,"message":"Invalid json message received"}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
 
@@ -208,62 +186,61 @@ JSON;
     {
         $data =
 <<<JSON
-    {"code": "my_identifier"}
-    {"identifier": null}
-    {"identifier": ""}
-    {"identifier": " "}
+    {"identifier": "my_identifier"}
+    {"code": null}
+    {"code": ""}
+    {"code": " "}
     {}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"status_code":422,"message":"Identifier is missing."}
-{"line":2,"status_code":422,"message":"Identifier is missing."}
-{"line":3,"status_code":422,"message":"Identifier is missing."}
-{"line":4,"status_code":422,"message":"Identifier is missing."}
-{"line":5,"status_code":422,"message":"Identifier is missing."}
+{"line":1,"status_code":422,"message":"Code is missing."}
+{"line":2,"status_code":422,"message":"Code is missing."}
+{"line":3,"status_code":422,"message":"Code is missing."}
+{"line":4,"status_code":422,"message":"Code is missing."}
+{"line":5,"status_code":422,"message":"Code is missing."}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateWhenUpdaterFailed()
+    public function testUpdateChannelWhenUpdaterFailed()
     {
         $data =
 <<<JSON
-    {"identifier": "foo", "variant_group":"bar"}
+    {"code": "foo", "type":"bar"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","status_code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"type\" does not exist. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_channels__code_"}}}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateWhenValidationFailed()
+    public function testUpdateChannelWhenValidationFailed()
     {
         $data =
 <<<JSON
-    {"identifier": "foo,"}
+    {"code": "foo,","category_tree": "master", "currencies": ["EUR"], "locales": ["fr_FR"]}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"identifier","message":"This field should not contain any comma or semicolon."}]}
+{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Channel code may contain only letters, numbers and underscores"}]}
 JSON;
 
-
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -274,7 +251,7 @@ JSON;
     {
         $data =
 <<<JSON
-    {"identifier": "my_identifier"}
+    {"code": "my_code"}
 JSON;
 
         $expectedContent =
@@ -287,41 +264,40 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
-        $client->request('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/channels', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
+    /**
+     * @return integer
+     */
     protected function getBufferSize()
     {
         return $this->getParameter('api_input_buffer_size');
     }
 
+    /**
+     * @return integer
+     */
     protected function getMaxNumberResources()
     {
         return $this->getParameter('api_input_max_resources_number');
     }
 
     /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier      identifier of the product that should be created
+     * @param $code
+     *
+     * @return array
      */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    protected function getNormalizedChannel($code)
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
 
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
+        return $this->get('pim_catalog.normalizer.standard.channel')->normalize($channel);
     }
-
     /**
      * {@inheritdoc}
      */
