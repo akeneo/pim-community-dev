@@ -48,10 +48,6 @@ class FilterNotGrantedProductDataSubscriber implements EventSubscriber
             return;
         }
 
-        if (null === $this->container->get('security.token_storage')->getToken()) {
-            return;
-        }
-
         $this->container->get('pimee_catalog.security.filter.not_granted_associated_product')->filter($product);
 
         if (0 !== $product->getCategories()->count()) {

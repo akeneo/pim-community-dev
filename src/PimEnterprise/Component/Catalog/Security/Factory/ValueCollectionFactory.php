@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -23,9 +22,6 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var ValueCollectionFactoryInterface */
     private $valueCollectionFactory;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
@@ -40,7 +36,6 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
     /**
      * @param ValueCollectionFactoryInterface       $valueCollectionFactory
-     * @param TokenStorageInterface                 $tokenStorage
      * @param AuthorizationCheckerInterface         $authorizationChecker
      * @param LoggerInterface                       $logger
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
@@ -48,14 +43,12 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
      */
     public function __construct(
         ValueCollectionFactoryInterface $valueCollectionFactory,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         LoggerInterface $logger,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->valueCollectionFactory = $valueCollectionFactory;
-        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->logger = $logger;
         $this->attributeRepository = $attributeRepository;
@@ -69,8 +62,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
      */
     public function createFromStorageFormat(array $rawValues)
     {
-        $token = $this->tokenStorage->getToken();
-        if (null === $token || empty($rawValues)) {
+        if (empty($rawValues)) {
             return $this->valueCollectionFactory->createFromStorageFormat($rawValues);
         }
 
@@ -78,7 +70,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         foreach ($rawValues as $attributeCode => $values) {
             $isGrantedAttribute = $this->isGrantedAttribute($attributeCode);
             if ($isGrantedAttribute) {
-                $grantedValues = $this->getGrantedProductValueLocalizable($values);
+                $grantedValues = $this->getGrantedValueLocalizable($values);
 
                 if (!empty($grantedValues)) {
                     $rawValuesFiltered[$attributeCode] = $grantedValues;
@@ -90,13 +82,13 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     }
 
     /**
-     * Get only granted localizable product values (so at least viewable) or non localizable product values
+     * Get only granted localizable values (so at least viewable) or non localizable values
      *
      * @param array $values
      *
      * @return array
      */
-    private function getGrantedProductValueLocalizable(array $values)
+    private function getGrantedValueLocalizable(array $values)
     {
         foreach ($values as $channelCode => $localeRawValue) {
             foreach ($localeRawValue as $localeCode => $data) {

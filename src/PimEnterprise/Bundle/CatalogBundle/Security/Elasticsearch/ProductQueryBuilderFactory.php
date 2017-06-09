@@ -53,12 +53,9 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     {
         $pqb = $this->pqbFactory->create($options);
 
-        if (null === $this->tokenStorage->getToken()) {
-            throw new \LogicException('The token cannot be null on the instantiation of the Product Query Builder.');
-        }
-
+        $token = $this->tokenStorage->getToken();
         $grantedCategories = $this->categoryAccessRepository->getGrantedCategoryCodes(
-            $this->tokenStorage->getToken()->getUser(),
+            $token->getUser(),
             Attributes::VIEW_ITEMS
         );
 

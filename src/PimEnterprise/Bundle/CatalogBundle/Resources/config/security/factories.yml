@@ -8,7 +8,6 @@ services:
         decoration_inner_name: pim_catalog.factory.value_collection_without_permission
         arguments:
             - '@pim_catalog.factory.value_collection_without_permission'
-            - '@security.token_storage'
             - '@security.authorization_checker'
             - '@logger'
             - '@pim_catalog.repository.cached_attribute'
