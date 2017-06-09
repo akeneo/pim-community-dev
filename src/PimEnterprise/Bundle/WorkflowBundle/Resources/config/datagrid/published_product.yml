@@ -64,14 +64,14 @@ datagrid:
                 label: pim_datagrid.mass_action_group.quick_export.label
                 icon: download-alt
         mass_actions:
-            mass_edit:
+            published_product_edit:
                 type: edit
                 acl_resource: pimee_workflow_published_product_index
                 label: pim.grid.mass_action.mass_edit
                 handler: product_mass_edit
-                route: pimee_workflow_mass_edit_published_action_choose
+                route: pim_enrich_mass_edit_action
                 route_parameters:
-                    operationGroup: mass-edit
+                    actionName: published-product-edit
                 launcherOptions:
                     iconClassName: icon-pencil
                 className: AknActionButton

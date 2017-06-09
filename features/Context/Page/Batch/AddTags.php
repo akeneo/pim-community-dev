@@ -44,13 +44,33 @@ class AddTags extends Form
     }
 
     /**
+     * Go to the configuration step
+     *
+     * @return string
+     */
+    public function choose()
+    {
+        $this->spin(function () {
+            $this->getElement('Choose')->click();
+
+            return true;
+        }, 'Cannot got to the configuration step');
+
+        return $this->currentStep;
+    }
+
+    /**
      * Go to the next step
      *
      * @return string
      */
-    public function next()
+    public function configure()
     {
-        $this->getElement('Next')->click();
+        $this->spin(function () {
+            $this->getElement('Configure')->click();
+
+            return true;
+        }, 'Cannot got to the confirm step');
 
         return $this->currentStep;
     }
@@ -62,7 +82,11 @@ class AddTags extends Form
      */
     public function confirm()
     {
-        $this->getElement('Confirm')->click();
+        $this->spin(function () {
+            $this->getElement('Confirm')->click();
+
+            return true;
+        }, 'Cannot confirm the wizard');
 
         return $this->currentStep;
     }

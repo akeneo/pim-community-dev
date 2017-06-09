@@ -112,24 +112,13 @@ datagrid:
             bulk_actions:
                 label: pim_datagrid.mass_action_group.bulk_actions.label
         mass_actions:
-            classify_move:
+            asset_edit:
                 type: edit
-                label: pim.grid.mass_action.mass_classify_assets
+                label: pim.grid.mass_action.asset_edit
                 acl_resource: pimee_product_asset_index
-                route: pimee_product_asset_mass_edit_asset_action_configure
+                route: pim_enrich_mass_edit_action
                 route_parameters:
-                    operationGroup: category-edit
-                    operationAlias: asset-classify-move
-                launcherOptions:
-                    group: bulk_actions
-            add_tags_to_assets:
-                type: edit
-                label: pim.grid.mass_action.add_tags_to_assets
-                acl_resource: pimee_product_asset_index
-                route: pimee_product_asset_mass_edit_asset_action_configure
-                route_parameters:
-                    operationGroup: mass-edit
-                    operationAlias: add-tags-to-assets
+                    actionName: asset-edit
                 launcherOptions:
                     group: bulk_actions
             delete:

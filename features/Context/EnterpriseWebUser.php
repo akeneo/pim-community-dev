@@ -30,7 +30,7 @@ class EnterpriseWebUser extends BaseWebUser
             ->addStep('Publish products', 'Batch Publish')
             ->addStep('Unpublish products', 'Batch Unpublish')
             ->chooseOperation($operation)
-            ->next();
+            ->choose();
 
         $this->wait();
     }
