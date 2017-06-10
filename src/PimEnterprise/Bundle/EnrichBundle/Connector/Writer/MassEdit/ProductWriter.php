@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -33,16 +33,16 @@ class ProductWriter extends BaseProductWriter
     /**
      * @param VersionManager                $versionManager
      * @param BulkSaverInterface            $productSaver
-     * @param BulkObjectDetacherInterface   $detacher
+     * @param CacheClearerInterface         $cacheClearer
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        BulkObjectDetacherInterface $detacher,
+        CacheClearerInterface $cacheClearer,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($versionManager, $productSaver, $detacher);
+        parent::__construct($versionManager, $productSaver, $cacheClearer);
 
         $this->authorizationChecker = $authorizationChecker;
     }

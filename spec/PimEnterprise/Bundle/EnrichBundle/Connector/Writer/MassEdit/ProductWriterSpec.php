@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,14 +20,14 @@ class ProductWriterSpec extends ObjectBehavior
     function let(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        BulkObjectDetacherInterface $detacher,
+        CacheClearerInterface $cacheClearer,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $versionManager,
             $productSaver,
-            $detacher,
+            $cacheClearer,
             $authorizationChecker
         );
         $this->setStepExecution($stepExecution);
