@@ -47,7 +47,7 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_association:
         class: '%pim_connector.writer.database.product_association.class%'
