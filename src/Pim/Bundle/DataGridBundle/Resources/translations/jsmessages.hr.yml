@@ -27,6 +27,8 @@ Action performed.: Akcija je izvršena.
 Action is not performed.: Akcija nije izvršena.
 Please, select item to perform action.: Molimo, odaberite stavku za izvođenje akcije.
 View per page: Pregled po stranici
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Entitet
 oro.datagrid.noentities: Nisu pronađeni rezultati
 oro.datagrid.noresults: "Nisu pronađeni rezultati. Pokušajte promijeniti kriterije pretraživanja."
