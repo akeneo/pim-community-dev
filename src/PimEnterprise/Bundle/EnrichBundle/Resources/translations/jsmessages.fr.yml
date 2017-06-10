@@ -37,6 +37,8 @@ pimee_enrich:
           title: Permissions
           view.label: Autorisé à voir les attributs
           edit.label: Autorisé à modifier les attributs
+          removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le groupe d'attributs
+          added: Le groupe {{ group }} sera autorisé à {{ permission }} le groupe d'attributs
   entity:
     product:
       history:
@@ -150,6 +152,7 @@ pimee_enrich:
         height: '%value%px de hauteur'
 pim_menu:
   item:
+    upload_asset: Télécharger les ressources
     asset: Ressources
     asset_category: Catégories de ressources
     proposal: Propositions
