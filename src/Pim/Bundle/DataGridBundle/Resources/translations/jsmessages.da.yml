@@ -27,6 +27,8 @@ Action performed.: Handlingen er udført.
 Action is not performed.: Handling udføres ikke.
 Please, select item to perform action.: Vælg vare for at udføre handling.
 View per page: Se pr. side
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Enhed
 oro.datagrid.noentities: Ingen poster fundet
 oro.datagrid.noresults: "Ingen resultater fundet. Prøv at ændre dine søgekriterier."
