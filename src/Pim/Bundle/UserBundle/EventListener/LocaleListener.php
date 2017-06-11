@@ -22,5 +22,6 @@ class LocaleListener
 
         $event->getRequest()->getSession()->remove('dataLocale');
         $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
+        $event->getRequest()->getSession()->save();
     }
 }

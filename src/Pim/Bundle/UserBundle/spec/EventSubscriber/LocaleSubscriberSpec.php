@@ -3,12 +3,14 @@
 namespace spec\Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManager;
+use FOS\RestBundle\FOSRestBundle;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -30,11 +32,16 @@ class LocaleSubscriberSpec extends ObjectBehavior
     function it_sets_locale_on_kernel_request(
         GetResponseEvent $event,
         Request $request,
+        ParameterBag $attributes,
         SessionInterface $session
     ) {
+        $request->attributes = $attributes;
+        $attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)->willReturn(false);
         $event->getRequest()->willReturn($request);
+        $request->hasPreviousSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn('fr_FR');
+        $session->save()->shouldBeCalled();
         $request->setLocale('fr_FR')->shouldBeCalled();
 
         $this->onKernelRequest($event);

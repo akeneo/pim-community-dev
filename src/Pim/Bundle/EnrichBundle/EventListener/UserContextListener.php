@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
+use FOS\RestBundle\FOSRestBundle;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -76,7 +77,12 @@ class UserContextListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
+        $request = $event->getRequest();
+
+        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()
+            || $request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)
+            || null === $this->tokenStorage->getToken()
+        ) {
             return;
         }
 

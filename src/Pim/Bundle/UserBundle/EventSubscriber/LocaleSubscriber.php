@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManager;
+use FOS\RestBundle\FOSRestBundle;
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -47,12 +48,19 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     public function onPostUpdate(GenericEvent $event)
     {
+        $request = $event->getRequest();
+
+        if (!$request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)) {
+            return;
+        }
+
         $user = $event->getSubject();
 
         if ($user === $event->getArgument('current_user')) {
             $request = $this->requestStack->getMasterRequest();
             $request->getSession()->set('_locale', $user->getUiLocale()->getCode());
             $this->translator->setLocale($user->getUiLocale()->getCode());
+            $request->getSession()->save();
         }
     }
 
@@ -62,6 +70,11 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+
+        if ($request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)) {
+            return;
+        }
+
         $locale = $this->getLocale($request);
 
         if (null !== $locale) {
@@ -87,8 +100,16 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
+        if (!$request->hasPreviousSession()) {
+            return $this->getLocaleFromOroConfigValue();
+        }
+
+        $locale = null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
+
+        $request->getSession()->save();
+
+        return $locale;
     }
 
     /**

@@ -45,7 +45,7 @@ class TranslateFlashMessagesSubscriberSpec extends ObjectBehavior
     ) {
         $event->getRequest()->willReturn($request);
         $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
-        $request->hasSession()->willReturn(true);
+        $request->hasPreviousSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->getFlashBag()->willReturn($flashBag);
 
