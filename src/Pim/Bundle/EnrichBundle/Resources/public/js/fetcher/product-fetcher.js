@@ -4,7 +4,6 @@ define(
     [
         'jquery',
         'backbone',
-        'module',
         'routing',
         'oro/mediator',
         'pim/cache-invalidator',
@@ -13,7 +12,6 @@ define(
     function (
         $,
         Backbone,
-        module,
         Routing,
         mediator,
         CacheInvalidator,

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -15,21 +15,12 @@ use Pim\Component\Catalog\Model\ProductInterface;
 interface AssociationRepositoryInterface
 {
     /**
-     * Return the number of Associations for a specific association type
-     *
-     * @param AssociationTypeInterface $associationType
-     *
-     * @return mixed
-     */
-    public function countForAssociationType(AssociationTypeInterface $associationType);
-
-    /**
      * Get the list of associations corresponding to the given owner IDs
      *
      * @param ProductInterface $product
      * @param array            $ownerIds
      *
-     * @return \Pim\Component\Catalog\Model\Association[]
+     * @return AssociationInterface[]
      */
     public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds);
 }

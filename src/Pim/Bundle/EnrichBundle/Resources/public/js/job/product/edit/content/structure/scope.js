@@ -11,11 +11,12 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'text!pim/template/export/product/edit/content/structure/scope',
+        'pim/template/export/product/edit/content/structure/scope',
         'pim/form',
         'pim/fetcher-registry',
         'pim/user-context',
-        'jquery.select2'
+        'jquery.select2',
+        'pim/i18n'
     ],
     function (
         $,
@@ -24,7 +25,9 @@ define(
         template,
         BaseForm,
         fetcherRegistry,
-        UserContext
+        UserContext,
+        select2,
+        i18n
     ) {
         return BaseForm.extend({
             config: {},
@@ -61,8 +64,7 @@ define(
                         this.template({
                             isEditable: this.isEditable(),
                             __: __,
-                            locale: UserContext.get('uiLocale'),
-                            channels: channels,
+                            channels: this.setChannelLabels(channels),
                             scope: this.getScope(),
                             errors: this.getParent().getValidationErrorsForField('scope')
                         })
@@ -78,6 +80,23 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Sets fallback labels for channels without a translation
+             *
+             * @param {Array} channels
+             *
+             * @return {Array}
+             */
+            setChannelLabels: function (channels) {
+                var locale = UserContext.get('uiLocale');
+
+                return _.map(channels, function (channel) {
+                    channel.label = i18n.getLabel(channel.labels, locale, channel.code);
+
+                    return channel;
+                });
             },
 
             /**

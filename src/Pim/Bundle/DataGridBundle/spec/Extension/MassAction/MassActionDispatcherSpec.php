@@ -31,7 +31,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         QueryBuilder $queryBuilder
     ) {
-        $this->beConstructedWith($handlerRegistry, $manager, $requestParams, $parametersParser);
+        $this->beConstructedWith($handlerRegistry, $manager, $requestParams, $parametersParser, ['product-grid']);
 
         $acceptedDatasource->getQueryBuilder()->willReturn($queryBuilder);
         $grid->getAcceptor()->willReturn($acceptor);

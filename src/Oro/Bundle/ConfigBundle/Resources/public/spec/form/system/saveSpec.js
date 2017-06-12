@@ -2,8 +2,8 @@
 'use strict';
 
 define(
-    ['pim/form/common/save', 'oro/form/system/config/save', 'routing', 'module'],
-    function (CommonSave, SaveForm, Routing, module) {
+    ['pim/form/common/save', 'oro/form/system/config/save', 'routing'],
+    function (CommonSave, SaveForm, Routing) {
         describe('Save form', function () {
             var saveForm = new SaveForm({config: {config: {}}});
             it('extends save form', function () {

@@ -43,27 +43,15 @@ config:
             deps:
                 - jquery
 
-    map:
-        '*':
-            jquery: oro/jquery-setup
-        oro/jquery-setup:
-            jquery: jquery
-
     paths:
         text:                          pimui/lib/text/text
-        json:                          pimui/lib/json2/json2
-        base64:                        pimui/lib/base64/base64
-        jquery:                        pimui/lib/jquery/jquery-1.10.2
         jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
         jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
         bootstrap:                     pimui/lib/bootstrap/js/bootstrap
-        underscore:                    pimui/lib/underscore/underscore
-        backbone:                      pimui/lib/backbone/backbone
         backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
-        summernote:                    pimui/lib/summernote/summernote.js
         oro/app:                       pimui/js/app
         oro/error:                     pimui/js/error
         oro/init-layout:               pimui/js/init-layout

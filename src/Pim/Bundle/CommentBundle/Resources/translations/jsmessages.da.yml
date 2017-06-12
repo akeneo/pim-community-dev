@@ -1,0 +1,26 @@
+btn:
+  post: Tilføj en ny kommentar
+  reply: Besvar
+  cancel: Annuller
+confirmation:
+  remove:
+    comment: Er du sikker på du vil slette denne kommentar?
+flash:
+  comment:
+    create:
+      success: Din kommentar er blevet oprettet.
+      error: Der opstod en fejl under oprettelsen af din kommentar.
+    delete:
+      success: Din kommentar er blevet slettet.
+      error: Der opstod en fejl under sletningen af din kommentar.
+    reply:
+      success: Dit svar er blevet oprettet.
+      error: Der opstod en fejl under oprettelsen af dit svar.
+comment:
+  index:
+    empty: Ingen kommentarer for nu
+  placeholder:
+    new: Skriv en ny kommentar...
+    reply: Besvar denne kommentar...
+pim_comment:
+  product.panel.comment.title: Kommentarer

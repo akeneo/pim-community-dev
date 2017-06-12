@@ -1,0 +1,82 @@
+parameters:
+    pim_catalog.normalizer.storage.product.class: Pim\Component\Catalog\Normalizer\Storage\ProductNormalizer
+    pim_catalog.normalizer.storage.product.properties.class: Pim\Component\Catalog\Normalizer\Storage\Product\PropertiesNormalizer
+    pim_catalog.normalizer.storage.product.associations.class: Pim\Component\Catalog\Normalizer\Storage\Product\AssociationsNormalizer
+    pim_catalog.normalizer.storage.product.product_values.class: Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer
+    pim_catalog.normalizer.storage.product.product_value.class: Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer
+    pim_catalog.normalizer.storage.product.price.class: Pim\Component\Catalog\Normalizer\Storage\Product\PriceNormalizer
+    pim_catalog.normalizer.storage.product.metric.class: Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer
+    pim_catalog.normalizer.storage.datetime.class: Pim\Component\Catalog\Normalizer\Storage\DateTimeNormalizer
+    pim_catalog.normalizer.storage.file.class: Pim\Component\Catalog\Normalizer\Storage\FileNormalizer
+    pim_catalog.normalizer.storage.attribute_option.class: Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer
+services:
+    pim_catalog.normalizer.storage.product:
+        class: '%pim_catalog.normalizer.storage.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.storage.product.properties'
+            - '@pim_catalog.normalizer.storage.product.associations'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.properties:
+        class: '%pim_catalog.normalizer.storage.product.properties.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.storage.product.associations:
+        class: '%pim_catalog.normalizer.storage.product.associations.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.associations'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.storage.product.product_values:
+        class: '%pim_catalog.normalizer.storage.product.product_values.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_values'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.product_value:
+        class: '%pim_catalog.normalizer.storage.product.product_value.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_value'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.price:
+        class: '%pim_catalog.normalizer.storage.product.price.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.price'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.metric:
+        class: '%pim_catalog.normalizer.storage.product.metric.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.metric'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.datetime:
+        class: '%pim_catalog.normalizer.storage.datetime.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.file:
+        class: '%pim_catalog.normalizer.storage.file.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.file'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.attribute_option:
+        class: '%pim_catalog.normalizer.storage.attribute_option.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_option'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

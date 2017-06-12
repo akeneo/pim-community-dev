@@ -14,7 +14,7 @@ define(
         'backbone',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/sequential-edit',
+        'pim/template/product/sequential-edit',
         'routing',
         'pim/router',
         'pim/fetcher-registry',

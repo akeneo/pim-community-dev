@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/locale-switcher',
+        'pim/template/product/locale-switcher',
         'pim/fetcher-registry',
         'pim/i18n'
     ],

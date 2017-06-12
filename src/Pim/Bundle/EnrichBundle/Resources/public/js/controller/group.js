@@ -11,8 +11,7 @@ define(
         'pim/dialog',
         'pim/page-title',
         'pim/error',
-        'pim/i18n',
-        'module'
+        'pim/i18n'
     ],
     function (
         _,
@@ -24,12 +23,11 @@ define(
         Dialog,
         PageTitle,
         Error,
-        i18n,
-        module
+        i18n
     ) {
         return BaseController.extend({
             initialize: function () {
-                this.config = module.config();
+                this.config = __moduleConfig;
             },
 
             /**

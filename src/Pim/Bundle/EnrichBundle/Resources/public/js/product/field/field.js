@@ -11,7 +11,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'text!pim/template/product/field/field',
+        'pim/template/product/field/field',
         'pim/attribute-manager',
         'pim/i18n',
         'oro/mediator'
@@ -38,6 +38,7 @@ define([
             editable: true,
             ready: true,
             valid: true,
+            locked: false,
 
             /**
              * Initialize this field
@@ -61,7 +62,7 @@ define([
              * @returns {Object}
              */
             render: function () {
-                this.setEditable(true);
+                this.setEditable(!this.locked);
                 this.setValid(true);
                 this.elements = {};
                 var promises  = [];
@@ -71,7 +72,6 @@ define([
                     .then(this.getTemplateContext.bind(this))
                     .then(function (templateContext) {
                         this.$el.html(this.template(templateContext));
-
                         this.$('.original-field .field-input').append(this.renderInput(templateContext));
 
                         this.renderElements();
@@ -175,7 +175,6 @@ define([
              */
             setValues: function (values) {
                 if (_.isUndefined(values) || values.length === 0) {
-                    /*global console: true */
                     console.error('Value array is empty');
                 }
 
@@ -249,6 +248,15 @@ define([
              */
             setEditable: function (editable) {
                 this.editable = editable;
+            },
+
+            /**
+             * Set this field as locked
+             *
+             * @param {boolean} locked
+             */
+            setLocked: function (locked) {
+                this.locked = locked;
             },
 
             /**

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Component\Catalog\Repository\ProductValueCounterRepositoryInterface;
 
 /**
  * Product value repository used to retrieve the number of product values. This number can be used
@@ -13,7 +12,7 @@ use Pim\Component\Catalog\Repository\ProductValueCounterRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueCounterRepository implements ProductValueCounterRepositoryInterface
+class ProductValueCounterRepository
 {
     /** @var DocumentManager */
     protected $documentManager;

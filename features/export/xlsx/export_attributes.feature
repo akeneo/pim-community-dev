@@ -87,7 +87,7 @@ Feature: Export attributes in XLSX
     And I launch the export job
     And I wait for the "xlsx_footwear_attribute_export" job to finish
     Then exported xlsx file of "xlsx_footwear_attribute_export" should contains the following headers:
-      | code | label-fr_FR | label-en_US | allowed_extensions | available_locales | date_max | date_min | decimals_allowed | default_metric_unit | group | localizable | max_characters | max_file_size | metric_family | minimum_input_length | negative_allowed | number_max | number_min | reference_data_name | scopable | sort_order | type | unique | useable_as_grid_filter | validation_regexp | validation_rule | wysiwyg_enabled |
+      | code | label-en_US | label-fr_FR | allowed_extensions | available_locales | date_max | date_min | decimals_allowed | default_metric_unit | group | localizable | max_characters | max_file_size | metric_family | minimum_input_length | negative_allowed | number_max | number_min | reference_data_name | scopable | sort_order | type | unique | useable_as_grid_filter | validation_regexp | validation_rule | wysiwyg_enabled |
 
   @ce
   Scenario: Successfully export associations into several files

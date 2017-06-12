@@ -18,10 +18,10 @@ Feature: Edit attribute options
     Then I should see "To manage options, please save the attribute first"
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
-    And I check the "Automatic option sorting" switch
 
   Scenario: Successfully cancel while editing some attribute options
-    Given I create the following attribute options:
+    Given I check the "Automatic option sorting" switch
+    And I create the following attribute options:
       | Code  |
       | red   |
       | blue  |
@@ -36,7 +36,8 @@ Feature: Edit attribute options
 
   @jira https://akeneo.atlassian.net/browse/PIM-6002
   Scenario: Successfully edit an attribute option value containing a quote
-    Given I create the following attribute options:
+    Given I check the "Automatic option sorting" switch
+    And I create the following attribute options:
       | Code  | en_US |
       | red   | r"ed  |
       | blue  | blue  |
@@ -45,3 +46,26 @@ Feature: Edit attribute options
     And I should not see the text "There are unsaved changes."
     And I edit the attribute option "red" to turn it to "red" and cancel
     Then I should not see the text "r\"ed"
+
+  Scenario: Edit an option value of an attribute of type "Multi select" is successfully impacted to the products
+    Given the following attribute:
+      | code   | label-en_US | type                    | allowed_extensions | group | localizable | available_locales |
+      | colors | Colors      | pim_catalog_multiselect |                    | Other | 0           | en_US             |
+    And I am on the "colors" attribute page
+    And I visit the "Values" tab
+    And I create the following attribute options:
+      | Code  | en_US |
+      | red   | Red   |
+      | blue  | Blue  |
+      | green | Green |
+    And I save the attribute
+    And the following product:
+      | sku     | colors     |
+      | shoe_42 | Red, Green |
+    When I am on the "colors" attribute page
+    And I visit the "Values" tab
+    And I edit the following attribute option:
+      | Code  | en_US    |
+      | red   | Reeed !  |
+    And I am on the "shoe_42" product page
+    Then I should see "Reeed !"

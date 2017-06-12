@@ -3,7 +3,6 @@
 define([
         'jquery',
         'underscore',
-        'module',
         'oro/mediator',
         'routing',
         'pim/attribute-manager',
@@ -11,7 +10,6 @@ define([
     ], function (
         $,
         _,
-        module,
         mediator,
         Routing,
         AttributeManager,

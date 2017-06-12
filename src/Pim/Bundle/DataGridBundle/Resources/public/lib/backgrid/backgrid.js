@@ -2539,3 +2539,5 @@ var Grid = Backgrid.Grid = Backbone.View.extend({
 });
 
 }(this, jQuery, _, Backbone));
+
+module.exports = this.Backgrid

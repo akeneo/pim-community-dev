@@ -14,7 +14,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/grid/view-selector/line'
+        'pim/template/grid/view-selector/line'
     ],
     function (
         $,

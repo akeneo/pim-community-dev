@@ -104,11 +104,9 @@ class SequentialEditController
     }
 
     /**
-     * @param Request $request
-     *
      * @return JsonResponse
      */
-    public function getAction(Request $request)
+    public function getAction()
     {
         $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());
 

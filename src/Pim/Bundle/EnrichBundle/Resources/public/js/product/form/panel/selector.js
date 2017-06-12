@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/panel/selector'
+        'pim/template/product/panel/selector'
     ],
     function (_, BaseForm, template) {
         return BaseForm.extend({

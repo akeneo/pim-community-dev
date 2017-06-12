@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductIntegration extends AbstractProductTestCase
@@ -10,7 +11,7 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -1198,8 +1199,7 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_categories');
-        $normalizer = $this->get('pim_catalog.normalizer.standard.product');
-        $standardizedProduct = $normalizer->normalize($product);
+        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['created']);
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
@@ -1285,7 +1285,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The value product_family is already set on another product for the unique attribute sku',
+                    'message'  => 'The same identifier is already set on another product',
                 ],
             ],
         ];
@@ -1432,30 +1432,22 @@ JSON;
     protected function assertSameProducts(array $expectedProduct, $identifier)
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $normalizer = $this->get('pim_catalog.normalizer.standard.product');
-        $standardizedProduct = $normalizer->normalize($product);
-
-        $standardizedProduct = static::sanitizeDateFields($standardizedProduct);
-        $expectedProduct = static::sanitizeDateFields($expectedProduct);
+        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
         $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
         $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
 
-        ksort($expectedProduct['values']);
-        ksort($standardizedProduct['values']);
+        NormalizedProductCleaner::clean($standardizedProduct);
+        NormalizedProductCleaner::clean($expectedProduct);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
-
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

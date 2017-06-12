@@ -2,11 +2,13 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -27,150 +29,158 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeTranslation $attributeTranslationFr,
         AttributeTranslation $attributeTranslationEn,
-        CompletenessInterface $completeness,
-        ChannelInterface $channel
+        ArrayCollection $completenessCollection,
+        \ArrayIterator $completenessIterator,
+        ArrayCollection $attributeCollectionMobileEnUS,
+        ArrayCollection $attributeCollectionMobileFrFR,
+        ArrayCollection $attributeCollectionPrintEnUS,
+        ArrayCollection $attributeCollectionPrintFrFR,
+        \ArrayIterator $attributeIteratorMobileEnUS,
+        \ArrayIterator $attributeIteratorMobileFrFR,
+        \ArrayIterator $attributeIteratorPrintEnUS,
+        \ArrayIterator $attributeIteratorPrintFrFR,
+        CompletenessInterface $completenessMobileEnUS,
+        CompletenessInterface $completenessMobileFrFR,
+        CompletenessInterface $completenessPrintEnUS,
+        CompletenessInterface $completenessPrintFrFR,
+        ChannelInterface $mobile,
+        ChannelInterface $print,
+        LocaleInterface $enUS,
+        LocaleInterface $frFR
     ) {
-        $normalizer->normalize(Argument::any(), 'internal_api', ['a_context_key' => 'context_value'])
-            ->willReturn(['missing' => [], 'completeness' => 'normalized_completeness']);
+        $completenessCollection->getIterator()->willReturn($completenessIterator);
+        $completenessIterator->rewind()->shouldBeCalled();
+        $completenessIterator->valid()->willReturn(true, true, true, true, false);
+        $completenessIterator->current()->willReturn(
+            $completenessMobileEnUS,
+            $completenessMobileFrFR,
+            $completenessPrintEnUS,
+            $completenessPrintFrFR
+        );
+        $completenessIterator->next()->shouldBeCalled();
 
-        $completeness->getChannel()->willReturn($channel);
-        $channel->getCode()->willReturn('mobile', 'print', 'tablet', 'mobile', 'print', 'tablet');
+        $attributeCollectionMobileEnUS->getIterator()->willReturn($attributeIteratorMobileEnUS);
+        $attributeIteratorMobileEnUS->rewind()->shouldBeCalled();
+        $attributeIteratorMobileEnUS->valid()->willReturn(true, false);
+        $attributeIteratorMobileEnUS->current()->willReturn($attribute);
+        $attributeIteratorMobileEnUS->next()->shouldBeCalled();
+
+        $attributeCollectionMobileFrFR->getIterator()->willReturn($attributeIteratorMobileFrFR);
+        $attributeIteratorMobileFrFR->rewind()->shouldBeCalled();
+        $attributeIteratorMobileFrFR->valid()->willReturn(true, false);
+        $attributeIteratorMobileFrFR->current()->willReturn($attribute);
+        $attributeIteratorMobileFrFR->next()->shouldBeCalled();
+
+        $attributeCollectionPrintEnUS->getIterator()->willReturn($attributeIteratorPrintEnUS);
+        $attributeIteratorPrintEnUS->rewind()->shouldBeCalled();
+        $attributeIteratorPrintEnUS->valid()->willReturn(true, false);
+        $attributeIteratorPrintEnUS->current()->willReturn($attribute);
+        $attributeIteratorPrintEnUS->next()->shouldBeCalled();
+
+        $attributeCollectionPrintFrFR->getIterator()->willReturn($attributeIteratorPrintFrFR);
+        $attributeIteratorPrintFrFR->rewind()->shouldBeCalled();
+        $attributeIteratorPrintFrFR->valid()->willReturn(true, false);
+        $attributeIteratorPrintFrFR->current()->willReturn($attribute);
+        $attributeIteratorPrintFrFR->next()->shouldBeCalled();
+
+        $mobile->getCode()->willReturn('mobile');
+        $print->getCode()->willReturn('print');
+        $enUS->getCode()->willReturn('en_US');
+        $frFR->getCode()->willReturn('fr_FR');
+
+        $completenessMobileEnUS->getChannel()->willReturn($mobile);
+        $completenessMobileEnUS->getLocale()->willReturn($enUS);
+        $completenessMobileEnUS->getRatio()->willReturn(50);
+        $completenessMobileEnUS->getRequiredCount()->willReturn(2);
+        $completenessMobileEnUS->getMissingCount()->willReturn(1);
+        $completenessMobileEnUS->getMissingAttributes()->willReturn($attributeCollectionMobileEnUS);
+
+        $completenessMobileFrFR->getChannel()->willReturn($mobile);
+        $completenessMobileFrFR->getLocale()->willReturn($frFR);
+        $completenessMobileFrFR->getRatio()->willReturn(50);
+        $completenessMobileFrFR->getRequiredCount()->willReturn(2);
+        $completenessMobileFrFR->getMissingCount()->willReturn(1);
+        $completenessMobileFrFR->getMissingAttributes()->willReturn($attributeCollectionMobileFrFR);
+
+        $completenessPrintEnUS->getChannel()->willReturn($print);
+        $completenessPrintEnUS->getLocale()->willReturn($enUS);
+        $completenessPrintEnUS->getRatio()->willReturn(50);
+        $completenessPrintEnUS->getRequiredCount()->willReturn(2);
+        $completenessPrintEnUS->getMissingCount()->willReturn(1);
+        $completenessPrintEnUS->getMissingAttributes()->willReturn($attributeCollectionPrintEnUS);
+
+        $completenessPrintFrFR->getChannel()->willReturn($print);
+        $completenessPrintFrFR->getLocale()->willReturn($frFR);
+        $completenessPrintFrFR->getRatio()->willReturn(50);
+        $completenessPrintFrFR->getRequiredCount()->willReturn(2);
+        $completenessPrintFrFR->getMissingCount()->willReturn(1);
+        $completenessPrintFrFR->getMissingAttributes()->willReturn($attributeCollectionPrintFrFR);
 
         $attribute->getCode()->willReturn('name');
 
         $attribute->getTranslation('en_US')->willReturn($attributeTranslationEn);
         $attribute->getTranslation('fr_FR')->willReturn($attributeTranslationFr);
 
-        $attributeTranslationEn->getLabel()->willReturn('labelEn');
-        $attributeTranslationFr->getLabel()->willReturn('labelFr');
+        $attributeTranslationEn->getLabel()->willReturn('Name');
+        $attributeTranslationFr->getLabel()->willReturn('Nom');
 
-        $this->normalize([
-            'en_US' => [
-                'locale' => 'en_US',
-                'stats' => [],
-                'channels' => [
-                    'mobile' => ['missing' => [$attribute], 'completeness' => $completeness],
-                    'print'  => ['missing' => [$attribute], 'completeness' => $completeness],
-                    'tablet' => ['missing' => [$attribute], 'completeness' => $completeness]
-                ],
-            ],
-            'fr_FR' => [
-                'locale' => 'fr_FR',
-                'stats' => [],
-                'channels' => [
-                    'mobile' => ['missing' => [$attribute], 'completeness' => $completeness],
-                    'print'  => ['missing' => [$attribute], 'completeness' => $completeness],
-                    'tablet' => ['missing' => [$attribute], 'completeness' => $completeness]
-                ]
-            ]
-        ], 'internal_api', ['a_context_key' => 'context_value'])
+        $normalizer->normalize(Argument::cetera())->shouldBeCalledTimes(4);
+        $normalizer
+            ->normalize($completenessMobileEnUS, 'internal_api', ['a_context_key' => 'context_value'])
+            ->willReturn([]);
+        $normalizer
+            ->normalize($completenessMobileFrFR, 'internal_api', ['a_context_key' => 'context_value'])
+            ->willReturn([]);
+        $normalizer
+            ->normalize($completenessPrintEnUS, 'internal_api', ['a_context_key' => 'context_value'])
+            ->willReturn([]);
+        $normalizer
+            ->normalize($completenessPrintFrFR, 'internal_api', ['a_context_key' => 'context_value'])
+            ->willReturn([]);
+
+        $this
+            ->normalize($completenessCollection, 'internal_api', ['a_context_key' => 'context_value'])
             ->shouldReturn(
                 [
                     [
                         'locale'   => 'en_US',
-                        'stats'    => [],
+                        'stats'    => [
+                            'total'    => 2,
+                            'complete' => 0,
+                        ],
                         'channels' => [
                             'mobile' => [
-                                'completeness' => [
-                                  'missing' => [
-                                  ],
-                                  'completeness' => 'normalized_completeness',
-                                ],
+                                'completeness' => [],
                                 'missing' => [
-                                  [
-                                    'code' => 'name',
-                                    'labels' => [
-                                      'en_US' => 'labelEn',
-                                      'fr_FR' => 'labelFr',
-                                    ],
-                                  ],
+                                    ['code' => 'name', 'labels' => ['en_US' => 'Name', 'fr_FR' => 'Nom']],
                                 ],
                             ],
                             'print'  => [
-                                'completeness' => [
-                                  'missing' => [
-                                  ],
-                                  'completeness' => 'normalized_completeness',
-                                ],
+                                'completeness' => [],
                                 'missing' => [
-                                  [
-                                    'code' => 'name',
-                                    'labels' => [
-                                      'en_US' => 'labelEn',
-                                      'fr_FR' => 'labelFr',
-                                    ],
-                                  ],
-                                ],
-                            ],
-                            'tablet' => [
-                                'completeness' => [
-                                  'missing' => [
-                                  ],
-                                  'completeness' => 'normalized_completeness',
-                                ],
-                                'missing' => [
-                                  [
-                                    'code' => 'name',
-                                    'labels' => [
-                                      'en_US' => 'labelEn',
-                                      'fr_FR' => 'labelFr',
-                                    ],
-                                  ],
+                                    ['code' => 'name', 'labels' => ['en_US' => 'Name', 'fr_FR' => 'Nom']],
                                 ],
                             ],
                         ],
                     ],
                     [
                         'locale'   => 'fr_FR',
-                        'stats'    => [],
+                        'stats'    => [
+                            'total'    => 2,
+                            'complete' => 0,
+                        ],
                         'channels' => [
                             'mobile' => [
-                                'completeness' => [
-                                  'missing' => [
-                                  ],
-                                  'completeness' => 'normalized_completeness',
-                                ],
+                                'completeness' => [],
                                 'missing' => [
-                                  [
-                                    'code' => 'name',
-                                    'labels' => [
-                                      'en_US' => 'labelEn',
-                                      'fr_FR' => 'labelFr',
-                                    ],
-                                  ],
+                                    ['code' => 'name', 'labels' => ['en_US' => 'Name', 'fr_FR' => 'Nom']],
                                 ],
                             ],
                             'print'  => [
-                                'completeness' => [
-                                  'missing' => [
-                                  ],
-                                  'completeness' => 'normalized_completeness',
-                                ],
+                                'completeness' => [],
                                 'missing' => [
-                                  [
-                                    'code' => 'name',
-                                    'labels' => [
-                                      'en_US' => 'labelEn',
-                                      'fr_FR' => 'labelFr',
-                                    ],
-                                  ],
+                                    ['code' => 'name', 'labels' => ['en_US' => 'Name', 'fr_FR' => 'Nom']],
                                 ],
-                            ],
-                            'tablet' => [
-                                'completeness' => [
-                                  'missing' => [
-                                  ],
-                                  'completeness' => 'normalized_completeness',
-                                ],
-                                'missing' => [
-                                  [
-                                    'code' => 'name',
-                                    'labels' => [
-                                      'en_US' => 'labelEn',
-                                      'fr_FR' => 'labelFr',
-                                    ],
-                                  ],
-                                ]
                             ],
                         ],
                     ],

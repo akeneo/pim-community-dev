@@ -12,7 +12,7 @@ define(
         'jquery',
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/multi-select',
+        'pim/template/product/field/multi-select',
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',

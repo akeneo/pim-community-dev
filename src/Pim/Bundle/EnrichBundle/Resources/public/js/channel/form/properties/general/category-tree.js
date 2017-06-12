@@ -13,7 +13,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/channel/tab/properties/general/category-tree',
+        'pim/template/channel/tab/properties/general/category-tree',
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'

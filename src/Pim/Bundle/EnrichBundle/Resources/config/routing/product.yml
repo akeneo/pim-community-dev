@@ -4,7 +4,7 @@ pim_enrich_product_index:
 
 pim_enrich_product_edit:
     path: /{id}
-    defaults: { _controller: pim_enrich.controller.rest.product:editAction }
+    defaults: { _controller: pim_enrich.controller.product:editAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET, POST]
@@ -44,7 +44,7 @@ pim_enrich_product_rest_post:
 
 pim_enrich_product_rest_remove:
     path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.rest.product:removeAction }
+    defaults: { _controller: pim_enrich.controller.rest.product:removeAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
     methods: [DELETE]
@@ -52,13 +52,6 @@ pim_enrich_product_rest_remove:
 pim_enrich_product_category_rest_list:
     path: /rest/{id}/categories
     defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }
-    requirements:
-        id: '[0-9a-f]+'
-    methods: [GET]
-
-pim_enrich_product_completeness_rest_get:
-    path: /rest/{id}/completeness
-    defaults: { _controller: pim_enrich.controller.rest.completeness:getAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]

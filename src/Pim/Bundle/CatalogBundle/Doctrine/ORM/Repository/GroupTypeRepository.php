@@ -64,22 +64,6 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     /**
      * {@inheritdoc}
      */
-    public function findTypeIds($isVariant)
-    {
-        $query = $this->_em->createQueryBuilder()
-            ->select('g.id')
-            ->from($this->_entityName, 'g', 'g.id')
-            ->leftJoin('g.translations', 't')
-            ->andWhere('g.variant = :variant')
-            ->setParameter('variant', $isVariant)
-            ->getQuery();
-
-        return array_keys($query->getArrayResult());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getVariantGroupType()
     {
         $query = $this

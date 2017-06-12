@@ -13,8 +13,8 @@ class PartialUpdateAttributeIntegration extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "a_text"
     }
 JSON;
@@ -33,8 +33,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "a_new_text",
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
@@ -55,8 +55,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "an_incomplete_text",
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
@@ -134,8 +134,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "a_new_text_with_code",
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
@@ -184,8 +184,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
     }
@@ -277,8 +277,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code":"a_metric",
         "type":"pim_catalog_metric",
         "group":"attributeGroupA",
@@ -329,8 +329,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "type":"pim_catalog_metric",
         "group":"attributeGroupA",
         "default_metric_unit":"WATT" 
@@ -481,8 +481,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "new_code"
     }
 JSON;
@@ -510,8 +510,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "extra_property": ""
     }
 JSON;
@@ -538,8 +538,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "labels": null
     }
 JSON;
@@ -566,8 +566,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "inconsistent_code2"
     }
 JSON;
@@ -589,9 +589,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

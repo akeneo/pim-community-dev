@@ -14,13 +14,12 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text!pim/template/form/tab/attribute/create-button',
-        'text!pim/template/form/tab/attribute/create-modal-content',
+        'pim/template/form/tab/attribute/create-button',
+        'pim/template/form/tab/attribute/create-modal-content',
         'routing',
         'pim/fetcher-registry',
         'pim/router',
-        'module',
-        'backbone/bootstrap-modal'
+        'bootstrap-modal'
     ],
     function (
         $,
@@ -32,8 +31,7 @@ define(
         templateModal,
         Routing,
         FetcherRegistry,
-        router,
-        module
+        router
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -54,10 +52,12 @@ define(
             createModal: function (attributeTypesMap) {
                 var attributeTypes = this.formatAndSortAttributeTypesByLabel(attributeTypesMap);
 
+                var moduleConfig = __moduleConfig;
+
                 var modal = null;
                 var modalContent = this.templateModal({
                     attributeTypes: attributeTypes,
-                    iconsMap: module.config().attribute_icons,
+                    iconsMap: moduleConfig.attribute_icons,
                     generateRoute: function (route, params) {
                         return Routing.generate(route, params);
                     }

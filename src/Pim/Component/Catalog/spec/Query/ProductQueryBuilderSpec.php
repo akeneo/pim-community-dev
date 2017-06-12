@@ -4,13 +4,13 @@ namespace spec\Pim\Component\Catalog\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
@@ -24,16 +24,20 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        QueryBuilder $qb
+        SearchQueryBuilder $searchQb,
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
+        $defaultContext = ['locale' => 'en_US', 'scope' => 'print'];
         $this->beConstructedWith(
             $repository,
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
-            ['locale' => 'en_US', 'scope' => 'print']
+            $optionsResolver,
+            $defaultContext
         );
-        $this->setQueryBuilder($qb);
+        $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
+        $this->setQueryBuilder($searchQb);
     }
 
     function it_is_a_product_query_builder()
@@ -127,24 +131,23 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addSorter('sku', 'DESC', []);
     }
 
-    function it_provides_a_query_builder_once_configured($qb)
+    function it_provides_a_query_builder_once_configured($searchQb)
     {
-        $this->getQueryBuilder()->shouldReturn($qb);
+        $this->getQueryBuilder()->shouldReturn($searchQb);
     }
 
-    function it_configures_the_query_builder($qb)
+    function it_configures_the_query_builder($searchQb)
     {
-        $this->setQueryBuilder($qb)->shouldReturn($this);
+        $this->setQueryBuilder($searchQb)->shouldReturn($this);
     }
 
     function it_executes_the_query(
-        $qb,
-        AbstractQuery $query,
+        $searchQb,
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor
     ) {
-        $qb->getQuery()->willReturn($query);
-        $cursorFactory->createCursor(Argument::any())->shouldBeCalled()->willReturn($cursor);
+        $searchQb->getQuery()->willReturn([]);
+        $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
     }

@@ -29,8 +29,7 @@ class IsStringValidator extends ConstraintValidator
 
         if ($value instanceof ProductValueInterface) {
             $code = $value->getAttribute()->getCode();
-            $getter = sprintf('get%s', ucfirst($value->getAttribute()->getBackendType()));
-            $checkedValue = $value->$getter();
+            $checkedValue = $value->getData();
         }
 
         if (null === $checkedValue) {

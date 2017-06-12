@@ -4,6 +4,7 @@ namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
+use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +57,7 @@ class ProductController
         try {
             $responseContent = $this->rendererRegistry->render(
                 $product,
-                'pdf',
+                ProductPdfRenderer::PDF_FORMAT,
                 [
                     'locale'        => $request->get('dataLocale', null),
                     'renderingDate' => $renderingDate,
@@ -92,7 +93,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
 
         if (null === $product) {
             throw new NotFoundHttpException(

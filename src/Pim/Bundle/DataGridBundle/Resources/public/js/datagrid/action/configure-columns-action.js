@@ -8,7 +8,7 @@ define(
         'oro/loading-mask',
         'pim/datagrid/state',
         'pim/common/column-list-view',
-        'backbone/bootstrap-modal',
+        'bootstrap-modal',
         'jquery-ui'
     ],
     function(

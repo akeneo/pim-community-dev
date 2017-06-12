@@ -10,7 +10,7 @@
 define([
     'underscore',
     'pim/job/common/edit/field/field',
-    'text!pim/template/export/common/edit/field/switch',
+    'pim/template/export/common/edit/field/switch',
     'bootstrap.bootstrapswitch'
 ], function (
     _,

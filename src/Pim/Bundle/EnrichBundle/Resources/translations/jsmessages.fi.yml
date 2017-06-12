@@ -36,6 +36,8 @@ flash:
     removed: Sidostyyppi poistettu onnistuneesti
   attribute:
     removed: Attribuutin poistaminen onnistui
+  attribute_group:
+    removed: Attribuuttiryhmän poisto onnistui
   family:
     removed: Tuoteperhe poistettu
   product:
@@ -157,9 +159,6 @@ pim_enrich:
         deletion_failed: Tuotetta ei voi poistaa.
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
-        field_not_ready:
-          The product cannot be saved right now. The following fields are not ready:
-            - kentät
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
@@ -204,6 +203,9 @@ pim_enrich:
           family: Valitse perhe
           save: Tallenna
           cancel: Peruuta
+    attribute:
+      scopable: Scopable
+      global: Globaali
     association_type:
       info:
         field_not_ready:
@@ -305,6 +307,9 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+    attribute_group:
+      info:
+        update_successful: Attribuuttiryhmän päivittäminen onnistui
   confirmation:
     leave: Oletko varma että haluat poistua sivulta?
     discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
@@ -464,6 +469,21 @@ pim_enrich:
           title: Historia
         products:
           title: Tuotteet
+    attribute_group:
+      tab:
+        properties:
+          title: Ominaisuudet
+          general: Yleiset ominaisuudet
+          code: Koodi
+          label_translations: Nimikkeiden käännökset
+        attribute:
+          title: Attribuutit
+          table:
+            name: Nimi
+            type: Tyyppi
+            scope: Soveltamisala
+            localizable: Lokalisoitavissa
+        history.title: Historia
     common:
       tab:
         attributes:
@@ -591,7 +611,6 @@ pim_enrich:
             title: Attribuuttivalinta
         attributes_selector:
           attribute_group: Attribuuttiryhmät
-          attributes: "Etsi {{ attributeCount }} attribuutista"
           selected: "Valitut attribuutit"
           clear: Tyhjennä
           all_group: Kaikki ryhmät
@@ -719,6 +738,8 @@ pim_enrich:
       title: Prosessiseurain
     attribute:
       modal_title: Valitse attribuutin tyyppi
+    attribute_group:
+      create_btn: Luo
 pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
 page_title:

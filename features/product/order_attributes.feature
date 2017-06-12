@@ -42,7 +42,8 @@ Feature: Order attributes
     And I visit the "Attributes" tab
     And I change the attribute "Description" position to 2
     Then I save the attribute group
-    And I am on the "boot-001" product page
+    When I am on the "boot-001" product page
+    And I refresh current page
     Then the attribute "SKU" should be in position 1
     And the attribute "Description" should be in position 2
     And the attribute "Manufacturer" should be in position 3

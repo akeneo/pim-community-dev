@@ -1,6 +1,6 @@
 'use strict';
 
-define(['pim/router', 'oro/translator'], function (router, __) {
+define(['pim-router', 'oro/translator'], function (router, __) {
     var routeParams = {};
 
     router.on('route_complete', function (name) {

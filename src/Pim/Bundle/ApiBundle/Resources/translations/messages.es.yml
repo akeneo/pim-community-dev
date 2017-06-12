@@ -17,6 +17,7 @@ pim_api:
       list: Lista de familias
     channel.list: Lista de canales
     locale.list: Lista de locales
+    currency.list: Lista de monedas
   acl_group:
     overall_access: Acceso general API Web
     attribute: Atributos
@@ -26,4 +27,5 @@ pim_api:
     family: Familias
     channel: Canales
     locale: Locales
+    currency: Monedas
 rights.api: Permisiones del API Web

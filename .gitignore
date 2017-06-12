@@ -2,6 +2,8 @@ web/bundles/*
 web/media/*
 web/css/*
 web/js/*
+web/dist/*
+web/cache/
 web/app_local.php
 app/AppKernel_local.php
 app/console_local
@@ -33,3 +35,9 @@ composer.lock
 .php_cs.cache
 node_modules/
 .grunt/
+
+npm-debug.log
+
+web/dist/app.min.js
+web/dist/paths.js
+web/dist/general.js

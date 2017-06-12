@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,102 +10,145 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricFilterIntegration extends AbstractFilterTestCase
+class MetricFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_metric' => [
-                        ['data' => ['amount' => '10.55', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_metric' => [
+                    ['data' => ['amount' => '10.55', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_metric' => [
-                        ['data' => ['amount' => '15', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_metric' => [
+                    ['data' => ['amount' => '15', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['a_metric', Operators::LOWER_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_metric', Operators::LOWER_THAN, ['amount' => 10.5501, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_THAN, ['amount' => 10.5501, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_metric', Operators::LOWER_THAN, ['amount' => 16, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_THAN, ['amount' => 16, 'unit' => 'KILOWATT']]]);
+        $this->assert($result, ['product_one', 'product_two']);
+
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_THAN, ['amount' => 10550, 'unit' => 'WATT']]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_THAN, ['amount' => 10550.1, 'unit' => 'WATT']]]);
+        $this->assert($result, ['product_one']);
+
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_THAN, ['amount' => 16000, 'unit' => 'WATT']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorInferiorOrEquals()
     {
-        $result = $this->execute([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.4999, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.4999, 'unit' => 'KILOWATT']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $this->assert($result, ['product_one', 'product_two']);
+
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10499.9, 'unit' => 'WATT']]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10550, 'unit' => 'WATT']]]);
+        $this->assert($result, ['product_one']);
+
+        $result = $this->executeFilter([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 15000, 'unit' => 'WATT']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_metric', Operators::EQUALS, ['amount' => 10.5501, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::EQUALS, ['amount' => 10.5501, 'unit' => 'KILOWATT']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_metric', Operators::EQUALS, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::EQUALS, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
+        $this->assert($result, ['product_one']);
+
+        $result = $this->executeFilter([['a_metric', Operators::EQUALS, ['amount' => 10550.1, 'unit' => 'WATT']]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['a_metric', Operators::EQUALS, ['amount' => 10550, 'unit' => 'WATT']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['a_metric', Operators::GREATER_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_metric', Operators::GREATER_THAN, ['amount' => 10.4999, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_THAN, ['amount' => 10.4999, 'unit' => 'KILOWATT']]]);
+        $this->assert($result, ['product_one', 'product_two']);
+
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_THAN, ['amount' => 15000, 'unit' => 'WATT']]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_THAN, ['amount' => 10499.9, 'unit' => 'WATT']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorSuperiorOrEquals()
     {
-        $result = $this->execute([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15.01, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15.01, 'unit' => 'KILOWATT']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $this->assert($result, ['product_two']);
+
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15010, 'unit' => 'WATT']]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 10550, 'unit' => 'WATT']]]);
+        $this->assert($result, ['product_one', 'product_two']);
+
+        $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15000, 'unit' => 'WATT']]]);
         $this->assert($result, ['product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_metric', Operators::IS_EMPTY, []]]);
+        $result = $this->executeFilter([['a_metric', Operators::IS_EMPTY, []]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_metric', Operators::IS_NOT_EMPTY, []]]);
+        $result = $this->executeFilter([['a_metric', Operators::IS_NOT_EMPTY, []]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_metric', Operators::NOT_EQUAL, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $result = $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $this->assert($result, ['product_one']);
+
+        $result = $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['amount' => 15000, 'unit' => 'WATT']]]);
         $this->assert($result, ['product_one']);
     }
 
@@ -115,7 +158,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['a_metric', Operators::NOT_EQUAL, 'string']]);
+        $this->executeFilter([['a_metric', Operators::NOT_EQUAL, 'string']]);
     }
 
     /**
@@ -124,7 +167,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorAmountIsMissing()
     {
-        $this->execute([['a_metric', Operators::NOT_EQUAL, ['unit' => 'WATT']]]);
+        $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['unit' => 'WATT']]]);
     }
 
     /**
@@ -133,7 +176,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorCurrencyIsMissing()
     {
-        $this->execute([['a_metric', Operators::NOT_EQUAL, ['amount' => '']]]);
+        $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['amount' => '']]]);
     }
 
     /**
@@ -142,7 +185,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorUnitNotFound()
     {
-        $this->execute([['a_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -151,6 +194,6 @@ class MetricFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['a_metric', Operators::BETWEEN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+        $this->executeFilter([['a_metric', Operators::BETWEEN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
     }
 }

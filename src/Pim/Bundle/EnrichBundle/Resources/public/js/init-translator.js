@@ -2,10 +2,12 @@
 
 define([
         'jquery',
-        'pim/user-context'
+        'pim/user-context',
+        'translator-lib'
     ], function (
         $,
-        UserContext
+        UserContext,
+        Translator
     ) {
         return {
             fetch: function () {

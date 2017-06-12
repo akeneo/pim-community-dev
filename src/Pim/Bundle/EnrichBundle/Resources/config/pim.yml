@@ -9,7 +9,6 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/liip_imagine.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_filter.yml' }
-    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_require_js.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_translation.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_user.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }

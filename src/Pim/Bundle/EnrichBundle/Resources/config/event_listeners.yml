@@ -37,7 +37,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.saver.locale'
-            - '@pim_catalog.doctrine.completeness_generator'
+            - '@pim_catalog.remover.completeness'
         tags:
             - { name: kernel.event_subscriber }
 

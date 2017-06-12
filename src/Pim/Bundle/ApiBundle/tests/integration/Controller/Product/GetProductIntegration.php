@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductIntegration extends AbstractProductTestCase
@@ -127,6 +128,13 @@ class GetProductIntegration extends AbstractProductTestCase
                         'data'   => 'this is a text',
                     ],
                 ],
+                '123'                                => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'a text for an attribute with numerical code',
+                    ],
+                ],
                 'a_text_area'                        => [
                     [
                         'locale' => null,
@@ -224,14 +232,11 @@ class GetProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     /**
@@ -242,14 +247,12 @@ class GetProductIntegration extends AbstractProductTestCase
     {
         $result = json_decode($response->getContent(), true);
 
-        $result = $this->sanitizeDateFields($result);
         $result = $this->sanitizeMediaAttributeData($result);
 
-        $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        ksort($expected['values']);
-        ksort($result['values']);
+        NormalizedProductCleaner::clean($expected);
+        NormalizedProductCleaner::clean($result);
 
         $this->assertSame($expected, $result);
     }

@@ -122,7 +122,13 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function sortColumns()
     {
-        $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
-            + $this->axisColumns + $this->propertiesColumns;
+        $inGroupColumn = [];
+        if (isset($this->propertiesColumns['in_group'])) {
+            $inGroupColumn['in_group'] = $this->propertiesColumns['in_group'];
+            unset($this->propertiesColumns['in_group']);
+        }
+
+        $this->displayedColumns = $this->editableColumns + $inGroupColumn + $this->primaryColumns
+            + $this->identifierColumn + $this->axisColumns + $this->propertiesColumns;
     }
 }

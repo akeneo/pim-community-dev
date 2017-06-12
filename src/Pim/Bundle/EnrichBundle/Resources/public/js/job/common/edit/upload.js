@@ -5,7 +5,7 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
-    'text!pim/template/export/common/edit/upload'
+    'pim/template/export/common/edit/upload'
 ], function ($, _, __, BaseForm, template) {
     return BaseForm.extend({
         template: _.template(template),

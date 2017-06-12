@@ -57,9 +57,9 @@ class CreateMediaFileIntegration extends ApiTestCase
         // check if product value has been created
         $product = $this->productRepository->findOneByIdentifier('foo');
         $this->assertCount(2, $product->getValues());
-        $this->assertSame('foo', $product->getValues()->first()->getData());
+        $this->assertSame('foo', $product->getIdentifier());
 
-        $productValueFile = $product->getValues()->next();
+        $productValueFile = $product->getValues()->getByCodes('an_image');
         $this->assertInstanceOf(FileInfoInterface::class, $productValueFile->getData());
         $this->assertSame($productValueFile->getData(), $fileInfo);
 
@@ -281,11 +281,9 @@ JSON;
         $this->fileRepository = $this->get('pim_api.repository.media_file');
         $this->productRepository = $this->get('pim_api.repository.product');
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
-            $this->get('pim_catalog.saver.product')->save($product);
-            $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
-        }
+        $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
+        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
 
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['image']);
@@ -298,13 +296,10 @@ JSON;
     }
 
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

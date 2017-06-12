@@ -13,7 +13,7 @@ define(
         'underscore',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/form/group-selector'
+        'pim/template/form/group-selector'
     ],
     function ($, _, BaseForm, mediator, template) {
         return BaseForm.extend({

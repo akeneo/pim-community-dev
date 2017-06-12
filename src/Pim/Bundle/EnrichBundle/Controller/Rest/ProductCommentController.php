@@ -222,7 +222,7 @@ class ProductCommentController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
 
         if (!$product) {
             throw new NotFoundHttpException(

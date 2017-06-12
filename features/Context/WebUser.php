@@ -102,7 +102,7 @@ class WebUser extends RawMinkContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("require(['backbone'], function (Backbone) { Backbone.history.navigate('#%s'); } );", $url)
+                sprintf("Backbone.history.navigate('#%s');", $url)
             );
             $this->wait();
 
@@ -298,6 +298,7 @@ class WebUser extends RawMinkContext
     public function iSwitchTheLocaleTo($locale)
     {
         $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
+        $this->wait();
     }
 
     /**
@@ -749,6 +750,32 @@ class WebUser extends RawMinkContext
                 sprintf(
                     'Attribute %s exists but is not read only',
                     $label
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $label
+     * @param string $scope
+     *
+     * @Then /^the field ([^"]*) should display the ([^"]*) scope label$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
+     */
+    public function theFieldShouldDisplayTheScopeLabel($label, $scope)
+    {
+        $fieldContainer = $this->getCurrentPage()->findFieldContainer($label);
+        $scopeLabel = $fieldContainer->find('css', '.field-scope')->getText();
+
+        if ($scopeLabel !== $scope) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Scope label %s is not displayed for %s. %s is displayed instead.',
+                    $scope,
+                    $label,
+                    $scopeLabel
                 )
             );
         }
@@ -1403,6 +1430,22 @@ class WebUser extends RawMinkContext
                 $this->wait();
                 return true;
             }, sprintf('Unable to create the attribute option %s', $data['Code']));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @When /^I edit the following attribute options?:$/
+     */
+    public function iEditTheFollowingAttributeOptionValue(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['Code'];
+            unset($data['Code']);
+
+            $this->getCurrentPage()->editOption($code, $data);
+            $this->wait();
         }
     }
 
@@ -2321,11 +2364,17 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $family
+     *
      * @Then /^I change the family of the product to "([^"]*)"$/
      */
     public function iChangeTheFamilyOfTheProductTo($family)
     {
-        $this->getCurrentPage()->changeFamily($family);
+        $this->spin(function () use ($family) {
+            $this->getCurrentPage()->changeFamily($family);
+
+            return true;
+        }, sprintf('Cannot change the product family to %s', $family));
     }
 
     /**

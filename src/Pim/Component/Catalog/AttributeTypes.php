@@ -40,6 +40,6 @@ final class AttributeTypes
     const BACKEND_TYPE_PRICE = 'prices';
     const BACKEND_TYPE_REF_DATA_OPTION = 'reference_data_option';
     const BACKEND_TYPE_REF_DATA_OPTIONS = 'reference_data_options';
+    const BACKEND_TYPE_TEXTAREA = 'textarea';
     const BACKEND_TYPE_TEXT = 'text';
-    const BACKEND_TYPE_VARCHAR = 'varchar';
 }

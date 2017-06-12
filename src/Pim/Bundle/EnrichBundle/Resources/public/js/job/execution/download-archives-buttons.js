@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/job-execution/download-archives-buttons',
+        'pim/template/job-execution/download-archives-buttons',
         'routing',
         'pim/common/property',
         'pim/security-context'

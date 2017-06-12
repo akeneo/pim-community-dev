@@ -14,12 +14,12 @@ define(
         'pim/form',
         'pim/fetcher-registry',
         'pim/product-manager',
-        'text!pim/template/product/meta/change-family-modal',
+        'pim/template/product/meta/change-family-modal',
         'pim/user-context',
         'pim/i18n',
         'routing',
         'pim/initselect2',
-        'backbone/bootstrap-modal',
+        'bootstrap-modal',
         'jquery.select2'
     ],
     function (

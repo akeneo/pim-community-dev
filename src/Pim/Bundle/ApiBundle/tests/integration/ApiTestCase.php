@@ -24,25 +24,6 @@ abstract class ApiTestCase extends WebTestCase
     const USERNAME = 'admin';
     const PASSWORD = 'admin';
 
-    /** @var int Count of executed tests inside the same test class */
-    protected static $count = 0;
-
-    /** @var string[] */
-    protected static $accessTokens;
-
-    /** @var string[] */
-    protected static $refreshTokens;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function setUpBeforeClass()
-    {
-        self::$count = 0;
-        static::$accessTokens = [];
-        static::$refreshTokens = [];
-    }
-
     /**
      * @return Configuration
      */
@@ -53,18 +34,15 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function setUp()
     {
-        static::bootKernel();
+        static::bootKernel(['debug' => false]);
 
         $configuration = $this->getConfiguration();
+        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
 
-        self::$count++;
+        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
+        $fixturesLoader->load();
 
-        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $this->getDatabaseSchemaHandler()->reset();
-
-            $fixturesLoader = $this->getFixturesLoader($configuration);
-            $fixturesLoader->load();
-        }
+        $this->resetIndex();
     }
 
     /**
@@ -76,6 +54,8 @@ abstract class ApiTestCase extends WebTestCase
      * @param string $secret
      * @param string $username
      * @param string $password
+     * @param string $accessToken
+     * @param string $refreshToken
      *
      * @return Client
      */
@@ -85,20 +65,20 @@ abstract class ApiTestCase extends WebTestCase
         $clientId = null,
         $secret = null,
         $username = self::USERNAME,
-        $password = self::PASSWORD
+        $password = self::PASSWORD,
+        $accessToken = null,
+        $refreshToken = null
     ) {
-        if (!isset(static::$accessTokens[$username]) || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            if (null === $clientId || null === $secret) {
-                list($clientId, $secret) = $this->createOAuthClient();
-            }
+        if (null === $clientId || null === $secret) {
+            list($clientId, $secret) = $this->createOAuthClient();
+        }
 
-            $tokens = $this->authenticate($clientId, $secret, $username, $password);
-            static::$accessTokens[$username] = $tokens[0];
-            static::$refreshTokens[$username] = $tokens[1];
+        if (null === $accessToken || null === $refreshToken) {
+            list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, $username, $password);
         }
 
         $client = static::createClient($options, $server);
-        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.static::$accessTokens[$username]);
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
 
         if (!isset($server['CONTENT_TYPE'])) {
             $client->setServerParameter('CONTENT_TYPE', 'application/json');
@@ -204,13 +184,14 @@ abstract class ApiTestCase extends WebTestCase
     }
 
     /**
-     * @param Configuration $configuration
+     * @param Configuration         $configuration
+     * @param DatabaseSchemaHandler $databaseSchemaHandler
      *
      * @return FixturesLoader
      */
-    protected function getFixturesLoader(Configuration $configuration)
+    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
     {
-        return new FixturesLoader(static::$kernel, $configuration);
+        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
     }
 
     /**
@@ -242,5 +223,20 @@ abstract class ApiTestCase extends WebTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    /**
+     * Resets the index used for the integration tests query
+     */
+    private function resetIndex()
+    {
+        $esClient = $this->get('akeneo_elasticsearch.client');
+        $conf = $this->get('akeneo_elasticsearch.index_configuration.loader')->load();
+
+        if ($esClient->hasIndex()) {
+            $esClient->deleteIndex();
+        }
+
+        $esClient->createIndex($conf->buildAggregated());
     }
 }

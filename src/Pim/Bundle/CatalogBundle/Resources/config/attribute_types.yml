@@ -21,7 +21,7 @@ services:
     pim_catalog.attributetype.identifier:
         class: '%pim_catalog.attribute_type.identifier.class%'
         arguments:
-            - varchar
+            - text
             - text
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
@@ -30,7 +30,7 @@ services:
     pim_catalog.attributetype.text:
         class: '%pim_catalog.attribute_type.text.class%'
         arguments:
-            - varchar
+            - text
             - text
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
@@ -39,7 +39,7 @@ services:
     pim_catalog.attributetype.textarea:
         class: '%pim_catalog.attribute_type.textarea.class%'
         arguments:
-            - text
+            - textarea
             - textarea
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:

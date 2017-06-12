@@ -6,7 +6,9 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExten
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
@@ -105,6 +107,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
+        $this->addPaginationConfig();
     }
 
     /**
@@ -231,7 +234,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
-        $product = null !== $id ? $this->productRepository->findOneByWithValues($id) : null;
+        $product = null !== $id ? $this->productRepository->find($id) : null;
         $this->configuration->offsetSetByPath($path, $product);
     }
 
@@ -404,5 +407,25 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return null;
+    }
+
+    /**
+     * Inject requested _per_page parameters in the datagrid configuration
+     */
+    protected function addPaginationConfig()
+    {
+        $pager = $this->requestParams->get(PagerExtension::PAGER_ROOT_PARAM);
+
+        $defaultPerPage = $this->configuration->offsetGetByPath(
+            ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH,
+            25
+        );
+        $itemsPerPage = isset($pager[PagerExtension::PER_PAGE_PARAM]) ? (int)$pager[PagerExtension::PER_PAGE_PARAM] : $defaultPerPage;
+
+        $this->configuration->offsetSetByPath($this->getSourcePath(PagerExtension::PER_PAGE_PARAM), $itemsPerPage);
+
+        $currentPage = isset($pager[PagerExtension::PAGE_PARAM]) ? (int)$pager[PagerExtension::PAGE_PARAM] : 1;
+        $from = ($currentPage - 1) * $itemsPerPage;
+        $this->configuration->offsetSetByPath($this->getSourcePath('from'), $from);
     }
 }

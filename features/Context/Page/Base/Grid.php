@@ -438,7 +438,8 @@ class Grid extends Index
         foreach ($rows as $row) {
             $cell = $this->getRowCell($row, $position);
             if ($span = $cell->find('css', 'span')) {
-                $values[] = (string) (strpos($span->getAttribute('class'), 'success') !== false);
+                $value = strpos($span->getAttribute('class'), 'success') !== false;
+                $values[] = true === $value ? '1' : '0';
             } else {
                 $values[] = $cell->getText();
             }
@@ -512,10 +513,11 @@ class Grid extends Index
      *
      * @param string $columnName
      * @param string $order
+     * @param bool   $natural If TRUE, empty values are taken in account when sorting
      *
      * @return bool
      */
-    public function isSortedAndOrdered($columnName, $order)
+    public function isSortedAndOrdered($columnName, $order, $natural)
     {
         $order = strtolower($order);
         if (!$this->getColumnHeader($columnName)->hasClass($order)) {
@@ -531,6 +533,16 @@ class Grid extends Index
             sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
             rsort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
+        }
+
+        // If not sorted naturally, always put empty values at the end, whatever the $order
+        if (!$natural) {
+            $valuesCount = count($sortedValues);
+            $sortedValues = array_filter($sortedValues, function ($value) {
+                return $value !== '';
+            });
+
+            $sortedValues = array_pad($sortedValues, $valuesCount, '');
         }
 
         return $sortedValues === $values;
@@ -660,6 +672,11 @@ class Grid extends Index
         }
 
         $this->spin(function () use ($manageFilters, $filterName) {
+            $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
+            if (null !== $loadingWrapper && $loadingWrapper->isVisible()) {
+                return false;
+            }
+
             $filterElement = $manageFilters->find('css', sprintf('input[value="%s"]', $filterName));
 
             if (null !== $filterElement && $filterElement->isVisible()) {
@@ -731,6 +748,11 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $this->spin(function () use ($value, $check) {
+            $loadingWrapper = $this->find('css', '#loading-wrapper');
+            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+                return false;
+            }
+
             $row = $this->getRow($value);
             if (null === $row) {
                 return false;

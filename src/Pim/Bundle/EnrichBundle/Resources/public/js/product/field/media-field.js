@@ -13,7 +13,7 @@ define([
         'underscore',
         'routing',
         'pim/attribute-manager',
-        'text!pim/template/product/field/media',
+        'pim/template/product/field/media',
         'pim/dialog',
         'oro/mediator',
         'oro/messenger',

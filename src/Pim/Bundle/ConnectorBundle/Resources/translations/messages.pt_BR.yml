@@ -105,17 +105,34 @@ batch_jobs:
     export.label: Exportação de canal
   csv_locale_export:
     label: Exportação de localidade em CSV
+    export.label: Exportação de localidade
+  csv_attribute_group_export:
+    label: Exportação de grupo de atributos em CSV
+    export.label: Exportação de grupo de atributos
+  csv_currency_export:
+    label: Exportação de moeda em CSV
+    export.label: Exportação de moeda
+  csv_group_type_export:
+    label: Exportação de tipos de grupo em CSV
+    export.label: Exportação de tipos de grupo
   csv_channel_import:
+    label: Importação de canal em CSV
     validation.label: Validação de arquivo
+    import.label: Importação de canal
   csv_locale_import:
+    label: Importação de localidade em CSV
     validation.label: Validação de arquivo
     import.label: Importação de localidade
   csv_attribute_group_import:
+    label: Importação de grupo de atributos em CSV
     validation.label: Validação de arquivo
+    import.label: Importação de grupo de atributos
   csv_currency_import:
+    label: Importação de moeda em CSV
     validation.label: Validação de arquivo
     import.label: Importação de moeda
   csv_group_type_import:
+    label: Importação de tipos de grupo em CSV
     validation.label: Validação de arquivo
     import.label: Grupo tipo importação
   xlsx_category_import:
@@ -176,14 +193,32 @@ batch_jobs:
     label: Exportação de tipos de associação em XLSX
     export.label: Exportação de tipos de associação em XLSX
   xlsx_channel_export:
+    label: Exportação de canais em XLSX
     export.label: Exportação de canal
+  xlsx_locale_export:
+    label: Exportação de localidade em XLSX
+    export.label: Exportação de localidade
+  xlsx_attribute_group_export:
+    label: Exportação de grupo de atributos em XLSX
+    export.label: Exportação de grupo de atributos
+  xlsx_currency_export:
+    label: Exportação de Moedas em XLSX
+    export.label: Exportação de moeda
+  xlsx_group_type_export:
+    label: Exportação de tipos de grupos em XLSX
+    export.label: Exportação de tipos de grupo
   xlsx_channel_import:
+    label: Importação de canais em XLSX
     validation.label: Validação de arquivo
+    import.label: Importação de canal
   xlsx_locale_import:
+    label: Importação de localidade em XLSX
     validation.label: Validação de arquivo
     import.label: Importação de localidade
   xlsx_attribute_group_import:
+    label: Importação de grupos de atributos em XLSX
     validation.label: Validação de arquivo
+    import.label: Importação de grupo de atributos
   xlsx_currency_import:
     validation.label: Validação de arquivo
     import.label: Importação de moeda

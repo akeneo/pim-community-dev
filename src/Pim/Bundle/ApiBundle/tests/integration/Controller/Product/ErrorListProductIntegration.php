@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use Akeneo\Test\Integration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -228,5 +229,12 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assertCount(2, $content);
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
         $this->assertSame($message, $content['message']);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

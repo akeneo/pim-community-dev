@@ -9,12 +9,14 @@
  */
 define(
     [
+        'jquery',
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/textarea',
+        'pim/template/product/field/textarea',
         'summernote'
     ],
     function (
+        $,
         Field,
         _,
         fieldTemplate
@@ -45,8 +47,26 @@ define(
                         ['para', ['ul', 'ol']],
                         ['insert', ['link']],
                         ['view', ['codeview']]
-                    ]
-                }).on('summernote.blur', this.updateModel.bind(this));
+                    ],
+                    callbacks: {}
+                })
+                .on('summernote.blur', this.updateModel.bind(this))
+                .on('summernote.keyup', this.removeEmptyTags.bind(this));
+
+                this.$('.note-codable').on('blur', function () {
+                    this.removeEmptyTags();
+                    this.updateModel();
+                }.bind(this));
+            },
+
+            removeEmptyTags: function () {
+                var textarea = this.$('.field-input:first textarea:first');
+                var editorHTML = $.parseHTML(textarea.code());
+                var textIsEmpty = $(editorHTML).text().length === 0;
+
+                if (textIsEmpty) {
+                    textarea.code('');
+                }
             },
 
             /**

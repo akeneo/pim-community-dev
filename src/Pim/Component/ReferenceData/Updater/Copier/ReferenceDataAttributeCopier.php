@@ -5,10 +5,8 @@ namespace Pim\Component\ReferenceData\Updater\Copier;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 
 /**
  * Copy a reference data value attribute in other reference data value attribute
@@ -32,6 +30,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -74,6 +73,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     {
         $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
+
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
@@ -100,36 +100,14 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
-            $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-            $toDataSetter = $this->getValueMethodName($toValue, $toAttribute, 'set');
-
-            $toValue->$toDataSetter($fromValue->$fromDataGetter());
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     * @param string                $type
-     *
-     * @return string
-     */
-    private function getValueMethodName(ProductValueInterface $value, AttributeInterface $attribute, $type)
-    {
-        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), true);
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $method)
+        if (null !== $fromValue && null !== $fromValue->getData()) {
+            $this->productBuilder->addOrReplaceProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->getData()->getCode()
             );
         }
-
-        return $method;
     }
 }

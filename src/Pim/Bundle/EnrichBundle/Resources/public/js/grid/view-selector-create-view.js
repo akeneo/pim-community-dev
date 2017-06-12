@@ -15,8 +15,8 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text!pim/template/grid/view-selector/create-view',
-        'text!pim/template/grid/view-selector/create-view-label-input',
+        'pim/template/grid/view-selector/create-view',
+        'pim/template/grid/view-selector/create-view-label-input',
         'pim/datagrid/state',
         'pim/saver/datagrid-view',
         'oro/messenger'

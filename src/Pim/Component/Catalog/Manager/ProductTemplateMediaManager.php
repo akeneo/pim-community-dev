@@ -3,9 +3,10 @@
 namespace Pim\Component\Catalog\Manager;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 
 /**
  * Product template media manager
@@ -16,20 +17,22 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductTemplateMediaManager
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
     /** @var FileStorerInterface */
     protected $fileStorer;
 
+    /** @var ProductValueFactory */
+    protected $productValueFactory;
+
     /**
      * @param FileStorerInterface $fileStorer
-     * @param NormalizerInterface    $normalizer
+     * @param ProductValueFactory $productValueFactory
      */
-    public function __construct(FileStorerInterface $fileStorer, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        FileStorerInterface $fileStorer,
+        ProductValueFactory $productValueFactory
+    ) {
         $this->fileStorer = $fileStorer;
-        $this->normalizer = $normalizer;
+        $this->productValueFactory = $productValueFactory;
     }
 
     /**
@@ -40,34 +43,46 @@ class ProductTemplateMediaManager
     public function handleProductTemplateMedia(ProductTemplateInterface $template)
     {
         $mediaHandled = false;
-        foreach ($template->getValues() as $value) {
-            if (null !== $value->getMedia() && true === $value->getMedia()->isRemoved()) {
-                $mediaHandled = true;
-                $value->setMedia(null);
-            } elseif (null !== $value->getMedia() && null !== $value->getMedia()->getUploadedFile()) {
-                $mediaHandled = true;
-                $file = $this->fileStorer->store(
-                    $value->getMedia()->getUploadedFile(),
-                    FileStorage::CATALOG_STORAGE_ALIAS,
-                    true
-                );
-                $value->setMedia($file);
+        $values = $template->getValues();
+
+        foreach ($values as $value) {
+            if ($value instanceof MediaProductValueInterface) {
+                if (null !== $value->getData() && true === $value->getData()->isRemoved()) {
+                    $mediaHandled = true;
+
+                    $values->remove($value);
+                    $values->add(
+                        $this->productValueFactory->create(
+                            $value->getAttribute(),
+                            $value->getScope(),
+                            $value->getLocale(),
+                            null
+                        )
+                    );
+                } elseif (null !== $value->getData() && null !== $value->getData()->getUploadedFile()) {
+                    $mediaHandled = true;
+
+                    $file = $this->fileStorer->store(
+                        $value->getData()->getUploadedFile(),
+                        FileStorage::CATALOG_STORAGE_ALIAS,
+                        true
+                    );
+
+                    $values->remove($value);
+                    $values->add(
+                        $this->productValueFactory->create(
+                            $value->getAttribute(),
+                            $value->getScope(),
+                            $value->getLocale(),
+                            $file->getKey()
+                        )
+                    );
+                }
             }
         }
 
         if ($mediaHandled) {
-            $this->updateNormalizedValues($template);
+            $template->setValues($values);
         }
-    }
-
-    /**
-     * Updates normalized product template values (required after handling new media added to a template)
-     *
-     * @param ProductTemplateInterface $template
-     */
-    protected function updateNormalizedValues(ProductTemplateInterface $template)
-    {
-        $valuesData = $this->normalizer->normalize($template->getValues(), 'standard', ['entity' => 'product']);
-        $template->setValuesData($valuesData);
     }
 }

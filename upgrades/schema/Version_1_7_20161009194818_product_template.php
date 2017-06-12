@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * As standard format has been changed, we have to update the table `pim_catalog_product_template` to update keys of
- * `metric` and `price` attributes (`data` has been changed to `amount`).
+ * `metric` and `price` attributes (`data` has been changed to `amount`). Also `image` attributes should be fixed.
  */
 class Version_1_7_20161009194818_product_template extends AbstractMigration implements ContainerAwareInterface
 {
@@ -34,17 +34,21 @@ class Version_1_7_20161009194818_product_template extends AbstractMigration impl
         $schemaHelper = new SchemaHelper($this->container);
 
         $attributes = $this->container->get('pim_catalog.repository.attribute')->findBy([
-            'type' => [AttributeTypes::METRIC, AttributeTypes::PRICE_COLLECTION]
+            'type' => [AttributeTypes::METRIC, AttributeTypes::PRICE_COLLECTION, AttributeTypes::IMAGE]
         ]);
 
-        $attributeCodes = ['metric' => [], 'price' => []];
+        $attributeCodes = ['metric' => [], 'price' => [], 'image' => []];
         foreach ($attributes as $attribute) {
-            if (AttributeTypes::METRIC === $attribute->getAttributeType()) {
+            if (AttributeTypes::METRIC === $attribute->getType()) {
                 $attributeCodes['metric'][] = $attribute->getCode();
             }
 
-            if (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
+            if (AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
                 $attributeCodes['price'][] = $attribute->getCode();
+            }
+
+            if (AttributeTypes::IMAGE === $attribute->getAttributeType()) {
+                $attributeCodes['image'][] = $attribute->getCode();
             }
         }
 
@@ -66,6 +70,8 @@ class Version_1_7_20161009194818_product_template extends AbstractMigration impl
                                     unset($data['data'][$indexPrice]['data']);
                                 }
                             }
+                        } elseif (in_array($code, $attributeCodes['image'])) {
+                            $data['data'] = isset($data['data']['filePath']) ? $data['data']['filePath'] : null;
                         }
 
                         $values[$code][$index] = $data;

@@ -56,25 +56,6 @@ Feature: Export products according to textarea attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Description
-    And I filter by "description" with operator "Ends with" and value "description"
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
-    And I press "Save"
-    And I should not see the text "There are unsaved changes"
-    When I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should contain:
-    """
-    sku;categories;enabled;family;groups;description-en_US-mobile;name-en_US
-    SNKRS-1R;summer_collection;1;rangers;;Awesome description;
-    """
-
-  Scenario: Export products by textarea values using the UI
-    Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
-    When I am on the "csv_footwear_product_export" export job edit page
-    And I visit the "Content" tab
-    And I add available attributes Description
     And I filter by "description" with operator "Starts with" and value "Awesome"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"

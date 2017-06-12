@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -97,7 +98,12 @@ class ProductProcessor extends AbstractProcessor
         $productStandard = $this->normalizer->normalize($product, 'standard', $normalizerContext);
 
         if ($this->areAttributesToFilter($parameters)) {
-            $productStandard = $this->filterProperties($productStandard, $parameters->get('selected_properties'));
+            $selectedProperties = $parameters->get('selected_properties');
+            if (in_array('identifier', $selectedProperties)) {
+                $identifer = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+                $selectedProperties[] = $identifer->getCode();
+            }
+            $productStandard = $this->filterProperties($productStandard, $selectedProperties);
         }
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
@@ -159,7 +165,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function fetchMedia(ProductInterface $product, $directory)
     {
-        $identifier = $product->getIdentifier()->getData();
+        $identifier = $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {

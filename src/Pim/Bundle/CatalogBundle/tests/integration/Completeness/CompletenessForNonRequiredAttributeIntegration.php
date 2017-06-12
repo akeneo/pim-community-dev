@@ -86,11 +86,9 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
      */
     private function assertComplete(ProductInterface $product, $requiredCount)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(1, $completenesses);
+        $this->assertCompletenessesCount($product, 1);
 
-        $completeness = current($completenesses);
+        $completeness = $this->getCurrentCompleteness($product);
 
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals('en_US', $completeness->getLocale()->getCode());
@@ -99,6 +97,7 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals($requiredCount, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
     }
 
     /**
@@ -106,9 +105,6 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getMinimalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getMinimalCatalogPath()]);
     }
 }

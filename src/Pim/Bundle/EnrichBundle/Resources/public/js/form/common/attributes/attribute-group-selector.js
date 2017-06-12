@@ -13,7 +13,7 @@ define(
         'underscore',
         'pim/form/common/group-selector',
         'pim/attribute-group-manager',
-        'text!pim/template/form/tab/attribute/attribute-group-selector',
+        'pim/template/form/tab/attribute/attribute-group-selector',
         'pim/user-context',
         'pim/i18n',
         'pim/provider/to-fill-field-provider'
@@ -95,7 +95,7 @@ define(
 
                     this.$el.html(this.template({
                         current: this.getCurrent(),
-                        elements: this.getElements(),
+                        elements: _.sortBy(this.getElements(), 'sort_order'),
                         badges: this.badges,
                         locale: UserContext.get('catalogLocale'),
                         toFillAttributeGroups: toFillAttributeGroups,

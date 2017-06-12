@@ -2,14 +2,33 @@
 require(
     ['jquery', 'underscore', 'datepicker', 'oro/mediator', 'pim/date-context', 'jquery.select2', 'bootstrap.bootstrapswitch'],
     function ($, _, datepicker, mediator, dateContext) {
-        'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
 
             // Get form name
             var formName = '#{{ form.vars.id }}';
 
-            var $optionList;
+            function getFirstInvalidField() {
+                var container = $('.field-input.validation-error', formName).first();
+
+                return $('input', container);
+            }
+
+            function getParentTabLink(field) {
+                var paneId = $(field).parents('.tab-pane').attr('id');
+
+                return $('.AknHorizontalNavtab-link[href="#'+ paneId +'"]');
+            }
+
+            function focusInvalidField() {
+                var invalidField = getFirstInvalidField();
+                var parentTab = getParentTabLink(invalidField);
+
+                parentTab.trigger('click');
+                invalidField.trigger('focus');
+            }
+
+            $(formName).on('refresh', focusInvalidField);
 
             function initializeForm() {
                 var $switch = $(formName+'_autoOptionSorting')
@@ -17,7 +36,8 @@ require(
                     .appendTo('#attribute-option-switcher')
                     .removeClass('hide')
                     .find('.has-switch');
-                $switch.on('switch-change', function (e, data) {
+
+                    $switch.on('switch-change', function (e, data) {
                         mediator.trigger('attribute:auto_option_sorting:changed', data.value);
                     });
 
@@ -81,7 +101,7 @@ require(
                 $(formName).trigger('refresh');
             }
 
-            initializeForm();
+            setTimeout(initializeForm, 0);
         });
     }
 );

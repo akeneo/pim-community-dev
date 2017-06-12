@@ -14,7 +14,7 @@ define(
         'backbone',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/form/save-buttons'
+        'pim/template/form/save-buttons'
     ],
     function ($, _, Backbone, mediator, BaseForm, template) {
         return BaseForm.extend({

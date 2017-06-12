@@ -7,11 +7,12 @@ Feature: Well display navigation titles
   Scenario Outline: Successfully display the page titles
     Given a "footwear" catalog configuration
     And a "sandals" product
+    And a "'quote'" product
     And I am logged in as "Peter"
     When I am on the <page> page
     Then I should see the title "<title>"
 
-  Examples:
+    Examples:
       | page                                          | title                                               |
       | association types                             | Association types                                   |
       | "X_SELL" association type                     | Association types Cross sell \| Edit                |
@@ -45,3 +46,4 @@ Feature: Well display navigation titles
       | export executions                             | Export executions history                           |
       | variant groups                                | Variant groups                                      |
       | "sandals" product                             | Products sandals \| Edit                            |
+      | "'quote'" product                             | Products 'quote' \| Edit                             |

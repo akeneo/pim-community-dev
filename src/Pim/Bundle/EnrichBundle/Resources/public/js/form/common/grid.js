@@ -7,9 +7,10 @@ define([
         'oro/datagrid-builder',
         'routing',
         'oro/mediator',
-        'text!pim/template/form/grid',
+        'pim/template/form/grid',
         'oro/pageable-collection',
-        'pim/datagrid/state'
+        'pim/datagrid/state',
+        'require-context'
     ],
     function (
         $,
@@ -20,7 +21,8 @@ define([
         mediator,
         template,
         PageableCollection,
-        DatagridState
+        DatagridState,
+        requireContext
     ) {
         return Backbone.View.extend({
             template: _.template(template),
@@ -38,12 +40,21 @@ define([
                 });
                 this.options = options;
 
+                var selectionIdentifier = options.selectionIdentifier || 'id';
+
+                /*
+                 * Removing to be sure that this property will not be used in URLs generated to load the data
+                 * The selection is never used back side to load the data and it can generate an URL too long.
+                 * The rightful usages of the selection are done with the property "this.selection"
+                 */
+                delete this.options.selection;
+
                 mediator.on('datagrid:selectModel:' + this.alias, function (model) {
-                    this.addElement(model.get('id'));
+                    this.addElement(model.get(selectionIdentifier));
                 }.bind(this));
 
                 mediator.on('datagrid:unselectModel:' + this.alias, function (model) {
-                    this.removeElement(model.get('id'));
+                    this.removeElement(model.get(selectionIdentifier));
                 }.bind(this));
             },
 
@@ -90,10 +101,13 @@ define([
                         data: JSON.parse(response.data)
                     });
 
-                    require(response.metadata.requireJSModules.concat('pim/datagrid/state-listener'),
-                        function () {
-                            datagridBuilder(_.toArray(arguments));
-                        });
+                    var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
+
+                    var resolvedModules = []
+                    _.each(modules, function(module) {
+                        resolvedModules.push(requireContext(module))
+                    })
+                    datagridBuilder(resolvedModules)
                 }.bind(this));
             },
 

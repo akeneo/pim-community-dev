@@ -9,11 +9,10 @@
  */
 define(
     [
-        'module',
         'underscore',
         'oro/translator',
         'backbone',
-        'text!pim/template/form/edit-form',
+        'pim/template/form/edit-form',
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry',
@@ -21,7 +20,6 @@ define(
         'oro/messenger'
     ],
     function (
-        module,
         _,
         __,
         Backbone,
@@ -42,8 +40,8 @@ define(
                 mediator.clear('pim_enrich:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.displayError.bind(this));

@@ -6,7 +6,7 @@ define([
     'oro/translator',
     'oro/mediator',
     'pim/form',
-    'text!pim/template/filter/filter'
+    'pim/template/filter/filter'
 ], function (
     $,
     _,

@@ -4,7 +4,7 @@ define(
         'underscore',
         'oro/datafilter/text-filter',
         'routing',
-        'text!pim/template/datagrid/filter/select2-choice-filter',
+        'pim/template/datagrid/filter/select2-choice-filter',
         'pim/initselect2',
         'pim/user-context',
         'jquery.select2'

@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'text!pim/template/form/add-select/select',
+        'pim/template/form/add-select/select',
         'pim/form',
         'pim/common/add-select/line',
         'pim/common/add-select/footer',

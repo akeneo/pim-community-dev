@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/header/header'
+        'pim/template/header/header'
     ],
     function (
         _,

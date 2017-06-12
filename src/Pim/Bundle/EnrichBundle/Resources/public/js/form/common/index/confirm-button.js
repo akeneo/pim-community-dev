@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'pim/form',
         'routing',
-        'text!pim/template/form/index/confirm-button'
+        'pim/template/form/index/confirm-button'
     ],
     function (
         _,

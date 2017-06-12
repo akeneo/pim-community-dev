@@ -12,11 +12,8 @@ datagrid:
                     excluded: '#removeProducts'
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_datasource_product
+            type:              pim_datasource_variant_group_product
             entity:            '%pim_catalog.entity.product.class%'
-            repository_method: createVariantGroupDatagridQueryBuilder
-            repository_parameters:
-                - currentGroup
         columns:
             is_checked:
                 frontend_type: boolean
@@ -24,42 +21,30 @@ datagrid:
                 editable:      true
             in_group:
                 label:         In group
-                data_name:     in_group
-                selector:      product_in_group
-                type:          twig
-                primary:       true
-                template:      PimDataGridBundle:Property:boolean.html.twig
-                frontend_type: html
+                frontend_type: boolean-label
             label:
                 label:         Label
-                data_name:     productLabel
-                selector:      product_label
+                data_name:     label
+                type:          field
             family:
                 label:         Family
-                data_name:     familyLabel
-                selector:      product_family
+                data_name:     family
+                type:          field
             enabled:
                 label:         Status
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
+                frontend_type: enabled
             completeness:
                 label:         Complete
-                type:          twig
-                data_name:     ratio
-                template:      PimDataGridBundle:Property:completeness.html.twig
-                frontend_type: html
-                selector:      product_completeness
+                frontend_type: completeness
             created:
                 label:         Created At
-                type:          product_value_date
-                frontend_type: date
+                type:          field
             updated:
                 label:         Updated At
-                type:          product_value_date
-                frontend_type: date
+                type:          field
         properties:
             id: ~
+            identifier: ~
         sorters:
             columns:
                 in_group:

@@ -2,15 +2,14 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 
+use Acme\Bundle\AppBundle\Entity\Color;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Prophecy\Argument;
 
 class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
@@ -55,18 +54,17 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        ProductInterface $product4,
-        CustomProductValueBis $fromProductValue,
-        CustomProductValueBis $toProductValue
+        ProductValueInterface $fromProductValue,
+        ProductValueInterface $toProductValue,
+        ArrayCollection $fromCollection,
+        Color $black,
+        Color $red,
+        \ArrayIterator $referenceDataIterator
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
         $toScope = 'mobile';
         $fromScope = 'mobile';
-
-        $fromCollection = new ArrayCollection([new Color(), new Color()]);
-        $toCollection = new ArrayCollection([new Color()]);
 
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
@@ -76,26 +74,26 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getColors()->willReturn($fromCollection);
-        $toProductValue->getColors()->willReturn($toCollection);
-        $toProductValue->removeColor(Argument::any())->shouldBeCalledTimes(3);
-        $toProductValue->addColor(Argument::any())->shouldBeCalledTimes(6);
+        $fromProductValue->getData()->willReturn($fromCollection);
+        $fromCollection->getIterator()->willReturn($referenceDataIterator);
+        $referenceDataIterator->rewind()->shouldBeCalled();
+        $referenceDataIterator->valid()->willReturn(true, true, false);
+        $referenceDataIterator->current()->willReturn($red, $black);
+        $referenceDataIterator->next()->shouldBeCalled();
+
+        $red->getCode()->willReturn('red');
+        $black->getCode()->willReturn('black');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $builder
+            ->addOrReplaceProductValue($product1, $toAttribute, $toLocale, $toScope, ['red', 'black'])
+            ->shouldBeCalled()
+            ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $builder->addOrReplaceProductValue($product2, Argument::cetera())->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
-
-        $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3, $product4];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,
@@ -112,200 +110,4 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         }
     }
 
-    function it_throws_error_when_getter_method_of_the_reference_data_is_not_implemented(
-        $attrValidatorHelper,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        CustomProductValueBis $fromProductValue
-    ) {
-        $fromLocale = 'fr_FR';
-        $toLocale = 'fr_FR';
-        $toScope = 'mobile';
-        $fromScope = 'mobile';
-        $toProductValue = new InvalidGetterCustomProductValueBis();
-
-        $fromAttribute->getCode()->willReturn('fromAttributeCode');
-        $toAttribute->getCode()->willReturn('toAttributeCode');
-        $fromAttribute->getReferenceDataName()->willReturn('colors');
-        $toAttribute->getReferenceDataName()->willReturn('colors');
-
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $fromProduct->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $fromProduct->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $toProduct->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $toProduct->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $this->shouldThrow(new \LogicException('ProductValue method "getColors" is not implemented'))->during('copyAttributeData', [
-            $fromProduct,
-            $toProduct,
-            $fromAttribute,
-            $toAttribute,
-            [
-                'from_locale' => $fromLocale,
-                'to_locale' => $toLocale,
-                'from_scope' => $fromScope,
-                'to_scope' => $toScope
-            ]
-        ]);
-    }
-
-    function it_throws_error_when_remover_method_of_the_reference_data_is_not_implemented(
-        $attrValidatorHelper,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        CustomProductValueBis $fromProductValue
-    ) {
-        $fromLocale = 'fr_FR';
-        $toLocale = 'fr_FR';
-        $toScope = 'mobile';
-        $fromScope = 'mobile';
-        $toProductValue = new InvalidRemoverCustomProductValue();
-
-        $fromAttribute->getCode()->willReturn('fromAttributeCode');
-        $toAttribute->getCode()->willReturn('toAttributeCode');
-        $fromAttribute->getReferenceDataName()->willReturn('colors');
-        $toAttribute->getReferenceDataName()->willReturn('colors');
-
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $fromProduct->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $fromProduct->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $toProduct->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $toProduct->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $this->shouldThrow(new \LogicException('ProductValue method "removeColor" is not implemented'))->during('copyAttributeData', [
-            $fromProduct,
-            $toProduct,
-            $fromAttribute,
-            $toAttribute,
-            [
-                'from_locale' => $fromLocale,
-                'to_locale' => $toLocale,
-                'from_scope' => $fromScope,
-                'to_scope' => $toScope
-            ]
-        ]);
-    }
-
-    function it_throws_error_when_adder_method_of_the_reference_data_is_not_implemented(
-        $attrValidatorHelper,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        CustomProductValueBis $fromProductValue
-    ) {
-        $fromLocale = 'fr_FR';
-        $toLocale = 'fr_FR';
-        $toScope = 'mobile';
-        $fromScope = 'mobile';
-        $toProductValue = new InvalidAdderCustomProductValue();
-
-        $fromAttribute->getCode()->willReturn('fromAttributeCode');
-        $toAttribute->getCode()->willReturn('toAttributeCode');
-        $fromAttribute->getReferenceDataName()->willReturn('colors');
-        $toAttribute->getReferenceDataName()->willReturn('colors');
-
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $fromProduct->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $fromProduct->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $toProduct->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $toProduct->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $this->shouldThrow(new \LogicException('ProductValue method "addColor" is not implemented'))->during('copyAttributeData', [
-            $fromProduct,
-            $toProduct,
-            $fromAttribute,
-            $toAttribute,
-            [
-                'from_locale' => $fromLocale,
-                'to_locale' => $toLocale,
-                'from_scope' => $fromScope,
-                'to_scope' => $toScope
-            ]
-        ]);
-    }
-}
-
-class Color implements ReferenceDataInterface
-{
-    public function getId()
-    {
-    }
-    public function getCode()
-    {
-    }
-    public function setCode($code)
-    {
-    }
-    public function getSortOrder()
-    {
-    }
-    public static function getLabelProperty()
-    {
-    }
-    public function __toString()
-    {
-    }
-}
-
-class CustomProductValueBis extends AbstractProductValue
-{
-    public function setColors(Collection $referenceData = null)
-    {
-    }
-    public function getColors()
-    {
-    }
-    public function removeColor(ReferenceDataInterface $referenceData)
-    {
-    }
-    public function addColor(ReferenceDataInterface $referenceData)
-    {
-    }
-}
-
-class InvalidGetterCustomProductValueBis extends AbstractProductValue
-{
-    protected $color;
-}
-
-class InvalidRemoverCustomProductValue extends AbstractProductValue
-{
-    protected $colors;
-
-    public function getColors()
-    {
-    }
-}
-
-class InvalidAdderCustomProductValue extends AbstractProductValue
-{
-    protected $colors;
-
-    public function __construct()
-    {
-        $this->colors = new ArrayCollection();
-    }
-
-    public function getColors()
-    {
-        return $this->colors;
-    }
-
-    public function removeColor(ReferenceDataInterface $referenceData)
-    {
-    }
 }

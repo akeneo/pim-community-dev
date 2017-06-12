@@ -19,7 +19,6 @@ define(
         'pim/i18n',
         'pim/user-context',
         'routing',
-        'module',
         'pim/router'
     ],
     function (
@@ -33,7 +32,6 @@ define(
         i18n,
         UserContext,
         Routing,
-        module,
         router
     ) {
         return BaseSave.extend({

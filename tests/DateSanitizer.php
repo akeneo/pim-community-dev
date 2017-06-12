@@ -5,9 +5,11 @@ namespace Akeneo\Test\Integration;
 /**
  * Sanitize a date.
  *
- * In integration tests, when creating a product for instance, we cannot guess created/updated dates.
- * We can just check if the data match with the constant DATE_FIELD_PATTERN.
- * If the pattern is checked, we return the constant DATE_FIELD_COMPARISON to be able to have an identical comparison element
+ * In integration tests, when creating a product for instance, we cannot guess
+ * created/updated dates. We can just check if the data match with the constant
+ * DATE_FIELD_PATTERN.
+ * If the pattern is checked, we return the constant DATE_FIELD_COMPARISON to be
+ * able to have an identical comparison element.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

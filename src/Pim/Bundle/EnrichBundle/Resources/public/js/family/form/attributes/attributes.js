@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'jquery',
         'pim/form',
-        'text!pim/template/family/tab/attributes/attributes',
+        'pim/template/family/tab/attributes/attributes',
         'pim/user-context',
         'pim/security-context',
         'pim/i18n',
@@ -93,20 +93,23 @@ define([
                     return this;
                 }
 
+                var data = this.getFormData();
+                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'));
+
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                    FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(
+                        attributeGroupsToFetch,
+                        {'apply_filters': false}
+                    )
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-                    this.attributeGroups = attributeGroups;
-
-                    var data = this.getFormData();
                     var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
                         return attribute.group_code;
                     });
 
                     _.sortBy(groupedAttributes, function (attributes, group) {
-                        return this.attributeGroups[group].sort_order;
+                        return _.findWhere(attributeGroups, {code: group}).sort_order;
                     }.bind(this));
 
                     _.each(groupedAttributes, function (attributes, group) {
@@ -124,7 +127,7 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: this.attributeGroups,
+                        attributeGroups: attributeGroups,
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
@@ -297,7 +300,8 @@ define([
                             options: {
                                 identifiers: event.codes,
                                 limit: event.codes.length
-                            }
+                            },
+                            apply_filters: false
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {

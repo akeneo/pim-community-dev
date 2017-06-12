@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Component\Catalog\AttributeTypes;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Option value updated query generator
@@ -13,6 +15,26 @@ use Pim\Component\Catalog\AttributeTypes;
  */
 class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
 {
+    /** @var NormalizerInterface */
+    protected $attributeOptionNormalizer;
+
+    /**
+     * @param NamingUtility       $namingUtility
+     * @param string              $entityClass
+     * @param string              $field
+     * @param NormalizerInterface $attributeOptionNormalizer
+     */
+    public function __construct(
+        NamingUtility $namingUtility,
+        $entityClass,
+        $field,
+        NormalizerInterface $attributeOptionNormalizer
+    ) {
+        $this->attributeOptionNormalizer = $attributeOptionNormalizer;
+
+        parent::__construct($namingUtility, $entityClass, $field);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,22 +45,35 @@ class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
         );
 
         $queries = [];
+        $attributeOptionNormalized = $this->attributeOptionNormalizer->normalize($entity->getOption());
+        $optionId = (int) $entity->getOption()->getId();
+        $optionCode = $entity->getOption()->getCode();
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
                 [
-                    $attributeNormField => ['$elemMatch' => ['code' => $entity->getOption()->getCode()]]
-                ],
-                [
-                    '$set' => [
-                        sprintf(
-                            '%s.$.optionValues.%s.value',
-                            $attributeNormField,
-                            $entity->getLocale()
-                        ) => $newValue
+                    '$and' => [
+                        ['values.optionIds' => $optionId],
+                        [$attributeNormField => ['$elemMatch' => ['code' => $optionCode]]]
                     ]
                 ],
-                ['multiple' => true]
+                ['$push' => [$attributeNormField => $attributeOptionNormalized]],
+                ['multiple' => true],
+            ];
+
+            $queries[] = [
+                ['values.optionIds' => $optionId],
+                [
+                    '$pull' => [
+                        $attributeNormField => [
+                            '$and' => [
+                                ['code' => $optionCode],
+                                [sprintf('optionValues.%s.value', $entity->getLocale()) => $oldValue]
+                            ]
+                        ]
+                    ]
+                ],
+                ['multiple' => true],
             ];
         }
 

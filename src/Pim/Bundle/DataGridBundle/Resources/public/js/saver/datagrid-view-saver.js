@@ -2,11 +2,9 @@
 
 define([
         'jquery',
-        'module',
         'routing'
     ], function (
         $,
-        module,
         Routing
     ) {
         return {
@@ -20,7 +18,7 @@ define([
              * @returns {Promise}
              */
             save: function (datagridView, gridAlias) {
-                var saveRoute = Routing.generate(module.config().url, {alias: gridAlias});
+                var saveRoute = Routing.generate(__moduleConfig.url, {alias: gridAlias});
 
                 return $.post(saveRoute, {view: datagridView});
             }

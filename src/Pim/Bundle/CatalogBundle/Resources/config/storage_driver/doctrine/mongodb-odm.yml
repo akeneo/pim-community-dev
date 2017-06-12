@@ -36,7 +36,6 @@ parameters:
     pim_catalog.event_subscriber.mongodb.ensure_indexes.class:                 Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EnsureIndexesSubscriber
     pim_catalog.event_subscriber.mongodb.timestampable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\TimestampableSubscriber
 
-    pim_catalog.event_subscriber.metric_base_values.class:    Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\MetricBaseValuesSubscriber
     pim_catalog.event_subscriber.remove_outdated_products_from_associations.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\RemoveOutdatedProductsFromAssociationsSubscriber
 
     pim_catalog.mongodb_odm_query_generator.abstract_normalized_data.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator
@@ -46,10 +45,8 @@ parameters:
     pim_catalog.mongodb_odm_query_generator.family_deleted.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.family_label_updated.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.family_label_deleted.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelDeletedQueryGenerator
-    pim_catalog.mongodb_odm_query_generator.option_code_updated.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionCodeUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_deleted.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_value_updated.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionValueUpdatedQueryGenerator
-    pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated.class:  Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionCodeUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.multiple_option_deleted.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionValueUpdatedQueryGenerator
 
@@ -407,15 +404,6 @@ services:
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
-    pim_catalog.mongodb_odm_query_generator.option_code_updated:
-        class: '%pim_catalog.mongodb_odm_query_generator.option_code_updated.class%'
-        parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
-        arguments:
-            - '%pim_catalog.entity.attribute_option.class%'
-            - 'code'
-        tags:
-            - { name: pim_catalog.mongodb_odm_query_generator }
-
     pim_catalog.mongodb_odm_query_generator.option_deleted:
         class: '%pim_catalog.mongodb_odm_query_generator.option_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
@@ -433,15 +421,6 @@ services:
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 
-    pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated:
-        class: '%pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated.class%'
-        parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
-        arguments:
-            - '%pim_catalog.entity.attribute_option.class%'
-            - 'code'
-        tags:
-            - { name: pim_catalog.mongodb_odm_query_generator }
-
     pim_catalog.mongodb_odm_query_generator.multiple_option_deleted:
         class: '%pim_catalog.mongodb_odm_query_generator.multiple_option_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
@@ -456,6 +435,7 @@ services:
         arguments:
             - '%pim_catalog.entity.attribute_option_value.class%'
             - 'value'
+            - '@pim_catalog.mongodb.normalizer.normalized_data.attribute_option'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 

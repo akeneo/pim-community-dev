@@ -33,10 +33,12 @@ Feature: Edit a product with localizable and scopable attribute options
   Scenario: I should not lost data when switching scope on scopable and localizable simple select
     Given I edit the "rick_morty" product
     And I add available attribute Simple
+    Then the field Simple should display the Print scope label
     And I change the Simple to "US1"
     When I save the product
     Then I should see the flash message "Product successfully updated"
     Given I switch the scope to "ecommerce"
+    Then the field Simple should display the Ecommerce scope label
     And I change the Simple to "US2"
     And I switch the scope to "print"
     When I switch the scope to "ecommerce"

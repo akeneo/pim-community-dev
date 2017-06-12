@@ -4,7 +4,7 @@ Feature: Display the category history
   As a product manager
   I need to have access to a category history
 
-  @skip-doc
+  @skip-doc @ce
   Scenario: Display category updates
     Given the "default" catalog configuration
     And I am logged in as "Julia"

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Boolean;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,64 +11,65 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
+class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_yes_no',
-                'type'                => AttributeTypes::BOOLEAN,
-                'localizable'         => true,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_yes_no',
+            'type'                => AttributeTypes::BOOLEAN,
+            'localizable'         => true,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_yes_no' => [
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_yes_no' => [
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_yes_no' => [
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_yes_no' => [
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce']
                 ]
-            ]);
-        }
+            ]
+        ]);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_localizable_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'ecommerce', 'locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'ecommerce', 'locale' => 'en_US']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_localizable_scopable_yes_no', Operators::EQUALS, false, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_yes_no', Operators::EQUALS, false, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_localizable_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_yes_no', Operators::EQUALS, true, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_scopable_yes_no', Operators::EQUALS, false, ['scope' => 'tablet', 'locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_yes_no', Operators::EQUALS, false, ['scope' => 'tablet', 'locale' => 'en_US']]]);
         $this->assert($result, []);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'ecommerce', 'locale' => 'en_US']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'ecommerce', 'locale' => 'en_US']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one']);
     }
 
@@ -78,7 +79,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorLocalizable()
     {
-        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true]]);
+        $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true]]);
     }
 
     /**
@@ -87,7 +88,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorScopable()
     {
-        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'en_US']]]);
+        $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'en_US']]]);
     }
 
     /**
@@ -96,7 +97,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testLocaleNotFound()
     {
-        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -105,6 +106,6 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'fr_FR', 'scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'fr_FR', 'scope' => 'NOT_FOUND']]]);
     }
 }

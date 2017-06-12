@@ -1,7 +1,7 @@
  /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'pim/router', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher'],
-function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal, ActionLauncher) {
+    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher', 'require-context'],
+function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal, ActionLauncher, requireContext) {
     'use strict';
 
     /**
@@ -166,13 +166,11 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
             if (action.dispatched) {
                 return;
             }
-            require(
-                ['oro/' + action.frontend_type + '-widget'],
-                function(ExportAction) {
-                    var exportAction = new ExportAction(action);
-                    exportAction.run();
-                }
-            );
+
+            var ExportAction = requireContext('oro/' + action.frontend_type + '-widget')
+
+            var exportAction = new ExportAction(action)
+            exportAction.run();
         },
 
         _handleWidget: function(action) {
@@ -181,11 +179,11 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
             }
             action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
             action.frontend_options.title = action.frontend_options.title || this.label;
-            require(['oro/' + action.frontend_type + '-widget'],
-            function(WidgetType) {
-                var widget = new WidgetType(action.frontend_options);
-                widget.render();
-            });
+
+            var WidgetType = requireContext('oro/' + action.frontend_type + '-widget')
+
+            var widget = new WidgetType(action.frontend_options);
+            widget.render();
         },
 
         _handleRedirect: function(action) {

@@ -17,6 +17,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
@@ -28,10 +29,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ObjectDetacherInterface $objectDetacher,
         BulkMediaFetcher $mediaFetcher,
-        ObjectUpdaterInterface $variantGroupUpdater,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($normalizer, $objectDetacher, $mediaFetcher, $variantGroupUpdater);
+        $this->beConstructedWith($normalizer, $objectDetacher, $mediaFetcher);
         $this->setStepExecution($stepExecution);
     }
 
@@ -49,7 +49,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $objectDetacher,
         $normalizer,
         $stepExecution,
-        $variantGroupUpdater,
         $mediaFetcher,
         AttributeInterface $color,
         AttributeInterface $weight,
@@ -85,7 +84,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ]
         )->willReturn($variantStandard);
 
-        $variantGroupUpdater->update($variantGroup, Argument::any())->shouldNotBeCalled();
         $mediaFetcher->fetchAll(Argument::any())->shouldNotBeCalled();
 
         $this->process($variantGroup)->shouldReturn($variantStandard);
@@ -96,10 +94,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     function it_processes_variant_group_without_media(
         $objectDetacher,
         $normalizer,
-        $variantGroupUpdater,
         $stepExecution,
         $mediaFetcher,
-        ArrayCollection $emptyCollection,
+        ProductValueCollectionInterface $emptyCollection,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue,
@@ -153,8 +150,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $mediaFetcher->fetchAll($emptyCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
-        $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
-
         $this->process($variantGroup)->shouldReturn($variantStandard);
 
         $objectDetacher->detach($variantGroup)->shouldBeCalled();
@@ -165,8 +160,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $mediaFetcher,
         $stepExecution,
-        $variantGroupUpdater,
-        ArrayCollection $productValueCollection,
+        ProductValueCollectionInterface $productValueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
@@ -187,8 +181,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('my_variant_group');
 
         $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->setMedia($media1);
-        $productValue2->setMedia($media2);
+        $productValue1->getData()->willReturn($media1);
+        $productValue2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -225,7 +219,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ]
         )->willReturn($variantStandard);
 
-        $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($productValueCollection);
         $mediaFetcher->fetchAll($productValueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
@@ -241,8 +234,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $mediaFetcher,
         $stepExecution,
-        $variantGroupUpdater,
-        ArrayCollection $productValueCollection,
+        ProductValueCollectionInterface $productValueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
@@ -263,8 +255,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('my_variant_group');
 
         $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->setMedia($media1);
-        $productValue2->setMedia($media2);
+        $productValue1->getData()->willReturn($media1);
+        $productValue2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -296,7 +288,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ]
         )->willReturn($variantStandard);
 
-        $variantGroupUpdater->update($variantGroup, ['values' => $variantStandard['values']])->shouldBeCalled();
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
         $productTemplate->getValues()->willReturn($productValueCollection);
         $mediaFetcher->fetchAll($productValueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();

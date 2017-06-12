@@ -10,6 +10,7 @@ pim_api:
       list: Przeglądanie rodzin
     channel.list: Przeglądanie kanałów
     locale.list: Przeglądanie ustawień regionalnych
+    currency.list: Przeglądanie walut
   acl_group:
     attribute: Atrybuty
     attribute_group: Grupy Atrybutów
@@ -17,3 +18,4 @@ pim_api:
     family: Rodziny
     channel: Kanały
     locale: Ustawienia regionalne
+    currency: Waluty

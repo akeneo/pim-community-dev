@@ -61,18 +61,6 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         $checkers[] = new ReferenceDataNameChecker();
         $checkers[] = new ReferenceDataInterfaceChecker($this->getReferenceDataInterface());
         $checkers[] = new ReferenceDataUniqueCodeChecker($this->getDoctrineEntityManager());
-        $checkers[] = new ProductValueAccessorsChecker($this->getProductValueClass());
-
-        $storageDriver = $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
-        $relationCheckerClass = sprintf(
-            '\Pim\Bundle\ReferenceDataBundle\Doctrine\%s\RequirementChecker\ProductValueRelationshipChecker',
-            AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver ? 'ORM' : 'MongoDB'
-        );
-
-        $checkers[] = new $relationCheckerClass(
-            $this->getDoctrineProductManager(),
-            $this->getProductValueClass()
-        );
 
         return $checkers;
     }
@@ -115,14 +103,6 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function getDoctrineProductManager()
     {
         return $this->getContainer()->get('pim_catalog.object_manager.product');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getProductValueClass()
-    {
-        return $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
     }
 
     /**

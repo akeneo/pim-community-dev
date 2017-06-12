@@ -9,7 +9,7 @@ define([
     'routing',
     'pim/filter/product/category/selector',
     'pim/fetcher-registry',
-    'text!pim/template/filter/product/category',
+    'pim/template/filter/product/category',
     'jquery.select2'
 ], function ($, _, __, Backbone, BaseFilter, Routing, CategoryTree, fetcherRegistry, template) {
     var TreeModal = Backbone.BootstrapModal.extend({

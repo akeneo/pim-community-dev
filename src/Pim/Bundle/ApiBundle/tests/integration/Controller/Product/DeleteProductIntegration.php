@@ -8,14 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 class DeleteProductIntegration extends AbstractProductTestCase
 {
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     public function testDeleteAProduct()
@@ -23,15 +20,15 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $this->assertCount(3, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(30, $this->get('pim_catalog.repository.product_value_counter')->count());
 
+        $fooProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+        $this->get('pim_catalog.elasticsearch.product_indexer')->index($fooProduct);
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
         $this->assertCount(2, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(2, $this->get('pim_catalog.repository.product_value_counter')->count());
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
     }
 

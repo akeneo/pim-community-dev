@@ -6,8 +6,8 @@ use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
-use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**
  * Product interface
@@ -44,18 +44,45 @@ interface ProductInterface extends
     /**
      * Get the identifier of the product
      *
-     * @throws MissingIdentifierException if no identifier could be found
-     *
-     * @return ProductValueInterface the identifier of the product
+     * @return string
      */
     public function getIdentifier();
 
     /**
+     * @param ProductValueInterface $identifier
+     *
+     * @return ProductInterface
+     *
+     */
+    public function setIdentifier(ProductValueInterface $identifier);
+
+    /**
+     * @return array
+     */
+    public function getRawValues();
+
+    /**
+     * @param array $rawValues
+     *
+     * @return ProductInterface
+     */
+    public function setRawValues(array $rawValues);
+
+    /**
      * Get values
      *
-     * @return ArrayCollection | ProductValueInterface[]
+     * @return ProductValueCollectionInterface
      */
     public function getValues();
+
+    /**
+     * Set values
+     *
+     * @param ProductValueCollectionInterface $values
+     *
+     * @return ProductInterface
+     */
+    public function setValues(ProductValueCollectionInterface $values);
 
     /**
      * Get value related to attribute code
@@ -89,7 +116,7 @@ interface ProductInterface extends
     /**
      * Get the product groups
      *
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getGroups();
 
@@ -135,7 +162,7 @@ interface ProductInterface extends
     /**
      * Get types of associations
      *
-     * @return AssociationInterface[]|ArrayCollection
+     * @return Collection
      */
     public function getAssociations();
 
@@ -212,11 +239,11 @@ interface ProductInterface extends
     /**
      * Set product completenesses
      *
-     * @param Collection $completenesses CompletenessInterface
+     * @param Collection $completenesses
      *
      * @return ProductInterface
      */
-    public function setCompletenesses(ArrayCollection $completenesses);
+    public function setCompletenesses(Collection $completenesses);
 
     /**
      * Get the attributes of the product
@@ -235,7 +262,7 @@ interface ProductInterface extends
     public function hasAttribute(AttributeInterface $attribute);
 
     /**
-     * Get the list of used attribute code from the indexed values
+     * Get the list of used attribute codes from the indexed values
      *
      * @return array
      */
@@ -274,13 +301,6 @@ interface ProductInterface extends
     public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
-     * Mark the indexed as outdated
-     *
-     * @return ProductInterface
-     */
-    public function markIndexedValuesOutdated();
-
-    /**
      * Get product label
      *
      * @param string $locale
@@ -288,11 +308,6 @@ interface ProductInterface extends
      * @return mixed|string
      */
     public function getLabel($locale = null);
-
-    /**
-     * @param mixed $normalizedData
-     */
-    public function setNormalizedData($normalizedData);
 
     /**
      * Set family
@@ -325,4 +340,16 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamilyId($familyId);
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUniqueData();
+
+    /**
+     * @param ProductUniqueDataInterface $uniqueData
+     *
+     * @return ProductInterface
+     */
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData);
 }

@@ -11,12 +11,23 @@ class RefreshTokenIntegration extends ApiTestCase
     public function testRefreshToken()
     {
         list($clientId, $secret) = $this->createOAuthClient();
-        $client = $this->createAuthenticatedClient([], [], $clientId, $secret);
+        list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, self::USERNAME, self::PASSWORD);
+
+        $client = $this->createAuthenticatedClient(
+            [],
+            [],
+            $clientId,
+            $secret,
+            self::USERNAME,
+            self::PASSWORD,
+            $accessToken,
+            $refreshToken
+        );
 
         $client->request('POST', 'api/oauth/v1/token',
             [
                 'grant_type'    => 'refresh_token',
-                'refresh_token' => static::$refreshTokens[self::USERNAME],
+                'refresh_token' => $refreshToken,
             ],
             [],
             [
@@ -92,9 +103,6 @@ class RefreshTokenIntegration extends ApiTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

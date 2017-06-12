@@ -10,6 +10,7 @@ pim_api:
       list: Listaa tuoteperheet
     channel.list: Listaa kanavat
     locale.list: Lista lokaatioista
+    currency.list: Lista valuutoista
   acl_group:
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
@@ -17,3 +18,4 @@ pim_api:
     family: Perheet
     channel: Kanavat
     locale: Alueet
+    currency: Valuutat

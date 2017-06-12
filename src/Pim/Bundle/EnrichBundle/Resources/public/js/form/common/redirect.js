@@ -15,7 +15,7 @@ define(
         'routing',
         'pim/router',
         'pim/common/property',
-        'text!pim/template/form/redirect'
+        'pim/template/form/redirect'
     ],
     function ($, _, __, BaseForm, Routing, router, propertyAccessor, template) {
         return BaseForm.extend({

@@ -47,7 +47,7 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_association:
         class: '%pim_connector.writer.database.product_association.class%'
@@ -410,7 +410,7 @@ services:
         class: '%pim_connector.writer.file.product.column_sorter.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.association_type'
             - ['label']
 
@@ -418,6 +418,6 @@ services:
         class: '%pim_connector.writer.file.product.column_sorter.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.association_type'
             - ['categories', 'enabled', 'family', 'groups']

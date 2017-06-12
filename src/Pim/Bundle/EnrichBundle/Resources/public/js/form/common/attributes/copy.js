@@ -14,12 +14,13 @@ define(
         'underscore',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/form/tab/attribute/copy',
+        'pim/template/form/tab/attribute/copy',
         'pim/form/common/attributes/copy-field',
         'pim/field-manager',
         'pim/attribute-manager',
         'pim/user-context',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/i18n'
     ],
     function (
         $,
@@ -31,7 +32,8 @@ define(
         FieldManager,
         AttributeManager,
         UserContext,
-        FetcherRegistry
+        FetcherRegistry,
+        i18n
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -135,7 +137,7 @@ define(
                     copyField.setContext({
                         locale: this.locale,
                         scope: this.scope,
-                        scopeLabel: this.scopeLabel
+                        scopeLabel: i18n.getLabel(this.scopeLabel, this.locale, this.scope)
                     });
                     copyField.setValues(sourceData[code]);
                     copyField.setField(field);
@@ -336,7 +338,7 @@ define(
                 return FetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
                     var scope = _.findWhere(channels, { code: scopeCode });
 
-                    return scope.label;
+                    return scope.labels;
                 });
             }
         });

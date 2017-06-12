@@ -39,22 +39,28 @@ class MassActionDispatcher
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
+    /** @var array */
+    protected $gridsWithoutMassActionRepository;
+
     /**
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
+     * @param array                      $gridsWithoutMassActionRepository
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
-        MassActionParametersParser $parametersParser
+        MassActionParametersParser $parametersParser,
+        array $gridsWithoutMassActionRepository
     ) {
         $this->handlerRegistry = $handlerRegistry;
         $this->manager = $manager;
         $this->requestParams = $requestParams;
         $this->parametersParser = $parametersParser;
+        $this->gridsWithoutMassActionRepository = $gridsWithoutMassActionRepository;
     }
 
     /**
@@ -71,10 +77,8 @@ class MassActionDispatcher
         $parameters = $this->prepareMassActionParameters($request);
         $datagrid = $parameters['datagrid'];
         $massAction = $parameters['massAction'];
-        $inset = $parameters['inset'];
-        $values = $parameters['values'];
 
-        return $this->performMassAction($datagrid, $massAction, $inset, $values);
+        return $this->performMassAction($datagrid, $massAction);
     }
 
     /**
@@ -165,7 +169,12 @@ class MassActionDispatcher
             }
         }
 
-        $repository = $datagrid->getDatasource()->getMassActionRepository();
+        $datasource = $datagrid->getDatasource();
+        if ($datasource instanceof ProductDatasource) {
+            $qb = $datasource->getProductQueryBuilder();
+        }
+
+        $repository = $datasource->getMassActionRepository();
         $repository->applyMassActionParameters($qb, $inset, $values);
 
         return [

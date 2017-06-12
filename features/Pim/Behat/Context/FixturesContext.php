@@ -2,11 +2,10 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Console\Processor\ProcessorInterface;
-use Behat\Behat\Context\Step;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -171,7 +170,7 @@ class FixturesContext extends PimContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->getEntities()[$entityName],
-                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
+                    print_r(Debug::export($criteria, 2), true)
                 )
             );
         }

@@ -13,8 +13,8 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/tab/associations',
-        'text!pim/template/product/tab/association-panes',
+        'pim/template/product/tab/associations',
+        'pim/template/product/tab/association-panes',
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/user-context',
@@ -22,7 +22,8 @@ define(
         'oro/mediator',
         'oro/datagrid-builder',
         'oro/pageable-collection',
-        'pim/datagrid/state'
+        'pim/datagrid/state',
+        'require-context'
     ],
     function (
         $,
@@ -38,7 +39,8 @@ define(
         mediator,
         datagridBuilder,
         PageableCollection,
-        DatagridState
+        DatagridState,
+        requireContext
     ) {
         var state = {};
 
@@ -72,8 +74,8 @@ define(
                         getParamValue: function (associationType) {
                             return _.findWhere(state.associationTypes, {code: associationType}).id;
                         }.bind(this),
-                        getModelIdentifier: function (model, identifierAttribute) {
-                            return model.get(identifierAttribute.code);
+                        getModelIdentifier: function (model) {
+                            return model.get('identifier');
                         }
                     },
                     groups: {
@@ -126,10 +128,7 @@ define(
                     return;
                 }
 
-                $.when(
-                    this.loadAssociationTypes(),
-                    FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                ).then(function (associationTypes, identifierAttribute) {
+                this.loadAssociationTypes().then(function (associationTypes) {
                     var currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
 
                     if (null === this.getCurrentAssociationType()) {
@@ -138,7 +137,6 @@ define(
 
                     state.currentAssociationType = currentAssociationType;
                     state.associationTypes       = associationTypes;
-                    this.identifierAttribute     = identifierAttribute;
 
                     this.$el.html(
                         this.template({
@@ -322,9 +320,12 @@ define(
 
                     var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
-                    require(gridModules, function () {
-                        datagridBuilder(_.toArray(arguments));
-                    });
+
+                    var resolvedModules = []
+                    _.each(gridModules, function(module) {
+                        resolvedModules.push(requireContext(module));
+                    })
+                    datagridBuilder(resolvedModules)
                 }.bind(this));
             },
             setListenerSelectors: function () {
@@ -366,7 +367,7 @@ define(
                 var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = this.getCurrentAssociations(datagrid);
 
-                currentAssociations.push(datagrid.getModelIdentifier(model, this.identifierAttribute));
+                currentAssociations.push(datagrid.getModelIdentifier(model));
                 currentAssociations = _.uniq(currentAssociations);
 
                 this.updateFormDataAssociations(currentAssociations, assocType, assocTarget);
@@ -377,7 +378,7 @@ define(
                 var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = _.uniq(this.getCurrentAssociations(datagrid));
 
-                var index = currentAssociations.indexOf(datagrid.getModelIdentifier(model, this.identifierAttribute));
+                var index = currentAssociations.indexOf(datagrid.getModelIdentifier(model));
                 if (-1 !== index) {
                     currentAssociations.splice(index, 1);
                 }

@@ -43,6 +43,6 @@ Feature: Mass edit common attributes for reference data
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "heels" should have the following values:
-      | sole_fabric | Wool, Kevlar, Jute |
+      | sole_fabric | Jute, Kevlar, Wool|
     Then the product "platform_shoes" should have the following values:
-      | sole_fabric | Wool, Kevlar, Jute |
+      | sole_fabric | Jute, Kevlar, Wool|

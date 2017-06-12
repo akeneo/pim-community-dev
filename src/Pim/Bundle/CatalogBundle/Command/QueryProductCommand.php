@@ -103,7 +103,7 @@ class QueryProductCommand extends ContainerAwareCommand
         } else {
             $result = [];
             foreach ($products as $product) {
-                $result[] = $product->getIdentifier()->getData();
+                $result[] = $product->getIdentifier();
             }
 
             $output->write(json_encode($result));

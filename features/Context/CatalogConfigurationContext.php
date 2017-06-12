@@ -3,12 +3,12 @@
 namespace Context;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -118,13 +118,7 @@ class CatalogConfigurationContext extends RawMinkContext
             $referenceDataLoader->load($this->getEntityManager());
         }
 
-        // clear product manager UOW after the install to start the scenario execution with a clean state
-        $productObjectManager = $this->getContainer()->get('pim_catalog.object_manager.product');
-        $productObjectManager->clear();
-
-        // clear the standard entity manager UOW after the install to start the scenario execution with a clean state
-        $standardObjectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $standardObjectManager->clear();
+        $this->getElasticsearchClient()->refreshIndex();
     }
 
     /**
@@ -133,6 +127,14 @@ class CatalogConfigurationContext extends RawMinkContext
     protected function getFixtureJobLoader()
     {
         return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client');
     }
 
     /**
@@ -178,7 +180,7 @@ class CatalogConfigurationContext extends RawMinkContext
     }
 
     /**
-     * @return EntityManager
+     * @return EntityManagerInterface
      */
     protected function getEntityManager()
     {

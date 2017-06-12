@@ -10,7 +10,7 @@
 define([
     'underscore',
     'pim/job/common/edit/field/field',
-    'text!pim/template/export/common/edit/field/text'
+    'pim/template/export/common/edit/field/text'
 ], function (
     _,
     BaseField,

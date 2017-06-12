@@ -21,9 +21,10 @@ define(
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/form/tab/attributes',
+        'pim/template/form/tab/attributes',
         'pim/dialog',
-        'oro/messenger'
+        'oro/messenger',
+        'pim/i18n'
     ],
     function (
         $,
@@ -40,7 +41,8 @@ define(
         SecurityContext,
         formTemplate,
         Dialog,
-        messenger
+        messenger,
+        i18n
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
@@ -132,13 +134,7 @@ define(
                             $valuesPanel.empty();
 
                             FieldManager.clearVisibleFields();
-                            _.each(fields, function (field) {
-                                if (field.canBeSeen()) {
-                                    field.render();
-                                    FieldManager.addVisibleField(field.attribute.code);
-                                    $valuesPanel.append(field.$el);
-                                }
-                            }.bind(this));
+                            _.each(fields, this.appendField.bind(this, $valuesPanel));
                         }.bind(this));
                     this.delegateEvents();
 
@@ -146,6 +142,21 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Append a field to the panel
+             *
+             * @param {jQueryElement} panel
+             * @param {Object} field
+             *
+             */
+            appendField: function (panel, field) {
+                if (field.canBeSeen()) {
+                    field.render();
+                    FieldManager.addVisibleField(field.attribute.code);
+                    panel.append(field.$el);
+                }
             },
 
             /**
@@ -166,15 +177,17 @@ define(
                     );
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
+                    var catalogLocale = UserContext.get('catalogLocale');
 
                     field.setContext({
-                        locale: UserContext.get('catalogLocale'),
+                        locale: catalogLocale,
                         scope: scope.code,
-                        scopeLabel: scope.label,
-                        uiLocale: UserContext.get('catalogLocale'),
+                        scopeLabel: i18n.getLabel(scope.labels, catalogLocale, scope.code),
+                        uiLocale: catalogLocale,
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
+
                     field.setValues(values);
 
                     return field;

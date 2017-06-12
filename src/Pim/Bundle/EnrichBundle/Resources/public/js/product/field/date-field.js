@@ -9,13 +9,15 @@
  */
 define(
     [
+        'jquery',
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/date',
+        'pim/template/product/field/date',
         'datepicker',
         'pim/date-context'
     ],
     function (
+        $,
         Field,
         _,
         fieldTemplate,
@@ -36,10 +38,14 @@ define(
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            click: function () {
-                Datepicker.init(this.$('.datetimepicker'), this.datetimepickerOptions).datetimepicker('show');
+            click: function (event) {
+                var clickedElement = $(event.currentTarget).parent();
+                var picker = this.$('.datetimepicker');
 
-                this.$('.datetimepicker').on('changeDate', function (e) {
+                Datepicker.init(picker, this.datetimepickerOptions);
+                clickedElement.datetimepicker('show');
+
+                picker.on('changeDate', function (e) {
                     this.setCurrentValue(this.$(e.target).find('input[type="text"]').val());
                 }.bind(this));
             },

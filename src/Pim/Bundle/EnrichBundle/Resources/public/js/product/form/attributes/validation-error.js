@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'backbone',
-        'text!pim/template/product/tab/attribute/validation-error',
+        'pim/template/product/tab/attribute/validation-error',
         'pim/i18n'
     ],
     function (_, Backbone, template, i18n) {

@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\Completeness;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -27,35 +29,82 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * Normalized completeness collection that is returned looks like:
+     *
+     * [
+     *     [
+     *         'locale'   => 'de_DE',
+     *         'stats'    => [
+     *             'total'    => 3,
+     *             'complete' => 0,
+     *         ],
+     *         'channels' => [
+     *             'ecommerce' => [
+     *                 'completeness' => [
+     *                     'required' => 4,
+     *                     'missing' => 2,
+     *                     'ratio' => 50,
+     *                     'locale' => 'de_DE',
+     *                     'channel_code' => 'ecommerce',
+     *                     'channel_labels' => [
+     *                         'en_US' => 'Ecommerce',
+     *                         'de_DE' => 'Ecommerce',
+     *                         'fr_FR' => 'Ecommerce',
+     *                     ],
+     *                 ],
+     *                 'missing' => [
+     *                     [
+     *                         'code' = 'description',
+     *                         'labels' = [
+     *                             'de_DE' => 'Beschreibung',
+     *                             'en_US' => 'Description',
+     *                             'fr_FR' => 'Description',
+     *                         ],
+     *                     ],
+     *                     ['...'],
+     *                 ],
+     *             ],
+     *             'mobile'    => ['...'],
+     *             'print'     => ['...'],
+     *         ],
+     *     ],
+     *     ['...'],
+     *     ['...'],
+     * ];
      */
     public function normalize($completenesses, $format = null, array $context = [])
     {
-        $normalizedCompleteness = [];
-        $locales = [];
+        $normalizedCompletenesses = [];
+        $localeCodes = [];
+        $sortedCompletenesses = [];
+
         foreach ($completenesses as $completeness) {
-            $locales[] = $completeness['locale'];
+            $locale = $completeness->getLocale();
+            if (!in_array($locale->getCode(), $localeCodes)) {
+                $localeCodes[] = $locale->getCode();
+            }
+
+            $sortedCompletenesses[$locale->getCode()][$completeness->getChannel()->getCode()] = $completeness;
         }
 
-        foreach ($completenesses as $completeness) {
-            $locale = $completeness['locale'];
-            $channels = $completeness['channels'];
-            $stats = $completeness['stats'];
-
-            $normalizedCompChannels = $this->normalizeChannelCompleteness(
-                $format,
-                $context,
-                $channels,
-                $locales
-            );
-
-            $normalizedCompleteness[] = [
-                'locale'   => $locale,
-                'stats'    => $stats,
-                'channels' => $normalizedCompChannels,
+        foreach ($sortedCompletenesses as $localeCode => $channelCompletenesses) {
+            $normalizedCompletenesses[] = [
+                'locale'   => $localeCode,
+                'stats'    => [
+                    'total'    => count($channelCompletenesses),
+                    'complete' => $this->countComplete($channelCompletenesses),
+                ],
+                'channels' => $this->normalizeChannelCompletenesses(
+                    $channelCompletenesses,
+                    $format,
+                    $context,
+                    $localeCodes
+                ),
             ];
         }
 
-        return $normalizedCompleteness;
+        return $normalizedCompletenesses;
     }
 
     /**
@@ -67,64 +116,77 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param array              $locales
+     * Returns how many completenesses have a ratio of 100 for a provided list of completeness.
      *
-     * @return array
+     * @param CompletenessInterface[] $completenesses
+     *
+     * @return int
      */
-    protected function normalizeAttributeLabels(AttributeInterface $attribute, array $locales)
+    protected function countComplete(array $completenesses)
     {
-        $labels = [];
-        foreach ($locales as $locale) {
-            $labels[$locale] = $attribute->getTranslation($locale)->getLabel();
+        $complete = 0;
+
+        foreach ($completenesses as $completeness) {
+            if (100 <= $completeness->getRatio()) {
+                $complete++;
+            }
         }
 
-        return $labels;
+        return $complete;
     }
 
     /**
      * Returns the normalized channel completeness
      *
-     * @param string $format
-     * @param array  $context
-     * @param array  $channels
-     * @param array  $locales
+     * @param CompletenessInterface[] $completenesses
+     * @param string                  $format
+     * @param array                   $context
+     * @param array                   $localeCodes
      *
      * @return array
      */
-    protected function normalizeChannelCompleteness($format, array $context, array $channels, array $locales)
-    {
-        $normalizedCompChannels = [];
+    protected function normalizeChannelCompletenesses(
+        array $completenesses,
+        $format,
+        array $context,
+        array $localeCodes
+    ) {
+        $normalizedCompletenesses = [];
 
         //TODO: workaround in order to handle behat empty completeness
-        foreach ($channels as $channelCompleteness) {
-            $channelCode = null;
-            if (null !== $channelCompleteness['completeness']) {
-                $channelCode = $channelCompleteness['completeness']->getChannel()->getCode();
+        foreach ($completenesses as $completeness) {
+            $channelCode = $completeness->getChannel()->getCode();
+
+            $normalizedCompleteness = [];
+            $normalizedCompleteness['completeness'] = $this->normalizer->normalize($completeness, $format, $context);
+            $normalizedCompleteness['missing'] = [];
+
+            foreach ($completeness->getMissingAttributes() as $attribute) {
+                $normalizedCompleteness['missing'][] = [
+                    'code'   => $attribute->getCode(),
+                    'labels' => $this->normalizeAttributeLabels($attribute, $localeCodes),
+                ];
             }
 
-            if (null !== $channelCode) {
-                $attributes = $channelCompleteness['missing'];
-                $normChannel = [];
-                $normChannel['completeness'] = $this->normalizer->normalize(
-                    $channelCompleteness['completeness'],
-                    $format,
-                    $context
-                );
-
-                $normChannel['missing'] = [];
-
-                foreach ($attributes as $attribute) {
-                    $normChannel['missing'][] = [
-                        'code'   => $attribute->getCode(),
-                        'labels' => $this->normalizeAttributeLabels($attribute, $locales)
-                    ];
-                }
-
-                $normalizedCompChannels[$channelCode] = $normChannel;
-            }
+            $normalizedCompletenesses[$channelCode] = $normalizedCompleteness;
         }
 
-        return $normalizedCompChannels;
+        return $normalizedCompletenesses;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $localeCodes
+     *
+     * @return array
+     */
+    protected function normalizeAttributeLabels(AttributeInterface $attribute, array $localeCodes)
+    {
+        $labels = [];
+        foreach ($localeCodes as $locale) {
+            $labels[$locale] = $attribute->getTranslation($locale)->getLabel();
+        }
+
+        return $labels;
     }
 }

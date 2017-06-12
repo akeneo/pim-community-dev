@@ -1,0 +1,89 @@
+Item deleted: Element slettet
+Are you sure you want to delete this item?: Er du sikker på at du vil slette dette emne?
+Delete Error: Fejl ved sletning
+Are you sure you want to do remove selected items?: Er du sikker på at du vil slette de markede elementer?
+Selected items were removed.: De valgte varer blev fjernet.
+Selected items were not removed.: De valgte varer kunne ikke fjernes.
+Please, select items to remove.: Vælg de varer der skal fjernes.
+Cannot delete item.: Det er ikke muligt at slette varerne.
+Refresh Confirmation: Opdater bekræftelse
+Your local changes will be lost. Are you sure you want to refresh grid?: Din lokale ændringer vil gå tabt. Er du sikker på, du vil opdatere?
+Reset Confirmation: Nulstil bekræftelse
+Your local changes will be lost. Are you sure you want to reset grid?: Din lokale ændringer vil gå tabt. Er du sikker på, du vil opdatere?
+Confirmation: Bekræftelse
+edit: rediger
+copy: Kopier
+remove: fjern
+Status: Status
+All: Alle
+Per page: Per side
+Mass Action Confirmation: Bekræftelse af handling
+Mass action performed.: Handlingen er udført.
+Mass action is not performed.: Handlingen kunne ikke udføres.
+Please, select items to perform mass action.: Vælg de elementer, der skal medtages i handlingen.
+Execution Confirmation: Udfør bekræftelse
+Are you sure you want to do this?: Er du sikker på du ønsker at gøre det?
+Action performed.: Handlingen er udført.
+Action is not performed.: Handling udføres ikke.
+Please, select item to perform action.: Vælg vare for at udføre handling.
+View per page: Se pr. side
+oro.datagrid.entityHint: Enhed
+oro.datagrid.noentities: Ingen poster fundet
+oro.datagrid.noresults: "Ingen resultater fundet. Prøv at ændre dine søgekriterier."
+oro.datagrid.nocolumns: Ingen kolonner er konfigureret for dette gitter
+oro.datagrid.pagination.label: "Side"
+oro.datagrid.pagination.totalPages: "af {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} poster"
+oro.datagrid.action.reset: "Nulstil"
+oro.datagrid.action.refresh: "Opdatér"
+oro_datagrid.select.all: "Alle"
+oro_datagrid.select.visible: "Alle synlige"
+oro_datagrid.select.none: "Ingen"
+pim.grid.ajax_choice_filter.label_empty: er tom
+pim.grid.ajax_choice_filter.label_not_empty: er ikke tom
+pim.grid.choice_filter:
+  label_empty: er tom
+  label_not_empty: er ikke tom
+  label_in_list: i listen
+Available Columns: Tilgængelige kolonner
+Displayed Columns: Valgte kolonner
+datagrid_view.columns.min_message: Du skal vælge mindst én datagrid kolonne der skal vises
+pim_datagrid:
+  column_configurator:
+    label: Kolonner
+    title: Kolonnevalg
+    all_groups: Alle grupper
+    search: Søg
+    clear: Nustil
+    displayed_columns: Valgte kolonner
+    apply: Anvend
+    cancel: Annuller
+    remove_column: Fjern
+  mass_action:
+    delete:
+      confirm_title: Bekræft sletning
+      confirm_ok: OK
+      empty_selection: Du har ikke valgt et produkt
+pim.grid.mass_action.quick_export.title: Hurtig eksport
+pim.grid.mass_action.quick_export.launched: Hurtig eksport er blevet lanceret
+pim.grid.action.launch.title: Kør
+pim.grid.action.show.title: Vis
+Please select view: Vælg visning
+Loading...: Indlæser...
+View: Se
+from: fra
+to: til
+grid.view_selector:
+  default_view: Standardvisning
+  save_changes: Gem denne visning
+  remove: Slet denne visning
+  create_view: Opret visning
+  create: Opret
+  search: Søg
+  views: Visninger
+  placeholder: Navn på ny visning
+  choose_label: Vælge en etiket til visningen
+  confirmation:
+    remove: Er du sikker på du vil slette denne datagrid visning?
+    delete: Bekræft sletning
+grid.view_selector.flash.updated: DataGrid visningen er opdateret
