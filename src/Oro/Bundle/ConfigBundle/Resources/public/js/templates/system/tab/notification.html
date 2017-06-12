@@ -1,9 +1,12 @@
 <div class="AknFormContainer AknFormContainer--withPadding system-notification-field">
-    <label for="system-notification"><%- _.__('oro_config.form.config.group.notification.system_notification') %></label>
-
-    <div class="system-notification-field">
-        <div class="switch switch-small" data-on-label="<%- _.__('pim_enrich.form.entity.switch.yes') %>" data-off-label="<%- _.__('pim_enrich.form.entity.switch.no') %>">
-            <input type="checkbox" name="system-notification" <%- notification === '1' ? 'checked' : '' %> />
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label" for="system-notification"><%- _.__('oro_config.form.config.group.notification.system_notification') %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer system-notification-field">
+            <div class="switch switch-small" data-on-label="<%- _.__('pim_enrich.form.entity.switch.yes') %>" data-off-label="<%- _.__('pim_enrich.form.entity.switch.no') %>">
+                <input type="checkbox" name="system-notification" <%- notification === '1' ? 'checked' : '' %> />
+            </div>
         </div>
     </div>
 </div>

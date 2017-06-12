@@ -4,6 +4,15 @@ extensions:
         config:
             title: pim_enrich.index.user_role.title
 
+    pim-user-role-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-role-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-system
+                - pim-menu-system-user-role
+
     pim-user-role-index-grid:
         module: pim/form/common/index/grid
         parent: pim-user-role-index

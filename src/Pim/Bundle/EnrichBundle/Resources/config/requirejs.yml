@@ -743,6 +743,7 @@ config:
         pim/common/grid:                   pimenrich/js/form/common/grid
         pim/common/redirect:               pimenrich/js/form/common/redirect
         pim/common/column-list-view:       pimenrich/js/common/column-list-view
+        pim/common/breadcrumbs:                pimenrich/js/common/breadcrumbs
         pim/common/tab/history:            pimenrich/js/form/common/tab/history
         pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
@@ -764,7 +765,7 @@ config:
         pim/form/common/delete:                              pimenrich/js/form/common/delete
         pim/form/common/form-tabs:                           pimenrich/js/form/common/form-tabs
         pim/form/common/column-tabs:                         pimenrich/js/form/common/column-tabs
-        pim/form/common/column-navigation:                   pimenrich/js/form/common/column-navigation
+        pim/form/common/column-tabs-navigation:              pimenrich/js/form/common/column-tabs-navigation
         pim/form/common/save-form:                           pimenrich/js/form/common/save-form
         pim/form/common/save-buttons:                        pimenrich/js/form/common/save-buttons
         pim/form/common/state:                               pimenrich/js/form/common/state
@@ -786,10 +787,10 @@ config:
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
         pim/menu/item:                                       pimenrich/js/menu/item
-        pim/header/header:                                   pimenrich/js/header/header
-        pim/header/logo:                                     pimenrich/js/header/logo
-        pim/header/user:                                     pimenrich/js/header/user
-
+        pim/menu/navigation-block:                           pimenrich/js/menu/navigation-block
+        pim/menu/user-navigation:                            pimenrich/js/menu/user-navigation
+        pim/menu/logo:                                       pimenrich/js/menu/logo
+        pim/menu/column:                                     pimenrich/js/menu/column
 
         # Fields
         pim/field:                  pimenrich/js/product/field/field
@@ -856,9 +857,10 @@ config:
         pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
         pim/template/form/column:                                 pimenrich/templates/form/column.html
+        pim/template/form/column-navigation:                      pimenrich/templates/form/column-navigation.html
         pim/template/form/secondary-actions:                      pimenrich/templates/form/secondary-actions.html
         pim/template/form/column-tabs:                            pimenrich/templates/form/column-tabs.html
-        pim/template/form/column-navigation:                      pimenrich/templates/form/column-navigation.html
+        pim/template/form/column-tabs-navigation:                 pimenrich/templates/form/column-tabs-navigation.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html
@@ -918,12 +920,15 @@ config:
         pim/template/error/error:                            pimenrich/templates/error/error.html
 
         pim/template/menu/tab:                               pimenrich/templates/menu/tab.html
+        pim/template/menu/menu:                              pimenrich/templates/menu/menu.html
         pim/template/menu/item:                              pimenrich/templates/menu/item.html
-        pim/template/header/header:                          pimenrich/templates/header/header.html
-        pim/template/header/logo:                            pimenrich/templates/header/logo.html
-        pim/template/header/user:                            pimenrich/templates/header/user.html
+        pim/template/menu/user-navigation:                   pimenrich/templates/menu/user-navigation.html
+        pim/template/menu/navigation-block:                  pimenrich/templates/menu/navigation-block.html
+        pim/template/menu/logo:                              pimenrich/templates/menu/logo.html
+
         pim/template/app:                                    pimenrich/templates/app.html
-        pim/template/header/flash:                           pimenrich/templates/header/flash.html
+        pim/template/common/flash:                           pimenrich/templates/common/flash.html
+        pim/template/common/breadcrumbs:                     pimenrich/templates/common/breadcrumbs.html
 
         pim/template/variant-group/tab/properties/general:   pimenrich/templates/variant-group/tab/properties/general.html
         pim/template/variant-group/form/no-attribute:        pimenrich/templates/variant-group/form/no-attribute.html

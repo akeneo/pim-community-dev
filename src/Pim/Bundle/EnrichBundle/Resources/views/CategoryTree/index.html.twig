@@ -1,8 +1,9 @@
 {% block content %}
-    <div id="category-tree-container" class="row-fluid">
+    {# This style is temporary and will be dropped on PEFization of this screen #}
+    <div id="category-tree-container" style="display:flex; height:100%">
         <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
 
-        <div id="category-form">
+        <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
             <div class="AknInfoBlock">
                 {% if resource_granted(acl ~ '_category_edit') %}
                     {{ 'category.suggest selection'|trans }}

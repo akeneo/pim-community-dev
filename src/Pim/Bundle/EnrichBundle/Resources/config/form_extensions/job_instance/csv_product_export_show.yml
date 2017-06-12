@@ -2,6 +2,14 @@ extensions:
     pim-job-instance-csv-product-export-show:
         module: pim/form/common/edit-form
 
+    pim-job-instance-csv-product-export-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-product-export-show
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-exports
+
     pim-job-instance-csv-product-export-show-tabs:
         module: pim/form/common/form-tabs
         parent: pim-job-instance-csv-product-export-show

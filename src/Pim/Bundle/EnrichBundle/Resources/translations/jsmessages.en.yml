@@ -935,11 +935,13 @@ job_tracker:
 
 pim_menu:
     tab:
-        collect: Collect
-        enrich: Enrich
+        dashboard: Dashboard
+        imports: Imports
+        products: Products
+        exports: Exports
         settings: Settings
         system: System
-        spread: Spread
+
     item:
         association_type: Association types
         attribute: Attributes
@@ -965,7 +967,11 @@ pim_menu:
         info: System information
         job_tracker: Process tracker
 
-pim_header:
+    navigation:
+        system: System navigation
+        user: Users management navigation
+        settings: Settings navigation
+
     user:
         logout: Logout
         user_account: My Account

@@ -2,6 +2,14 @@ extensions:
     pim-job-instance-xlsx-base-import-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-xlsx-base-import-edit-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-xlsx-base-import-edit
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-imports
+
     pim-job-instance-xlsx-base-import-edit-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-job-instance-xlsx-base-import-edit

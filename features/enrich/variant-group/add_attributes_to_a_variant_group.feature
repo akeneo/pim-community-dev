@@ -103,6 +103,7 @@ Feature: Add attributes to a variant group
       | sku     | family     | high_heel_main_color | high_heel_main_fabric |
       | heel001 | high_heels | Red                  | Silk                  |
     When I am on the "high_heels" variant group page
+    And I collapse the column
     Then I should see the available filters high_heel_main_color and high_heel_secondary_fabric
     And I should not see the available filters High heel main fabric and High heel secondary color
     And I should see the columns In group, Sku, High heel main color, High heel main fabric, Label, Family, Status, Complete, Created at and Updated at

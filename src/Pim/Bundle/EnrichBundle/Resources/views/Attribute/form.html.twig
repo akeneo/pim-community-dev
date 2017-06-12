@@ -5,6 +5,7 @@
 </script>
 
 {% block content %}
+<div class="AknDefault-mainContent">
     {{ form_start(form, {
         'action': form.vars.value.id ?
             path('pim_enrich_attribute_edit', { id: form.vars.value.id }) :
@@ -54,4 +55,5 @@
     {{ form_end(form) }}
 
     {% include 'PimEnrichBundle:Attribute:_js-handler.html.twig' with measures %}
+</div>
 {% endblock %}

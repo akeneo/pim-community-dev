@@ -4,6 +4,15 @@ extensions:
         config:
             title: pim_enrich.index.process_tracker.title
 
+    pim-process-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-process-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-system
+                - pim-menu-system-job-tracker
+
     pim-process-index-grid:
         module: pim/form/common/index/grid
         parent: pim-process-index

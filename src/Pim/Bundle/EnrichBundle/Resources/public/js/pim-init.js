@@ -39,10 +39,10 @@ define(
                 if (!$target) {
                     $target = $('body');
                 }
-                var $container = $('.scrollable-container');
-                $target.find('.fullheight').filter(':visible').each(function () {
-                    $(this).height($container.height() - $(this).position().top + $container.position().top);
-                });
+                // var $container = $('.scrollable-container');
+                // $target.find('.fullheight').filter(':visible').each(function () {
+                //     $(this).height($container.height() - $(this).position().top + $container.position().top);
+                // });
             };
             var pageInit = function ($target) {
                 if (!$target) {

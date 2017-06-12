@@ -2,6 +2,15 @@ extensions:
     pim-family-edit-form:
         module: pim/form/common/edit-form
 
+    pim-family-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-family-edit-form
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-settings
+                - pim-menu-settings-family
+
     pim-family-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-family-edit-form

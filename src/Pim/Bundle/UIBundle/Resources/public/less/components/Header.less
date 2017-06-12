@@ -1,60 +1,69 @@
 @import '../base/variables';
 
 .AknHeader {
+  @transitionDelay: 0.1s;
+  @transitionKeyframe: ease-in;
+
   display: flex;
-  flex-direction: column;
+  height: 100%;
 
-  &-menus {
-    background: @AknPurple;
-    width: 100%;
+  &-menu {
     display: flex;
+    width: @AknMainMenuWidth;
+    flex-basis: @AknMainMenuWidth;
+    flex-direction: column;
     justify-content: space-between;
-    z-index: 900;
-    position: relative;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    height: 100%;
+    border-right: 1px solid @AknBorderColor;
   }
 
-  &-leftMenus {
+  &-menuBlock {
+  }
+
+  &-menuItem {
     display: flex;
-  }
+    height: @AknMainMenuWidth;
+    width: @AknMainMenuWidth;
+    border: 0 solid @AknLightPurple;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    padding-right: 0;
+    transition:
+      border-left-width @transitionDelay @transitionKeyframe,
+      padding-right @transitionDelay @transitionKeyframe,
+      color @transitionDelay @transitionKeyframe,
+      opacity @transitionDelay @transitionKeyframe;
 
-  &-logo {
-    margin: 0 30px 0 0;
-  }
-
-  &-logoImage {
-    height: @AknMainMenuHeight;
-    vertical-align: middle;
-  }
-
-  &-userMenu {
-    display: flex;
-    height: @AknMainMenuHeight;
-    line-height: @AknMainMenuHeight;
-  }
-
-  &-userLink {
-    color: white;
-    padding: 20px;
-
-    &:hover,
-    &:focus {
-      color: white;
+    &:hover, &--active {
+      border-left-width: 4px;
+      padding-right: 4px;
+      color: @AknLightPurple;
     }
   }
 
-  &-helpLink {
-    height: @AknMainMenuHeight;
-    width: @AknMainMenuHeight;
-    text-align: center;
-    line-height: @AknMainMenuHeight;
-    color: white;
-    font-size: @AknLittleIconFontSize;
-    display: block;
+  &-menuItemImage {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    transition: opacity @transitionDelay @transitionKeyframe;
 
-    &:hover,
-    &:focus {
-      color: white;
+    &:first-child {
+      position: absolute;
+      opacity: 1;
     }
+  }
+
+  &-menuItem:hover &-menuItemImage:first-child,
+  &-menuItem--active &-menuItemImage:first-child {
+    opacity: 0;
+  }
+
+  &-menuItem:hover &-menuItemImage:not(:first-child),
+  &-menuItem--active &-menuItemImage:not(:first-child) {
+    opacity: 1;
   }
 }
+

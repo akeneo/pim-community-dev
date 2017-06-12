@@ -4,6 +4,15 @@ extensions:
         config:
             title: pim_enrich.index.locale.title
 
+    pim-locale-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-locale-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-settings
+                - pim-menu-settings-locale
+
     pim-locale-index-grid:
         module: pim/form/common/index/grid
         parent: pim-locale-index

@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.import_history.title
 
+    pim-import-execution-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-import-execution-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-imports
+
     pim-import-execution-index-grid:
         module: pim/form/common/index/grid
         parent: pim-import-execution-index

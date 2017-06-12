@@ -12,7 +12,7 @@ define(
         'underscore',
         'pim/form',
         'pim/router',
-        'pim/template/header/logo'
+        'pim/template/menu/logo'
     ],
     function (
         _,
@@ -21,8 +21,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            tagName: 'span',
-            className: 'AknHeader-logo',
+            className: 'AknHeader-menuItem',
             template: _.template(template),
             events: {
                 'click': 'backHome'
@@ -42,6 +41,23 @@ define(
              */
             backHome: function () {
                 router.redirectToRoute('oro_default');
+            },
+
+            /**
+             * The logo is never active, so did nothing.
+             *
+             * @param {string[]} codes
+             */
+            setActive: function (codes) {
+            },
+
+            /**
+             * There is no attached breadcrumbs to menu, so did nothing.
+             *
+             * @returns {Array}
+             */
+            getBreadcrumbItems: function () {
+                return [];
             }
         });
     });

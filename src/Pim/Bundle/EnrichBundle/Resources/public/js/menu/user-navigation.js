@@ -1,7 +1,10 @@
 'use strict';
 
 /**
- * Base extension forheadermenu
+ * This extension will display the user navigation.
+ * The user navigation contains:
+ * - The link to display the user options
+ * - The notification menu
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +18,7 @@ define(
         'pim/router',
         'pim/user-context',
         'pim/notifications',
-        'pim/template/header/user'
+        'pim/template/menu/user-navigation'
     ],
     function (
         _,
@@ -27,7 +30,6 @@ define(
         template
     ) {
         return BaseForm.extend({
-            tagName: 'ul',
             className: 'AknHeader-userMenu',
             template: _.template(template),
             events: {
@@ -41,7 +43,6 @@ define(
             initialize: function (config) {
                 this.config = config.config;
 
-
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
@@ -52,6 +53,7 @@ define(
                 this.$el.html(this.template({
                     firstName: UserContext.get('firstName'),
                     lastName: UserContext.get('lastName'),
+                    avatar: UserContext.get('avatar'),
                     logoutLabel: __(this.config.logout),
                     userAccountLabel: __(this.config.userAccount)
                 }));

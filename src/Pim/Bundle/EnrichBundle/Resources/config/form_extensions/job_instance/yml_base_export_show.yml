@@ -2,6 +2,14 @@ extensions:
     pim-job-instance-yml-base-export-show:
         module: pim/form/common/edit-form
 
+    pim-job-instance-yml-base-export-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-yml-base-export-show
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-exports
+
     pim-job-instance-yml-base-export-show-tabs:
         module: pim/form/common/form-tabs
         parent: pim-job-instance-yml-base-export-show

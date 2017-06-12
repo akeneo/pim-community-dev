@@ -10,13 +10,21 @@
   @scrollbarWidth: 16px;
 
   flex-basis: @width;
+  width: @width;
   position: relative;
   overflow: hidden;
-  transition: flex-basis @timing @transition;
+  transition:
+    flex-basis @timing @transition,
+    width @timing @transition;
   order: -1;
   background: @AknLightGray;
   border-right: 1px solid @AknBorderColor;
   flex-shrink: 0;
+  height: 100%;
+
+  &:empty {
+    display: none;
+  }
 
   &-inner {
     width: @width;
@@ -49,15 +57,23 @@
   }
 
   &-block:not(:empty) {
-    padding: 36px 0 0 0;
     display: flex;
     flex-direction: column;
+
+    & + & {
+      margin: 36px 0 0 0;
+    }
   }
 
-  &-title {
+  &-title,
+  &-subtitle {
     color: @AknGrey;
     text-transform: uppercase;
     font-size: 11px;
+  }
+
+  &-title {
+    margin-bottom: 20px;
   }
 
   &-value {
@@ -66,8 +82,9 @@
   }
 
   &-navigationLink {
+    display: block;
     font-size: 14px;
-    padding: 8px 0;
+    margin: 0 0 16px 0;
     color: @AknDarkBlue;
     cursor: pointer;
     opacity: 0.85;
@@ -82,18 +99,13 @@
     }
   }
 
-  &-title + &-navigationLink {
-    margin-top: 12px;
-  }
-
   &-navigation {
     position: fixed;
-    margin-top: -10px;
-    left: -@littleWidth;
+    margin-top: 10px;
+    left: @AknMainMenuWidth + (@littleWidth - @AknDefaultButtonSize) / 2;
     opacity: 0;
-    transition:
-      opacity @timing @transition,
-      left @timing @transition;
+    transition: opacity @timing @transition;
+    z-index: 850;
   }
 
   &-collapseButton {
@@ -119,10 +131,10 @@
 
   &--collapsed {
     flex-basis: @littleWidth;
+    width: @littleWidth;
   }
 
   &--collapsed &-navigation {
-    left: 3px;
     opacity: 1;
   }
 

@@ -2607,8 +2607,16 @@ class WebUser extends RawMinkContext
     public function iCollapseTheColumn()
     {
         $this->spin(function () {
-            return $this->getCurrentPAge()->find('css', '.AknColumn-collapseButton');
-        }, 'Could not find the collapse button')->click();
+            $collapseButtons = $this->getCurrentPage()->findAll('css', '.AknColumn-collapseButton');
+
+            foreach ($collapseButtons as $collapseButton) {
+                if ($collapseButton->isVisible()) {
+                    $collapseButton->click();
+                }
+            }
+
+            return null !== $this->getCurrentPage()->find('css', '.AknColumn--collapsed');
+        }, 'Could not collapse the column');
     }
 
     /**

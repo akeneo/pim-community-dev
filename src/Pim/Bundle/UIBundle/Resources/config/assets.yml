@@ -66,7 +66,6 @@ css:
 
         - bundles/pimui/less/components/Acl.less
         - bundles/pimui/less/components/Badge.less
-        - bundles/pimui/less/components/Bell.less
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/Column.less
@@ -81,9 +80,9 @@ css:
         - bundles/pimui/less/components/List.less
         - bundles/pimui/less/components/LoadingMask.less
         - bundles/pimui/less/components/MessageBox.less
-        - bundles/pimui/less/components/MainMenu.less
         - bundles/pimui/less/components/Notification.less
         - bundles/pimui/less/components/NotificationList.less
+        - bundles/pimui/less/components/NotificationMenu.less
         - bundles/pimui/less/components/Progress.less
         - bundles/pimui/less/components/ProjectWidget.less
         - bundles/pimui/less/components/Rule.less

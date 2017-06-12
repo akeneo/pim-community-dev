@@ -1,20 +1,13 @@
 <div class="AknColumn-navigation">
-    <div class="AknSecondaryActions AknSecondaryActions AknDropdown secondary-actions">
-        <div class="AknSecondaryActions-button AknSecondaryActions-button AknSecondaryActions-button--rotated dropdown-button" data-toggle="dropdown">
-        </div>
+    <div class="AknSecondaryActions AknDropdown">
+        <div class="AknSecondaryActions-button AknSecondaryActions-button--rotated dropdown-button" data-toggle="dropdown"></div>
         <div class="AknDropdown-menu">
             <div class="AknDropdown-menuTitle"><%= title %></div>
-            <% _.each(tabs, function (tab) { %>
-            <div class="AknDropdown-menuLink<% if (currentTab === tab.code) { %> AknDropdown-menuLink--active <% } %>" data-tab="<%- tab.code %>">
-                <%- tab.label %>
-            </div>
+            <% _.each(navigationItems, function (navigationItem) { %>
+                <div class="AknDropdown-menuLink navigation-link" data-tab="<%- navigationItem.code %>">
+                    <%- navigationItem.label %>
+                </div>
             <% }); %>
         </div>
     </div>
 </div>
-<div class="AknColumn-title"><%= title %></div>
-<% _.each(tabs, function (tab) { %>
-    <div class="AknColumn-navigationLink<% if (currentTab === tab.code) { %> AknColumn-navigationLink--active <% } %> column-navigation-link" data-tab="<%- tab.code %>">
-        <%- tab.label %>
-    </div>
-<% }); %>

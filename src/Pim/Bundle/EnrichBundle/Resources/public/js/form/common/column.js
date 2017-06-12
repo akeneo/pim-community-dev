@@ -12,28 +12,36 @@ define(
         'oro/translator',
         'pim/form',
         'pim/template/form/column'
+        'pim/template/form/column-navigation'
     ],
-    function (_, __, BaseForm, template) {
+    function (
+        _,
+        __,
+        BaseForm,
+        template,
+        navigationTemplate
+    ) {
         return BaseForm.extend({
             className: 'AknColumn',
-
             template: _.template(template),
-
+            navigationTemplate: _.template(navigationTemplate),
             events: {
-                'click .AknColumn-collapseButton': 'toggleColumn'
+                'click .AknColumn-collapseButton': 'toggleColumn',
+                'click .navigation-link': 'redirect'
             },
-
-            config: {},
+            navigationItems: [],
 
             /**
-             * Configuration:
-             * - stateCode: This is a key to identify each module using column, to store if the column is collapsed
-             *   or not. If you want to use the different collapsed states, use different "stateCode" value.
+             * @param {string} meta.config.navigationTitle Title of the navigation dropdown
+             * @param {string} meta.config.stateCode       This is a key to identify each module using column, to
+             *                 store if the column is collapsed or not. If you want to use the different collapsed
+             *                 states, use different "stateCode" value.
              *
              * {@inheritdoc}
              */
             initialize: function (meta) {
                 this.config = meta.config;
+                this.navigationItems = [];
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -41,8 +49,25 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure: function () {
+                this.listenTo(this, 'pim_menu:column:register_navigation_item', this.registerNavigationItem);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
-                this.$el.html(this.template());
+                this.$el.empty().append(this.template());
+
+                if (!_.isEmpty(this.getNavigationItems())) {
+                    this.$el.find('.column-inner').prepend(this.navigationTemplate({
+                        navigationItems: this.getNavigationItems(),
+                        title: __(this.config.navigationTitle)
+                    }));
+                }
+
                 if (this.isCollapsed()) {
                     this.setCollapsed(true);
                 }
@@ -96,6 +121,43 @@ define(
              */
             getSessionStorageKey: function () {
                 return 'collapsedColumn_' + this.config.stateCode;
+            },
+
+            /**
+             * Registers a new item to display on navigation template
+             *
+             * @param {Event}    navigationItem
+             * @param {string}   navigationItem.label
+             * @param {function} navigationItem.isVisible
+             * @param {string}   navigationItem.code
+             */
+            registerNavigationItem: function (navigationItem) {
+                this.navigationItems.push(navigationItem);
+            },
+
+            /**
+             * Returns the visible navigation items
+             *
+             * @returns {Array}
+             */
+            getNavigationItems: function () {
+                return _.filter(this.navigationItems, function (navigationItem) {
+                    return !_.isFunction(navigationItem.isVisible) || navigationItem.isVisible();
+                });
+            },
+
+            /**
+             * @param {Event} event
+             */
+            redirect: function (event) {
+                this.getRoot().trigger('column-tab:select-tab', event);
+            },
+
+            /**
+             * @returns {Backbone.View}
+             */
+            getColumn: function () {
+                return this;
             }
         });
     }

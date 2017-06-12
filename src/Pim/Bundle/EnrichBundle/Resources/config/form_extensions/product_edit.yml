@@ -2,6 +2,14 @@ extensions:
     pim-product-edit-form:
         module: pim/form/common/edit-form
 
+    pim-product-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-product-edit-form
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-products
+
     pim-product-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-product-edit-form
@@ -21,12 +29,15 @@ extensions:
         targetZone: column
         config:
           stateCode: product_edit_form
+          navigationTitle: pim_enrich.entity.product.navigation
 
-    pim-product-edit-form-column-navigation:
-        module: pim/form/common/column-navigation
+    pim-product-edit-form-column-tabs-navigation:
+        module: pim/form/common/column-tabs-navigation
         parent: pim-product-edit-form-left-column
         targetZone: navigation
         position: 10
+        config:
+          title: pim_enrich.entity.product.navigation
 
     pim-product-edit-form-meta:
         module: pim/form/common/meta

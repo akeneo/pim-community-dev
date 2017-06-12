@@ -23,12 +23,11 @@ define(
         template
     ) {
         return BaseForm.extend({
-            tagName: 'li',
-            className: 'AknMainMenu-item',
             template: _.template(template),
             events: {
-                'click .menu-link': 'redirect'
+                'click .navigation-item': 'redirect'
             },
+            active: false,
 
             /**
              * {@inheritdoc}
@@ -40,22 +39,78 @@ define(
             },
 
             /**
+             * On configure, this module triggers an event to register it to tabs.
+             *
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.getRoot().trigger('pim_menu:register_item', {
+                    target: this.getColumn().getTab(),
+                    origin: this
+                });
+
+                this.getColumn().trigger('pim_menu:column:register_navigation_item', {
+                    code: this.getRoute(),
+                    label: this.getLabel()
+                });
+
+                BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    title: __(this.config.title),
-                    hasChild: 0 < _.keys(this.extensions).length
+                this.$el.empty().append(this.template({
+                    title: this.getLabel(),
+                    active: this.active
                 }));
 
-                BaseForm.prototype.render.apply(this, arguments);
+                this.delegateEvents();
+
+                return BaseForm.prototype.render.apply(this, arguments);
             },
 
             /**
              * Redirect the user to the config destination
              */
             redirect: function () {
-                router.redirectToRoute(this.config.to);
+                router.redirectToRoute(this.getRoute());
+            },
+
+            /**
+             * Returns the route of the tab.
+             *
+             * @returns {string|undefined}
+             */
+            getRoute: function () {
+                return this.config.to;
+            },
+
+            /**
+             * Returns the displayed label of the tab
+             *
+             * @returns {string}
+             */
+            getLabel: function () {
+                return __(this.config.title);
+            },
+
+            /**
+             * @returns {Backbone.View}
+             */
+            getColumn: function () {
+                return this.getParent().getColumn();
+            },
+
+            /**
+             * Activate/deactivate the item
+             *
+             * @param {Boolean} active
+             */
+            setActive: function (active) {
+                this.active = active;
+                this.render();
             }
         });
     });

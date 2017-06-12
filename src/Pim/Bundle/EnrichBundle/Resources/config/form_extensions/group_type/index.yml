@@ -4,6 +4,15 @@ extensions:
         config:
             title: pim_enrich.index.grouptype.title
 
+    pim-group-type-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-group-type-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-settings
+                - pim-menu-settings-group-type
+
     pim-group-type-index-grid:
         module: pim/form/common/index/grid
         parent: pim-group-type-index

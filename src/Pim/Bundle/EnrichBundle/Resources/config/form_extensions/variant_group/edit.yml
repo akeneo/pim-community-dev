@@ -2,6 +2,15 @@ extensions:
     pim-variant-group-edit-form:
         module: pim/form/common/edit-form
 
+    pim-variant-group-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-variant-group-edit-form
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-settings
+                - pim-menu-settings-variant-group
+
     pim-variant-group-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-variant-group-edit-form

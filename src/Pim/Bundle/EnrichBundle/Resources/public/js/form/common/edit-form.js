@@ -17,6 +17,7 @@ define(
         'oro/mediator',
         'pim/fetcher-registry',
         'pim/field-manager',
+        'pim/form-builder',
         'oro/messenger'
     ],
     function (
@@ -28,6 +29,7 @@ define(
         mediator,
         FetcherRegistry,
         FieldManager,
+        formBuilder,
         messenger
     ) {
         return BaseForm.extend({
@@ -65,6 +67,10 @@ define(
                 this.$el.html(this.template());
 
                 this.renderExtensions();
+
+                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                    form.setElement('.user-menu').render();
+                }.bind(this));
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
             },

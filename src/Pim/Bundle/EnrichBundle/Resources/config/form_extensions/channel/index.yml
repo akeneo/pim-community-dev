@@ -4,6 +4,15 @@ extensions:
         config:
             title: pim_enrich.index.channel.title
 
+    pim-channel-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-channel-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-settings
+                - pim-menu-settings-channel
+
     pim-channel-index-grid:
         module: pim/form/common/index/grid
         parent: pim-channel-index

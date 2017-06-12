@@ -574,7 +574,7 @@ class AssertionContext extends RawMinkContext
     public function iShouldHaveNewNotification($count)
     {
         $this->spin(function () use ($count) {
-            $countContainer = $this->getCurrentPage()->find('css', '.AknBell-countContainer');
+            $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
             if (!$countContainer) {
                 return false;
@@ -600,7 +600,7 @@ class AssertionContext extends RawMinkContext
     public function iOpenTheNotificationPanel()
     {
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknHeader-rightMenus .notification');
+            return $this->getCurrentPage()->find('css', '.notification');
         }, 'Cannot find the link to the notification widget');
 
         if ($notificationWidget->hasClass('open')) {
@@ -608,7 +608,7 @@ class AssertionContext extends RawMinkContext
         }
 
         $this->spin(function () use ($notificationWidget) {
-            $toggle = $notificationWidget->find('css', '.dropdown-toggle');
+            $toggle = $notificationWidget->find('css', '.notification-link');
 
             if (null !== $toggle && $toggle->isVisible()) {
                 $toggle->click();
@@ -654,7 +654,7 @@ class AssertionContext extends RawMinkContext
         $this->iOpenTheNotificationPanel();
 
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknHeader-rightMenus .notification');
+            return $this->getCurrentPage()->find('css', '.notification');
         }, 'Cannot find the link to the notification widget');
 
         $icons = [

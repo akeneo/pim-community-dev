@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/template/form/column-navigation'
+        'pim/template/form/column-tabs-navigation'
     ],
     function (
         $,
@@ -23,17 +23,23 @@ define(
     ) {
         return BaseForm.extend({
             tabs: [],
-
             template: _.template(template),
-
             currentTab: null,
-
             events: {
-                'click .column-navigation-link': 'selectTab',
-                'click .AknDropdown-menuLink': 'selectTab'
+                'click .column-navigation-link': 'selectTab'
             },
-
             currentKey: 'current_column_tab',
+
+            /**
+             * @param {string} meta.config.title Translation key of the block title
+             *
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -44,6 +50,7 @@ define(
                 this.currentTab = sessionStorage.getItem(this.currentKey);
 
                 this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab);
+                this.listenTo(this.getRoot(), 'column-tab:select-tab', this.setCurrentTab);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -57,7 +64,7 @@ define(
                     .html(this.template({
                         tabs: this.getTabs(),
                         currentTab: this.getCurrentTabOrDefault(),
-                        title: __('pim_enrich.entity.product.navigation')
+                        title: __(this.config.title)
                     }));
             },
 
@@ -67,11 +74,13 @@ define(
              * @param event
              */
             registerTab: function (event) {
-                this.tabs.push({
+                var tab = {
                     code: event.code,
                     isVisible: event.isVisible,
                     label: event.label
-                });
+                };
+                this.tabs.push(tab);
+                this.getColumn().trigger('pim_menu:column:register_navigation_item', tab);
 
                 this.render();
             },
@@ -83,9 +92,16 @@ define(
              */
             selectTab: function (event) {
                 this.getRoot().trigger('column-tab:select-tab', event);
+                this.setCurrentTab(event.currentTarget.dataset.tab);
+            },
 
-                this.currentTab = event.currentTarget.dataset.tab;
-
+            /**
+             * Set the current tab
+             *
+             * @param {string} tabCode
+             */
+            setCurrentTab: function (tabCode) {
+                this.currentTab = tabCode;
                 this.render();
             },
 
@@ -106,6 +122,13 @@ define(
                 return _.filter(this.tabs, function (tab) {
                     return !_.isFunction(tab.isVisible) || tab.isVisible();
                 });
+            },
+
+            /**
+             * @returns {Backbone.View}
+             */
+            getColumn: function () {
+                return this.getParent().getColumn();
             }
         });
     }

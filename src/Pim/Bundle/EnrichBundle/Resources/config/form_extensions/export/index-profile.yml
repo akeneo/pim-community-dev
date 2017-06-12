@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.export_profiles.title
 
+    pim-export-profile-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-export-profile-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-exports
+
     pim-export-profile-index-grid:
         module: pim/form/common/index/grid
         parent: pim-export-profile-index

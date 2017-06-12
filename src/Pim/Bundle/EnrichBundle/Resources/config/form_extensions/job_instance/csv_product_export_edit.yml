@@ -2,6 +2,14 @@ extensions:
     pim-job-instance-csv-product-export-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-csv-product-export-edit-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-product-export-edit
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-exports
+
     pim-job-instance-csv-product-export-edit-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-job-instance-csv-product-export-edit

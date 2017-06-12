@@ -19,7 +19,7 @@ define(
         'pimuser/js/init-signin',
         'pim/page-title',
         'pim/template/app',
-        'pim/template/header/flash'
+        'pim/template/common/flash'
     ], function (
         $,
         _,

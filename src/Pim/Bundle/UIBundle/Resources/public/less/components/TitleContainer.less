@@ -5,6 +5,8 @@
 
   margin-bottom: 40px;
   display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: flex-end;
 
   &-imageContainer:not(:empty) {
     width: @imageSize;
@@ -21,6 +23,7 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    max-width: 100%;
   }
 
   &-breadcrumbs:not(:empty) {
@@ -35,17 +38,47 @@
     margin: 0;
     font-weight: normal;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 
     &:first-letter {
       text-transform: uppercase;
     }
   }
 
+  &-buttonsContainer {
+    display: flex;
+    justify-content: flex-end;
+    height: @AknDefaultButtonSize;
+    flex-grow: 1;
+  }
+
   &-rightButtons {
     order: 10;
     display: flex;
     justify-content: flex-end;
-    flex-grow: 1;
+  }
+
+  &-state {
+    order: -1;
+    align-self: center;
+    margin-right: @AknDefaultButtonSize / 2;
+  }
+
+  &-userMenu {
+    display: flex;
+    border-right: 1px solid @AknBorderColor;
+    margin-right: @AknDefaultButtonSize / 2;
+    padding-right: @AknDefaultButtonSize / 2;
+  }
+
+  &-userIcon {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    border-radius: 100px;
+    cursor: pointer;
+    background-size: cover;
   }
 
   &--hidden {

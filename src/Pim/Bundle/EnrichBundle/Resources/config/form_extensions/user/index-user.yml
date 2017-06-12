@@ -4,6 +4,15 @@ extensions:
         config:
             title: pim_enrich.index.user.title
 
+    pim-user-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-index
+        targetZone: breadcrumbs
+        config:
+            path:
+                - pim-menu-system
+                - pim-menu-system-user-user
+
     pim-user-index-grid:
         module: pim/form/common/index/grid
         parent: pim-user-index
