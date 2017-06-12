@@ -286,9 +286,9 @@ services:
     pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor:
         class: '%pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
             - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
 
     # product value converters

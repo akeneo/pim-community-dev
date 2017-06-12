@@ -3,15 +3,15 @@
 namespace spec\Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\ProductPrice;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
 class PriceFactorySpec extends ObjectBehavior
 {
-    function let(CurrencyRepositoryInterface $currencyRepository)
+    function let(IdentifiableObjectRepositoryInterface $currencyRepository)
     {
         $this->beConstructedWith($currencyRepository, ProductPrice::class);
     }
