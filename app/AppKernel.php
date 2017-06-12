@@ -102,6 +102,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle(),
+            new PimEnterprise\Bundle\ApiBundle\PimEnterpriseApiBundle(),
         ];
     }
 
