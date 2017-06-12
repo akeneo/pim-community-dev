@@ -19,8 +19,6 @@ define(
         'oro/translator',
         'pim/fetcher-registry',
         'pim/initselect2',
-        'pim/template/product-create-popin',
-        'pim/template/product-create-error',
         'pim/template/form/creation/family',
         'jquery.select2'
     ],
@@ -37,6 +35,7 @@ define(
         initSelect2,
         template
     ) {
+
         return BaseForm.extend({
             template: _.template(template),
             validationErrors: {},

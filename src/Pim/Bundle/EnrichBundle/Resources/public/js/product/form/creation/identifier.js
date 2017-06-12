@@ -15,7 +15,7 @@ define(
         'pim/i18n',
         'oro/translator',
         'pim/fetcher-registry',
-        'text!pim/template/product-create-error'
+        'pim/template/product-create-error'
     ],
     function (
         _,

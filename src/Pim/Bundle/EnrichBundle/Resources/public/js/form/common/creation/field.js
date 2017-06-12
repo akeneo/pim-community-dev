@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/creation/field'
+        'pim/template/form/creation/field'
     ],
     function (
         $,
