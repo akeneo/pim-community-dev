@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/common/breadcrumbs',
+        'pim/template/common/breadcrumbs',
         'oro/mediator',
         'pim/router'
     ],

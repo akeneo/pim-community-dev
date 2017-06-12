@@ -151,8 +151,8 @@ Feature: Display the completeness of a product
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel
     Given I am on the "sneakers" product page
-    When I visit the "Completeness" column tab
     And I switch the locale to "fr_FR"
+    When I visit the "Completeness" column tab
     Then I should see the "fr_FR" completeness in position 1
     And The completeness "en_US" should be closed
     Then The label for the "tablet" channel for "fr_FR" locale should be "Tablette"
@@ -162,6 +162,7 @@ Feature: Display the completeness of a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I am on the "sneakers" product page
-    And I visit the "Completeness" column tab
+    When I visit the "Attributes" column tab
     And I switch the locale to "fr_FR"
+    And I visit the "Completeness" column tab
     Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"

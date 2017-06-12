@@ -12,7 +12,8 @@
                 {% set routeParams = routeParams|default({})|merge({ (localeParamName): locale.code }) %}
                 <a class="AknDropdown-menuLink {% if currentLocaleCode == locale.code %}AknDropdown-menuLink--active{% endif %}"
                     href="#{{ path(routeName, routeParams) }}"
-                    title="{{ locale_label(locale.code) }}">
+                    title="{{ locale_label(locale.code) }}"
+                    data-locale="{{ locale.code }}">
                         {{ locale.code|flag }}
                 </a>
             </li>

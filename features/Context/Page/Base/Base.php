@@ -33,7 +33,7 @@ class Base extends Page
         'Product title'          => ['css' => '.entity-title'],
         'HeadTitle'              => ['css' => 'title'],
         'Flash messages'         => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'         => ['css' => '.AknHeader-menus'],
+        'Navigation Bar'         => ['css' => '.AknHeader-menu'],
         'Container'              => ['css' => '#container'],
         'Locales dropdown'       => ['css' => '#locale-switcher'],
         'Tabs'                   => ['css' => '#form-navbar'],
@@ -379,7 +379,7 @@ class Base extends Page
     public function clickOnAkeneoLogo()
     {
         $this->spin(function () {
-            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logo img');
+            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logoImage');
         }, 'Cannot find Akeneo logo')->click();
     }
 

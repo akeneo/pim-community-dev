@@ -402,7 +402,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      *
      * @Then /^I hide the filter "([^"]*)"$/
-     * @Then /^I collapse the "([^"]*)" sidebar$/
      */
     public function iHideTheFilter($filterName)
     {
@@ -429,16 +428,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         if (!$ordered) {
             throw $this->createExpectationException('Filters are not ordered as expected');
         }
-    }
-
-    /**
-     * @param string $filterName
-     *
-     * @Then /^I expand the "([^"]*)" sidebar$/
-     */
-    public function iExpandTheCategoriesSidebar($filterName)
-    {
-        $this->datagrid->expandFilter($filterName);
     }
 
     /**

@@ -50,30 +50,26 @@ class ContextSwitcherDecorator extends ElementDecorator
             }
             $option->click();
 
-            return true;
-        }, 'Could not find locale switcher');
+            return $this->getSelectedLocale() === $localeCode;
+        }, sprintf('Could switch locale to "%s"', $localeCode));
     }
 
     /**
      * @param string $localeCode
      *
-     * @return bool
+     * @return string
      */
-    public function hasSelectedLocale($localeCode)
+    public function getSelectedLocale()
     {
         $dropdown = $this->spin(function () {
             return $this->find('css', $this->selectors['Locales dropdown']);
         }, 'Could not find locale switcher');
 
-        $this->spin(function () use ($dropdown, $localeCode) {
-            return $dropdown->find('css', sprintf('.AknDropdown-menuLink--active[href*="%s"]', $localeCode));
-        }, sprintf(
-            'Locale is expected to be "%s", actually is "%s".',
-            $localeCode,
-            $dropdown->find('css', sprintf('.AknDropdown-menuLink--active'))->getAttribute('title')
-        ));
+        $active = $this->spin(function () use ($dropdown) {
+            return $dropdown->find('css', '.AknDropdown-menuLink--active');
+        }, 'Cannot find active locale');
 
-        return true;
+        return $active->getAttribute('data-locale');
     }
 
     /**

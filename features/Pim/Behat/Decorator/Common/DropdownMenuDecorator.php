@@ -26,6 +26,8 @@ class DropdownMenuDecorator extends ElementDecorator
             $button = $this->find('css', '.dropdown-button');
             if (null !== $button) {
                 $button->click();
+
+                return true;
             }
 
             return false;

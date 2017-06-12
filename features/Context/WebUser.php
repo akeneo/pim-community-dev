@@ -316,7 +316,13 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleShouldBeSelected($locale)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->hasSelectedLocale($locale);
+        $this->spin(function () use ($locale) {
+            return $this->getCurrentPage()->getElement('Main context selector')->getSelectedLocale() === $locale;
+        }, sprintf(
+            'Expected to have locale "%s", found "%s"',
+            $locale,
+            $this->getCurrentPage()->getElement('Main context selector')->getSelectedLocale()
+        ));
     }
 
     /**
