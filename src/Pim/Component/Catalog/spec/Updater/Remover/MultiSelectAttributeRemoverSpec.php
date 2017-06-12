@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -16,7 +16,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         AttributeValidatorHelper $attrValidatorHelper,
-        ProductBuilderInterface $productBuilder
+        ValuesContainerBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
@@ -66,7 +66,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $round->getCode()->willReturn('round');
         $vneck->getCode()->willReturn('vneck');
 
-        $productBuilder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
+        $productBuilder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
 
         $this->removeAttributeData($product, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

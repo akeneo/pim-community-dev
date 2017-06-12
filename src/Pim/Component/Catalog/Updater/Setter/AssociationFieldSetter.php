@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -24,19 +24,19 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var \Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface */
     protected $productBuilder;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param ProductBuilderInterface               $productBuilder
+     * @param ValuesContainerBuilderInterface       $productBuilder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $productBuilder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;

@@ -4,14 +4,14 @@ namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
 
 class MultiSelectAttributeAdderSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder)
+    function let(ValuesContainerBuilderInterface $builder)
     {
         $this->beConstructedWith($builder, ['pim_catalog_multiselect']);
     }
@@ -67,11 +67,11 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $productValue->getOptionCodes()->willReturn(['optionCode', 'previousOptionCode']);
 
         $builder
-            ->addOrReplaceProductValue($product1, $attribute, $locale, $scope, ['optionCode', 'previousOptionCode'])
+            ->addOrReplaceValue($product1, $attribute, $locale, $scope, ['optionCode', 'previousOptionCode'])
             ->shouldBeCalled();
 
         $builder
-            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope, ['optionCode'])
+            ->addOrReplaceValue($product2, $attribute, $locale, $scope, ['optionCode'])
             ->shouldBeCalled();
 
         $this->addAttributeData($product1, $attribute, ['optionCode'], ['locale' => $locale, 'scope' => $scope]);

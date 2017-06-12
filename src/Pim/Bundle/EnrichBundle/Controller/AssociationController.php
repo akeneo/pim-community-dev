@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -27,7 +27,7 @@ class AssociationController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var \Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface */
     protected $productBuilder;
 
     /** @var EngineInterface */
@@ -36,13 +36,13 @@ class AssociationController
     /**
      * @param AssociationTypeRepositoryInterface $assocTypeRepository
      * @param ProductRepositoryInterface         $productRepository
-     * @param ProductBuilderInterface            $productBuilder
+     * @param ValuesContainerBuilderInterface    $productBuilder
      * @param EngineInterface                    $templating
      */
     public function __construct(
         AssociationTypeRepositoryInterface $assocTypeRepository,
         ProductRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $productBuilder,
         EngineInterface $templating
     ) {
         $this->assocTypeRepository = $assocTypeRepository;
