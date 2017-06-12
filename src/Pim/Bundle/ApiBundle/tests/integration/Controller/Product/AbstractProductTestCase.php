@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -33,56 +32,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
-     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function sanitizeDateFields(array $data)
-    {
-        if (isset($data['created'])) {
-            $data['created'] = DateSanitizer::sanitize($data['created']);
-        }
-        if (isset($data['updated'])) {
-            $data['updated'] = DateSanitizer::sanitize($data['updated']);
-        }
-
-        return $data;
-    }
-
-    /**
-     * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function sanitizeMediaAttributeData(array $data)
-    {
-        if (!isset($data['values'])) {
-            return $data;
-        }
-
-        foreach ($data['values'] as $attributeCode => $values) {
-            if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
-                foreach ($values as $index => $value) {
-                    $sanitizedData = ['data' => MediaSanitizer::sanitize($value['data'])];
-                    if (isset($value['_links']['download']['href'])) {
-                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize(
-                            $value['_links']['download']['href']
-                        );
-                    }
-
-                    $data['values'][$attributeCode][$index] = array_replace($value, $sanitizedData);
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
      * @param Response $response
      * @param string   $expected
      */
@@ -92,12 +41,10 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $expected = json_decode($expected, true);
 
         foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeDateFields($product);
-            $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
+            NormalizedProductCleaner::clean($result['_embedded']['items'][$index]);
 
             if (isset($expected['_embedded']['items'][$index])) {
-                $expected['_embedded']['items'][$index] = $this->sanitizeDateFields($expected['_embedded']['items'][$index]);
-                $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
+                NormalizedProductCleaner::clean($expected['_embedded']['items'][$index]);
             }
         }
 
