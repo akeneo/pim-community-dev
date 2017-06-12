@@ -21,4 +21,4 @@ extensions:
         config:
            iconName:  plus
            title:     pim_enrich.index.association_type.create_btn
-           url:       pim_enrich_associationtype_create
+           modalForm: pim-association-type-create-modal
