@@ -3,9 +3,11 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -17,22 +19,22 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MultiSelectAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var ValuesContainerBuilderInterface */
+    protected $valuesContainerBuilder;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param ProductBuilderInterface  $productBuilder
-     * @param string[]                 $supportedTypes
+     * @param AttributeValidatorHelper        $attrValidatorHelper
+     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
+     * @param string[]                        $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->productBuilder = $productBuilder;
+        $this->valuesContainerBuilder = $valuesContainerBuilder;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -52,30 +54,36 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
     }
 
     /**
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param string[]           $optionCodes
-     * @param string|null        $locale
-     * @param string|null        $scope
+     * @param ValuesContainerInterface $valuesContainer
+     * @param AttributeInterface       $attribute
+     * @param string[]                 $optionCodes
+     * @param string|null              $locale
+     * @param string|null              $scope
      */
     protected function removeOptions(
-        ProductInterface $product,
+        ValuesContainerInterface $valuesContainer,
         AttributeInterface $attribute,
         $optionCodes,
         $locale,
         $scope
     ) {
-        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
+        $value = $valuesContainer->getValue($attribute->getCode(), $locale, $scope);
 
-        if (null !== $productValue) {
+        if (null !== $value) {
             $newOptionCodes = [];
-            foreach ($productValue->getData() as $originalOption) {
+            foreach ($value->getData() as $originalOption) {
                 if (!in_array($originalOption->getCode(), $optionCodes)) {
                     $newOptionCodes[] = $originalOption->getCode();
                 }
             }
 
-            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
+            $this->valuesContainerBuilder->addOrReplaceValue(
+                $valuesContainer,
+                $attribute,
+                $locale,
+                $scope,
+                $newOptionCodes
+            );
         }
     }
 

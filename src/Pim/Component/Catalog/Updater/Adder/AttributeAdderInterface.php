@@ -18,15 +18,16 @@ interface AttributeAdderInterface extends AdderInterface
     /**
      * Add attribute data
      *
-     * @param ProductInterface   $product   The product to update
-     * @param AttributeInterface $attribute The attribute of the product to update
-     * @param mixed              $data      The data to add
-     * @param array              $options   Options passed to the adder
+     * @param ValuesContainerInterface $valuesContainer
+     * @param AttributeInterface       $attribute The attribute of the product to update
+     * @param mixed                    $data      The data to add
+     * @param array                    $options   Options passed to the adder
      *
-     * @throws PropertyException
+     * @return
+     * @internal param ProductInterface $product The product to update
      */
     public function addAttributeData(
-        ProductInterface $product,
+        ValuesContainerInterface $valuesContainer,
         AttributeInterface $attribute,
         $data,
         array $options = []

@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, NormalizerInterface $normalizer)
+    function let(ValuesContainerBuilderInterface $builder, NormalizerInterface $normalizer)
     {
         $this->beConstructedWith($builder, $normalizer, ['pim_catalog_price_collection']);
     }
@@ -88,13 +88,13 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
             ->normalize($price2, 'standard')
             ->willReturn(['amount' => 4.2, 'currency' => 'EUR']);
 
-        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope, [
+        $builder->addOrReplaceValue($product1, $attribute, $locale, $scope, [
             ['amount' => 42, 'currency' => 'USD'],
             ['amount' => 4.2, 'currency' => 'EUR'],
             ['amount' => 123.2, 'currency' => 'EUR'],
         ])->shouldBeCalled();
 
-        $builder->addOrReplaceProductValue($product2, $attribute, $locale, $scope, $data)->shouldBeCalled();
+        $builder->addOrReplaceValue($product2, $attribute, $locale, $scope, $data)->shouldBeCalled();
 
         $this->addattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->addattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);

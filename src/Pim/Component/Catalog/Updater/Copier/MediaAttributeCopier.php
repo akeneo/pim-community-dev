@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Copier;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -31,16 +31,16 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     protected $filesystemProvider;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param FileFetcherInterface     $fileFetcher
-     * @param FileStorerInterface      $fileStorer
-     * @param FilesystemProvider       $filesystemProvider
-     * @param array                    $supportedFromTypes
-     * @param array                    $supportedToTypes
+     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
+     * @param AttributeValidatorHelper        $attrValidatorHelper
+     * @param FileFetcherInterface            $fileFetcher
+     * @param FileStorerInterface             $fileStorer
+     * @param FilesystemProvider              $filesystemProvider
+     * @param array                           $supportedFromTypes
+     * @param array                           $supportedToTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
@@ -48,7 +48,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($valuesContainerBuilder, $attrValidatorHelper);
 
         $this->fileFetcher = $fileFetcher;
         $this->fileStorer = $fileStorer;
@@ -61,8 +61,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
      * {@inheritdoc}
      */
     public function copyAttributeData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        ValuesContainerInterface $fromValuesContainer,
+        ValuesContainerInterface $toValuesContainer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
@@ -77,8 +77,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
-            $fromProduct,
-            $toProduct,
+            $fromValuesContainer,
+            $toValuesContainer,
             $fromAttribute,
             $toAttribute,
             $fromLocale,
@@ -91,18 +91,18 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     /**
      * Copies a single media value and handle the file associated to it.
      *
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string             $fromLocale
-     * @param string             $toLocale
-     * @param string             $fromScope
-     * @param string             $toScope
+     * @param ValuesContainerInterface $fromValuesContainer
+     * @param ValuesContainerInterface $toValuesContainer
+     * @param AttributeInterface       $fromAttribute
+     * @param AttributeInterface       $toAttribute
+     * @param string                   $fromLocale
+     * @param string                   $toLocale
+     * @param string                   $fromScope
+     * @param string                   $toScope
      */
     protected function copySingleValue(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        ValuesContainerInterface $fromValuesContainer,
+        ValuesContainerInterface $toValuesContainer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -110,7 +110,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromValuesContainer->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $file = null;
             if (null !== $fromValue->getData()) {
@@ -121,8 +121,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $file->setOriginalFilename($fromValue->getData()->getOriginalFilename());
             }
 
-            $this->productBuilder->addOrReplaceProductValue(
-                $toProduct,
+            $this->valuesContainerBuilder->addOrReplaceValue(
+                $toValuesContainer,
                 $toAttribute,
                 $toLocale,
                 $toScope,

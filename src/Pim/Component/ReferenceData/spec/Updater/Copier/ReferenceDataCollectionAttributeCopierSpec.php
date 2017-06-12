@@ -5,7 +5,7 @@ namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 
 class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
+    function let(ValuesContainerBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,
@@ -86,12 +86,12 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
-            ->addOrReplaceProductValue($product1, $toAttribute, $toLocale, $toScope, ['red', 'black'])
+            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['red', 'black'])
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $builder->addOrReplaceProductValue($product2, Argument::cetera())->shouldNotBeCalled();
+        $builder->addOrReplaceValue($product2, Argument::cetera())->shouldNotBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
