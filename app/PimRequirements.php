@@ -15,7 +15,8 @@ require_once __DIR__.'/OroRequirements.php';
  */
 class PimRequirements extends OroRequirements
 {
-    const REQUIRED_MYSQL_VERSION = '5.7';
+    const LOWEST_REQUIRED_MYSQL_VERSION = '5.7.0';
+    const GREATEST_REQUIRED_MYSQL_VERSION = '5.8.0';
 
     /**
      * {@inheritdoc}
@@ -27,11 +28,17 @@ class PimRequirements extends OroRequirements
         $currentMySQLVersion = $this->getMySQLVersion();
 
         $this->addPimRequirement(
-            version_compare($currentMySQLVersion, self::REQUIRED_MYSQL_VERSION, '=='),
-            sprintf('MySQL version must be at least %s', self::REQUIRED_MYSQL_VERSION),
+            version_compare($currentMySQLVersion, self::LOWEST_REQUIRED_MYSQL_VERSION, '>=')  &&
+            version_compare($currentMySQLVersion, self::GREATEST_REQUIRED_MYSQL_VERSION, '<'),
             sprintf(
-                'Install MySQL %s or newer (installed version is %s)',
-                self::REQUIRED_MYSQL_VERSION,
+                'MySQL version must be greater or equal to %s and lower than %s',
+                self::LOWEST_REQUIRED_MYSQL_VERSION,
+                self::GREATEST_REQUIRED_MYSQL_VERSION
+            ),
+            sprintf(
+                'Install MySQL greater or equal to %s and lower than %s (installed version is %s)',
+                self::LOWEST_REQUIRED_MYSQL_VERSION,
+                self::GREATEST_REQUIRED_MYSQL_VERSION,
                 $currentMySQLVersion
             )
         );
