@@ -29,6 +29,9 @@ class ProductFilter implements ProductFilterInterface
     /** @var array */
     protected $productFields;
 
+    /** @var array[] */
+    protected $attributeTypeByCodes;
+
     /**
      * @param NormalizerInterface          $normalizer
      * @param ComparatorRegistry           $comparatorRegistry
@@ -45,6 +48,7 @@ class ProductFilter implements ProductFilterInterface
         $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
         $this->productFields = $productFields;
+        $this->attributeTypeByCodes = [];
     }
 
     /**
@@ -107,15 +111,15 @@ class ProductFilter implements ProductFilterInterface
      */
     protected function compareAttribute(array $originalValues, array $values)
     {
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($values));
+        $this->cacheAttributeTypeByCodes(array_keys($values));
 
         $result = [];
         foreach ($values as $code => $value) {
-            if (!isset($attributeTypes[$code])) {
+            if (!isset($this->attributeTypeByCodes[$code])) {
                 throw UnknownPropertyException::unknownProperty($code);
             }
 
-            $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
+            $comparator = $this->comparatorRegistry->getAttributeComparator($this->attributeTypeByCodes[$code]);
 
             foreach ($value as $data) {
                 $diff = $comparator->compare($data, $this->getOriginalAttribute($originalValues, $data, $code));
@@ -220,5 +224,16 @@ class ProductFilter implements ProductFilterInterface
     protected function buildKey(array $data, $code)
     {
         return sprintf('%s-%s-%s', $code, $data['locale'], $data['scope']);
+    }
+
+    /**
+     * @param array $codes
+     */
+    private function cacheAttributeTypeByCodes(array $codes)
+    {
+        $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
+
+        // we can have numeric keys here, we can't use array_merge :(
+        $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);
     }
 }
