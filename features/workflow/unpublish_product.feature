@@ -31,6 +31,7 @@ Feature: Unpublish a product
     And I should not be able to view the "Unpublish the product" action of the row which contains "my-tee"
     And I should be able to view the "Unpublish the product" action of the row which contains "my-jacket"
     When I click on the "Unpublish the product" action of the row which contains "my-jacket"
+    And I refresh current page
     Then the grid should contain 1 elements
     And I should not see product my-jacket
     And I should see product my-tee
