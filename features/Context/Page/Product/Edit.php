@@ -183,11 +183,11 @@ class Edit extends ProductEditForm
     {
         $productValues = $this->spin(function () {
             return $this->find('css', '.tab-pane.active.object-values');
-        }, "Spining on find for product-values tab to get attribute position");
+        }, "Spinning on find for product-values tab to get attribute position");
 
         $rows = $this->spin(function () use ($productValues) {
             return $productValues->findAll('css', '.field-container');
-        }, "Spining on findAll for rows on object-values to get attribute position");
+        }, "Spinning on findAll for rows on object-values to get attribute position");
 
         $position = $this->spin(function () use ($rows, $attribute) {
             foreach ($rows as $index => $row) {
@@ -195,7 +195,7 @@ class Edit extends ProductEditForm
                     return $index + 1;
                 }
             }
-        }, "Spining on scanning rows to get attribute position");
+        }, "Spinning on scanning rows to get attribute position");
 
         if (!$position) {
             throw new ElementNotFoundException(

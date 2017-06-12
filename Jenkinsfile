@@ -1,7 +1,7 @@
 #!groovy
 
 def editions = ["ce"]
-def phpVersion = "7.0"
+def phpVersion = "7.1"
 def features = "features"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
@@ -16,7 +16,7 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
+            choice(choices: '7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
 
         editions = userInput['editions'].tokenize(',')
@@ -104,10 +104,8 @@ if (launchUnitTests.equals("yes")) {
     stage("Unit tests and Code style") {
         def tasks = [:]
 
-        tasks["phpunit-7.0"] = {runPhpUnitTest("7.0")}
         tasks["phpunit-7.1"] = {runPhpUnitTest("7.1")}
 
-        tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
         tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
 
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
@@ -123,15 +121,6 @@ if (launchUnitTests.equals("yes")) {
 if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
-
-        tasks["phpunit-7.0-akeneo"] = {runIntegrationTest("7.0", "Akeneo_Integration_Test")}
-        tasks["phpunit-7.0-api-base"] = {runIntegrationTest("7.0", "PIM_Api_Base_Integration_Test")}
-        tasks["phpunit-7.0-api-controllers"] = {runIntegrationTest("7.0", "PIM_Api_Bundle_Controllers_Integration_Test")}
-        tasks["phpunit-7.0-api-controllers-catalog"] = {runIntegrationTest("7.0", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
-        tasks["phpunit-7.0-api-controller-product"] = {runIntegrationTest("7.0", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
-        tasks["phpunit-7.0-catalog"] = {runIntegrationTest("7.0", "PIM_Catalog_Integration_Test")}
-        tasks["phpunit-7.0-completeness"] = {runIntegrationTest("7.0", "PIM_Catalog_Completeness_Integration_Test")}
-        tasks["phpunit-7.0-pqb"] = {runIntegrationTest("7.0", "PIM_Catalog_PQB_Integration_Test")}
 
         tasks["phpunit-7.1-akeneo"] = {runIntegrationTest("7.1", "Akeneo_Integration_Test")}
         tasks["phpunit-7.1-api-base"] = {runIntegrationTest("7.1", "PIM_Api_Base_Integration_Test")}
@@ -300,7 +289,6 @@ def runBehatTest(edition, features, phpVersion) {
             }
 
             // Configure the PIM
-            sh "cp behat.ci.yml behat.yml"
             sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
             sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch: 9200'#g\" app/config/parameters_test.yml"
