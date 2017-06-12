@@ -10,7 +10,7 @@ define(
     [
         'underscore',
         'pim/form/common/meta/created',
-        'text!pim/template/product/meta/created'
+        'pim/template/product/meta/created'
     ],
     function (_, Created, template) {
         return Created.extend({

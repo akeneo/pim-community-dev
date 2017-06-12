@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'pim/form/common/form-tabs',
-        'text!pim/template/form/column-tabs'
+        'pim/template/form/column-tabs'
     ],
     function ($, _, FormTabs, template) {
         return FormTabs.extend({

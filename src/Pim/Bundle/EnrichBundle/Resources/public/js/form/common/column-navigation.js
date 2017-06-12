@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/column-navigation'
+        'pim/template/form/column-navigation'
     ],
     function (
         $,

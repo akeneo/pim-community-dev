@@ -136,7 +136,7 @@ Feature: Display the completeness of a product
     And I am on the "my_nice_sneakers" product page
     When I visit the "Completeness" column tab
     Given I am on the "my_nice_sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     And I change the family of the product to "Sneakers"
     And I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
@@ -151,7 +151,7 @@ Feature: Display the completeness of a product
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I switch the locale to "fr_FR"
     Then I should see the "fr_FR" completeness in position 1
     And The completeness "en_US" should be closed
@@ -162,6 +162,6 @@ Feature: Display the completeness of a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I am on the "sneakers" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     And I switch the locale to "fr_FR"
     Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"

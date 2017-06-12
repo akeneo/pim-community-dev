@@ -747,9 +747,9 @@ config:
         pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
         pim/common/properties/general:     pimenrich/js/form/common/properties/general
-        pim/common/add-select:             pimenrich/js/form/common/add-select/select
         pim/common/add-select/line:        pimenrich/js/form/common/add-select/line
         pim/common/add-select/footer:      pimenrich/js/form/common/add-select/footer
+        pim/common/add-select :             pimenrich/js/form/common/add-select/select
         pim/create/properties/general:     pimenrich/js/create/form/properties/general
 
         # Root
@@ -838,10 +838,10 @@ config:
         pim/template/form/properties/input:                       pimenrich/templates/form/properties/input.html
         pim/template/form/form-tabs:                              pimenrich/templates/form/form-tabs.html
         pim/template/form/state:                                  pimenrich/templates/form/state.html
-        pim/template/form/meta:                                   pimenrich/templates/form/meta.html
         pim/template/form/meta/created:                           pimenrich/templates/form/meta/created.html
         pim/template/form/meta/updated:                           pimenrich/templates/form/meta/updated.html
         pim/template/form/meta/status:                            pimenrich/templates/form/meta/status.html
+        pim/template/form/meta:                                   pimenrich/templates/form/meta.html
         pim/template/form/tab/attributes:                         pimenrich/templates/form/tab/attributes.html
         pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
         pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html

@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/meta'
+        'pim/template/form/meta'
     ],
     function (_, __, BaseForm, template) {
         return BaseForm.extend({

@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/secondary-actions'
+        'pim/template/form/secondary-actions'
     ],
     function (
         _,
