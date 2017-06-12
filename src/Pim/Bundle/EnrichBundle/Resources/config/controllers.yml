@@ -7,7 +7,6 @@ parameters:
     pim_enrich.controller.product.mass_edit_action.class:     Pim\Bundle\EnrichBundle\Controller\MassEdit\ProductController
     pim_enrich.controller.family.mass_edit_action.class:      Pim\Bundle\EnrichBundle\Controller\MassEdit\FamilyController
     pim_enrich.controller.association.class:                  Pim\Bundle\EnrichBundle\Controller\AssociationController
-    pim_enrich.controller.group.class:                        Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.variant_group.class:                Pim\Bundle\EnrichBundle\Controller\VariantGroupController
@@ -144,18 +143,6 @@ services:
             - '@pim_enrich.mass_edit_action.form_resolver'
             - '@pim_enrich.mass_edit_action.operation.registry'
             - '@pim_enrich.mass_edit_action.operation_job_launcher'
-
-    pim_enrich.controller.group:
-        scope: request
-        class: '%pim_enrich.controller.group.class%'
-        arguments:
-            - '@request'
-            - '@templating'
-            - '@router'
-            - '@pim_catalog.repository.group_type'
-            - '@pim_enrich.form.handler.group'
-            - '@pim_enrich.form.group'
-            - '@pim_catalog.factory.group'
 
     pim_enrich.controller.association_type:
         scope: request
@@ -320,6 +307,7 @@ services:
             - '@pim_enrich.normalizer.group_violation'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.remover.group'
+            - '@pim_catalog.factory.group'
 
     pim_enrich.controller.rest.locale:
         class: '%pim_enrich.controller.rest.locale.class%'

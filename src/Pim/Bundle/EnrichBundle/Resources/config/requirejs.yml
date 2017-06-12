@@ -783,6 +783,7 @@ config:
         pim/form/common/creation/field:                      pimenrich/js/form/common/creation/field
         pim/form/common/creation/family:                     pimenrich/js/form/common/creation/family
         pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
+        pim/form/common/creation/type:                      pimenrich/js/form/common/creation/type
 
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
@@ -858,6 +859,7 @@ config:
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
         pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
         pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
+        pim/template/form/creation/type:                          pimenrich/templates/form/creation/type.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html

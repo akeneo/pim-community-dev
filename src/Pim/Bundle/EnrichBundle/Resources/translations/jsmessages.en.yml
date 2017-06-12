@@ -362,6 +362,10 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+            create_popin:
+                title: Create a new group type
+            message:
+                created: Group type successfully created
         job_instance:
             title: job profile
             info:
