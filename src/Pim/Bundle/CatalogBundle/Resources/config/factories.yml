@@ -86,7 +86,7 @@ services:
     pim_catalog.factory.price:
         class: '%pim_catalog.factory.price.class%'
         arguments:
-            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.cached_currency'
             - '%pim_catalog.entity.product_price.class%'
 
     pim_catalog.factory.group:
