@@ -24,8 +24,8 @@ class AttributeGroupNormalizer implements NormalizerInterface
     protected $attributeRepository;
 
     /**
-     * @param NormalizerInterface   $categoryNormalizer
-     * @param EntityRepository      $entityRepository
+     * @param NormalizerInterface $normalizer
+     * @param EntityRepository    $attributeRepository
      */
     public function __construct(NormalizerInterface $normalizer, EntityRepository $attributeRepository)
     {
