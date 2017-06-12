@@ -27,7 +27,7 @@ class PimRequirements extends OroRequirements
         $currentMySQLVersion = $this->getMySQLVersion();
 
         $this->addPimRequirement(
-            version_compare($currentMySQLVersion, self::REQUIRED_MYSQL_VERSION, '>='),
+            version_compare($currentMySQLVersion, self::REQUIRED_MYSQL_VERSION, '=='),
             sprintf('MySQL version must be at least %s', self::REQUIRED_MYSQL_VERSION),
             sprintf(
                 'Install MySQL %s or newer (installed version is %s)',
@@ -135,7 +135,15 @@ class PimRequirements extends OroRequirements
      */
     protected function getMySQLVersion()
     {
-        $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters.yml'));
+        $file = file_get_contents(__DIR__.'/config/parameters.yml');
+
+        if (false === $file) {
+            throw new RuntimeException(
+                'The file config/parameters.yml does not exist, please create it'
+            );
+        }
+
+        $parameters = Yaml::parse($file);
 
         try {
             if (null === $parameters) {
