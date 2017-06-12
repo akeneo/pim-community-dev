@@ -44,7 +44,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $template->getValues()->willReturn($originalValues);
         $product->setValues($originalValues)->shouldBeCalled();
 
-        $productBuilder->addAttributeToProduct($product, $name)->shouldBeCalled();
+        $productBuilder->addAttribute($product, $name)->shouldBeCalled();
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
         $product->getValues()->willReturn($newValues);

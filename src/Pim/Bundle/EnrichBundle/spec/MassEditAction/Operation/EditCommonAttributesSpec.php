@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $productBuilder,
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,

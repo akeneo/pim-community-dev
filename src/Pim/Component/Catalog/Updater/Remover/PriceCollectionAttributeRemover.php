@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -22,19 +22,19 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var ProductBuilderInterface */
+    /** @var ValuesContainerBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param AttributeValidatorHelper    $attrValidatorHelper
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param ProductBuilderInterface     $productBuilder
-     * @param string[]                    $supportedTypes
+     * @param AttributeValidatorHelper        $attrValidatorHelper
+     * @param CurrencyRepositoryInterface     $currencyRepository
+     * @param ValuesContainerBuilderInterface $productBuilder
+     * @param string[]                        $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $productBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);

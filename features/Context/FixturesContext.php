@@ -27,7 +27,7 @@ use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -320,7 +320,7 @@ class FixturesContext extends BaseFixturesContext
         $product = $this->getProduct($sku);
 
         foreach ($this->listToArray($attributeCodes) as $code) {
-            $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
+            $this->getProductBuilder()->addAttribute($product, $this->getAttribute($code));
         }
         $this->validate($product);
         $this->getProductSaver()->save($product);
@@ -1979,7 +1979,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductBuilderInterface
+     * @return ValuesContainerBuilderInterface
      */
     protected function getProductBuilder()
     {

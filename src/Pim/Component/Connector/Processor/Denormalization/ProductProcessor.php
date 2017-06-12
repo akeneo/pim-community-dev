@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var ProductBuilderInterface */
+    /** @var ValuesContainerBuilderInterface */
     protected $builder;
 
     /** @var ObjectUpdaterInterface */
@@ -44,16 +44,16 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected $productFilter;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository         product repository
-     * @param ProductBuilderInterface               $builder            product builder
-     * @param ObjectUpdaterInterface                $updater            product updater
-     * @param ValidatorInterface                    $validator          product validator
-     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
-     * @param ProductFilterInterface                $productFilter      product filter
+     * @param IdentifiableObjectRepositoryInterface $repository    product repository
+     * @param ValuesContainerBuilderInterface       $builder       product builder
+     * @param ObjectUpdaterInterface                $updater       product updater
+     * @param ValidatorInterface                    $validator     product validator
+     * @param ObjectDetacherInterface               $detacher      detacher to remove it from UOW when skip
+     * @param ProductFilterInterface                $productFilter product filter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ProductBuilderInterface $builder,
+        ValuesContainerBuilderInterface $builder,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,

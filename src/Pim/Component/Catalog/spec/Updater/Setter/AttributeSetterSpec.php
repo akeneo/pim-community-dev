@@ -3,13 +3,13 @@
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 class AttributeSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder)
+    function let(ValuesContainerBuilderInterface $builder)
     {
         $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea']);
     }
@@ -43,7 +43,7 @@ class AttributeSetterSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = 'data';
 
-        $builder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $data);
+        $builder->addOrReplaceValue($product, $attribute, $locale, $scope, $data);
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
