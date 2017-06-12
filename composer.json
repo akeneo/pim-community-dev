@@ -63,10 +63,8 @@
         "box/spout": "2.5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.4.*",
-        "squizlabs/php_codesniffer": "2.*",
-        "pdepend/pdepend": "2.1.*",
-        "phpmd/phpmd": "1.*",
+        "akeneo/phpspec-skip-example-extension": "2.0.*",
+        "akeneo/php-coupling-detector": "0.2.0",
         "behat/behat": "2.5.5",
         "behat/gherkin":"2.3.5",
         "behat/mink":"1.7.1",
@@ -76,10 +74,12 @@
         "behat/symfony2-extension": "1.1.2",
         "behat/transliterator":"1.0.1",
         "kriswallsmith/buzz": "^0.15",
-        "sensiolabs/behat-page-object-extension": "1.0.1",
+        "pdepend/pdepend": "2.1.*",
+        "phpmd/phpmd": "1.*",
         "phpspec/phpspec": "3.0.*",
-        "akeneo/phpspec-skip-example-extension": "2.0.*",
-        "akeneo/php-coupling-detector": "0.2.0"
+        "phpunit/phpunit": "5.4.*",
+        "sensiolabs/behat-page-object-extension": "1.0.1",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
