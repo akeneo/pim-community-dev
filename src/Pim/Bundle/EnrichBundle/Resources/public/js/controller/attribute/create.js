@@ -22,7 +22,11 @@ function (_, BaseController, FormBuilder) {
 
             var type = this.getQueryParam(location.href, 'attribute_type');
 
-            return FormBuilder.buildForm('pim-attribute-create-form')
+            var formName = 'pim_catalog_identifier' === type ?
+                'pim-attribute-identifier-create-form' :
+                'pim-attribute-create-form';
+
+            return FormBuilder.buildForm(formName)
                 .then(function (form) {
                     form.setType(type);
 

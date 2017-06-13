@@ -46,7 +46,11 @@ function (
 
                     PageTitle.set({'attribute.label': label});
 
-                    return FormBuilder.buildForm('pim-attribute-edit-form')
+                    var formName = 'pim_catalog_identifier' === attribute.type ?
+                        'pim-attribute-identifier-edit-form' :
+                        'pim-attribute-edit-form';
+
+                    return FormBuilder.buildForm(formName)
                         .then(function (form) {
                             form.setType(attribute.type);
 

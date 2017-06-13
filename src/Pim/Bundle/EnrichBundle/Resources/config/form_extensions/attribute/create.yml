@@ -92,7 +92,7 @@ extensions:
         module: pim/attribute-edit-form/properties/text
         parent: pim-attribute-create-form-properties-common
         targetZone: content
-        position: 100
+        position: 90
         config:
             fieldName: code
             required: true
@@ -101,7 +101,7 @@ extensions:
         module: pim/attribute-edit-form/properties/type
         parent: pim-attribute-create-form-properties-common
         targetZone: content
-        position: 110
+        position: 100
         config:
             fieldName: type
             readOnly: true
@@ -110,7 +110,7 @@ extensions:
         module: pim/attribute-edit-form/properties/group
         parent: pim-attribute-create-form-properties-common
         targetZone: content
-        position: 120
+        position: 110
         config:
             fieldName: group
             required: true
@@ -156,7 +156,7 @@ extensions:
         config:
             fieldName: available_locales
 
-    pim-attribute-create-form-properties-common-usable_as_grid_filter:
+    pim-attribute-create-form-properties-common-usable-as-grid-filter:
         module: pim/attribute-edit-form/properties/boolean
         parent: pim-attribute-create-form-properties-common
         targetZone: content

@@ -176,7 +176,7 @@ extensions:
         config:
             fieldName: available_locales
 
-    pim-attribute-edit-form-properties-common-usable_as_grid_filter:
+    pim-attribute-edit-form-properties-common-usable-as-grid-filter:
         module: pim/attribute-edit-form/properties/boolean
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
