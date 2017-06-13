@@ -49,6 +49,9 @@ function (
             BaseForm.prototype.initialize.apply(this, arguments);
         },
 
+        /**
+         * {@inheritdoc}
+         */
         configure: function () {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
 
@@ -95,7 +98,8 @@ function (
                     requiredLabel: __('pim_enrich.form.required'),
                     fieldName: this.fieldName,
                     errors: this.errors,
-                    readOnly: this.config.readOnly || false
+                    readOnly: this.isReadOnly(),
+                    required: this.config.required || false
                 })
                 .promise();
         },
@@ -119,6 +123,15 @@ function (
          */
         isVisible: function () {
             return true;
+        },
+
+        /**
+         * Should the field be in readonly mode?
+         *
+         * @returns {Boolean}
+         */
+        isReadOnly: function () {
+            return this.config.readOnly || false;
         },
 
         /**

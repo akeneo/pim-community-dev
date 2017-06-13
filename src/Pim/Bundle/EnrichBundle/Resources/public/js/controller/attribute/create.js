@@ -46,6 +46,14 @@ function (_, BaseController, FormBuilder) {
                 }.bind(this));
         },
 
+        /**
+         * Extracts the value of a given parameter from the query string.
+         *
+         * @param {String} url
+         * @param {String} paramName
+         *
+         * @return  {String}
+         */
         getQueryParam: function (url, paramName) {
             var params = url.substr(url.lastIndexOf('?') + 1);
             if (!params) {

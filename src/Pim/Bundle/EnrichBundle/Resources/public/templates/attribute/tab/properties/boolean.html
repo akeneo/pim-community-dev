@@ -4,5 +4,6 @@
         type="checkbox"
         name="<%- fieldName %>"
         <% if (value) { %> checked<% } %>
+        <% if (readOnly) { %>readonly disabled<% } %>
     >
 </div>

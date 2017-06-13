@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: metric_family
+            required: true
 
     pim-attribute-form-metric-create-type-specific-params-default-metric-unit:
         module: pim/attribute-edit-form/properties/default-metric-unit
@@ -30,6 +31,7 @@ extensions:
         position: 110
         config:
             fieldName: default_metric_unit
+            required: true
 
     pim-attribute-form-metric-create-validation-params:
         module: pim/common/simple-view

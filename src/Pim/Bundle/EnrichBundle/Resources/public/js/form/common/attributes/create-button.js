@@ -75,7 +75,7 @@ define(
                         modal.open();
                         modal.$el.find('.modal-footer').remove();
 
-                        modal.$el.on('click', 'span.attribute-choice', function () {
+                        modal.$el.on('click', '.attribute-choice', function () {
                             modal.close();
                             modal.$el.remove();
                             router.redirect($(this).attr('data-route'), {trigger: true});

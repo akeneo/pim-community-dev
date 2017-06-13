@@ -95,6 +95,7 @@ extensions:
         position: 100
         config:
             fieldName: code
+            required: true
 
     pim-attribute-create-form-properties-common-type:
         module: pim/attribute-edit-form/properties/type
@@ -112,9 +113,19 @@ extensions:
         position: 120
         config:
             fieldName: group
+            required: true
+
+    pim-attribute-create-form-properties-common-unique:
+        module: pim/attribute-edit-form/properties/unique
+        parent: pim-attribute-create-form-properties-common
+        targetZone: content
+        position: 120
+        config:
+            fieldName: unique
+            activeForTypes: [pim_catalog_number, pim_catalog_text]
 
     pim-attribute-create-form-properties-common-scopable:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/attribute-edit-form/properties/scopable
         parent: pim-attribute-create-form-properties-common
         targetZone: content
         position: 130
@@ -122,7 +133,7 @@ extensions:
             fieldName: scopable
 
     pim-attribute-create-form-properties-common-localizable:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/attribute-edit-form/properties/localizable
         parent: pim-attribute-create-form-properties-common
         targetZone: content
         position: 140
@@ -177,7 +188,7 @@ extensions:
         config:
             template: pim/template/common/form-container
 
-    pim-group-type-create-form-labels-translation:
+    pim-attribute-create-form-labels-translation:
         module: pim/common/properties/translation
         parent: pim-attribute-create-form-labels-container
         targetZone: form-container

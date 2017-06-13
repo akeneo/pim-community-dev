@@ -109,15 +109,17 @@ extensions:
         module: pim/attribute-edit-form/properties/text
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 100
+        position: 90
         config:
             fieldName: code
+            required: true
+            readOnly: true
 
     pim-attribute-edit-form-properties-common-type:
         module: pim/attribute-edit-form/properties/type
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 110
+        position: 100
         config:
             fieldName: type
             readOnly: true
@@ -126,25 +128,37 @@ extensions:
         module: pim/attribute-edit-form/properties/group
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
-        position: 120
+        position: 110
         config:
             fieldName: group
+            required: true
+
+    pim-attribute-edit-form-properties-common-unique:
+        module: pim/attribute-edit-form/properties/unique
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 120
+        config:
+            fieldName: unique
+            readOnly: true
 
     pim-attribute-edit-form-properties-common-scopable:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/attribute-edit-form/properties/scopable
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
         position: 130
         config:
             fieldName: scopable
+            readOnly: true
 
     pim-attribute-edit-form-properties-common-localizable:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/attribute-edit-form/properties/localizable
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
         position: 140
         config:
             fieldName: localizable
+            readOnly: true
 
     pim-attribute-edit-form-properties-common-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
@@ -218,7 +232,7 @@ extensions:
         config:
             template: pim/template/common/form-container
 
-    pim-group-type-edit-form-labels-translation:
+    pim-attribute-edit-edit-form-labels-translation:
         module: pim/common/properties/translation
         parent: pim-attribute-edit-form-labels-container
         targetZone: form-container
