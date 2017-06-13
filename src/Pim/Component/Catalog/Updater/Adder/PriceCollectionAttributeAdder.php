@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

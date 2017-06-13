@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\Association;
@@ -36,6 +37,7 @@ class ProductBuilderSpec extends ObjectBehavior
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         ProductValueFactory $productValueFactory
     ) {
         $entityConfig = [
@@ -51,6 +53,7 @@ class ProductBuilderSpec extends ObjectBehavior
             $eventDispatcher,
             $valuesResolver,
             $productValueFactory,
+            $valuesContainerBuilder,
             $entityConfig
         );
     }
