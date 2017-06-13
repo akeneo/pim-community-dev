@@ -18,8 +18,7 @@ define(
         'oro/translator',
         'pim/fetcher-registry',
         'pim/initselect2',
-        'pim/template/form/creation/type',
-        'jquery.select2'
+        'pim/template/form/creation/type'
     ],
     function (
         $,
@@ -46,7 +45,7 @@ define(
              *
              * @return {Promise}
              */
-            configure: function () {
+            configure() {
                 return $.when(
                     FetcherRegistry.initialize(),
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -56,8 +55,60 @@ define(
             /**
              * Model update callback
              */
-            updateModel: function (event) {
+            updateModel(event) {
                 this.getFormModel().set('type', event.target.value);
+            },
+
+
+            /**
+             * Parses each group type for the select display
+             *
+             * @param  {Array} types The search results
+             * @return {Object}
+             */
+            parseResults(types) {
+                const resultLength = Object.keys(types).length;
+                const locale = UserContext.get('catalogLocale');
+
+                const data = {
+                    more: 20 === resultLength,
+                    results: []
+                };
+
+                types.forEach(value => {
+                    const { code, labels } = value
+                    data.results.push({
+                        id: code,
+                        text: i18n.getLabel(labels, locale, code)
+                    });
+                })
+
+                return data;
+            },
+
+
+            /**
+             * Uses the fetcher registry to get a list of group types to use in the select2
+             *
+             * @param  {Object} formData An object containing group code and type
+             * @param  {jQueryElement} element  The select2 element
+             * @param  {Function} callback
+             */
+            fetchGroupTypes(formData, element, callback) {
+                if (!formData.type) return;
+
+                FetcherRegistry.getFetcher('grouptype')
+                .fetch(formData.type)
+                .then(type => {
+                    callback({
+                        id: type.code,
+                        text: i18n.getLabel(
+                            type.labels,
+                            UserContext.get('catalogLocale'),
+                            type.code
+                        )
+                    });
+                });
             },
 
             /**
@@ -65,68 +116,35 @@ define(
              *
              * @return {Promise}
              */
-            render: function () {
+            render() {
                 if (!this.configured) return this;
 
                 const formData = this.getFormData();
+                const locale = UserContext.get('catalogLocale')
 
                 this.$el.html(this.template({
                     label: __('pim_enrich.form.group.tab.properties.type'),
                     type: formData.type,
-                    __: __
+                    required: __('pim_enrich.form.required')
                 }));
 
                 this.delegateEvents();
 
                 var options = {
+                    initSelection: this.fetchGroupTypes.bind(this, formData),
                     allowClear: true,
                     ajax: {
                         url: Routing.generate('pim_enrich_grouptype_rest_index'),
+                        results: this.parseResults,
                         quietMillis: 250,
                         cache: true,
-                        data: function (term, page) {
+                        data(search, page) {
                             return {
-                                search: term,
-                                options: {
-                                    limit: 20,
-                                    page: page,
-                                    locale: UserContext.get('catalogLocale')
-                                }
+                                search,
+                                options: { limit: 20, page, locale }
                             };
-                        },
-                        results: function (types) {
-                            var data = {
-                                more: 20 === Object.keys(types).length,
-                                results: []
-                            };
-                            _.each(types, function (value) {
-                                const { code, labels } = value
-
-                                data.results.push({
-                                    id: code,
-                                    text: i18n.getLabel(labels, UserContext.get('catalogLocale'), code)
-                                });
-                            });
-
-                            return data;
                         }
-                    },
-                    initSelection: function (element, callback) {
-                        if (formData.type) {
-                            FetcherRegistry.getFetcher('grouptype')
-                                .fetch(formData.type)
-                                .then(function (type) {
-                                    callback({
-                                        id: type.code,
-                                        text: i18n.getLabel(
-                                            type.labels,
-                                            UserContext.get('catalogLocale'),
-                                            type.code
-                                        )
-                                    });
-                                });
-                        }
-                    }.bind(this)
+                    }
                 };
 
                 initSelect2.init(this.$('[data-code="type"] input'), options);
