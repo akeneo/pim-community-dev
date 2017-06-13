@@ -40,6 +40,10 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $result = json_decode($response->getContent(), true);
         $expected = json_decode($expected, true);
 
+        if (!isset($result['_embedded'])) {
+            \PHPUnit_Framework_Assert::fail($response->getContent());
+        }
+
         foreach ($result['_embedded']['items'] as $index => $product) {
             NormalizedProductCleaner::clean($result['_embedded']['items'][$index]);
 
