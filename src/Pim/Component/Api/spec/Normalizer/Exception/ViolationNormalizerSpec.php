@@ -39,7 +39,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        ValueCollectionInterface $productValues,
+        ValueCollectionInterface $values,
         ProductValueInterface $identifier,
         AttributeInterface $attribute,
         Constraint $constraint
@@ -47,8 +47,8 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('identifier');
         $identifier->getAttribute()->willReturn($attribute);
-        $product->getValues()->willReturn($productValues);
-        $productValues->getByKey('sku')->willReturn($identifier);
+        $product->getValues()->willReturn($values);
+        $values->getByKey('sku')->willReturn($identifier);
 
         $violation->getRoot()->willReturn($product);
         $violation->getMessage()->willReturn('Not Blank');
