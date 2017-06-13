@@ -24,5 +24,6 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.product_value'
+            - '@pim_catalog.builder.values_container'
             - {'product': '%pimee_workflow.entity.published_product.class%', 'association': '%pimee_workflow.entity.published_product_association.class%'}
 
