@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -50,16 +51,16 @@ class ProductUpdaterSpec extends ObjectBehavior
         );
     }
 
-    function it_updates_a_product($propertySetter, ProductInterface $product)
+    function it_updates_a_product($propertySetter, $valuesUpdater, ProductInterface $product)
     {
         $propertySetter
             ->setData($product, 'groups', ['related1', 'related2'])
             ->shouldBeCalled();
-        $propertySetter
-            ->setData($product, 'name', 'newname', ['locale' => null, 'scope' => null])
+        $valuesUpdater
+            ->update($product, 'name', 'newname', ['locale' => null, 'scope' => null])
             ->shouldBeCalled();
-        $propertySetter
-            ->setData($product, 'desc', 'newdescUS', ['locale' => 'en_US', 'scope' => null])
+        $valuesUpdater
+            ->update($product, 'desc', 'newdescUS', ['locale' => 'en_US', 'scope' => null])
             ->shouldBeCalled();
 
         $updates = [

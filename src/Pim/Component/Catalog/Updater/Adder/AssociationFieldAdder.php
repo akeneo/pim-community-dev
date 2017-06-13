@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Adder;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -24,19 +24,19 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param ValuesContainerBuilderInterface       $productBuilder
+     * @param ProductBuilderInterface               $productBuilder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ValuesContainerBuilderInterface $productBuilder,
+        ProductBuilderInterface $productBuilder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
