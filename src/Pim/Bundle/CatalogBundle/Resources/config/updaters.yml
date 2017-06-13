@@ -241,7 +241,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.group'
-            - '@pim_catalog.builder.values_container'
+            - '@pim_catalog.builder.product'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -481,7 +481,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.group'
-            - '@pim_catalog.builder.values_container'
+            - '@pim_catalog.builder.product'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.adder' }
