@@ -241,7 +241,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.group'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.values_container'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -324,7 +324,7 @@ services:
         class: '%pim_catalog.updater.copier.abstract.class%'
         public: false
         arguments:
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.values_container'
             - '@pim_catalog.validator.helper.attribute'
 
     pim_catalog.updater.copier.registry:
@@ -471,7 +471,7 @@ services:
     pim_catalog.updater.adder.multiselect_value:
         class: '%pim_catalog.updater.adder.multiselect_value.class%'
         arguments:
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.values_container'
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -481,7 +481,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.group'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.values_container'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -489,7 +489,7 @@ services:
     pim_catalog.updater.adder.price_collection_value:
         class: '%pim_catalog.updater.adder.price_collection_value.class%'
         arguments:
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.values_container'
             - '@pim_serializer'
             - ['pim_catalog_price_collection']
         tags:
@@ -514,7 +514,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_catalog.repository.currency'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.values_container'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.remover' }
