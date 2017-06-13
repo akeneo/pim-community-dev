@@ -663,6 +663,6 @@ class ProductEditForm extends Form
                 $field,
                 $field
             ));
-        }, sprintf('Spining to get remove link on product edit form for field "%s"', $field));
+        }, sprintf('Spinning to get remove link on product edit form for field "%s"', $field));
     }
 }

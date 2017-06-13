@@ -6,12 +6,16 @@ const { resolve } = require('path')
 const { values } = require('lodash')
 const { getModulePaths } = require('./frontend/requirejs-utils')
 const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
+const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
-console.log('Starting webpack from', rootDir)
+const babelPresets = ['es2017']
+if (isProd) babelPresets.push('babili')
+
+console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
 
 module.exports = {
     target: 'web',
@@ -136,7 +140,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['es2017'],
+                        presets: babelPresets,
                         // Cache speeds up the incremental builds
                         cacheDirectory: 'web/cache'
                     }

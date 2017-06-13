@@ -351,7 +351,31 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             parent::assertNumElements($num, $element);
 
             return true;
-        }, sprintf('Spining for asserting "%d" num elements', $num));
+        }, sprintf('Spinning for asserting "%d" num elements', $num));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assertCheckboxChecked($checkbox)
+    {
+        $this->spin(function () use ($checkbox) {
+            parent::assertCheckboxChecked($checkbox);
+
+            return true;
+        }, sprintf('Spinning for asserting checkbox "%d" is checked', $checkbox));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assertCheckboxNotChecked($checkbox)
+    {
+        $this->spin(function () use ($checkbox) {
+            parent::assertCheckboxNotChecked($checkbox);
+
+            return true;
+        }, sprintf('Spinning for asserting checkbox "%d" is not checked', $checkbox));
     }
 
     /**

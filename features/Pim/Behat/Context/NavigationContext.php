@@ -452,7 +452,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
             return true;
-        }, 'Spining to assert address');
+        }, 'Spinning to assert address');
     }
 
     /**
