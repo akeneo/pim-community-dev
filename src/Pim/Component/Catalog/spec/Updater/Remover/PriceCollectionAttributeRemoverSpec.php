@@ -19,13 +19,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         CurrencyRepositoryInterface $currencyRepository,
-        ValuesContainerBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
             $currencyRepository,
-            $productBuilder,
+            $valuesContainerBuilder,
             ['pim_catalog_price_collection']
         );
     }
@@ -48,7 +48,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 
     function it_removes_an_attribute_data_price_collection_value_to_a_product_value(
         $currencyRepository,
-        $productBuilder,
+        $valuesContainerBuilder,
         AttributeInterface $attribute,
         ProductInterface $penProduct,
         ProductInterface $bookProduct,
@@ -82,11 +82,11 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $priceUSD->getData()->willReturn(42);
         $priceUSD->getCurrency()->willReturn('USD');
 
-        $productBuilder
-            ->addOrReplaceProductValue($penProduct, $attribute, $locale, $scope, [])
+        $valuesContainerBuilder
+            ->addOrReplaceValue($penProduct, $attribute, $locale, $scope, [])
             ->shouldBeCalled();
 
-        $productBuilder->addOrReplaceProductValue($bookProduct, Argument::cetera())->shouldNotBeCalled();
+        $valuesContainerBuilder->addOrReplaceValue($bookProduct, Argument::cetera())->shouldNotBeCalled();
 
         $this->removeAttributeData($penProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->removeAttributeData($bookProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);

@@ -9,7 +9,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -34,7 +34,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ValuesContainerBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var ObjectDetacherInterface */
@@ -47,18 +47,18 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected $mediaFetcher;
 
     /**
-     * @param NormalizerInterface             $normalizer
-     * @param ChannelRepositoryInterface      $channelRepository
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ValuesContainerBuilderInterface $productBuilder
-     * @param ObjectDetacherInterface         $detacher
-     * @param BulkMediaFetcher                $mediaFetcher
+     * @param NormalizerInterface          $normalizer
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductBuilderInterface      $productBuilder
+     * @param ObjectDetacherInterface      $detacher
+     * @param BulkMediaFetcher             $mediaFetcher
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ValuesContainerBuilderInterface $productBuilder,
+        ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher
     ) {
