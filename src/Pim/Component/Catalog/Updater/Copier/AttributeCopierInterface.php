@@ -19,9 +19,9 @@ interface AttributeCopierInterface extends CopierInterface
      *
      * @param ValuesContainerInterface $fromValuesContainer
      * @param ValuesContainerInterface $toValuesContainer
-     * @param AttributeInterface                        $fromAttribute
-     * @param AttributeInterface                        $toAttribute
-     * @param array                                     $options
+     * @param AttributeInterface       $fromAttribute
+     * @param AttributeInterface       $toAttribute
+     * @param array                    $options
      *
      * @return
      */

@@ -28,10 +28,10 @@ class AssociationFieldAdder extends AbstractFieldAdder
     protected $productBuilder;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface                          $productRepository
-     * @param IdentifiableObjectRepositoryInterface                          $groupRepository
-     * @param \Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface $productBuilder
-     * @param array                                                          $supportedFields
+     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param ValuesContainerBuilderInterface       $productBuilder
+     * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
