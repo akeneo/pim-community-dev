@@ -9,9 +9,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
-use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -66,7 +65,7 @@ class ProductController
     /** @var RemoverInterface */
     protected $productRemover;
 
-    /** @var ValuesContainerBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var AttributeConverterInterface */
@@ -79,20 +78,20 @@ class ProductController
     protected $productValueConverter;
 
     /**
-     * @param ProductRepositoryInterface      $productRepository
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ObjectUpdaterInterface          $productUpdater
-     * @param SaverInterface                  $productSaver
-     * @param NormalizerInterface             $normalizer
-     * @param ValidatorInterface              $validator
-     * @param UserContext                     $userContext
-     * @param ObjectFilterInterface           $objectFilter
-     * @param CollectionFilterInterface       $productEditDataFilter
-     * @param RemoverInterface                $productRemover
-     * @param ValuesContainerBuilderInterface $productBuilder
-     * @param AttributeConverterInterface     $localizedConverter
-     * @param ProductFilterInterface          $emptyValuesFilter
-     * @param ConverterInterface              $productValueConverter
+     * @param ProductRepositoryInterface   $productRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ObjectUpdaterInterface       $productUpdater
+     * @param SaverInterface               $productSaver
+     * @param NormalizerInterface          $normalizer
+     * @param ValidatorInterface           $validator
+     * @param UserContext                  $userContext
+     * @param ObjectFilterInterface        $objectFilter
+     * @param CollectionFilterInterface    $productEditDataFilter
+     * @param RemoverInterface             $productRemover
+     * @param ProductBuilderInterface      $productBuilder
+     * @param AttributeConverterInterface  $localizedConverter
+     * @param ProductFilterInterface       $emptyValuesFilter
+     * @param ConverterInterface           $productValueConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -105,7 +104,7 @@ class ProductController
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
-        ValuesContainerBuilderInterface $productBuilder,
+        ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter,
         ConverterInterface $productValueConverter
