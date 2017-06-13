@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -41,7 +40,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
      * {@inheritdoc}
      */
     public function removeAttributeData(
-        ProductInterface $product,
+        ValuesContainerInterface $valuesContainer,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -49,7 +48,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         $options = $this->resolver->resolve($options);
         $this->checkData($attribute, $data);
 
-        $this->removeOptions($product, $attribute, $data, $options['locale'], $options['scope']);
+        $this->removeOptions($valuesContainer, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
