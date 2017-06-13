@@ -15,11 +15,13 @@ class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        ObjectUpdaterInterface $valuesUpdater
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $templateUpdater,
+            $valuesUpdater,
             ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'],
             ['identifier', 'created', 'updated']
         );

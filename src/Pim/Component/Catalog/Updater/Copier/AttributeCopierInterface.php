@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
  * Copies a data from a product's attribute to another product's attribute

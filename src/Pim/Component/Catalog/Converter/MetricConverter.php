@@ -6,6 +6,7 @@ use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
  * Convert value into channel conversion unit if selected
