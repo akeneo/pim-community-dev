@@ -24,7 +24,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface */
+    /** @var ValuesContainerBuilderInterface */
     protected $productBuilder;
 
     /**
