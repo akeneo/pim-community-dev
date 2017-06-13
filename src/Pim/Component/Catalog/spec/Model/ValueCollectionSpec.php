@@ -5,11 +5,11 @@ namespace spec\Pim\Component\Catalog\Model;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ValueCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
-class ProductValueCollectionSpec extends ObjectBehavior
+class ValueCollectionSpec extends ObjectBehavior
 {
     function let(
         AttributeInterface $length,
@@ -69,7 +69,7 @@ class ProductValueCollectionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductValueCollection::class);
+        $this->shouldHaveType(ValueCollection::class);
     }
 
     function it_convert_the_collection_to_an_array($value1, $value2, $value3, $value4, $value5, $value6)

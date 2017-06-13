@@ -24,18 +24,18 @@ interface ValuesContainerInterface
     /**
      * Get values
      *
-     * @return ProductValueCollectionInterface
+     * @return ValueCollectionInterface
      */
     public function getValues();
 
     /**
      * Set values
      *
-     * @param ProductValueCollectionInterface $values
+     * @param ValueCollectionInterface $values
      *
      * @return ProductInterface
      */
-    public function setValues(ProductValueCollectionInterface $values);
+    public function setValues(ValueCollectionInterface $values);
 
     /**
      * Get value related to attribute code

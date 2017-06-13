@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -39,6 +39,6 @@ class ProductValueCollectionNormalizer extends SerializerAwareNormalizer impleme
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'indexing' === $format && $data instanceof ProductValueCollectionInterface;
+        return 'indexing' === $format && $data instanceof ValueCollectionInterface;
     }
 }

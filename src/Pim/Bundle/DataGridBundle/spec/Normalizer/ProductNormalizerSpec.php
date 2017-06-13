@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\GroupTranslationInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -52,7 +52,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupTranslationInterface $promotionEN,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce
@@ -135,7 +135,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupTranslationInterface $promotionEN,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce

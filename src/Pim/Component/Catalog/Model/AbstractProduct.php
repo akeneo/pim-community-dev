@@ -45,7 +45,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
      *
-     * @var ProductValueCollectionInterface
+     * @var ValueCollectionInterface
      */
     protected $values;
 
@@ -87,7 +87,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function __construct()
     {
-        $this->values = new ProductValueCollection();
+        $this->values = new ValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
@@ -326,7 +326,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ProductValueCollectionInterface $values)
+    public function setValues(ValueCollectionInterface $values)
     {
         $this->values = $values;
 

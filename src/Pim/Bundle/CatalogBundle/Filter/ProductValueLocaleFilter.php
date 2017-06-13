@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
@@ -58,6 +58,6 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ProductValueCollectionInterface;
+        return $collection instanceof ValueCollectionInterface;
     }
 }

@@ -14,8 +14,8 @@ use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -147,7 +147,7 @@ class VariantGroupUpdater extends GroupUpdater
         $templateProductValues = $template->getValues();
 
         if (null === $templateProductValues) {
-            $templateProductValues = new ProductValueCollection();
+            $templateProductValues = new ValueCollection();
         }
         $mergedValues = $this->updateTemplateValues($templateProductValues, $newValues);
 
@@ -162,12 +162,12 @@ class VariantGroupUpdater extends GroupUpdater
      * New values respect the standard format, so we can use the product updater
      * on a temporary product.
      *
-     * @param ProductValueCollectionInterface $templateProductValues
-     * @param array                           $newValues
+     * @param ValueCollectionInterface $templateProductValues
+     * @param array                    $newValues
      *
-     * @return ProductValueCollectionInterface
+     * @return ValueCollectionInterface
      */
-    protected function updateTemplateValues(ProductValueCollectionInterface $templateProductValues, array $newValues)
+    protected function updateTemplateValues(ValueCollectionInterface $templateProductValues, array $newValues)
     {
         foreach ($newValues as $attributeCode => $newValue) {
             $attribute = $this->getAttributeOrThrowException($attributeCode);
