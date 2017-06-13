@@ -978,3 +978,5 @@ pim_menu:
 
 pim_notification:
     mark_all_as_read: Mark all as read
+    no_notifications: No notifications
+    loading: Loading...

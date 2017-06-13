@@ -2,6 +2,7 @@
 
 /**
  * Base extension for tab
+ * This represents a main tab of the application, associated with icon, text and column.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -13,14 +14,16 @@ define(
         'oro/translator',
         'pim/form',
         'pim/router',
-        'pim/template/menu/tab'
+        'pim/template/menu/tab',
+        'oro/mediator'
     ],
     function (
         _,
         __,
         BaseForm,
         router,
-        template
+        template,
+        mediator
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -36,6 +39,9 @@ define(
             initialize: function (config) {
                 this.config = config.config;
                 this.items = [];
+
+                mediator.on('pim_menu:highlight:tab', this.highlight, this);
+                mediator.on('pim_menu:redirect:tab', this.redirect, this);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -66,9 +72,11 @@ define(
 
             /**
              * Redirect the user to the config destination
+             *
+             * @param {Event} event
              */
-            redirect: function () {
-                if (undefined !== this.getRoute()) {
+            redirect: function (event) {
+                if ((!_.has(event, 'extension') || event.extension === this.code) && undefined !== this.getRoute()) {
                     router.redirectToRoute(this.getRoute());
                 }
             },
@@ -96,43 +104,15 @@ define(
             },
 
             /**
-             * Activate/deactivate the tab and the attached items
+             * Highlight or un-highlight tab
              *
-             * @param {string[]} codes
+             * @param {Event} event
+             * @param {string} event.extension The extension code to highlight
              */
-            setActive: function (codes) {
-                this.active = _.contains(codes, this.code);
-
-                _.each(this.items, function (item) {
-                    item.setActive(_.contains(codes, item.code))
-                });
+            highlight: function (event) {
+                this.active = (event.extension === this.code);
 
                 this.render();
-            },
-
-            /**
-             * Returns the active breadcrumb items from the tab
-             *
-             * @returns {Array}
-             */
-            getBreadcrumbItems: function () {
-                var activatedElements = [];
-                if (this.active) {
-                    activatedElements.push(this);
-                    _.each(this.items, function (item) {
-                        if (item.active) {
-                            activatedElements.push(item);
-                        }
-                    });
-                }
-
-                return _.map(activatedElements, function (element) {
-                    return {
-                        code: element.code,
-                        route: element.getRoute(),
-                        label: element.getLabel()
-                    };
-                });
             },
 
             /**

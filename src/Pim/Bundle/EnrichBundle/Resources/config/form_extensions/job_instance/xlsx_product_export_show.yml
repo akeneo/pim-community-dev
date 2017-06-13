@@ -7,8 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-show
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-exports
+            tab: pim-menu-exports
 
     pim-job-instance-xlsx-product-export-show-tabs:
         module: pim/form/common/form-tabs

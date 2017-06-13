@@ -46,7 +46,7 @@ define(
              */
             configure: function () {
                 this.tabs = [];
-                
+
                 this.currentTab = sessionStorage.getItem(this.currentKey);
 
                 this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab);
@@ -80,7 +80,7 @@ define(
                     label: event.label
                 };
                 this.tabs.push(tab);
-                this.getColumn().trigger('pim_menu:column:register_navigation_item', tab);
+                this.getParent().trigger('pim_menu:column:register_navigation_item', tab);
 
                 this.render();
             },

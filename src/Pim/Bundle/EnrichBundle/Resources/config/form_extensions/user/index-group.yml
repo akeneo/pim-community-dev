@@ -9,9 +9,8 @@ extensions:
         parent: pim-user-group-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-system
-                - pim-menu-system-user-group
+            tab: pim-menu-system
+            item: pim-menu-system-user-group
 
     pim-user-group-index-grid:
         module: pim/form/common/index/grid

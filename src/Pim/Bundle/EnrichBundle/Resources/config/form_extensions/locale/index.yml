@@ -9,9 +9,8 @@ extensions:
         parent: pim-locale-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-settings
-                - pim-menu-settings-locale
+            tab: pim-menu-settings
+            item: pim-menu-settings-locale
 
     pim-locale-index-grid:
         module: pim/form/common/index/grid

@@ -9,9 +9,8 @@ extensions:
         parent: pim-channel-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-settings
-                - pim-menu-settings-channel
+            tab: pim-menu-settings
+            item: pim-menu-settings-channel
 
     pim-channel-index-grid:
         module: pim/form/common/index/grid

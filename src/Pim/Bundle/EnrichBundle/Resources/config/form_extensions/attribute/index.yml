@@ -9,9 +9,8 @@ extensions:
         parent: pim-attribute-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-settings
-                - pim-menu-settings-attribute
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute
 
     pim-attribute-index-grid:
         module: pim/form/common/index/grid

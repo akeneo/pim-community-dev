@@ -48,7 +48,7 @@ define(
              * @returns {Backbone.View}
              */
             getColumn: function () {
-                return this.getParent().getColumn();
+                return this.getParent();
             }
         })
     });

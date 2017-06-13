@@ -7,8 +7,7 @@ extensions:
         parent: pim-job-instance-csv-base-import-show
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-imports
+            tab: pim-menu-imports
 
     pim-job-instance-csv-base-import-show-tabs:
         module: pim/form/common/form-tabs

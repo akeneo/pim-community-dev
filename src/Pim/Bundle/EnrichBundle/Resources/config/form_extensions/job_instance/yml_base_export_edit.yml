@@ -7,8 +7,7 @@ extensions:
         parent: pim-job-instance-yml-base-export-edit
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-exports
+            tab: pim-menu-exports
 
     pim-job-instance-yml-base-export-edit-cache-invalidator:
         module: pim/cache-invalidator

@@ -9,9 +9,8 @@ extensions:
         parent: pim-process-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-system
-                - pim-menu-system-job-tracker
+            tab: pim-menu-system
+            item: pim-menu-system-job-tracker
 
     pim-process-index-grid:
         module: pim/form/common/index/grid

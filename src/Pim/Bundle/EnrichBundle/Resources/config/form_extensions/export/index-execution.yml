@@ -9,8 +9,7 @@ extensions:
         parent: pim-export-execution-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-exports
+            tab: pim-menu-exports
 
     pim-export-execution-index-grid:
         module: pim/form/common/index/grid

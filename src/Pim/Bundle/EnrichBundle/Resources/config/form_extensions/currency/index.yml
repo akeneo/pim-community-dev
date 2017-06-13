@@ -9,9 +9,8 @@ extensions:
         parent: pim-currency-index
         targetZone: breadcrumbs
         config:
-            path:
-                - pim-menu-settings
-                - pim-menu-settings-currency
+            tab: pim-menu-settings
+            item: pim-menu-settings-currency
 
     pim-currency-index-grid:
         module: pim/form/common/index/grid

@@ -60,7 +60,7 @@ define(
 
                 var notificationView = new Notifications({
                     imgUrl: 'bundles/pimimportexport/images/loading.gif',
-                    loadingText: __('Loading ...'),
+                    loadingText: __('pim_notification.loading'),
                     noNotificationsMessage: __('pim_notification.no_notifications'),
                     markAsReadMessage: __('pim_notification.mark_all_as_read')
                 });

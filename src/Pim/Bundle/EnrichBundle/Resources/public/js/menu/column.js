@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Base extension forheadermenu
+ * Extension for menu columns
+ * This extends the default column and adds some behaviors only used in the menu context (visibility)
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -11,15 +12,26 @@ define(
     [
         'underscore',
         'pim/form/common/column',
-        'pim/router'
+        'pim/router',
+        'oro/mediator'
     ],
     function (
         _,
         Column,
-        router
+        router,
+        mediator
     ) {
         return Column.extend({
             active: false,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function () {
+                mediator.on('pim_menu:highlight:tab', this.highlight, this);
+
+                Column.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -33,12 +45,14 @@ define(
             },
 
             /**
-             * Activate/deactivate the column using the attached tab code
+             * Highlight or un-highlight tab
              *
-             * @param {string[]} codes
+             * @param {Event} event
+             * @param {string} event.extension The extension code to highlight
              */
-            setActive: function (codes) {
-                this.active = _.contains(codes, this.getTab());
+            highlight: function (event) {
+                this.active = (event.extension === this.getTab());
+
                 this.render();
             },
 
@@ -56,15 +70,6 @@ define(
              */
             redirect: function (event) {
                 router.redirectToRoute(event.currentTarget.dataset.tab);
-            },
-
-            /**
-             * There is no attached breadcrumbs to column extension, so did nothing.
-             *
-             * @param {string[]} codes
-             */
-            getBreadcrumbItems: function (codes) {
-                return [];
             }
         });
     });

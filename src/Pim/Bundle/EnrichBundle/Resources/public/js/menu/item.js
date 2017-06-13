@@ -13,14 +13,16 @@ define(
         'oro/translator',
         'pim/form',
         'pim/router',
-        'pim/template/menu/item'
+        'pim/template/menu/item',
+        'oro/mediator'
     ],
     function (
         _,
         __,
         BaseForm,
         router,
-        template
+        template,
+        mediator
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -34,6 +36,9 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
+
+                mediator.on('pim_menu:highlight:item', this.highlight, this);
+                mediator.on('pim_menu:redirect:item', this.redirect, this);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -73,9 +78,13 @@ define(
 
             /**
              * Redirect the user to the config destination
+             *
+             * @param {Event} event
              */
-            redirect: function () {
-                router.redirectToRoute(this.getRoute());
+            redirect: function (event) {
+                if (!_.has(event, 'extension') || event.extension === this.code) {
+                    router.redirectToRoute(this.getRoute());
+                }
             },
 
             /**
@@ -104,12 +113,14 @@ define(
             },
 
             /**
-             * Activate/deactivate the item
+             * Highlight or un-highlight item
              *
-             * @param {Boolean} active
+             * @param {Event}  event
+             * @param {string} event.extension The extension code to highlight
              */
-            setActive: function (active) {
-                this.active = active;
+            highlight: function (event) {
+                this.active = (event.extension === this.code);
+
                 this.render();
             }
         });
