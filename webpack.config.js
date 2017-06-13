@@ -12,7 +12,7 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
-const babelPresets = ['es2017']
+const babelPresets = ['es2015']
 if (isProd) babelPresets.push('babili')
 
 console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
@@ -136,7 +136,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: /(web\/bundles|frontend|spec)/,
-                exclude: /lib/,
+                exclude: /lib|node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
