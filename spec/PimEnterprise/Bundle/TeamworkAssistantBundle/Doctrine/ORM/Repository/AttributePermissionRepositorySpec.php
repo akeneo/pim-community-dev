@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\AttributePermissionRepository;
-use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\AttributePermissionRepository;
+use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
 
 class AttributePermissionRepositorySpec extends ObjectBehavior
 {

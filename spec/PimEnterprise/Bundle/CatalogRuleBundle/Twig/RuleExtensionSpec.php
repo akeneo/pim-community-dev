@@ -4,10 +4,10 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\Formatter\Presenter\Presenter;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
-use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 
 class RuleExtensionSpec extends ObjectBehavior

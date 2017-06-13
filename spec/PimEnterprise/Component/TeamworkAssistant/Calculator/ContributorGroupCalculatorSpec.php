@@ -3,18 +3,18 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Calculator;
 
 use Oro\Bundle\UserBundle\Entity\Group;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ContributorGroupCalculator;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
 
 class ContributorGroupCalculatorSpec extends ObjectBehavior
 {

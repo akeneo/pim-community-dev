@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\UserBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

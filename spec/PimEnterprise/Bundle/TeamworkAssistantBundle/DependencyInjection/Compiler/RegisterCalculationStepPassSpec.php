@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler;
 
-use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

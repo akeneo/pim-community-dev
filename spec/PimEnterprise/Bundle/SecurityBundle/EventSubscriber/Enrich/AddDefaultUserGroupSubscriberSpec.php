@@ -4,14 +4,14 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
-use PimEnterprise\Component\Security\Attributes;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior

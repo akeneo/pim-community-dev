@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
-use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator;
 use Prophecy\Argument;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Translation\TranslatorInterface;

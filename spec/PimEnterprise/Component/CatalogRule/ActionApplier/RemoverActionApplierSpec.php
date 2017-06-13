@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
 

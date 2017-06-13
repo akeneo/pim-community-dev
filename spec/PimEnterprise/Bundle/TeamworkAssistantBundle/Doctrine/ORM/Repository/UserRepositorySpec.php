@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\UserRepository;
-use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\UserRepository;
+use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
 
 class UserRepositorySpec extends ObjectBehavior
 {

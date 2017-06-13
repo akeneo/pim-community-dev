@@ -8,13 +8,13 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\Group;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CleanContributorGroupTasklet;
-use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CleanContributorGroupTasklet;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 class CleanContributorGroupTaskletSpec extends ObjectBehavior
 {

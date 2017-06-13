@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle\Form\Type;
 
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,8 +28,8 @@ class JobProfilePermissionsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('execute', 'pimee_security_groups', ['label' => 'job_profile.permissions.execute.label']);
-        $builder->add('edit', 'pimee_security_groups', ['label' => 'job_profile.permissions.edit.label']);
+        $builder->add('execute', GroupsType::class, ['label' => 'job_profile.permissions.execute.label']);
+        $builder->add('edit', GroupsType::class, ['label' => 'job_profile.permissions.edit.label']);
     }
 
     /**
@@ -42,7 +43,7 @@ class JobProfilePermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_import_export_job_profile_permissions';
     }

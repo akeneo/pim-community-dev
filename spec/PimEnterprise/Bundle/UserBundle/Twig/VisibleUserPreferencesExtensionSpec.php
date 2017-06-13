@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\UserBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 class VisibleUserPreferencesExtensionSpec extends ObjectBehavior
 {

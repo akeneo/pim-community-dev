@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -16,7 +17,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes as AssetAttributeTypes;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover;
-use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Prophecy\Argument;
 

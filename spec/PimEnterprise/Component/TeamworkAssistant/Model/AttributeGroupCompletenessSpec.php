@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
-use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 
 class AttributeGroupCompletenessSpec extends ObjectBehavior
 {

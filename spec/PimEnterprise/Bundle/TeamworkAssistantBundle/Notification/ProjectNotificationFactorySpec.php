@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Pim\Bundle\NotificationBundle\Entity\Notification;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;
 
 class ProjectNotificationFactorySpec extends ObjectBehavior

@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 class AssetCategoryReaderSpec extends ObjectBehavior

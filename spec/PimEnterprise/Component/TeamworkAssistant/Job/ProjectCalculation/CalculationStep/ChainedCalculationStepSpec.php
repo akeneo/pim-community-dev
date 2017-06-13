@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 class ChainedCalculationStepSpec extends ObjectBehavior
 {

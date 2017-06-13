@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\PreProcessing;
 
 use PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\TeamworkAssistantTestCase;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
 {

@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,22 +31,22 @@ class CategoryPermissionsType extends AbstractType
     {
         $builder->add(
             'view',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'category.permissions.view.label', 'help' => 'category.permissions.view.help']
         );
         $builder->add(
             'edit',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'category.permissions.edit.label', 'help' => 'category.permissions.edit.help']
         );
         $builder->add(
             'own',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'category.permissions.own.label', 'help' => 'category.permissions.own.help']
         );
         $builder->add(
             'apply_on_children',
-            'checkbox',
+            CheckboxType::class,
             [
                 'label'    => 'category.permissions.apply_on_children.label',
                 'help'     => 'category.permissions.apply_on_children.help',
@@ -65,7 +67,7 @@ class CategoryPermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_enrich_category_permissions';
     }

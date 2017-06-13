@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Localization\Presenter\DatePresenter;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;
 use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;

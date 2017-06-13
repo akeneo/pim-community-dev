@@ -8,8 +8,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AssetEventSubscriberSpec extends ObjectBehavior

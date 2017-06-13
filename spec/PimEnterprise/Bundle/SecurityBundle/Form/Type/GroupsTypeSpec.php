@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupsTypeSpec extends ObjectBehavior
@@ -13,14 +14,14 @@ class GroupsTypeSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pimee_security_groups');
+        $this->getBlockPrefix()->shouldReturn('pimee_security_groups');
     }
 
     function it_extends_the_entity_form_type()
     {
-        $this->getParent()->shouldReturn('entity');
+        $this->getParent()->shouldReturn(EntityType::class);
     }
 
     function it_configures_the_form_type_to_provide_available_user_groups(OptionsResolver $resolver)

@@ -47,7 +47,7 @@ class UnpublishType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_enrich_mass_unpublish';
     }

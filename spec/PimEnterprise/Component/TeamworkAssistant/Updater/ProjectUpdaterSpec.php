@@ -4,8 +4,6 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -13,6 +11,8 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Updater\ProjectUpdater;
 use Prophecy\Argument;
 
 class ProjectUpdaterSpec extends ObjectBehavior

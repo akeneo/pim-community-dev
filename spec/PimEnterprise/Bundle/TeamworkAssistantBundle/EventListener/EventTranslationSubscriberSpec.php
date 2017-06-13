@@ -2,10 +2,6 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EventTranslationSubscriber;
-use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
-use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -13,6 +9,10 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EventTranslationSubscriber;
+use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
+use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

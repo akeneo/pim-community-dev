@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;

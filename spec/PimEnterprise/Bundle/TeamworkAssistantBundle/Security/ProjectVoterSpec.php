@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Security;
 
+use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 class ProjectVoterSpec extends ObjectBehavior
 {

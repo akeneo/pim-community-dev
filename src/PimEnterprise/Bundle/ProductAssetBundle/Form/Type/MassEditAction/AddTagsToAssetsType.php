@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type\MassEditAction;
 
+use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AjaxAssetTagType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -48,7 +49,7 @@ class AddTagsToAssetsType extends AbstractType
     {
         $builder->add(
             'tags',
-            'pim_ajax_asset_tag',
+            AjaxAssetTagType::class,
             [
                 'class'        => $this->tagClass,
                 'multiple'     => true,
@@ -69,7 +70,7 @@ class AddTagsToAssetsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return $this->formName;
     }

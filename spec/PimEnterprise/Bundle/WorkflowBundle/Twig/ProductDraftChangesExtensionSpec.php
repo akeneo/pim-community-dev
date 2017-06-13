@@ -5,13 +5,13 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use Pim\Component\Catalog\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use Pim\Component\Catalog\Factory\AttributeFactory;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductDraftChangesExtensionSpec extends ObjectBehavior

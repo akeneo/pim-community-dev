@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Widget;
 
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Widget\ProjectCompletenessWidget;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Widget\ProjectCompletenessWidget;
 
 class ProjectCompletenessWidgetSpec extends ObjectBehavior
 {

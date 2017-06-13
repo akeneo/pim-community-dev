@@ -2,18 +2,18 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProductRepository;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProductRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProductRepository;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Repository\ProductRepositoryInterface;
 
 class ProductRepositorySpec extends ObjectBehavior
 {

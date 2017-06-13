@@ -3,11 +3,11 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Attributes;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 

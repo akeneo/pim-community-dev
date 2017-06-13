@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.8.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-symfony-3-3@dev",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {

@@ -9,8 +9,8 @@ use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\FormInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ClassifyTypeSpec extends ObjectBehavior
 {

@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -30,7 +31,7 @@ class LocaleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code', 'text', ['disabled' => true]);
+        $builder->add('code', TextType::class, ['disabled' => true]);
 
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);
@@ -50,7 +51,7 @@ class LocaleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_enrich_locale';
     }

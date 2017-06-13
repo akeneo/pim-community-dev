@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompl
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessJobParameter;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessJobParameter;
 use Symfony\Component\Validator\Constraints\Collection;
 
 class RefreshProjectCompletenessJobParameterSpec extends ObjectBehavior
