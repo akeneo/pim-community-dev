@@ -17,8 +17,8 @@ extensions:
         module: pim/attribute-edit-form/delete
         parent: pim-attribute-edit-form
         targetZone: buttons
-        aclResourceId: pim_enrich_attribute_remove
         position: 100
+        aclResourceId: pim_enrich_attribute_remove
         config:
             trans:
                 title: confirmation.remove.attribute
@@ -129,6 +129,7 @@ extensions:
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
         position: 110
+        aclResourceId: pim_enrich_attributegroup_add_attribute
         config:
             fieldName: group
             required: true
@@ -244,8 +245,8 @@ extensions:
         module: pim/common/tab/history
         parent: pim-attribute-edit-form-form-tabs
         targetZone: container
-        aclResourceId: pim_enrich_channel_history
         position: 130
+        aclResourceId: pim_enrich_attribute_history
         config:
             class: attribute
             title: pim_enrich.form.attribute.tab.history.title
