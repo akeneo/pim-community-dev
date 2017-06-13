@@ -1872,6 +1872,8 @@ class WebUser extends RawMinkContext
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $code));
+
+        $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**
