@@ -19,6 +19,9 @@ pim_enrich:
     entity:
         attribute_label:
             pim_assets_collection: Assets collection
+        attribute:
+            type:
+                pim_assets_collection: Assets collection
 
 pimee_enrich:
     form:
