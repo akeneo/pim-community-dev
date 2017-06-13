@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
@@ -22,7 +23,7 @@ class ProductProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
-        ValuesContainerBuilderInterface $productBuilder,
+        ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,

@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -19,7 +19,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ValuesContainerBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith($productRepository, $groupRepository, $productBuilder, ['associations']);
     }

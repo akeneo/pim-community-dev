@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var ValuesContainerBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $builder;
 
     /** @var ObjectUpdaterInterface */
@@ -45,7 +45,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository    product repository
-     * @param ValuesContainerBuilderInterface       $builder       product builder
+     * @param ProductBuilderInterface               $builder       product builder
      * @param ObjectUpdaterInterface                $updater       product updater
      * @param ValidatorInterface                    $validator     product validator
      * @param ObjectDetacherInterface               $detacher      detacher to remove it from UOW when skip
@@ -53,7 +53,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ValuesContainerBuilderInterface $builder,
+        ProductBuilderInterface $builder,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,

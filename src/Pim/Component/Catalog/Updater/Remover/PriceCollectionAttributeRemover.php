@@ -23,25 +23,25 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     protected $currencyRepository;
 
     /** @var ValuesContainerBuilderInterface */
-    protected $productBuilder;
+    protected $valuesContainerBuilder;
 
     /**
      * @param AttributeValidatorHelper        $attrValidatorHelper
      * @param CurrencyRepositoryInterface     $currencyRepository
-     * @param ValuesContainerBuilderInterface $productBuilder
+     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
      * @param string[]                        $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
-        ValuesContainerBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->currencyRepository = $currencyRepository;
-        $this->productBuilder = $productBuilder;
-        $this->supportedTypes = $supportedTypes;
+        $this->currencyRepository     = $currencyRepository;
+        $this->valuesContainerBuilder = $valuesContainerBuilder;
+        $this->supportedTypes         = $supportedTypes;
     }
 
     /**
@@ -98,7 +98,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 }
             }
 
-            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $prices);
+            $this->valuesContainerBuilder->addOrReplaceValue($product, $attribute, $locale, $scope, $prices);
         }
     }
 
