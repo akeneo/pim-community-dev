@@ -8,19 +8,19 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         AttributeValidatorHelper $attrValidatorHelper,
-        ValuesContainerBuilderInterface $productBuilder
+        ValuesContainerBuilderInterface $valuesContainerBuilder
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $productBuilder,
+            $valuesContainerBuilder,
             ['pim_catalog_multiselect']
         );
     }
@@ -30,7 +30,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface');
     }
 
-    function it_should_supports_multiselect_attributes(
+    function it_supports_multiselect_attributes(
         AttributeInterface $multiSelectAttribute,
         AttributeInterface $textareaAttribute
     ) {
@@ -41,10 +41,10 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_should_removes_an_attribute_data_multi_select_value_to_a_product_value(
-        $productBuilder,
+    function it_removes_an_attribute_data_multi_select_value_from_a_values_container(
+        $valuesContainerBuilder,
         AttributeInterface $attribute,
-        ProductInterface $product,
+        ValuesContainerInterface $valuesContainer,
         ProductValueInterface $productValue,
         ArrayCollection $options,
         AttributeOptionInterface $vneck,
@@ -53,7 +53,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('tshirt_style');
 
-        $product->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($productValue);
+        $valuesContainer->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($productValue);
 
         $productValue->getData()->willReturn($options);
 
@@ -66,14 +66,14 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $round->getCode()->willReturn('round');
         $vneck->getCode()->willReturn('vneck');
 
-        $productBuilder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
+        $valuesContainerBuilder->addOrReplaceValue($valuesContainer, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
 
-        $this->removeAttributeData($product, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $this->removeAttributeData($valuesContainer, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_should_throws_an_error_if_attribute_data_value_is_not_an_array(
+    function it_throws_an_error_if_attribute_data_value_is_not_an_array(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -84,12 +84,12 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_should_throws_an_error_if_attribute_data_value_array_is_not_string(
+    function it_throws_an_error_if_attribute_data_value_array_is_not_string(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -101,6 +101,6 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 }
