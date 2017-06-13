@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Updater\Adder;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
  * Sets a multi select value in many values containers

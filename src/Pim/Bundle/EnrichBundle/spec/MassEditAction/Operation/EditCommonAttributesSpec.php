@@ -8,7 +8,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -21,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
-        ValuesContainerBuilderInterface $productBuilder,
+        ProductBuilderInterface $productBuilder,
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,
