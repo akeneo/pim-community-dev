@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 
@@ -69,8 +69,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         \ArrayIterator $localesIterator,
         LocaleInterface $locale,
         AttributeInterface $attribute,
-        ProductValueCollectionInterface $requiredProductValues,
-        ProductValueCollectionInterface $actualProductValues,
+        ValueCollectionInterface $requiredProductValues,
+        ValueCollectionInterface $actualProductValues,
         ProductValueInterface $requiredProductValue
     ) {
         $attribute->isUnique()->willReturn(false);
@@ -129,8 +129,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         \ArrayIterator $localesIterator,
         LocaleInterface $locale,
         AttributeInterface $attribute,
-        ProductValueCollectionInterface $requiredProductValues,
-        ProductValueCollectionInterface $actualProductValues,
+        ValueCollectionInterface $requiredProductValues,
+        ValueCollectionInterface $actualProductValues,
         ProductValueInterface $requiredProductValue,
         ProductValueInterface $actualProductValue
     ) {
@@ -192,8 +192,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         \ArrayIterator $localesIterator,
         LocaleInterface $locale,
         AttributeInterface $attribute,
-        ProductValueCollectionInterface $requiredProductValues,
-        ProductValueCollectionInterface $actualProductValues,
+        ValueCollectionInterface $requiredProductValues,
+        ValueCollectionInterface $actualProductValues,
         ProductValueInterface $requiredProductValue,
         ProductValueInterface $actualProductValue
     ) {
@@ -257,8 +257,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         LocaleInterface $locale,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
-        ProductValueCollectionInterface $requiredProductValues,
-        ProductValueCollectionInterface $actualProductValues,
+        ValueCollectionInterface $requiredProductValues,
+        ValueCollectionInterface $actualProductValues,
         ProductValueInterface $requiredProductValue1,
         ProductValueInterface $requiredProductValue2,
         ProductValueInterface $actualProductValue

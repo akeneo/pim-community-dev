@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
@@ -42,7 +42,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         FileInfoInterface $fileInfoMediaUploaded,
         AttributeInterface $imageAttribute,
         AttributeInterface $fileAttribute,
-        ProductValueCollectionInterface $values,
+        ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator
     ) {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
@@ -96,8 +96,8 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         FileInfoInterface $imageMedia,
         AttributeInterface $attribute,
         MediaProductValueInterface $newImageValue,
-        ProductValueCollectionInterface $imageValues,
-        ProductValueCollectionInterface $textValues,
+        ValueCollectionInterface $imageValues,
+        ValueCollectionInterface $textValues,
         \ArrayIterator $imageValuesIterator,
         \ArrayIterator $textValuesIterator
     ) {

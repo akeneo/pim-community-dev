@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class ProductTemplateBuilderSpec extends ObjectBehavior
@@ -34,8 +34,8 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $productBuilder,
         ProductTemplateInterface $template,
         AttributeInterface $name,
-        ProductValueCollectionInterface $originalValues,
-        ProductValueCollectionInterface $newValues,
+        ValueCollectionInterface $originalValues,
+        ValueCollectionInterface $newValues,
         ProductInterface $product
     ) {
         $productBuilder->createProduct()->willReturn($product);
@@ -59,7 +59,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         ProductValueInterface $colorValue,
         AttributeInterface $name,
         AttributeInterface $color,
-        ProductValueCollectionInterface $values
+        ValueCollectionInterface $values
     ) {
         $nameValue->getAttribute()->willReturn($name);
         $colorValue->getAttribute()->willReturn($color);

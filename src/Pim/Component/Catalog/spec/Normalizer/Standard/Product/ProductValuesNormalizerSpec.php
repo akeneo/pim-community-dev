@@ -7,8 +7,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\ProductValue\ScalarProductValue;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -38,9 +38,9 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute->setBackendType('text');
         $realValue = new ScalarProductValue($attribute, null, null, null);
 
-        $valuesCollection = new ProductValueCollection([$realValue]);
+        $valuesCollection = new ValueCollection([$realValue]);
         $valuesArray = [$realValue];
-        $emptyValuesCollection = new ProductValueCollection();
+        $emptyValuesCollection = new ValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
@@ -60,7 +60,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         AttributeInterface $text,
         ProductValueInterface $priceValue,
         AttributeInterface $price,
-        ProductValueCollectionInterface $values,
+        ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator
     ) {
         $values->getIterator()->willReturn($valuesIterator);

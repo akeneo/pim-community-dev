@@ -15,7 +15,7 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductValueCollectionInterface extends ProductUniqueValueCollectionInterface, \Countable, \IteratorAggregate
+interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface, \Countable, \IteratorAggregate
 {
     /**
      * Adds a value at the end of the collection.

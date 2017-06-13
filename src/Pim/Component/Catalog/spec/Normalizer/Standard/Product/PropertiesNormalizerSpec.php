@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -45,7 +45,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         FamilyInterface $family,
-        ProductValueCollection $values,
+        ValueCollection $values,
         \ArrayIterator $iterator
     ) {
         $values->getIterator()->willReturn($iterator);

@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -249,15 +249,15 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                           $completenesses
-     * @param AttributeRequirementInterface   $requirement
-     * @param ProductValueCollectionInterface $productValues
-     * @param LocaleInterface[]               $locales
+     * @param array                         $completenesses
+     * @param AttributeRequirementInterface $requirement
+     * @param ValueCollectionInterface      $productValues
+     * @param LocaleInterface[]             $locales
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
         AttributeRequirementInterface $requirement,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         array $locales
     ) {
         $attribute = $requirement->getAttribute();
