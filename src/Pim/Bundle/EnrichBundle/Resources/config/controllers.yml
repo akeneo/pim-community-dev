@@ -134,7 +134,7 @@ services:
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.builder.values_container'
+            - '@pim_catalog.builder.product'
             - '@templating'
 
     pim_enrich.controller.product.mass_edit_action:
