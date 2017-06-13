@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "install": "npm install vendor/akeneo/pim-community-dev",
-    "webpack": "webpack --display-error-details --config vendor/akeneo/pim-community-dev/webpack.config.js --progress --display-modules",
+    "webpack": "webpack --display-error-details --config vendor/akeneo/pim-community-dev/webpack.config.js --progress --env=prod",
     "webpack-watch": "webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch",
     "lint": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet --fix"
