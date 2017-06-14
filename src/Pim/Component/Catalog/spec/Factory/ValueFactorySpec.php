@@ -4,12 +4,12 @@ namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
-class ProductValueFactorySpec extends ObjectBehavior
+class ValueFactorySpec extends ObjectBehavior
 {
     function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
@@ -18,7 +18,7 @@ class ProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductValueFactory::class);
+        $this->shouldHaveType(ValueFactory::class);
     }
 
     function it_creates_a_simple_empty_product_value(

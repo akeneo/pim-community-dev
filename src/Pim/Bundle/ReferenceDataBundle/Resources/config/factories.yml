@@ -11,7 +11,7 @@ services:
             - '%pim_reference_data.product_value.reference_data.class%'
             - 'pim_reference_data_simpleselect'
         tags:
-            - { name: pim_catalog.factory.product_value }
+            - { name: pim_catalog.factory.value }
 
     pim_reference_data.factory.product_value.reference_data_collection:
         class: '%pim_reference_data.factory.product_value.reference_data_collection.class%'
@@ -21,4 +21,4 @@ services:
             - '%pim_reference_data.product_value.reference_data_collection.class%'
             - 'pim_reference_data_multiselect'
         tags:
-            - { name: pim_catalog.factory.product_value }
+            - { name: pim_catalog.factory.value }

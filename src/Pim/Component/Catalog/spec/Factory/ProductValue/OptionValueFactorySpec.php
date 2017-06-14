@@ -5,14 +5,14 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\OptionValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
-class OptionProductValueFactorySpec extends ObjectBehavior
+class OptionValueFactorySpec extends ObjectBehavior
 {
     function let(AttributeOptionRepositoryInterface $attrOptionRepository)
     {
@@ -21,7 +21,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(OptionProductValueFactory::class);
+        $this->shouldHaveType(OptionValueFactory::class);
     }
 
     function it_supports_simpleselect_attribute_type()
@@ -157,13 +157,13 @@ class OptionProductValueFactorySpec extends ObjectBehavior
 
         $booleanException = InvalidPropertyTypeException::stringExpected(
             'simple_select_attribute',
-            OptionProductValueFactory::class,
+            OptionValueFactory::class,
             true
         );
 
         $arrayException = InvalidPropertyTypeException::stringExpected(
             'simple_select_attribute',
-            OptionProductValueFactory::class,
+            OptionValueFactory::class,
             []
         );
 
@@ -191,7 +191,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
             'simple_select_attribute',
             'code',
             'The option does not exist',
-            OptionProductValueFactory::class,
+            OptionValueFactory::class,
             'foobar'
         );
 

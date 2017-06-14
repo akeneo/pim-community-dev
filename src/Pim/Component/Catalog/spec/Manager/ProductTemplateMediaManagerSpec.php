@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Manager;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -19,7 +19,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
 {
     function let(
         FileStorerInterface $fileStorer,
-        ProductValueFactory $productValueFactory
+        ValueFactory $productValueFactory
     ) {
         $this->beConstructedWith($fileStorer, $productValueFactory);
     }

@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 /**
  * Factory that creates product values.
  *
- * @internal  Interface for the factories used internally by \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Interface for the factories used internally by \Pim\Component\Catalog\Factory\ValueFactory.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

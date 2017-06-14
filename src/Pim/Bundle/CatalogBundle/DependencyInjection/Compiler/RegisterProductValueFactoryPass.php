@@ -17,9 +17,9 @@ class RegisterProductValueFactoryPass implements CompilerPassInterface
 {
     const DEFAULT_PRIORITY = 25;
 
-    const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.product_value';
+    const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.value';
 
-    const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.product_value';
+    const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.value';
 
     /**
      * {@inheritdoc}

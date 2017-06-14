@@ -5,11 +5,11 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\DateValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 
-class DateProductValueFactorySpec extends ObjectBehavior
+class DateValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,7 +18,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DateProductValueFactory::class);
+        $this->shouldHaveType(DateValueFactory::class);
     }
 
     function it_supports_date_attribute_type()
@@ -134,7 +134,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::stringExpected(
             'date_attribute',
-            DateProductValueFactory::class,
+            DateValueFactory::class,
             []
         );
 
@@ -155,7 +155,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyException::dateExpected(
             'date_attribute',
             'yyyy-mm-dd',
-            DateProductValueFactory::class,
+            DateValueFactory::class,
             'foobar is no date'
         );
 
@@ -176,7 +176,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyException::dateExpected(
             'date_attribute',
             'yyyy-mm-dd',
-            DateProductValueFactory::class,
+            DateValueFactory::class,
             '03-04-2013'
         );
 

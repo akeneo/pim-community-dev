@@ -12,8 +12,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterProductValueFactoryPassSpec extends ObjectBehavior
 {
-    const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.product_value';
-    const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.product_value';
+    const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.value';
+    const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.value';
 
     function it_is_initializable()
     {

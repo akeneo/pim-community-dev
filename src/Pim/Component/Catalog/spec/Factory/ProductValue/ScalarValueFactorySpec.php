@@ -4,12 +4,12 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\ScalarValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Prophecy\Argument;
 
-class ScalarProductValueFactorySpec extends ObjectBehavior
+class ScalarValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,7 +18,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ScalarProductValueFactory::class);
+        $this->shouldHaveType(ScalarValueFactory::class);
     }
 
     function it_creates_an_empty_text_product_value(AttributeInterface $attribute)
@@ -616,7 +616,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::scalarExpected(
             'text_attribute',
-            ScalarProductValueFactory::class,
+            ScalarValueFactory::class,
             ['foo' => 'bar']
         );
 

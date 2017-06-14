@@ -2,25 +2,26 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 
 /**
- * Factory that creates media product values.
+ * Factory that creates option (simple-select) product values.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class MediaProductValueFactory implements ProductValueFactoryInterface
+class OptionValueFactory implements ProductValueFactoryInterface
 {
-    /** @var FileInfoRepositoryInterface */
-    protected $fileInfoRepository;
+    /** @var AttributeOptionRepositoryInterface */
+    protected $attrOptionRepository;
 
     /** @var string */
     protected $productValueClass;
@@ -29,16 +30,16 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
     protected $supportedAttributeType;
 
     /**
-     * @param FileInfoRepositoryInterface $fileInfoRepository
-     * @param string                      $productValueClass
-     * @param string                      $supportedAttributeType
+     * @param AttributeOptionRepositoryInterface $attrOptionRepository
+     * @param string                             $productValueClass
+     * @param string                             $supportedAttributeType
      */
     public function __construct(
-        FileInfoRepositoryInterface $fileInfoRepository,
+        AttributeOptionRepositoryInterface $attrOptionRepository,
         $productValueClass,
         $supportedAttributeType
     ) {
-        $this->fileInfoRepository = $fileInfoRepository;
+        $this->attrOptionRepository = $attrOptionRepository;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
@@ -51,7 +52,7 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
         $this->checkData($attribute, $data);
 
         if (null !== $data) {
-            $data = $this->getFileInfo($attribute, $data);
+            $data = $this->getOption($attribute, $data);
         }
 
         $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
@@ -68,12 +69,12 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * Checks that data is a valid file path.
+     * Checks if data is valid.
      *
      * @param AttributeInterface $attribute
-     * @param string             $data
+     * @param mixed              $data
      *
-     * @throws InvalidPropertyException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -81,7 +82,7 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
             return;
         }
 
-        if (!is_string($data)) {
+        if (!is_string($data) && !is_numeric($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,
@@ -91,26 +92,33 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $data
+     * Gets an attribute option from its code.
      *
-     * @throws InvalidPropertyException
-     * @return FileInfoInterface
+     * @param AttributeInterface $attribute
+     * @param string|null        $optionCode
+     *
+     * @throws InvalidOptionException
+     * @return AttributeOptionInterface|null
      */
-    protected function getFileInfo(AttributeInterface $attribute, $data)
+    protected function getOption(AttributeInterface $attribute, $optionCode)
     {
-        $file = $this->fileInfoRepository->findOneByIdentifier($data);
+        if (null === $optionCode) {
+            return null;
+        }
 
-        if (null === $file) {
-            throw InvalidPropertyException::validEntityCodeExpected(
+        $identifier = $attribute->getCode() . '.' . $optionCode;
+        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
+
+        if (null === $option) {
+            throw InvalidOptionException::validEntityCodeExpected(
                 $attribute->getCode(),
-                'fileinfo key',
-                'The media does not exist',
+                'code',
+                'The option does not exist',
                 static::class,
-                $data
+                $optionCode
             );
         }
 
-        return $file;
+        return $option;
     }
 }
