@@ -21,7 +21,7 @@ extensions:
           stateCode: product_edit_form
 
     pimee-product-edit-form-column-navigation:
-        module: pim/form/common/column-navigation
+        module: pim/form/common/column-tabs-navigation
         parent: pimee-product-view-left-column
         targetZone: navigation
         position: 10
@@ -46,10 +46,16 @@ extensions:
         targetZone: title
         position: 100
 
-    pimee-product-view-download-pdf:
-        module: pim/product-edit-form/download-pdf
+    pimee-product-view-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pimee-product-view-form
         targetZone: buttons
+        position: 50
+
+    pimee-product-view-download-pdf:
+        module: pim/product-edit-form/download-pdf
+        parent: pimee-product-view-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_pdf_generator_product_download
         position: 90
 

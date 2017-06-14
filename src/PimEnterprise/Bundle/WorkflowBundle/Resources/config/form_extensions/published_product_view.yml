@@ -16,7 +16,7 @@ extensions:
           stateCode: product_edit_form
 
     pimee-published-product-view-form-column-navigation:
-        module: pim/form/common/column-navigation
+        module: pim/form/common/column-tabs-navigation
         parent: pimee-published-product-view-form-left-column
         targetZone: navigation
         position: 10
