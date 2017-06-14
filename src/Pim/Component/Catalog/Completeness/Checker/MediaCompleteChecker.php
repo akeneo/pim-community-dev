@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @internal for internal use only, please use
- *           \Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker
+ *           \Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker
  *           to calculate the completeness on a product value
  */
 class MediaCompleteChecker implements ProductValueCompleteCheckerInterface
