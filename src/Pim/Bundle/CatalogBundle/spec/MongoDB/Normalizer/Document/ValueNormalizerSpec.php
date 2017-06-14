@@ -6,13 +6,13 @@ use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @require \MongoId
  */
-class ProductValueNormalizerSpec extends ObjectBehavior
+class ValueNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory, ManagerRegistry $managerRegistry, SerializerInterface $serializer)
     {
@@ -26,7 +26,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_of_product_value_in_mongodb_document(ProductValueInterface $value)
+    function it_supports_normalization_of_product_value_in_mongodb_document(ValueInterface $value)
     {
         $this->supportsNormalization($value, 'mongodb_document')->shouldReturn(true);
     }
@@ -36,7 +36,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($object, 'mongodb_document')->shouldReturn(false);
     }
 
-    function it_does_not_support_normalization_of_product_value_into_other_format(ProductValueInterface $value)
+    function it_does_not_support_normalization_of_product_value_into_other_format(ValueInterface $value)
     {
         $this->supportsNormalization($value, 'json')->shouldReturn(false);
     }
@@ -44,7 +44,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_value_into_mongodb_document(
         $mongoFactory,
         $serializer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         \MongoDBRef $mongoDBRef,
         \MongoId $mongoId

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductPrice;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
@@ -18,7 +18,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_supports_normalization_in_mongodb_json_of_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $attribute->getBackendType()->willReturn('foo');
@@ -30,7 +30,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_value_with_simple_data(
         SerializerInterface $serializer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
@@ -52,7 +52,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_value_with_collection_data(
         SerializerInterface $serializer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
@@ -75,7 +75,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_value_with_empty_collection_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         Collection $collection,
         \Iterator $iterator
@@ -92,7 +92,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_value_with_decimal_support_backend(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('code');

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
-class ScalarProductValueSpec extends ObjectBehavior
+class ScalarValueSpec extends ObjectBehavior
 {
     function let(AttributeInterface $attribute)
     {
