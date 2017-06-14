@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 
-class PriceCollectionProductValueSpec extends ObjectBehavior
+class PriceCollectionValueSpec extends ObjectBehavior
 {
     function let(AttributeInterface $attribute, PriceCollectionInterface $priceCollection)
     {

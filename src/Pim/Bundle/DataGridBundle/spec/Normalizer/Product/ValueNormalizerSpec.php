@@ -2,11 +2,12 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ValueInterface;
 
-class ProductValueNormalizerSpec extends ObjectBehavior
+class ValueNormalizerSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $standardNormalizer)
     {
@@ -15,7 +16,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer');
+        $this->shouldHaveType(ValueNormalizer::class);
     }
 
     function it_is_a_normalizer()
