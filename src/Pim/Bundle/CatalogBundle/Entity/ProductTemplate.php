@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Product template model, contains common product values as raw data
