@@ -3,7 +3,7 @@ parameters:
     pim_catalog.normalizer.standard.product.properties.class: Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer
     pim_catalog.normalizer.standard.product.associations.class: Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer
     pim_catalog.normalizer.standard.product.product_values.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer
-    pim_catalog.normalizer.standard.product.product_value.class: Pim\Component\Catalog\Normalizer\Standard\Product\ValueNormalizer
+    pim_catalog.normalizer.standard.product.product_value.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValueNormalizer
     pim_catalog.normalizer.standard.product.price.class: Pim\Component\Catalog\Normalizer\Standard\Product\PriceNormalizer
     pim_catalog.normalizer.standard.product.metric.class: Pim\Component\Catalog\Normalizer\Standard\Product\MetricNormalizer
     pim_catalog.normalizer.standard.datetime.class: Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer
