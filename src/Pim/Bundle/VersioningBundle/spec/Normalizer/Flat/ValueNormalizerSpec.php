@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class ProductValueNormalizerSpec extends ObjectBehavior
+class ValueNormalizerSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
