@@ -49,14 +49,10 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.getRoot().trigger('pim_menu:register_item', {
-                    target: this.getColumn().getTab(),
-                    origin: this
-                });
-
-                this.getColumn().trigger('pim_menu:column:register_navigation_item', {
+                this.trigger('pim_menu:column:register_navigation_item', {
                     code: this.getRoute(),
-                    label: this.getLabel()
+                    label: this.getLabel(),
+                    position: this.position
                 });
 
                 BaseForm.prototype.configure.apply(this, arguments);
@@ -103,13 +99,6 @@ define(
              */
             getLabel: function () {
                 return __(this.config.title);
-            },
-
-            /**
-             * @returns {Backbone.View}
-             */
-            getColumn: function () {
-                return this.getParent().getColumn();
             },
 
             /**

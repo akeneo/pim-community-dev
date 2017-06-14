@@ -9,18 +9,17 @@ extensions:
         module: pim/menu/logo
         parent: pim-menu
         position: 10
-        targetZone: left
+        targetZone: mainMenu
 
     # Dashboard
     pim-menu-dashboard:
         module: pim/menu/tab
         parent: pim-menu
         position: 80
-        targetZone: left
+        targetZone: mainMenu
         config:
             title: pim_menu.tab.dashboard
-            icon: icon-card.svg
-            iconHover: icon-card-purple.svg
+            iconModifier: iconCard
             to: pim_dashboard_index
 
     # Imports
@@ -28,12 +27,11 @@ extensions:
         module: pim/menu/tab
         parent: pim-menu
         position: 100
-        targetZone: left
+        targetZone: mainMenu
         aclResourceId: pim_importexport_import_profile_index
         config:
             title: pim_menu.tab.imports
-            icon: icon-upload.svg
-            iconHover: icon-upload-purple.svg
+            iconModifier: iconUpload
             to: pim_importexport_import_profile_index
 
     # Products
@@ -41,12 +39,11 @@ extensions:
         module: pim/menu/tab
         parent: pim-menu
         position: 110
-        targetZone: left
+        targetZone: mainMenu
         aclResourceId: pim_enrich_product_index
         config:
             title: pim_menu.tab.products
-            icon: icon-product.svg
-            iconHover: icon-product-purple.svg
+            iconModifier: iconProduct
             to: pim_enrich_product_index
 
     # Exports
@@ -54,12 +51,11 @@ extensions:
         module: pim/menu/tab
         parent: pim-menu
         position: 120
-        targetZone: left
+        targetZone: mainMenu
         aclResourceId: pim_importexport_export_profile_index
         config:
             title: pim_menu.tab.exports
-            icon: icon-download.svg
-            iconHover: icon-download-purple.svg
+            iconModifier: iconDownload
             to: pim_importexport_export_profile_index
 
     # Settings
@@ -67,11 +63,10 @@ extensions:
         module: pim/menu/tab
         parent: pim-menu
         position: 130
-        targetZone: left
+        targetZone: mainMenu
         config:
             title: pim_menu.tab.settings
-            icon: icon-settings.svg
-            iconHover: icon-settings-purple.svg
+            iconModifier: iconSettings
 
     pim-menu-settings-column:
         module: pim/menu/column
@@ -196,11 +191,10 @@ extensions:
         module: pim/menu/tab
         parent: pim-menu
         position: 140
-        targetZone: left
+        targetZone: mainMenu
         config:
             title: pim_menu.tab.system
-            icon: icon-system.svg
-            iconHover: icon-system-purple.svg
+            iconModifier: iconSystem
 
     pim-menu-system-column:
         module: pim/menu/column

@@ -17,8 +17,6 @@
                         Backbone.history.navigate('#{{ path(route ~ '_categorytree_create') }}', { trigger: true });
                     }).tooltip());
                 {% endif %}
-                // Instantiate sidebar
-                // $('#category-tree-container').sidebarize({ buttons: buttons });
                 new TreeManage('#tree', '{{ route }}');
             });
         }

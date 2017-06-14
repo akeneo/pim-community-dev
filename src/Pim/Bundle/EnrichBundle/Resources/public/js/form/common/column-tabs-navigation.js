@@ -84,7 +84,7 @@ define(
                     label: event.label
                 };
                 this.tabs.push(tab);
-                this.getParent().trigger('pim_menu:column:register_navigation_item', tab);
+                this.trigger('pim_menu:column:register_navigation_item', tab);
 
                 this.render();
             },
@@ -97,6 +97,7 @@ define(
             selectTab: function (event) {
                 this.getRoot().trigger('column-tab:select-tab', event);
                 this.setCurrentTab(event.currentTarget.dataset.tab);
+                this.render();
             },
 
             /**
@@ -106,7 +107,6 @@ define(
              */
             setCurrentTab: function (tabCode) {
                 this.currentTab = tabCode;
-                this.render();
             },
 
             /**

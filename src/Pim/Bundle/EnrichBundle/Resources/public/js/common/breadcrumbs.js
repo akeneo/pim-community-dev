@@ -32,8 +32,6 @@ define([
                 'click .breadcrumb-tab': 'redirectTab',
                 'click .breadcrumb-item': 'redirectItem'
             },
-            breadcrumbTab: null,
-            breadcrumbItem: null,
 
             /**
              * {@inheritdoc}
@@ -58,36 +56,28 @@ define([
                 mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab });
                 mediator.trigger('pim_menu:highlight:item', { extension: this.config.item });
 
-                return $.when(
-                    FormRegistry.getFormMeta(this.config.tab),
-                    FormRegistry.getFormMeta(this.config.item),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                ).then(function (metaTab, metaItem) {
-                    this.breadcrumbTab = {
-                        code: this.config.tab,
-                        label: __(metaTab.config.title)
-                    };
-                    if (undefined !== metaItem) {
-                        this.breadcrumbItem = {
-                            code: this.config.item,
-                            label: __(metaItem.config.title)
-                        };
-                    }
-
-                    this.configured = true;
-                }.bind(this));
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
-                if (true === this.configured) {
+                return $.when(
+                    FormRegistry.getFormMeta(this.config.tab),
+                    FormRegistry.getFormMeta(this.config.item)
+                ).then(function (metaTab, metaItem) {
+                    var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) };
+                    var breadcrumbItem = null;
+                    if (undefined !== metaItem) {
+                        breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) };
+                    }
+
                     this.$el.empty().append(this.template({
-                        breadcrumbTab: this.breadcrumbTab,
-                        breadcrumbItem: this.breadcrumbItem
+                        breadcrumbTab: breadcrumbTab,
+                        breadcrumbItem: breadcrumbItem
                     }));
-                }
+                }.bind(this));
             },
 
             /**

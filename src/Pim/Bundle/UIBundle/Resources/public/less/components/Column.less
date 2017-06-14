@@ -41,7 +41,7 @@
 
   &-innerTop:not(:empty),
   &-innerBottom:not(:empty) {
-    padding: @padding;
+    padding: 0 @padding @padding @padding;
     line-height: 14px;
     transition:
       margin-right @timing @transition,
@@ -59,10 +59,7 @@
   &-block:not(:empty) {
     display: flex;
     flex-direction: column;
-
-    & + & {
-      margin: 36px 0 0 0;
-    }
+    margin: 36px 0 0 0;
   }
 
   &-title,

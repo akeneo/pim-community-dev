@@ -66,10 +66,31 @@ define(
             },
 
             /**
-             * @param {Event} event
+             * The DOM element contains a `data-tab` attribute for compatibility with tab Bootstram tabs.
+             *
+             * {@inheritdoc}
              */
             redirect: function (event) {
                 router.redirectToRoute(event.currentTarget.dataset.tab);
+            },
+
+            /**
+             * Registers a new item to display on navigation template
+             *
+             * @param {Event}    navigationItem
+             * @param {string}   navigationItem.label
+             * @param {function} navigationItem.isVisible
+             * @param {string}   navigationItem.route
+             * @param {number}   navigationItem.position
+             */
+            registerNavigationItem: function (navigationItem) {
+                Column.prototype.registerNavigationItem.apply(this, arguments);
+
+                this.getRoot().trigger('pim_menu:register_item', {
+                    target: this.getTab(),
+                    route: navigationItem.code,
+                    position: navigationItem.position
+                });
             }
         });
     });

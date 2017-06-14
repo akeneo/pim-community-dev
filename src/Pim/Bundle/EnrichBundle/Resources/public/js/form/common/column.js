@@ -50,7 +50,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this, 'pim_menu:column:register_navigation_item', this.registerNavigationItem);
+                this.onExtensions('pim_menu:column:register_navigation_item', this.registerNavigationItem);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -151,13 +151,6 @@ define(
              */
             redirect: function (event) {
                 this.getRoot().trigger('column-tab:select-tab', event);
-            },
-
-            /**
-             * @returns {Backbone.View}
-             */
-            getColumn: function () {
-                return this;
             }
         });
     }

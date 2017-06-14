@@ -35,6 +35,19 @@ define(
             },
 
             /**
+             * Proxy for 'pim_menu:column:register_navigation_item' event
+             *
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.onExtensions('pim_menu:column:register_navigation_item', function (event) {
+                    this.trigger('pim_menu:column:register_navigation_item', event);
+                });
+
+                BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render: function () {
@@ -43,13 +56,6 @@ define(
                 }));
 
                 BaseForm.prototype.render.apply(this, arguments);
-            },
-
-            /**
-             * @returns {Backbone.View}
-             */
-            getColumn: function () {
-                return this.getParent();
             }
         })
     });

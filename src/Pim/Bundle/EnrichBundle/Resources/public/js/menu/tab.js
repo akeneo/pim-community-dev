@@ -63,8 +63,7 @@ define(
                 this.$el.empty().append(this.template({
                     active: this.active,
                     title: this.getLabel(),
-                    icon: '/bundles/pimui/images/' + this.config.icon,
-                    iconHover: '/bundles/pimui/images/' + this.config.iconHover
+                    iconModifier: this.config.iconModifier
                 }));
 
                 return BaseForm.prototype.render.apply(this, arguments);
@@ -84,13 +83,19 @@ define(
             /**
              * Returns the route of the tab.
              *
+             * There is 2 cases here:
+             * - The configuration contains a `to` element, so we did a simple redirect to this route.
+             * - There is no configuration, so we need to get the first available element of the associated column.
+             *   For this, we simply register all the items of the column, sort them by priority then take the first
+             *   one.
+             *
              * @returns {string|undefined}
              */
             getRoute: function () {
                 if (undefined !== this.config.to) {
                     return this.config.to;
                 } else {
-                    return _.first(_.sortBy(this.items, 'position')).getRoute();
+                    return _.first(_.sortBy(this.items, 'position')).route;
                 }
             },
 
@@ -118,13 +123,13 @@ define(
             /**
              * Registers a new item attached to this tab.
              *
-             * @param {Event} event
-             * @param {string} event.target
-             * @param {Backbone.View} event.origin
+             * @param {Event}  event
+             * @param {string} event.route
+             * @param {number} event.position
              */
             registerItem: function (event) {
                 if (event.target === this.code) {
-                    this.items.push(event.origin);
+                    this.items.push(event);
                 }
             }
         });
