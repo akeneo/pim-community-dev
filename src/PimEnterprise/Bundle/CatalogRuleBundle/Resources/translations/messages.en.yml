@@ -106,8 +106,9 @@ batch_jobs:
         label:        Rule export in YAML
         export.label: Rule export
     rule_impacted_product_count:
-        label:         Affected products for the rules
-        perform.label: Count impacted products
+        label:               Affected products for the rules
+        perform.label:       Count impacted products
+        execute_rules.label: Rules execution
     csv_product_import_with_rules:
         label:                     Product import in CSV with rules
         execute_rules.label:       Rules execution
