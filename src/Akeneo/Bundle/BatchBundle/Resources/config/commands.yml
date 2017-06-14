@@ -1,0 +1,19 @@
+parameters:
+    akeneo_batch.command.class: Akeneo\Bundle\BatchBundle\Command\BatchCommand
+
+services:
+    akeneo_batch.command:
+        class: '%akeneo_batch.command.class%'
+        arguments:
+            - '@monolog.logger.batch'
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@doctrine'
+            - '@validator'
+            - '@akeneo_batch.mail_notifier'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_repository'
+        tags:
+            - { name: console.command }
