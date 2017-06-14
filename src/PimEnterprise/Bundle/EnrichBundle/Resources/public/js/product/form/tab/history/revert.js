@@ -72,7 +72,7 @@ define(
                                 FetcherRegistry.getFetcher('product').fetch(this.getFormData().meta.id)
                                     .done(function (product) {
                                         loadingMask.hide().$el.remove();
-                                        messenger.notificationFlashMessage(
+                                        messenger.notify(
                                             'success',
                                             __('pimee_enrich.entity.product.flash.product_reverted')
                                         );

@@ -3,11 +3,10 @@ extensions:
         module: pim/menu/tab
         parent: pim-menu
         position: 115
-        targetZone: left
+        targetZone: mainMenu
         config:
             title: pim_menu.tab.asset
-            icon: icon-asset.svg
-            iconHover: icon-asset-purple.svg
+            iconModifier: iconAsset
             to: pimee_product_asset_index
 
     pim-menu-enrich-asset-category:

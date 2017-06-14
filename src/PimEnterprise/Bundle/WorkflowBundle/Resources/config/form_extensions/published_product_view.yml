@@ -2,6 +2,13 @@ extensions:
     pimee-published-product-view-form:
         module: pimee/product-view-form
 
+    pimee-published-product-view-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pimee-published-product-view-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-products
+
     pimee-published-product-view-cache-invalidator:
         module: pim/cache-invalidator
         parent: pimee-published-product-view-form
@@ -20,6 +27,8 @@ extensions:
         parent: pimee-published-product-view-form-left-column
         targetZone: navigation
         position: 10
+        config:
+          title: pim_enrich.entity.product.navigation
 
     pimee-published-product-view-form-meta:
         module: pim/form/common/meta

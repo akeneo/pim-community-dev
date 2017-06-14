@@ -1,6 +1,5 @@
 {% block content %}
     {% placeholder content_before %}
-    <div id="published-product-view-form"></div>
     <script>
         require(
             ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-builder', 'pimee/published-product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
@@ -17,11 +16,11 @@
 
                                         mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
-                                        form.setElement('#published-product-view-form').render();
+                                        form.setElement('.view').render();
                                     });
                             }).fail(function(response, textStatus, errorThrown) {
                                 var errorView = new Error(response.responseJSON.message, response.status);
-                                errorView.setElement('#published-product-view-form').render();
+                                errorView.setElement('.view').render();
                             });
                     })
                 });

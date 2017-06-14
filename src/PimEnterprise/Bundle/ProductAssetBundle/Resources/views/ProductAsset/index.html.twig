@@ -6,6 +6,30 @@
 {% endblock %}
 
 {% block content %}
+<script>
+        require(
+            [
+                'pim/fetcher-registry',
+                'pim/form-builder',
+                'oro/mediator'
+            ],
+            function(
+                FetcherRegistry,
+                FormBuilder,
+                mediator
+            ) {
+                $(function() {
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                            form.setElement('.user-menu').render();
+                        }.bind(this));
+                    });
+                    mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-asset' });
+                });
+            }
+        );
+</script>
+
 <div class="AknDefault-mainContent">
     {% set title %}
         {{ 'pimee_product_asset.page_tab.title.index'|trans }}
