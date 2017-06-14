@@ -4,11 +4,9 @@ namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
@@ -17,6 +15,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
@@ -58,6 +58,13 @@ class BatchCommand extends ContainerAwareCommand
                 'The email to notify at the end of the job execution'
             )
             ->addOption(
+                'username',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Username',
+                'superadmin'
+            )
+            ->addOption(
                 'no-log',
                 null,
                 InputOption::VALUE_NONE,
@@ -76,6 +83,18 @@ class BatchCommand extends ContainerAwareCommand
             $logger = $this->getContainer()->get('monolog.logger.batch');
             // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
             $logger->pushHandler(new StreamHandler('php://stdout'));
+        }
+
+        $username = $input->getOption('username');
+
+        try {
+            $user = $this->getContainer()->get('security.user.provider.concrete.chain_provider')
+                ->loadUserByUsername($username);
+
+            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+            $this->getContainer()->get('security.token_storage')->setToken($token);
+        } catch (UsernameNotFoundException $e) {
+            // We do nothing as we want to let the possibility to not pass an user.
         }
 
         $code = $input->getArgument('code');
