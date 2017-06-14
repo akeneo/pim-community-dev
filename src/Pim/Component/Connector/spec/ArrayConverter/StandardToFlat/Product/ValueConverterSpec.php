@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry;
 
-class ProductValueConverterSpec extends ObjectBehavior
+class ValueConverterSpec extends ObjectBehavior
 {
     function let(
         ValueConverterRegistry $converterRegistry,
