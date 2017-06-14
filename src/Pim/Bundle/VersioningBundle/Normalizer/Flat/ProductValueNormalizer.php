@@ -5,7 +5,7 @@ namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -117,17 +117,17 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof ValueInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize the field name for values
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return string
      */
-    protected function getFieldName(ProductValueInterface $value)
+    protected function getFieldName(ValueInterface $value)
     {
         // TODO : should be extracted
         $suffix = '';
@@ -145,11 +145,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Check if the attribute is locale specific and check if the given local exist in available locales
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return bool
      */
-    protected function filterLocaleSpecific(ProductValueInterface $value)
+    protected function filterLocaleSpecific(ValueInterface $value)
     {
         $attribute = $value->getAttribute();
         if ($attribute->isLocaleSpecific()) {

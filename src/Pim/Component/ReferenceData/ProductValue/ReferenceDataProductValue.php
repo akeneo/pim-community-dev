@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData\ProductValue;
 
-use Pim\Component\Catalog\Model\AbstractProductValue;
+use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -13,7 +13,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataProductValue extends AbstractProductValue implements ReferenceDataProductValueInterface
+class ReferenceDataProductValue extends AbstractValue implements ReferenceDataValueInterface
 {
     /** @var ReferenceDataInterface */
     protected $data;

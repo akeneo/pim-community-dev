@@ -50,12 +50,12 @@ interface ProductInterface extends
     public function getIdentifier();
 
     /**
-     * @param ProductValueInterface $identifier
+     * @param ValueInterface $identifier
      *
      * @return ProductInterface
      *
      */
-    public function setIdentifier(ProductValueInterface $identifier);
+    public function setIdentifier(ValueInterface $identifier);
 
     /**
      * Get the product groups

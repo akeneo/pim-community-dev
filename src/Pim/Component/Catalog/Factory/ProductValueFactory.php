@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Factory;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -49,7 +49,7 @@ class ProductValueFactory
      *
      * @throws \LogicException
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {

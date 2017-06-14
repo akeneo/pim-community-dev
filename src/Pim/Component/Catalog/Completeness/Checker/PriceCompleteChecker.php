@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Check if a product price collection complete or not for a provided channel.
@@ -27,7 +27,7 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
@@ -39,7 +39,7 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
 
         foreach ($expectedCurrencies as $currency) {
             $completeForCurrency[$currency] = false;
-            foreach ($productValue->getData() as $price) {
+            foreach ($value->getData() as $price) {
                 if ($currency === $price->getCurrency() && null !== $price->getData()) {
                     $completeForCurrency[$currency] = true;
                 }
@@ -53,10 +53,10 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::PRICE_COLLECTION === $productValue->getAttribute()->getType();
+        return AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getType();
     }
 }

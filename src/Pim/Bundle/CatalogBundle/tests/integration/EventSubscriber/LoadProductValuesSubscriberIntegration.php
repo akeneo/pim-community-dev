@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Integration tests to verify a product is well loaded from database with its product values.
@@ -58,7 +58,7 @@ class LoadProductValuesSubscriberIntegration extends TestCase
      * @param string             $locale
      * @param mixed              $data
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     private function createProductValue(AttributeInterface $attribute, $scope, $locale, $data)
     {
@@ -101,7 +101,7 @@ class LoadProductValuesSubscriberIntegration extends TestCase
 
     /**
      * @throws \Exception
-     * @return ProductValueInterface[]
+     * @return ValueInterface[]
      */
     private function getValuesForProductWithAllAttributes()
     {

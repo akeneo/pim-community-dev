@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Check if a metric collection data is complete or not.
@@ -24,11 +24,11 @@ class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $metric = $productValue->getData();
+        $metric = $value->getData();
 
         if (null === $metric) {
             return false;
@@ -53,10 +53,10 @@ class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::METRIC === $productValue->getAttribute()->getType();
+        return AttributeTypes::METRIC === $value->getAttribute()->getType();
     }
 }

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Factory;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Creates and configures a product unique data.
@@ -27,12 +27,12 @@ class ProductUniqueDataFactory
     }
 
     /**
-     * @param ProductInterface      $product
-     * @param ProductValueInterface $value
+     * @param ProductInterface $product
+     * @param ValueInterface   $value
      *
      * @return ProductUniqueDataInterface
      */
-    public function create(ProductInterface $product, ProductValueInterface $value)
+    public function create(ProductInterface $product, ValueInterface $value)
     {
         return new $this->productUniqueDataClass($product, $value);
     }

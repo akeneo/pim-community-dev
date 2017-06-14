@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 
 /**
  * Product template media manager
@@ -46,7 +46,7 @@ class ProductTemplateMediaManager
         $values = $template->getValues();
 
         foreach ($values as $value) {
-            if ($value instanceof MediaProductValueInterface) {
+            if ($value instanceof MediaValueInterface) {
                 if (null !== $value->getData() && true === $value->getData()->isRemoved()) {
                     $mediaHandled = true;
 

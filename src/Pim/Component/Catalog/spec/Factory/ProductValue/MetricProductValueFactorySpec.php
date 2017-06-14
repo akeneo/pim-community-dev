@@ -8,14 +8,14 @@ use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Prophecy\Argument;
 
 class MetricProductValueFactorySpec extends ObjectBehavior
 {
     function let(MetricFactory $metricFactory)
     {
-        $this->beConstructedWith($metricFactory, ScalarProductValue::class, 'pim_catalog_metric');
+        $this->beConstructedWith($metricFactory, ScalarValue::class, 'pim_catalog_metric');
     }
 
     function it_is_initializable()
@@ -55,7 +55,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -88,7 +88,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -122,7 +122,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
             ['amount' => 42, 'unit' => 'GRAM']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -154,7 +154,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
             ['amount' => 42, 'unit' => 'GRAM']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');

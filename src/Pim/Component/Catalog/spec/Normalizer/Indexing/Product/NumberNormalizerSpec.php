@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\NumberNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,8 +21,8 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_number_product_value(
-        ProductValueInterface $numberValue,
-        ProductValueInterface $textValue,
+        ValueInterface $numberValue,
+        ValueInterface $textValue,
         AttributeInterface $numberAttribute,
         AttributeInterface $textAttribute
     ) {
@@ -41,7 +41,7 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_normamlizes_an_empty_number_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $integerValue,
+        ValueInterface $integerValue,
         AttributeInterface $integerAttribute
     ) {
         $integerValue->getAttribute()->willReturn($integerAttribute);
@@ -63,7 +63,7 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_integer_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $integerValue,
+        ValueInterface $integerValue,
         AttributeInterface $integerAttribute
     ) {
         $integerValue->getAttribute()->willReturn($integerAttribute);
@@ -85,7 +85,7 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_decimal_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $decimalValue,
+        ValueInterface $decimalValue,
         AttributeInterface $decimalAttribute
     ){
         $decimalValue->getAttribute()->willReturn($decimalAttribute);
@@ -107,7 +107,7 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_decimal_product_value_with_locale(
-        ProductValueInterface $decimalValue,
+        ValueInterface $decimalValue,
         AttributeInterface $decimalAttribute
     ) {
         $decimalValue->getAttribute()->willReturn($decimalAttribute);
@@ -129,7 +129,7 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_integer_product_value_with_locale(
-        ProductValueInterface $decimalValue,
+        ValueInterface $decimalValue,
         AttributeInterface $decimalAttribute
     ) {
         $decimalValue->getAttribute()->willReturn($decimalAttribute);
@@ -151,7 +151,7 @@ class NumberNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_integer_product_value_with_locale_and_channel(
-        ProductValueInterface $decimalValue,
+        ValueInterface $decimalValue,
         AttributeInterface $decimalAttribute
     ) {
         $decimalValue->getAttribute()->willReturn($decimalAttribute);

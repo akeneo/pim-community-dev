@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
@@ -58,7 +58,7 @@ class BulkMediaFetcher
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 
         foreach ($values as $value) {
-            if ($value instanceof MediaProductValueInterface && null !== $media = $value->getData()) {
+            if ($value instanceof MediaValueInterface && null !== $media = $value->getData()) {
                 $exportPath = $this->fileExporterPath->generate(
                     [
                         'locale' => $value->getLocale(),

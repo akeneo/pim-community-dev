@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Chained checker that contains all the product value completeness checkers.
@@ -29,13 +29,13 @@ class ProductValueCompleteChecker implements ProductValueCompleteCheckerInterfac
      * {@inheritdoc}
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
         foreach ($this->productValueCheckers as $productValueChecker) {
-            if ($productValueChecker->supportsValue($productValue, $channel, $locale)) {
-                return $productValueChecker->isComplete($productValue, $channel, $locale);
+            if ($productValueChecker->supportsValue($value, $channel, $locale)) {
+                return $productValueChecker->isComplete($value, $channel, $locale);
             }
         }
 
@@ -46,20 +46,20 @@ class ProductValueCompleteChecker implements ProductValueCompleteCheckerInterfac
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        if (null !== $productValue->getScope() && $channel !== $productValue->getScope()) {
+        if (null !== $value->getScope() && $channel !== $value->getScope()) {
             return false;
         }
 
-        if (null !== $productValue->getLocale() && $locale !== $productValue->getLocale()) {
+        if (null !== $value->getLocale() && $locale !== $value->getLocale()) {
             return false;
         }
 
-        if ($productValue->getAttribute()->isLocaleSpecific() &&
-            !$productValue->getAttribute()->hasLocaleSpecific($locale)
+        if ($value->getAttribute()->isLocaleSpecific() &&
+            !$value->getAttribute()->hasLocaleSpecific($locale)
         ) {
             return false;
         }

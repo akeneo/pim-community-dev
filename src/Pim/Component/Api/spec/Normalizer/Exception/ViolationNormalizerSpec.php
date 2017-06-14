@@ -7,7 +7,7 @@ use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
@@ -40,7 +40,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $values,
-        ProductValueInterface $identifier,
+        ValueInterface $identifier,
         AttributeInterface $attribute,
         Constraint $constraint
     ) {
@@ -87,7 +87,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $productValues,
-        ProductValueInterface $sku,
+        ValueInterface $sku,
         AttributeInterface $attribute,
         Constraint $lengthConstraint
     ) {
@@ -143,7 +143,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $productValues,
-        ProductValueInterface $sku,
+        ValueInterface $sku,
         AttributeInterface $attribute,
         Constraint $regexpConstraint
     ) {
@@ -204,7 +204,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $productValues,
-        ProductValueInterface $description,
+        ValueInterface $description,
         AttributeInterface $attribute,
         Constraint $constraint
     ) {

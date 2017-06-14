@@ -5,14 +5,14 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
 class FileTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser, ProductValueInterface $value, AttributeInterface $attribute)
+    function let(AttributeConstraintGuesser $guesser, ValueInterface $value, AttributeInterface $attribute)
     {
         $value->getAttribute()->willReturn($attribute);
 

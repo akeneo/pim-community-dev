@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Check if a media data is complete or not.
@@ -24,11 +24,11 @@ class MediaCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $media = $productValue->getData();
+        $media = $value->getData();
 
         if (null === $media) {
             return false;
@@ -45,10 +45,10 @@ class MediaCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::BACKEND_TYPE_MEDIA === $productValue->getAttribute()->getBackendType();
+        return AttributeTypes::BACKEND_TYPE_MEDIA === $value->getAttribute()->getBackendType();
     }
 }

@@ -2,7 +2,7 @@
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Factory that creates product values.
@@ -24,7 +24,7 @@ interface ProductValueFactoryInterface
      * @param string             $localeCode
      * @param mixed              $data
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data);
 

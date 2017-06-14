@@ -9,7 +9,7 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProductValue implements ProductValueInterface
+abstract class AbstractValue implements ValueInterface
 {
     /** @var AttributeInterface */
     protected $attribute;
@@ -55,11 +55,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ProductValueInterface $productValue)
+    public function isEqual(ValueInterface $value)
     {
-        return $this->getData() === $productValue->getData() &&
-            $this->scope === $productValue->getScope() &&
-            $this->locale === $productValue->getLocale();
+        return $this->getData() === $value->getData() &&
+            $this->scope === $value->getScope() &&
+            $this->locale === $value->getLocale();
     }
 
     /**
@@ -69,7 +69,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @throws \LogicException
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     protected function setAttribute(AttributeInterface $attribute = null)
     {

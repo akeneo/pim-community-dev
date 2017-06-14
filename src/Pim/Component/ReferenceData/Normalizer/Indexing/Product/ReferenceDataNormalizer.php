@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\AbstractProductValueNormalizer;
 use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,9 +25,9 @@ class ReferenceDataNormalizer extends AbstractProductValueNormalizer implements 
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ProductValueInterface $productValue)
+    protected function getNormalizedData(ValueInterface $value)
     {
-        $data = $productValue->getData();
+        $data = $value->getData();
         if (null !== $data) {
             return $data->getCode();
         }

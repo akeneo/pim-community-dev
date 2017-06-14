@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -34,10 +34,10 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
         $attributeRepository,
         AttributeInterface $sku,
         AttributeInterface $description,
-        ProductValueInterface $value1,
-        ProductValueInterface $value2,
-        ProductValueInterface $value3,
-        ProductValueInterface $value4
+        ValueInterface $value1,
+        ValueInterface $value2,
+        ValueInterface $value3,
+        ValueInterface $value4
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->isUnique()->willReturn(false);

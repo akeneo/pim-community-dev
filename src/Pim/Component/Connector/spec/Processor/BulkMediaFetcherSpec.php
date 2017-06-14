@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 class BulkMediaFetcherSpec extends ObjectBehavior
@@ -39,7 +39,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         ValueCollectionInterface $valuesCollection,
         \ArrayIterator $valuesIterator,
-        MediaProductValueInterface $value,
+        MediaValueInterface $value,
         AttributeInterface $attribute,
         FilesystemInterface $filesystem
     ) {
@@ -79,8 +79,8 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         FileInfoInterface $fileInfo2,
         ValueCollectionInterface $valuesCollection,
         \ArrayIterator $valuesIterator,
-        MediaProductValueInterface $value,
-        MediaProductValueInterface $value2,
+        MediaValueInterface $value,
+        MediaValueInterface $value2,
         AttributeInterface $attribute,
         FilesystemInterface $filesystem
     ) {

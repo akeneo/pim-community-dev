@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNormalizer implements NormalizerInterface
+class ValueNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     protected $standardNormalizer;
@@ -40,6 +40,6 @@ class ProductValueNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && 'datagrid' === $format;
+        return $data instanceof ValueInterface && 'datagrid' === $format;
     }
 }

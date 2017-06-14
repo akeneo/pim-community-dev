@@ -44,27 +44,27 @@ interface ValuesContainerInterface
      * @param string $localeCode
      * @param string $scopeCode
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
 
     /**
      * Add value, override to deal with relation owner side
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return ProductInterface
      */
-    public function addValue(ProductValueInterface $value);
+    public function addValue(ValueInterface $value);
 
     /**
      * Remove value
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return ProductInterface
      */
-    public function removeValue(ProductValueInterface $value);
+    public function removeValue(ValueInterface $value);
 
     /**
      * Get the attributes of the product

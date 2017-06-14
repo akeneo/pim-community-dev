@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Check if a product value is complete or not for a given couple channel/locale.
@@ -21,14 +21,14 @@ interface ProductValueCompleteCheckerInterface
     /**
      * Is the given product value complete on the given couple channel/locale?
      *
-     * @param ProductValueInterface $productValue
+     * @param ValueInterface        $value
      * @param ChannelInterface|null $channel
      * @param LocaleInterface|null  $locale
      *
      * @return bool
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     );
@@ -41,14 +41,14 @@ interface ProductValueCompleteCheckerInterface
      *      - the locale of the value is compatible (localisable + locale specific) with the given locale
      *      - the channel of the value is compatible with the given channel
      *
-     * @param ProductValueInterface $productValue
-     * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
+     * @param ValueInterface   $value
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
      *
      * @return bool
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     );

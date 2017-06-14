@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class ValueCollectionSpec extends ObjectBehavior
 {
@@ -20,12 +20,12 @@ class ValueCollectionSpec extends ObjectBehavior
         ChannelInterface $print,
         LocaleInterface $en_US,
         LocaleInterface $fr_FR,
-        ProductValueInterface $value1,
-        ProductValueInterface $value2,
-        ProductValueInterface $value3,
-        ProductValueInterface $value4,
-        ProductValueInterface $value5,
-        ProductValueInterface $value6
+        ValueInterface $value1,
+        ValueInterface $value2,
+        ValueInterface $value3,
+        ValueInterface $value4,
+        ValueInterface $value5,
+        ValueInterface $value6
     ) {
         $length->isUnique()->willReturn(false);
         $price->isUnique()->willReturn(false);
@@ -234,7 +234,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
 
-    function it_does_not_removes_a_non_existing_value($value1, $value2, $value3, $value4, $value5, $value6, ProductValueInterface $anotherValue)
+    function it_does_not_removes_a_non_existing_value($value1, $value2, $value3, $value4, $value5, $value6, ValueInterface $anotherValue)
     {
         $this->remove($anotherValue)->shouldReturn(false);
 
@@ -300,7 +300,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->containsKey('description-ecommerce-fr_FR')->shouldReturn(true);
     }
 
-    function it_contains_a_value($value1, ProductValueInterface $anotherValue)
+    function it_contains_a_value($value1, ValueInterface $anotherValue)
     {
         $this->contains($anotherValue)->shouldReturn(false);
         $this->contains($value1)->shouldReturn(true);
@@ -350,7 +350,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value4,
         $value5,
         $value6,
-        ProductValueInterface $newValue,
+        ValueInterface $newValue,
         AttributeInterface $attribute
     ) {
         $attribute->isUnique()->willReturn(false);
@@ -384,7 +384,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value4,
         $value5,
         $value6,
-        ProductValueInterface $newValue,
+        ValueInterface $newValue,
         AttributeInterface $attribute
     ) {
         $attribute->isUnique()->willReturn(true);
@@ -422,7 +422,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value4,
         $value5,
         $value6,
-        ProductValueInterface $newValue,
+        ValueInterface $newValue,
         AttributeInterface $attribute
     ) {
         $attribute->isUnique()->willReturn(true);

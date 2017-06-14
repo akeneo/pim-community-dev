@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -15,7 +15,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValueNormalizer');
+        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer');
     }
 
     function it_is_a_normalizer()
@@ -23,17 +23,17 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_datagrid_format_and_product_value(ProductValueInterface $productValue)
+    function it_supports_datagrid_format_and_product_value(ValueInterface $value)
     {
-        $this->supportsNormalization($productValue, 'datagrid')->shouldReturn(true);
-        $this->supportsNormalization($productValue, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization($value, 'datagrid')->shouldReturn(true);
+        $this->supportsNormalization($value, 'other_format')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'datagrid')->shouldReturn(false);
     }
 
     function it_normalizes_a_product_value(
         $standardNormalizer,
-        ProductValueInterface $productValue
+        ValueInterface $value
     ) {
         $data =  [
             'locale' => null,
@@ -41,8 +41,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
             'data'   => 'product_value_data',
         ];
 
-        $standardNormalizer->normalize($productValue, 'standard', [])->willReturn($data);
+        $standardNormalizer->normalize($value, 'standard', [])->willReturn($data);
 
-        $this->normalize($productValue)->shouldReturn($data);
+        $this->normalize($value)->shouldReturn($data);
     }
 }

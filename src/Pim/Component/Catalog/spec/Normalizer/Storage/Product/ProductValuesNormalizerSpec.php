@@ -6,10 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -37,7 +37,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('attribute');
         $attribute->setBackendType('text');
-        $realValue = new ScalarProductValue($attribute, null, null, null);
+        $realValue = new ScalarValue($attribute, null, null, null);
 
         $valuesCollection = new ValueCollection([$realValue]);
         $valuesArray = [$realValue];
@@ -57,11 +57,11 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_collection_of_product_values_in_storage_format(
         $serializer,
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute,
-        ProductValueInterface $descriptionEcommerceFrValue,
-        ProductValueInterface $descriptionEcommerceEnValue,
-        ProductValueInterface $descriptionPrintFrValue,
+        ValueInterface $descriptionEcommerceFrValue,
+        ValueInterface $descriptionEcommerceEnValue,
+        ValueInterface $descriptionPrintFrValue,
         AttributeInterface $descriptionAttribute,
         ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator

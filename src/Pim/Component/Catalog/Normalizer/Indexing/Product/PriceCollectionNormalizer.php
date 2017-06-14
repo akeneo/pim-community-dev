@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\PriceCollectionProductValue;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductValue\PriceCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,7 +21,7 @@ class PriceCollectionNormalizer extends AbstractProductValueNormalizer implement
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof PriceCollectionProductValue &&
+        return $data instanceof PriceCollectionValue &&
             AttributeTypes::BACKEND_TYPE_PRICE === $data->getAttribute()->getBackendType() &&
             'indexing' === $format;
     }
@@ -29,10 +29,10 @@ class PriceCollectionNormalizer extends AbstractProductValueNormalizer implement
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ProductValueInterface $productValue)
+    protected function getNormalizedData(ValueInterface $value)
     {
         $currencyIndexedPrices = [];
-        $prices = $productValue->getData();
+        $prices = $value->getData();
 
         if (null === $prices) {
             return null;

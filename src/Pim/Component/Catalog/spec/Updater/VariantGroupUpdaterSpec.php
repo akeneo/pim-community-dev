@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -87,7 +87,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductTemplateInterface $productTemplate,
         ProductQueryBuilderInterface $pqb,
         ValueCollectionInterface $originalValueCollection,
-        ProductValueInterface $whiteValue
+        ValueInterface $whiteValue
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -161,7 +161,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqb,
         ValueCollectionInterface $originalValueCollection,
         FileInfoInterface $fileInfo,
-        ProductValueInterface $pictureValue
+        ValueInterface $pictureValue
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');

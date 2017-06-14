@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
@@ -17,7 +17,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
 {
     function let(AttributeOptionRepositoryInterface $attributeOptionRepository)
     {
-        $this->beConstructedWith($attributeOptionRepository, ScalarProductValue::class, 'pim_catalog_multiselect');
+        $this->beConstructedWith($attributeOptionRepository, ScalarValue::class, 'pim_catalog_multiselect');
     }
 
     function it_is_initializable()
@@ -51,7 +51,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
             []
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -78,7 +78,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
             []
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -111,7 +111,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
             ['foo', 'bar']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -142,7 +142,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
             ['foo', 'bar']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
