@@ -10,7 +10,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Prophecy\Argument;
 
-class ProductValueSpec extends ObjectBehavior
+class ValKueSpec extends ObjectBehavior
 {
     function let(
         AttributeColumnInfoExtractor $fieldExtractor,
