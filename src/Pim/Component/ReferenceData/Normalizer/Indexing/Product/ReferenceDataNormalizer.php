@@ -4,7 +4,7 @@ namespace Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\AbstractProductValueNormalizer;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +19,7 @@ class ReferenceDataNormalizer extends AbstractProductValueNormalizer implements 
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ReferenceDataProductValue && 'indexing' === $format;
+        return $data instanceof ReferenceDataValue && 'indexing' === $format;
     }
 
     /**

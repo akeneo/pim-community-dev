@@ -1,29 +1,30 @@
 <?php
 
-namespace Pim\Component\Catalog\ProductValue;
+namespace Pim\Component\ReferenceData\ProductValue;
 
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
- * Product value for "pim_catalog_date" attribute types
+ * Product value for a reference data
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateProductValue extends AbstractValue implements DateValueInterface
+class ReferenceDataValue extends AbstractValue implements ReferenceDataValueInterface
 {
-    /** @var \DateTime */
+    /** @var ReferenceDataInterface */
     protected $data;
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $channel
-     * @param string             $locale
-     * @param \DateTime|null     $data
+     * @param AttributeInterface          $attribute
+     * @param string                      $channel
+     * @param string                      $locale
+     * @param ReferenceDataInterface|null $data
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, \DateTime $data = null)
+    public function __construct(AttributeInterface $attribute, $channel, $locale, ReferenceDataInterface $data = null)
     {
         $this->setAttribute($attribute);
         $this->setScope($channel);
@@ -45,6 +46,6 @@ class DateProductValue extends AbstractValue implements DateValueInterface
      */
     public function __toString()
     {
-        return null !== $this->data ? $this->data->format('Y-m-d') : '';
+        return null !== $this->data ? (string) $this->data : '';
     }
 }

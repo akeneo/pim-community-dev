@@ -4,7 +4,7 @@ namespace Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\AbstractProductValueNormalizer;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValue;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
@@ -18,7 +18,7 @@ class ReferenceDataCollectionNormalizer extends AbstractProductValueNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ReferenceDataCollectionProductValue && 'indexing' === $format;
+        return $data instanceof ReferenceDataCollectionValue && 'indexing' === $format;
     }
 
     /**

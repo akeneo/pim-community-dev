@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
-class DateProductValueSpec extends ObjectBehavior
+class DateValueSpec extends ObjectBehavior
 {
     function let(AttributeInterface $attribute, \DateTime $date)
     {

@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataValueFactory;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Prophecy\Argument;
@@ -22,7 +22,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
 {
     function let(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
-        $this->beConstructedWith($repositoryResolver, ReferenceDataProductValue::class, 'pim_reference_data_catalog_simpleselect');
+        $this->beConstructedWith($repositoryResolver, ReferenceDataValue::class, 'pim_reference_data_catalog_simpleselect');
     }
 
     function it_is_initializable()
@@ -58,7 +58,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -86,7 +86,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -119,7 +119,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
             'blue'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -150,7 +150,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
             'blue'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');

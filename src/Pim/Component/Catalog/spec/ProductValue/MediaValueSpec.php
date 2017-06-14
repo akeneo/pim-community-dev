@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
-class MediaProductValueSpec extends ObjectBehavior
+class MediaValueSpec extends ObjectBehavior
 {
     function let(AttributeInterface $attribute, FileInfoInterface $fileInfo)
     {
