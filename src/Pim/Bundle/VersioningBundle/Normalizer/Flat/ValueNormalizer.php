@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var SerializerInterface */
     protected $serializer;
