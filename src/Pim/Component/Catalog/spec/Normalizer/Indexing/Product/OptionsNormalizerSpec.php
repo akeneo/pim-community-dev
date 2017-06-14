@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\OptionsNormalizer;
-use Pim\Component\Catalog\ProductValue\OptionsProductValue;
+use Pim\Component\Catalog\ProductValue\OptionsValue;
 use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -43,7 +43,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_empty_options_product_value(
-        OptionsProductValue $optionsValue,
+        OptionsValue $optionsValue,
         AttributeInterface $optionsAttribute
     ) {
         $optionsValue->getAttribute()->willReturn($optionsAttribute);
@@ -68,7 +68,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_options_product_value_with_no_locale_and_no_channel(
-        OptionsProductValue $optionsValue,
+        OptionsValue $optionsValue,
         AttributeInterface $optionsAttribute
     ) {
         $optionsValue->getAttribute()->willReturn($optionsAttribute);
@@ -96,7 +96,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_locale(
-        OptionsProductValue $optionsValue,
+        OptionsValue $optionsValue,
         AttributeInterface $optionsAttribute
     ) {
         $optionsValue->getAttribute()->willReturn($optionsAttribute);
@@ -124,7 +124,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_channel(
-        OptionsProductValue $optionsValue,
+        OptionsValue $optionsValue,
         AttributeInterface $optionsAttribute
     ) {
         $optionsValue->getAttribute()->willReturn($optionsAttribute);
@@ -152,7 +152,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_locale_and_channel(
-        OptionsProductValue $optionsValue,
+        OptionsValue $optionsValue,
         AttributeInterface $optionsAttribute
     ) {
         $optionsValue->getAttribute()->willReturn($optionsAttribute);

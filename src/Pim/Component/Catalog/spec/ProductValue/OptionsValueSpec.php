@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
-class OptionsProductValueSpec extends ObjectBehavior
+class OptionsValueSpec extends ObjectBehavior
 {
     function let(AttributeInterface $attribute, AttributeOptionInterface $optionA, AttributeOptionInterface $optionB)
     {

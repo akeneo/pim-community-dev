@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 
-class MetricProductValueSpec extends ObjectBehavior
+class MetricValueSpec extends ObjectBehavior
 {
     function let(AttributeInterface $attribute, MetricInterface $metric)
     {
