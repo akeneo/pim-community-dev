@@ -20,9 +20,9 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueCompleteChecker implements ProductValueCompleteCheckerInterface
+class ValueCompleteChecker implements ValueCompleteCheckerInterface
 {
-    /** @var ProductValueCompleteCheckerInterface[] */
+    /** @var ValueCompleteCheckerInterface[] */
     protected $productValueCheckers = [];
 
     /**
@@ -68,9 +68,9 @@ class ValueCompleteChecker implements ProductValueCompleteCheckerInterface
     }
 
     /**
-     * @param ProductValueCompleteCheckerInterface $checker
+     * @param ValueCompleteCheckerInterface $checker
      */
-    public function addProductValueChecker(ProductValueCompleteCheckerInterface $checker)
+    public function addProductValueChecker(ValueCompleteCheckerInterface $checker)
     {
         $this->productValueCheckers[] = $checker;
     }

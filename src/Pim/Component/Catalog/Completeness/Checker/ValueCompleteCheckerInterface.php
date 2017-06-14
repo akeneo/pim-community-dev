@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @internal for internal use only, please use the \Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface
  *           to calculate the completeness on a product
  */
-interface ProductValueCompleteCheckerInterface
+interface ValueCompleteCheckerInterface
 {
     /**
      * Is the given product value complete on the given couple channel/locale?

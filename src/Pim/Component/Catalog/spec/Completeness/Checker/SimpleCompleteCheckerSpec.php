@@ -12,7 +12,7 @@ class SimpleCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
     }
 
     public function it_supports_all_product_values(
