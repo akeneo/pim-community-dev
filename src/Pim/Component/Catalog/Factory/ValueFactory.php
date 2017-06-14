@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
-use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
+use Pim\Component\Catalog\Factory\ProductValue\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -23,12 +23,12 @@ class ValueFactory
     /** @var AttributeValidatorHelper */
     protected $attributeValidatorHelper;
 
-    /** @var ProductValueFactoryInterface[] */
+    /** @var ValueFactoryInterface[] */
     protected $factories;
 
     /**
-     * @param AttributeValidatorHelper       $attributeValidatorHelper
-     * @param ProductValueFactoryInterface[] $factories
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param ValueFactoryInterface[]  $factories
      */
     public function __construct(
         AttributeValidatorHelper $attributeValidatorHelper,
@@ -67,9 +67,9 @@ class ValueFactory
     }
 
     /**
-     * @param ProductValueFactoryInterface $factory
+     * @param ValueFactoryInterface $factory
      */
-    public function registerFactory(ProductValueFactoryInterface $factory)
+    public function registerFactory(ValueFactoryInterface $factory)
     {
         $this->factories[] = $factory;
     }
@@ -77,7 +77,7 @@ class ValueFactory
     /**
      * @param string $attributeType
      *
-     * @return ProductValueFactoryInterface
+     * @return ValueFactoryInterface
      *
      */
     protected function getFactory($attributeType)

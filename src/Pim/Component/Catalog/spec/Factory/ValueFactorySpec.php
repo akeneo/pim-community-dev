@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
+use Pim\Component\Catalog\Factory\ProductValue\ValueFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -24,7 +24,7 @@ class ValueFactorySpec extends ObjectBehavior
     function it_creates_a_simple_empty_product_value(
         $attributeValidatorHelper,
         AttributeInterface $attribute,
-        ProductValueFactoryInterface $productValueFactory,
+        ValueFactoryInterface $productValueFactory,
         ValueInterface $productValue
     ) {
         $productValueFactory->supports('text')->willReturn(true);
@@ -48,7 +48,7 @@ class ValueFactorySpec extends ObjectBehavior
     function it_creates_a_simple_localizable_and_scopable_empty_product_value(
         $attributeValidatorHelper,
         AttributeInterface $attribute,
-        ProductValueFactoryInterface $productValueFactory,
+        ValueFactoryInterface $productValueFactory,
         ValueInterface $productValue
     ) {
         $productValueFactory->supports('text')->willReturn(true);
@@ -72,7 +72,7 @@ class ValueFactorySpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_there_is_no_registered_factory(
-        ProductValueFactoryInterface $factory,
+        ValueFactoryInterface $factory,
         AttributeInterface $attribute
     ) {
         $this->registerFactory($factory);

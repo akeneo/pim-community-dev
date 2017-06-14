@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Model\PriceCollection;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PriceCollectionValueFactory implements ProductValueFactoryInterface
+class PriceCollectionValueFactory implements ValueFactoryInterface
 {
     /** @var PriceFactory */
     protected $priceFactory;
