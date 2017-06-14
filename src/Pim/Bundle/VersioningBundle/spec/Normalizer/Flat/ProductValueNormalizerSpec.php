@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -34,12 +34,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_csv_normalization_of_product_value(ProductValueInterface $value)
+    function it_supports_csv_normalization_of_product_value(ValueInterface $value)
     {
         $this->supportsNormalization($value, 'csv')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_product(ProductValueInterface $value)
+    function it_supports_flat_normalization_of_product(ValueInterface $value)
     {
         $this->supportsNormalization($value, 'flat')->shouldBe(true);
     }
@@ -50,7 +50,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_null_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
@@ -63,7 +63,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_a_integer_data(
         NumberLocalizer $numberLocalizer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
@@ -79,7 +79,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_allowed(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
@@ -94,7 +94,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_not_allowed(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
@@ -109,7 +109,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_string_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
@@ -122,7 +122,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_boolean_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
@@ -139,7 +139,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_a_collection_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute,
         SerializerInterface $serializer
     ) {
@@ -158,7 +158,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_an_array_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $simpleAttribute,
         SerializerInterface $serializer
     ) {
@@ -177,7 +177,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_ordered_options_with_a_option_collection_data(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $multiColorAttribute,
         SerializerInterface $serializer,
         AttributeOptionInterface $redOption,
@@ -200,7 +200,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $blueOption->getSortOrder()->willReturn(11)->shouldBeCalled();
 
         // phpspec raises this php bug https://bugs.php.net/bug.php?id=50688,
-        // warning: usort(): Array was modified by the user comparison function in ProductValueNormalizer.php line 178
+        // warning: usort(): Array was modified by the user comparison function in ValueNormalizer.php line 178
         $previousReporting = error_reporting();
         error_reporting(0);
         $serializer->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'flat', ['field_name' => 'colors'])
@@ -211,7 +211,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         error_reporting($previousReporting);
     }
 
-    function it_normalizes_a_value_with_a_date_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    function it_normalizes_a_value_with_a_date_data(ValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $simpleAttribute->getType()->willReturn(AttributeTypes::DATE);
 
@@ -222,7 +222,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '2000-10-28']);
     }
 
-    function it_normalizes_a_scopable_product_value(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    function it_normalizes_a_scopable_product_value(ValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
@@ -236,7 +236,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-mobile' => '12']);
     }
 
-    function it_normalizes_a_localizable_product_value(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    function it_normalizes_a_localizable_product_value(ValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
@@ -250,7 +250,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-fr_FR' => '12']);
     }
 
-    function it_normalizes_a_scopable_and_localizable_product_value(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    function it_normalizes_a_scopable_and_localizable_product_value(ValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 

@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -50,7 +50,7 @@ class CompletenessManagerSpec extends ObjectBehavior
         LocaleInterface $en,
         FamilyInterface $shirt,
         CompletenessInterface $completeness,
-        ProductValueInterface $nameValue,
+        ValueInterface $nameValue,
         AttributeInterface $name
     ) {
         $product->getFamily()->willReturn($shirt);
@@ -109,7 +109,7 @@ class CompletenessManagerSpec extends ObjectBehavior
         LocaleInterface $en,
         FamilyInterface $shirt,
         CompletenessInterface $completeness,
-        ProductValueInterface $nameValue,
+        ValueInterface $nameValue,
         AttributeInterface $name
     ) {
         $product->getFamily()->willReturn($shirt);

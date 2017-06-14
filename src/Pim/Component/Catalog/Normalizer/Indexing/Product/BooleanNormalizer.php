@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,7 +18,7 @@ class BooleanNormalizer extends AbstractProductValueNormalizer implements Normal
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface &&
+        return $data instanceof ValueInterface &&
             AttributeTypes::BACKEND_TYPE_BOOLEAN === $data->getAttribute()->getBackendType() &&
             'indexing' === $format;
     }
@@ -26,8 +26,8 @@ class BooleanNormalizer extends AbstractProductValueNormalizer implements Normal
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ProductValueInterface $productValue)
+    protected function getNormalizedData(ValueInterface $value)
     {
-        return $productValue->getData();
+        return $value->getData();
     }
 }

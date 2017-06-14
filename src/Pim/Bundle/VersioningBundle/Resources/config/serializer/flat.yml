@@ -12,7 +12,7 @@ parameters:
     pim_serializer.normalizer.flat.job_instance.class:      Pim\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer
     pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer
     pim_serializer.normalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer
-    pim_serializer.normalizer.flat.product_value.class:     Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer
+    pim_serializer.normalizer.flat.product_value.class:     Pim\Bundle\VersioningBundle\Normalizer\Flat\ValueNormalizer
     pim_serializer.normalizer.flat.locale.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\LocaleNormalizer
     pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\VersioningBundle\Normalizer\Flat\CollectionNormalizer
     pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\DateTimeNormalizer

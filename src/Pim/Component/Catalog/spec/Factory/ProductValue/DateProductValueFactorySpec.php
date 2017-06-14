@@ -7,13 +7,13 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 
 class DateProductValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_date');
+        $this->beConstructedWith(ScalarValue::class, 'pim_catalog_date');
     }
 
     function it_is_initializable()
@@ -43,7 +43,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -66,7 +66,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -91,7 +91,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
             '2000-01-01'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -114,7 +114,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
             '2000-01-01'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');

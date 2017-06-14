@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class ProductValueFactorySpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper,
         AttributeInterface $attribute,
         ProductValueFactoryInterface $productValueFactory,
-        ProductValueInterface $productValue
+        ValueInterface $productValue
     ) {
         $productValueFactory->supports('text')->willReturn(true);
         $this->registerFactory($productValueFactory);
@@ -49,7 +49,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper,
         AttributeInterface $attribute,
         ProductValueFactoryInterface $productValueFactory,
-        ProductValueInterface $productValue
+        ValueInterface $productValue
     ) {
         $productValueFactory->supports('text')->willReturn(true);
         $this->registerFactory($productValueFactory);

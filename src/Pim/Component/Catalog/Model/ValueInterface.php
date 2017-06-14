@@ -9,7 +9,7 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductValueInterface
+interface ValueInterface
 {
     /**
      * Get data
@@ -49,11 +49,11 @@ interface ProductValueInterface
     /**
      * Checks that the product value is equal to another.
      *
-     * @param ProductValueInterface $productValue
+     * @param ValueInterface $value
      *
      * @return bool
      */
-    public function isEqual(ProductValueInterface $productValue);
+    public function isEqual(ValueInterface $value);
 
     /**
      * @return string

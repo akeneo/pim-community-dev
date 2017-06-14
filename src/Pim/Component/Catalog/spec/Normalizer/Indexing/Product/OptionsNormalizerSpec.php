@@ -4,10 +4,10 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\OptionsNormalizer;
 use Pim\Component\Catalog\ProductValue\OptionsProductValue;
-use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OptionsNormalizerSpec extends ObjectBehavior
@@ -23,8 +23,8 @@ class OptionsNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_options_product_value(
-        OptionsProductValueInterface $optionsValue,
-        ProductValueInterface $textValue,
+        OptionsValueInterface $optionsValue,
+        ValueInterface $textValue,
         AttributeInterface $optionAttribute,
         AttributeInterface $textAttribute
     ) {

@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -52,7 +52,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ValuesContainerInterface $penValuesContainer,
         ValuesContainerInterface $bookValuesContainer,
-        ProductValueInterface $priceValue,
+        ValueInterface $priceValue,
         PriceCollectionInterface $priceCollection,
         ProductPriceInterface $priceEUR,
         ProductPriceInterface $priceUSD,

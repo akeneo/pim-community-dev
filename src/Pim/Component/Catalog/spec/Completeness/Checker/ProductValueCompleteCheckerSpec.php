@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 
 class ProductValueCompleteCheckerSpec extends ObjectBehavior
@@ -17,7 +17,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_tells_the_value_is_not_complete_by_default(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
@@ -25,7 +25,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_supports_non_localisable_and_non_scopable_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AttributeInterface $attribute
@@ -39,7 +39,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_supports_localisable_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AttributeInterface $attribute
@@ -53,7 +53,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_supports_locale_specific_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AttributeInterface $attribute
@@ -68,7 +68,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_supports_scopable_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AttributeInterface $attribute
@@ -82,7 +82,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_supports_scopable_and_localisable_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AttributeInterface $attribute
@@ -96,7 +96,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_does_not_supports_a_locale_that_does_not_match_the_localisable_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         LocaleInterface $localeValue,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -111,7 +111,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_does_not_supports_a_locale_that_does_not_match_the_locale_specific_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AttributeInterface $attribute
@@ -126,7 +126,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_does_not_supports_a_channel_that_does_not_match_the_channel_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channelValue,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -141,7 +141,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_successfully_checks_incomplete_attribute(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductValueCompleteCheckerInterface $completenessChecker,
@@ -159,7 +159,7 @@ class ProductValueCompleteCheckerSpec extends ObjectBehavior
     }
 
     function it_successfully_checks_complete_attribute(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductValueCompleteCheckerInterface $completenessChecker,

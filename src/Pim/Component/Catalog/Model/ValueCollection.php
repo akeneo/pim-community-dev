@@ -21,17 +21,17 @@ namespace Pim\Component\Catalog\Model;
  */
 class ValueCollection implements ValueCollectionInterface
 {
-    /** @var ProductValueInterface[] */
+    /** @var ValueInterface[] */
     private $values;
 
-    /** @var ProductValueInterface[] */
+    /** @var ValueInterface[] */
     private $uniqueValues;
 
     /** @var AttributeInterface[] */
     private $attributes;
 
     /**
-     * @param ProductValueInterface[] $values
+     * @param ValueInterface[] $values
      */
     public function __construct(array $values = [])
     {
@@ -113,7 +113,7 @@ class ValueCollection implements ValueCollectionInterface
     /**
      * {@inheritDoc}
      */
-    public function remove(ProductValueInterface $value)
+    public function remove(ValueInterface $value)
     {
         $key = array_search($value, $this->values, true);
 
@@ -156,7 +156,7 @@ class ValueCollection implements ValueCollectionInterface
     /**
      * {@inheritDoc}
      */
-    public function contains(ProductValueInterface $value)
+    public function contains(ValueInterface $value)
     {
         return in_array($value, $this->values, true);
     }
@@ -208,7 +208,7 @@ class ValueCollection implements ValueCollectionInterface
     /**
      * {@inheritDoc}
      */
-    public function add(ProductValueInterface $value)
+    public function add(ValueInterface $value)
     {
         if (false !== array_search($value, $this->values, true)) {
             return false;

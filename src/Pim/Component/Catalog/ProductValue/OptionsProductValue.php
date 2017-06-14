@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\ProductValue;
 
-use Pim\Component\Catalog\Model\AbstractProductValue;
+use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionsProductValue extends AbstractProductValue implements OptionsProductValueInterface
+class OptionsProductValue extends AbstractValue implements OptionsValueInterface
 {
     /** @var AttributeOptionInterface[] */
     protected $data;

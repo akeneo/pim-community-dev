@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\LocalizableValue;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -33,7 +33,7 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
     function it_does_not_add_violations_if_value_is_localizable_and_has_an_existing_locale(
         $context,
         $localeRepository,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $localizableAttribute,
         LocaleInterface $existingLocale,
         LocalizableValue $constraint
@@ -49,7 +49,7 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
 
     function it_adds_violations_if_value_is_localizable_and_does_not_have_locale(
         $context,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $localizableAttribute,
         LocalizableValue $constraint,
         ConstraintViolationBuilderInterface $violation
@@ -71,7 +71,7 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
 
     function it_adds_violations_if_value_is_not_localizable_and_a_locale_is_provided(
         $context,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $notLocalizableAttribute,
         LocalizableValue $constraint,
         ConstraintViolationBuilderInterface $violation
@@ -94,7 +94,7 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
     function it_adds_violations_if_value_is_localizable_and_its_locale_does_not_exist(
         $context,
         $localeRepository,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $localizableAttribute,
         LocalizableValue $constraint,
         ConstraintViolationBuilderInterface $violation

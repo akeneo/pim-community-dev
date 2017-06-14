@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Mapping;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Validator\Mapping\ClassMetadataFactory;
 use Prophecy\Argument;
@@ -33,7 +33,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
             ->duringGetMetadataFor($object);
     }
 
-    function it_has_metadata_for_product_value(ProductValueInterface $value)
+    function it_has_metadata_for_product_value(ValueInterface $value)
     {
         $this->hasMetadataFor($value)->shouldBe(true);
     }
@@ -47,7 +47,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $guesser,
         $factory,
         ClassMetadata $metadata,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         Constraint $unique,
         Constraint $validNumber
@@ -71,7 +71,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $guesser,
         $factory,
         ClassMetadata $metadata,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         Constraint $property
     ) {
@@ -90,7 +90,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $guesser,
         $factory,
         ClassMetadata $metadata,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         Constraint $class
     ) {
@@ -109,7 +109,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $guesser,
         $factory,
         ClassMetadata $metadata,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         Constraint $multiTargets
     ) {

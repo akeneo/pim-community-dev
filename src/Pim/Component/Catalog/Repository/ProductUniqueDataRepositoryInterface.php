@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product unique data repository. Please see {@see Pim\Component\Catalog\Model\ProductUniqueDataInterface}
@@ -20,10 +20,10 @@ interface ProductUniqueDataRepositoryInterface extends ObjectRepository
      * Returns true if a unique ProductValue with the provided data already exists in another product,
      * false otherwise.
      *
-     * @param ProductValueInterface $value
-     * @param ProductInterface      $product
+     * @param ValueInterface   $value
+     * @param ProductInterface $product
      *
      * @return bool
      */
-    public function uniqueDataExistsInAnotherProduct(ProductValueInterface $value, ProductInterface $product);
+    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product);
 }

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 
 /**
@@ -20,7 +20,7 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
     /**
      * {@inheritdoc}
      */
-    public function uniqueDataExistsInAnotherProduct(ProductValueInterface $value, ProductInterface $product)
+    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product)
     {
         $queryBuilder = $this->createQueryBuilder('ud')
             ->select('COUNT(ud)')

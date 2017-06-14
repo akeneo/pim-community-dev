@@ -5,7 +5,7 @@ namespace spec\Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataCollectionNormalizer;
 use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,7 +24,7 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 
     function it_support_reference_data_product_value(
         ReferenceDataCollectionProductValue $referenceDataCollectionProductValue,
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $referenceData,
         AttributeInterface $textAttribute
     ) {

@@ -4,7 +4,7 @@ namespace spec\Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\AbstractReferenceData;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataNormalizer;
@@ -25,7 +25,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_support_reference_data_product_value(
         ReferenceDataProductValue $referenceDataProductValue,
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $referenceData,
         AttributeInterface $textAttribute
     ) {

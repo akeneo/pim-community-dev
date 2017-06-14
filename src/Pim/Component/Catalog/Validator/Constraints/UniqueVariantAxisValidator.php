@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -66,7 +66,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $value = $product->getValue($code);
-                $option = $value instanceof OptionProductValueInterface && null !== $value->getData() ?
+                $option = $value instanceof OptionValueInterface && null !== $value->getData() ?
                     $value->getData()->getCode() :
                     null;
 
@@ -133,7 +133,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         $criteria = [];
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
-            $isOption = $value instanceof OptionProductValueInterface;
+            $isOption = $value instanceof OptionValueInterface;
 
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
             if (null === $value ||
