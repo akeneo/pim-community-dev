@@ -12,3 +12,11 @@ extensions:
         config:
             alias: proposal-grid
             localeKey: dataLocale
+
+    pim-proposal-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-proposal-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-proposal

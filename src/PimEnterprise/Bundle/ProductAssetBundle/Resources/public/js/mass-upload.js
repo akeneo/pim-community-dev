@@ -9,7 +9,8 @@ define(
         'pim/dropzonejs',
         'oro/messenger',
         'pimee/template/asset/mass-upload',
-        'pimee/template/asset/mass-upload-row'
+        'pimee/template/asset/mass-upload-row',
+        'pim/form-builder'
     ],
     function (
         $,
@@ -20,7 +21,8 @@ define(
         Dropzone,
         messenger,
         pageTemplate,
-        rowTemplate
+        rowTemplate,
+        formBuilder
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -57,6 +59,10 @@ define(
              */
             render: function () {
                 this.$el.html(this.pageTemplate({__: __}));
+
+                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                    form.setElement('.user-menu').render();
+                }.bind(this));
 
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');

@@ -2,12 +2,12 @@ extensions:
     pim-menu-asset:
         module: pim/menu/tab
         parent: pim-menu
-        position: 80
+        position: 115
         targetZone: left
         config:
             title: pim_menu.tab.asset
-            icon: icon-card.svg
-            iconHover: icon-card-purple.svg
+            icon: icon-asset.svg
+            iconHover: icon-asset-purple.svg
             to: pimee_product_asset_index
 
     pim-menu-enrich-asset-category:
@@ -47,7 +47,7 @@ extensions:
             title: pim_menu.item.published_product
             to: pimee_workflow_published_product_index
 
-    pim-menu-enrich-proposal:
+    pim-menu-settings-proposal:
         module: pim/menu/item
         parent: pim-menu-settings-navigation-block
         position: 140

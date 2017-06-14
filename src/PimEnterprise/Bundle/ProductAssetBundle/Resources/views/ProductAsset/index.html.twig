@@ -3,20 +3,10 @@
 
 {% block head_script %}
     {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_create-js-handler.html.twig' %}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'jquery.sidebarize'],
-            function ($) {
-                'use strict';
-                $(function() {
-                    $('.has-sidebar').sidebarize();
-                });
-            }
-        );
-    </script>
 {% endblock %}
 
 {% block content %}
+<div class="AknDefault-mainContent">
     {% set title %}
         {{ 'pimee_product_asset.page_tab.title.index'|trans }}
     {% endset %}
@@ -40,12 +30,14 @@
     {{ elements.page_header(title, buttons, titleButtons) }}
 
     {% set categoriesGranted = true %}
-    <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}">
+    {# This style is temporary and will be dropped on PEFization of this screen #}
+    <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
         {% if categoriesGranted %}
             <div id="tree" data-datalocale="{{ locale_code() }}" data-name="category" data-type="tree" class="filter-item" data-relatedentity="asset"></div>
         {% endif %}
-        <div id="product-grid">
+        <div id="product-grid" style="flex-grow: 1;">
             {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, {}, 'pimee_asset_categorytree') }}
         </div>
     </div>
+</div>
 {% endblock %}
