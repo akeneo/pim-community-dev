@@ -19,12 +19,16 @@
     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
         <script type="text/javascript">
-            require(['jquery', 'pim/product-create'], function ($, ProductCreate) {
-                'use strict';
-                $('.create-product').on('click', function () {
-                    ProductCreate.openProductModal();
-                });
-            });
+            require(['jquery', 'pim/product-create', 'oro/mediator'],
+                function ($, ProductCreate, mediator) {
+                    'use strict';
+
+                    mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-products' });
+                    $('.create-product').on('click', function () {
+                        ProductCreate.openProductModal();
+                    });
+                }
+            );
         </script>
     {% endset %}
 
