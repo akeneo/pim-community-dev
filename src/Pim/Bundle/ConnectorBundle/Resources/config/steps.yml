@@ -1,6 +1,7 @@
 parameters:
     pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
     pim_connector.step.tasklet.class:   Pim\Component\Connector\Step\TaskletStep
+    pim_connector.step.product.import.bulk_size: 1000
 
 services:
     # Validator steps -------------------------------------------------------------------------------------------------
@@ -72,6 +73,7 @@ services:
             - '@pim_connector.reader.file.csv_product'
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
+            - '%pim_connector.step.product.import.bulk_size%'
 
     pim_connector.step.csv_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
@@ -348,6 +350,7 @@ services:
             - '@pim_connector.reader.file.xlsx_product'
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
+            - '%pim_connector.step.product.import.bulk_size%'
 
     pim_connector.step.xlsx_product.import_associations:
         class: '%pim_connector.step.item_step.class%'

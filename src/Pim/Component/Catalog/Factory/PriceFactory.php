@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
 /**
  * Creates and configures a price instance.
@@ -15,17 +15,17 @@ use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
  */
 class PriceFactory
 {
-    /** @var CurrencyRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $currencyRepository;
 
     /** @var string */
     protected $priceClass;
 
     /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param string                      $priceClass
+     * @param IdentifiableObjectRepositoryInterface $currencyRepository
+     * @param string                                $priceClass
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository, $priceClass)
+    public function __construct(IdentifiableObjectRepositoryInterface $currencyRepository, $priceClass)
     {
         $this->currencyRepository = $currencyRepository;
         $this->priceClass = $priceClass;

@@ -86,7 +86,7 @@ services:
     pim_catalog.factory.price:
         class: '%pim_catalog.factory.price.class%'
         arguments:
-            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.cached_currency'
             - '%pim_catalog.entity.product_price.class%'
 
     pim_catalog.factory.group:
@@ -197,7 +197,7 @@ services:
         class: '%pim_catalog.factory.product_value.option.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_catalog.entity.product_value.option.class%'
             - 'pim_catalog_simpleselect'
         tags:
@@ -207,7 +207,7 @@ services:
         class: '%pim_catalog.factory.product_value.options.class%'
         public: false
         arguments:
-            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_catalog.entity.product_value.options.class%'
             - 'pim_catalog_multiselect'
         tags:

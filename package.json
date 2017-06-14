@@ -4,7 +4,7 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "scripts": {
-    "webpack": "webpack --display-error-details --config webpack.config.js --progress --optimize-minimize",
+    "webpack": "webpack --display-error-details --config webpack.config.js --progress --env=prod",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
@@ -25,6 +25,7 @@
     "babel-eslint": "^6.1.2",
     "babel-loader": "^7.0.0",
     "babel-preset-es2017": "^6.24.1",
+    "babili": "^0.1.2",
     "backbone": "0.9.10",
     "bundle-loader": "^0.5.5",
     "codemirror": "5.25.2",
