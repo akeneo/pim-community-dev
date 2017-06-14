@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory;
+use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionValueFactory;
 use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -18,7 +18,7 @@ use Prophecy\Argument;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
+class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
 {
     function let(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
@@ -27,7 +27,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceDataCollectionProductValueFactory::class);
+        $this->shouldHaveType(ReferenceDataCollectionValueFactory::class);
     }
 
     function it_supports_pim_reference_data_catalog_multiselect_attribute_type()
@@ -179,7 +179,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::arrayExpected(
             'reference_data_multi_select_attribute',
-            ReferenceDataCollectionProductValueFactory::class,
+            ReferenceDataCollectionValueFactory::class,
             true
         );
 
@@ -199,7 +199,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'reference_data_multi_select_attribute',
             'array key "foo" expects a string as value, "array" given',
-            ReferenceDataCollectionProductValueFactory::class,
+            ReferenceDataCollectionValueFactory::class,
             ['foo' => ['bar']]
         );
 
@@ -226,7 +226,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
             'reference_data_multi_select_attribute',
             'reference data code',
             'The code of the reference data "fabrics" does not exist',
-            ReferenceDataCollectionProductValueFactory::class,
+            ReferenceDataCollectionValueFactory::class,
             'foobar'
         );
 

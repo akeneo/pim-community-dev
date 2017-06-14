@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory;
+use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataValueFactory;
 use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -18,7 +18,7 @@ use Prophecy\Argument;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataProductValueFactorySpec extends ObjectBehavior
+class ReferenceDataValueFactorySpec extends ObjectBehavior
 {
     function let(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
@@ -27,7 +27,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceDataProductValueFactory::class);
+        $this->shouldHaveType(ReferenceDataValueFactory::class);
     }
 
     function it_supports_pim_reference_data_catalog_simpleselect_attribute_type()
@@ -171,7 +171,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::stringExpected(
             'reference_data_simple_select_attribute',
-            ReferenceDataProductValueFactory::class,
+            ReferenceDataValueFactory::class,
             []
         );
 
@@ -198,7 +198,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
             'reference_data_simple_select_attribute',
             'reference data code',
             'The code of the reference data "color" does not exist',
-            ReferenceDataProductValueFactory::class,
+            ReferenceDataValueFactory::class,
             'foobar'
         );
 
