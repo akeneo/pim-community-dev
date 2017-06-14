@@ -4,18 +4,17 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\ProductValue\ScalarProductValue;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
 class OptionsProductValueFactorySpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepositoryInterface $attributeOptionRepository)
+    function let(IdentifiableObjectRepositoryInterface $attributeOptionRepository)
     {
         $this->beConstructedWith($attributeOptionRepository, ScalarProductValue::class, 'pim_catalog_multiselect');
     }

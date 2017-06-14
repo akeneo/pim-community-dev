@@ -2,13 +2,11 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 
 class AttributeColumnInfoExtractorSpec extends ObjectBehavior
@@ -19,9 +17,9 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
     const LOCALE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Locale';
 
     function let(
-        AttributeRepositoryInterface $attributeRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository,
         AssociationColumnsResolver $assoColumnResolver
     ) {
         $this->beConstructedWith($attributeRepository, $channelRepository, $localeRepository, $assoColumnResolver);
