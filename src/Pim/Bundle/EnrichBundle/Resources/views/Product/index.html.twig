@@ -53,9 +53,9 @@
 
     {% if resource_granted('pim_enrich_product_category_list') %}
         {# This style is temporary and will be dropped on PEFization of this screen #}
-        <div class="row-fluid" style="display: flex; height: 100%">
+        <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
             <div id="tree" data-datalocale="{{ dataLocale.code }}" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
-            <div id="product-grid" style="flex-grow: 1;" class="AknDefault-mainContent">
+            <div id="product-grid" style="flex-grow: 1;">
                 {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
         </div>

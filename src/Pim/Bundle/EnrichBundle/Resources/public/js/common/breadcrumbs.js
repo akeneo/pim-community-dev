@@ -7,8 +7,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
+define([
         'jquery',
         'underscore',
         'oro/translator',
@@ -49,15 +48,20 @@ define(
             },
 
             /**
+             * This method will configure the breadcrumb. The configuration of this module contains backbone extension
+             * codes related to the menu. To avoid duplication of the labels, we load the configuration of these modules
+             * to bring back the labels into this module.
+             *
              * {@inheritdoc}
              */
             configure: function () {
                 mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab });
                 mediator.trigger('pim_menu:highlight:item', { extension: this.config.item });
 
-                $.when(
+                return $.when(
                     FormRegistry.getFormMeta(this.config.tab),
-                    FormRegistry.getFormMeta(this.config.item)
+                    FormRegistry.getFormMeta(this.config.item),
+                    BaseForm.prototype.configure.apply(this, arguments)
                 ).then(function (metaTab, metaItem) {
                     this.breadcrumbTab = {
                         code: this.config.tab,
@@ -69,6 +73,8 @@ define(
                             label: __(metaItem.config.title)
                         };
                     }
+
+                    this.configured = true;
                 }.bind(this));
             },
 
@@ -76,28 +82,26 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty().append(this.template({
-                    breadcrumbTab: this.breadcrumbTab,
-                    breadcrumbItem: this.breadcrumbItem
-                }));
+                if (true === this.configured) {
+                    this.$el.empty().append(this.template({
+                        breadcrumbTab: this.breadcrumbTab,
+                        breadcrumbItem: this.breadcrumbItem
+                    }));
+                }
             },
 
             /**
-             * Redirects to the linked route
-             *
-             * @param {Event} event
+             * Redirects to the linked tab
              */
             redirectTab: function () {
-                mediator.trigger('pim_menu:redirect:tab', {extension: this.config.tab});
+                mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab });
             },
 
             /**
-             * Redirects to the linked route
-             *
-             * @param {Event} event
+             * Redirects to the linked item
              */
             redirectItem: function () {
-                mediator.trigger('pim_menu:redirect:item', {extension: this.config.item});
+                mediator.trigger('pim_menu:redirect:item', { extension: this.config.item });
             }
         });
     });

@@ -24,6 +24,7 @@
     cursor: pointer;
     margin-bottom: -1px;
     transition: color 0.1s ease-in, border-width 0.1s ease-in;
+    white-space: nowrap;
 
     &--errored {
       font-weight: bold;
@@ -46,10 +47,7 @@
     width: 100%;
   }
 
-  &-item:not(&-item--active) &-link:not(&-link--active):hover {
-    background: @AknDefaultHoverBackground;
-  }
-
+  &-item:not(&-item--active) &-link:not(&-link--active):hover,
   &-item--active &-link,
   &-link--active {
     background: none;

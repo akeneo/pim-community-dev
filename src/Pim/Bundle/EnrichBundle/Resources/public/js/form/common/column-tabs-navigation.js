@@ -2,6 +2,9 @@
 /**
  * Display navigation links in column for the tab display
  *
+ * Even if this module has the same design than `navigation-block`, it does not works like it, because this module is
+ * not composed of extensions, but listen to the product edit form events to register its own tabs.
+ *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -22,8 +25,9 @@ define(
         template
     ) {
         return BaseForm.extend({
-            tabs: [],
+            className: 'AknColumn-block',
             template: _.template(template),
+            tabs: [],
             currentTab: null,
             events: {
                 'click .column-navigation-link': 'selectTab'
@@ -122,13 +126,6 @@ define(
                 return _.filter(this.tabs, function (tab) {
                     return !_.isFunction(tab.isVisible) || tab.isVisible();
                 });
-            },
-
-            /**
-             * @returns {Backbone.View}
-             */
-            getColumn: function () {
-                return this.getParent().getColumn();
             }
         });
     }

@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Base extension for menu
+ * Base extension for navigation blocks
+ * A navigation block is composed of a title and a list of items, displayed in the columns.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

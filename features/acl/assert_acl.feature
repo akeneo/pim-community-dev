@@ -18,6 +18,7 @@ Feature: Define user rights
     And I should not be able to access the products page
     And I should not be able to access the channels page
     But I should be able to access the attributes page
+    And I should see the text "Settings Attributes Attribute overview"
 
   Scenario Outline: Successfully hide entity creation, deletion buttons and page access when user doesn't have the rights
     Given I am logged in as "Peter"
