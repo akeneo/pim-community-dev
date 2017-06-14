@@ -2,21 +2,26 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
- * Factory that creates date product values.
+ * Factory that creates media product values.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DateProductValueFactory implements ProductValueFactoryInterface
+class MediaValueFactory implements ProductValueFactoryInterface
 {
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
+
     /** @var string */
     protected $productValueClass;
 
@@ -24,11 +29,16 @@ class DateProductValueFactory implements ProductValueFactoryInterface
     protected $supportedAttributeType;
 
     /**
-     * @param string $productValueClass
-     * @param string $supportedAttributeType
+     * @param FileInfoRepositoryInterface $fileInfoRepository
+     * @param string                      $productValueClass
+     * @param string                      $supportedAttributeType
      */
-    public function __construct($productValueClass, $supportedAttributeType)
-    {
+    public function __construct(
+        FileInfoRepositoryInterface $fileInfoRepository,
+        $productValueClass,
+        $supportedAttributeType
+    ) {
+        $this->fileInfoRepository = $fileInfoRepository;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
@@ -41,7 +51,7 @@ class DateProductValueFactory implements ProductValueFactoryInterface
         $this->checkData($attribute, $data);
 
         if (null !== $data) {
-            $data = new \DateTime($data);
+            $data = $this->getFileInfo($attribute, $data);
         }
 
         $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
@@ -58,12 +68,12 @@ class DateProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * Checks the data.
+     * Checks that data is a valid file path.
      *
      * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param string             $data
      *
-     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -78,16 +88,6 @@ class DateProductValueFactory implements ProductValueFactoryInterface
                 $data
             );
         }
-
-        try {
-            new \DateTime($data);
-
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                $this->throwsInvalidDateException($attribute, $data);
-            }
-        } catch (\Exception $e) {
-            $this->throwsInvalidDateException($attribute, $data);
-        }
     }
 
     /**
@@ -95,14 +95,22 @@ class DateProductValueFactory implements ProductValueFactoryInterface
      * @param string             $data
      *
      * @throws InvalidPropertyException
+     * @return FileInfoInterface
      */
-    protected function throwsInvalidDateException(AttributeInterface $attribute, $data)
+    protected function getFileInfo(AttributeInterface $attribute, $data)
     {
-        throw InvalidPropertyException::dateExpected(
-            $attribute->getCode(),
-            'yyyy-mm-dd',
-            static::class,
-            $data
-        );
+        $file = $this->fileInfoRepository->findOneByIdentifier($data);
+
+        if (null === $file) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'fileinfo key',
+                'The media does not exist',
+                static::class,
+                $data
+            );
+        }
+
+        return $file;
     }
 }

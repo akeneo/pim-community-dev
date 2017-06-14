@@ -6,14 +6,14 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\OptionsValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
-class OptionsProductValueFactorySpec extends ObjectBehavior
+class OptionsValueFactorySpec extends ObjectBehavior
 {
     function let(AttributeOptionRepositoryInterface $attributeOptionRepository)
     {
@@ -22,7 +22,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(OptionsProductValueFactory::class);
+        $this->shouldHaveType(OptionsValueFactory::class);
     }
 
     function it_supports_multiselect_attribute_type()
@@ -166,7 +166,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::arrayExpected(
             'multi_select_attribute',
-            OptionsProductValueFactory::class,
+            OptionsValueFactory::class,
             'foobar'
         );
 
@@ -191,7 +191,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'multi_select_attribute',
             'one of the options is not a string, "integer" given',
-            OptionsProductValueFactory::class,
+            OptionsValueFactory::class,
             [42]
         );
 
@@ -217,7 +217,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
             'multi_select_attribute',
             'code',
             'The option does not exist',
-            OptionsProductValueFactory::class,
+            OptionsValueFactory::class,
             'foobar'
         );
 

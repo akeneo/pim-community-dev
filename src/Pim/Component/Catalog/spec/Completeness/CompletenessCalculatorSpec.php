@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterf
 use Pim\Component\Catalog\Completeness\CompletenessCalculator;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -24,7 +24,7 @@ use Prophecy\Argument;
 class CompletenessCalculatorSpec extends ObjectBehavior
 {
     function let(
-        ProductValueFactory $valueFactory,
+        ValueFactory $valueFactory,
         CachedObjectRepositoryInterface $channelRepository,
         CachedObjectRepositoryInterface $localeRepository,
         ProductValueCompleteCheckerInterface $valueCompleteChecker

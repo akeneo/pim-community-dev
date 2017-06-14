@@ -5,14 +5,14 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\PriceFactory;
-use Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\PriceCollectionValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Prophecy\Argument;
 
-class PriceCollectionProductValueFactorySpec extends ObjectBehavior
+class PriceCollectionValueFactorySpec extends ObjectBehavior
 {
     function let(PriceFactory $priceFactory)
     {
@@ -21,7 +21,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(PriceCollectionProductValueFactory::class);
+        $this->shouldHaveType(PriceCollectionValueFactory::class);
     }
 
     function it_supports_price_collection_attribute_type()
@@ -196,7 +196,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::arrayExpected(
             'price_collection_attribute',
-            PriceCollectionProductValueFactory::class,
+            PriceCollectionValueFactory::class,
             'foobar'
         );
 
@@ -216,7 +216,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::arrayOfArraysExpected(
             'price_collection_attribute',
-            PriceCollectionProductValueFactory::class,
+            PriceCollectionValueFactory::class,
             ['foobar']
         );
 
@@ -237,7 +237,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'price_collection_attribute',
             'amount',
-            PriceCollectionProductValueFactory::class,
+            PriceCollectionValueFactory::class,
             [['foo' => 42, 'currency' => 'EUR']]
         );
 
@@ -258,7 +258,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'price_collection_attribute',
             'currency',
-            PriceCollectionProductValueFactory::class,
+            PriceCollectionValueFactory::class,
             [['amount' => 42, 'bar' => 'EUR']]
         );
 

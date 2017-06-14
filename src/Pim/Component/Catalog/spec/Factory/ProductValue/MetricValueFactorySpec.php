@@ -5,13 +5,13 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\MetricFactory;
-use Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\MetricValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Prophecy\Argument;
 
-class MetricProductValueFactorySpec extends ObjectBehavior
+class MetricValueFactorySpec extends ObjectBehavior
 {
     function let(MetricFactory $metricFactory)
     {
@@ -20,7 +20,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(MetricProductValueFactory::class);
+        $this->shouldHaveType(MetricValueFactory::class);
     }
 
     function it_supports_metric_attribute_type()
@@ -177,7 +177,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::arrayExpected(
             'metric_attribute',
-            MetricProductValueFactory::class,
+            MetricValueFactory::class,
             'foobar'
         );
 
@@ -201,7 +201,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'metric_attribute',
             'amount',
-            MetricProductValueFactory::class,
+            MetricValueFactory::class,
             ['foo' => 42, 'unit' => 'GRAM']
         );
 
@@ -225,7 +225,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'metric_attribute',
             'unit',
-            MetricProductValueFactory::class,
+            MetricValueFactory::class,
             ['amount' => 42, 'bar' => 'GRAM']
         );
 

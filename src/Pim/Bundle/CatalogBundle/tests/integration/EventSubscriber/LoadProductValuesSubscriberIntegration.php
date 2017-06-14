@@ -62,7 +62,7 @@ class LoadProductValuesSubscriberIntegration extends TestCase
      */
     private function createProductValue(AttributeInterface $attribute, $scope, $locale, $data)
     {
-        return $this->get('pim_catalog.factory.product_value')->create(
+        return $this->get('pim_catalog.factory.value')->create(
             $attribute,
             $scope,
             $locale,

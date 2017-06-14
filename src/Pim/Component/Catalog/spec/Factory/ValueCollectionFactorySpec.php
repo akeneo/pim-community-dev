@@ -6,18 +6,18 @@ use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
-use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
-class ProductValueCollectionFactorySpec extends ObjectBehavior
+class ValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
-        ProductValueFactory $valueFactory,
+        ValueFactory $valueFactory,
         CachedObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger
     ) {
@@ -26,7 +26,7 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductValueCollectionFactory::class);
+        $this->shouldHaveType(ValueCollectionFactory::class);
     }
 
     function it_creates_a_values_collection_from_the_storage_format(

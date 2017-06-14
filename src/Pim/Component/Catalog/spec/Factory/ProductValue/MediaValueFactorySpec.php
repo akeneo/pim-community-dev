@@ -7,12 +7,12 @@ use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory;
+use Pim\Component\Catalog\Factory\ProductValue\MediaValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Prophecy\Argument;
 
-class MediaProductValueFactorySpec extends ObjectBehavior
+class MediaValueFactorySpec extends ObjectBehavior
 {
     function let(FileInfoRepositoryInterface $fileInfoRepository)
     {
@@ -21,7 +21,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(MediaProductValueFactory::class);
+        $this->shouldHaveType(MediaValueFactory::class);
     }
 
     function it_creates_an_empty_file_product_value($fileInfoRepository, AttributeInterface $attribute)
@@ -309,7 +309,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::stringExpected(
             'image_attribute',
-            MediaProductValueFactory::class,
+            MediaValueFactory::class,
             []
         );
 
@@ -341,7 +341,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
             'image_attribute',
             'fileinfo key',
             'The media does not exist',
-            MediaProductValueFactory::class,
+            MediaValueFactory::class,
             'foo/bar.txt'
         );
 

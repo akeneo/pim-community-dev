@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
@@ -31,7 +31,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductValueFactory $productValueFactory,
+        ValueFactory $productValueFactory,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $pqbFactory,

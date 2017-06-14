@@ -16,9 +16,9 @@ use Psr\Log\LoggerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueCollectionFactory
+class ValueCollectionFactory
 {
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     private $valueFactory;
 
     /** @var CachedObjectRepositoryInterface */
@@ -28,12 +28,12 @@ class ProductValueCollectionFactory
     private $logger;
 
     /**
-     * @param ProductValueFactory             $valueFactory
+     * @param ValueFactory                    $valueFactory
      * @param CachedObjectRepositoryInterface $attributeRepository
      * @param LoggerInterface                 $logger
      */
     public function __construct(
-        ProductValueFactory $valueFactory,
+        ValueFactory $valueFactory,
         CachedObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger
     ) {

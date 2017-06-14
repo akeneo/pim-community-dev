@@ -6,7 +6,7 @@ services:
     pim_catalog.completeness.calculator:
         class: '%pim_catalog.completeness.calculator.class%'
         arguments:
-            - '@pim_catalog.factory.product_value'
+            - '@pim_catalog.factory.value'
             - '@pim_catalog.repository.cached_channel'
             - '@pim_catalog.repository.cached_locale'
             - '@pim_catalog.completeness.checker'
