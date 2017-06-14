@@ -6,7 +6,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -27,7 +27,7 @@ class CompletenessManagerSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ProductValueCompleteCheckerInterface $productValueCompleteChecker
+        ValueCompleteCheckerInterface $productValueCompleteChecker
     ) {
         $this->beConstructedWith(
             $familyRepository,

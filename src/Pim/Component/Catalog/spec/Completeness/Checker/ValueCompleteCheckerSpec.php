@@ -7,13 +7,13 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 
 class ValueCompleteCheckerSpec extends ObjectBehavior
 {
     function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
     }
 
     function it_tells_the_value_is_not_complete_by_default(
@@ -144,7 +144,7 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        ProductValueCompleteCheckerInterface $completenessChecker,
+        ValueCompleteCheckerInterface $completenessChecker,
         AttributeInterface $attribute
     ) {
         $completenessChecker->supportsValue($value, $channel, $locale)->willReturn(true);
@@ -162,7 +162,7 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        ProductValueCompleteCheckerInterface $completenessChecker,
+        ValueCompleteCheckerInterface $completenessChecker,
         AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);

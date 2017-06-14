@@ -13,7 +13,7 @@ class MediaCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
     }
 
     public function it_suports_media_attribute(

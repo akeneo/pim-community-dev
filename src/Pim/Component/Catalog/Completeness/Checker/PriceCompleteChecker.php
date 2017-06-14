@@ -21,7 +21,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  *           \Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker
  *           to calculate the completeness on a product value
  */
-class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
+class PriceCompleteChecker implements ValueCompleteCheckerInterface
 {
     /**
      * {@inheritdoc}

@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Completeness;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Completeness\CompletenessCalculator;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
@@ -27,7 +27,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         ValueFactory $valueFactory,
         CachedObjectRepositoryInterface $channelRepository,
         CachedObjectRepositoryInterface $localeRepository,
-        ProductValueCompleteCheckerInterface $valueCompleteChecker
+        ValueCompleteCheckerInterface $valueCompleteChecker
     ) {
         $this->beConstructedWith(
             $valueFactory,
