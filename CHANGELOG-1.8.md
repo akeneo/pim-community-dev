@@ -1,5 +1,36 @@
 # 1.8.*
 
+## BC breaks
+
+### Classes
+
+- PIM-6442: Rename Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractProductValueDataNormalizer in Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractValueDataNormalizer
+- PIM-6442: Rename Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer in Pim\Bundle\VersioningBundle\Normalizer\Flat\ValueNormalizer
+- PIM-6442: Rename Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker in Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker
+- PIM-6442: Rename Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface in Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\DateValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\MediaValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\MetricValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\OptionValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\OptionsValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\PriceCollectionValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface in Pim\Component\Catalog\Factory\ProductValue\ValueFactoryInterface
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory in Pim\Component\Catalog\Factory\ProductValue\ScalarValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValueCollectionFactory in Pim\Component\Catalog\Factory\ProductValueCollectionFactory
+- PIM-6442: Rename Pim\Component\Catalog\Factory\ProductValueFactory in Pim\Component\Catalog\Factory\ValueFactory
+- PIM-6442: Rename Pim\Component\Catalog\ProductValue\DateProductValue in Pim\Component\Catalog\ProductValue\DateValue
+- PIM-6442: Rename Pim\Component\Catalog\ProductValue\MediaProductValue in Pim\Component\Catalog\ProductValue\MediaValue
+- PIM-6442: Rename Pim\Component\Catalog\ProductValue\MetricProductValue in Pim\Component\Catalog\ProductValue\MetricValue
+- PIM-6442: Rename Pim\Component\Catalog\ProductValue\OptionProductValue in Pim\Component\Catalog\ProductValue\OptionValue
+- PIM-6442: Rename Pim\Component\Catalog\ProductValue\OptionsProductValue in Pim\Component\Catalog\ProductValue\OptionsValue
+- PIM-6442: Rename Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue in Pim\Component\Connector\ArrayConverter\FlatToStandard\Value
+- PIM-6442: Rename Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter in Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter
+- PIM-6442: Rename Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter in Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter
+- PIM-6442: Rename Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory in Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionValueFactory
+- PIM-6442: Rename Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory in Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataValueFactory
+- PIM-6442: Rename Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue in Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValue
+- PIM-6442: Rename Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue in Pim\Component\ReferenceData\ProductValue\ReferenceDataValue
+
 ## Functional improvements
 
 - TIP-718: Update group types form
