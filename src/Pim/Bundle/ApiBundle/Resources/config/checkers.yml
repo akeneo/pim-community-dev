@@ -1,0 +1,9 @@
+parameters:
+    pim_api.checker.product_query_parameters.class: Pim\Bundle\ApiBundle\Checker\ProductQueryParametersChecker
+
+services:
+    pim_api.checker.product_query_parameters:
+        class: '%pim_api.checker.product_query_parameters.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_api.repository.attribute'
