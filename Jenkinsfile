@@ -76,7 +76,14 @@ stage("Checkout") {
             docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
 
-                    sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                    sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts"
+
+                    dir('vendor/akeneo/pim-community-dev') {
+                        deleteDir()
+                        unstash "pim_community_dev"
+                        sh "php -d memory_limit=-1 /usr/local/bin/composer run-script post-update-cmd"
+                    }
+
                     sh "app/console assets:install"
                     sh "app/console pim:installer:dump-require-paths"
 
@@ -281,10 +288,6 @@ def runBehatTest(edition, features, phpVersion) {
                tags = "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
             } else {
                 unstash "pim_enterprise_dev_full"
-                dir('vendor/akeneo/pim-community-dev') {
-                    deleteDir()
-                    unstash "pim_community_dev"
-                }
                 tags = "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
 

@@ -72,7 +72,7 @@ define(
                         }.bind(this),
                         paramName: 'associationType',
                         getParamValue: function (associationType) {
-                            return _.findWhere(state.associationTypes, {code: associationType}).id;
+                            return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
                         }.bind(this),
                         getModelIdentifier: function (model) {
                             return model.get('identifier');

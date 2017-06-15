@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -59,6 +61,9 @@ class AssociationTypeController
     /** @var SaverInterface */
     protected $saver;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -72,6 +77,7 @@ class AssociationTypeController
      * @param ValidatorInterface          $validator
      * @param RouterInterface             $router
      * @param SaverInterface              $saver
+     * @param StreamResourceResponse      $partialUpdateStreamResource
      * @param array                       $apiConfiguration
      */
     public function __construct(
@@ -84,6 +90,7 @@ class AssociationTypeController
         ValidatorInterface $validator,
         RouterInterface $router,
         SaverInterface $saver,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
@@ -95,6 +102,7 @@ class AssociationTypeController
         $this->validator = $validator;
         $this->router = $router;
         $this->saver = $saver;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -195,6 +203,58 @@ class AssociationTypeController
     }
 
     /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_association_type_edit")
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $associationType = $this->repository->findOneByIdentifier($code);
+
+        if (null === $associationType) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $associationType = $this->factory->create();
+        }
+
+        $this->updateAssociationType($associationType, $data, 'patch_association_types__code_');
+        $this->validateAssociationType($associationType);
+
+        $this->saver->save($associationType);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($associationType, $status);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_association_type_edit")
+     */
+    public function partialUpdateListAction(Request $request)
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+
+        return $response;
+    }
+
+    /**
      * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
      *
      * @param string $content content of a request to decode
@@ -271,5 +331,29 @@ class AssociationTypeController
         $response->headers->set('Location', $url);
 
         return $response;
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating an association type with a PATCH method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($code, array $data)
+    {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
+            );
+        }
     }
 }
