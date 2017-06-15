@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueFactoryPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -10,14 +10,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class RegisterProductValueFactoryPassSpec extends ObjectBehavior
+class RegisterValueFactoryPassSpec extends ObjectBehavior
 {
     const PRODUCT_VALUE_FACTORY_TAG = 'pim_catalog.factory.value';
     const PRODUCT_VALUE_FACTORY = 'pim_catalog.factory.value';
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RegisterProductValueFactoryPass::class);
+        $this->shouldHaveType(RegisterValueFactoryPass::class);
     }
 
     function it_is_a_compiler_pass()
