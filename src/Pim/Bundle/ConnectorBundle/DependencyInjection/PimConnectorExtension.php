@@ -25,7 +25,6 @@ class PimConnectorExtension extends Extension
         $loader->load('analyzers.yml');
         $loader->load('archiving.yml');
         $loader->load('array_converters.yml');
-        $loader->load('commands.yml');
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
         $loader->load('items.yml');

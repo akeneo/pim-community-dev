@@ -31,67 +31,6 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
  */
 class BatchCommand extends BaseBatchCommand
 {
-    /** @var UserProviderInterface */
-    protected $userProvider;
-
-    /** @var TokenStorage */
-    protected $tokenStorage;
-
-    /**
-     * @param DebugLoggerInterface                  $logger
-     * @param BatchLogHandler                       $batchLogHandler
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param RegistryInterface                     $doctrine
-     * @param RecursiveValidator                    $validator
-     * @param MailNotifier                          $notifier
-     * @param JobParametersFactory                  $jobParametersFactory
-     * @param JobParametersValidator                $jobParametersValidator
-     * @param JobRegistry                           $jobRegistry
-     * @param JobRepositoryInterface                $jobRepository
-     * @param UserProviderInterface                 $userProvider
-     * @param TokenStorage                          $tokenStorage
-     */
-    public function __construct(
-        DebugLoggerInterface $logger,
-        BatchLogHandler $batchLogHandler,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        RegistryInterface $doctrine,
-        RecursiveValidator $validator,
-        MailNotifier $notifier,
-        JobParametersFactory $jobParametersFactory,
-        JobParametersValidator $jobParametersValidator,
-        JobRegistry $jobRegistry,
-        JobRepositoryInterface $jobRepository,
-        UserProviderInterface $userProvider,
-        TokenStorage $tokenStorage
-    ) {
-        parent::__construct(
-            $logger,
-            $batchLogHandler,
-            $jobInstanceRepository,
-            $doctrine,
-            $validator,
-            $notifier,
-            $jobParametersFactory,
-            $jobParametersValidator,
-            $jobRegistry,
-            $jobRepository
-        );
-
-        $this->logger = $logger;
-        $this->batchLogHandler = $batchLogHandler;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->doctrine = $doctrine;
-        $this->validator = $validator;
-        $this->mailNotifier = $notifier;
-        $this->jobParametersFactory = $jobParametersFactory;
-        $this->jobParametersValidator = $jobParametersValidator;
-        $this->jobRegistry = $jobRegistry;
-        $this->jobRepository = $jobRepository;
-        $this->userProvider = $userProvider;
-        $this->tokenStorage = $tokenStorage;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -131,14 +70,14 @@ class BatchCommand extends BaseBatchCommand
     {
         $username = $input->getArgument('username');
 
-        $user = $this->userProvider->loadUserByUsername($username);
+        $user = $this->getContainer()->get('pim_user.provider.user')->loadUserByUsername($username);
 
         if (null === $user) {
             throw new UsernameNotFoundException();
         }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
+        $this->getContainer()->get('security.token_storage')->setToken($token);
 
         parent::execute($input, $output);
     }
