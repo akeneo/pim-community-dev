@@ -7,7 +7,7 @@ use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
-class ProductValueConverterSpec extends ObjectBehavior
+class ValueConverterSpec extends ObjectBehavior
 {
     function let(AttributeRepositoryInterface $attributeRepository, FileInfoRepositoryInterface $fileInfoRepository)
     {
