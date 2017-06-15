@@ -128,7 +128,8 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
-
+        file_put_contents('/tmp/dump.txt', print_r($GLOBALS['kernel']->getContainer()->get('doctrine.orm.default_entity_manager')->getConfiguration()->getQueryCacheImpl(), TRUE));
+        die();
         if (false === $this->itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
         }

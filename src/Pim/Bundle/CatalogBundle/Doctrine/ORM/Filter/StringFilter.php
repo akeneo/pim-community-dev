@@ -92,6 +92,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 'WITH',
                 $condition
             );
+            $this->qb->setParameter('value', $value);
         }
 
         return $this;
@@ -139,7 +140,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 break;
             case Operators::EQUALS:
                 $operator = 'LIKE';
-                $value    = $value;
+                return $this->qb->expr()->like($backendField, ':value')->__toString();
                 break;
             default:
                 break;
