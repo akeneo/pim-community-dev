@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
-class ValueChannelFilterSpec extends ObjectBehavior
+class ProductValueChannelFilterSpec extends ObjectBehavior
 {
     public function it_does_not_filter_a_product_value_if_channel_option_is_empty(ValueInterface $price, AttributeInterface $priceAttribute)
     {
