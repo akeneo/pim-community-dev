@@ -43,7 +43,7 @@ define([
          * {@inheritdoc}
          */
         configure: function () {
-            var formName = FormRegistry.initialize().getFormName(this.getRoot().getType(), this.config.mode);
+            var formName = FormRegistry.getFormName(this.getRoot().getType(), this.config.mode);
 
             if (undefined !== formName && null !== formName) {
                 return FormBuilder.buildForm(formName)

@@ -9,7 +9,7 @@ define([
     'underscore',
     'pim/attribute-edit-form/properties/field',
     'oro/translator',
-    'text!pim/template/attribute/tab/properties/select'
+    'pim/template/attribute/tab/properties/select'
 ],
 function (
     _,

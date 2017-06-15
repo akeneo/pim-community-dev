@@ -6,22 +6,19 @@
 'use strict';
 
 define([
-        'underscore',
-        'pim/attribute-edit-form/properties/text',
-        'text!pim/template/attribute/tab/properties/text'
-    ],
-    function (
-        _,
-        BaseField
-    ) {
-        return BaseField.extend({
-            /**
-             * {@inheritdoc}
-             *
-             * This field should be displayed only when the validation rule is set to "regular expression".
-             */
-            isVisible: function () {
-                return 'regexp' === this.getFormData().validation_rule;
-            }
-        });
+    'pim/attribute-edit-form/properties/text'
+],
+function (
+    BaseField
+) {
+    return BaseField.extend({
+        /**
+         * {@inheritdoc}
+         *
+         * This field should be displayed only when the validation rule is set to "regular expression".
+         */
+        isVisible: function () {
+            return 'regexp' === this.getFormData().validation_rule;
+        }
     });
+});

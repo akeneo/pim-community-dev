@@ -12,7 +12,7 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'text!pim/template/attribute/tab/properties/select'
+    'pim/template/attribute/tab/properties/select'
 ],
 function (
     _,

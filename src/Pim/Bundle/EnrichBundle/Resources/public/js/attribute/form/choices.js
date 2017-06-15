@@ -9,7 +9,7 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
-    'text!pim/template/common/form-container'
+    'pim/template/common/form-container'
 ],
 function (
     _,

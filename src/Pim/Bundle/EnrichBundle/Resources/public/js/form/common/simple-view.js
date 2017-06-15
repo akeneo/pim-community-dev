@@ -12,13 +12,15 @@ define([
     'underscore',
     'backbone',
     'oro/translator',
-    'pim/form'
+    'pim/form',
+    'require-context'
 ], function (
     $,
     _,
     Backbone,
     __,
-    BaseForm
+    BaseForm,
+    requireContext
 ) {
     return BaseForm.extend({
         config: {},
@@ -43,17 +45,9 @@ define([
                 throw new Error('The view "' + this.code + '" must be configured with a template.');
             }
 
-            var promise = $.Deferred();
+            this.template = requireContext(this.config.template);
 
-            require(['text!' + this.config.template], function (template) {
-                this.template = template;
-                promise.resolve().promise();
-            }.bind(this));
-
-            return $.when(
-                promise,
-                BaseForm.prototype.configure.apply(this, arguments)
-            );
+            return BaseForm.prototype.configure.apply(this, arguments);
         },
 
         /**

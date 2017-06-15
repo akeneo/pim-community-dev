@@ -8,7 +8,7 @@
 define([
     'underscore',
     'pim/attribute-edit-form/properties/field',
-    'text!pim/template/attribute/tab/properties/text'
+    'pim/template/attribute/tab/properties/text'
 ],
 function (
     _,

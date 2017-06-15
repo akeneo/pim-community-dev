@@ -10,7 +10,7 @@ define([
     'pim/form',
     'pim/fetcher-registry',
     'pim/attributeoptionview',
-    'text!pim/template/attribute/tab/choices/options-grid'
+    'pim/template/attribute/tab/choices/options-grid'
 ],
 function (
     _,

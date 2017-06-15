@@ -11,7 +11,7 @@ define([
     'datepicker',
     'pim/formatter/date',
     'pim/date-context',
-    'text!pim/template/attribute/tab/properties/date'
+    'pim/template/attribute/tab/properties/date'
 ],
 function (
     _,

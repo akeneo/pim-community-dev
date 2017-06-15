@@ -630,7 +630,6 @@ config:
         # Channel
         pim/channel-edit-form/delete:                           pimenrich/js/channel/form/delete
         pim/channel-edit-form/save:                             pimenrich/js/channel/form/save
-        pim/channel-edit-form/properties/general:               pimenrich/js/channel/form/properties/general
         pim/channel-edit-form/properties/general/currencies:    pimenrich/js/channel/form/properties/general/currencies
         pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
         pim/channel-edit-form/properties/general/category-tree: pimenrich/js/channel/form/properties/general/category-tree
@@ -785,11 +784,9 @@ config:
         pim/group-edit-form/save:                   pimenrich/js/group/form/save
 
         # Attribute
-        pim/attribute-edit-form:                                pimenrich/js/attribute/form/edit-form
         pim/attribute-edit-form/tab/choices:                    pimenrich/js/attribute/form/choices
+        pim/attribute-edit-form/choices/options-grid:           pimenrich/js/attribute/form/choices/options-grid
         pim/attribute-edit-form/delete:                         pimenrich/js/attribute/form/delete
-        pim/attribute-edit-form/type-specific-form:             pimenrich/js/attribute/form/type-specific-form
-        pim/attribute-edit-form/type-specific-form-registry:    pimenrich/js/attribute/form/type-specific-form-registry
         pim/attribute-edit-form/properties/available-locales:   pimenrich/js/attribute/form/properties/available-locales
         pim/attribute-edit-form/properties/boolean:             pimenrich/js/attribute/form/properties/boolean
         pim/attribute-edit-form/properties/date:                pimenrich/js/attribute/form/properties/date
@@ -805,7 +802,9 @@ config:
         pim/attribute-edit-form/properties/type:                pimenrich/js/attribute/form/properties/type
         pim/attribute-edit-form/properties/unique:              pimenrich/js/attribute/form/properties/unique
         pim/attribute-edit-form/properties/validation-regexp:   pimenrich/js/attribute/form/properties/validation-regexp
-        pim/attribute-edit-form/choices/options-grid:           pimenrich/js/attribute/form/choices/options-grid
+        pim/attribute-edit-form/type-specific-form:             pimenrich/js/attribute/form/type-specific-form
+        pim/attribute-edit-form/type-specific-form-registry:    pimenrich/js/attribute/form/type-specific-form-registry
+        pim/attribute-edit-form:                                pimenrich/js/attribute/form/edit-form
 
         # Common
         pim/common/grid:                   pimenrich/js/form/common/grid
@@ -813,7 +812,7 @@ config:
         pim/common/column-list-view:       pimenrich/js/common/column-list-view
         pim/common/breadcrumbs:            pimenrich/js/common/breadcrumbs
         pim/common/tab/history:            pimenrich/js/form/common/tab/history
-        pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
+        pim/common/tab:                    pimenrich/js/form/common/tab
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
         pim/common/properties/general:     pimenrich/js/form/common/properties/general
         pim/common/add-select:             pimenrich/js/form/common/add-select/select
@@ -824,8 +823,6 @@ config:
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
-
-        pim/app: pimenrich/js/app
 
         pim/form/common/label:                               pimenrich/js/form/common/label
         pim/form/common/group-selector:                      pimenrich/js/form/common/group-selector
@@ -942,11 +939,11 @@ config:
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html
         pim/template/form/attribute-group/list:          pimenrich/templates/attribute-group/list.html
 
-        pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
         pim/template/channel/tab/properties/general/locales:        pimenrich/templates/channel/tab/properties/general/locales.html
         pim/template/channel/tab/properties/general/category-tree:  pimenrich/templates/channel/tab/properties/general/category-tree.html
         pim/template/channel/tab/properties/conversion-unit:        pimenrich/templates/channel/tab/properties/conversion-unit.html
+        pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
 
         pim/template/family/tab/attributes/toolbar:          pimenrich/templates/family/tab/attributes/toolbar.html
         pim/template/family/tab/attributes/attributes:       pimenrich/templates/family/tab/attributes/attributes.html

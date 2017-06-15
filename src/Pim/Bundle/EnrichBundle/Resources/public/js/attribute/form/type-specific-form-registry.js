@@ -1,15 +1,7 @@
 'use strict';
 
-define(['module', 'underscore'], function (module, _) {
+define(['underscore'], function (_) {
     return {
-        formNames: {},
-
-        initialize: function () {
-            this.formNames = module.config().formNames;
-
-            return this;
-        },
-
         /**
          * Get the form name corresponding to the specified attribute type, or null.
          *
@@ -19,8 +11,8 @@ define(['module', 'underscore'], function (module, _) {
          * @return {String}
          */
         getFormName: function (attributeType, mode) {
-            return _.has(this.formNames, attributeType) ?
-                this.formNames[attributeType][mode] :
+            return _.has(__moduleConfig.formNames, attributeType) ?
+                __moduleConfig.formNames[attributeType][mode] :
                 null;
         }
     };

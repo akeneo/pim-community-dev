@@ -9,7 +9,7 @@ define([
     'underscore',
     'pim/attribute-edit-form/properties/field',
     'pim/fetcher-registry',
-    'text!pim/template/attribute/tab/properties/select'
+    'pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
