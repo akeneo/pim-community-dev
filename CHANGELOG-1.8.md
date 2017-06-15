@@ -30,6 +30,7 @@
 - PIM-6442: Rename Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory in Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataValueFactory
 - PIM-6442: Rename Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue in Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValue
 - PIM-6442: Rename Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue in Pim\Component\ReferenceData\ProductValue\ReferenceDataValue
+- PIM-6442: Rename PPim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass in Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass
 
 ## Functional improvements
 

@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 /**
  * Factory that creates product values.
  *
- * "RegisterProductValueFactoryPass" allows to register private product value
+ * "RegisterValueFactoryPass" allows to register private product value
  * factories tagged with "pim_catalog.factory.value".
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
