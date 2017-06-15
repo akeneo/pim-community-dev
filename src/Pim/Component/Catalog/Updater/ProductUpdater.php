@@ -156,28 +156,24 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /**
      * Sets the product values,
-     *  - always set values related to family's attributes
-     *  - sets optional values (not related to family's attributes) when a data is provided
-     *  - sets optional values (not related to family's attributes) with empty data if value already exists
+     *  - removes empty values from the product
+     *  - sets optional values when a data is provided
      *
      * @param ProductInterface $product
      * @param array            $values
      */
     protected function updateProductValues(ProductInterface $product, array $values)
     {
-        $family = $product->getFamily();
-        $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
-
         foreach ($values as $code => $value) {
-            $isFamilyAttribute = in_array($code, $authorizedCodes);
-
             foreach ($value as $data) {
                 $hasValue = $product->getValue($code, $data['locale'], $data['scope']);
                 $providedData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']) ? false : true;
 
-                if ($isFamilyAttribute || $providedData || $hasValue) {
+                if ($providedData) {
                     $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
                     $this->propertySetter->setData($product, $code, $data['data'], $options);
+                } elseif ($hasValue) {
+                    $product->getValues()->removeByCodes($code, $data['scope'], $data['locale']);
                 }
             }
         }

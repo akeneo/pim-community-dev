@@ -877,7 +877,9 @@ class FixturesContext extends BaseFixturesContext
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute));
-        $this->assertDataEquals($productValue->getData(), $value);
+        $data = (null !== $productValue) ? $productValue->getData() : '';
+
+        $this->assertDataEquals($data, $value);
     }
 
     /**
@@ -1697,7 +1699,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface|null
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1705,18 +1707,7 @@ class FixturesContext extends BaseFixturesContext
             throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
         }
 
-        if (null === $value = $product->getValue($attribute, $locale, $scope)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
-                    $attribute,
-                    $locale,
-                    $scope
-                )
-            );
-        }
-
-        return $value;
+        return $product->getValue($attribute, $locale, $scope);
     }
 
     /**
