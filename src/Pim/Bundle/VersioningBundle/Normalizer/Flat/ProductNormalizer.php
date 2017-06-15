@@ -7,8 +7,8 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -109,7 +109,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * @param ProductInterface $product
      * @param array            $context
      *
-     * @return ProductValueCollectionInterface|ProductValueInterface[]
+     * @return ValueCollectionInterface|ProductValueInterface[]
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {

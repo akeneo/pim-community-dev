@@ -7,10 +7,10 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
  * Sets a media data in a product.
@@ -28,18 +28,18 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     protected $repository;
 
     /**
-     * @param ProductBuilderInterface     $productBuilder
-     * @param FileStorerInterface         $storer
-     * @param FileInfoRepositoryInterface $repository
-     * @param string[]                    $supportedTypes
+     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
+     * @param FileStorerInterface             $storer
+     * @param FileInfoRepositoryInterface     $repository
+     * @param string[]                        $supportedTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder);
+        parent::__construct($valuesContainerBuilder);
 
         $this->storer = $storer;
         $this->repository = $repository;
@@ -52,7 +52,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * Expected data input format :  "/absolute/file/path/filename.extension"
      */
     public function setAttributeData(
-        ProductInterface $product,
+        ValuesContainerInterface $valuesContainer,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -66,8 +66,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             $file = $this->storeFile($attribute, $data);
         }
 
-        $this->productBuilder->addOrReplaceProductValue(
-            $product,
+        $this->valuesContainerBuilder->addOrReplaceValue(
+            $valuesContainer,
             $attribute,
             $options['locale'],
             $options['scope'],

@@ -2,9 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
  * Copies a data from a product's attribute to another product's attribute
@@ -18,17 +17,15 @@ interface AttributeCopierInterface extends CopierInterface
     /**
      * Copy a data from a source attribute to a destination attribute
      *
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param array              $options
-     *
-     * @throws PropertyException
+     * @param ValuesContainerInterface $fromValuesContainer
+     * @param ValuesContainerInterface $toValuesContainer
+     * @param AttributeInterface       $fromAttribute
+     * @param AttributeInterface       $toAttribute
+     * @param array                    $options
      */
     public function copyAttributeData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        ValuesContainerInterface $fromValuesContainer,
+        ValuesContainerInterface $toValuesContainer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []

@@ -6,15 +6,10 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LoadProductValuesSubscriberSpec extends ObjectBehavior
 {
@@ -41,7 +36,7 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
         $valueCollectionFactory,
         LifecycleEventArgs $event,
         ProductInterface $product,
-        ProductValueCollectionInterface $values
+        ValueCollectionInterface $values
     ) {
         $event->getObject()->willReturn($product);
         $product->getIdentifier()->willReturn('foo');

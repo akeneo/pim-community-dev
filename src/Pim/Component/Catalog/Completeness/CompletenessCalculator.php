@@ -8,13 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Calculates the completenesses for a provided product.
@@ -112,14 +111,14 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
      * [
      *     "mobile" => [
      *         "en_US" => [
-     *             ProductValueCollection {
+     *             ValueCollection {
      *                 name product value,
      *                 short_description-mobile product value,
      *                 long_description-mobile-en_US product value,
      *             }
      *         ],
      *         "fr_FR" => [
-     *             ProductValueCollection {
+     *             ValueCollection {
      *                 name product value,
      *                 short_description-mobile product value,
      *                 long_description-mobile-fr_FR product value,
@@ -128,14 +127,14 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
      *     ],
      *     "print"  => [
      *         "en_US" => [
-     *             ProductValueCollection {
+     *             ValueCollection {
      *                 name product value,
      *                 short_description-print product value,
      *                 long_description-print-en_US product value,
      *             }
      *         ],
      *         "fr_FR" => [
-     *             ProductValueCollection {
+     *             ValueCollection {
      *                 name product value,
      *                 short_description-print product value,
      *                 long_description-print-fr_FR product value,
@@ -171,7 +170,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
                     );
 
                     if (!isset($productValues[$channelCode][$localeCode])) {
-                        $productValues[$channelCode][$localeCode] = new ProductValueCollection();
+                        $productValues[$channelCode][$localeCode] = new ValueCollection();
                     }
                     $productValues[$channelCode][$localeCode]->add($productValue);
                 }
@@ -185,16 +184,16 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
      * Generates one completeness for the given required product value, channel
      * code, locale code and the product values to compare.
      *
-     * @param ProductInterface                $product
-     * @param ProductValueCollectionInterface $requiredValues
-     * @param string                          $channelCode
-     * @param string                          $localeCode
+     * @param ProductInterface         $product
+     * @param ValueCollectionInterface $requiredValues
+     * @param string                   $channelCode
+     * @param string                   $localeCode
      *
      * @return CompletenessInterface
      */
     protected function generateCompleteness(
         ProductInterface $product,
-        ProductValueCollectionInterface $requiredValues,
+        ValueCollectionInterface $requiredValues,
         $channelCode,
         $localeCode
     ) {

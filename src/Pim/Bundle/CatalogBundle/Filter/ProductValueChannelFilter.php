@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Filter the product values according to channel codes provided in options.
@@ -58,6 +58,6 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ProductValueCollectionInterface;
+        return $collection instanceof ValueCollectionInterface;
     }
 }

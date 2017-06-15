@@ -5,8 +5,8 @@ namespace Pim\Component\Catalog\Factory;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -51,7 +51,7 @@ class ProductValueCollectionFactory
      *
      * @param array $rawValues
      *
-     * @return ProductValueCollectionInterface
+     * @return ValueCollectionInterface
      */
     public function createFromStorageFormat(array $rawValues)
     {
@@ -101,6 +101,6 @@ class ProductValueCollectionFactory
             }
         }
 
-        return new ProductValueCollection($values);
+        return new ValueCollection($values);
     }
 }

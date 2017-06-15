@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 
@@ -29,7 +29,7 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $factory,
         ProductInterface $product,
         Collection $uniqueDataCollection,
-        ProductValueCollectionInterface $values,
+        ValueCollectionInterface $values,
         ProductValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
@@ -55,7 +55,7 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $factory,
         ProductInterface $product,
         Collection $uniqueDataCollection,
-        ProductValueCollectionInterface $values,
+        ValueCollectionInterface $values,
         ProductValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductValue\ScalarProductValue;
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class MetricAttributeCopierSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilderInterface $builder,
+        ValuesContainerBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
         NormalizerInterface $normalizer
     ) {
@@ -84,12 +84,12 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
-            ->addOrReplaceProductValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
+            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
-            ->addOrReplaceProductValue($product2, $toAttribute, $toLocale, $toScope, null)
+            ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
         $products = [$product1, $product2];

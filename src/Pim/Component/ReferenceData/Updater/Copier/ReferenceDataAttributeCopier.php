@@ -2,9 +2,9 @@
 
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -18,18 +18,18 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class ReferenceDataAttributeCopier extends AbstractAttributeCopier
 {
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedFromTypes
-     * @param array                    $supportedToTypes
+     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
+     * @param AttributeValidatorHelper        $attrValidatorHelper
+     * @param array                           $supportedFromTypes
+     * @param array                           $supportedToTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($valuesContainerBuilder, $attrValidatorHelper);
 
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
@@ -39,8 +39,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
      * {@inheritdoc}
      */
     public function copyAttributeData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        ValuesContainerInterface $fromValuesContainer,
+        ValuesContainerInterface $toValuesContainer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
@@ -55,8 +55,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
-            $fromProduct,
-            $toProduct,
+            $fromValuesContainer,
+            $toValuesContainer,
             $fromAttribute,
             $toAttribute,
             $fromLocale,
@@ -80,18 +80,18 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string|null        $fromLocale
-     * @param string|null        $toLocale
-     * @param string|null        $fromScope
-     * @param string|null        $toScope
+     * @param ValuesContainerInterface $fromValuesContainer
+     * @param ValuesContainerInterface $toValuesContainer
+     * @param AttributeInterface       $fromAttribute
+     * @param AttributeInterface       $toAttribute
+     * @param string|null              $fromLocale
+     * @param string|null              $toLocale
+     * @param string|null              $fromScope
+     * @param string|null              $toScope
      */
     protected function copySingleValue(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        ValuesContainerInterface $fromValuesContainer,
+        ValuesContainerInterface $toValuesContainer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -99,10 +99,10 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromValuesContainer->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue && null !== $fromValue->getData()) {
-            $this->productBuilder->addOrReplaceProductValue(
-                $toProduct,
+            $this->valuesContainerBuilder->addOrReplaceValue(
+                $toValuesContainer,
                 $toAttribute,
                 $toLocale,
                 $toScope,

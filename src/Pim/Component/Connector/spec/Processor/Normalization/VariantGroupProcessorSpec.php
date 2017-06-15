@@ -11,13 +11,12 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
@@ -96,7 +95,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $stepExecution,
         $mediaFetcher,
-        ProductValueCollectionInterface $emptyCollection,
+        ValueCollectionInterface $emptyCollection,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue,
@@ -160,7 +159,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $mediaFetcher,
         $stepExecution,
-        ProductValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $productValueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
@@ -234,7 +233,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $mediaFetcher,
         $stepExecution,
-        ProductValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $productValueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,

@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
  * Convert value into channel conversion unit if selected
@@ -20,29 +20,29 @@ class MetricConverter
     /** @var MeasureConverter */
     protected $converter;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var ValuesContainerBuilderInterface */
+    protected $valuesContainerBuilder;
 
     /**
-     * @param MeasureConverter        $converter
-     * @param ProductBuilderInterface $productBuilder
+     * @param MeasureConverter                $converter
+     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
      */
-    public function __construct(MeasureConverter $converter, ProductBuilderInterface $productBuilder)
+    public function __construct(MeasureConverter $converter, ValuesContainerBuilderInterface $valuesContainerBuilder)
     {
         $this->converter = $converter;
-        $this->productBuilder = $productBuilder;
+        $this->valuesContainerBuilder = $valuesContainerBuilder;
     }
 
     /**
-     * Convert all the products metric values into the channel configured conversion units
+     * Convert all the metric values into the channel configured conversion units
      *
-     * @param ProductInterface $product
-     * @param ChannelInterface $channel
+     * @param ValuesContainerInterface $valuesContainer
+     * @param ChannelInterface         $channel
      */
-    public function convert(ProductInterface $product, ChannelInterface $channel)
+    public function convert(ValuesContainerInterface $valuesContainer, ChannelInterface $channel)
     {
         $channelUnits = $channel->getConversionUnits();
-        foreach ($product->getValues() as $value) {
+        foreach ($valuesContainer->getValues() as $value) {
             $data = $value->getData();
             $attribute = $value->getAttribute();
             if ($data instanceof MetricInterface && isset($channelUnits[$attribute->getCode()])) {
@@ -56,8 +56,8 @@ class MetricConverter
                     ->setFamily($measureFamily)
                     ->convert($data->getUnit(), $channelUnit, $data->getData());
 
-                $this->productBuilder->addOrReplaceProductValue(
-                    $product,
+                $this->valuesContainerBuilder->addOrReplaceValue(
+                    $valuesContainer,
                     $attribute,
                     $value->getLocale(),
                     $value->getScope(),

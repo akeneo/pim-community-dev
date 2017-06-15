@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraint;
@@ -39,7 +39,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $values,
         ProductValueInterface $identifier,
         AttributeInterface $attribute,
         Constraint $constraint
@@ -47,8 +47,8 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('identifier');
         $identifier->getAttribute()->willReturn($attribute);
-        $product->getValues()->willReturn($productValues);
-        $productValues->getByKey('sku')->willReturn($identifier);
+        $product->getValues()->willReturn($values);
+        $values->getByKey('sku')->willReturn($identifier);
 
         $violation->getRoot()->willReturn($product);
         $violation->getMessage()->willReturn('Not Blank');
@@ -86,7 +86,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violationProductValue,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         ProductValueInterface $sku,
         AttributeInterface $attribute,
         Constraint $lengthConstraint
@@ -142,7 +142,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violationProductValue,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         ProductValueInterface $sku,
         AttributeInterface $attribute,
         Constraint $regexpConstraint
@@ -203,7 +203,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         ProductValueInterface $description,
         AttributeInterface $attribute,
         Constraint $constraint

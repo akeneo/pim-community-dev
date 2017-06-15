@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -89,7 +89,7 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
             ],
         ]);
 
-        $actualValues->shouldReturnAnInstanceOf(ProductValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(4);
 
         $actualIterator = $actualValues->getIterator();
@@ -117,7 +117,7 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
             ]
         ]);
 
-        $actualValues->shouldReturnAnInstanceOf(ProductValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
@@ -151,7 +151,7 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
             ],
         ]);
 
-        $actualValues->shouldReturnAnInstanceOf(ProductValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 
@@ -180,7 +180,7 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
             ],
         ]);
 
-        $actualValues->shouldReturnAnInstanceOf(ProductValueCollection::class);
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
     }
 }

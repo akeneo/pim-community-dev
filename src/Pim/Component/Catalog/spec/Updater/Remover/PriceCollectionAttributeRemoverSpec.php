@@ -5,12 +5,12 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -19,13 +19,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         CurrencyRepositoryInterface $currencyRepository,
-        ProductBuilderInterface $productBuilder,
+        ValuesContainerBuilderInterface $valuesContainerBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
             $currencyRepository,
-            $productBuilder,
+            $valuesContainerBuilder,
             ['pim_catalog_price_collection']
         );
     }
@@ -46,12 +46,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_removes_an_attribute_data_price_collection_value_to_a_product_value(
+    function it_removes_an_attribute_data_price_collection_value_from_a_values_container(
         $currencyRepository,
-        $productBuilder,
+        $valuesContainerBuilder,
         AttributeInterface $attribute,
-        ProductInterface $penProduct,
-        ProductInterface $bookProduct,
+        ValuesContainerInterface $penValuesContainer,
+        ValuesContainerInterface $bookValuesContainer,
         ProductValueInterface $priceValue,
         PriceCollectionInterface $priceCollection,
         ProductPriceInterface $priceEUR,
@@ -66,8 +66,8 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $penProduct->getValue('attributeCode', $locale, $scope)->willReturn($priceValue);
-        $bookProduct->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $penValuesContainer->getValue('attributeCode', $locale, $scope)->willReturn($priceValue);
+        $bookValuesContainer->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
         $priceValue->getData()->willReturn($priceCollection);
 
@@ -82,19 +82,19 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $priceUSD->getData()->willReturn(42);
         $priceUSD->getCurrency()->willReturn('USD');
 
-        $productBuilder
-            ->addOrReplaceProductValue($penProduct, $attribute, $locale, $scope, [])
+        $valuesContainerBuilder
+            ->addOrReplaceValue($penValuesContainer, $attribute, $locale, $scope, [])
             ->shouldBeCalled();
 
-        $productBuilder->addOrReplaceProductValue($bookProduct, Argument::cetera())->shouldNotBeCalled();
+        $valuesContainerBuilder->addOrReplaceValue($bookValuesContainer, Argument::cetera())->shouldNotBeCalled();
 
-        $this->removeAttributeData($penProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->removeAttributeData($bookProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->removeAttributeData($penValuesContainer, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->removeAttributeData($bookValuesContainer, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 
     function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -106,12 +106,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_does_not_contain_an_array(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -123,12 +123,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_amount_key(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -141,12 +141,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_currency_key(
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -159,13 +159,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_valid_currency(
         $currencyRepository,
         AttributeInterface $attribute,
-        ProductInterface $product
+        ValuesContainerInterface $valuesContainer
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -181,6 +181,6 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 'invalid currency'
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 }

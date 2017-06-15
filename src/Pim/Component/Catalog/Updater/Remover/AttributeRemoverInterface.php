@@ -2,12 +2,11 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValuesContainerInterface;
 
 /**
- * Remove a value from a product
+ * Remove a value from a values container
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -18,15 +17,15 @@ interface AttributeRemoverInterface extends RemoverInterface
     /**
      * Remove attribute data
      *
-     * @param ProductInterface   $product   The product to modify
-     * @param AttributeInterface $attribute The attribute of the product to modify
-     * @param mixed              $data      The data to remove
-     * @param array              $options   Options passed to the remover
+     * @param ValuesContainerInterface $valuesContainer The values container to modify
+     * @param AttributeInterface       $attribute       The attribute of the values container to modify
+     * @param mixed                    $data            The data to remove
+     * @param array                    $options         Options passed to the remover
      *
-     * @throws PropertyException
+     * @return
      */
     public function removeAttributeData(
-        ProductInterface $product,
+        ValuesContainerInterface $valuesContainer,
         AttributeInterface $attribute,
         $data,
         array $options = []

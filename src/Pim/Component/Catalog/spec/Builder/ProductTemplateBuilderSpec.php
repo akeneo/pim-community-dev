@@ -3,21 +3,20 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilder;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class ProductTemplateBuilderSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $productBuilder)
+    function let(ProductBuilderInterface $productBuilder)
     {
         $this->beConstructedWith(
             $productBuilder,
-            'Pim\Bundle\CatalogBundle\Entity\ProductTemplate',
-            'Pim\Component\Catalog\Model\Product'
+            'Pim\Bundle\CatalogBundle\Entity\ProductTemplate'
         );
     }
 
@@ -35,8 +34,8 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $productBuilder,
         ProductTemplateInterface $template,
         AttributeInterface $name,
-        ProductValueCollectionInterface $originalValues,
-        ProductValueCollectionInterface $newValues,
+        ValueCollectionInterface $originalValues,
+        ValueCollectionInterface $newValues,
         ProductInterface $product
     ) {
         $productBuilder->createProduct()->willReturn($product);
@@ -44,7 +43,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $template->getValues()->willReturn($originalValues);
         $product->setValues($originalValues)->shouldBeCalled();
 
-        $productBuilder->addAttributeToProduct($product, $name)->shouldBeCalled();
+        $productBuilder->addAttribute($product, $name)->shouldBeCalled();
         $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
         $product->getValues()->willReturn($newValues);
@@ -60,7 +59,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         ProductValueInterface $colorValue,
         AttributeInterface $name,
         AttributeInterface $color,
-        ProductValueCollectionInterface $values
+        ValueCollectionInterface $values
     ) {
         $nameValue->getAttribute()->willReturn($name);
         $colorValue->getAttribute()->willReturn($color);
