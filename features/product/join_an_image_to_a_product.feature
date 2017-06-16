@@ -61,9 +61,6 @@ Feature: Join an image to a product
     And I remove the "Visual" file
     And I save the product
     Then I should not see the text "akeneo.jpg"
-    When I remove the "Visual" attribute
-    And I confirm the deletion
-    And I save the product
     Then I should see available attribute Visual in group "Other"
     And The file with original filename "akeneo.jpg" should exists in database
 

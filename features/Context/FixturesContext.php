@@ -990,29 +990,29 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $options      = $productValue->getData();
-            $optionCodes  = array_map(
-                function ($option) {
+            $expectedValues = array_filter(array_column($table->getHash(), 'value'));
+
+            if (empty($expectedValues)) {
+                assertNull($productValue);
+            } else {
+                $options = $productValue->getData();
+                $optionCodes = array_map(function ($option) {
                     return $option->getCode();
-                },
-                $options
-            );
+                }, $options);
 
-            $values = array_map(
-                function ($row) {
-                    return $row['value'];
-                },
-                $table->getHash()
-            );
-            $values = array_filter($values);
+                assertEquals(count($expectedValues), count($options));
 
-            assertEquals(count($values), count($options));
-            foreach ($values as $value) {
-                assertContains(
-                    $value,
-                    $optionCodes,
-                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes), $value)
-                );
+                foreach ($expectedValues as $value) {
+                    if ('' === trim($value)) {
+                        assertNull($productValue);
+                    } else {
+                        assertContains(
+                            $value,
+                            $optionCodes,
+                            sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes), $value)
+                        );
+                    }
+                }
             }
         }
     }
@@ -1029,12 +1029,10 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $media        = $productValue->getData();
             if ('' === trim($filename)) {
-                if ($media) {
-                    assertNull($media->getOriginalFilename());
-                }
+                assertNull($productValue);
             } else {
+                $media = $productValue->getData();
                 assertEquals($filename, $media->getOriginalFilename());
             }
         }
