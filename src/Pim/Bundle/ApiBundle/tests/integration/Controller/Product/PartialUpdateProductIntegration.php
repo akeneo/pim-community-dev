@@ -961,7 +961,6 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => 'localizable'],
                 ],
                 'a_localizable_image' => [
-                    ['locale' => 'en_US', 'scope' => null, 'data' => null],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_akeneo.txt'],
                 ]
             ],
@@ -1076,9 +1075,6 @@ JSON;
             'values'        => [
                 'sku'                                => [
                     ['locale' => null, 'scope' => null, 'data' => 'complete'],
-                ],
-                'a_metric' => [
-                    ['locale' => null, 'scope' => null, 'data' => ['amount' => null, 'unit' => 'KILOWATT']],
                 ],
                 'a_date'   => [
                     ['locale' => null, 'scope' => null, 'data' => '2016-06-13T00:00:00+02:00'],
