@@ -24,6 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class RuleExecutionSubscriber implements EventSubscriberInterface
 {
+    /** @var TokenStorageInterface */
     protected $tokenStorage;
 
     /** @var NotifierInterface */
