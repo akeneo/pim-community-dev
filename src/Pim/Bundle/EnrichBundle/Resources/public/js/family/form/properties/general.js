@@ -44,7 +44,8 @@ define([
              */
             render: function () {
                 this.$el.html(this.template({
-                    sectionTitle: __(this.config.label),
+                    __: __,
+                    sectionTitle: this.config.label,
                     dropZone: this.config.dropZone
                 }));
 

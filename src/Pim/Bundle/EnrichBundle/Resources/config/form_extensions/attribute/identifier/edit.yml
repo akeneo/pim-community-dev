@@ -196,7 +196,7 @@ extensions:
         config:
             template: pim/template/common/form-container
 
-    pim-attribute-edit-edit-form-labels-translation:
+    pim-attribute-identifier-edit-form-labels-translation:
         module: pim/common/properties/translation
         parent: pim-attribute-identifier-edit-form-labels-container
         targetZone: form-container

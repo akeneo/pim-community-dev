@@ -46,7 +46,6 @@ define([
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
             channels: null,
-            attributeGroups: null,
             events: {
                 'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
@@ -125,7 +124,7 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: this.attributeGroups,
+                        attributeGroups: attributeGroups,
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
