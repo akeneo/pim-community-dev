@@ -68,19 +68,3 @@ Feature: Execute rules from the user interface
     When I am on the rules page
     Then I should not see the "Execute rules" button
     And I should not be able to view the "Execute" action of the row which contains "copy_description"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6438
-  Scenario: Successfully execute a selection of rules from the user interface
-    Given I am on the rules page
-    When I select rows copy_description, update_tees_collection
-    And I press "Calculate the affected products" on the "Bulk Actions" dropdown button
-    Then I should see the text "Calculation confirmation"
-    When I confirm the rules calculation
-    And I am on the rules page
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                     |
-      | success | Calculation of the affected products for the rules finished |
-    When I click on the notification "Calculation of the affected products for the rules finished"
-    Then I should see "Execution details - Calculation of the affected products for the rules [rule_impacted_product_count]"
-    And I should see "COMPLETED"
