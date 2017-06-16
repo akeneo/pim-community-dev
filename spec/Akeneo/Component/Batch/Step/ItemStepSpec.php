@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Component\Batch\Step;
 
+use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
@@ -89,7 +90,7 @@ class ItemStepSpec extends ObjectBehavior
         $writer,
         StepExecution $execution,
         EventDispatcherInterface $dispatcher,
-        JobRepositoryInterface $repository,
+        DoctrineJobRepository $repository,
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
@@ -113,7 +114,7 @@ class ItemStepSpec extends ObjectBehavior
 
         // second batch
         $processor->process('r4')->shouldBeCalled()->willThrow(new InvalidItemException('my msg', ['r4']));
-        $execution->addWarning(Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
+        $repository->insertWarning(Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
         $processor->process(null)->shouldNotBeCalled();
