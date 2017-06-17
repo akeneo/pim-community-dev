@@ -29,7 +29,7 @@ datagrid_view:
 confirmation.remove.datagrid view: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
 flash.datagrid view:
   created: La griglia di dati è stata creata con successo
-  updated: La griglia di dati è stata caricata con successo
+  updated: La griglia di dati è stata aggiornata con successo
   removed: La griglia di dati è stata rimossa con successo
   not removable: Non hai l'autorizzazione per rimuovere questa visualizzazione
 quick_export: Esportazione rapida
