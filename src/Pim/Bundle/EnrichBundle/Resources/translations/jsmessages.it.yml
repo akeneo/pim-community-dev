@@ -141,8 +141,8 @@ pim_enrich:
         upload: Si è verificato un errore durante il caricamento del file
       meta:
         created: Creato
-        created_by: Di
-        updated_by: Di
+        created_by: Da
+        updated_by: Da
         updated: Ultimo aggiornamento
         family:
           title: Famiglia
@@ -250,6 +250,6 @@ pim_enrich:
       add_option_modal:
         title: Aggiungi l'opzione dell'attributo
         confirm: Aggiungi
-        cancel: Cancella
+        cancel: Annulla
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...

@@ -137,7 +137,7 @@ pim_connector:
       help: Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes
     enabledComparison:
       label: Comparer les valeurs
-      help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine
+      help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les imports si les valeurs importées sont très similaires aux valeurs d'origine
 job_execution.summary:
   read: lu(s)
   read_lines: lignes lues
