@@ -3,6 +3,7 @@ confirmation:
     item: Sei sicuro di voler eliminare questo articolo?
     association_type: Sei sicuro di voler eliminare questo tipo di associazione?
     attribute: Sei sicuro di voler eliminare questo attributo?
+    attribute_group: Sei sicuro di voler eliminare questo gruppo di attributi?
     family: Sei sicuro di voler eliminare questa famiglia?
     product: Sei sicuro di voler eliminare questo prodotto?
     channel: Sei sicuro di voler eliminare questo canale?
@@ -59,6 +60,7 @@ flash:
   role:
     removed: Ruolo rimosso con successo
 error:
+  common: Si è verificato un errore
   creating:
     product: Nessun attributo è configurato come identificatore di prodotto o non hai i diritti per modificarlo.
   removing:
@@ -167,8 +169,8 @@ pim_enrich:
         upload: Si è verificato un errore durante il caricamento del file
       meta:
         created: Creato
-        created_by: Di
-        updated_by: Di
+        created_by: Da
+        updated_by: Da
         updated: Ultimo aggiornamento
         family:
           title: Famiglia
@@ -472,7 +474,7 @@ pim_enrich:
       add_option_modal:
         title: Aggiungi l'opzione dell'attributo
         confirm: Aggiungi
-        cancel: Cancella
+        cancel: Annulla
     entity:
       switch:
         "no": "No"
@@ -536,7 +538,7 @@ pim_enrich:
         status.title: Stato
       button:
         show_profile.title: Visualizza profilo
-        download_log.title: Protocollo download
+        download_log.title: Scarica il log
         download_file.title: Scarica file generati
         download_archive.title: Scarica archivi generati
       summary:
@@ -544,7 +546,6 @@ pim_enrich:
         warning: Attenzione
         header.step: Passo
         header.status: Stato
-        header.warnings: Avvertenze
         header.summary: Riepilogo
         header.start: Inizio
         header.end: Fine
