@@ -38,7 +38,7 @@ oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
 oro_datagrid.select.all: "Tutto"
 oro_datagrid.select.visible: "Tutti visibili"
-oro_datagrid.select.none: "Nessun"
+oro_datagrid.select.none: "Nessuno"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 pim.grid.choice_filter:
   label_empty: è vuoto
