@@ -8,7 +8,9 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -22,7 +24,7 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()
@@ -53,7 +55,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $qb->expr()->willReturn(new Expr());
 
         $qb->innerJoin(
@@ -87,7 +89,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $qb->expr()->willReturn($expr);
 
         $expr->isNull(Argument::any())->shouldBeCalled()->willReturn('filteroptions_code.option IS NULL');
@@ -124,7 +126,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $qb->expr()->willReturn($expr);
 
         $expr->isNotNull(Argument::any())->shouldBeCalled()->willReturn('filteroptions_code.option IS NOT NULL');
@@ -161,7 +163,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $expr->notIn(Argument::containingString('filterOoptions_code'), [10, 12])
             ->shouldBeCalled()
             ->willReturn($notInFunc);
@@ -176,7 +178,7 @@ class OptionsFilterSpec extends ObjectBehavior
             Argument::any(),
             Argument::containingString('.id')
         )->shouldBeCalled()->willReturn($notInQb);
-        $notInQb->getRootAlias()->willReturn('ep');
+        $notInQb->getRootAliases()->willReturn(['ep']);
         $notInQb->innerJoin(
             'ep.values',
             Argument::containingString('filteroptions_code'),
@@ -208,7 +210,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('options_code');
         $this->shouldThrow(InvalidPropertyTypeException::arrayExpected(
             'options_code',
-            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter',
+            OptionsFilter::class,
             'WRONG'
         ))->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'options_code.id']]);
     }
@@ -218,7 +220,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('options_code');
         $this->shouldThrow(InvalidPropertyTypeException::numericExpected(
             'options_code',
-            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter',
+            OptionsFilter::class,
             'not numeric'
         ))->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric'], null, null, ['field' => 'options_code.id']]);
     }

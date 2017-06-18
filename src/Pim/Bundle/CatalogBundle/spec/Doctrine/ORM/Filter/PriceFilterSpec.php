@@ -8,7 +8,9 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -31,7 +33,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()
@@ -57,7 +59,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -85,7 +87,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -113,7 +115,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -141,7 +143,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -169,7 +171,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => 12, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -201,7 +203,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => null, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -234,7 +236,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -265,7 +267,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -296,7 +298,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -327,7 +329,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $value = ['amount' => null, 'currency' => 'EUR'];
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
@@ -359,7 +361,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -388,7 +390,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -418,7 +420,7 @@ class PriceFilterSpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
@@ -458,7 +460,7 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['amount' => 12, 'currency' => 'EUR'];
 
         $queryBuilder->expr()->willReturn($expr);
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
         $expr->literal('EUR')->willReturn($currencyLiteral);
         $expr->literal(12)->willReturn($dataLiteral);
         $expr->eq(Argument::any(), $currencyLiteral)->shouldBeCalled();
@@ -489,7 +491,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidPropertyTypeException::arrayKeyExpected(
                 'price_code',
                 'amount',
-                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                PriceFilter::class,
                 $value
             )
         )
@@ -500,7 +502,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidPropertyTypeException::arrayKeyExpected(
                 'price_code',
                 'currency',
-                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                PriceFilter::class,
                 $value
             )
         )
@@ -511,7 +513,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'price_code',
                 'key "amount" has to be a numeric, "string" given',
-                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                PriceFilter::class,
                 $value
             )
         )
@@ -522,7 +524,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'price_code',
                 'key "currency" has to be a string, "integer" given',
-                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                PriceFilter::class,
                 $value
             )
         )
@@ -540,7 +542,7 @@ class PriceFilterSpec extends ObjectBehavior
                 'price_code',
                 'currency',
                 'The currency does not exist',
-                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                PriceFilter::class,
                 'FOO'
             )
         )->during('addAttributeFilter', [$attribute, '=', $value]);

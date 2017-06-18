@@ -3,11 +3,21 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Prophecy\Argument;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class AttributeTypeSpec extends ObjectBehavior
 {
@@ -22,15 +32,15 @@ class AttributeTypeSpec extends ObjectBehavior
         $this->beConstructedWith(
             $registry,
             $subscriber,
-            'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
-            'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
+            AttributeTranslation::class,
+            Attribute::class,
+            AttributeGroup::class
         );
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_attribute');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_attribute');
     }
 
     function it_builds_the_attribute_form($builder)
@@ -42,13 +52,13 @@ class AttributeTypeSpec extends ObjectBehavior
     function it_adds_id_field_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('id', 'hidden')->shouldHaveBeenCalled();
+        $builder->add('id', HiddenType::class)->shouldHaveBeenCalled();
     }
 
     function it_adds_code_field_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('code', 'text', ['required' => true])->shouldHaveBeenCalled();
+        $builder->add('code', TextType::class, ['required' => true])->shouldHaveBeenCalled();
     }
 
     function it_adds_attribute_type_field_to_the_form($builder)
@@ -57,7 +67,7 @@ class AttributeTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'type',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices'   => ['text' => 'text', 'number' => 'number', 'email' => 'email'],
                     'select2'   => true,
@@ -77,7 +87,7 @@ class AttributeTypeSpec extends ObjectBehavior
     function it_adds_required_field_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('required', 'switch')->shouldHaveBeenCalled();
+        $builder->add('required', SwitchType::class)->shouldHaveBeenCalled();
     }
 
     function it_adds_translatable_label_field_to_the_form($builder)
@@ -86,11 +96,11 @@ class AttributeTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'label',
-                'pim_translatable_field',
+                TranslatableFieldType::class,
                 [
                     'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
-                    'entity_class'      => 'Pim\Bundle\CatalogBundle\Entity\Attribute',
+                    'translation_class' => AttributeTranslation::class,
+                    'entity_class'      => Attribute::class,
                     'property_path'     => 'translations'
                 ]
             )->shouldHaveBeenCalled();
@@ -102,7 +112,7 @@ class AttributeTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'group',
-                'entity',
+                EntityType::class,
                 Argument::any()
             )->shouldHaveBeenCalled();
     }
@@ -110,15 +120,15 @@ class AttributeTypeSpec extends ObjectBehavior
     function it_adds_grid_parameter_fields_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('useableAsGridFilter', 'switch')->shouldHaveBeenCalled();
+        $builder->add('useableAsGridFilter', SwitchType::class)->shouldHaveBeenCalled();
     }
 
     function it_sets_the_default_form_data_class(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Attribute',
-                'cascade_validation' => true,
+                'data_class'  => Attribute::class,
+                'constraints' => new Valid(),
             ]
         )->shouldBeCalled();
         $this->setDefaultOptions($resolver);

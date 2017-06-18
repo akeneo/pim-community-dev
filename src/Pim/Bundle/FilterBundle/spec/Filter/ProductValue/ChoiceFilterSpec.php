@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -29,7 +30,7 @@ class ChoiceFilterSpec extends ObjectBehavior
 
     function it_is_an_oro_choice_filter()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\ChoiceFilter');
+        $this->shouldBeAnInstanceOf(ChoiceFilter::class);
     }
 
     function it_initializes_filter_with_name()
@@ -111,7 +112,7 @@ class ChoiceFilterSpec extends ObjectBehavior
     ) {
         $repository->findOneByCode('data_name_key')->willReturn($attribute);
 
-        $factory->create(AjaxChoiceFilterType::NAME, [], [
+        $factory->create(AjaxChoiceFilterType::class, [], [
             'csrf_protection'   => false,
             'choice_url'        => 'pim_ui_ajaxentity_list',
             'choice_url_params' => [

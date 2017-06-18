@@ -4,6 +4,10 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -15,25 +19,25 @@ class ClassifyTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $categoryRepository,
-            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify',
+            Classify::class,
             'pim_enrich_mass_classify'
         );
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_mass_classify');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_mass_classify');
     }
 
     function it_sets_default_options(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify',
+            'data_class' => Classify::class,
         ])->shouldBeCalled();
 
         $this->configureOptions($resolver, []);
@@ -41,13 +45,13 @@ class ClassifyTypeSpec extends ObjectBehavior
 
     function it_builds_classify_products_form($categoryRepository, FormBuilderInterface $builder)
     {
-        $categoryRepository->getClassName()->willReturn('Pim\Bundle\CatalogBundle\Entity\Category');
+        $categoryRepository->getClassName()->willReturn(Category::class);
 
         $builder ->add(
             'trees',
-            'pim_enrich_entity_identifier',
+            EntityIdentifierType::class,
             [
-                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Category',
+                'class'    => Category::class,
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
@@ -56,9 +60,9 @@ class ClassifyTypeSpec extends ObjectBehavior
 
         $builder->add(
             'categories',
-            'pim_enrich_entity_identifier',
+            EntityIdentifierType::class,
             [
-                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Category',
+                'class'    => Category::class,
                 'required' => true,
                 'mapped'   => true,
                 'multiple' => true,

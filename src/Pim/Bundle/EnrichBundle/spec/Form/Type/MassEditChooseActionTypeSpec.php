@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,7 +21,7 @@ class MassEditChooseActionTypeSpec extends ObjectBehavior
 
         $builder->add(
             'operationAlias',
-            'choice',
+            ChoiceType::class,
             [
                 'choices'  => $options['operations'],
                 'expanded' => true,
@@ -42,8 +43,8 @@ class MassEditChooseActionTypeSpec extends ObjectBehavior
         $this->setDefaultOptions($resolver);
     }
 
-    function it_gets_the_form_type_name()
+    function it_gets_the_form_type_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_mass_edit_choose_action');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_mass_edit_choose_action');
     }
 }

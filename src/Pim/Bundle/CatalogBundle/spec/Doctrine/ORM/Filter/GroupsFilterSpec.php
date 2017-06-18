@@ -7,7 +7,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Prophecy\Argument;
 
 class GroupsFilterSpec extends ObjectBehavior
@@ -20,7 +21,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
+        $this->shouldImplement(FieldFilterInterface::class);
     }
 
     function it_supports_operators()
@@ -37,7 +38,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_codes_by_default($qb, Expr $expr)
     {
-        $qb->getRootAlias()->willReturn('f');
+        $qb->getRootAliases()->willReturn(['f']);
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
         $qb->andWhere('filtergroups.code IN ("foo", "bar")')->willReturn($qb);
 
@@ -49,7 +50,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_on_codes($qb, Expr $expr)
     {
-        $qb->getRootAlias()->willReturn('f');
+        $qb->getRootAliases()->willReturn(['f']);
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
         $qb->andWhere('filtergroups.code IN ("foo", "bar")')->willReturn($qb);
 
@@ -61,7 +62,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
-        $qb->getRootAlias()->willReturn('f');
+        $qb->getRootAliases()->willReturn(['f']);
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
         $qb->andWhere('filtergroups.code IN ("foo", "bar")')->willReturn($qb);
 
@@ -73,7 +74,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_adds_an_empty_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
-        $qb->getRootAlias()->willReturn('f');
+        $qb->getRootAliases()->willReturn(['f']);
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
         $qb->andWhere('filtergroups.code IS NULL')->willReturn($qb);
 
@@ -91,7 +92,7 @@ class GroupsFilterSpec extends ObjectBehavior
         Expr\Func $inFunc,
         Expr\Func $whereFunc
     ) {
-        $qb->getRootAlias()->willReturn('f');
+        $qb->getRootAliases()->willReturn(['f']);
         $qb->leftJoin('f.groups', Argument::containingString('filtergroups'))->willReturn($qb);
         $qb->getEntityManager()->willReturn($em);
         $em->createQueryBuilder()->willReturn($notInQb);
@@ -102,7 +103,7 @@ class GroupsFilterSpec extends ObjectBehavior
             Argument::any(),
             Argument::containingString('.code')
         )->shouldBeCalled()->willReturn($notInQb);
-        $notInQb->getRootAlias()->willReturn('ep');
+        $notInQb->getRootAliases()->willReturn(['ep']);
         $notInQb->innerJoin(
             Argument::containingString('ep.groups'),
             Argument::containingString('filtergroups')
@@ -133,7 +134,7 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidPropertyTypeException::arrayExpected(
             'groups',
-            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter',
+            GroupsFilter::class,
             'WRONG'
         ))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
     }
@@ -142,7 +143,7 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidPropertyTypeException::stringExpected(
             'groups',
-            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter',
+            GroupsFilter::class,
             false
         ))->during('addFieldFilter', ['groups', 'IN', [false]]);
     }

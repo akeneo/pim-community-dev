@@ -6,7 +6,9 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -24,7 +26,7 @@ class NumberFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()
@@ -46,7 +48,7 @@ class NumberFilterSpec extends ObjectBehavior
         $number->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -65,7 +67,7 @@ class NumberFilterSpec extends ObjectBehavior
         $number->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
         $queryBuilder->andWhere(Argument::any())->shouldBeCalled();
@@ -89,7 +91,7 @@ class NumberFilterSpec extends ObjectBehavior
         $number->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn($expr);
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $expr->isNotNull(Argument::any())->shouldBeCalled()->willReturn('filternumber IS NOT NULL');
 
@@ -117,7 +119,7 @@ class NumberFilterSpec extends ObjectBehavior
         $number->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn($expr);
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
         $expr->literal(12)->willReturn($literal);
         $expr->neq(Argument::any(), $literal)->shouldBeCalled()->willReturn($comp);
         $literal->__toString()->willReturn('12');
@@ -137,7 +139,7 @@ class NumberFilterSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('number_code');
         $this->shouldThrow(InvalidPropertyTypeException::numericExpected(
-            'number_code', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter',
+            'number_code', NumberFilter::class,
             'WRONG'
         ))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
