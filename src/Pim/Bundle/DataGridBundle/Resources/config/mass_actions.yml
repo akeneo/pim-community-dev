@@ -82,19 +82,19 @@ services:
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
         class: '%pim_datagrid.extension.mass_action.type.export.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
 
     pim_datagrid.extension.mass_action.type.edit:
         class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
 
     pim_datagrid.extension.mass_action.type.delete:
         class: '%pim_datagrid.extension.mass_action.type.delete.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: delete }
 

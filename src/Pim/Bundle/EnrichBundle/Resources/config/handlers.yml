@@ -5,7 +5,6 @@ parameters:
 services:
     pim_enrich.form.handler.attribute:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.attribute'
             - '@request_stack'
@@ -13,7 +12,6 @@ services:
 
     pim_enrich.form.handler.attribute_group:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.attribute_group'
             - '@request_stack'
@@ -21,7 +19,6 @@ services:
 
     pim_enrich.form.handler.group:
         class: '%pim_enrich.form.handler.group.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.group'
             - '@request_stack'
@@ -31,7 +28,6 @@ services:
 
     pim_enrich.form.handler.variant_group:
         class: '%pim_enrich.form.handler.group.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.variant_group'
             - '@request_stack'
@@ -41,7 +37,6 @@ services:
 
     pim_enrich.form.handler.group_type:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.group_type'
             - '@request_stack'
@@ -49,7 +44,6 @@ services:
 
     pim_enrich.form.handler.association_type:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.association_type'
             - '@request_stack'
@@ -57,7 +51,6 @@ services:
 
     pim_enrich.form.handler.family:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.family'
             - '@request_stack'
