@@ -63,12 +63,4 @@ class Md5Extension extends \Twig_Extension
 
         return $hash;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_md5';
-    }
 }

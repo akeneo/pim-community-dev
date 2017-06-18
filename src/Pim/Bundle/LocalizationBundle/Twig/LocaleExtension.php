@@ -16,14 +16,6 @@ class LocaleExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'pim_localization.twig.locale_extension';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [

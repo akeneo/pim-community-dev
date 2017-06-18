@@ -24,12 +24,4 @@ class CeilExtension extends \Twig_Extension
     {
         return ceil($number);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_ceil';
-    }
 }

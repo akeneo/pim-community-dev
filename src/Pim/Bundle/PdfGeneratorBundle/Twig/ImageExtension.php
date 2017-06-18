@@ -47,12 +47,4 @@ class ImageExtension extends \Twig_Extension
 
         return $path;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_pdf_generator_image_extension';
-    }
 }

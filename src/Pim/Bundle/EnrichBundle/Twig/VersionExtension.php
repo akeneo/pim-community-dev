@@ -37,12 +37,4 @@ class VersionExtension extends \Twig_Extension
 
         return $version;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_version_extension';
-    }
 }

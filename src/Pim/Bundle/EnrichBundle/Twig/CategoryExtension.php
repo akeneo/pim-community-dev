@@ -192,14 +192,6 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_category_extension';
-    }
-
-    /**
      * Format categories from an array
      *
      * @param array  $categories

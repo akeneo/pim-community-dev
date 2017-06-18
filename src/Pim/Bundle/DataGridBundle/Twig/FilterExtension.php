@@ -55,14 +55,6 @@ class FilterExtension extends Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_datagrid_filter_extension';
-    }
-
-    /**
      * @return Manager
      */
     final protected function getDatagridManager()

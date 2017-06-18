@@ -27,14 +27,6 @@ class MetadataExtension extends Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getName()
-    {
-        return 'oro_datagrid_metadata';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getFunctions()
     {
         return [

@@ -44,14 +44,4 @@ class OroSecurityExtension extends \Twig_Extension
     {
         return $this->securityFacade->isGranted($attributes, $object);
     }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'oro_security_extension';
-    }
 }

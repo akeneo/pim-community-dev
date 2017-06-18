@@ -34,12 +34,4 @@ class ObjectClassExtension extends \Twig_Extension
     {
         return ClassUtils::getClass($entity);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_object_class_extension';
-    }
 }

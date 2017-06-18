@@ -37,14 +37,4 @@ class ConfigExtension extends \Twig_Extension
     {
         return $this->userConfigManager->get($name);
     }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'config_extension';
-    }
 }

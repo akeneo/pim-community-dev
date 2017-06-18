@@ -74,14 +74,4 @@ class DateExtension extends \Twig_Extension
         }
         return $date->diff(new \DateTime('now'));
     }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'oro_ui.date';
-    }
 }

@@ -49,12 +49,4 @@ class LoadingMessageExtension extends \Twig_Extension
 
         return $messages[array_rand($messages)];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_ui_loading_message_extension';
-    }
 }
