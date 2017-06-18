@@ -3,7 +3,6 @@ parameters:
 
 services:
     pim_dashboard.controller.widget:
-        scope: request
         class: '%pim_dashboard.controller.widget.class%'
         arguments:
             - '@pim_dashboard.widget.registry'
