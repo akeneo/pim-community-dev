@@ -145,12 +145,4 @@ class RuleExtension extends \Twig_Extension
 
         return $value;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pimee_catalog_rule_rule_extension';
-    }
 }

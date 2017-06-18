@@ -37,7 +37,7 @@ class AttributeExtension extends BaseAttributeExtension
     public function getFunctions()
     {
         return array_merge(parent::getFunctions(), [
-            'is_attribute_localizable' => new \Twig_Function_Method($this, 'isAttributeLocalizable'),
+            new \Twig_SimpleFunction('is_attribute_localizable', [$this, 'isAttributeLocalizable']),
         ]);
     }
 
