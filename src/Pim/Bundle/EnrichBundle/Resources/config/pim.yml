@@ -28,7 +28,7 @@ services:
              - { name: twig.extension }
     doctrine.dbal.default.wrapped_connection:
         class: PDO
-        factory: ['@doctrine.dbal.session_connection', 'getWrappedConnection']
+        factory: 'doctrine.dbal.session_connection:getWrappedConnection'
 
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
