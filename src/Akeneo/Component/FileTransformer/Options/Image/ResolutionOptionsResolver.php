@@ -29,7 +29,7 @@ class ResolutionOptionsResolver implements TransformationOptionsResolverInterfac
     {
         $this->resolver = new OptionsResolver();
         $this->resolver->setRequired(['resolution']);
-        $this->resolver->setOptional(['resolution-unit']);
+        $this->resolver->setDefined(['resolution-unit']);
         $this->resolver->setAllowedTypes(['resolution' => 'int', 'resolution-unit' => 'string']);
         $this->resolver->setDefaults(['resolution-unit' => ImageInterface::RESOLUTION_PIXELSPERINCH]);
         $this->resolver->setAllowedValues(
