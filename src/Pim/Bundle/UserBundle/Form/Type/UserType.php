@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -48,8 +48,8 @@ class UserType extends AbstractType
     protected $isMyProfilePage;
 
     /**
-     * @param TokenStorageInterface     $tokenStorage
-     * @param Request                   $request
+     * @param TokenStorageInterface $tokenStorage
+     * @param RequestStack $requestStack
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
@@ -57,14 +57,17 @@ class UserType extends AbstractType
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        Request $request,
+        RequestStack $requestStack,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->isMyProfilePage = $request->attributes->get('_route') === 'oro_user_profile_update';
+        $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
+                ->getCurrentRequest()
+                ->attributes
+                ->get('_route');
         $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;

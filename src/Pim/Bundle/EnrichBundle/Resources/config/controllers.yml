@@ -60,7 +60,7 @@ services:
         scope: request
         class: '%pim_enrich.controller.currency.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@pim_catalog.saver.currency'
 
@@ -68,7 +68,7 @@ services:
         scope: request
         class: '%pim_enrich.controller.family.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
@@ -78,7 +78,7 @@ services:
         scope: request
         class: '%pim_enrich.controller.attribute.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@form.factory'
             - '@translator'
@@ -161,7 +161,7 @@ services:
         scope: request
         class: '%pim_enrich.controller.group.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@templating'
             - '@router'
             - '@pim_catalog.repository.group_type'
@@ -173,7 +173,7 @@ services:
         scope: request
         class: '%pim_enrich.controller.association_type.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@translator'
             - '@pim_catalog.repository.association'
@@ -207,7 +207,7 @@ services:
         scope: request
         class: '%pim_enrich.controller.group_type.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@translator'
             - '@pim_enrich.form.handler.group_type'

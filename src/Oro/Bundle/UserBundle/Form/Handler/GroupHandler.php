@@ -111,9 +111,9 @@ class GroupHandler
     /**
      * Get Request
      *
-     * @return Request
+     * @return null|Request
      */
-    public function getRequest()
+    protected function getRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
     }

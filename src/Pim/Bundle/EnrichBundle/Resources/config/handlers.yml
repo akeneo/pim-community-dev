@@ -8,7 +8,7 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.attribute'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.attribute'
 
     pim_enrich.form.handler.attribute_group:
@@ -16,7 +16,7 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.attribute_group'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.attribute_group'
 
     pim_enrich.form.handler.group:
@@ -24,7 +24,7 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.group'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.localization.localizer.converter'
@@ -34,7 +34,7 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.variant_group'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.localization.localizer.converter'
@@ -44,7 +44,7 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.group_type'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.group_type'
 
     pim_enrich.form.handler.association_type:
@@ -52,7 +52,7 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.association_type'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.association_type'
 
     pim_enrich.form.handler.family:
@@ -60,5 +60,5 @@ services:
         scope: request
         arguments:
             - '@pim_enrich.form.family'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.family'

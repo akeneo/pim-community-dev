@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -18,8 +19,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ExportController
 {
-    /** @var Request $request */
-    protected $request;
+    /** @var RequestStack $requestStack */
+    protected $requestStack;
 
     /** @var MassActionDispatcher $massActionDispatcher */
     protected $massActionDispatcher;
@@ -31,16 +32,16 @@ class ExportController
     protected $exportMassAction;
 
     /**
-     * @param Request              $request
+     * @param RequestStack         $requestStack
      * @param MassActionDispatcher $massActionDispatcher
      * @param SerializerInterface  $serializer
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->serializer = $serializer;
     }
@@ -115,7 +116,7 @@ class ExportController
      */
     protected function quickExport()
     {
-        $results = $this->massActionDispatcher->dispatch($this->request);
+        $results = $this->massActionDispatcher->dispatch($this->requestStack->getCurrentRequest());
 
         echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
     }
@@ -127,7 +128,7 @@ class ExportController
      */
     protected function getContentType()
     {
-        return $this->request->get('_contentType');
+        return $this->requestStack->getCurrentRequest()->get('_contentType');
     }
 
     /**
@@ -137,7 +138,7 @@ class ExportController
      */
     protected function getFormat()
     {
-        return $this->request->get('_format');
+        return $this->requestStack->getCurrentRequest()->get('_format');
     }
 
     /**
@@ -159,8 +160,8 @@ class ExportController
     {
         if ($this->exportMassAction === null) {
             $this->exportMassAction = $this->massActionDispatcher->getMassActionByNames(
-                $this->request->get('actionName'),
-                $this->request->get('gridName')
+                $this->requestStack->getCurrentRequest()->get('actionName'),
+                $this->requestStack->getCurrentRequest()->get('gridName')
             );
         }
 
