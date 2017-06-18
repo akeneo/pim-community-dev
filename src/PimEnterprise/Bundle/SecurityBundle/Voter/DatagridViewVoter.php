@@ -15,6 +15,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\SecurityBundle\Manager\DatagridViewAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class DatagridViewVoter implements VoterInterface
+class DatagridViewVoter extends Voter implements VoterInterface
 {
     /** @var DatagridViewAccessManager */
     protected $accessManager;
@@ -40,40 +41,40 @@ class DatagridViewVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::VIEW]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof DatagridView;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if (!$this->supportsClass($object)) {
+        if (!$object instanceof DatagridView) {
             return $result;
         }
 
         foreach ($attributes as $attribute) {
-            if ($this->supportsAttribute($attribute)) {
+            if ($this->supports($attribute, $object)) {
                 $result = VoterInterface::ACCESS_DENIED;
 
-                if ($this->accessManager->isUserGranted($token->getUser(), $object, $attribute)) {
+                if ($this->voteOnAttribute($attribute, $object, $token)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::VIEW]) && $subject instanceof DatagridView;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        return $this->accessManager->isUserGranted($token->getUser(), $subject, $attribute);
     }
 }

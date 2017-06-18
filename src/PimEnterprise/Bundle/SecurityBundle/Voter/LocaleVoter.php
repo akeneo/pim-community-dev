@@ -16,6 +16,7 @@ use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class LocaleVoter implements VoterInterface
+class LocaleVoter extends Voter implements VoterInterface
 {
     /**
      * @var LocaleAccessManager
@@ -41,36 +42,20 @@ class LocaleVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof LocaleInterface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $locale, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
-        if ($this->supportsClass($locale) && !is_string($token->getUser())) {
-            foreach ($attributes as $attribute) {
-                if ($this->supportsAttribute($attribute)) {
-                    $result = VoterInterface::ACCESS_DENIED;
-                    $grantedGroups = $this->extractUserGroups($attribute, $locale);
 
-                    foreach ($grantedGroups as $group) {
-                        if ($token->getUser()->hasGroup($group)) {
-                            return VoterInterface::ACCESS_GRANTED;
-                        }
-                    }
+        if (!$locale instanceof LocaleInterface || is_string($token->getUser())) {
+            return $result;
+        }
+
+        foreach ($attributes as $attribute) {
+            if ($this->supports($attribute, $locale)) {
+                $result = VoterInterface::ACCESS_DENIED;
+
+                if ($this->voteOnAttribute($attribute, $locale, $token)) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
@@ -95,5 +80,30 @@ class LocaleVoter implements VoterInterface
         }
 
         return $grantedGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS]) &&
+            $subject instanceof LocaleInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        $grantedGroups = $this->extractUserGroups($attribute, $subject);
+
+        foreach ($grantedGroups as $group) {
+            if ($token->getUser()->hasGroup($group)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

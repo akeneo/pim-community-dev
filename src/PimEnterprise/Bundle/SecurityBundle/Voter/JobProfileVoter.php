@@ -15,6 +15,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class JobProfileVoter implements VoterInterface
+class JobProfileVoter extends Voter implements VoterInterface
 {
     /** @var JobProfileAccessManager */
     protected $accessManager;
@@ -41,37 +42,20 @@ class JobProfileVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::EXECUTE, Attributes::EDIT]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof JobInstance;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if ($this->supportsClass($object)) {
-            foreach ($attributes as $attribute) {
-                if ($this->supportsAttribute($attribute)) {
-                    $result = VoterInterface::ACCESS_DENIED;
-                    $grantedGroups = $this->extractGroups($attribute, $object);
+        if (!$object instanceof JobInstance) {
+            return $result;
+        }
 
-                    foreach ($grantedGroups as $group) {
-                        if ($token->getUser()->hasGroup($group)) {
-                            return VoterInterface::ACCESS_GRANTED;
-                        }
-                    }
+        foreach ($attributes as $attribute) {
+            if ($this->supports($attribute, $object)) {
+                $result = VoterInterface::ACCESS_DENIED;
+
+                if ($this->voteOnAttribute($attribute, $object, $token)) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
@@ -96,5 +80,31 @@ class JobProfileVoter implements VoterInterface
         }
 
         return $grantedGroups;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::EXECUTE, Attributes::EDIT]) &&
+            $subject instanceof JobInstance;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        $grantedGroups = $this->extractGroups($attribute, $subject);
+
+        foreach ($grantedGroups as $group) {
+            if ($token->getUser()->hasGroup($group)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

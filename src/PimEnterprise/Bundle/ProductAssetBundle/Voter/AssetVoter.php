@@ -15,6 +15,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class AssetVoter implements VoterInterface
+class AssetVoter extends Voter implements VoterInterface
 {
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
@@ -39,34 +40,20 @@ class AssetVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof AssetInterface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if ($this->supportsClass($object)) {
-            foreach ($attributes as $attribute) {
-                if ($this->supportsAttribute($attribute)) {
-                    $result = VoterInterface::ACCESS_DENIED;
+        if (!$object instanceof AssetInterface) {
+            return $result;
+        }
 
-                    if ($this->isAssetAccessible($object, $token->getUser(), $attribute)) {
-                        return VoterInterface::ACCESS_GRANTED;
-                    }
+        foreach ($attributes as $attribute) {
+            if ($this->supports($attribute, $object)) {
+                $result = VoterInterface::ACCESS_DENIED;
+
+                if ($this->voteOnAttribute($attribute, $object, $token)) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
@@ -106,5 +93,21 @@ class AssetVoter implements VoterInterface
         }
 
         return $this->categoryAccessRepo->isCategoriesGranted($user, $categoryAttribute, $categoryIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT]) && $subject instanceof AssetInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        return $this->isAssetAccessible($subject, $token->getUser(), $attribute);
     }
 }
