@@ -35,7 +35,7 @@ class CompletenessJoin
      */
     public function addJoins($completenessAlias, $locale, $scope)
     {
-        $rootAlias = $this->qb->getRootAliases()[0];
+        $rootAlias = current($this->qb->getRootAliases());
         $localeAlias = $completenessAlias.'Locale';
         $channelAlias = $completenessAlias.'Channel';
 

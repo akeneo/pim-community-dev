@@ -105,7 +105,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     {
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
-            $this->qb->getRootAlias() . '.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $valueCondition
@@ -133,7 +133,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     {
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->innerJoin(
-            $this->qb->getRootAlias() . '.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $valueCondition
