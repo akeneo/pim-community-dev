@@ -1,5 +1,6 @@
 parameters:
     oro_user.form.type.reset.class:             Oro\Bundle\UserBundle\Form\Type\ResetType
+    oro_user.form.type.acl_role_type.class:     Oro\Bundle\UserBundle\Form\Type\AclRoleType
     oro_user.form.type.role.api.class:          Oro\Bundle\UserBundle\Form\Type\RoleApiType
     oro_user.form.type.group.class:             Oro\Bundle\UserBundle\Form\Type\GroupType
     oro_user.form.type.group.api.class:         Oro\Bundle\UserBundle\Form\Type\GroupApiType

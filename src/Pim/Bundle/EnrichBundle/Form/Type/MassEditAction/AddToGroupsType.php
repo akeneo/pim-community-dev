@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -49,7 +50,7 @@ class AddToGroupsType extends AbstractType
     {
         $builder->add(
             'groups',
-            'entity',
+            EntityType::class,
             [
                 'class'    => $this->groupClassName,
                 'required' => false,

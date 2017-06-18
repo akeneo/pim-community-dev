@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CommentBundle\Form\Type;
 
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -59,7 +60,14 @@ class CommentType extends AbstractType
             ->add('resourceId', HiddenType::class);
 
         if (true === $options['is_reply']) {
-            $builder->add('parent', 'pim_object_identifier', ['multiple' => false, 'repository' => $this->repository]);
+            $builder->add(
+                'parent',
+                ObjectIdentifierType::class,
+                [
+                    'multiple' => false,
+                    'repository' => $this->repository
+                ]
+            );
         }
     }
 

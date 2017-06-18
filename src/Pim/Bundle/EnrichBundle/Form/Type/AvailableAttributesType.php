@@ -57,7 +57,7 @@ class AvailableAttributesType extends AbstractType
     {
         $builder->add(
             'attributes',
-            'light_entity',
+            LightEntityType::class,
             [
                 'repository'         => $this->attributeProvider,
                 'repository_options' => [

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\UIBundle\Form\Type\NumberType as FormNumberType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -22,15 +24,15 @@ class PriceCollectionType extends AbstractAttributeType
         return parent::defineCustomAttributeProperties($attribute) + [
             'numberMin' => [
                 'name'      => 'numberMin',
-                'fieldType' => 'pim_number'
+                'fieldType' => FormNumberType::class
             ],
             'numberMax' => [
                 'name'      => 'numberMax',
-                'fieldType' => 'pim_number'
+                'fieldType' => FormNumberType::class
             ],
             'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
                 ]

@@ -6,7 +6,7 @@ use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Validator\Constraints\DateFormat;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -90,7 +90,7 @@ class DateType extends AbstractType
      */
     public function getParent()
     {
-        return DateType::class;
+        return BaseDateType::class;
     }
 
     /**

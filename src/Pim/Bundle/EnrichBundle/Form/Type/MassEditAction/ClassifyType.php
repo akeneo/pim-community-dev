@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -48,7 +49,7 @@ class ClassifyType extends AbstractType
 
         $builder->add(
             'trees',
-            'pim_enrich_entity_identifier',
+            EntityIdentifierType::class,
             [
                 'class'    => $categoryClassName,
                 'required' => false,
@@ -59,7 +60,7 @@ class ClassifyType extends AbstractType
 
         $builder->add(
             'categories',
-            'pim_enrich_entity_identifier',
+            EntityIdentifierType::class,
             [
                 'class'    => $categoryClassName,
                 'required' => true,

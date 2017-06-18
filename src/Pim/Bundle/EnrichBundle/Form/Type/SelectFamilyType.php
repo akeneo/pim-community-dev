@@ -43,7 +43,7 @@ class SelectFamilyType extends AbstractType
      */
     public function getParent()
     {
-        return 'pim_async_select';
+        return AsyncSelectType::class;
     }
 
     /**

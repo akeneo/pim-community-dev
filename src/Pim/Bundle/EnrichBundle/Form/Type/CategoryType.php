@@ -65,7 +65,7 @@ class CategoryType extends AbstractType
     {
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             [
                 'field'             => 'label',
                 'translation_class' => $this->translationDataClass,

@@ -6,8 +6,10 @@ use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -77,7 +79,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'catalogLocale',
-            'entity',
+            EntityType::class,
             [
                 'class'         => 'PimCatalogBundle:Locale',
                 'property'      => 'code',
@@ -96,7 +98,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'catalogScope',
-            'entity',
+            EntityType::class,
             [
                 'class'    => 'PimCatalogBundle:Channel',
                 'property' => 'label',
@@ -112,7 +114,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'defaultTree',
-            'light_entity',
+            LightEntityType::class,
             [
                 'select2'    => true,
                 'repository' => $this->categoryRepository,
@@ -128,7 +130,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $localeProvider = $this->localeProvider;
         $form->add(
             'uiLocale',
-            'entity',
+            EntityType::class,
             [
                 'class'         => 'PimCatalogBundle:Locale',
                 'property'      => 'getName',

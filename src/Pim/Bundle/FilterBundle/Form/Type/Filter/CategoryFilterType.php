@@ -52,7 +52,7 @@ class CategoryFilterType extends NumberFilterType
 
         $resolver->setDefaults(
             [
-                'field_type'        => CategoryType::NAME,
+                'field_type'        => CategoryType::class,
                 'operator_choices'  => $choices,
                 'empty_value'       => self::EXCLUDE_SUB,
                 'data_type'         => self::DATA_INTEGER,

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,7 +40,7 @@ class ChangeFamilyType extends AbstractType
     {
         $builder->add(
             'family',
-            'pim_async_select',
+            AsyncSelectType::class,
             [
                 'repository' => $this->familyRepository,
                 'route'      => 'pim_enrich_family_rest_index',

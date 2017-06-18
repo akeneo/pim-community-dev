@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -135,7 +136,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_edit_common_attributes';
+        return EditCommonAttributesType::class;
     }
 
     /**

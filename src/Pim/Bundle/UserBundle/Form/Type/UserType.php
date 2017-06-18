@@ -3,14 +3,20 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
+use Oro\Bundle\UserBundle\Form\Type\ChangePasswordType;
+use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType;
+use Pim\Bundle\UIBundle\Form\Type\DateType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +25,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * Overriden user form to add a custom subscriber
@@ -51,9 +58,9 @@ class UserType extends AbstractType
      * @param TokenStorageInterface $tokenStorage
      * @param RequestStack $requestStack
      * @param UserPreferencesSubscriber $subscriber
-     * @param RoleRepository            $roleRepository
-     * @param GroupRepository           $groupRepository
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @param RoleRepository $roleRepository
+     * @param GroupRepository $groupRepository
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -97,7 +104,7 @@ class UserType extends AbstractType
         $builder
             ->add(
                 'rolesCollection',
-                'entity',
+                EntityType::class,
                 [
                     'label'          => 'Roles',
                     'class'          => 'OroUserBundle:Role',
@@ -112,7 +119,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'groups',
-                'entity',
+                EntityType::class,
                 [
                     'class'          => 'OroUserBundle:Group',
                     'property'       => 'name',
@@ -128,7 +135,7 @@ class UserType extends AbstractType
                 'plainPassword',
                 RepeatedType::class,
                 [
-                    'type'           => 'password',
+                    'type'           => PasswordType::class,
                     'required'       => true,
                     'first_options'  => ['label' => 'Password'],
                     'second_options' => ['label' => 'Re-enter password'],
@@ -136,9 +143,9 @@ class UserType extends AbstractType
             )
             ->add(
                 'change_password',
-                'oro_change_password'
+                ChangePasswordType::class
             )
-            ->add('productGridFilters', 'pim_enrich_product_grid_filter_choice', [
+            ->add('productGridFilters', ProductGridFilterChoiceType::class, [
                 'label'    => 'user.product_grid_filters',
                 'multiple' => true,
             ]);
@@ -151,7 +158,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'        => 'Pim\Bundle\UserBundle\Entity\UserInterface',
+                'data_class'        => UserInterface::class,
                 'intention'         => 'user',
                 'validation_groups' => function ($form) {
                     if ($form instanceof FormInterface) {
@@ -170,7 +177,7 @@ class UserType extends AbstractType
                 'error_mapping'        => [
                     'roles' => 'rolesCollection'
                 ],
-                'cascade_validation'   => true
+                'constraints'   => new Valid()
             ]
         );
     }
@@ -248,7 +255,7 @@ class UserType extends AbstractType
             )
             ->add(
                 'birthday',
-                'pim_date',
+                DateType::class,
                 [
                     'label'    => 'Date of birth',
                     'required' => false,

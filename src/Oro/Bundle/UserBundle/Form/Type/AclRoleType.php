@@ -45,7 +45,7 @@ class AclRoleType extends AbstractType
                 $fieldName,
                 new PrivilegeCollectionType(),
                 [
-                    'type'         => new AclPrivilegeType(),
+                    'entry_type'   => new AclPrivilegeType(),
                     'allow_add'    => true,
                     'prototype'    => false,
                     'allow_delete' => false,

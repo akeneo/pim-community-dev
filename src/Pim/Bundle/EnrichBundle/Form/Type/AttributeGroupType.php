@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
@@ -41,11 +43,11 @@ class AttributeGroupType extends AbstractType
             ->add('code')
             ->add(
                 'label',
-                'pim_translatable_field',
+                TranslatableFieldType::class,
                 [
                     'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
+                    'translation_class' => AttributeGroupTranslation::class,
+                    'entity_class'      => AttributeGroup::class,
                     'property_path'     => 'translations'
                 ]
             )

@@ -51,7 +51,7 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - { related_entity: product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
+            - { related_entity: product, form_type: '%pim_enrich.form.type.category.class%', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 

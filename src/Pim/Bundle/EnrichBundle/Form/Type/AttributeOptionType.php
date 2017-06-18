@@ -72,7 +72,7 @@ class AttributeOptionType extends AbstractType
             'optionValues',
             CollectionType::class,
             [
-                'type'         => 'pim_enrich_attribute_option_value',
+                'entry_type'   => AttributeOptionValueType::class,
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,

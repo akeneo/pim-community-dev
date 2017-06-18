@@ -24,7 +24,7 @@ class AclPrivilegeIdentityType extends AbstractType
         );
         $builder->add(
             'name',
-            'oro_acl_label',
+            ObjectLabelType::class,
             [
                 'required' => false,
             ]

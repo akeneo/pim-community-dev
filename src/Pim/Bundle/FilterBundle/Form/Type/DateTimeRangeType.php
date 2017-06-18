@@ -24,7 +24,7 @@ class DateTimeRangeType extends AbstractType
      */
     public function getParent()
     {
-        return DateRangeType::NAME;
+        return DateRangeType::class;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -67,7 +68,7 @@ class AddToVariantGroupType extends AbstractType
     {
         $builder->add(
             'group',
-            'entity',
+            EntityType::class,
             [
                 'class'       => $this->groupClassName,
                 'required'    => true,
