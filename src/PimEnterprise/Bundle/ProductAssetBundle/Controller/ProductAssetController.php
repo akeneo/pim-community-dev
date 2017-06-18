@@ -29,6 +29,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
@@ -668,7 +669,7 @@ class ProductAssetController extends Controller
             $locale = null;
         }
 
-        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
+        $assetForm = $this->createForm(AssetType::class, $productAsset);
         $assetForm->handleRequest($request);
 
         if ($assetForm->isValid()) {

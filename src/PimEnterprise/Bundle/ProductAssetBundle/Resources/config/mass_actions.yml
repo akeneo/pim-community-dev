@@ -7,7 +7,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'classify_assets'
-            - 'pimee_product_asset_mass_classify'
+            - '%pim_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -21,7 +21,7 @@ services:
         class: '%pim_enrich.mass_edit_action.add_tags.class%'
         arguments:
             - 'add_tags_to_assets'
-            - 'pimee_product_asset_mass_add_tags'
+            - '%pimee_product_asset.form.type.add_tags_to_assets.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action

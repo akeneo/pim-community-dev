@@ -59,7 +59,7 @@ services:
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.repository.category'
             - '@oro_security.security_facade'
-            - { related_entity: asset, form_type: pimee_asset_category, acl: pimee_product_asset, route: pimee_asset }
+            - { related_entity: asset, form_type: '%pimee_product_asset.form.type.category.class%', acl: pimee_product_asset, route: pimee_asset }
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
         calls:
@@ -76,7 +76,7 @@ services:
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.repository.category'
             - '@oro_security.security_facade'
-            - { related_entity: asset, form_type: pimee_asset_category, acl: pimee_product_asset_picker, route: pimee_asset_picker }
+            - { related_entity: asset, form_type: '%pimee_product_asset.form.type.category.class%', acl: pimee_product_asset_picker, route: pimee_asset_picker }
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
         calls:

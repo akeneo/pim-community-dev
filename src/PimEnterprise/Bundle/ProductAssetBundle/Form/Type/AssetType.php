@@ -90,7 +90,7 @@ class AssetType extends AbstractType
         $builder->add(
             'references',
             CollectionType::class,
-            ['entry_type' => 'pimee_product_asset_reference']
+            ['entry_type' => ReferenceType::class]
         );
         $builder->add(
             'categories',

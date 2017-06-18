@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
+use PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType;
 
 /**
  * Batch operation to publish products
@@ -25,7 +26,7 @@ class Publish extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pimee_enrich_mass_publish';
+        return PublishType::class;
     }
 
     /**

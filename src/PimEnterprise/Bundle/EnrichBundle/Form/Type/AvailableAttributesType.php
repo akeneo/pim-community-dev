@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
+use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -64,7 +65,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
     {
         $builder->add(
             'attributes',
-            'light_entity',
+            LightEntityType::class,
             [
                 'repository'         => $this->attributeRepository,
                 'repository_options' => [

@@ -44,7 +44,7 @@ class ReferenceType extends AbstractType
         $builder->add(
             'variations',
             CollectionType::class,
-            ['entry_type' => 'pimee_product_asset_variation']
+            ['entry_type' => VariationType::class]
         );
     }
 

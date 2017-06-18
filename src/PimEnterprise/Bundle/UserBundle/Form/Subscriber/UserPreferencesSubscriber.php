@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Subscriber;
 
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
@@ -72,7 +73,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         if ($this->categoryAccessRepo->isOwner($user)) {
             $form->add(
                 'proposalsToReviewNotification',
-                'switch',
+                SwitchType::class,
                 [
                     'label'    => 'user.proposals.notifications.to_review',
                     'required' => false,
@@ -86,7 +87,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         if (!empty($editableCategories) && !empty($editableButNotOwned)) {
             $form->add(
                 'proposalsStateNotification',
-                'switch',
+                SwitchType::class,
                 [
                     'label'    => 'user.proposals.notifications.state',
                     'required' => false,

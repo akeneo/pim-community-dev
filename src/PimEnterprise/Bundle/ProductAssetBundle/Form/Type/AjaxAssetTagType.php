@@ -54,7 +54,7 @@ class AjaxAssetTagType extends AjaxEntityType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_ajax_asset_tag';
     }
