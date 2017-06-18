@@ -11,7 +11,7 @@ services:
     pimee_workflow.controller.product_draft:
         class: '%pimee_workflow.controller.product_draft.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@security.token_storage'
             - '@translator'
@@ -28,7 +28,7 @@ services:
     pimee_workflow.controller.published_product:
         class: '%pimee_workflow.controller.published_product.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@templating'
             - '@translator'

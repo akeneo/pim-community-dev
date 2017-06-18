@@ -24,6 +24,7 @@ use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,8 +48,8 @@ class ProductDraftController
     /** @staticvar string */
     const MASS_REFUSE_JOB_CODE = 'refuse_product_draft';
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -87,7 +88,7 @@ class ProductDraftController
     protected $collectionFilter;
 
     /**
-     * @param Request                               $request
+     * @param RequestStack                          $requestStack
      * @param RouterInterface                       $router
      * @param TokenStorageInterface                 $tokenStorage
      * @param TranslatorInterface                   $translator
@@ -102,7 +103,7 @@ class ProductDraftController
      * @param CollectionFilterInterface             $collectionFilter
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
         TranslatorInterface $translator,
@@ -116,7 +117,7 @@ class ProductDraftController
         OroToPimGridFilterAdapter $gridFilterAdapter,
         CollectionFilterInterface $collectionFilter
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
         $this->translator = $translator;
