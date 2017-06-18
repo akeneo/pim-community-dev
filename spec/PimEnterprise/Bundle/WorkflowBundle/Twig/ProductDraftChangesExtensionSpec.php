@@ -42,11 +42,6 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pimee_workflow_product_draft_changes_extension');
-    }
-
     function it_has_presenters(
         $attributePresenter,
         $valuePresenter

@@ -28,21 +28,6 @@ class ProductVoterSpec extends ObjectBehavior
         $this->beConstructedWith($categoryAccessRepository);
     }
 
-    function it_supports_the_VIEW_PRODUCT_attribute()
-    {
-        $this->supportsAttribute(Attributes::VIEW)->shouldReturn(true);
-    }
-
-    function it_supports_the_EDIT_PRODUCT_attribute()
-    {
-        $this->supportsAttribute(Attributes::EDIT)->shouldReturn(true);
-    }
-
-    function it_supports_the_OWN_attribute()
-    {
-        $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
-    }
-
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
     {
         $this

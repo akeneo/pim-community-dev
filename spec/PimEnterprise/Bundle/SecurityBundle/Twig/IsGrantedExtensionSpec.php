@@ -26,11 +26,6 @@ class IsGrantedExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pimee_attribute_granted_extension');
-    }
-
     function it_has_functions()
     {
         $functions = $this->getFunctions();

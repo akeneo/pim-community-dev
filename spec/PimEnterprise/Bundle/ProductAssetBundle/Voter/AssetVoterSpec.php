@@ -28,21 +28,6 @@ class AssetVoterSpec extends ObjectBehavior
         $this->beConstructedWith($categoryAccessRepository);
     }
 
-    function it_supports_the_VIEW_attribute()
-    {
-        $this->supportsAttribute(Attributes::VIEW)->shouldReturn(true);
-    }
-
-    function it_supports_the_EDIT_attribute()
-    {
-        $this->supportsAttribute(Attributes::EDIT)->shouldReturn(true);
-    }
-
-    function it_does_not_support_the_OWN_attribute()
-    {
-        $this->supportsAttribute(Attributes::OWN)->shouldReturn(false);
-    }
-
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
     {
         $this

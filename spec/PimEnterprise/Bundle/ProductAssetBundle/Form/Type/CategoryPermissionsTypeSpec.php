@@ -3,6 +3,8 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +15,9 @@ class CategoryPermissionsTypeSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pimee_product_asset_category_permissions');
+        $this->getBlockPrefix()->shouldReturn('pimee_product_asset_category_permissions');
     }
 
     function it_has_view_edit_and_own_permission_fields(FormBuilderInterface $builder)
@@ -25,7 +27,7 @@ class CategoryPermissionsTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'view',
-                'pimee_security_groups',
+                GroupsType::class,
                 [
                     'label' => 'pimee_product_asset.category.permissions.view.label',
                     'help'  => 'pimee_product_asset.category.permissions.view.help'
@@ -36,7 +38,7 @@ class CategoryPermissionsTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'edit',
-                'pimee_security_groups',
+                GroupsType::class,
                 [
                     'label' => 'pimee_product_asset.category.permissions.edit.label',
                     'help'  => 'pimee_product_asset.category.permissions.edit.help'
@@ -54,7 +56,7 @@ class CategoryPermissionsTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'apply_on_children',
-                'checkbox',
+                CheckboxType::class,
                 [
                     'label' => 'pimee_product_asset.category.permissions.apply_on_children.label',
                     'help'  => 'pimee_product_asset.category.permissions.apply_on_children.help',

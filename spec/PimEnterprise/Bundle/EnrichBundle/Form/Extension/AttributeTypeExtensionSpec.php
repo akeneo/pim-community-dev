@@ -3,6 +3,8 @@
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Extension;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -20,7 +22,7 @@ class AttributeTypeExtensionSpec extends ObjectBehavior
     
     function it_builds_a_form(FormBuilderInterface $builder)
     {
-        $builder->add('isReadOnly', 'switch', [
+        $builder->add('isReadOnly', SwitchType::class, [
             'required' => false,
             'property_path' => 'properties[is_read_only]',
         ])->shouldBeCalled();
@@ -30,6 +32,6 @@ class AttributeTypeExtensionSpec extends ObjectBehavior
 
     function it_extends_form_type()
     {
-        $this->getExtendedType()->shouldReturn('pim_enrich_attribute');
+        $this->getExtendedType()->shouldReturn(AttributeType::class);
     }
 }

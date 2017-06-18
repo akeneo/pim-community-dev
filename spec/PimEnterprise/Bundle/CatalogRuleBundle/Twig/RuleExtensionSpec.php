@@ -24,11 +24,6 @@ class RuleExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pimee_catalog_rule_rule_extension');
-    }
-
     function it_defines_filters()
     {
         $filters = $this->getFilters();
