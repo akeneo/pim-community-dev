@@ -30,9 +30,8 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $helperSet = $this->getHelperSet();
-        $this->getFieldFilterDumper()->dump($output, $helperSet);
-        $this->getAttributeFilterDumper()->dump($output, $helperSet);
+        $this->getFieldFilterDumper()->dump($output);
+        $this->getAttributeFilterDumper()->dump($output);
     }
 
     /**
