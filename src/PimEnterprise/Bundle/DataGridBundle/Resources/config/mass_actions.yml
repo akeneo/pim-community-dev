@@ -55,12 +55,12 @@ services:
 
     pimee_datagrid.extension.mass_action.type.mass_approve:
         class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-approve-proposal }
 
     pimee_datagrid.extension.mass_action.type.mass_refuse:
         class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }

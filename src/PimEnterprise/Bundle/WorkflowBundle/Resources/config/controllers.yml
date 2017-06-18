@@ -10,7 +10,6 @@ parameters:
 services:
     pimee_workflow.controller.product_draft:
         class: '%pimee_workflow.controller.product_draft.class%'
-        scope: request
         arguments:
             - '@request'
             - '@router'
@@ -28,7 +27,6 @@ services:
 
     pimee_workflow.controller.published_product:
         class: '%pimee_workflow.controller.published_product.class%'
-        scope: request
         arguments:
             - '@request'
             - '@router'
@@ -42,7 +40,6 @@ services:
 
     pimee_workflow.controller.published_product_rest:
         class: '%pimee_workflow.controller.published_product_rest.class%'
-        scope: request
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.manager.published_product'

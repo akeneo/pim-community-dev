@@ -49,7 +49,6 @@ services:
             - '%tmp_storage_dir%'
 
     pimee_product_asset.controller.category_tree:
-        scope: request
         class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
@@ -66,7 +65,6 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pimee_product_asset.controller.category_tree_asset_picker:
-        scope: request
         class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'

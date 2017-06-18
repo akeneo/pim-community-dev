@@ -10,7 +10,6 @@ parameters:
 services:
     # overriden to add security checks and use a smarter product saver which update draft or working copy
     pim_enrich.controller.product:
-        scope: request
         class: '%pim_enrich.controller.product.class%'
         arguments:
             - '@router'
@@ -56,7 +55,6 @@ services:
 
     # overidden to filter categories with a category access repository that handles permissions
     pim_enrich.controller.category_tree.product:
-        scope: request
         class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
@@ -73,7 +71,6 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.category_tree.published_product:
-        scope: request
         class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
@@ -100,7 +97,6 @@ services:
             - ['catalogStorage', 'assetStorage']
 
     pim_enrich.controller.locale:
-        scope: request
         class: '%pim_enrich.controller.locale.class%'
         arguments:
             - '@form.factory'
