@@ -12,7 +12,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.type_specific
+                sectionTitle: pim_enrich.form.attribute.tab.properties.section.type_specific
                 dropZone: content
 
     pim-attribute-form-ref-data-simple-type-specific-params-ref-data-name:

@@ -10,7 +10,7 @@ define([
     'pim/attribute-edit-form/properties/field',
     'pim/fetcher-registry',
     'oro/translator',
-    'text!pim/template/attribute/tab/properties/select'
+    'pim/template/attribute/tab/properties/select'
 ],
 function (
     _,
@@ -51,7 +51,7 @@ function (
                 choices: this.formatChoices(this.refData),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_reference_data.entity.attribute.reference_data_name.default_label')
+                    defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.reference_data_name')
                 }
             }));
         },

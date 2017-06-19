@@ -94,7 +94,7 @@ function (
         getTemplateContext: function () {
             return $.Deferred()
                 .resolve({
-                    fieldLabel: __('pim_enrich.form.attribute.tab.properties.' + this.fieldName),
+                    fieldLabel: __('pim_enrich.form.attribute.tab.properties.label.' + this.fieldName),
                     requiredLabel: __('pim_enrich.form.required'),
                     fieldName: this.fieldName,
                     errors: this.errors,

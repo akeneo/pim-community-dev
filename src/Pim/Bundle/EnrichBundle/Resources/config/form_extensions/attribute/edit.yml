@@ -61,8 +61,8 @@ extensions:
         targetZone: meta
         position: 90
         config:
-            label: pim_enrich.entity.attribute.meta.created
-            labelBy: pim_enrich.entity.attribute.meta.created_by
+            label: pim_enrich.form.attribute.meta.created
+            labelBy: pim_enrich.form.attribute.meta.created_by
 
     pim-attribute-edit-form-updated:
         module: pim/form/common/meta/updated
@@ -70,8 +70,8 @@ extensions:
         targetZone: meta
         position: 100
         config:
-            label: pim_enrich.entity.attribute.meta.updated
-            labelBy: pim_enrich.entity.attribute.meta.updated_by
+            label: pim_enrich.form.attribute.meta.updated
+            labelBy: pim_enrich.form.attribute.meta.updated_by
 
     pim-attribute-edit-form-form-tabs:
         module: pim/form/common/form-tabs
@@ -102,7 +102,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.common
+                sectionTitle: pim_enrich.form.attribute.tab.properties.section.common
                 dropZone: content
 
     pim-attribute-edit-form-properties-common-code:

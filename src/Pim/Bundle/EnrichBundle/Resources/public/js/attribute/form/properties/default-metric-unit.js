@@ -47,7 +47,7 @@ function (
                 choices: this.formatChoices(this.measures[metricFamily].units),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_enrich.entity.attribute.default_metric_unit.default_label')
+                    defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.default_metric_unit')
                 }
             }));
         },

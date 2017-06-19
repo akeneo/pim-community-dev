@@ -85,7 +85,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.common
+                sectionTitle: pim_enrich.form.attribute.tab.properties.section.common
                 dropZone: content
 
     pim-attribute-create-form-properties-common-code:

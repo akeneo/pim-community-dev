@@ -12,7 +12,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.validation
+                sectionTitle: pim_enrich.form.attribute.tab.properties.section.validation
                 dropZone: content
 
     pim-attribute-form-date-validation-params-date-min:

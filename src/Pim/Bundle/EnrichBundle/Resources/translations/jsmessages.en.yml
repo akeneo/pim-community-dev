@@ -646,6 +646,57 @@ pim_enrich:
                 history:
                     title: History
             file_path: File path
+        attribute:
+            meta:
+                created: Created
+                created_by: by
+                updated: Last update
+                updated_by: by
+            tab:
+                properties:
+                    title: Properties
+                    section:
+                        common: General parameters
+                        type_specific: Type specific parameters
+                        validation: Validation parameters
+                    label:
+                        allowed_extensions: Allowed extensions
+                        auto_option_sorting: Sort automatically options by alphabetical order
+                        available_locales: Available locales
+                        code: Code
+                        date_max: Max date
+                        date_min: Min date
+                        decimals_allowed: Decimals allowed
+                        default_metric_unit: Default metric unit
+                        group: Attribute group
+                        is_locale_specific: Locale specific
+                        localizable: Value per locale
+                        max_characters: Max characters
+                        max_file_size: Max file size (MB)
+                        metric_family: Metric family
+                        minimum_input_length: Minimum length for autocompletion
+                        negative_allowed: Negative allowed
+                        number_max: Max number
+                        number_min: Min number
+                        reference_data_name: Reference data type
+                        scopable: Value per channel
+                        type: Type
+                        unique: Unique value
+                        useable_as_grid_filter: Usable in grid
+                        validation_regexp: Regular expression
+                        validation_rule: Validation rule
+                        wysiwyg_enabled: Rich text editor enabled
+                    default_label:
+                        default_metric_unit: Choose a unit
+                        group: Choose the attribute group
+                        metric_family: Choose a family
+                        reference_data_name: Choose the reference data type
+                labels:
+                    title: Label translations
+                choices:
+                    title: Options
+                history:
+                    title: History
         mass_edit:
             family:
                 attributes:
