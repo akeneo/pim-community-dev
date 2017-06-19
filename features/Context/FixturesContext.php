@@ -1139,50 +1139,48 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->spin(function () use ($identifier, $table) {
+        $product = $this->spin(function () use ($identifier) {
             $this->getMainContext()->getSubcontext('hook')->clearUOW();
 
-            $product = $this->getProduct($identifier);
-
-            foreach ($table->getRowsHash() as $rawCode => $value) {
-                $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
-
-                $attribute     = $infos['attribute'];
-                $attributeCode = $attribute->getCode();
-                $localeCode    = $infos['locale_code'];
-                $scopeCode     = $infos['scope_code'];
-                $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-                $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
-
-                if ('' === $value) {
-                    assertEmpty((string) $productValue);
-                } elseif ('media' === $attribute->getBackendType()) {
-                    // media filename is auto generated during media handling and cannot be guessed
-                    // (it contains a timestamp)
-                    if ('**empty**' === $value) {
-                        assertEmpty((string) $productValue);
-                    } else {
-                        assertTrue(
-                            null !== $productValue->getData() &&
-                            false !== strpos($productValue->getData()->getOriginalFilename(), $value)
-                        );
-                    }
-                } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
-                    // $priceCurrency can be null if we want to test all the currencies at the same time
-                    // in this case, it's a simple string comparison
-                    // example: 180.00 EUR, 220.00 USD
-
-                    $price = $productValue->getPrice($priceCurrency);
-                    assertEquals($value, $price->getData());
-                } elseif ('date' === $attribute->getBackendType()) {
-                    assertEquals($value, $productValue->getData()->format('Y-m-d'));
-                } else {
-                    assertEquals($value, (string) $productValue);
-                }
-            }
-
-            return true;
+            return $this->getProduct($identifier);
         }, sprintf('Cannot get the product %s', $identifier));
+
+        foreach ($table->getRowsHash() as $rawCode => $value) {
+            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+
+            $attribute     = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $localeCode    = $infos['locale_code'];
+            $scopeCode     = $infos['scope_code'];
+            $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
+            $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+
+            if ('' === $value) {
+                assertNull($productValue);
+            } elseif ('media' === $attribute->getBackendType()) {
+                // media filename is auto generated during media handling and cannot be guessed
+                // (it contains a timestamp)
+                if ('**empty**' === $value) {
+                    assertNull($productValue);
+                } else {
+                    assertTrue(
+                        null !== $productValue->getData() &&
+                        false !== strpos($productValue->getData()->getOriginalFilename(), $value)
+                    );
+                }
+            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                // $priceCurrency can be null if we want to test all the currencies at the same time
+                // in this case, it's a simple string comparison
+                // example: 180.00 EUR, 220.00 USD
+
+                $price = $productValue->getPrice($priceCurrency);
+                assertEquals($value, $price->getData());
+            } elseif ('date' === $attribute->getBackendType()) {
+                assertEquals($value, $productValue->getData()->format('Y-m-d'));
+            } else {
+                assertEquals($value, (string) $productValue);
+            }
+        }
     }
 
     /**
