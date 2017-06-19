@@ -105,7 +105,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceProductValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
@@ -160,7 +160,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceProductValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
@@ -215,7 +215,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceProductValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
@@ -270,7 +270,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
             ->addOrReplaceProductValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldNotBeCalled();
+            ->shouldBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {
