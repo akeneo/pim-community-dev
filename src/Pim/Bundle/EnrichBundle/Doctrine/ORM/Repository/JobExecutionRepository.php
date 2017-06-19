@@ -58,7 +58,6 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
             ->addGroupBy('jobLabel')
             ->addGroupBy('jobName');
 
-
         return $qb;
     }
 
