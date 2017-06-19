@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-class AttributeVoter implements VoterInterface
+class AttributeVoter extends Voter implements VoterInterface
 {
     /** @var AttributeGroupVoter */
     protected $attributeGroupVoter;
@@ -37,28 +38,29 @@ class AttributeVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof AttributeInterface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (!$this->supportsClass($object)) {
+        if (!($object instanceof AttributeInterface)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
         return $this->attributeGroupVoter->vote($token, $object->getgroup(), $attributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES]) &&
+            $subject instanceof AttributeInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        return true;
     }
 }

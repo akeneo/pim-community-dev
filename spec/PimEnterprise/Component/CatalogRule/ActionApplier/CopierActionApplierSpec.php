@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 
 class CopierActionApplierSpec extends ObjectBehavior
 {

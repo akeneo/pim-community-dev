@@ -12,10 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * Asset collection type
@@ -71,14 +73,14 @@ class AssetCollectionType extends AbstractAttributeType
         return $attributes + [
             'reference_data_name' => [
                 'name'      => 'reference_data_name',
-                'fieldType' => 'hidden',
+                'fieldType' => HiddenType::class,
                 'options'   => [
                     'data' => 'assets',
                 ],
             ],
             'scopable' => [
                 'name'      => 'scopable',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'data'      => false,
                     'disabled'  => true,
@@ -87,7 +89,7 @@ class AssetCollectionType extends AbstractAttributeType
             ],
             'localizable' => [
                 'name'      => 'localizable',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'data'      => false,
                     'disabled'  => true,

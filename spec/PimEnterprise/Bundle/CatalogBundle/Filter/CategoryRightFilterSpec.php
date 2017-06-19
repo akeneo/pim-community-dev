@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Akeneo\Component\Classification\Model\CategoryInterface;
-use PimEnterprise\Component\Security\Attributes;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

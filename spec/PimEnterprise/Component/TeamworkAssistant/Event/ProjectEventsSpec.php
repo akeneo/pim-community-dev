@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Event;
 
-use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
 
 class ProjectEventsSpec extends ObjectBehavior
 {

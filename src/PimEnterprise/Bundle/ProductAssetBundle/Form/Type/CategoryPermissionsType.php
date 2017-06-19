@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
 use PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType as BaseCategoryPermissionsType;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -28,7 +30,7 @@ class CategoryPermissionsType extends BaseCategoryPermissionsType
     {
         $builder->add(
             'view',
-            'pimee_security_groups',
+            GroupsType::class,
             [
                 'label' => 'pimee_product_asset.category.permissions.view.label',
                 'help'  => 'pimee_product_asset.category.permissions.view.help'
@@ -36,7 +38,7 @@ class CategoryPermissionsType extends BaseCategoryPermissionsType
         );
         $builder->add(
             'edit',
-            'pimee_security_groups',
+            GroupsType::class,
             [
                 'label' => 'pimee_product_asset.category.permissions.edit.label',
                 'help'  => 'pimee_product_asset.category.permissions.edit.help'
@@ -44,7 +46,7 @@ class CategoryPermissionsType extends BaseCategoryPermissionsType
         );
         $builder->add(
             'apply_on_children',
-            'checkbox',
+            CheckboxType::class,
             [
                 'label'    => 'pimee_product_asset.category.permissions.apply_on_children.label',
                 'help'     => 'pimee_product_asset.category.permissions.apply_on_children.help',
@@ -57,7 +59,7 @@ class CategoryPermissionsType extends BaseCategoryPermissionsType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_product_asset_category_permissions';
     }

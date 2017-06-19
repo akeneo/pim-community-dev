@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
+use Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,7 +39,7 @@ class VariationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fileInfo', 'akeneo_file_storage_file_info', ['required' => false]);
+        $builder->add('fileInfo', FileInfoType::class, ['required' => false]);
     }
 
     /**
@@ -54,7 +55,7 @@ class VariationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_product_asset_variation';
     }

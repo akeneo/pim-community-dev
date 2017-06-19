@@ -3,11 +3,11 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterProjectRemoverPass;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\RegisterProjectRemoverPass;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

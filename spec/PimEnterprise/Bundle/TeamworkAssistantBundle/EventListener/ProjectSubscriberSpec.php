@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\ProjectSubscriber;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;

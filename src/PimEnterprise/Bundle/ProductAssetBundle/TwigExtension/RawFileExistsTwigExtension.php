@@ -37,7 +37,7 @@ class RawFileExistsTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'fileExists' => new \Twig_Function_Method($this, 'fileExists'),
+            new \Twig_SimpleFunction('fileExists', [$this, 'fileExists']),
         ];
     }
 
@@ -66,13 +66,5 @@ class RawFileExistsTwigExtension extends \Twig_Extension
         }
 
         return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'twig_extension';
     }
 }

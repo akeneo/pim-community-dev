@@ -1,9 +1,8 @@
 services:
     pimee_datagrid.controller.published_product_export:
         class: '%pim_datagrid.controller.product_export.class%'
-        scope: request
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'

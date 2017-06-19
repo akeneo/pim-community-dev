@@ -12,7 +12,11 @@
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
+use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -42,8 +46,8 @@ class AclRoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->privilegeConfig as $fieldName => $config) {
-            $builder->add($fieldName, 'oro_acl_collection', [
-                'type'         => new AclPrivilegeType(),
+            $builder->add($fieldName, PrivilegeCollectionType::class, [
+                'entry_type'    => new AclPrivilegeType(),
                 'allow_add'    => true,
                 'prototype'    => false,
                 'allow_delete' => false,
@@ -54,18 +58,18 @@ class AclRoleType extends AbstractType
             ]);
         }
 
-        $builder->add('label', 'text', [
+        $builder->add('label', TextType::class, [
             'label' => 'Role'
         ]);
 
-        $builder->add('appendUsers', 'pim_enrich_entity_identifier', [
+        $builder->add('appendUsers', EntityIdentifierType::class, [
             'class'    => 'PimEnterpriseUserBundle:User',
             'required' => false,
             'mapped'   => false,
             'multiple' => true,
         ]);
 
-        $builder->add('removeUsers', 'pim_enrich_entity_identifier', [
+        $builder->add('removeUsers', EntityIdentifierType::class, [
             'class'    => 'PimEnterpriseUserBundle:User',
             'required' => false,
             'mapped'   => false,
@@ -79,7 +83,7 @@ class AclRoleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Oro\Bundle\UserBundle\Entity\Role',
+            'data_class' => Role::class,
             'intention'  => 'role',
         ]);
     }
@@ -87,7 +91,7 @@ class AclRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oro_user_role_form';
     }

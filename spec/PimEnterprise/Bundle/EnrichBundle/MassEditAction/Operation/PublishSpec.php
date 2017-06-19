@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType;
 
 class PublishSpec extends ObjectBehavior
 {
@@ -20,7 +21,7 @@ class PublishSpec extends ObjectBehavior
 
     function it_provides_a_form_type()
     {
-        $this->getFormType()->shouldReturn('pimee_enrich_mass_publish');
+        $this->getFormType()->shouldReturn(PublishType::class);
     }
 
     function it_provides_form_options()

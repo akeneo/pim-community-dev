@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -37,8 +38,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PublishedProductController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -65,7 +66,7 @@ class PublishedProductController
     protected $authorizationChecker;
 
     /**
-     * @param Request                       $request
+     * @param RequestStack                  $requestStack
      * @param RouterInterface               $router
      * @param EngineInterface               $templating
      * @param TranslatorInterface           $translator
@@ -76,7 +77,7 @@ class PublishedProductController
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         EngineInterface $templating,
         TranslatorInterface $translator,
@@ -86,7 +87,7 @@ class PublishedProductController
         ChannelRepositoryInterface $channelRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->templating = $templating;
         $this->translator = $translator;

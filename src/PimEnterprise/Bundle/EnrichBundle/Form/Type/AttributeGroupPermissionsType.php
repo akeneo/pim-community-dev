@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,12 +30,12 @@ class AttributeGroupPermissionsType extends AbstractType
     {
         $builder->add(
             'view',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'attribute group.permissions.view.label', 'help' => 'attribute group.permissions.view.help']
         );
         $builder->add(
             'edit',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'attribute group.permissions.edit.label', 'help' => 'attribute group.permissions.edit.help']
         );
     }
@@ -50,7 +51,7 @@ class AttributeGroupPermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_enrich_attribute_group_permissions';
     }

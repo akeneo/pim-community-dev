@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
 use Symfony\Component\Validator\Constraint;
 
 class ProjectDueDateSpec extends ObjectBehavior

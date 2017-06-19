@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Versioning\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 class ReferenceUpdateGuesserSpec extends ObjectBehavior
 {

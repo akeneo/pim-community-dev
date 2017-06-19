@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -70,7 +71,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         if (null !== $event->getData() && $this->isGranted($event->getData())) {
-            $event->getForm()->add('permissions', 'pimee_import_export_job_profile_permissions');
+            $event->getForm()->add('permissions', JobProfilePermissionsType::class);
         }
     }
 

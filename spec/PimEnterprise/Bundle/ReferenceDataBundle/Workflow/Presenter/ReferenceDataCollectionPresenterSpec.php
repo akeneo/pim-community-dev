@@ -4,11 +4,11 @@ namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 {

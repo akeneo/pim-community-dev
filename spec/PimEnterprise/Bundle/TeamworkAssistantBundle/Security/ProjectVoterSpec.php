@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Security;
 
+use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 class ProjectVoterSpec extends ObjectBehavior
 {
@@ -25,19 +25,6 @@ class ProjectVoterSpec extends ObjectBehavior
     function it_is_a_voter()
     {
         $this->shouldHaveType(VoterInterface::class);
-    }
-
-    function it_has_own_and_contribute_attribute()
-    {
-        $this->supportsAttribute(ProjectVoter::OWN)->shouldReturn(true);
-        $this->supportsAttribute(ProjectVoter::CONTRIBUTE)->shouldReturn(true);
-        $this->supportsAttribute('wrong_attribute')->shouldReturn(false);
-    }
-
-    function it_only_works_with_project()
-    {
-        $this->supportsClass(ProjectInterface::class)->shouldReturn(true);
-        $this->supportsClass('OtherClass')->shouldReturn(false);
     }
 
     function it_returns_access_granted_for_owner(

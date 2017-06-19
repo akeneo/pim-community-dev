@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,18 +32,18 @@ class RoleApiType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('label', 'text', [
+        $builder->add('label', TextType::class, [
             'label'    => 'Role'
         ]);
 
-        $builder->add('appendUsers', 'pim_enrich_entity_identifier', [
+        $builder->add('appendUsers', EntityIdentifierType::class, [
             'class'    => 'PimEnterpriseUserBundle:User',
             'required' => false,
             'mapped'   => false,
             'multiple' => true,
         ]);
 
-        $builder->add('removeUsers', 'pim_enrich_entity_identifier', [
+        $builder->add('removeUsers', EntityIdentifierType::class, [
             'class'    => 'PimEnterpriseUserBundle:User',
             'required' => false,
             'mapped'   => false,
@@ -55,7 +58,7 @@ class RoleApiType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
-            'data_class'      => 'Oro\Bundle\UserBundle\Entity\Role',
+            'data_class'      => Role::class,
             'intention'       => 'role',
         ]);
     }
@@ -63,7 +66,7 @@ class RoleApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'role';
     }

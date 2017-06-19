@@ -7,8 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 
 class LocaleAccessManagerSpec extends ObjectBehavior

@@ -101,7 +101,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'add_product_value_with_permission_and_rules'
-            - 'pim_enrich_mass_classify'
+            - '%pimee_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -115,7 +115,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'update_product_value_with_permission_and_rules'
-            - 'pim_enrich_mass_classify'
+            - '%pimee_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -129,7 +129,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'remove_product_value_with_permission_and_rules'
-            - 'pim_enrich_mass_classify'
+            - '%pimee_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action

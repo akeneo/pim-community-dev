@@ -11,7 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Pim\Bundle\UIBundle\Form\Type\DateType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -50,7 +55,7 @@ class AssetType extends AbstractType
     {
         $builder->add(
             'code',
-            'text',
+            TextType::class,
             [
                 'read_only' => true,
                 'label'     => 'pimee_product_asset.enrich_asset.view.code',
@@ -58,7 +63,7 @@ class AssetType extends AbstractType
         );
         $builder->add(
             'description',
-            'textarea',
+            TextareaType::class,
             [
                 'required' => false,
                 'label'    => 'pimee_product_asset.enrich_asset.view.description',
@@ -66,7 +71,7 @@ class AssetType extends AbstractType
         );
         $builder->add(
             'tags',
-            'pim_ajax_asset_tag',
+            AjaxAssetTagType::class,
             [
                 'class'        => $this->tagClass,
                 'multiple'     => true,
@@ -76,7 +81,7 @@ class AssetType extends AbstractType
         );
         $builder->add(
             'endOfUseAt',
-            'pim_date',
+            DateType::class,
             [
                 'required' => false,
                 'label'    => 'pimee_product_asset.enrich_asset.view.end_of_use',
@@ -84,12 +89,12 @@ class AssetType extends AbstractType
         );
         $builder->add(
             'references',
-            'collection',
-            ['type' => 'pimee_product_asset_reference']
+            CollectionType::class,
+            ['entry_type' => ReferenceType::class]
         );
         $builder->add(
             'categories',
-            'pim_enrich_entity_identifier',
+            EntityIdentifierType::class,
             [
                 'class'    => $this->categoryClass,
                 'required' => true,
@@ -112,7 +117,7 @@ class AssetType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_product_asset';
     }

@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\UserBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 class VisibleUserPreferencesExtensionSpec extends ObjectBehavior
 {
@@ -19,18 +19,15 @@ class VisibleUserPreferencesExtensionSpec extends ObjectBehavior
         $this->shouldImplement('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('are_visible_user_preferences');
-    }
-
     function it_has_functions()
     {
         $functions = $this->getFunctions();
 
         $functions->shouldHaveCount(2);
-        $functions['is_proposal_to_review_field_visible']->shouldBeAnInstanceOf('\Twig_Function_Method');
-        $functions['is_proposal_state_field_visible']->shouldBeAnInstanceOf('\Twig_Function_Method');
+        $functions[0]->getName()->shouldBeEqualTo('is_proposal_to_review_field_visible');
+        $functions[0]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
+        $functions[1]->getName()->shouldBeEqualTo('is_proposal_state_field_visible');
+        $functions[1]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
     }
 
     function it_checks_if_the_field_notification_for_proposals_to_review_has_to_be_show(

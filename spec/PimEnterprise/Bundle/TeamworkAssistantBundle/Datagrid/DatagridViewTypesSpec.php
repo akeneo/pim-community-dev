@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid;
 
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 
 class DatagridViewTypesSpec extends ObjectBehavior
 {

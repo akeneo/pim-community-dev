@@ -54,7 +54,7 @@ services:
             - '@pim_catalog.manager.category'
             - '@security.token_storage'
             - '%pim_enrich.mass_edit_action.classify.class%'
-            - 'pim_enrich_mass_classify'
+            - '%pimee_enrich.form.type.classify.class%'
         tags:
             - { name: form.type, alias: pim_enrich_mass_classify }
 
@@ -97,4 +97,4 @@ services:
     pimee_enrich.form.extension.attribute:
         class: '%pimee_enrich.form.extension.attribute.class%'
         tags:
-            - { name: form.type_extension, alias: pim_enrich_attribute }
+            - { name: form.type_extension, extended_type: '%pim_enrich.form.type.attribute.class%' }

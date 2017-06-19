@@ -22,13 +22,14 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig_Extension_InitRuntimeInterface;
 
 /**
  * Twig extension to present product draft changes
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftChangesExtension extends \Twig_Extension
+class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Extension_InitRuntimeInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
@@ -78,14 +79,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     public function initRuntime(\Twig_Environment $twig)
     {
         $this->twig = $twig;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pimee_workflow_product_draft_changes_extension';
     }
 
     /**

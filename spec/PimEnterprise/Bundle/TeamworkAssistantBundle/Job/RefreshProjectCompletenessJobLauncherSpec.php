@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Job;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Component\Batch\Model\JobInstance;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
-use PhpSpec\ObjectBehavior;
 
 class RefreshProjectCompletenessJobLauncherSpec extends ObjectBehavior
 {

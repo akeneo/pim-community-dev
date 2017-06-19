@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +14,9 @@ class JobProfilePermissionsTypeSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pimee_import_export_job_profile_permissions');
+        $this->getBlockPrefix()->shouldReturn('pimee_import_export_job_profile_permissions');
     }
 
     function it_has_view_and_edit_permission_fields(FormBuilderInterface $builder)
@@ -23,11 +24,11 @@ class JobProfilePermissionsTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('execute', 'pimee_security_groups', ['label' => 'job_profile.permissions.execute.label'])
+            ->add('execute', GroupsType::class, ['label' => 'job_profile.permissions.execute.label'])
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('edit', 'pimee_security_groups', ['label' => 'job_profile.permissions.edit.label'])
+            ->add('edit', GroupsType::class, ['label' => 'job_profile.permissions.edit.label'])
             ->shouldHaveBeenCalled();
     }
 

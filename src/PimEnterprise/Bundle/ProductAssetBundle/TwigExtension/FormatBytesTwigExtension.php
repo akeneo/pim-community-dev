@@ -56,12 +56,4 @@ class FormatBytesTwigExtension extends \Twig_Extension
     {
         return $this->bytesFormater->formatBytes($bytes, $decimals, $intlSystem);
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'twig_extension';
-    }
 }

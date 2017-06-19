@@ -33,14 +33,6 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'pimee_workflow_product_draft_button_view_extension';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [

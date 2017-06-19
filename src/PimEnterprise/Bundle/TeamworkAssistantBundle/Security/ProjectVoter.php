@@ -13,15 +13,16 @@ namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Security;
 
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Project voter, allow to know if a user has own and/or contribute access to a project.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectVoter extends AbstractVoter
+class ProjectVoter extends Voter implements VoterInterface
 {
     const OWN = 'OWN';
     const CONTRIBUTE = 'CONTRIBUTE';
@@ -40,36 +41,27 @@ class ProjectVoter extends AbstractVoter
     /**
      * {@inheritdoc}
      */
-    protected function getSupportedClasses()
+    protected function supports($attribute, $subject)
     {
-        return [ProjectInterface::class];
+        return in_array($attribute, [self::OWN, self::CONTRIBUTE]) && $subject instanceof ProjectInterface;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getSupportedAttributes()
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return [self::OWN, self::CONTRIBUTE];
-    }
+        $user = $token->getUser();
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param ProjectInterface   $project
-     * @param UserInterface|null $user
-     */
-    protected function isGranted($attribute, $project, $user = null)
-    {
         if (null === $user) {
             return false;
         }
 
         switch ($attribute) {
             case self::OWN:
-                return $project->getOwner()->getId() === $user->getId();
+                return $subject->getOwner()->getId() === $user->getId();
             case self::CONTRIBUTE:
-                return $this->userRepository->isProjectContributor($project, $user);
+                return $this->userRepository->isProjectContributor($subject, $user);
         }
     }
 }

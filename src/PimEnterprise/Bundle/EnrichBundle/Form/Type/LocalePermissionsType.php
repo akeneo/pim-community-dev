@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,12 +30,12 @@ class LocalePermissionsType extends AbstractType
     {
         $builder->add(
             'view',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'locale.permissions.view.label', 'help' => 'locale.permissions.view.help']
         );
         $builder->add(
             'edit',
-            'pimee_security_groups',
+            GroupsType::class,
             ['label' => 'locale.permissions.edit.label', 'help' => 'locale.permissions.edit.help']
         );
     }
@@ -50,7 +51,7 @@ class LocalePermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_enrich_locale_permissions';
     }

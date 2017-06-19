@@ -3,12 +3,12 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
+use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -26,21 +26,6 @@ class ProductVoterSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith($categoryAccessRepository);
-    }
-
-    function it_supports_the_VIEW_PRODUCT_attribute()
-    {
-        $this->supportsAttribute(Attributes::VIEW)->shouldReturn(true);
-    }
-
-    function it_supports_the_EDIT_PRODUCT_attribute()
-    {
-        $this->supportsAttribute(Attributes::EDIT)->shouldReturn(true);
-    }
-
-    function it_supports_the_OWN_attribute()
-    {
-        $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
     }
 
     function it_returns_abstain_access_if_non_attribute_group_entity($token)

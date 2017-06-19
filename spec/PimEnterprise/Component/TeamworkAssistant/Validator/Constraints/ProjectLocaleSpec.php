@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use Symfony\Component\Validator\Constraint;
 
 class ProjectLocaleSpec extends ObjectBehavior

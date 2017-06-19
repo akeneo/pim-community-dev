@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifier;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;

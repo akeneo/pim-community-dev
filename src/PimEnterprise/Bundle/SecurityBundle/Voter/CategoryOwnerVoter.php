@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
-class CategoryOwnerVoter implements VoterInterface
+class CategoryOwnerVoter extends Voter implements VoterInterface
 {
     /**
      * @var CategoryAccessRepository
@@ -39,7 +40,27 @@ class CategoryOwnerVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
+    public function vote(TokenInterface $token, $object, array $attributes)
+    {
+        foreach ($attributes as $attribute) {
+            if (!$this->supports($attribute, $object)) {
+                continue;
+            }
+
+            if ($this->voteOnAttribute($attribute, $object, $token)) {
+                return VoterInterface::ACCESS_GRANTED;
+            }
+
+            return VoterInterface::ACCESS_DENIED;
+        }
+
+        return VoterInterface::ACCESS_ABSTAIN;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
     {
         return $attribute === Attributes::OWN_AT_LEAST_ONE_CATEGORY;
     }
@@ -47,31 +68,13 @@ class CategoryOwnerVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function vote(TokenInterface $token, $object, array $attributes)
-    {
-        foreach ($attributes as $attribute) {
-            if (!$this->supportsAttribute($attribute)) {
-                continue;
-            }
-
-            $user = $token->getUser();
-            if (null === $user || !is_object($user)) {
-                return VoterInterface::ACCESS_DENIED;
-            }
-
-            return $this->accessRepository->isOwner($user) ?
-                VoterInterface::ACCESS_GRANTED :
-                VoterInterface::ACCESS_DENIED;
+        $user = $token->getUser();
+        if (null === $user || !is_object($user)) {
+            return false;
         }
 
-        return VoterInterface::ACCESS_ABSTAIN;
+        return $this->accessRepository->isOwner($user);
     }
 }

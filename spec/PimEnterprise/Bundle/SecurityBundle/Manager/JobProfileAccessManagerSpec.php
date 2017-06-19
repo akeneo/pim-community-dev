@@ -7,8 +7,8 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 
 class JobProfileAccessManagerSpec extends ObjectBehavior

@@ -36,19 +36,17 @@ class VisibleUserPreferencesExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'are_visible_user_preferences';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [
-            'is_proposal_to_review_field_visible' => new \Twig_Function_Method($this, 'isProposalToReviewFieldVisible'),
-            'is_proposal_state_field_visible'     => new \Twig_Function_Method($this, 'isProposalStateFieldVisible'),
+            new \Twig_SimpleFunction(
+                'is_proposal_to_review_field_visible',
+                [$this, 'isProposalToReviewFieldVisible']
+            ),
+            new \Twig_SimpleFunction(
+                'is_proposal_state_field_visible',
+                [$this, 'isProposalStateFieldVisible']
+            ),
         ];
     }
 

@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
@@ -58,7 +59,7 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
 
     function it_adds_permissions_to_the_form($event, $form)
     {
-        $form->add('permissions', 'pimee_import_export_job_profile_permissions')->shouldBeCalled();
+        $form->add('permissions', JobProfilePermissionsType::class)->shouldBeCalled();
 
         $this->preSetData($event);
     }

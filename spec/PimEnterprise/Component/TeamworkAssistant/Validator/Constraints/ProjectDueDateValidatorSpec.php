@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;

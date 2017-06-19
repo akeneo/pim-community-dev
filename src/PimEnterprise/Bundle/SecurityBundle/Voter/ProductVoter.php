@@ -15,6 +15,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductVoter implements VoterInterface
+class ProductVoter extends Voter implements VoterInterface
 {
     /**
      * @var CategoryAccessRepository
@@ -42,32 +43,16 @@ class ProductVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT, Attributes::OWN]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof ProductInterface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if ($this->supportsClass($object)) {
+        if ($object instanceof ProductInterface) {
             foreach ($attributes as $attribute) {
-                if ($this->supportsAttribute($attribute)) {
+                if ($this->supports($attribute, $object)) {
                     $result = VoterInterface::ACCESS_DENIED;
 
-                    if ($this->isProductAccessible($object, $token->getUser(), $attribute)) {
+                    if ($this->voteOnAttribute($attribute, $object, $token)) {
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }
@@ -110,5 +95,22 @@ class ProductVoter implements VoterInterface
         }
 
         return $this->categoryAccessRepo->isCategoriesGranted($user, $categoryAttribute, $categoryIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT, Attributes::OWN]) &&
+            $subject instanceof ProductInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        return $this->isProductAccessible($subject, $token->getUser(), $attribute);
     }
 }

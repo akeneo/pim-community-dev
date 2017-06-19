@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
 use Akeneo\Component\Localization\Presenter\DatePresenter;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCreatedNotifier;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatusInterface;

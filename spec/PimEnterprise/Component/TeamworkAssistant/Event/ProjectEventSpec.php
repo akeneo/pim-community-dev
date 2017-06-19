@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Event;
 
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\Event;
 
 class ProjectEventSpec extends ObjectBehavior

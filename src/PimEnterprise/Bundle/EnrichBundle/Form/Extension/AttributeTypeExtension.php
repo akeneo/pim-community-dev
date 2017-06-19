@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Extension;
 
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -24,7 +26,7 @@ class AttributeTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
-        $builder->add('isReadOnly', 'switch', [
+        $builder->add('isReadOnly', SwitchType::class, [
             'required'      => false,
             'property_path' => 'properties[is_read_only]',
         ]);
@@ -35,6 +37,6 @@ class AttributeTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'pim_enrich_attribute';
+        return AttributeType::class;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 
 class ProjectCompletenessSpec extends ObjectBehavior
 {

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectIdentifier;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectIdentifier;
 use Prophecy\Argument;
 
 class ProjectIdentifierSpec extends ObjectBehavior

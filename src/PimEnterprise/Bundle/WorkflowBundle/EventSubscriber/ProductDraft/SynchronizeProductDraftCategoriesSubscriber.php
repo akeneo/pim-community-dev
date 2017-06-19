@@ -114,7 +114,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
         if (!$event instanceof ORMLifecycleEventsArgs) {
             return;
         }
-        $category = $event->getEntity();
+        $category = $event->getObject();
         if (!$category instanceof CategoryInterface) {
             return;
         }

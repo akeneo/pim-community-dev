@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MongoDBODM;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductEvents;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 

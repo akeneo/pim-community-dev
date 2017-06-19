@@ -9,8 +9,8 @@ use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class JobPermissionsSubscriberSpec extends ObjectBehavior
 {

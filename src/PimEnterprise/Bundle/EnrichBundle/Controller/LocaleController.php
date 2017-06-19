@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,7 +50,7 @@ class LocaleController
      */
     public function editAction(Request $request, Locale $locale)
     {
-        $form = $this->formFactory->create('pimee_enrich_locale', $locale);
+        $form = $this->formFactory->create(LocaleType::class, $locale);
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {

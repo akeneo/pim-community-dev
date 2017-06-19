@@ -10,6 +10,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as CEUserPreferencesSubscriber;
@@ -17,8 +18,10 @@ use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as EEUserPreferencesSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -36,7 +39,7 @@ class UserType extends BaseUserType
 
     /**
      * @param TokenStorageInterface             $tokenStorage
-     * @param Request                           $request
+     * @param RequestStack                      $requestStack
      * @param CEUserPreferencesSubscriber       $ceSubscriber
      * @param RoleRepository                    $roleRepository
      * @param GroupRepository                   $groupRepository
@@ -46,7 +49,7 @@ class UserType extends BaseUserType
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        Request $request,
+        RequestStack $requestStack,
         CEUserPreferencesSubscriber $ceSubscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
@@ -56,7 +59,7 @@ class UserType extends BaseUserType
     ) {
         parent::__construct(
             $tokenStorage,
-            $request,
+            $requestStack,
             $ceSubscriber,
             $roleRepository,
             $groupRepository,
@@ -86,7 +89,7 @@ class UserType extends BaseUserType
 
         $builder->add(
             'emailNotifications',
-            'checkbox',
+            CheckboxType::class,
             [
                 'label'    => 'user.email.notifications',
                 'required' => false,
@@ -95,7 +98,7 @@ class UserType extends BaseUserType
 
         $builder->add(
             'assetDelayReminder',
-            'integer',
+            IntegerType::class,
             [
                 'label'    => 'user.asset_delay_reminder',
                 'required' => true,
@@ -104,7 +107,7 @@ class UserType extends BaseUserType
 
         $builder->add(
             'defaultAssetTree',
-            'light_entity',
+            LightEntityType::class,
             [
                 'select2'    => true,
                 'repository' => $this->categoryProvider

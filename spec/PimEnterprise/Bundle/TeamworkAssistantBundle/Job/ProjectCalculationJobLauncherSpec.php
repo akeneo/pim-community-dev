@@ -3,11 +3,11 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Job;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 {

@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
+use PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType;
 
 /**
  * Batch operation to unpublish products
@@ -25,7 +26,7 @@ class Unpublish extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pimee_enrich_mass_unpublish';
+        return UnpublishType::class;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
@@ -60,7 +61,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
 
     function it_adds_permissions_to_the_form($event, $form)
     {
-        $form->add('permissions', 'pimee_enrich_category_permissions')->shouldBeCalled();
+        $form->add('permissions', CategoryPermissionsType::class)->shouldBeCalled();
 
         $this->preSetData($event);
     }

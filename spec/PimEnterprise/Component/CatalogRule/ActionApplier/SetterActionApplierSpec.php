@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 
 class SetterActionApplierSpec extends ObjectBehavior
 {

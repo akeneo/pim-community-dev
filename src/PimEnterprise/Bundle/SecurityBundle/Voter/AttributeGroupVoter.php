@@ -15,6 +15,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class AttributeGroupVoter implements VoterInterface
+class AttributeGroupVoter extends Voter implements VoterInterface
 {
     /**
      * @var AttributeGroupAccessManager
@@ -41,38 +42,41 @@ class AttributeGroupVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
-    {
-        return in_array($attribute, [Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class instanceof AttributeGroupInterface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if ($this->supportsClass($object)) {
-            foreach ($attributes as $attribute) {
-                if ($this->supportsAttribute($attribute)) {
-                    $result = VoterInterface::ACCESS_DENIED;
+        if (!($object instanceof AttributeGroupInterface)) {
+            return $result;
+        }
 
-                    if ($this->accessManager->isUserGranted($token->getUser(), $object, $attribute)) {
-                        return VoterInterface::ACCESS_GRANTED;
-                    }
+        foreach ($attributes as $attribute) {
+            if ($this->supports($attribute, $object)) {
+                $result = VoterInterface::ACCESS_DENIED;
+
+                if ($this->voteOnAttribute($attribute, $object, $token)) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
+    {
+        return in_array($attribute, [Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES]) &&
+            $subject instanceof AttributeGroupInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        return $this->accessManager->isUserGranted($token->getUser(), $subject, $attribute);
     }
 }

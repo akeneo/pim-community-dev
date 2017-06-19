@@ -23,7 +23,7 @@ class CategoryType extends BaseCategoryType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_asset_category';
     }

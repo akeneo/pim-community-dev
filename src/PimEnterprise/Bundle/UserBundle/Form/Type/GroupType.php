@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,14 +33,14 @@ class GroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text')
-            ->add('appendUsers', 'pim_enrich_entity_identifier', [
+            ->add('name', TextType::class)
+            ->add('appendUsers', EntityIdentifierType::class, [
                 'class'    => 'PimEnterpriseUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
             ])
-            ->add('removeUsers', 'pim_enrich_entity_identifier', [
+            ->add('removeUsers', EntityIdentifierType::class, [
                 'class'    => 'PimEnterpriseUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
@@ -51,7 +54,7 @@ class GroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Oro\Bundle\UserBundle\Entity\Group',
+            'data_class' => Group::class,
             'intention'  => 'group',
         ]);
     }
@@ -59,7 +62,7 @@ class GroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oro_user_group';
     }

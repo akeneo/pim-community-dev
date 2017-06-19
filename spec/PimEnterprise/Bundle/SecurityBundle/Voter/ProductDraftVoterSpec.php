@@ -24,18 +24,6 @@ class ProductDraftVoterSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\Security\Core\Authorization\Voter\VoterInterface');
     }
 
-    function it_supports_product_drafts()
-    {
-        $this->supportsClass(new ProductDraft())->shouldReturn(true);
-        $this->supportsClass(new \stdClass())->shouldReturn(false);
-    }
-
-    function it_supports_the_right_attributes()
-    {
-        $this->supportsAttribute(SecurityAttributes::OWN)->shouldReturn(true);
-        $this->supportsAttribute('not_supported')->shouldReturn(false);
-    }
-
     function it_abstains_if_class_is_not_supported(TokenInterface $token)
     {
         $this->vote($token, Argument::any(), [SecurityAttributes::OWN])

@@ -18,11 +18,6 @@ class FormatBytesTwigExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('twig_extension');
-    }
-
     function it_converts_with_two_decimals_by_default($bytesFormater)
     {
         $bytesFormater->formatBytes(753, 2, false)->willReturn('753 B');

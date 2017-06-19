@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
+use Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -32,17 +35,17 @@ class CreateAssetType extends AbstractType
     {
         $builder->add(
             'isLocalized',
-            'switch',
+            SwitchType::class,
             [
                 'mapped'      => false,
                 'label'       => 'pimee_product_asset.popin.create.is_localized',
                 'constraints' => [ new Type(['type' => 'bool']) ],
             ]
         );
-        $builder->add('reference_file', 'akeneo_file_storage_file_info');
+        $builder->add('reference_file', FileInfoType::class);
         $builder->add(
             'code',
-            'text',
+            TextType::class,
             [
                 'required'    => true,
                 'constraints' => [
@@ -61,7 +64,7 @@ class CreateAssetType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pimee_product_asset_create';
     }

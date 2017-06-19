@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
 use PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber as
     BaseCategoryPermissionsSubscriber;
+use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryPermissionsType;
 use Symfony\Component\Form\FormEvent;
 
 /**
@@ -36,7 +37,7 @@ class CategoryPermissionsSubscriber extends BaseCategoryPermissionsSubscriber
             return;
         }
 
-        $event->getForm()->add('permissions', 'pimee_product_asset_category_permissions');
+        $event->getForm()->add('permissions', CategoryPermissionsType::class);
     }
 
     /**

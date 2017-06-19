@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +14,9 @@ class AttributeGroupPermissionsTypeSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pimee_enrich_attribute_group_permissions');
+        $this->getBlockPrefix()->shouldReturn('pimee_enrich_attribute_group_permissions');
     }
 
     function it_has_view_and_edit_permission_fields(FormBuilderInterface $builder)
@@ -25,7 +26,7 @@ class AttributeGroupPermissionsTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'view',
-                'pimee_security_groups',
+                GroupsType::class,
                 ['label' => 'attribute group.permissions.view.label', 'help' => 'attribute group.permissions.view.help']
             )
             ->shouldHaveBeenCalled();
@@ -33,7 +34,7 @@ class AttributeGroupPermissionsTypeSpec extends ObjectBehavior
         $builder
             ->add(
                 'edit',
-                'pimee_security_groups',
+                GroupsType::class,
                 ['label' => 'attribute group.permissions.edit.label', 'help' => 'attribute group.permissions.edit.help']
             )
             ->shouldHaveBeenCalled();

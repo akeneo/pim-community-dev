@@ -12,8 +12,7 @@ services:
 
     pimee_workflow.repository.product_draft:
         class: '%pimee_workflow.repository.product_draft.class%'
-        factory_service: pimee_workflow.object_manager.product_draft
-        factory_method: getRepository
+        factory: 'pimee_workflow.object_manager.product_draft:getRepository'
         arguments: ['%pimee_workflow.model.product_draft.class%']
         calls:
             - [setCategoryAccessRepository, ['@pimee_security.repository.category_access']]
@@ -22,8 +21,7 @@ services:
 
     pimee_workflow.repository.published_product:
         class: '%pimee_workflow.repository.published_product.class%'
-        factory_service: pim_catalog.object_manager.product
-        factory_method: getRepository
+        factory: 'pim_catalog.object_manager.product:getRepository'
         arguments: ['%pimee_workflow.entity.published_product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_builder_factory']]

@@ -3,9 +3,10 @@
 namespace spec\PimEnterprise\Bundle\UserBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Security\Attributes;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -43,7 +44,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
 
         $form->add(
             'proposalsToReviewNotification',
-            'switch',
+            SwitchType::class,
             [
                 'label'    => 'user.proposals.notifications.to_review',
                 'required' => false,
@@ -77,7 +78,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
 
         $form->add(
             'proposalsStateNotification',
-            'switch',
+            SwitchType::class,
             [
                 'label'    => 'user.proposals.notifications.state',
                 'required' => false,
@@ -100,7 +101,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
 
         $form->add(
             'proposalsToReviewNotification',
-            'switch',
+            SwitchType::class,
             [
                 'label'    => 'user.proposals.notifications.to_review',
                 'required' => false,
@@ -134,7 +135,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
 
         $form->add(
             'proposalsStateNotification',
-            'switch',
+            SwitchType::class,
             [
                 'label'    => 'user.proposals.notifications.state',
                 'required' => false,

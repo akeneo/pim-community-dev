@@ -13,8 +13,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AbstractAttribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
+use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
