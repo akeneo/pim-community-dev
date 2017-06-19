@@ -102,7 +102,7 @@ class TranslatableFieldType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_translatable_field';
     }

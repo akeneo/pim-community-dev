@@ -19,7 +19,7 @@ class VersionExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'version' => new \Twig_Function_Method($this, 'version'),
+            new \Twig_SimpleFunction('version', [$this, 'version']),
         ];
     }
 
@@ -36,13 +36,5 @@ class VersionExtension extends \Twig_Extension
         }
 
         return $version;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_version_extension';
     }
 }

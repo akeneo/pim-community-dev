@@ -12,11 +12,6 @@ class LocaleExtensionSpec extends ObjectBehavior
         $this->beConstructedWith($helper);
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pim_locale_extension');
-    }
-
     function it_registers_locale_functions()
     {
         $functions = $this->getFunctions();

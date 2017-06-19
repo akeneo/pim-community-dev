@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;

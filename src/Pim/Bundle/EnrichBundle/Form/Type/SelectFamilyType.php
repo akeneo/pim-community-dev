@@ -33,7 +33,7 @@ class SelectFamilyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'select_family_type';
     }
@@ -43,7 +43,7 @@ class SelectFamilyType extends AbstractType
      */
     public function getParent()
     {
-        return 'pim_async_select';
+        return AsyncSelectType::class;
     }
 
     /**

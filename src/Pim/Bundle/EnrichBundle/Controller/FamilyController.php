@@ -8,7 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -21,8 +21,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class FamilyController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -37,19 +37,19 @@ class FamilyController
     protected $familyForm;
 
     /**
-     * @param Request                      $request
-     * @param RouterInterface              $router
-     * @param FamilyFactory                $familyFactory
-     * @param HandlerInterface             $familyHandler
+     * @param RequestStack     $requestStack
+     * @param RouterInterface  $router
+     * @param FamilyFactory    $familyFactory
+     * @param HandlerInterface $familyHandler
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
         Form $familyForm
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->familyFactory = $familyFactory;
         $this->familyHandler = $familyHandler;
@@ -69,7 +69,12 @@ class FamilyController
         $family = $this->familyFactory->create();
 
         if ($this->familyHandler->process($family)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
+            $this
+                ->requestStack
+                ->getCurrentRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.family.created'));
 
             $response = [
                 'status' => 1,

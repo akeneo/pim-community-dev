@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToVariantGroupType;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
@@ -45,7 +46,7 @@ class AddToVariantGroup extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_add_to_variant_group';
+        return AddToVariantGroupType::class;
     }
 
     /**

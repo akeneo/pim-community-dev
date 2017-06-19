@@ -57,12 +57,4 @@ class UpdateExtension extends \Twig_Extension
     {
         return $this->updateServerUrl;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_analytics_update_extension';
-    }
 }

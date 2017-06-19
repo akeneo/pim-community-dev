@@ -27,7 +27,7 @@ class OroSecurityExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'resource_granted' => new \Twig_Function_Method($this, 'checkResourceIsGranted'),
+            new \Twig_SimpleFunction('resource_granted', [$this, 'checkResourceIsGranted']),
         ];
     }
 
@@ -43,15 +43,5 @@ class OroSecurityExtension extends \Twig_Extension
     public function checkResourceIsGranted($attributes, $object = null)
     {
         return $this->securityFacade->isGranted($attributes, $object);
-    }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'oro_security_extension';
     }
 }

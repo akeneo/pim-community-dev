@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
@@ -60,7 +61,7 @@ class AddToGroups extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_add_to_groups';
+        return AddToGroupsType::class;
     }
 
     /**

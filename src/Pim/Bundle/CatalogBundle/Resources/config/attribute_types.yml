@@ -21,8 +21,8 @@ services:
     pim_catalog.attributetype.identifier:
         class: '%pim_catalog.attribute_type.identifier.class%'
         arguments:
-            - text
-            - text
+            - 'text'
+            - 'Symfony\Component\Form\Extension\Core\Type\TextType'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_identifier, entity: '%pim_catalog.entity.product.class%' }
@@ -30,8 +30,8 @@ services:
     pim_catalog.attributetype.text:
         class: '%pim_catalog.attribute_type.text.class%'
         arguments:
-            - text
-            - text
+            - 'text'
+            - 'Symfony\Component\Form\Extension\Core\Type\TextType'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_text, entity: '%pim_catalog.entity.product.class%' }
@@ -39,8 +39,8 @@ services:
     pim_catalog.attributetype.textarea:
         class: '%pim_catalog.attribute_type.textarea.class%'
         arguments:
-            - textarea
-            - textarea
+            - 'textarea'
+            - 'Symfony\Component\Form\Extension\Core\Type\TextAreaType'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_textarea, entity: '%pim_catalog.entity.product.class%' }
@@ -48,8 +48,8 @@ services:
     pim_catalog.attributetype.multiselect:
         class: '%pim_catalog.attribute_type.multiselect.class%'
         arguments:
-            - options
-            - pim_ajax_entity
+            - 'options'
+            - '%pim_ui.form.type.ajax_entity.class%'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_multiselect, entity: '%pim_catalog.entity.product.class%' }
@@ -57,8 +57,8 @@ services:
     pim_catalog.attributetype.simpleselect:
         class: '%pim_catalog.attribute_type.simpleselect.class%'
         arguments:
-            - option
-            - pim_ajax_entity
+            - 'option'
+            - '%pim_ui.form.type.ajax_entity.class%'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_simpleselect, entity: '%pim_catalog.entity.product.class%' }
@@ -66,8 +66,8 @@ services:
     pim_catalog.attributetype.pricecollection:
         class: '%pim_catalog.attribute_type.price_collection.class%'
         arguments:
-            - prices
-            - pim_enrich_price_collection
+            - 'prices'
+            - 'Pim\Bundle\EnrichBundle\Form\Type\PriceCollectionType'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
             - '@pim_catalog.repository.currency'
         tags:
@@ -76,8 +76,8 @@ services:
     pim_catalog.attributetype.number:
         class: '%pim_catalog.attribute_type.number.class%'
         arguments:
-            - decimal
-            - pim_number
+            - 'decimal'
+            - '%pim_ui.form.type.number.class%'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_number, entity: '%pim_catalog.entity.product.class%' }
@@ -85,8 +85,8 @@ services:
     pim_catalog.attributetype.boolean:
         class: '%pim_catalog.attribute_type.boolean.class%'
         arguments:
-            - boolean
-            - switch
+            - 'boolean'
+            - '%pim_ui.form.type.switch.class%'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_boolean, entity: '%pim_catalog.entity.product.class%' }
@@ -94,8 +94,8 @@ services:
     pim_catalog.attributetype.date:
         class: '%pim_catalog.attribute_type.date.class%'
         arguments:
-            - date
-            - pim_date
+            - 'date'
+            - '%pim_ui.form.type.date.class%'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_date, entity: '%pim_catalog.entity.product.class%' }
@@ -103,8 +103,8 @@ services:
     pim_catalog.attributetype.file:
         class: '%pim_catalog.attribute_type.file.class%'
         arguments:
-            - media
-            - pim_enrich_media
+            - 'media'
+            - '%pim_enrich.form.type.media.class%'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_file, entity: '%pim_catalog.entity.product.class%' }
@@ -112,8 +112,8 @@ services:
     pim_catalog.attributetype.image:
         class: '%pim_catalog.attribute_type.image.class%'
         arguments:
-            - media
-            - pim_enrich_image
+            - 'media'
+            - 'Pim\Bundle\EnrichBundle\Form\Type\ImageType'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_image, entity: '%pim_catalog.entity.product.class%' }
@@ -121,8 +121,8 @@ services:
     pim_catalog.attributetype.metric:
         class: '%pim_catalog.attribute_type.metric.class%'
         arguments:
-            - metric
-            - pim_enrich_metric
+            - 'metric'
+            - 'Pim\Bundle\EnrichBundle\Form\Type\MetricType'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: '%pim_catalog.entity.product.class%' }

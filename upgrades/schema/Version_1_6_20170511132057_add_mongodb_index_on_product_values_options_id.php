@@ -3,11 +3,11 @@
 namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 use Pim\Upgrade\SchemaHelper;
 use Pim\Upgrade\UpgradeHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Add index on MongoDB Product collection for retrieving products by an attribute option value code

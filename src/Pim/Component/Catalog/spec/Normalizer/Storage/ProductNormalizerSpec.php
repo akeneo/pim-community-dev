@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Storage;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

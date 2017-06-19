@@ -3,7 +3,6 @@ parameters:
 
 services:
     pim_pdf_generator.controller.product:
-        scope: request
         class: '%pim_pdf_generator.controller.product.class%'
         arguments:
             - '@pim_catalog.repository.product'

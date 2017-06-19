@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter;
 use Symfony\Component\Validator\Constraint;
 
 class IsIdentifierUsableAsGridFilterSpec extends ObjectBehavior

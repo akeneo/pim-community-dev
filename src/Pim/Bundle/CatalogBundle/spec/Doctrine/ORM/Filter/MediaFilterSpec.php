@@ -6,7 +6,9 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -21,7 +23,7 @@ class MediaFilterSpec extends ObjectBehavior
         );
         $this->setQueryBuilder($qb);
 
-        $qb->getRootAlias()->willReturn('p');
+        $qb->getRootAliases()->willReturn(['p']);
         $qb->expr()->willReturn($expr);
 
         $image->getId()->willReturn(1);
@@ -33,12 +35,12 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_is_a_media_filter()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter');
+        $this->shouldHaveType(MediaFilter::class);
     }
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()
@@ -241,7 +243,7 @@ class MediaFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::stringExpected(
                 'media_code',
-                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter',
+                MediaFilter::class,
                 $value
             )
         )->during('addAttributeFilter', [$attribute, '=', $value]);

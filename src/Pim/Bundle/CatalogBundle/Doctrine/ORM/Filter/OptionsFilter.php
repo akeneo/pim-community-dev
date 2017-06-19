@@ -80,7 +80,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias() . '.values',
+                current($this->qb->getRootAliases()) . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -95,7 +95,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             }
             $this->qb
                 ->innerJoin(
-                    $this->qb->getRootAlias() . '.values',
+                    current($this->qb->getRootAliases()) . '.values',
                     $joinAlias,
                     'WITH',
                     $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -109,7 +109,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
             if (Operators::NOT_IN_LIST === $operator) {
                 $this->qb->andWhere($this->qb->expr()->notIn(
-                    $this->qb->getRootAlias() . '.id',
+                    current($this->qb->getRootAliases()) . '.id',
                     $this->getNotInSubquery($attribute, $locale, $scope, $value)
                 ));
             }
@@ -139,7 +139,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
         $notInQb->select($notInAlias . '.id')
             ->from($rootEntity, $notInAlias, $notInAlias . '.id')
             ->innerJoin(
-                $notInQb->getRootAlias() . '.values',
+                current($notInQb->getRootAliases()) . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)

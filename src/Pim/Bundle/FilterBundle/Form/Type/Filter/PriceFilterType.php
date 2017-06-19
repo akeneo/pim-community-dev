@@ -5,6 +5,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -38,7 +39,7 @@ class PriceFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -48,7 +49,7 @@ class PriceFilterType extends AbstractType
      */
     public function getParent()
     {
-        return NumberFilterType::NAME;
+        return NumberFilterType::class;
     }
 
     /**
@@ -58,7 +59,7 @@ class PriceFilterType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('currency', 'choice', $this->createCurrencyOptions($options));
+        $builder->add('currency', ChoiceType::class, $this->createCurrencyOptions($options));
     }
 
     /**

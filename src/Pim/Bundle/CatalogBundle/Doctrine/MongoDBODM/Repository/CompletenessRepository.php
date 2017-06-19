@@ -127,7 +127,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     protected function getCategoryIds(OrmQueryBuilder $categoryQb)
     {
         $categoryIds = [];
-        $categoryAlias = $categoryQb->getRootAlias();
+        $categoryAlias = current($categoryQb->getRootAliases());
         $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
 
         foreach ($categories as $category) {

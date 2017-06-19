@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {

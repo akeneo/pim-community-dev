@@ -3,6 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToVariantGroupType;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 class AddToVariantGroupSpec extends ObjectBehavior
@@ -14,14 +18,14 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
     function it_is_a_mass_edit_action()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface');
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface');
+        $this->shouldImplement(MassEditOperationInterface::class);
+        $this->shouldImplement(ConfigurableOperationInterface::class);
+        $this->shouldImplement(BatchableOperationInterface::class);
     }
 
     function it_provides_a_form_type()
     {
-        $this->getFormType()->shouldReturn('pim_enrich_mass_add_to_variant_group');
+        $this->getFormType()->shouldReturn(AddToVariantGroupType::class);
     }
 
     function it_provides_an_alias()

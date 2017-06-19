@@ -33,7 +33,7 @@ class LoadingMessageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'loading_message' => new \Twig_Function_Method($this, 'loadingMessage'),
+            new \Twig_SimpleFunction('loading_message', [$this, 'loadingMessage']),
         ];
     }
 
@@ -48,13 +48,5 @@ class LoadingMessageExtension extends \Twig_Extension
         $messages = file($path);
 
         return $messages[array_rand($messages)];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_ui_loading_message_extension';
     }
 }

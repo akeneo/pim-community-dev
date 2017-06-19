@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -53,13 +54,13 @@ class LocalizedCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return 'collection';
+        return CollectionType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_localized_collection';
     }

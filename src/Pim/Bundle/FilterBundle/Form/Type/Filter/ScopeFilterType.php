@@ -4,6 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -36,7 +37,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -46,7 +47,7 @@ class ScopeFilterType extends ChoiceFilterType
      */
     public function getParent()
     {
-        return ChoiceFilterType::NAME;
+        return ChoiceFilterType::class;
     }
 
     /**
@@ -58,7 +59,7 @@ class ScopeFilterType extends ChoiceFilterType
 
         $resolver->setDefaults(
             [
-                'field_type'    => 'choice',
+                'field_type'    => ChoiceType::class,
                 'field_options' => ['choices' => $scopeChoices]
             ]
         );

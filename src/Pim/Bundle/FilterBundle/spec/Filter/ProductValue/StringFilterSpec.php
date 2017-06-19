@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 

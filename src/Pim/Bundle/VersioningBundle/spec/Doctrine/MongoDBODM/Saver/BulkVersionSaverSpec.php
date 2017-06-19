@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Component\Versioning\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -38,7 +39,7 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_set_attribute_requirements';
+        return SetAttributeRequirementsType::class;
     }
 
     /**

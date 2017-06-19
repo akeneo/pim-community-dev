@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Component\Connector\Archiver;
 
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Step\AbstractStep;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;

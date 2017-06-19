@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

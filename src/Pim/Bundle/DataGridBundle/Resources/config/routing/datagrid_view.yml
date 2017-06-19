@@ -36,6 +36,6 @@ pim_datagrid_view_rest_get:
 pim_datagrid_view_index:
     path: /{alias}/{id}
     defaults: { _controller: pim_datagrid.controller.datagrid_view:indexAction, id: ~ }
+    methods: [GET, POST]
     requirements:
-        _method: GET|POST
         id: \d+

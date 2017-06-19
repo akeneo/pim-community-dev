@@ -54,7 +54,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias() . '.values',
+                current($this->qb->getRootAliases()) . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -64,7 +64,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
             $condition .= ' AND ' . $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias() . '.values',
+                current($this->qb->getRootAliases()) . '.values',
                 $joinAlias,
                 'WITH',
                 $condition

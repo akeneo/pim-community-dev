@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -18,7 +19,7 @@ class OperationRegistrySpec extends ObjectBehavior
 
     function it_implements_operation_registry_interface()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface');
+        $this->shouldHaveType(OperationRegistryInterface::class);
     }
 
     function it_registers_a_mass_edit_operation_and_retrieves_it_by_its_alias(

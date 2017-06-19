@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Entity\AssociationType as EntityAssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,11 +50,11 @@ class AssociationTypeType extends AbstractType
     {
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             [
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTypeTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationType',
+                'translation_class' => AssociationTypeTranslation::class,
+                'entity_class'      => EntityAssociationType::class,
                 'property_path'     => 'translations'
             ]
         );
@@ -73,7 +75,7 @@ class AssociationTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_associationtype';
     }

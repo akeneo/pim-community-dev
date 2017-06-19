@@ -10,6 +10,7 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdTransformer;
 use Pim\Bundle\EnrichBundle\Form\Exception\FormException;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FixArrayToStringListener;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -133,7 +134,7 @@ class EntityIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -143,6 +144,6 @@ class EntityIdentifierType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 }

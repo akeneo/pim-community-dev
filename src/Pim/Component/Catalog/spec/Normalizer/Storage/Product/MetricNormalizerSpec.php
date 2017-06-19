@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Storage\Product;
 
-use Pim\Component\Catalog\Model\MetricInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

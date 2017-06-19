@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\CatalogBundle\Saver\Common;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
+use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;

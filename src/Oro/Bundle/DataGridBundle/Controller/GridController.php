@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class GridController extends Controller
@@ -30,10 +31,8 @@ class GridController extends Controller
      * @throws \LogicException
      * @return Response
      */
-    public function massActionAction($gridName, $actionName)
+    public function massActionAction(Request $request, $gridName, $actionName)
     {
-        $request = $this->getRequest();
-
         /** @var MassActionParametersParser $massActionParametersParser */
         $parametersParser = $this->get('oro_datagrid.mass_action.parameters_parser');
         $parameters = $parametersParser->parse($request);

@@ -19,7 +19,7 @@ class ObjectClassExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            'class' => new \Twig_Filter_Method($this, 'getClass')
+            new \Twig_SimpleFilter('class', array($this, 'getClass')),
         ];
     }
 
@@ -33,13 +33,5 @@ class ObjectClassExtension extends \Twig_Extension
     public function getClass($entity)
     {
         return ClassUtils::getClass($entity);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_object_class_extension';
     }
 }

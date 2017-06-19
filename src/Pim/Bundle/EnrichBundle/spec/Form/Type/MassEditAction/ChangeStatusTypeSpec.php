@@ -3,6 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangeStatusTypeSpec extends ObjectBehavior
@@ -10,18 +12,18 @@ class ChangeStatusTypeSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            'Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus'
+            ChangeStatus::class
         );
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_mass_change_status');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_mass_change_status');
     }
 
     function it_sets_default_options(OptionsResolver $resolver)
@@ -30,7 +32,7 @@ class ChangeStatusTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus',
+                'data_class' => ChangeStatus::class,
             ]
         )->shouldHaveBeenCalled();
     }

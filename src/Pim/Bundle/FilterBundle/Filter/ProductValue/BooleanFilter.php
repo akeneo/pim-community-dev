@@ -58,6 +58,6 @@ class BooleanFilter extends OroBooleanFilter
      */
     protected function getFormType()
     {
-        return BooleanFilterType::NAME;
+        return BooleanFilterType::class;
     }
 }

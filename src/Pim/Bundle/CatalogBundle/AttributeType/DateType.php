@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\UIBundle\Form\Type\DateType as FormDateType;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -22,14 +23,14 @@ class DateType extends AbstractAttributeType
         $properties = parent::defineCustomAttributeProperties($attribute) + [
             'dateMin' => [
                 'name'      => 'dateMin',
-                'fieldType' => 'pim_date',
+                'fieldType' => FormDateType::class,
                 'options'   => [
                     'widget' => 'single_text'
                 ]
             ],
             'dateMax' => [
                 'name'      => 'dateMax',
-                'fieldType' => 'pim_date',
+                'fieldType' => FormDateType::class,
                 'options'   => [
                     'widget' => 'single_text'
                 ]

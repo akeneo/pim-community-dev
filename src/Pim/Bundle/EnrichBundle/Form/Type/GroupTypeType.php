@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Entity\GroupType as EntityGroupType;
+use Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,11 +37,11 @@ class GroupTypeType extends AbstractType
         $builder->add('code');
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             [
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTypeTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupType',
+                'translation_class' => GroupTypeTranslation::class,
+                'entity_class'      => EntityGroupType::class,
                 'property_path'     => 'translations'
             ]
         );
@@ -61,7 +63,7 @@ class GroupTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_grouptype';
     }

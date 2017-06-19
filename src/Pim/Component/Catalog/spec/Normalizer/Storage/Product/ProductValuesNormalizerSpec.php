@@ -6,11 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior

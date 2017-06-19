@@ -9,10 +9,10 @@ use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RemoveProductValueProcessorSpec extends ObjectBehavior
 {

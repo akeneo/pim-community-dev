@@ -165,7 +165,7 @@ pim_enrich:
             already_in_variant_group_or_not_valid: You cannot group the following product because it is already in a variant group or doesn't have the group axis.
             no_variant_group:                      No variant group for now. Please start by creating a variant group.
             no_valid_variant_group:                No variant group is sharing attributes with selected products.
-            some_variant_groups_are_skipped:       The following variant groups have been skipped because they don't share attributes with selected products : %groups%
+            some_variant_groups_are_skipped:       "The following variant groups have been skipped because they don't share attributes with selected products : %groups%"
             launched_flash:                        The bulk action "add to variant group" has been launched. You will be notified when it is done.
 
         set-attribute-requirements:

@@ -16,6 +16,6 @@ class DateTimeRangeFilter extends AbstractDateFilter
      */
     protected function getFormType()
     {
-        return DateTimeRangeFilterType::NAME;
+        return DateTimeRangeFilterType::class;
     }
 }
