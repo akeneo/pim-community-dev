@@ -22,6 +22,12 @@ pim_enrich:
         attribute:
             type:
                 pim_assets_collection: Assets collection
+    form:
+        attribute:
+            tab:
+                properties:
+                    label:
+                        is_read_only: Read only
 
 pimee_enrich:
     form:
