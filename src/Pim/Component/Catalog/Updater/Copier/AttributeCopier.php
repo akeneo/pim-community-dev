@@ -96,15 +96,19 @@ class AttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+
+        $data = null;
         if (null !== $fromValue) {
             $standardData = $this->normalizer->normalize($fromValue, 'standard');
-            $this->productBuilder->addOrReplaceProductValue(
-                $toProduct,
-                $toAttribute,
-                $toLocale,
-                $toScope,
-                $standardData['data']
-            );
+            $data = $standardData['data'];
         }
+
+        $this->productBuilder->addOrReplaceProductValue(
+            $toProduct,
+            $toAttribute,
+            $toLocale,
+            $toScope,
+            $data
+        );
     }
 }

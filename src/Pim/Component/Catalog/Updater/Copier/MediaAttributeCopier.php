@@ -111,23 +111,22 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue) {
-            $file = null;
-            if (null !== $fromValue->getData()) {
-                $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
-                $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getData()->getKey());
-                $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
-                $file->setOriginalFilename($fromValue->getData()->getOriginalFilename());
-            }
+        $file = null;
+        if (null !== $fromValue && null !== $fromValue->getData()) {
+            $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+            $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getData()->getKey());
+            $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
-            $this->productBuilder->addOrReplaceProductValue(
-                $toProduct,
-                $toAttribute,
-                $toLocale,
-                $toScope,
-                null !== $file ? $file->getKey() : null
-            );
+            $file->setOriginalFilename($fromValue->getData()->getOriginalFilename());
         }
+
+        $this->productBuilder->addOrReplaceProductValue(
+            $toProduct,
+            $toAttribute,
+            $toLocale,
+            $toScope,
+            null !== $file ? $file->getKey() : null
+        );
     }
 }
