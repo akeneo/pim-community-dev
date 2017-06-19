@@ -125,13 +125,19 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addOrReplaceProductValue(
-                $product,
-                $attributes[$value['attribute']],
-                $value['locale'],
+            $attribute = $attributes[$value['attribute']];
+            $productValue = $product->getValue($attribute->getCode(), $value['locale'], $value['scope']);
+            if (null !== $productValue) {
+                $product->removeValue($productValue);
+            }
+
+            $productValue = $this->productValueFactory->create(
+                $attribute,
                 $value['scope'],
+                $value['locale'],
                 null
             );
+            $product->addValue($productValue);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -272,7 +278,13 @@ class ProductBuilder implements ProductBuilderInterface
                     }
                 }
 
-                $this->addOrReplaceProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
+                $productValue = $this->productValueFactory->create(
+                    $attribute,
+                    $value->getScope(),
+                    $value->getLocale(),
+                    null
+                );
+                $product->addValue($productValue);
             }
         }
     }
