@@ -155,7 +155,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('groups', $options['attribute_groups']);
         }
 
-        $qb->orderBy('ag.code');
         $qb->orderBy('ag.sortOrder');
 
         $qb->groupBy('a.id');

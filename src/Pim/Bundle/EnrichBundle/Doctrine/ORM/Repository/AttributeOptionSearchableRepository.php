@@ -55,6 +55,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb->select('o')
+            ->addSelect('v.value AS HIDDEN value')
             ->distinct()
             ->from($this->entityName, 'o')
             ->leftJoin('o.optionValues', 'v')
@@ -63,7 +64,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             ->setParameter('attributeCode', $options['identifier']);
 
         if ($this->isAttributeAutoSorted($options['identifier'])) {
-            $qb->orderBy('v.value, o.code');
+            $qb->orderBy('value, o.code');
         } else {
             $qb->orderBy('o.sortOrder');
         }

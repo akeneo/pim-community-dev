@@ -118,15 +118,15 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     public function hasAttribute($id, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('f')
-            ->leftJoin('f.attributes', 'a')
+            ->select(1)
+            ->innerJoin('f.attributes', 'a')
             ->where('f.id = :id')
             ->andWhere('a.code = :code')
             ->setMaxResults(1)
             ->setParameters([
                 'id'   => $id,
                 'code' => $attributeCode,
-            ])
-            ->addGroupBy('a.id');
+            ]);
 
         $result = $queryBuilder->getQuery()->getArrayResult();
 

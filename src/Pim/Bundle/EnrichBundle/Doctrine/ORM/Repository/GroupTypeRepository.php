@@ -73,7 +73,7 @@ class GroupTypeRepository extends EntityRepository implements
         );
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect(sprintf("%s AS label", $labelExpr));
 
         $qb
