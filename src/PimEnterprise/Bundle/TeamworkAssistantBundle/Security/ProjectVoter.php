@@ -15,13 +15,14 @@ use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Project voter, allow to know if a user has own and/or contribute access to a project.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectVoter extends Voter
+class ProjectVoter extends Voter implements VoterInterface
 {
     const OWN = 'OWN';
     const CONTRIBUTE = 'CONTRIBUTE';
