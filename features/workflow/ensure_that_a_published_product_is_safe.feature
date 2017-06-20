@@ -96,7 +96,7 @@ Feature: Ensure that a published product is safe
 
   Scenario: Fail to remove an option linked to a published product
     Given I am on the "manufacturer" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I remove the "Volcom" option
     And I confirm the deletion
     And I confirm the error message
@@ -106,7 +106,7 @@ Feature: Ensure that a published product is safe
 
   Scenario: Successfully remove an option not linked to a published product
     Given I am on the "manufacturer" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I remove the "Desigual" option
     And I confirm the deletion
     When I save the attribute
@@ -115,7 +115,7 @@ Feature: Ensure that a published product is safe
 
   Scenario: Fail to remove a multi-option linked to a published product
     Given I am on the "weather_conditions" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I remove the "dry" option
     And I confirm the deletion
     And I confirm the error message
@@ -126,7 +126,7 @@ Feature: Ensure that a published product is safe
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully remove a multi-option not linked to a published product
     Given I am on the "weather_conditions" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I remove the "hot" option
     And I confirm the deletion
     When I save the attribute
