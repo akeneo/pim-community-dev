@@ -11,10 +11,7 @@ Feature: Create attribute options
   Scenario: Successfully create some attribute options
     Given I am on the attributes page
     And I create a "Simple select" attribute
-    And I scroll down
-    And I fill in the following information:
-      | Code            | size  |
-      | Attribute group | Other |
+    And I change the "Attribute group" to "Other"
     And I visit the "Values" tab
     Then I should see the "Options" section
     And I should see the text "To manage options, please save the attribute first"
@@ -39,14 +36,11 @@ Feature: Create attribute options
     And I am on the "size" attribute page
     When I visit the "Values" tab
     And I create the following attribute options:
-      | Code  |
-      | red   |
-      | blue  |
-      | green |
-    And I add the following attribute option:
-      | Code  | Grey |
-      | en_US | Grey |
-      | fr_FR | Gris |
+      | Code  | en_US | fr_FR |
+      | red   |       |       |
+      | blue  |       |       |
+      | green |       |       |
+      | grey  | Grey  | Gris  |
     And I update the last attribute option
     And I add an empty attribute option
     And I add an empty attribute option

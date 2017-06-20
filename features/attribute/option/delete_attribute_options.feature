@@ -9,10 +9,7 @@ Feature: Delete attribute options
     And I am logged in as "Julia"
     And I am on the attributes page
     And I create a "Simple select" attribute
-    And I scroll down
-    And I fill in the following information:
-      | Code            | size  |
-      | Attribute group | Other |
+    And I change the "Attribute group" to "Other"
     And I visit the "Values" tab
     Then I should see the "Options" section
     Then I should see the text "To manage options, please save the attribute first"

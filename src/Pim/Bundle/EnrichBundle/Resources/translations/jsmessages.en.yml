@@ -666,7 +666,7 @@ pim_enrich:
                         code: Code
                         date_max: Max date
                         date_min: Min date
-                        decimals_allowed: Decimals allowed
+                        decimals_allowed: Decimal values allowed
                         default_metric_unit: Default metric unit
                         group: Attribute group
                         is_locale_specific: Locale specific
@@ -675,7 +675,7 @@ pim_enrich:
                         max_file_size: Max file size (MB)
                         metric_family: Metric family
                         minimum_input_length: Minimum length for autocompletion
-                        negative_allowed: Negative allowed
+                        negative_allowed: Negative values allowed
                         number_max: Max number
                         number_min: Min number
                         reference_data_name: Reference data type

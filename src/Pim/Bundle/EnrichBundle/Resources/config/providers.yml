@@ -134,7 +134,7 @@ services:
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
     pim_enrich.provider.structure_version.variant_group:
-        class: %pim_enrich.provider.structure_version.class%
+        class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:

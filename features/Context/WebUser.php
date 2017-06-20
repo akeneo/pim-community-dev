@@ -85,7 +85,6 @@ class WebUser extends PimContext
     public function iChooseTheAttributeType($type)
     {
         $this->getCurrentPage()->selectAttributeType($type);
-        $this->wait();
     }
 
     /**
@@ -914,36 +913,34 @@ class WebUser extends PimContext
     /**
      * @Then /^I should see select choices of the "(.*)" in the following order:$/
      *
-     * @param string $field
-     * @param array  $items
+     * @param string       $fieldName
+     * @param PyStringNode $items
      */
     public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
     {
-        $searched = array_values(explode(',', implode(',', $items->getStrings())));
+        $expectedChoices = array_values(explode(',', implode(',', $items->getStrings())));
 
-        $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+        $label = $this->spin(function () use ($fieldName) {
+            return $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+        }, sprintf('Cannot find field "%s"', $fieldName));
 
-        $valuesRoot = $this->getClosest($label, 'select2');
+        $this->spin(function () use ($label, $expectedChoices) {
+            $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
 
-        $foundChoices = $valuesRoot
-            ->findAll('css', '.field-input select option');
+            $foundChoices = $fieldContainer
+                ->findAll('css', '.AknFieldContainer-inputContainer select option');
 
-        $fieldsArray = [];
-        foreach ($foundChoices as $choice) {
-            $fieldsArray[] = trim($choice->getHtml());
-        }
+            $foundChoices = array_map(function ($choice) {
+                return trim($choice->getHtml());
+            }, $foundChoices);
 
-        $fieldsArray = array_values(array_filter($fieldsArray));
+            $foundChoices = array_values(array_filter($foundChoices));
 
-        if ($searched !== $fieldsArray) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Order of choices for field "%s" is not as expected, got: %s',
-                    $fieldName,
-                    implode(', ', $fieldsArray)
-                )
-            );
-        }
+            return $expectedChoices === $foundChoices;
+        }, sprintf(
+            'Order of choices for field "%s" is not as expected.',
+            $fieldName
+        ));
     }
 
     /**
@@ -1469,7 +1466,6 @@ class WebUser extends PimContext
 
                 $this->getCurrentPage()->addOption($code, $data);
 
-                $this->wait();
                 return true;
             }, sprintf('Unable to create the attribute option %s', $data['Code']));
         }
@@ -1492,22 +1488,11 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param TableNode $table
-     *
      * @When /^I add an empty attribute option$/
-     * @When /^I add the following attribute option:$/
      */
-    public function iAddAnOptionRow(TableNode $table = null)
+    public function iAddAnEmptyAttributeOption()
     {
         $this->getCurrentPage()->createOption();
-
-        if (null !== $table) {
-            $values = $table->getRowsHash();
-            $code = $values['Code'];
-            unset($values['Code']);
-
-            $this->getCurrentPage()->fillLastOption($code, $values);
-        }
     }
 
     /**

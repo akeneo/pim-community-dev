@@ -46,7 +46,10 @@ function (
         renderInput: function (templateContext) {
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
-                choices: this.formatChoices(this.attributeGroups, UserContext.get('catalogLocale')),
+                choices: this.formatChoices(
+                    _.sortBy(this.attributeGroups, 'sort_order'),
+                    UserContext.get('catalogLocale')
+                ),
                 multiple: false,
                 labels: {
                     defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.group')

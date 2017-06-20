@@ -19,7 +19,7 @@ function (
     _,
     BaseController,
     FormBuilder,
-    FetcherRegistry,
+    fetcherRegistry,
     UserContext,
     PageTitle,
     Error,
@@ -30,12 +30,16 @@ function (
          * {@inheritdoc}
          */
         renderRoute: function (route) {
-            return FetcherRegistry.getFetcher('attribute').fetch(route.params.code, {cached: false})
-                .then(function (attribute) {
-                    if (!this.active) {
-                        return;
-                    }
+            if (!this.active) {
+                return;
+            }
 
+            fetcherRegistry.getFetcher('attribute-group').clear();
+            fetcherRegistry.getFetcher('locale').clear();
+            fetcherRegistry.getFetcher('measure').clear();
+
+            return fetcherRegistry.getFetcher('attribute').fetch(route.params.code, {cached: false})
+                .then(function (attribute) {
                     var label = _.escape(
                         i18n.getLabel(
                             attribute.labels,

@@ -8,9 +8,10 @@
 define([
     'underscore',
     'pim/controller/base',
-    'pim/form-builder'
+    'pim/form-builder',
+    'pim/fetcher-registry'
 ],
-function (_, BaseController, FormBuilder) {
+function (_, BaseController, FormBuilder, fetcherRegistry) {
     return BaseController.extend({
         /**
          * {@inheritdoc}
@@ -19,6 +20,10 @@ function (_, BaseController, FormBuilder) {
             if (!this.active) {
                 return;
             }
+
+            fetcherRegistry.getFetcher('attribute-group').clear();
+            fetcherRegistry.getFetcher('locale').clear();
+            fetcherRegistry.getFetcher('measure').clear();
 
             var type = this.getQueryParam(location.href, 'attribute_type');
 

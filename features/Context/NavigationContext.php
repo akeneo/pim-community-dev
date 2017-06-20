@@ -164,8 +164,17 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
-        $page   = 'AttributeGroup';
-        $this->openPage(sprintf('%s edit', $page), ['identifier' => $identifier]);
+        $this->openPage(sprintf('%s edit', 'AttributeGroup'), ['identifier' => $identifier]);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" attribute page$/
+     */
+    public function iAmOnTheAttributeEditPage($identifier)
+    {
+        $this->openPage(sprintf('%s edit', 'Attribute'), ['identifier' => $identifier]);
     }
 
     /**

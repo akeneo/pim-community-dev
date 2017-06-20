@@ -50,7 +50,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      */
     public function getNewestLogEntryForRessources($resourceNames)
     {
-        return $this->findOneBy(['resourceName' => $resourceNames], ['version' => 'desc'], 1);
+        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
     }
 
     /**
