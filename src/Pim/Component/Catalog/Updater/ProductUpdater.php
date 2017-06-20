@@ -166,15 +166,8 @@ class ProductUpdater implements ObjectUpdaterInterface
     {
         foreach ($values as $code => $value) {
             foreach ($value as $data) {
-                $hasValue = $product->getValue($code, $data['locale'], $data['scope']);
-                $providedData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']) ? false : true;
-
-                if ($providedData) {
-                    $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
-                    $this->propertySetter->setData($product, $code, $data['data'], $options);
-                } elseif ($hasValue) {
-                    $product->getValues()->removeByCodes($code, $data['scope'], $data['locale']);
-                }
+                $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
+                $this->propertySetter->setData($product, $code, $data['data'], $options);
             }
         }
     }

@@ -192,11 +192,6 @@ class ProductBuilder implements ProductBuilderInterface
         if (null !== $data) {
             $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
             $product->addValue($productValue);
-
-            // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-            if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-                $product->setIdentifier($productValue);
-            }
         } else {
             $productValue = null;
             $product->getValues()->removeByCodes($attribute->getCode(), $scope, $locale);
