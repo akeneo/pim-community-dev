@@ -4,8 +4,8 @@
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-define(['pim/product-edit-form/categories'],
-    function (Categories) {
+define(['underscore', 'pim/product-edit-form/categories'],
+    function (_, Categories) {
         return Categories.extend({
             /**
              * {@inheritdoc}
