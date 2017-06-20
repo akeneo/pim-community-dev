@@ -14,7 +14,6 @@ define(
                 spyOn(Routing, 'generate').and.returnValue('/system/rest');
 
                 expect(saveForm.getSaveUrl()).toBe('/system/rest');
-                expect(Routing.generate).toHaveBeenCalledWith('oro_config_configuration_system_post');
             });
 
             it('updates the model after save', function () {
