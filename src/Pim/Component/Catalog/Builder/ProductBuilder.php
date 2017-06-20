@@ -189,7 +189,7 @@ class ProductBuilder implements ProductBuilderInterface
             $product->removeValue($productValue);
         }
 
-        if (null !== $data) {
+        if (null !== $data || AttributeTypes::IDENTIFIER === $attribute->getType()) {
             $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
             $product->addValue($productValue);
         } else {
