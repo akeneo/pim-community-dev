@@ -14,15 +14,12 @@ use PimEnterprise\Component\Catalog\Security\Factory\ValueCollectionFactory;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
         ValueCollectionFactoryInterface $valueCollectionFactory,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         LoggerInterface $logger,
         CachedObjectRepositoryInterface $attributeRepository,
@@ -30,7 +27,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $valueCollectionFactory,
-            $tokenStorage,
             $authorizationChecker,
             $logger,
             $attributeRepository,
@@ -49,12 +45,10 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     }
 
     function it_filters_not_granted_attribute(
-        $tokenStorage,
         $valueCollectionFactory,
         $authorizationChecker,
         $attributeRepository,
         $localeRepository,
-        TokenInterface $token,
         ValueCollection $valueCollection,
         ValueInterface $valueName,
         AttributeInterface $attributeDescription,
@@ -80,8 +74,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
                 ]
             ],
         ];
-
-        $tokenStorage->getToken()->willReturn($token);
 
         $valueCollection->add($valueName)->willReturn(true);
         $valueCollection->count()->willReturn(1);
@@ -110,23 +102,13 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldHaveCount(1);
     }
 
-    function it_throws_an_expcetion_if_there_is_no_token($tokenStorage)
-    {
-        $tokenStorage->getToken()->willReturn(null);
-
-        $this->shouldThrow(new \LogicException('The token cannot be null.'))->during('createFromStorageFormat', [[]]);
-    }
-
     function it_skips_unknown_attributes_when_creating_a_values_collection_from_the_storage_format(
-        $tokenStorage,
         $valueCollectionFactory,
         $attributeRepository,
         $logger,
-        TokenInterface $token,
         ValueFactory $valueFactory,
         ValueCollection $valueCollection
     ) {
-        $tokenStorage->getToken()->willReturn($token);
         $attributeRepository->findOneByIdentifier('attribute_that_does_not_exists')->willReturn(null);
 
         $valueFactory->create(Argument::cetera())->shouldNotBeCalled();
