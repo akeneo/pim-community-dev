@@ -43,7 +43,7 @@ datagrid:
                 user:
                     data_name: user
                 started_at:
-                    data_name: startTime
+                    data_name: e.id
                 status:
                     data_name: statusLabel
                 warning:
