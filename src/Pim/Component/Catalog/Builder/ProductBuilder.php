@@ -277,7 +277,7 @@ class ProductBuilder implements ProductBuilderInterface
                     $attribute,
                     $value->getScope(),
                     $value->getLocale(),
-                    null
+                    $prices
                 );
                 $product->addValue($productValue);
             }
