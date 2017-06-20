@@ -19,7 +19,6 @@ config:
                 'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
                 'pim_enrich:form:filter:extension:add': 'pim_enrich:form:filter:extension:add'
                 'pim_enrich:form:entity:pre_save':     'pim_enrich:form:entity:pre_save'
-                'pim_enrich:form:entity:bad_request':  'pim_enrich:form:entity:bad_request'
                 'pim_enrich:form:entity:update_state': 'pim_enrich:form:entity:update_state'
                 'pim_enrich:form:entity:post_fetch':   'pim_enrich:form:entity:post_fetch'
         pim/cache-invalidator:
