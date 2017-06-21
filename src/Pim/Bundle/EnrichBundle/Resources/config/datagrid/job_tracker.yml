@@ -5,12 +5,12 @@ datagrid:
         source:
             type: pim_datasource_job_tracker
         columns:
-            type:
-                label: Type
-                type:  job_type
             job:
                 label: Job
                 data_name: jobLabel
+            type:
+                label: Type
+                type:  job_type
             user:
                 label: User
             started_at:
@@ -38,10 +38,10 @@ datagrid:
                 rowAction: true
         sorters:
             columns:
-                type:
-                    data_name: type
                 job:
                     data_name: jobLabel
+                type:
+                    data_name: type
                 user:
                     data_name: user
                 started_at:
@@ -54,22 +54,18 @@ datagrid:
                 started_at: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
-                type:
-                    type:      string
-                    label:     Type
-                    data_name: j.type
                 job:
                     type: search
                     label: Job
                     data_name: j.label
+                type:
+                    type:      string
+                    label:     Type
+                    data_name: j.type
                 user:
                     type:      string
                     label:     User
                     data_name: e.user
-                started_at:
-                    type:             datetime
-                    data_name:        startTime
-                    filter_by_having: true
                 status:
                     type:             choice
                     data_name:        status
@@ -78,10 +74,6 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
-                warning:
-                    type:             number
-                    data_name:        warningCount
-                    filter_by_having: true
         properties:
             id: ~
             show_link:
