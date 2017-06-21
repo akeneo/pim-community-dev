@@ -87,11 +87,11 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * Constructor
      *
-     * @param UuidInterface|null $id
+     * @param string|null $id
      */
-    public function __construct(UuidInterface $id = null)
+    public function __construct($id = null)
     {
-        $id = null === $id ? Uuid::uuid4() : $id;
+        $id = null === $id ? Uuid::uuid4() : Uuid::fromString($id);
         $this->id = $id;
 
         $this->values = new ValueCollection();

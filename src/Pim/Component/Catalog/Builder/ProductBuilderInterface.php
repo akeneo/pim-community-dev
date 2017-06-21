@@ -19,13 +19,15 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
      * Create product with its identifier value,
      *  - sets the identifier data if provided
      *  - sets family if provided
+     *  - sets the technical ID provided
      *
      * @param string $identifier
      * @param string $familyCode
+     * @param string $id
      *
      * @return ProductInterface
      */
-    public function createProduct($identifier = null, $familyCode = null);
+    public function createProduct($identifier = null, $familyCode = null, $id = null);
 
     /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales

@@ -4,6 +4,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\Integration\UuidProvider;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractProductTestCase extends ApiTestCase
 {
+    /** @var UuidProvider */
+    private $uuidProvider;
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->uuidProvider = new UuidProvider();
+    }
+
     /**
      * @param string $identifier
      * @param array  $data
@@ -23,7 +33,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function createProduct($identifier, array $data = [])
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $id = $this->uuidProvider->current();
+        $this->uuidProvider->next();
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, null, $id);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
