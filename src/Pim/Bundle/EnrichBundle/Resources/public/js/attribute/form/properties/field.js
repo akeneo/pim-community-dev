@@ -11,12 +11,14 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
+    'pim/common/tab',
     'pim/template/attribute/tab/properties/field'
 ],
 function (
     _,
     __,
     BaseForm,
+    Tab,
     template
 ) {
     return BaseForm.extend({
@@ -64,6 +66,25 @@ function (
         onBadRequest: function (event) {
             this.errors = _.where(event.response, {path: this.fieldName});
             this.render();
+
+            this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
+        },
+
+        /**
+         * Recursively search for the first tab ancestor if any, and returns its code. Sorry.
+         *
+         * @returns {String}
+         */
+        getTabCode: function () {
+            var parent = this.getParent();
+            while (!(parent instanceof Tab)) {
+                parent = parent.getParent();
+                if (null === parent) {
+                    return null;
+                }
+            }
+
+            return parent.code;
         },
 
         /**
