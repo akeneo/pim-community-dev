@@ -35,4 +35,14 @@ interface FamilyVariantInterface
      * @param ArrayCollection $variantAttributeSets
      */
     public function setVariantAttributeSets(ArrayCollection $variantAttributeSets);
+
+    /**
+     * @param FamilyInterface $family
+     */
+    public function setFamily(FamilyInterface $family);
+
+    /**
+     * @return FamilyInterface
+     */
+    public function getFamily(): FamilyInterface;
 }
