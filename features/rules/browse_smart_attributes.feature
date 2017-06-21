@@ -12,7 +12,7 @@ Feature: Browse smart attributes in the attribute grid
     Given I am on the attributes page
     Then I should see the columns Code, Label, Type, Scopable, Localizable, Group and Smart
 
-  Scenario: Successfully filter by the smart property in the attribute grid
+  Scenario Outline: Successfully filter by the smart property in the attribute grid
     Given I am on the attributes page
     And the following product rule definitions:
       """
@@ -28,11 +28,16 @@ Feature: Browse smart attributes in the attribute grid
             value: Foo
             locale: en_US
       """
-    When I filter by "type" with operator "equals" and value "Text"
-    Then I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | smart  | equals   | yes   | name         |
-      | smart  | equals   | no    | 123, comment |
+    And I filter by "type" with operator "equals" and value "Text"
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    And I should see entities <result>
+
+    Examples:
+      | filter | operator | value | result       | count |
+      | smart  | equals   | yes   | name         | 1     |
+      | smart  | equals   | no    | 123, comment | 2     |
 
   @info https://akeneo.atlassian.net/browse/PIM-5056
   Scenario: Successfully display the correct amount of smart attribute on grid

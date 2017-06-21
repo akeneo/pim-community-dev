@@ -13,7 +13,8 @@ Feature: Copy value from my draft
     And I edit the "tshirt" product
 
   Scenario: Successfully copy value from my draft
-    Given I change the Name to "That's my tee"
+    Given I collapse the column
+    And I change the Name to "That's my tee"
     And I change the Description to "Hiking tee"
     And I save the product
     And I should see that Description is a modified value

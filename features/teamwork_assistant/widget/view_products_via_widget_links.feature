@@ -101,30 +101,30 @@ Feature: View products via widget completeness links
     And I am on the dashboard page
     When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: Todo"
+    And the criteria of "project_completeness" filter should be "Todo"
     When I am on the dashboard page
     And I click on the "in-progress" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: In progress"
+    And the criteria of "project_completeness" filter should be "In progress"
     When I am on the dashboard page
     And I click on the "done" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: Done"
+    And the criteria of "project_completeness" filter should be "Done"
 
   Scenario: A project owner can display project products todo, in progress and done
     Given I am logged in as "Mary"
     And I am on the dashboard page
     When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: Todo (project overview)"
+    And the criteria of "project_completeness" filter should be "Todo (project overview)"
     When I am on the dashboard page
     And I click on the "in-progress" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: In progress (project overview)"
+    And the criteria of "project_completeness" filter should be "In progress (project overview)"
     When I am on the dashboard page
     And I click on the "done" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: Done (project overview)"
+    And the criteria of "project_completeness" filter should be "Done (project overview)"
 
   Scenario: A project owner can display his products todo, in progress and done
     Given I am logged in as "Mary"
@@ -134,18 +134,18 @@ Feature: View products via widget completeness links
     And I should see the text "Mary Smith"
     When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: Todo"
+    And the criteria of "project_completeness" filter should be "Todo"
     When I am on the dashboard page
     And I select "Mary" contributor
     Then I should see the text "2016 summer collection E-Commerce | English (United States)"
     And I should see the text "Mary Smith"
     And I click on the "in-progress" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: In progress"
+    And the criteria of "project_completeness" filter should be "In progress"
     When I am on the dashboard page
     And I select "Mary" contributor
     Then I should see the text "2016 summer collection E-Commerce | English (United States)"
     And I should see the text "Mary Smith"
     And I click on the "done" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "Project progress: Done"
+    And the criteria of "project_completeness" filter should be "Done"
