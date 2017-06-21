@@ -137,6 +137,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $code, $values);
             } elseif ('values' === $code) {
                 $this->valuesUpdater->update($product, $values, $options);
+                $this->addEmptyValues($product, $values);
             } elseif (!in_array($code, $this->ignoredFields)) {
                 throw UnknownPropertyException::unknownProperty($code);
             }
@@ -178,6 +179,33 @@ class ProductUpdater implements ObjectUpdaterInterface
             }
             if ($shouldEraseData) {
                 $this->templateUpdater->update($template, [$product]);
+            }
+        }
+    }
+
+    /**
+     * Add empty values coming from the family of the $product
+     *
+     * TODO: TEMPORARY FIX, AS API-108 WILL HANDLE EMPTY VALUES
+     *
+     * @param ProductInterface $product
+     * @param array            $values
+     */
+    private function addEmptyValues(ProductInterface $product, array $values)
+    {
+        $family = $product->getFamily();
+        $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
+
+        foreach ($values as $code => $value) {
+            $isFamilyAttribute = in_array($code, $authorizedCodes);
+
+            foreach ($value as $data) {
+                $emptyData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']);
+
+                if ($isFamilyAttribute && $emptyData) {
+                    $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
+                    $this->propertySetter->setData($product, $code, $data['data'], $options);
+                }
             }
         }
     }
