@@ -28,6 +28,9 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     /** @var ArrayCollection */
     private $variantAttributeSets;
 
+    /** @var FamilyInterface */
+    private $family;
+
     /**
      * {@inheritdoc}
      */
@@ -146,5 +149,21 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     public function getTranslationFQCN()
     {
         return FamilyVariantTranslation::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamily(): FamilyInterface
+    {
+        return $this->family;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFamily(FamilyInterface $family)
+    {
+        $this->family = $family;
     }
 }
