@@ -3,7 +3,7 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
-<div class="layout-content">
+<div class="AknDefault-mainContent layout-content">
 
     {% block pageHeader %}
         {% set buttons %}
@@ -39,11 +39,9 @@
             {% endblock breadcrumbs %}
         {% endset %}
 
-        {% set back %}
-            {% block backButton %}
-            {% endblock backButton %}
+        {% set image %}
             {% if breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar %}
-                <img class="AknTitleContainer-avatar" src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                <img class="AknTitleContainer-image" src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
             {% endif %}
         {% endset %}
 
@@ -52,7 +50,7 @@
             {% endblock titleButtons %}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, titleButtons, meta, '', back) }}
+        {{ elements.page_header(title, buttons, titleButtons, meta, '', null, null, image) }}
 
     {% endblock pageHeader %}
 

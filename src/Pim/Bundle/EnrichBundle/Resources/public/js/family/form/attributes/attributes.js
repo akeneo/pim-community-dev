@@ -245,7 +245,7 @@ define([
                 var attributeToRemove = event.currentTarget.dataset.attribute;
 
                 if (attributeAsLabel === attributeToRemove) {
-                    Messanger.notificationFlashMessage(
+                    Messanger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
                     );

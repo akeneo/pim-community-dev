@@ -1,19 +1,26 @@
 @import '../base/variables';
 
-// TODO Remove the .dropdown, .dropdown-menu ... classes. I keep it because it's used everywhere for now.
 .AknDropdown {
+  @animationDuration: 0.2s;
+  @transitionTimingFunction: ease-in;
+
   position: relative;
 
   &-menu {
-    border: 1px solid @AknBorderColor;
-    padding: @AknDropdownMenuVerticalPadding 0;
+    padding: 10px 20px;
     position: absolute;
+    top: 0;
     left: 0;
-    display: none;
     background-color: white;
-    border-radius: 2px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-shadow: 1px 2px 8px rgba(0,0,0,0.15);
     z-index: 801;
+    min-width: 100%;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity @animationDuration @transitionTimingFunction;
+    animation-name: fadeOut;
+    transition-timing-function: @transitionTimingFunction;
+    animation-duration: @animationDuration;
 
     &--alignLeft { }
 
@@ -27,34 +34,68 @@
     }
   }
 
+  &-menuTitle {
+    color: @AknLightPurple;
+    border-bottom: 1px solid @AknLightPurple;
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+    padding-right: 40px;
+    text-transform: uppercase;
+  }
+
+  &-menuTitle,
   &-menuLink {
-    color: @AknDefaultFontColor;
-    font-size: @AknDefaultFontSize;
-    padding: 0 15px;
-    display: block;
-    height: 27px;
-    line-height: 27px;
     white-space: nowrap;
     font-weight: normal;
-    border: none;
-    background: white;
-    cursor: pointer;
+    background: none;
+    display: block;
     text-align: left;
-    min-width: 80px;
+    font-size: 12px;
+    width: 100%;
+    line-height: 1px;
+    transition: line-height @animationDuration @transitionTimingFunction;
+  }
+
+  &-menuLink {
+    color: @AknSlateGrey;
+    border: none;
+    cursor: pointer;
+    padding: 0;
 
     &:hover {
       background: @AknDefaultHoverBackground;
     }
 
-    &--active,
-    &--active:hover {
-      background: @AknPurple;
-      color: white;
+    &--active {
+      color: darken(@AknSlateGrey, 30%);
     }
   }
+}
 
-  // TODO Due to JS dropdown, we have to change it directly in the jQuery code.
-  &.open &-menu {
-    display: block;
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+  }
+
+  1% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: scale(1);
+  }
+
+  99% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
   }
 }

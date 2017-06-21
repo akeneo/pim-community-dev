@@ -27,7 +27,7 @@ Feature: Delete export
 
   Scenario: Successfully delete an export job from the job edit page
     Given I am on the "csv_footwear_product_export" import job edit page
-    When I press the "Delete" button
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Job instance successfully removed"
     And the grid should contain 22 elements

@@ -46,8 +46,7 @@ define(
                     url: Routing.generate(this.config.url),
                     redirectUrl: Routing.generate(this.config.redirectUrl),
                     errorMessage: __(this.config.errorMessage),
-                    successMessage: __(this.config.successMessage),
-                    iconName: this.config.iconName
+                    successMessage: __(this.config.successMessage)
                 }));
 
                 this.renderExtensions();

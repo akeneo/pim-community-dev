@@ -14,6 +14,18 @@
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 
+## UI/UX Refactoring
+
+- PIM-6288: Update flash messages design
+- PIM-6289: Update JSTree design
+- PIM-6294: Update switch design
+- PIM-6374: Add columns for product navigation
+- PIM-6391: Update comments design
+- PIM-6403: Update panels design to use dropdown selectors
+- PIM-6404: Update buttons design
+- PIM-6409: Update all the title containers design
+- PIM-6290: Update the main navigation design
+
 ## BC breaks
 
 ### Classes
@@ -149,6 +161,10 @@
 - Remove all standard denormalizers classes `Pim\Component\Catalog\Denormalizer\Standard\*` and services `pim_catalog.denormalizer.standard.*`
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
+
+### Methods
+
+- Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
 
 ## Requirements
 

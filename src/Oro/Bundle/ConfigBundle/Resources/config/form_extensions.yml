@@ -8,34 +8,22 @@ extensions:
         targetZone: content
         position: 100
 
-    oro-system-config-system:
-        module: oro/form/system/config/system
-        parent: oro-system-config-tabs
-        targetZone: container
-        position: 100
-
     oro-system-config-save:
         module: oro/form/system/config/save
         parent: oro-system-config-form
         targetZone: buttons
         position: 100
 
-    oro-system-config-group-selector:
-        module: pim/form/common/group-selector
-        parent: oro-system-config-system
-        targetZone: sidebar
+    oro-system-config-tab-localization:
+        module: oro/form/system/config/tab/localization
+        parent: oro-system-config-tabs
+        targetZone: container
         position: 100
 
-    oro-system-config-group-localization:
-        module: oro/form/system/config/group/localization
-        parent: oro-system-config-system
-        targetZone: content
-        position: 100
-
-    oro-system-config-group-notification:
-        module: oro/form/system/config/group/notification
-        parent: oro-system-config-system
-        targetZone: content
+    oro-system-config-tab-notification:
+        module: oro/form/system/config/tab/notification
+        parent: oro-system-config-tabs
+        targetZone: container
         position: 110
 
     oro-system-config-form-state:

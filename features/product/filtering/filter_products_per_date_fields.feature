@@ -55,7 +55,8 @@ Feature: Filter products by date field
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
     And I filter by "created" with operator "" and value ""
     When I click on the "book" row
-    And I click back to grid
+    And I should be on the product "book" edit page
+    And I am on the products page
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
     And I filter by "created" with operator "" and value ""
     When I refresh current page

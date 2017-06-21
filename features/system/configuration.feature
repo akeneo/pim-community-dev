@@ -7,11 +7,12 @@ Feature: Edit system configuration
   Background:
     Given a "default" catalog configuration
 
+  # This scenario fails because there is a remaining "old shool tabs" on the system. Will be done in another PR.
   @jira https://akeneo.atlassian.net/browse/PIM-6207
   Scenario: Does not display loading message by default
     Given I am logged in as "Peter"
     And I am on the System index page
-    When I visit the "Loading messages" group
+    When I press the "Loading messages" button
     And I fill in "loading_messages" with "They see me loadin', they hatin'"
     Then I should see the text "There are unsaved changes."
     When I save the configuration

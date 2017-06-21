@@ -1,8 +1,9 @@
 {% block content %}
-    <div id="category-tree-container" class="row-fluid">
+    {# This style is temporary and will be dropped on PEFization of this screen #}
+    <div id="category-tree-container" style="display:flex; height:100%">
         <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}{% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
 
-        <div id="category-form">
+        <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
             {% include 'PimEnrichBundle:CategoryTree:form.html.twig' with {'form': form} %}
         </div>
     </div>

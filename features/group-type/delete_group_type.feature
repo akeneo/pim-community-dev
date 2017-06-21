@@ -10,7 +10,7 @@ Feature: Delete a group type
 
   Scenario: Successfully delete a group type from the edit page
     Given I edit the "X_SELL" group type
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then the grid should contain 1 element
     And I should not see group type "X_SELL"

@@ -2,6 +2,13 @@ extensions:
     pim-job-instance-xlsx-product-export-show:
         module: pim/form/common/edit-form
 
+    pim-job-instance-xlsx-product-export-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-xlsx-product-export-show
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-exports
+
     pim-job-instance-xlsx-product-export-show-tabs:
         module: pim/form/common/form-tabs
         parent: pim-job-instance-xlsx-product-export-show
@@ -143,15 +150,6 @@ extensions:
         targetZone: meta
         position: 100
 
-    pim-job-instance-xlsx-product-export-show-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-job-instance-xlsx-product-export-show
-        targetZone: back
-        aclResourceId: pim_importexport_export_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_export_profile_index
-
     pim-job-instance-xlsx-product-export-show-content-structure-scope:
         module: pim/job/product/edit/content/structure/scope
         parent: pim-job-instance-xlsx-product-export-show-content-structure
@@ -218,7 +216,6 @@ extensions:
         targetZone: buttons
         position: 100
         config:
-            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
             identifier:

@@ -25,16 +25,21 @@ class ComparisonPanelDecorator extends ElementDecorator
      */
     public function selectElements($mode)
     {
-        $dropdown = $this->spin(function () {
-            return $this->find('css', $this->selectors['Change selection dropdown']);
-        }, 'Cannot find the select element dropdown');
+        $this->spin(function () use ($mode) {
+            $dropdown = $this->find('css', $this->selectors['Change selection dropdown']);
+            if (null === $dropdown) {
+                return false;
+            }
+            $dropdown->click();
 
-        $dropdown->click();
+            $selector = $dropdown->getParent()->find('css', sprintf('a:contains("%s")', ucfirst($mode)));
+            if (null === $selector) {
+                return false;
+            }
+            $selector->click();
 
-        $selector = $this->spin(function () use ($mode, $dropdown) {
-            return $dropdown->getParent()->find('css', sprintf('a.select-%s', str_replace(' ', '-', $mode)));
-        }, sprintf('Unable to find the mode %s', $mode));
-        $selector->click();
+            return true;
+        }, sprintf('Can not select "%s" elements', $mode));
     }
 
     /**
@@ -46,9 +51,13 @@ class ComparisonPanelDecorator extends ElementDecorator
             return 0 !== $this->selectedItemsCount();
         }, 'No selection before copy');
 
-        $this->find('css', $this->selectors['Copy selected button'])->click();
-
         $this->spin(function () {
+            $copyButton = $this->find('css', $this->selectors['Copy selected button']);
+            if (null === $copyButton) {
+                return false;
+            }
+            $copyButton->click();
+
             return 0 === $this->selectedItemsCount();
         }, 'Still a selection after copy');
     }

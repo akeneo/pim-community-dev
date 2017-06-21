@@ -145,6 +145,7 @@ pim_enrich:
     navigation:
         link:
             back_to_grid: Back to grid
+        other_actions: Other actions
     entity:
         save:
             label: Save
@@ -152,6 +153,8 @@ pim_enrich:
             update_failed: Update failed
             update_successful: Successfully updated
         product:
+            navigation: Product navigation
+            infos: Product infos
             title: product
             btn:
                 enable: Enable
@@ -162,13 +165,10 @@ pim_enrich:
                 compare_translate: Compare / Translate
                 delete: Delete
                 save: Save
-                save_and_back: Save and back to grid
             history:
                 version: Version
                 author: Author
                 logged_at: Logged at
-                more: More
-                less: Less
                 from: From
                 modified: Modified
                 property: Property
@@ -379,6 +379,7 @@ pim_enrich:
                         show_products: Show products
                         show_groups: Show groups
                         number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                    association_type_selector: Association type
                 attributes:
                     title: Attributes
                     btn:
@@ -390,8 +391,10 @@ pim_enrich:
                         attributes_selected: "{{ itemsCount }} attribute(s) selected"
                         no_match: No matches found
                         load_more: Loading more results...
+                    attribute_group_selector: Attribute group
                 categories:
                     title: Categories
+                    catalog_selector: Catalog
             panel:
                 completeness:
                     title: Completeness
@@ -932,11 +935,13 @@ job_tracker:
 
 pim_menu:
     tab:
-        collect: Collect
-        enrich: Enrich
+        dashboard: Dashboard
+        imports: Imports
+        products: Products
+        exports: Exports
         settings: Settings
         system: System
-        spread: Spread
+
     item:
         association_type: Association types
         attribute: Attributes
@@ -962,10 +967,16 @@ pim_menu:
         info: System information
         job_tracker: Process tracker
 
-pim_header:
+    navigation:
+        system: System navigation
+        user: Users management navigation
+        settings: Settings navigation
+
     user:
         logout: Logout
         user_account: My Account
 
 pim_notification:
     mark_all_as_read: Mark all as read
+    no_notifications: No notifications
+    loading: Loading...

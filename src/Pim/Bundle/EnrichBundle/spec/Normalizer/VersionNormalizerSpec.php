@@ -61,7 +61,6 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userManager->findUserByUsername('steve')->willReturn($steve);
         $steve->getFirstName()->willReturn('Steve');
         $steve->getLastName()->willReturn('Jobs');
-        $steve->getEmail()->willReturn('steve@pear.com');
 
         $changeset = [
             'maximum_frame_rate' => ['old' => '', 'new' => '200,7890'],
@@ -89,7 +88,7 @@ class VersionNormalizerSpec extends ObjectBehavior
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
-            'author'      => 'Steve Jobs - steve@pear.com',
+            'author'      => 'Steve Jobs',
             'resource_id' => '112',
             'snapshot'    => 'a nice snapshot',
             'changeset'   => $changeset,

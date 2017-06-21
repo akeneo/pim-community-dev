@@ -24,9 +24,14 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'a',
-            className: 'AknButton AknButton--grey AknButton--withIcon AknTitleContainer-rightButton btn-download',
+
+            className: 'AknDropdown-menuLink btn-download',
+
             template: _.template(template),
 
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
@@ -34,6 +39,9 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.getFormData().meta) {
                     return;

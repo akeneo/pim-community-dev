@@ -39,9 +39,8 @@ Feature: Export variant groups in XLSX
     When I am on the "xlsx_variant_group_export" export job page
     And I launch the export job
     And I wait for the "xlsx_variant_group_export" job to finish
-    And I press the "Download generated files" button
-    Then I should see the text "xlsx_variant_group_export_1.xlsx"
-    And I should see the text "xlsx_variant_group_export_2.xlsx"
+    Then I should see the secondary action "xlsx_variant_group_export_1.xlsx"
+    And I should see the secondary action "xlsx_variant_group_export_2.xlsx"
     And exported xlsx file 1 of "xlsx_variant_group_export" should contain:
       | code     | type    | axis       | label-en_US | label-en_GB | label-fr_FR | label-de_DE |
       | tshirts  | variant | color,size | T-shirts    | T-shirts    | T-shirts    | T-Shirts    |

@@ -108,7 +108,7 @@ define(
                     }.bind(this))
                     .fail(function (response) {
                         _.each(response.responseJSON, function (error) {
-                            messenger.notificationFlashMessage('error', error);
+                            messenger.notify('error', error);
                         });
                     });
             }

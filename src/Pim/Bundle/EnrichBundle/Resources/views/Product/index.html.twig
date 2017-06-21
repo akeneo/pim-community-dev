@@ -15,16 +15,20 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="AknDefault-mainContent">
     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
         <script type="text/javascript">
-            require(['jquery', 'pim/product-create'], function ($, ProductCreate) {
-                'use strict';
-                $('.create-product').on('click', function () {
-                    ProductCreate.openProductModal();
-                });
-            });
+            require(['jquery', 'pim/product-create', 'oro/mediator'],
+                function ($, ProductCreate, mediator) {
+                    'use strict';
+
+                    mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-products' });
+                    $('.create-product').on('click', function () {
+                        ProductCreate.openProductModal();
+                    });
+                }
+            );
         </script>
     {% endset %}
 
@@ -52,19 +56,10 @@
     {% endif %}
 
     {% if resource_granted('pim_enrich_product_category_list') %}
-        <script type="text/javascript">
-            require(['jquery', 'jquery.sidebarize'], function ($) {
-                'use strict';
-
-                $(function() {
-                    $('.has-sidebar').sidebarize();
-                });
-            });
-        </script>
-
-        <div class="row-fluid has-sidebar">
+        {# This style is temporary and will be dropped on PEFization of this screen #}
+        <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
             <div id="tree" data-datalocale="{{ dataLocale.code }}" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
-            <div id="product-grid">
+            <div id="product-grid" style="flex-grow: 1;">
                 {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale.code }, {}, defaultView, 'pim_enrich_categorytree') }}
             </div>
         </div>
@@ -75,4 +70,5 @@
             </div>
         </div>
     {% endif %}
+    </div>
 {% endblock %}

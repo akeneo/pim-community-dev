@@ -147,7 +147,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                     type: 'DELETE',
                     success: function () {
                         el.trigger('removesuccess');
-                        messenger.addMessage(
+                        messenger.enqueueMessage(
                             'success',
                             el.data('success-message'),
                             { 'hashNavEnabled': true }
@@ -162,10 +162,11 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                     error: function () {
                         router.hideLoadingMask();
 
-                        messenger.notificationMessage(
+                        messenger.notify(
                             'error',
                             el.data('error-message') ||
-                                __('Unexpected error occured. Please contact system administrator.')
+                                __('Unexpected error occurred. Please contact system administrator.'),
+                            { flash: false }
                         );
                     }
                 });

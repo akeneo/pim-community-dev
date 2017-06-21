@@ -46,7 +46,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left object-attributes',
+            className: 'tabbable object-attributes',
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },
@@ -286,7 +286,7 @@ define(
 
                                 this.render();
                             }.bind(this)).fail(function () {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     _.__(this.config.deletionFailed)
                                 );

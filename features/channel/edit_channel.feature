@@ -44,7 +44,7 @@ Feature: Edit a channel
     Then the grid should contain 2 elements
     And I should see locales "en_US" and "br_FR"
     When I am on the "tablet" channel page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the locales page
     Then the grid should contain 1 element

@@ -47,7 +47,7 @@ define(
                 this.getRoot().trigger('pim_enrich:form:entity:post_save');
                 var code = this.getFormData().code;
                 if (!isUpdate) {
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'success',
                         this.createSuccessMessage
                     );
@@ -56,7 +56,7 @@ define(
                     return;
                 }
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     this.updateSuccessMessage
                 );

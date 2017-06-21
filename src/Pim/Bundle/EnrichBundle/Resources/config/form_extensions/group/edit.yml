@@ -2,6 +2,14 @@ extensions:
     pim-group-edit-form:
         module: pim/form/common/edit-form
 
+    pim-group-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-group-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-group
+
     pim-group-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-group-edit-form
@@ -19,19 +27,16 @@ extensions:
         targetZone: title
         position: 100
 
-    pim-group-edit-form-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-group-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-group-edit-form
-        targetZone: back
-        aclResourceId: pim_enrich_group_index
-        position: 80
-        config:
-            backUrl: pim_enrich_group_index
+        targetZone: buttons
+        position: 50
 
     pim-group-edit-form-delete:
         module: pim/group-edit-form/delete
-        parent: pim-group-edit-form
-        targetZone: buttons
+        parent: pim-group-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_group_remove
         position: 100
         config:
@@ -61,24 +66,6 @@ extensions:
         position: 900
         config:
             entity: pim_enrich.entity.group.title
-
-    pim-group-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-group-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.group.meta.created
-            labelBy: pim_enrich.entity.group.meta.created_by
-
-    pim-group-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-group-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.group.meta.updated
-            labelBy: pim_enrich.entity.group.meta.updated_by
 
     pim-group-edit-form-product-count:
         module: pim/group-edit-form/meta/product-count

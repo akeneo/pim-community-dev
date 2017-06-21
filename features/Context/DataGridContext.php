@@ -402,7 +402,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      *
      * @Then /^I hide the filter "([^"]*)"$/
-     * @Then /^I collapse the "([^"]*)" sidebar$/
      */
     public function iHideTheFilter($filterName)
     {
@@ -429,16 +428,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         if (!$ordered) {
             throw $this->createExpectationException('Filters are not ordered as expected');
         }
-    }
-
-    /**
-     * @param string $filterName
-     *
-     * @Then /^I expand the "([^"]*)" sidebar$/
-     */
-    public function iExpandTheCategoriesSidebar($filterName)
-    {
-        $this->datagrid->expandFilter($filterName);
     }
 
     /**
@@ -956,22 +945,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }, 'Cannot find the button "Back to grid"');
 
         $backButton->click();
-    }
-
-    /**
-     * @Then /^I click on import profile$/
-     */
-    public function iClickOnImportProfile()
-    {
-        $collectLink = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknMainMenu-link:contains("Collect")');
-        }, 'Cannot find the button "Collect"');
-        $collectLink->click();
-
-        $importProfileLink = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknMainMenu-link:contains("Import profiles")');
-        }, 'Cannot find the button "Import profiles"');
-        $importProfileLink->click();
     }
 
     /**

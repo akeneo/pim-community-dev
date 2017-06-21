@@ -19,7 +19,7 @@ define(
         'pimuser/js/init-signin',
         'pim/page-title',
         'pim/template/app',
-        'pim/template/header/flash'
+        'pim/template/common/flash'
     ], function (
         $,
         _,
@@ -57,10 +57,7 @@ define(
             configure: function () {
                 return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
                     .then(function () {
-                        messenger.setup({
-                            container: '.flash-messages-holder',
-                            template: this.flashTemplate
-                        });
+                        messenger.showQueuedMessages();
 
                         init();
 

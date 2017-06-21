@@ -25,7 +25,7 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed
     And The completeness "en_US" should be opened
@@ -37,20 +37,18 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning | Description, Side view | 77%   |
     When I am on the products page
     Then I am on the "sandals" product page
-    And the Name field should be highlighted
-    And the Description field should be highlighted
-    And the Manufacturer field should not be highlighted
-    And the SKU field should not be highlighted
-    And the Product information group should be highlighted
-    And the Marketing group should be highlighted
-    And the Sizes group should be highlighted
+    And I visit the "Attributes" column tab
+    And the Name, Description fields should be highlighted
+    And the Manufacturer, SKU fields should not be highlighted
+    And the Product information, Marketing, Sizes, Media groups should be highlighted
     And the Colors group should not be highlighted
-    And the Media group should be highlighted
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed
     And The completeness "en_US" should be opened
+    And I visit the "Attributes" column tab
     When I switch the locale to "fr_FR"
+    And I visit the "Completeness" column tab
     Then I should see the "fr_FR" completeness in position 1
     And The completeness "en_US" should be closed
     And The completeness "fr_FR" should be opened
@@ -96,7 +94,7 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the product in the grid after product save (PIM-2916)
     Given I am on the "sneakers" product page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
@@ -122,7 +120,7 @@ Feature: Display the completeness of a product
 
   Scenario: Don't display the completeness if the family is not defined
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I change the family of the product to ""
     And I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     When I change the family of the product to "Sneakers"
@@ -132,8 +130,13 @@ Feature: Display the completeness of a product
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation
+    Given the following products:
+      | sku              |
+      | my_nice_sneakers |
+    And I am on the "my_nice_sneakers" product page
+    When I visit the "Completeness" column tab
     Given I am on the "my_nice_sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     And I change the family of the product to "Sneakers"
     And I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
@@ -141,15 +144,15 @@ Feature: Display the completeness of a product
 
   Scenario: Quickly jump to a field from completeness panel
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
-    Then I should be on the "Media" attribute group
+    Then I should see the text "Attribute group: Media"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
     And I switch the locale to "fr_FR"
+    When I visit the "Completeness" column tab
     Then I should see the "fr_FR" completeness in position 1
     And The completeness "en_US" should be closed
     Then The label for the "tablet" channel for "fr_FR" locale should be "Tablette"
@@ -159,6 +162,7 @@ Feature: Display the completeness of a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I am on the "sneakers" product page
-    And I open the "Completeness" panel
+    When I visit the "Attributes" column tab
     And I switch the locale to "fr_FR"
+    And I visit the "Completeness" column tab
     Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"
