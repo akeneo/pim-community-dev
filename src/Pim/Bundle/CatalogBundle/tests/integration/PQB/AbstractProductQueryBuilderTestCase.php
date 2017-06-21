@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Integration\UuidProvider;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -14,6 +15,15 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 abstract class AbstractProductQueryBuilderTestCase extends TestCase
 {
+    /** @var UuidProvider */
+    private $uuidProvider;
+
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->uuidProvider = new UuidProvider();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,9 +40,11 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
      */
     protected function createProduct($identifier, array $data)
     {
+        $id = $this->uuidProvider->current();
+        $this->uuidProvider->next();
         $family = isset($data['family']) ? $data['family'] : null;
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family, $id);
         $this->updateProduct($product, $data);
 
         return $product;
