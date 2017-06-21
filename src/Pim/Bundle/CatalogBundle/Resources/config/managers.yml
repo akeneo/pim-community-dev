@@ -35,7 +35,7 @@ services:
         class: '%pim_catalog.manager.product_template_media.class%'
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@pim_catalog.factory.product_value'
+            - '@pim_catalog.factory.value'
 
     pim_catalog.applier.product_template:
         class: '%pim_catalog.applier.product_template.class%'

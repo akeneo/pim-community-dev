@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
- * Filter the product values according to channel codes provided in options.
+ * Filter the values according to channel codes provided in options.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -17,18 +17,18 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
     /**
      * {@inheritdoc}
      */
-    public function filterObject($productValue, $type, array $options = [])
+    public function filterObject($value, $type, array $options = [])
     {
-        if (!$productValue instanceof ProductValueInterface) {
-            throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
+        if (!$value instanceof ValueInterface) {
+            throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
         $channelCodes = isset($options['channels']) ? $options['channels'] : [];
-        $attribute = $productValue->getAttribute();
+        $attribute = $value->getAttribute();
 
         return !empty($channelCodes) &&
             $attribute->isScopable() &&
-            !in_array($productValue->getScope(), $channelCodes);
+            !in_array($value->getScope(), $channelCodes);
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductValueInterface;
+        return $object instanceof ValueInterface;
     }
 
     /**
@@ -58,6 +58,6 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ProductValueCollectionInterface;
+        return $collection instanceof ValueCollectionInterface;
     }
 }

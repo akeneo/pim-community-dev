@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
@@ -143,7 +143,7 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ProductValueCollectionInterface $valuesCollection,
+        ValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -212,7 +212,7 @@ class ProductProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ProductValueCollectionInterface $valuesCollection,
+        ValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);

@@ -100,7 +100,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * to add, all of them in PIM standard format.
      *
      * It is possible to have several prices for the same currency, this will be
-     * handled by the ProductValueFactory which will keep only the last one
+     * handled by the ValueFactory which will keep only the last one
      * (here, it will be the new one passed to the adder).
      *
      * Validation will also be performed by the factory (array correctly

@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Check if a metric collection data is complete or not.
@@ -15,20 +15,20 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @internal for internal use only, please use
- *           \Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker
+ *           \Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker
  *           to calculate the completeness on a product value
  */
-class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
+class MetricCompleteChecker implements ValueCompleteCheckerInterface
 {
     /**
      * {@inheritdoc}
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $metric = $productValue->getData();
+        $metric = $value->getData();
 
         if (null === $metric) {
             return false;
@@ -53,10 +53,10 @@ class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::METRIC === $productValue->getAttribute()->getType();
+        return AttributeTypes::METRIC === $value->getAttribute()->getType();
     }
 }

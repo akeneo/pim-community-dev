@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -35,9 +35,9 @@ abstract class AbstractProductValueNormalizer extends SerializerAwareNormalizer 
     /**
      * Normalizes the product value data to the indexing format
      *
-     * @param ProductValueInterface $productValue
+     * @param ValueInterface $value
      *
      * @return mixed
      **/
-    abstract protected function getNormalizedData(ProductValueInterface $productValue);
+    abstract protected function getNormalizedData(ValueInterface $value);
 }

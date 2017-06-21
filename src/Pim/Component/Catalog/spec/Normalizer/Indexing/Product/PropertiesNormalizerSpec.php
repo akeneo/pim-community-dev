@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -36,7 +36,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_properties_with_empty_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ProductValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $productValueCollection,
         Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
@@ -87,7 +87,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_with_completenesses(
         $serializer,
         ProductInterface $product,
-        ProductValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $productValueCollection,
         Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
@@ -144,7 +144,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ProductValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
         Collection $completenessCollection,
         Group $variantGroup

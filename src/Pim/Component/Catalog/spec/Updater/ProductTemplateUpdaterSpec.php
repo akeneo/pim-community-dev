@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateUpdaterSpec extends ObjectBehavior
@@ -31,7 +31,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
         $normalizer,
         ProductTemplateInterface $template,
         ProductInterface $product,
-        ProductValueCollection $values
+        ValueCollection $values
     ) {
         $updates = [
             'description' => [

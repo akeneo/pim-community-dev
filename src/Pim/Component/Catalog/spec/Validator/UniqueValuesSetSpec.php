@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 
 class UniqueValuesSetSpec extends ObjectBehavior
@@ -16,35 +16,35 @@ class UniqueValuesSetSpec extends ObjectBehavior
     }
 
     function it_could_add_two_times_the_same_value(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
         $product->getId()->willReturn('jean');
-        $productValue->__toString()->willReturn('jean');
+        $value->__toString()->willReturn('jean');
         $attribute->getCode()->willReturn('identifier');
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
 
-        $this->addValue($productValue, $product)->shouldReturn(true);
-        $this->addValue($productValue, $product)->shouldReturn(true);
+        $this->addValue($value, $product)->shouldReturn(true);
+        $this->addValue($value, $product)->shouldReturn(true);
     }
 
     function it_cannot_add_two_times_the_same_value_if_the_products_do_not_exist(
-        ProductValueInterface $productValue1,
+        ValueInterface $value1,
         ProductInterface $product1,
-        ProductValueInterface $productValue2,
+        ValueInterface $value2,
         ProductInterface $product2,
         AttributeInterface $attribute
     ) {
         $product1->getId()->willReturn(null);
         $product2->getId()->willReturn(null);
-        $productValue1->__toString()->willReturn('jean');
-        $productValue2->__toString()->willReturn('jean');
+        $value1->__toString()->willReturn('jean');
+        $value2->__toString()->willReturn('jean');
         $attribute->getCode()->willReturn('identifier');
-        $productValue1->getAttribute()->willReturn($attribute);
-        $productValue2->getAttribute()->willReturn($attribute);
+        $value1->getAttribute()->willReturn($attribute);
+        $value2->getAttribute()->willReturn($attribute);
 
-        $this->addValue($productValue1, $product1)->shouldReturn(true);
-        $this->addValue($productValue2, $product2)->shouldReturn(false);
+        $this->addValue($value1, $product1)->shouldReturn(true);
+        $this->addValue($value2, $product2)->shouldReturn(false);
     }
 }

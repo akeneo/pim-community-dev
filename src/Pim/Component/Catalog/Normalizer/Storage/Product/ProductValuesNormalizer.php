@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Storage\Product;
 
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -40,6 +40,6 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'storage' === $format && $data instanceof ProductValueCollectionInterface;
+        return 'storage' === $format && $data instanceof ValueCollectionInterface;
     }
 }

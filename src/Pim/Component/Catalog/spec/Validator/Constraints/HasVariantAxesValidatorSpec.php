@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\HasVariantAxes;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -44,8 +44,8 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         GroupInterface $tShirtVariantGroup,
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
-        ProductValueInterface $sizeValue,
-        ProductValueInterface $colorValue,
+        ValueInterface $sizeValue,
+        ValueInterface $colorValue,
         Constraint $constraint
     ) {
         $tShirtVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
@@ -72,8 +72,8 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         GroupInterface $tShirtVariantGroup,
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
-        ProductValueInterface $sizeValue,
-        ProductValueInterface $identifierValue,
+        ValueInterface $sizeValue,
+        ValueInterface $identifierValue,
         HasVariantAxes $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {

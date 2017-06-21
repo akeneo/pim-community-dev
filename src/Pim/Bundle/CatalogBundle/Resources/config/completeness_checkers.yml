@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.completeness.checker.class: Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker
+    pim_catalog.completeness.checker.class: Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker
     pim_catalog.completeness.checker.media.class: Pim\Component\Catalog\Completeness\Checker\MediaCompleteChecker
     pim_catalog.completeness.checker.metric.class: Pim\Component\Catalog\Completeness\Checker\MetricCompleteChecker
     pim_catalog.completeness.checker.price.class: Pim\Component\Catalog\Completeness\Checker\PriceCompleteChecker

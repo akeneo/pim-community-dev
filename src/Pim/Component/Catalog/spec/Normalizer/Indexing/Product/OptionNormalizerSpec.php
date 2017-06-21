@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\OptionNormalizer;
-use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OptionNormalizerSpec extends ObjectBehavior
@@ -23,8 +23,8 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_option_product_value(
-        OptionProductValueInterface $optionValue,
-        ProductValueInterface $textValue,
+        OptionValueInterface $optionValue,
+        ValueInterface $textValue,
         AttributeInterface $optionAttribute,
         AttributeInterface $textAttribute
     ) {
@@ -43,7 +43,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_empty_option_product_value(
-        ProductValueInterface $optionValue,
+        ValueInterface $optionValue,
         AttributeInterface $optionAttribute
     ) {
         $optionValue->getAttribute()->willReturn($optionAttribute);
@@ -68,7 +68,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_option_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $optionValue,
+        ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
         AttributeOptionInterface $color
     ) {
@@ -95,7 +95,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_locale(
-        ProductValueInterface $optionValue,
+        ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
         AttributeOptionInterface $color
     ) {
@@ -122,7 +122,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_channel(
-        ProductValueInterface $optionValue,
+        ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
         AttributeOptionInterface $color
     ) {
@@ -149,7 +149,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_locale_and_channel(
-        ProductValueInterface $optionValue,
+        ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
         AttributeOptionInterface $color
     ) {

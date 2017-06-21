@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\ValuesContainerInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -45,7 +45,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $valuesContainerBuilder,
         AttributeInterface $attribute,
         ValuesContainerInterface $valuesContainer,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ArrayCollection $options,
         AttributeOptionInterface $vneck,
         AttributeOptionInterface $round,
@@ -53,9 +53,9 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('tshirt_style');
 
-        $valuesContainer->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($productValue);
+        $valuesContainer->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($value);
 
-        $productValue->getData()->willReturn($options);
+        $value->getData()->willReturn($options);
 
         $options->getIterator()->willReturn($optionsIterator);
         $optionsIterator->rewind()->shouldBeCalled();

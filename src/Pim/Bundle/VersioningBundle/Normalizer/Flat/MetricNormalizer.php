@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\MetricInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricNormalizer extends AbstractProductValueDataNormalizer
+class MetricNormalizer extends AbstractValueDataNormalizer
 {
     const LABEL_SEPARATOR = '-';
     const MULTIPLE_FIELDS_FORMAT = 'multiple_fields';
