@@ -5,7 +5,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pimee/template/product/panel/history/published'
+        'pimee/template/product/tab/history/published'
     ],
     function (_, Backbone, BaseForm, publishedTemplate) {
         return BaseForm.extend({
@@ -20,12 +20,7 @@ define(
                             );
 
                             if ($version.children('.label-published').length === 0) {
-                                $version.append(this.template({
-                                    display: this.getParent()
-                                        .getParent()
-                                        .getParent()
-                                        .isFullPanel() ? 'big' : 'small'
-                                }));
+                                $version.append(this.template());
                             }
                         }
                     }.bind(this));

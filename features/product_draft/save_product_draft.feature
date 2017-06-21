@@ -14,7 +14,7 @@ Feature: Save a product draft
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully save an empty product draft value
     Given I edit the "tshirt" product
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I change the "Name" to "Dark Tshirt"
     When I save the product
     Then the product Name should be "Dark Tshirt"
@@ -22,7 +22,7 @@ Feature: Save a product draft
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully save an existing product draft value
     Given I edit the "tshirt" product
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I change the "Description" to "Yes I can"
     When I save the product
     Then the product Description should be "Yes I can"
@@ -30,9 +30,9 @@ Feature: Save a product draft
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully show the product draft status
     Given I edit the "tshirt" product
-    Then I should see the text "Draft status: Working copy"
+    Then I should see the text "Draft status Working copy"
     When I change the "Description" to "Hammer time"
     And I save the product
-    Then I should see the text "Draft status: In progress"
+    Then I should see the text "Draft status In progress"
     When I press the Send for approval button
-    Then I should see the text "Draft status: Waiting for approval"
+    Then I should see the text "Draft status Waiting for approval"

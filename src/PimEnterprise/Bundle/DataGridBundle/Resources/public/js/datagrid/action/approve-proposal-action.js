@@ -66,7 +66,7 @@ define(
              * @param response
              */
             _onAjaxSuccess: function (response) {
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
                 );
@@ -92,7 +92,7 @@ define(
             _onAjaxError: function (jqXHR) {
                 var message = jqXHR.responseJSON.message;
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'error',
                     __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {
                         error: jqXHR.responseJSON.message

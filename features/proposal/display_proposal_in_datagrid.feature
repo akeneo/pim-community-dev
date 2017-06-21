@@ -19,7 +19,7 @@ Feature: Display proposals in datagrid
       | Price | 5 USD | Marketing |
     When I am logged in as "Julia"
     And I edit the "my-jacket" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should see the following proposals:
       | product   | author | attribute | original       | new   |
       | my-jacket | Mary   | price     | €75.00, $45.00 | $5.00 |
@@ -30,7 +30,7 @@ Feature: Display proposals in datagrid
       | Price | 5 USD | Marketing |
     When I am logged in as "Julia"
     And I edit the "my-jacket" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should see the following proposals:
       | product   | author | attribute | original | new   |
       | my-jacket | Mary   | price     | $45.00   | $5.00 |
@@ -44,7 +44,7 @@ Feature: Display proposals in datagrid
       | Price | 5 USD | Marketing |
     When I am logged in as "Julia"
     And I edit the "my-jacket" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should see the following proposals:
       | product   | author | attribute | original | new   |
       | my-jacket | Mary   | price     |          | $5.00 |

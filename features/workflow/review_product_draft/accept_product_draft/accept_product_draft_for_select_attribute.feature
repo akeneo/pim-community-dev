@@ -31,11 +31,11 @@ Feature: Review a product draft
       | Manufacturer | Nike  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Manufacturer"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     Then the product Manufacturer should be "Nike"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
@@ -45,9 +45,9 @@ Feature: Review a product draft
       | Weather conditions | Hot, Cold, Dry, Wet |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Weather conditions"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     Then the product Weather conditions should be "cold, dry, hot, wet"

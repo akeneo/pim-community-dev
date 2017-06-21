@@ -9,7 +9,8 @@ define(
         'pim/dropzonejs',
         'oro/messenger',
         'pimee/template/asset/mass-upload',
-        'pimee/template/asset/mass-upload-row'
+        'pimee/template/asset/mass-upload-row',
+        'pim/form-builder'
     ],
     function (
         $,
@@ -20,7 +21,8 @@ define(
         Dropzone,
         messenger,
         pageTemplate,
-        rowTemplate
+        rowTemplate,
+        formBuilder
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -57,6 +59,10 @@ define(
              */
             render: function () {
                 this.$el.html(this.pageTemplate({__: __}));
+
+                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                    form.setElement('.user-menu').render();
+                }.bind(this));
 
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');
@@ -179,7 +185,7 @@ define(
                             Dropzone.prototype.removeFile.call(this, file);
                         }.bind(this))
                         .fail(function () {
-                            messenger.notificationFlashMessage(
+                            messenger.notify(
                                 'error',
                                 __('pimee_product_asset.mass_upload.error.delete')
                             );
@@ -206,7 +212,7 @@ define(
                         });
                     })
                     .fail(function () {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'error',
                             __('pimee_product_asset.mass_upload.error.list')
                         );
@@ -229,7 +235,7 @@ define(
             cancelAll: function () {
                 $importButton.addClass('AknButton--disabled');
                 this.myDropzone.removeAllFiles(true);
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     __('pimee_product_asset.mass_upload.success.canceled')
                 );
@@ -242,7 +248,7 @@ define(
                 $importButton.addClass('AknButton--disabled');
                 $.get(router.generate('pimee_product_asset_mass_upload_rest_import'))
                     .done(function (response) {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'success',
                             __('pimee_product_asset.mass_upload.success.imported')
                         );
@@ -250,7 +256,7 @@ define(
                         router.redirectToRoute('pim_enrich_job_tracker_show', {id: response.jobId});
                     }.bind(this))
                     .fail(function () {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'error',
                             __('pimee_product_asset.mass_upload.error.import')
                         );

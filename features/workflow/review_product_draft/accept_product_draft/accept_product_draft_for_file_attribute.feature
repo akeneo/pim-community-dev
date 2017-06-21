@@ -31,11 +31,11 @@ Feature: Review a product draft
       | Media | Datasheet | file(akeneo.txt) |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Datasheet"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Media" group
     Then I should see "akeneo.txt"
 
@@ -46,11 +46,11 @@ Feature: Review a product draft
       | Media | Side view | file(akeneo.jpg) |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Side view"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Media" group
     Then I should see "akeneo.jpg"
 

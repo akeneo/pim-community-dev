@@ -46,12 +46,12 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     When I logout
     And I am logged in as "Julia"
     And I edit the "viewable" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then the grid should contain 0 elements
     When I edit the "editable" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should see the text "A draft is in progress by Mary for this product"
     And the grid should contain 1 elements
     When I edit the "owned" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then the grid should contain 0 elements

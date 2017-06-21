@@ -20,7 +20,6 @@ extensions:
         position: 100
         aclResourceId: pimee_catalog_rule_rule_execute_permissions
         config:
-            iconName: play
             url: pimee_catalog_rule_rule_execute
             redirectUrl: pimee_catalog_rule_rule_index
             successMessage: pimee_catalog_rule.notification.launched

@@ -49,7 +49,11 @@ define(
                 this.trigger('tab:register', {
                     code: this.code,
                     isVisible: function () {
-                        return this.getFormData().meta.is_owner;
+                        return _.result(
+                            _.result(this.getFormData(), 'meta', {}),
+                            'is_owner',
+                            false
+                        );
                     }.bind(this),
                     label: _.__('pimee_enrich.entity.product.tab.proposals.title')
                 });
@@ -73,7 +77,7 @@ define(
                         this.setData(product);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
 
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'success',
                             _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
                         );
@@ -86,7 +90,7 @@ define(
              * @param {string} message
              */
             onPostApproveError: function (message) {
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'error',
                     _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
                 );
@@ -96,7 +100,7 @@ define(
              * Callback triggered when a proposal is rejected from the grid
              */
             onPostRejectSuccess: function () {
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     _.__('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
                 );
@@ -106,7 +110,7 @@ define(
              * Callback triggered when a proposal is removed from the grid
              */
             onPostRemoveSuccess: function () {
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     _.__('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
                 );

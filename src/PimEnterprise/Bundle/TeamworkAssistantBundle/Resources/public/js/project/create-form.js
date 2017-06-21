@@ -195,7 +195,7 @@ define(
 
                 return ProjectSaver.save(project)
                     .done(function () {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'success',
                             __('teamwork_assistant.' + this.formType + '_project_modal.saved')
                         );

@@ -24,7 +24,7 @@ Feature: Publish a product
 
   Scenario: Successfully publish a product with reference data
     Given I am on the "red-heels" product page
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     And I am on the published products page
     Then the grid should contain 1 elements
@@ -32,7 +32,7 @@ Feature: Publish a product
 
   Scenario: Successfully edit a published product with reference data
     Given I am on the "red-heels" product page
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     Then I visit the "Other" group
     And I fill in the following information:

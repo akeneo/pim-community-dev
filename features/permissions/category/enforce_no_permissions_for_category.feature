@@ -76,7 +76,7 @@ Feature: Enforce no permissions for a category
   Scenario: Display only granted products in association products grid, I see all products
     Given I am logged in as "Julia"
     And I edit the "grantedOne" product
-    When I visit the "Associations" tab
+    When I visit the "Associations" column tab
     And I wait 3 seconds
     Then the grid should contain 2 elements
 
@@ -87,7 +87,7 @@ Feature: Enforce no permissions for a category
       | winter_collection | Manager    | own    |
       | summer_collection | IT support | all    |
     When I edit the "grantedOne" product
-    And I visit the "Associations" tab
+    And I visit the "Associations" column tab
     Then the grid should contain 1 elements
 
   Scenario: Display only granted products in variant group products grid, I see all products

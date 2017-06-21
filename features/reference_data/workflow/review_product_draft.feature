@@ -30,11 +30,11 @@ Feature: Review a product draft with reference data
       | Other | Sole color | black |
     And I am logged in as "Julia"
     And I edit the "my-vans" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Sole color"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Other" group
     Then the product Sole color should be "black"
 
@@ -45,14 +45,14 @@ Feature: Review a product draft with reference data
       | Other | Sole color | black |
     And I am logged in as "Julia"
     And I edit the "my-vans" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Reject all" action of the row which contains "Sole color"
     And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |
       | Status | In progress |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Other" group
     Then the product Sole color should be "cyan"
 
@@ -63,11 +63,11 @@ Feature: Review a product draft with reference data
       | Other | Sole color | black |
     And I am logged in as "Julia"
     And I edit the "my-vans" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "remove" action of the row which contains "A draft is in progress by Mary for this product."
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Other" group
     Then the product Sole color should be "cyan"
 
@@ -78,11 +78,11 @@ Feature: Review a product draft with reference data
       | Other | Sole fabric | wool, jute |
     And I am logged in as "Julia"
     And I edit the "my-vans" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Sole fabric"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Other" group
     Then the product Sole fabric should be "jute, wool"
 
@@ -93,14 +93,14 @@ Feature: Review a product draft with reference data
       | Other | Sole fabric | wool, jute |
     And I am logged in as "Julia"
     And I edit the "my-vans" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Reject all" action of the row which contains "Sole fabric"
     And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |
       | Status | In progress |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Other" group
     Then the product Sole fabric should be "kevlar, neoprene"
 
@@ -111,10 +111,10 @@ Feature: Review a product draft with reference data
       | Other | Sole fabric | wool, jute |
     And I am logged in as "Julia"
     And I edit the "my-vans" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "remove" action of the row which contains "A draft is in progress by Mary for this product."
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Other" group
     Then the product Sole fabric should be "kevlar, neoprene"

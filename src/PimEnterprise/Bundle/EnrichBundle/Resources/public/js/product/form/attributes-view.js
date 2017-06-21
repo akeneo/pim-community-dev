@@ -38,7 +38,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left product-attributes',
+            className: 'tabbable product-attributes',
             rendering: false,
             configure: function () {
                 this.trigger('tab:register', {

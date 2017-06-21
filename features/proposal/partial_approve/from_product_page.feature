@@ -24,7 +24,7 @@ Feature: Partial approve
       | Description | Summer t-shirt description |
     And I am logged in as "Julia"
     And I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I partially approve:
       | product | author | attribute | locale | scope |
       | tshirt  | Mary   | name      | en_US  |       |

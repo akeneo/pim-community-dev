@@ -4,15 +4,7 @@
 {% set title = 'published products'|trans %}
 
 {% block content %}
-    <script type="text/javascript">
-        require(['jquery', 'jquery.sidebarize'], function ($) {
-            'use strict';
-            $(function() {
-                $('.has-sidebar').sidebarize();
-            });
-        });
-    </script>
-
+<div class="AknDefault-mainContent">
     {% set gridAlias = 'published-product-grid' %}
 
     {% set titleButtons %}
@@ -36,11 +28,12 @@
         {% set defaultView = {} %}
     {% endif %}
 
-    <div class="row-fluid has-sidebar">
+    {# This style is temporary and will be dropped on PEFization of this screen #}
+    <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
         <div id="tree" data-datalocale="{{ dataLocale }}" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
-        <div id="published-product-grid">
+        <div id="published-product-grid" style="flex-grow: 1;">
             {{ dataGrid.renderStatefulGrid(gridAlias, { dataLocale: dataLocale }, {}, defaultView, 'pim_enrich_published_product_categorytree') }}
         </div>
     </div>
-
+</div>
 {% endblock %}

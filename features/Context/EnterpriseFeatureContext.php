@@ -139,7 +139,7 @@ class EnterpriseFeatureContext extends FeatureContext
     public function itsStatusShouldBe($status)
     {
         $info = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknTitleContainer-meta .draft-status');
+            return $this->getSession()->getPage()->find('css', '.meta .draft-status');
         }, 'Cannot find draft status');
 
         if (false === strpos($info->getText(), $status)) {
@@ -216,8 +216,7 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $button = $this->spin(function () use ($version) {
             return $this->getSession()->getPage()
-                ->find('css', sprintf('tr[data-version="%s"]', $version))
-                ->find('css', 'td.actions .restore');
+                ->find('css', sprintf('tr[data-version="%s"] td.actions .restore', $version));
         }, sprintf('Cannot find product version "%s"', $version));
 
         $button->click();

@@ -17,14 +17,14 @@ Feature: Save only filled fields after a save
   @jira https://akeneo.atlassian.net/browse/PIM-5597
   Scenario: Successfully display only updated fields by redactor
     Given I edit the "sport-sock" product
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I change the "Name" to "Socks for sport"
     Then I save the product
     And I press the Send for approval button
     And I logout
     When I am logged in as "Julia"
     And I edit the "sport-sock" product
-    And I visit the "Proposal" tab
+    And I visit the "Proposals" column tab
     Then I should see the following changes on the proposals:
       | product    | author | attribute |
       | sport-sock | Mary   | name      |

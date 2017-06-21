@@ -30,7 +30,7 @@ Feature: Filter product drafts
   Scenario: Successfully filter product drafts
     Given I am logged in as "Peter"
     And I edit the "tshirt" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     Then the grid should contain 3 elements
     And I should be able to use the following filters:
       | filter    | operator | value | result              |

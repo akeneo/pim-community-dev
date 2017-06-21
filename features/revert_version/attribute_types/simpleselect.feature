@@ -20,7 +20,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "jean" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     And I should see history:
       | version | property     | value    |
@@ -37,7 +37,7 @@ Feature: Revert product attributes to a previous version
       | 1       | SKU          | jean     |
       | 1       | family       | pants    |
       | 1       | enabled      | 1        |
-    When I visit the "Attribute" tab
+    When I visit the "Attributes" column tab
     Then the product "jean" should have the following values:
       | Manufacturer |  |
 
@@ -58,7 +58,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     Then I should not see the text "There are unsaved changes."
     And the history of the product "marcel" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
     Then the product "marcel" should have the following values:

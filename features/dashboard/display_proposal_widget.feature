@@ -39,8 +39,8 @@ Feature: Display proposal widget
       | my-tee-shirt | mary   | ready  | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
     And I am logged in as "Peter"
     When I edit the "my-tee-shirt" product
-    And I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    And I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I expand the "summer_collection" category
     And I click on the "jackets" category

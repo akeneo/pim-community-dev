@@ -33,15 +33,15 @@ Feature: Revert a product to a previous version
     And I press the "Save" button in the popin
     And I wait to be on the "shirt" product page
     And I disable the product
-    And I open the history
+    And I visit the "History" column tab
     When I revert the product version number 1
     Then product "shirt" should be enabled
     And I should see history in panel:
-      | version | author                          | property | value |
-      | 3       | Julia Stark - Julia@example.com | enabled  | 1     |
-      | 2       | Julia Stark - Julia@example.com | enabled  | 0     |
-      | 1       | Julia Stark - Julia@example.com | SKU      | shirt |
-      | 1       | Julia Stark - Julia@example.com | enabled  | 1     |
+      | version | author      | property | value |
+      | 3       | Julia Stark | enabled  | 1     |
+      | 2       | Julia Stark | enabled  | 0     |
+      | 1       | Julia Stark | SKU      | shirt |
+      | 1       | Julia Stark | enabled  | 1     |
 
   Scenario: Successfully revert the status of a product (disabled)
     Given I am on the products page
@@ -52,7 +52,7 @@ Feature: Revert a product to a previous version
     And I wait to be on the "shirt" product page
     And I disable the product
     And the history of the product "shirt" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then product "shirt" should be enabled
@@ -70,7 +70,7 @@ Feature: Revert a product to a previous version
     And I am on the "shirt" product page
     And I enable the product
     And the history of the product "shirt" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
     Then product "shirt" should be disabled
@@ -93,7 +93,7 @@ Feature: Revert a product to a previous version
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page
     And the history of the product "jean" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the family of product "jean" should be "pants"
@@ -105,20 +105,20 @@ Feature: Revert a product to a previous version
       | SKU | sandals |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
-    And I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    And I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    And I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    And I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
     And I click on the "summer_collection" category
     And I press the "Save" button
     And the history of the product "sandals" has been built
-    Then I open the history
+    Then I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
     Then the category of "sandals" should be "winter_collection"
@@ -144,7 +144,7 @@ Feature: Revert a product to a previous version
     And the row "helly-hansen" should be checked
     Then I am on the "helly-hansen" product page
     And the history of the product "helly-hansen" has been built
-    And I open the history
+    And I visit the "History" column tab
     When I revert the product version number 1
     Then I should see the flash message "Product can not be reverted because it belongs to a variant group"
 
@@ -162,6 +162,6 @@ Feature: Revert a product to a previous version
     And I change the Name to "Sandal"
     And I press the "Save" button
     And the history of the product "sandals" has been built
-    Then I open the history
+    Then I visit the "History" column tab
     And I should see 2 versions in the history
     But I should not see the text "Restore"

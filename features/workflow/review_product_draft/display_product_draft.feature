@@ -46,5 +46,5 @@ Feature: Review a product draft
     And I fill in the following information:
       | SKU | your-jacket |
     Then I save the product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     Then I should see the text "The value \"your-jacket\" is the same between the proposal and the working copy."

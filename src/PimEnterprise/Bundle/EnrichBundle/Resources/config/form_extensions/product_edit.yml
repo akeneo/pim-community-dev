@@ -18,13 +18,13 @@ extensions:
         position: 100
 
     pim-product-edit-form-history-published:
-        module: pimee/product-edit-form/panel/history/published
+        module: pimee/product-edit-form/tab/history/published
         parent: pim-product-edit-form-history
         targetZone: self
         position: 100
 
     pim-product-edit-form-revert:
-        module: pimee/product-edit-form/panel/history/revert
+        module: pimee/product-edit-form/tab/history/revert
         parent: pim-product-edit-form-history
         aclResourceId: pimee_versioning_product_version_revert
         targetZone: self
@@ -32,25 +32,25 @@ extensions:
 
     pim-product-edit-form-publish:
         module: pimee/product-edit-form/publish
-        parent: pim-product-edit-form
-        targetZone: buttons
-        position: 90
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        position: 30
 
     pim-product-edit-form-meta-published:
         module: pimee/product-edit-form/meta/published
-        parent: pim-product-edit-form
+        parent: pim-product-edit-form-meta
         targetZone: meta
         position: 100
 
     pim-product-edit-form-meta-owner-group:
         module: pimee/product-edit-form/meta/owner-groups
-        parent: pim-product-edit-form
+        parent: pim-product-edit-form-meta
         targetZone: meta
         position: 120
 
     pim-product-edit-form-meta-draft-status:
         module: pimee/product-edit-form/meta/draft-status
-        parent: pim-product-edit-form
+        parent: pim-product-edit-form-meta
         targetZone: meta
         position: 130
 
@@ -80,20 +80,20 @@ extensions:
 
     pim-product-edit-form-proposals:
         module: pimee/product-edit-form/proposals
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: container
-        position: 120
+        position: 115
 
     pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
 
     pim-product-edit-form-associations:
         module: pimee/product-edit-form/associations
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_associations_view
         position: 110

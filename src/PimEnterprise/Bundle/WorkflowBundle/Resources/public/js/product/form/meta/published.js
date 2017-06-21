@@ -3,26 +3,40 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'pimee/template/product/meta/published'
     ],
-    function (_, BaseForm, formTemplate) {
-        var FormView = BaseForm.extend({
-            tagName: 'span',
-            className: 'AknTitleContainer-metaItem published-version',
+    function (
+        _,
+        __,
+        BaseForm,
+        formTemplate
+    ) {
+        return BaseForm.extend({
+            className: 'AknColumn-block published-version',
+
             template: _.template(formTemplate),
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var product = this.getFormData();
 
                 if (product.meta.published) {
                     this.$el.html(
                         this.template({
-                            label: _.__('pimee_enrich.entity.product.meta.published'),
+                            label: __('pimee_enrich.entity.product.meta.published'),
                             publishedVersion: this.getPublishedVersion(product)
                         })
                     );
@@ -44,7 +58,5 @@ define(
                 return _.result(product.meta.published, 'version', null);
             }
         });
-
-        return FormView;
     }
 );

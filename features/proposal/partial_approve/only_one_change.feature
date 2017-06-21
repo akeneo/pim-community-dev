@@ -23,7 +23,7 @@ Feature: Partial approve
       | Name  | Summer jacket |
     And I am logged in as "Julia"
     And I edit the "jacket" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I should see the following proposals:
       | product | author | attribute | original | new           |
       | jacket  | Mary   | name      |          | Summer jacket |

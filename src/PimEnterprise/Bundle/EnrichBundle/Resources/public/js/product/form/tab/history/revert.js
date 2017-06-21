@@ -7,7 +7,7 @@ define(
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'pimee/template/product/panel/history/revert',
+        'pimee/template/product/tab/history/revert',
         'pim/router',
         'oro/messenger',
         'oro/loading-mask',
@@ -27,14 +27,29 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(revertTemplate),
-            render: function () {
+
+            /**
+             * Trigger a new event 'action:register' to send the revert action button to the parent.
+             *
+             * {@inheritdoc}
+             */
+            configure: function () {
                 var $revertAction = $(this.template());
                 $revertAction.on('click', this.revert.bind(this));
 
-                this.getParent().addAction('revert', $revertAction);
+                this.trigger('action:register', {
+                    code: 'revert',
+                    element: $revertAction
+                });
 
-                return this;
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Revert the product to the specified version
+             *
+             * @param {Event} event
+             */
             revert: function (event) {
                 event.stopPropagation();
 
@@ -57,7 +72,7 @@ define(
                                 FetcherRegistry.getFetcher('product').fetch(this.getFormData().meta.id)
                                     .done(function (product) {
                                         loadingMask.hide().$el.remove();
-                                        messenger.notificationFlashMessage(
+                                        messenger.notify(
                                             'success',
                                             __('pimee_enrich.entity.product.flash.product_reverted')
                                         );
@@ -73,7 +88,7 @@ define(
                                 loadingMask.hide().$el.remove();
                                 var message = response.responseJSON ? response.responseJSON.error : __('error.common');
 
-                                messenger.notificationFlashMessage('error', message);
+                                messenger.notify('error', message);
                             }
                         );
                     }.bind(this)

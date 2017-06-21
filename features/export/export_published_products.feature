@@ -43,10 +43,10 @@ Feature: Export published products
     And I save the asset
     And I launched the completeness calculator
     And I edit the "jacket-white" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     And I edit the "jacket-black" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     When I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job
@@ -75,10 +75,10 @@ Feature: Export published products
       | tee-black | name      | Tshirt noir     | fr_FR  |
       | tee-black | name      | Schwarz t-shirt | de_DE  |
     When I edit the "tee-white" product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     When I edit the "tee-black" product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     When I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job
@@ -92,7 +92,7 @@ Feature: Export published products
     When I edit the "tee-white" product
     And I change the "Name" to "Tee"
     And I save the product
-    And I press the "Publish" button
+    And I press the secondary action "Publish this version"
     And I confirm the publishing
     When I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job
@@ -120,10 +120,10 @@ Feature: Export published products
       | filePath | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv                                                     |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
     When I edit the "tee-white" product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     When I edit the "tee-black" product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     When I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job

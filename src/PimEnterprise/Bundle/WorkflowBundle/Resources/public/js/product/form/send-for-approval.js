@@ -141,13 +141,13 @@ define(
 
                     this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
 
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'success',
                         _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
                     );
                 }.bind(this))
                 .fail(function () {
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'error',
                         _.__('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
                     );

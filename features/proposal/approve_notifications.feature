@@ -51,7 +51,7 @@ Feature: Approve notifications
   Scenario: A notification is sent when I approve a proposal from the product draft page
     Given I am logged in as "Julia"
     And I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Summer t-shirt"
     And I press the "Send" button in the popin
     When I logout
@@ -67,7 +67,7 @@ Feature: Approve notifications
   Scenario: A notification is sent when I approve a proposal from the product draft page
     Given I am logged in as "Julia"
     And I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Summer t-shirt"
     And I fill in this comment in the popin: "You did a nice job on this proposal. Thank you!"
     And I press the "Send" button in the popin

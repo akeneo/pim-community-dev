@@ -32,7 +32,7 @@ Feature: Send a product draft with reference data for approval
       | Lace color | Red |
     And I save the product
     And I press the Send for approval button
-    Then I should see "Sent for approval"
+    Then I should see the text "Sent for approval"
     And its status should be "Waiting for approval"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
@@ -43,11 +43,11 @@ Feature: Send a product draft with reference data for approval
       | Lace color | Red |
     And I save the product
     And I press the Send for approval button
-    Then I should see "Sent for approval"
+    Then I should see the text "Sent for approval"
     When I fill in the following information:
       | Lace color | Blue |
     And I save the product
-    Then I should see "Send for approval"
+    Then I should see the text "Send for approval"
     And its status should be "In progress"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
@@ -67,7 +67,7 @@ Feature: Send a product draft with reference data for approval
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
     And I press the Send for approval button
-    Then I should see "Sent for approval"
+    Then I should see the text "Sent for approval"
     And its status should be "Waiting for approval"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
@@ -78,9 +78,9 @@ Feature: Send a product draft with reference data for approval
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
     And I press the Send for approval button
-    Then I should see "Sent for approval"
+    Then I should see the text "Sent for approval"
     When I fill in the following information:
       | Sleeve fabric | Leather, PVC |
     And I save the product
-    Then I should see "Send for approval"
+    Then I should see the text "Send for approval"
     And its status should be "In progress"

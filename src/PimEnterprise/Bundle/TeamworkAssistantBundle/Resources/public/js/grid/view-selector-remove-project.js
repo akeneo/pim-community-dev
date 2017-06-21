@@ -88,7 +88,7 @@ define(
                                 this.getRoot().trigger('grid:view-selector:project-removed');
                             }.bind(this))
                             .fail(function (response) {
-                                messenger.notificationFlashMessage('error', response.responseJSON);
+                                messenger.notify('error', response.responseJSON);
                             });
                     }.bind(this));
             }

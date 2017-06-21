@@ -43,10 +43,10 @@ Feature: Export published products with localized number
     And I save the asset
     And I launched the completeness calculator
     And I edit the "jacket-white" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     And I edit the "jacket-black" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     When I am on the "csv_clothing_mobile_published_product_export" export job page
     And I launch the export job

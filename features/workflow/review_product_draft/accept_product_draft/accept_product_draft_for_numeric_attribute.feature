@@ -32,11 +32,11 @@ Feature: Review a product draft
       | Marketing | tablet | Number in stock | 200   |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Number in stock"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     Then the product Number in stock for scope "mobile" should be "40"
     Then the product Number in stock for scope "tablet" should be "200"
@@ -49,11 +49,11 @@ Feature: Review a product draft
       | Marketing | Price | 150 EUR |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Price"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     Then the product Price in USD should be "90.00"
     Then the product Price in EUR should be "150.00"
@@ -65,11 +65,11 @@ Feature: Review a product draft
       | Product information | Release date | 05/20/2014 |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Release date"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     Then the product Release date for scope "mobile" should be "05/20/2014"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
@@ -79,10 +79,10 @@ Feature: Review a product draft
       | Sizes | Length | 40 Centimeter |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Approve all" action of the row which contains "Mary"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Sizes" group
     Then the product Length should be "40 Centimeter"

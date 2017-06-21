@@ -4,14 +4,18 @@
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-define(['pim/product-edit-form/associations'],
-    function (Associations) {
+define(['underscore', 'pim/product-edit-form/associations'],
+    function (_, Associations) {
         return Associations.extend({
             /**
              * {@inheritdoc}
              */
             isVisible: function () {
-                return this.getFormData().meta.is_owner;
+                return _.result(
+                    _.result(this.getFormData(), 'meta', {}),
+                    'is_owner',
+                    false
+                );
             }
         });
     }

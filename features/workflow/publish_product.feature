@@ -13,7 +13,7 @@ Feature: Publish a product
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
     And I edit the "my-jacket" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     And I am on the published products page
     Then the grid should contain 1 elements
@@ -24,7 +24,7 @@ Feature: Publish a product
       | sku       | family  | categories | name-en_US |
       | my-jacket | jackets | jackets    | Jacket1    |
     And I am on the "my-jacket" published product show page
-    Then I should see "Edit working copy"
+    Then I should see the secondary action "Edit working copy"
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
   Scenario: Not be able to edit the working copy of a publish product I can't edit
@@ -69,7 +69,7 @@ Feature: Publish a product
       | my-jacket | picture    | %fixtures%/akeneo.jpg |        |
       | my-jacket | manual     | %fixtures%/akeneo.txt |        |
     And I edit the "my-jacket" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     And I am on the published products page
     Then the grid should contain 1 elements
@@ -95,7 +95,7 @@ Feature: Publish a product
     And I remove the "Picture" file
     And I attach file "akeneo2.jpg" to "Picture"
     And I save the product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     And I am on the published products page
     Then the grid should contain 1 elements
@@ -122,7 +122,7 @@ Feature: Publish a product
       | my-jacket | handmade   | 1     |
       | my-jacket | waterproof | 0     |
     And I edit the "my-jacket" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     Then attribute Handmade of published "my-jacket" should be "true"
     And attribute Waterproof of published "my-jacket" should be "false"
@@ -140,19 +140,10 @@ Feature: Publish a product
       | product   | attribute | value | locale | scope |
       | my-jacket | climate   | Hot   |        |       |
     And I edit the "my-jacket" product
-    When I press the "Publish" button
+    When I press the secondary action "Publish"
     And I confirm the publishing
     Then I edit the "climate" attribute
     And I visit the "Values" tab
     When I remove the "Hot" option
     And I confirm the deletion
     Then I should see "Impossible to remove attribute option linked to a published product"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-4927
-  Scenario: Back to grid from a published product should redirect to published products
-    Given the following published product:
-      | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
-    And I am on the "my-jacket" published product show page
-    When I click back to grid
-    Then I should be on the published index page

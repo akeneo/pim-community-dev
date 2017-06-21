@@ -66,7 +66,7 @@ define(
              * @param product
              */
             _onAjaxSuccess: function (product) {
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
                 );

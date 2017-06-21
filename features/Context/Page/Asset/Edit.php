@@ -101,22 +101,22 @@ class Edit extends Form
 
     /**
      * @param string $channel
-     *
-     * @throws ElementNotFoundException
-     *
-     * @return bool
      */
     public function deleteVariationFile($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
 
-        $deleteButton = $this->spin(function () use ($variationContainer) {
-            return $variationContainer->find('css', '.delete');
-        }, 'Delete variation button not found.');
+        $this->spin(function () use ($variationContainer) {
+            $deleteButton = $variationContainer->find('css', '.delete');
 
-        $deleteButton->click();
+            if (null !== $deleteButton && $deleteButton->isVisible()) {
+                $deleteButton->click();
 
-        return true;
+                return true;
+            }
+
+            return null;
+        }, 'Could not click on the delete variation button');
     }
 
     /**

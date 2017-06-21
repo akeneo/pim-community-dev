@@ -1,17 +1,8 @@
 <% if (product.meta.published) { %>
-    <div class="AknSeveralActionsButton AknSeveralActionsButton--action AknTitleContainer-rightButton AknDropdown">
-        <button class="AknSeveralActionsButton-mainAction publish-product <%- (product.meta.published.version === product.meta.updated.version) ? 'disabled' : '' %>">
-            <%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %>
-        </button>
-        <button class="AknSeveralActionsButton-caretContainer dropdown-publish" data-toggle="dropdown">
-            <span class="AknCaret AknCaret--inverse"></span>
-        </button>
-        <ul class="AknSeveralActionsButton-menu AknDropdown-menu AknDropdown-menu--right">
-            <li><a class="AknDropdown-menuLink unpublish-product"><%- _.__('pimee_enrich.entity.product.btn.unpublish') %></a></li>
-        </ul>
-    </div>
+    <% if (product.meta.published.version !== product.meta.updated.version) { %>
+        <span class="AknDropdown-menuLink publish-product "><%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %></span>
+    <% } %>
+    <span class="AknDropdown-menuLink unpublish-product"><%- _.__('pimee_enrich.entity.product.btn.unpublish') %></span>
 <% } else { %>
-    <button class="AknButton AknButton--action AknButton--withIcon AknTitleContainer-rightButton publish-product">
-        <i class="AknButton-icon icon-cloud-upload"></i><%- _.__('pimee_enrich.entity.product.btn.publish') %>
-    </button>
+    <span class="AknDropdown-menuLink publish-product"><%- _.__('pimee_enrich.entity.product.btn.publish') %></span>
 <% } %>
