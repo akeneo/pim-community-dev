@@ -1177,6 +1177,12 @@ class FixturesContext extends BaseFixturesContext
                 assertEquals($value, $price->getData());
             } elseif ('date' === $attribute->getBackendType()) {
                 assertEquals($value, $productValue->getData()->format('Y-m-d'));
+            } elseif ('boolean' === $attribute->getBackendType()) {
+                if ($value === '0') {
+                    assertFalse($productValue->getData());
+                } elseif ($value === '1') {
+                    assertTrue($productValue->getData());
+                }
             } else {
                 assertEquals($value, (string) $productValue);
             }
