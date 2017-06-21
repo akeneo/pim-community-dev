@@ -30,7 +30,7 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
 
         foreach ($identifiers as $identifier) {
             $product = $this->createProduct($identifier, []);
-            $this->products[$product->getId()] = $product;
+            $this->products[$product->getId()->toString()] = $product;
         }
         // the API will return products sorted alphabetical by MySQL ID, and that's what we expect
         // for instance, if we have 100 products
