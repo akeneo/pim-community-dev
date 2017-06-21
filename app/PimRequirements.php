@@ -62,6 +62,12 @@ class PimRequirements extends OroRequirements
             'Install and enable <strong>bcmath</strong> extension'
         );
 
+        $this->addPimRequirement(
+            function_exists('exif_read_data'),
+            'Extension exif should be installed',
+            'Install and enable <strong>exif</strong> extension'
+        );
+
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
             $this->addPimRequirement(

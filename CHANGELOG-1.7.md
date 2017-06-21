@@ -13,6 +13,7 @@
 - PIM-6413: Fix to ensure that attribute options codes are no longer updated in MongoDB
 - PIM-6285: Fix content type validation in the API
 - PIM-6434: Fix attribute group order in Product Edit Form
+- PIM-DOC-565 : Fix PimRequirements need exif
 
 # 1.7.4 (2017-05-10)
 
