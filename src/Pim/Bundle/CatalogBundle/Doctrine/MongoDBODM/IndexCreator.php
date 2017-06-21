@@ -290,10 +290,16 @@ class IndexCreator
         ];
 
         foreach ($fields as $field) {
-            $collection->ensureIndex(
-                [$field => $indexType],
-                $indexOptions
-            );
+            try {
+                $collection->ensureIndex(
+                    [$field => $indexType],
+                    $indexOptions
+                );
+            } catch (\MongoResultException $e) {
+                $this->logger->error($e->getMessage());
+
+                return;
+            }
         }
     }
 

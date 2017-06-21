@@ -4,6 +4,7 @@ def editions = ["ce"]
 def storages = ["orm", "odm"]
 def phpVersion = "5.6"
 def mysqlVersion = "5.5"
+def mongoVersion = "2.4"
 def esVersion = "none"
 def features = "features"
 def launchUnitTests = "yes"
@@ -22,6 +23,7 @@ stage("Checkout") {
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
             choice(choices: '5.5\n5.7', description: 'Mysql version to run behat with', name: 'mysqlVersion'),
+            choice(choices: '2.4\n3.4', description: 'MongoDB version to run behat with', name: 'mongoVersion'),
             choice(choices: 'none\n1.7\n5', description: 'ElasticSearch version to run behat with', name: 'esVersion')
         ])
 
@@ -30,6 +32,7 @@ stage("Checkout") {
         features = userInput['features']
         phpVersion = userInput['phpVersion']
         mysqlVersion = userInput['mysqlVersion']
+        mongoVersion = userInput['mongoVersion']
         esVersion = userInput['esVersion']
         launchUnitTests = userInput['launchUnitTests']
         launchIntegrationTests = userInput['launchIntegrationTests']
@@ -150,10 +153,10 @@ if (launchBehatTests.equals("yes")) {
     stage("Functional tests") {
         def tasks = [:]
 
-        if (editions.contains('ee') && storages.contains('odm')) {tasks["behat-ee-odm"] = {runBehatTest("ee", "odm", features, phpVersion, mysqlVersion, esVersion)}}
-        if (editions.contains('ee') && storages.contains('orm')) {tasks["behat-ee-orm"] = {runBehatTest("ee", "orm", features, phpVersion, mysqlVersion, esVersion)}}
-        if (editions.contains('ce') && storages.contains('odm')) {tasks["behat-ce-odm"] = {runBehatTest("ce", "odm", features, phpVersion, mysqlVersion, esVersion)}}
-        if (editions.contains('ce') && storages.contains('orm')) {tasks["behat-ce-orm"] = {runBehatTest("ce", "orm", features, phpVersion, mysqlVersion, esVersion)}}
+        if (editions.contains('ee') && storages.contains('odm')) {tasks["behat-ee-odm"] = {runBehatTest("ee", "odm", features, phpVersion, mysqlVersion, mongoVersion, esVersion)}}
+        if (editions.contains('ee') && storages.contains('orm')) {tasks["behat-ee-orm"] = {runBehatTest("ee", "orm", features, phpVersion, mysqlVersion, mongoVersion, esVersion)}}
+        if (editions.contains('ce') && storages.contains('odm')) {tasks["behat-ce-odm"] = {runBehatTest("ce", "odm", features, phpVersion, mysqlVersion, mongoVersion, esVersion)}}
+        if (editions.contains('ce') && storages.contains('orm')) {tasks["behat-ce-orm"] = {runBehatTest("ce", "orm", features, phpVersion, mysqlVersion, mongoVersion, esVersion)}}
 
         parallel tasks
     }
@@ -296,7 +299,7 @@ def runPhpCsFixerTest() {
     }
 }
 
-def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion) {
+def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, mongoVersion, esVersion) {
     node() {
         dir("behat-${edition}-${storage}") {
             deleteDir()
@@ -333,7 +336,7 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
             sh "mkdir -p app/build/logs/behat app/build/logs/consumer app/build/screenshots"
             sh "cp behat.ci.yml behat.yml"
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${edition}-${storage}\" -e ${esVersion} --exit_on_failure"
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${edition}-${storage}\" -m ${mongoVersion} -e ${esVersion} --exit_on_failure"
             } finally {
                 sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\""
                 junit 'app/build/logs/behat/*.xml'
