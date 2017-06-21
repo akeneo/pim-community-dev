@@ -5,8 +5,6 @@ datagrid:
         source:
             type: pim_datasource_job_instance
         columns:
-            code:
-                label: Code
             label:
                 label: Label
             job_name:
@@ -51,8 +49,6 @@ datagrid:
                 link:  delete_link
         sorters:
             columns:
-                code:
-                    data_name: j.code
                 label:
                     data_name: j.label
                 connector:
@@ -63,9 +59,6 @@ datagrid:
                 code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
-                code:
-                    type:      string
-                    data_name: j.code
                 label:
                     type:      search
                     data_name: j.label

@@ -8,8 +8,6 @@ datagrid:
             acl_resource: pim_enrich_channel_index
             type: pim_datasource_channel
         columns:
-            code:
-                label: Code
             label:
                 label: Label
             category:
@@ -41,8 +39,6 @@ datagrid:
                 link:  delete_link
         sorters:
             columns:
-                code:
-                    data_name: c.code
                 label:
                     data_name: channelLabel
                 category:
@@ -51,10 +47,6 @@ datagrid:
                 code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
-                code:
-                    type:      string
-                    label:     Code
-                    data_name: c.code
                 label:
                     type:      search
                     label:     Label
