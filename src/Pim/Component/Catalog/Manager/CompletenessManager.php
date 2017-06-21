@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Manager;
 
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -41,16 +41,16 @@ class CompletenessManager
     /** @var CompletenessRemoverInterface */
     protected $remover;
 
-    /** @var ProductValueCompleteCheckerInterface */
+    /** @var ValueCompleteCheckerInterface */
     protected $valueCompleteChecker;
 
     /**
-     * @param FamilyRepositoryInterface            $familyRepository
-     * @param ChannelRepositoryInterface           $channelRepository
-     * @param LocaleRepositoryInterface            $localeRepository
-     * @param CompletenessGeneratorInterface       $generator
-     * @param CompletenessRemoverInterface         $remover
-     * @param ProductValueCompleteCheckerInterface $valueCompleteChecker
+     * @param FamilyRepositoryInterface      $familyRepository
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
+     * @param CompletenessGeneratorInterface $generator
+     * @param CompletenessRemoverInterface   $remover
+     * @param ValueCompleteCheckerInterface  $valueCompleteChecker
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -58,7 +58,7 @@ class CompletenessManager
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
         CompletenessRemoverInterface $remover,
-        ProductValueCompleteCheckerInterface $valueCompleteChecker
+        ValueCompleteCheckerInterface $valueCompleteChecker
     ) {
         $this->familyRepository = $familyRepository;
         $this->channelRepository = $channelRepository;

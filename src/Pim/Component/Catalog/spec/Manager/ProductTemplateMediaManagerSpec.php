@@ -5,13 +5,13 @@ namespace spec\Pim\Component\Catalog\Manager;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\FileStorage;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -19,7 +19,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
 {
     function let(
         FileStorerInterface $fileStorer,
-        ProductValueFactory $productValueFactory
+        ValueFactory $productValueFactory
     ) {
         $this->beConstructedWith($fileStorer, $productValueFactory);
     }
@@ -33,10 +33,10 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $fileStorer,
         $productValueFactory,
         ProductTemplateInterface $template,
-        MediaProductValueInterface $imageValue,
-        MediaProductValueInterface $fileValue,
-        MediaProductValueInterface $newImageValue,
-        MediaProductValueInterface $newFileValue,
+        MediaValueInterface $imageValue,
+        MediaValueInterface $fileValue,
+        MediaValueInterface $newImageValue,
+        MediaValueInterface $newFileValue,
         FileInfoInterface $imageMedia,
         FileInfoInterface $fileInfoMedia,
         FileInfoInterface $fileInfoMediaUploaded,
@@ -91,11 +91,11 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $productValueFactory,
         ProductTemplateInterface $imageTemplate,
         ProductTemplateInterface $textTemplate,
-        MediaProductValueInterface $imageValue,
-        ProductValueInterface $textValue,
+        MediaValueInterface $imageValue,
+        ValueInterface $textValue,
         FileInfoInterface $imageMedia,
         AttributeInterface $attribute,
-        MediaProductValueInterface $newImageValue,
+        MediaValueInterface $newImageValue,
         ValueCollectionInterface $imageValues,
         ValueCollectionInterface $textValues,
         \ArrayIterator $imageValuesIterator,

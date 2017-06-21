@@ -188,7 +188,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addValue(ProductValueInterface $value)
+    public function addValue(ValueInterface $value)
     {
         $this->values->add($value);
 
@@ -198,7 +198,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeValue(ProductValueInterface $value)
+    public function removeValue(ValueInterface $value)
     {
         $this->values->remove($value);
 
@@ -297,7 +297,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setIdentifier(ProductValueInterface $identifier)
+    public function setIdentifier(ValueInterface $identifier)
     {
         $this->identifier = $identifier->getData();
 

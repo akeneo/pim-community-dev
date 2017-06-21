@@ -18,11 +18,11 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
     /**
      * Adds a value at the end of the collection.
      *
-     * @param ProductValueInterface $value The value to add.
+     * @param ValueInterface $value The value to add.
      *
      * @return bool TRUE is the value has been added. FALSE if it was already there.
      */
-    public function add(ProductValueInterface $value);
+    public function add(ValueInterface $value);
 
     /**
      * Clears the collection, removing all values.
@@ -33,11 +33,11 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
      * Checks whether a value is contained in the collection.
      * This is an O(n) operation, where n is the size of the collection.
      *
-     * @param ProductValueInterface $value The value to search for.
+     * @param ValueInterface $value The value to search for.
      *
      * @return bool TRUE if the collection contains the value, FALSE otherwise.
      */
-    public function contains(ProductValueInterface $value);
+    public function contains(ValueInterface $value);
 
     /**
      * Checks whether the collection is empty (contains no values).
@@ -51,18 +51,18 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
      *
      * @param string $key The kex/index of the value to remove.
      *
-     * @return ProductValueInterface|null The removed value or NULL, if the collection did not contain the value.
+     * @return ValueInterface|null The removed value or NULL, if the collection did not contain the value.
      */
     public function removeKey($key);
 
     /**
      * Removes the specified value from the collection, if it is found.
      *
-     * @param ProductValueInterface $value The value to remove.
+     * @param ValueInterface $value The value to remove.
      *
      * @return bool TRUE if this collection contained the specified value, FALSE otherwise.
      */
-    public function remove(ProductValueInterface $value);
+    public function remove(ValueInterface $value);
 
     /**
      * Removes all product values related to a specified attribute (if any).
@@ -88,7 +88,7 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
      *
      * @param string $key The key/index of the value to retrieve.
      *
-     * @return ProductValueInterface|null
+     * @return ValueInterface|null
      */
     public function getByKey($key);
 
@@ -99,7 +99,7 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
      * @param string|null $channelCode
      * @param string|null $localeCode
      *
-     * @return ProductValueInterface|null
+     * @return ValueInterface|null
      */
     public function getByCodes($attributeCode, $channelCode = null, $localeCode = null);
 
@@ -143,14 +143,14 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
     /**
      * Sets the internal iterator to the first value in the collection and returns this value.
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function first();
 
     /**
      * Sets the internal iterator to the last value in the collection and returns this value.
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function last();
 
@@ -164,14 +164,14 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
     /**
      * Gets the value of the collection at the current iterator position.
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function current();
 
     /**
      * Moves the internal iterator position to the next value and returns this value.
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function next();
 }

@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductPrice;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PriceCollectionNormalizer;
-use Pim\Component\Catalog\ProductValue\PriceCollectionProductValue;
+use Pim\Component\Catalog\ProductValue\PriceCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionNormalizerSpec extends ObjectBehavior
@@ -23,8 +23,8 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_supports_price_collection_product_value(
-        PriceCollectionProductValue $priceCollectionValue,
-        ProductValueInterface $textValue,
+        PriceCollectionValue $priceCollectionValue,
+        ValueInterface $textValue,
         AttributeInterface $priceCollectionAttribute,
         AttributeInterface $textAttribute
     ) {
@@ -43,7 +43,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_empty_price_collection_product_value_with_no_locale_and_no_channel(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         AttributeInterface $priceCollectionAttribute
     ) {
 
@@ -65,7 +65,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_price_collection_product_value_with_no_locale_and_no_channel(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         ProductPrice $priceEUR,
         ProductPrice $priceUSD,
         AttributeInterface $priceCollectionAttribute
@@ -96,7 +96,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_price_collection_product_value_with_negative_amount(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         ProductPrice $priceEUR,
         ProductPrice $priceUSD,
         AttributeInterface $priceCollectionAttribute
@@ -127,7 +127,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_price_collection_product_value_with_locale(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         ProductPrice $priceEUR,
         ProductPrice $priceUSD,
         AttributeInterface $priceCollectionAttribute
@@ -158,7 +158,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_price_collection_product_value_with_channel(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         ProductPrice $priceEUR,
         ProductPrice $priceUSD,
         AttributeInterface $priceCollectionAttribute
@@ -189,7 +189,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_price_collection_product_value_with_locale_and_channel(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         ProductPrice $priceEUR,
         ProductPrice $priceUSD,
         AttributeInterface $priceCollectionAttribute
@@ -220,7 +220,7 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
     }
 
     function it_does_not_normalize_a_price_collection_product_value_without_currency(
-        PriceCollectionProductValue $priceCollection,
+        PriceCollectionValue $priceCollection,
         ProductPrice $priceEUR,
         ProductPrice $priceUSD,
         AttributeInterface $priceCollectionAttribute

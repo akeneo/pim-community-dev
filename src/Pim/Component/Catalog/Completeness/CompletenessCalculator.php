@@ -5,8 +5,8 @@ namespace Pim\Component\Catalog\Completeness;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -30,7 +30,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     protected $productValueFactory;
 
     /** @var CachedObjectRepositoryInterface */
@@ -39,24 +39,24 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     /** @var CachedObjectRepositoryInterface */
     protected $localeRepository;
 
-    /** @var ProductValueCompleteCheckerInterface */
+    /** @var ValueCompleteCheckerInterface */
     protected $productValueCompleteChecker;
 
     /** @var string */
     protected $completenessClass;
 
     /**
-     * @param ProductValueFactory                  $productValueFactory
-     * @param CachedObjectRepositoryInterface      $channelRepository
-     * @param CachedObjectRepositoryInterface      $localeRepository
-     * @param ProductValueCompleteCheckerInterface $productValueCompleteChecker
-     * @param string                               $completenessClass
+     * @param ValueFactory                    $productValueFactory
+     * @param CachedObjectRepositoryInterface $channelRepository
+     * @param CachedObjectRepositoryInterface $localeRepository
+     * @param ValueCompleteCheckerInterface   $productValueCompleteChecker
+     * @param string                          $completenessClass
      */
     public function __construct(
-        ProductValueFactory $productValueFactory,
+        ValueFactory $productValueFactory,
         CachedObjectRepositoryInterface $channelRepository,
         CachedObjectRepositoryInterface $localeRepository,
-        ProductValueCompleteCheckerInterface $productValueCompleteChecker,
+        ValueCompleteCheckerInterface $productValueCompleteChecker,
         $completenessClass
     ) {
         $this->productValueFactory = $productValueFactory;

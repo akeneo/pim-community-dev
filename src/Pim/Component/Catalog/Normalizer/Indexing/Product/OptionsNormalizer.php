@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,14 +20,14 @@ class OptionsNormalizer extends AbstractProductValueNormalizer implements Normal
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof OptionsProductValueInterface && 'indexing' === $format;
+        return $data instanceof OptionsValueInterface && 'indexing' === $format;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ProductValueInterface $productValue)
+    protected function getNormalizedData(ValueInterface $value)
     {
-        return $productValue->getOptionCodes();
+        return $value->getOptionCodes();
     }
 }

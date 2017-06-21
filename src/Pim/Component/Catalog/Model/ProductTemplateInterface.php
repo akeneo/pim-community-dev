@@ -45,11 +45,11 @@ interface ProductTemplateInterface
     public function setValuesData(array $valuesData);
 
     /**
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return bool
      */
-    public function hasValue(ProductValueInterface $value);
+    public function hasValue(ValueInterface $value);
 
     /**
      * @param AttributeInterface $attribute

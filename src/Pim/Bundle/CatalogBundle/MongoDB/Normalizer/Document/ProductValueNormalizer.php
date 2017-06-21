@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -53,7 +53,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof ProductValueInterface && ProductNormalizer::FORMAT === $format);
+        return ($data instanceof ValueInterface && ProductNormalizer::FORMAT === $format);
     }
 
     /**
@@ -123,13 +123,13 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Decide what is the key used for data inside the normalized product value
      *
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     * @param string                $backendType
+     * @param ValueInterface     $value
+     * @param AttributeInterface $attribute
+     * @param string             $backendType
      *
      * @return string
      */
-    protected function getKeyForValue(ProductValueInterface $value, AttributeInterface $attribute, $backendType)
+    protected function getKeyForValue(ValueInterface $value, AttributeInterface $attribute, $backendType)
     {
         if ('options' === $backendType) {
             return 'optionIds';
@@ -150,14 +150,14 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Search in Doctrine mapping what is the field name defined for the specified reference data
      *
-     * @param ProductValueInterface $value
-     * @param string                $refDataName
+     * @param ValueInterface $value
+     * @param string         $refDataName
      *
      * @throws \LogicException
      *
      * @return string
      */
-    protected function getReferenceDataFieldName(ProductValueInterface $value, $refDataName)
+    protected function getReferenceDataFieldName(ValueInterface $value, $refDataName)
     {
         $valueClass = ClassUtils::getClass($value);
         $manager = $this->managerRegistry->getManagerForClass($valueClass);

@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -29,7 +29,7 @@ use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
  */
 class VariantGroupUpdater extends GroupUpdater
 {
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     protected $productValueFactory;
 
     /** @var FileInfoRepositoryInterface */
@@ -44,7 +44,7 @@ class VariantGroupUpdater extends GroupUpdater
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param ProductValueFactory                 $productValueFactory
+     * @param ValueFactory                        $productValueFactory
      * @param FileInfoRepositoryInterface         $fileInfoRepository
      * @param FileStorerInterface                 $fileStorer
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
@@ -53,7 +53,7 @@ class VariantGroupUpdater extends GroupUpdater
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductValueFactory $productValueFactory,
+        ValueFactory $productValueFactory,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,

@@ -2,10 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,15 +20,15 @@ class MediaNormalizer extends AbstractProductValueNormalizer implements Normaliz
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof MediaProductValueInterface && 'indexing' === $format;
+        return $data instanceof MediaValueInterface && 'indexing' === $format;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ProductValueInterface $productValue)
+    protected function getNormalizedData(ValueInterface $value)
     {
-        $data = $productValue->getData();
+        $data = $value->getData();
 
         if (null !== $data) {
             $normalizedMedia = [];

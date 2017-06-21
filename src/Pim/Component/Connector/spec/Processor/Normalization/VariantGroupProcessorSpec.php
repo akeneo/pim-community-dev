@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -98,7 +98,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ValueCollectionInterface $emptyCollection,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -112,7 +112,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getCode()->willReturn('my_variant_group');
 
-        $productTemplate->getValuesData()->willReturn([$productValue]);
+        $productTemplate->getValuesData()->willReturn([$value]);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -159,13 +159,13 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $mediaFetcher,
         $stepExecution,
-        ValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $valueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue1,
-        ProductValueInterface $productValue2,
+        ValueInterface $value1,
+        ValueInterface $value2,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -179,9 +179,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getCode()->willReturn('my_variant_group');
 
-        $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->getData()->willReturn($media1);
-        $productValue2->getData()->willReturn($media2);
+        $valueCollection->toArray()->willReturn([$value1, $value2]);
+        $value1->getData()->willReturn($media1);
+        $value2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -219,8 +219,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         )->willReturn($variantStandard);
 
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
-        $productTemplate->getValues()->willReturn($productValueCollection);
-        $mediaFetcher->fetchAll($productValueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
+        $productTemplate->getValues()->willReturn($valueCollection);
+        $mediaFetcher->fetchAll($valueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($variantGroup)->shouldReturn($variantStandard);
@@ -233,13 +233,13 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $normalizer,
         $mediaFetcher,
         $stepExecution,
-        ValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $valueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue1,
-        ProductValueInterface $productValue2,
+        ValueInterface $value1,
+        ValueInterface $value2,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
@@ -253,9 +253,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getCode()->willReturn('my_variant_group');
 
-        $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->getData()->willReturn($media1);
-        $productValue2->getData()->willReturn($media2);
+        $valueCollection->toArray()->willReturn([$value1, $value2]);
+        $value1->getData()->willReturn($media1);
+        $value2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -288,8 +288,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         )->willReturn($variantStandard);
 
         $productTemplate->getValuesData()->willReturn($variantStandard['values']);
-        $productTemplate->getValues()->willReturn($productValueCollection);
-        $mediaFetcher->fetchAll($productValueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
+        $productTemplate->getValues()->willReturn($valueCollection);
+        $mediaFetcher->fetchAll($valueCollection, '/working/directory/', 'my_variant_group')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn(
             [
                 [

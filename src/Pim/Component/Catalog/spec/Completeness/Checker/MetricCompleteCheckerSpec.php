@@ -8,31 +8,31 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class MetricCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
     }
 
     public function it_suports_metric_attribute(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::METRIC);
-        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
+        $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
 
         $attribute->getType()->willReturn('other');
-        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(false);
+        $this->supportsValue($value, $channel, $locale)->shouldReturn(false);
     }
 
     public function it_successfully_checks_complete_metric(
-        ProductValueInterface $value,
+        ValueInterface $value,
         MetricInterface $metric,
         ChannelInterface $channel,
         LocaleInterface $locale
@@ -53,7 +53,7 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
     }
 
     public function it_checks_empty_value(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
@@ -62,7 +62,7 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
     }
 
     public function it_checks_incomplete_metric(
-        ProductValueInterface $value,
+        ValueInterface $value,
         MetricInterface $metric,
         ChannelInterface $channel,
         LocaleInterface $locale

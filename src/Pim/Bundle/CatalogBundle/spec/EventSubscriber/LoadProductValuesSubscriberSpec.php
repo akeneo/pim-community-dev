@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ValueCollectionFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Prophecy\Argument;
@@ -15,11 +15,11 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
 {
     function let(
         ContainerInterface $container,
-        ProductValueCollectionFactory $valueCollectionFactory
+        ValueCollectionFactory $valueCollectionFactory
     ) {
         $this->beConstructedWith($container);
 
-        $container->get('pim_catalog.factory.product_value_collection')->willReturn($valueCollectionFactory);
+        $container->get('pim_catalog.factory.value_collection')->willReturn($valueCollectionFactory);
     }
 
     function it_is_initializable()

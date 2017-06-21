@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionAttributeAdderSpec extends ObjectBehavior
@@ -58,7 +58,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         PriceCollectionInterface $prices,
         ProductPriceInterface $price1,
         ProductPriceInterface $price2,
@@ -70,10 +70,10 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($value);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $productValue->getData()->shouldBeCalledTimes(1)->willReturn($prices);
+        $value->getData()->shouldBeCalledTimes(1)->willReturn($prices);
         $prices->getIterator()->willReturn($pricesIterator);
         $pricesIterator->rewind()->shouldBeCalled();
         $pricesIterator->valid()->willReturn(true, true, false);

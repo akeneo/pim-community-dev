@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -56,8 +56,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryInterface $category2,
         GroupInterface $group1,
         GroupInterface $group2,
-        ProductValueInterface $value1,
-        ProductValueInterface $value2,
+        ValueInterface $value1,
+        ValueInterface $value2,
         FamilyInterface $family
     ) {
         $mongoFactory->createMongoId('product1')->willReturn($mongoId);
@@ -118,8 +118,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryInterface $category2,
         GroupInterface $group1,
         GroupInterface $group2,
-        ProductValueInterface $value1,
-        ProductValueInterface $value2
+        ValueInterface $value1,
+        ValueInterface $value2
     ) {
         $mongoFactory->createMongoId('product1')->willReturn($mongoId);
 

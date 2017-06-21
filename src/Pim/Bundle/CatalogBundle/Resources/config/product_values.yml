@@ -1,8 +1,8 @@
 parameters:
-    pim_catalog.entity.product_value.scalar.class: Pim\Component\Catalog\ProductValue\ScalarProductValue
-    pim_catalog.entity.product_value.media.class: Pim\Component\Catalog\ProductValue\MediaProductValue
-    pim_catalog.entity.product_value.metric.class: Pim\Component\Catalog\ProductValue\MetricProductValue
-    pim_catalog.entity.product_value.option.class: Pim\Component\Catalog\ProductValue\OptionProductValue
-    pim_catalog.entity.product_value.options.class: Pim\Component\Catalog\ProductValue\OptionsProductValue
-    pim_catalog.entity.product_value.date.class: Pim\Component\Catalog\ProductValue\DateProductValue
-    pim_catalog.entity.product_value.price_collection.class: Pim\Component\Catalog\ProductValue\PriceCollectionProductValue
+    pim_catalog.entity.value.scalar.class: Pim\Component\Catalog\ProductValue\ScalarValue
+    pim_catalog.entity.value.media.class: Pim\Component\Catalog\ProductValue\MediaValue
+    pim_catalog.entity.value.metric.class: Pim\Component\Catalog\ProductValue\MetricValue
+    pim_catalog.entity.value.option.class: Pim\Component\Catalog\ProductValue\OptionValue
+    pim_catalog.entity.value.options.class: Pim\Component\Catalog\ProductValue\OptionsValue
+    pim_catalog.entity.value.date.class: Pim\Component\Catalog\ProductValue\DateValue
+    pim_catalog.entity.value.price_collection.class: Pim\Component\Catalog\ProductValue\PriceCollectionValue
