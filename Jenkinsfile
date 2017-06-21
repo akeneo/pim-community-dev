@@ -6,6 +6,7 @@ def ceBranch = "1.7.x-dev"
 def ceOwner = "akeneo"
 def phpVersion = "5.6"
 def mysqlVersion = "5.5"
+def mongoVersion = "2.4"
 def esVersion = "none"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
@@ -24,6 +25,7 @@ stage("Checkout") {
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
             choice(choices: '5.5\n5.7', description: 'Mysql version to run behat with', name: 'mysqlVersion'),
+            choice(choices: '2.4\n3.4', description: 'MongoDB version to run behat with', name: 'mongoVersion'),
             choice(choices: 'none\n1.7\n5', description: 'ElasticSearch version to run behat with', name: 'esVersion')
         ])
 
@@ -32,6 +34,7 @@ stage("Checkout") {
         ceOwner = userInput['ce_owner']
         phpVersion = userInput['phpVersion']
         mysqlVersion = userInput['mysqlVersion']
+        mongoVersion = userInput['mongoVersion']
         esVersion = userInput['esVersion']
         features = userInput['features']
         launchUnitTests = userInput['launchUnitTests']
@@ -102,8 +105,8 @@ if (launchBehatTests.equals("yes")) {
     stage("Functional tests") {
         def tasks = [:]
 
-        if (storages.contains('odm')) {tasks["behat-odm"] = {runBehatTest("odm", features, phpVersion, mysqlVersion, esVersion)}}
-        if (storages.contains('orm')) {tasks["behat-orm"] = {runBehatTest("orm", features, phpVersion, mysqlVersion, esVersion)}}
+        if (storages.contains('odm')) {tasks["behat-odm"] = {runBehatTest("odm", features, phpVersion, mysqlVersion, mongoVersion, esVersion)}}
+        if (storages.contains('orm')) {tasks["behat-orm"] = {runBehatTest("orm", features, phpVersion, mysqlVersion, mongoVersion, esVersion)}}
 
         parallel tasks
     }
@@ -221,7 +224,7 @@ def runPhpCsFixerTest() {
     }
 }
 
-def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
+def runBehatTest(storage, features, phpVersion, mysqlVersion, mongoVersion, esVersion) {
     node() {
         dir("behat-${storage}") {
             deleteDir()
@@ -244,7 +247,7 @@ def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
             sh "cp behat.ci.yml behat.yml"
 
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${storage}\" -e ${esVersion} --exit_on_failure"
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${storage}\" -m ${mongoVersion} -e ${esVersion} --exit_on_failure"
             } finally {
                 sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\""
                 junit 'app/build/logs/behat/*.xml'
