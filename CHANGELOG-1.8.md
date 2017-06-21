@@ -182,8 +182,6 @@
 - Remove methods `addAttributeToProduct` and `addOrReplaceProductValue` from `Pim\Component\Catalog\Builder\ProductBuilderInterface`. 
     These methods are now in `Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface` and have been renamed to `addAttribute` and `addOrReplaceValue`. 
     For both methods, the `Pim\Component\Catalog\Model\ProductInterface` has been replaced by `Pim\Component\Catalog\Model\ValuesContainerInterface`.
-- Rename `Pim\Component\Catalog\Model\ProductValueCollectionInterface` to `Pim\Component\Catalog\Model\ValueCollectionInterface`
-- Rename `Pim\Component\Catalog\Model\ProductValueCollection` to `Pim\Component\Catalog\Model\ValueCollection`
 - Remove methods `getRawValues`, `setRawValues`, `getValues`, `setValues`, `getValue`, `addValue`, `removeValue`, `getAttributes`, `hasAttribute` and `getUsedAttributeCodes` from `Pim\Component\Catalog\Model\ProductInterface`.
     These methods are now in the `Pim\Component\Catalog\Model\ValuesContainerInterface`.
 - Change method `convert` of `Pim\Component\Catalog\Converter\MetricConverter` to use `Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface` instead of a `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
