@@ -6,7 +6,7 @@ define(
         'underscore',
         'oro/translator',
         'oro/datafilter/abstract-filter',
-        'text!pim/template/datagrid/filter/search-filter'
+        'pim/template/datagrid/filter/search-filter'
     ], function (
         $,
         _,

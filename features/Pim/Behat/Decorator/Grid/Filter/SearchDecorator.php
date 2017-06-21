@@ -11,7 +11,8 @@ class SearchDecorator extends ElementDecorator
      *
      * @param string $value
      */
-    public function search($value) {
+    public function search($value)
+    {
         $this->setValue($value);
     }
 }
