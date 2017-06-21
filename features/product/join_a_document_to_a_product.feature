@@ -10,9 +10,9 @@ Feature: Join a document to a product
       | label-en_US | type             | allowed_extensions | group | code        |
       | Description | pim_catalog_file | txt                | other | description |
     And a "Car" product
-    And the "Car" product has the "Description" attribute
     And I am logged in as "Julia"
     And I am on the "Car" product page
+    And I add available attributes Description
 
   @ce
   Scenario: Successfully leave the document empty
