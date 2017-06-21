@@ -12,6 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 class VariantAttributeSet implements VariantAttributeSetInterface
 {
     /** @var int */
+    private $id;
+
+    /** @var int */
     private $level;
 
     /** @var ArrayCollection */
@@ -19,6 +22,14 @@ class VariantAttributeSet implements VariantAttributeSetInterface
 
     /** @var ArrayCollection */
     private $axes;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     /**
      * {@inheritdoc}
