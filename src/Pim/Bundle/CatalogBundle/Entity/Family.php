@@ -66,6 +66,9 @@ class Family implements FamilyInterface
      */
     protected $updated;
 
+    /** @var ArrayCollection */
+    protected $familyVariants;
+
     /**
      * Constructor
      */
@@ -435,5 +438,21 @@ class Family implements FamilyInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFamilyVariants(): ArrayCollection
+    {
+        return $this->familyVariants;
+    }
+
+    /**
+     * @param ArrayCollection $FamilyVariants
+     */
+    public function setFamilyVariants(ArrayCollection $FamilyVariants)
+    {
+        $this->familyVariants = $FamilyVariants;
     }
 }
