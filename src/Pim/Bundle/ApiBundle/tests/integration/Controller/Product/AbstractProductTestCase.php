@@ -115,4 +115,20 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * Encode a string so that it can be used in a query string. Please not that "/" is not encoded.
+     * This is compliant with URI syntax {@see https://tools.ietf.org/html/rfc3986#section-3.4} and this is
+     * exactly what is done in Symfony's router {@see https://github.com/symfony/symfony/blob/2.7/src/Symfony/Component/Routing/Generator/UrlGenerator.php#L272-L274}.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function encodeForQueryString($string)
+    {
+        $encodedString = urlencode($string);
+
+        return strtr($encodedString, array('%2F' => '/'));
+    }
 }

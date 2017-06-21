@@ -66,7 +66,7 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $encryptedId = urlencode($this->getEncryptedId('product_complete_en_locale'));
+        $encryptedId = $this->getEncryptedId('product_complete_en_locale');
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
         $searchEncoded = urlencode($search);
@@ -166,6 +166,8 @@ JSON;
 
     /**
      * @param string $productIdentifier
+     *
+     * @return string
      */
     private function getEncryptedId($productIdentifier)
     {
@@ -174,6 +176,8 @@ JSON;
 
         $product = $productRepository->findOneByIdentifier($productIdentifier);
 
-        return $encrypter->encrypt($product->getId());
+        $encryptedId = $encrypter->encrypt($product->getId());
+
+        return $this->encodeForQueryString($encryptedId);
     }
 }

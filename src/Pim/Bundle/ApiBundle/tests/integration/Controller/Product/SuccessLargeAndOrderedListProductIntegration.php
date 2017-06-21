@@ -45,7 +45,7 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
             $standardizedProducts[] = $this->getStandardizedProduct($product->getIdentifier());
         }
         $standardizedProducts = implode(',', $standardizedProducts);
-        $lastEncryptedId = urlencode($this->getEncryptedId(end($this->products)));
+        $lastEncryptedId = $this->getEncryptedId(end($this->products));
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products?limit=100');
@@ -141,7 +141,9 @@ JSON;
     {
         $encrypter = $this->get('pim_api.security.primary_key_encrypter');
 
-        return $encrypter->encrypt($product->getId());
+        $encryptedId = $encrypter->encrypt($product->getId());
+
+        return $this->encodeForQueryString($encryptedId);
     }
 
     /**
