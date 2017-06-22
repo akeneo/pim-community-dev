@@ -19,17 +19,23 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     /** @var string */
     private $code;
 
+    /** @var FamilyInterface */
+    private $family;
+
+    /** @var ArrayCollection */
+    private $variantAttributeSets;
+
     /** @var string */
     private $locale;
 
     /** @var ArrayCollection */
     private $translations;
 
-    /** @var ArrayCollection */
-    private $variantAttributeSets;
-
-    /** @var FamilyInterface */
-    private $family;
+    public function __construct()
+    {
+        $this->variantAttributeSets = new ArrayCollection();
+        $this->translations = new ArrayCollection();
+    }
 
     /**
      * {@inheritdoc}
@@ -58,6 +64,50 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     /**
      * {@inheritdoc}
      */
+    public function getCommonAttributeSets(): ArrayCollection
+    {
+        return $this->variantAttributeSets->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariantAttributeSets($level = null): ArrayCollection
+    {
+        if (null !== $level) {
+            $this->variantAttributeSets->get($level);
+        }
+
+        return $this->variantAttributeSets->slice(1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setVariantAttributeSets(ArrayCollection $variantAttributeSets)
+    {
+        $this->variantAttributeSets = $variantAttributeSets;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamily(): FamilyInterface
+    {
+        return $this->family;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFamily(FamilyInterface $family)
+    {
+        $this->family = $family;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLocale(): string
     {
         return $this->locale;
@@ -69,22 +119,6 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     public function setLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantAttributeSets(): ArrayCollection
-    {
-        return $this->variantAttributeSets;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVariantAttributeSets(ArrayCollection $variantAttributeSets)
-    {
-        $this->variantAttributeSets = $variantAttributeSets;
     }
 
     /**
@@ -149,21 +183,5 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     public function getTranslationFQCN()
     {
         return FamilyVariantTranslation::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFamily(): FamilyInterface
-    {
-        return $this->family;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFamily(FamilyInterface $family)
-    {
-        $this->family = $family;
     }
 }
