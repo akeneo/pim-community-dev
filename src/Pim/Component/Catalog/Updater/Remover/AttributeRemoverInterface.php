@@ -6,7 +6,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
- * Remove a value from a values container
+ * Remove a value from an entity with values
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -17,8 +17,8 @@ interface AttributeRemoverInterface extends RemoverInterface
     /**
      * Remove attribute data
      *
-     * @param EntityWithValuesInterface $entityWithValues The values container to modify
-     * @param AttributeInterface        $attribute        The attribute of the values container to modify
+     * @param EntityWithValuesInterface $entityWithValues The entity to modify
+     * @param AttributeInterface        $attribute        The attribute of the entity to modify
      * @param mixed                     $data             The data to remove
      * @param array                     $options          Options passed to the remover
      *

@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
- * Removes a price attribute (a currency) from a values container
+ * Removes a price attribute (a currency) from an entity with values
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
