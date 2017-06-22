@@ -20,7 +20,10 @@
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association` VALUES (9,865,unhex(replace('c5d506a7-e9a3-4361-bb98-7affc851fbbb','-',''))),(8,866,unhex(replace('c5d506a7-e9a3-4361-bb98-7affc851fbbb','-',''))),(7,868,unhex(replace('c5d506a7-e9a3-4361-bb98-7affc851fbbb','-','')));
+INSERT INTO `pim_catalog_association` VALUES
+  (9,865,unhex(replace('c5d506a7-e9a3-4361-bb98-7affc851fbbb','-',''))),
+  (8,866,unhex(replace('c5d506a7-e9a3-4361-bb98-7affc851fbbb','-',''))),
+  (7,868,unhex(replace('c5d506a7-e9a3-4361-bb98-7affc851fbbb','-','')));
 /*!40000 ALTER TABLE `pim_catalog_association` ENABLE KEYS */;
 
 --
@@ -37,7 +40,10 @@ INSERT INTO `pim_catalog_association_group` VALUES (8,240),(9,241);
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association_product` VALUES (7,47),(7,48),(9,47);
+INSERT INTO `pim_catalog_association_product` VALUES
+  (7,unhex(replace('0c6ce103-532c-42bb-bd17-da6c964f40b2','-',''))),
+  (7,unhex(replace('baec7280-f317-46dd-980a-1566d6f47c9f','-',''))),
+  (9,unhex(replace('0c6ce103-532c-42bb-bd17-da6c964f40b2','-','')));
 /*!40000 ALTER TABLE `pim_catalog_association_product` ENABLE KEYS */;
 
 
