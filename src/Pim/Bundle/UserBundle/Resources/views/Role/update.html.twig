@@ -70,7 +70,7 @@
 {% set entityId = form.vars.value.id %}
 
 {% block content %}
-
+<div class="AknDefault-mainContent">
     {{ form_start(form, {
         'action': entityId ? path('oro_user_role_update', { 'id': entityId }) : path('oro_user_role_create'),
         'attr': {
@@ -81,10 +81,6 @@
     }) }}
 
         {% set title = entityId ? 'role.edit'|trans ~ ' - ' ~ form.vars.value.label : 'role.create'|trans %}
-
-        {% set titleButtons %}
-            {{ elements.backLink(path('oro_user_role_index')) }}
-        {% endset %}
 
         {% set buttons %}
             {% if entityId %}
@@ -101,7 +97,7 @@
             {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, null, titleButtons, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(title, buttons, null, null, null, null, elements.updated(form.vars.id)) }}
 
         {% set tabs = ['General'] %}
         {% for item in privilegesConfig|keys %}
@@ -109,7 +105,6 @@
         {% endfor %}
         {% set tabs = tabs|merge(['Users']) %}
 
-        <div class="AknTabContainer">
             {{ elements.form_navbar(tabs, '') }}
             <div class="tab-content oro-tab-form">
 
@@ -222,7 +217,6 @@
                     {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
                     {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
                 </div>
-            </div>
         </div>
 
     {{ form_end(form) }}
@@ -277,4 +271,5 @@
             }
         );
     </script>
+</div>
 {% endblock %}

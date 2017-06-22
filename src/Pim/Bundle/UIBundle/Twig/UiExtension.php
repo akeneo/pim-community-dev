@@ -25,12 +25,4 @@ class UiExtension extends \Twig_Extension
             new PlaceholderTokenParser($this->placeholders, $this->wrapClassName)
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_ui';
-    }
 }

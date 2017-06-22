@@ -40,7 +40,7 @@ Feature: Define the attribute requirement
       | BIGBOOTS | Boots  | Big boots  | 20 EUR, 20 USD | 35   | Black |
     And I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                     | ratio |
       | mobile  | en_US  | success |                                                    | 100%  |
@@ -57,7 +57,7 @@ Feature: Define the attribute requirement
     Then I should not see the "rating" attribute
     When I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                             | ratio |
       | mobile  | en_US  | success |                                            | 100%  |

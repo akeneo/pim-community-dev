@@ -14,7 +14,7 @@ class MassActionParametersParser
     public function parse(Request $request)
     {
         $inset = $request->get('inset', true);
-        $inset = !empty($inset);
+        $inset = !empty($inset) && 'false' !== $inset;
 
         $values = $request->get('values', '');
         if (!is_array($values)) {

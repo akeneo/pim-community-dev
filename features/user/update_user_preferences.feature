@@ -33,7 +33,7 @@ Feature: Update user preferences
     Then I should see the text "Catalog scope"
     And I should see the text "Print"
     When I am on the "Print" channel page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I edit the "Peter" user
     And I visit the "Additional" tab
@@ -50,7 +50,7 @@ Feature: Update user preferences
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"
     When I am on the "ecommerce" channel page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab

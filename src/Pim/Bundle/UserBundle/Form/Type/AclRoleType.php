@@ -23,7 +23,7 @@ class AclRoleType extends OroAclRoleType
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $builder->add(
                 $fieldName,
-                'oro_acl_collection',
+                PrivilegeCollectionType::class,
                 [
                     'type'         => new AclPrivilegeType(),
                     'allow_add'    => true,

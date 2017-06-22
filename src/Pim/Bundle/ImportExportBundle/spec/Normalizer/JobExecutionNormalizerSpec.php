@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Job\BatchStatus;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Prophecy\Argument;

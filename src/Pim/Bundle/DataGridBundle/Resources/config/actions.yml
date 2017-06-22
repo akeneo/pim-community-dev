@@ -4,6 +4,6 @@ parameters:
 services:
     pim_datagrid.extension.action.type.tab_redirect:
         class: '%pim_datagrid.extension.action.type.tab_redirect.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: tab-redirect }

@@ -2,18 +2,18 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as ODMClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as ODMClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
+use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Akeneo\Component\Versioning\Model\Version;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

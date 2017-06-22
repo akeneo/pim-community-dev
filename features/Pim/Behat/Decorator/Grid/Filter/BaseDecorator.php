@@ -32,4 +32,16 @@ class BaseDecorator extends ElementDecorator
     {
         $this->find('css', '.disable-filter')->click();
     }
+
+    /**
+     * Returns the displayed criteria in the filter
+     *
+     * @return string
+     */
+    public function getCriteriaHint()
+    {
+        return trim($this->spin(function () {
+            return $this->find('css', '.filter-criteria-hint');
+        }, 'Can not find the criteria hint of the filter')->getText());
+    }
 }

@@ -44,7 +44,7 @@ Feature: Display the localized product history for complex prices
   Scenario: Display french-format product history prices
     Given I am logged in as "Julien"
     And I edit the "sandal" product
-    When I open the history
+    When I visit the "Historique" column tab
     Then there should be 2 update
     And I should see history:
       | version | property                       | value    |

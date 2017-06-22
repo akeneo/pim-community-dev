@@ -2,6 +2,14 @@ extensions:
     pim-family-edit-form:
         module: pim/form/common/edit-form
 
+    pim-family-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-family-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-family
+
     pim-family-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-family-edit-form
@@ -19,19 +27,16 @@ extensions:
         targetZone: title
         position: 110
 
-    pim-family-edit-form-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-family-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-family-edit-form
-        targetZone: back
-        aclResourceId: pim_enrich_family_index
-        position: 80
-        config:
-            backUrl: pim_enrich_family_index
+        targetZone: buttons
+        position: 50
 
     pim-family-edit-form-delete:
         module: pim/family-edit-form/delete
-        parent: pim-family-edit-form
-        targetZone: buttons
+        parent: pim-family-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_family_remove
         position: 100
         config:
@@ -61,24 +66,6 @@ extensions:
         position: 900
         config:
             entity: pim_enrich.entity.family.title
-
-    pim-family-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-family-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.family.meta.created
-            labelBy: pim_enrich.entity.family.meta.created_by
-
-    pim-family-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-family-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.family.meta.updated
-            labelBy: pim_enrich.entity.family.meta.updated_by
 
     pim-family-edit-form-properties:
         module: pim/common/tab/properties

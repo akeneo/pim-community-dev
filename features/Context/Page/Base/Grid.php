@@ -155,6 +155,12 @@ class Grid extends Index
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
+                'Search filter'         => [
+                    'css' => '.search-filter input',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Grid\Filter\SearchDecorator'
+                    ]
+                ],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
@@ -310,9 +316,44 @@ class Grid extends Index
     public function filterBy($filterName, $operator, $value)
     {
         $filter = $this->getFilter($filterName);
-
         $filter->open();
         $filter->filter($operator, $value);
+    }
+
+    /**
+     * @param string $value
+     */
+    public function search($value)
+    {
+        $this->spin(function () use ($value) {
+            $input = $this->getElement('Search filter');
+            if (null !== $input) {
+                $input->search($value);
+
+                return true;
+            }
+        }, 'Unable to find the search filter');
+    }
+
+    /**
+     * @param string $filterName
+     */
+    public function openFilter($filterName)
+    {
+        $filter = $this->getFilter($filterName);
+        $filter->open();
+    }
+
+    /**
+     * Returns the displayed criteria of a filter
+     *
+     * @param $filterName
+     *
+     * @return string
+     */
+    public function getCriteria($filterName)
+    {
+        return $this->getFilter($filterName)->getCriteriaHint();
     }
 
     /**
@@ -957,7 +998,17 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $this->clickOnDropdownSelector('All');
+        $selector = $this->getDropdownSelector();
+        $this->spin(function () use ($selector) {
+            $selector->find('css', '.AknSeveralActionsButton-mainAction')->click();
+            foreach ($this->findAll('css', '.select-row-cell input') as $input) {
+                if (!$input->isChecked()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, 'Can not select all entities on the grid');
     }
 
     /**

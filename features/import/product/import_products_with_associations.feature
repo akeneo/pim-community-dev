@@ -26,8 +26,8 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
-    When I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    When I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
     Then I should see "2 products and 1 groups"
 
   @pim-2445
@@ -79,8 +79,8 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
-    When I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    When I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
     Then I should see "2 products and 1 groups"
     And the english localizable value name of "SKU-001" should be "Before"
 
@@ -90,8 +90,8 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
     Then I check the rows "SKU-002"
     And I save the product
     And the following CSV file to import:
@@ -113,8 +113,8 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
     Then I check the rows "SKU-002"
     And I save the product
     And the following CSV file to import:
@@ -128,8 +128,8 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
     Then I should see "0 products and 0 groups"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6019
@@ -139,8 +139,8 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
     And I check the rows "SKU-002"
     And I save the product
     And the following CSV file to import:

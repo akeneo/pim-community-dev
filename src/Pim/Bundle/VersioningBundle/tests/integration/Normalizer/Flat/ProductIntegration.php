@@ -2,8 +2,8 @@
 
 namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 
 /**

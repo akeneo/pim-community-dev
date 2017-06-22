@@ -54,7 +54,7 @@ define(
                         );
                     });
 
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'error',
                         __(
                             'pim_enrich.entity.family.info.field_not_ready',

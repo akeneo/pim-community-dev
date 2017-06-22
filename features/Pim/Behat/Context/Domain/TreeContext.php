@@ -57,14 +57,17 @@ class TreeContext extends PimContext
      */
     public function iShouldSeeTheNodeUnderTheNode($not, $child, $parent)
     {
-        $categoryTree = $this->getCurrentPage()
-            ->getElement('Category tree');
+        $parentNode = $this->spin(function () use ($parent) {
+            $categoryTree = $this->getCurrentPage()->getElement('Category tree');
 
-        $parentNode = $categoryTree->findNodeInTree($parent);
+            $parentNode = $categoryTree->findNodeInTree($parent);
 
-        if (!$parentNode->isOpen()) {
-            $parentNode->open();
-        }
+            if (!$parentNode->isOpen()) {
+                $parentNode->open();
+            }
+
+            return $parentNode;
+        }, sprintf('Cannot find parent node "%s" of "%s"', $parent, $child));
 
         $childNode = $parentNode->find('css', sprintf('li[data-code="%s"]', $child));
 

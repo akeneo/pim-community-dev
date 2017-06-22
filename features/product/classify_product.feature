@@ -14,8 +14,8 @@ Feature: Classify a product
 
   Scenario: Associate a product to categories
     Given I edit the "tea" product
-    When I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    When I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
@@ -25,19 +25,19 @@ Feature: Classify a product
 
   Scenario: Count product categories
     Given I edit the "tea" product
-    When I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    When I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     Then I should see 1 category count
     And I click on the "winter_collection" category
     Then I should see 2 category count
-    When I visit the "Associations" tab
-    And I visit the "Categories" tab
+    When I visit the "Associations" column tab
+    And I visit the "Categories" column tab
     Then I should see 2 category count
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I visit the "Categories" tab
+    When I visit the "Categories" column tab
     Then I should see 2 category count
 
   Scenario: Successfully save product when category code is integer
@@ -46,7 +46,7 @@ Feature: Classify a product
       | Code | 123 |
     And I save the category
     And I edit the "tea" product
-    And I visit the "Categories" tab
+    And I visit the "Categories" column tab
     And I expand the "2014_collection" category
     And I click on the "123" category
     When I save the product
@@ -55,22 +55,22 @@ Feature: Classify a product
   @jira https://akeneo.atlassian.net/browse/PIM-5656
   Scenario: Change categories without saving
     Given I edit the "tea" product
-    When I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    When I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
-    When I visit the "Attributes" tab
-    Then I visit the "Categories" tab
+    When I visit the "Attributes" column tab
+    Then I visit the "Categories" column tab
     Then I should see 2 category count
 
   @jira https://akeneo.atlassian.net/browse/PIM-5851
   Scenario: Change the product state when it is classified
     Given I edit the "tea" product
-    When I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    When I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."

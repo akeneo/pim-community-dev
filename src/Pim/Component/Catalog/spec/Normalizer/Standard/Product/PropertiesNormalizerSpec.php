@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 

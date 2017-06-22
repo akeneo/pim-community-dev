@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
@@ -26,8 +27,8 @@ class GroupController
 {
     const MAX_PRODUCTS = 5;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var EngineInterface */
     protected $templating;
@@ -48,7 +49,7 @@ class GroupController
     protected $groupFactory;
 
     /**
-     * @param Request                      $request
+     * @param RequestStack                 $requestStack
      * @param EngineInterface              $templating
      * @param RouterInterface              $router
      * @param GroupTypeRepositoryInterface $groupTypeRepository
@@ -57,7 +58,7 @@ class GroupController
      * @param GroupFactory                 $groupFactory
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         EngineInterface $templating,
         RouterInterface $router,
         GroupTypeRepositoryInterface $groupTypeRepository,
@@ -65,7 +66,7 @@ class GroupController
         FormInterface $groupForm,
         GroupFactory $groupFactory
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->templating = $templating;
         $this->router = $router;
         $this->groupTypeRepository = $groupTypeRepository;
@@ -89,7 +90,12 @@ class GroupController
         $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group.created'));
+            $this
+                ->requestStack
+                ->getCurrentRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.group.created'));
 
             $url = $this->router->generate(
                 'pim_enrich_group_edit',

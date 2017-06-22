@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Component\Versioning\Model\Version;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

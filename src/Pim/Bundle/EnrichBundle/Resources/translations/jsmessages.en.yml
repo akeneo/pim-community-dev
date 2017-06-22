@@ -145,6 +145,7 @@ pim_enrich:
     navigation:
         link:
             back_to_grid: Back to grid
+        other_actions: Other actions
     entity:
         save:
             label: Save
@@ -157,6 +158,8 @@ pim_enrich:
                  save: Save
                  cancel: Cancel
         product:
+            navigation: Product navigation
+            infos: Product infos
             title: product
             btn:
                 enable: Enable
@@ -167,13 +170,10 @@ pim_enrich:
                 compare_translate: Compare / Translate
                 delete: Delete
                 save: Save
-                save_and_back: Save and back to grid
             history:
                 version: Version
                 author: Author
                 logged_at: Logged at
-                more: More
-                less: Less
                 from: From
                 modified: Modified
                 property: Property
@@ -241,7 +241,7 @@ pim_enrich:
                 deletion_failed: Association type could not be deleted.
                 update_successful: Association type successfully updated.
                 update_failed: The association type could not be updated.
-                field_not_ready: The association type cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -260,7 +260,7 @@ pim_enrich:
                 deletion_failed: Group type could not be deleted.
                 update_successful: Group type successfully updated.
                 update_failed: The group type could not be updated.
-                field_not_ready: The group type cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -282,7 +282,7 @@ pim_enrich:
                 update_failed: The channel could not be updated.
                 create_successful: Channel successfully created.
                 create_failed: The channel could not be created.
-                field_not_ready: The channel cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The channel cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -335,7 +335,7 @@ pim_enrich:
                 deletion_failed: The variant group could not be deleted.
                 update_successful: Variant group successfully updated.
                 update_failed: The variant group could not be updated.
-                field_not_ready: The variant group cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The variant group cannot be saved right now. The following fields are not ready: {{ fields }}"
                 already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
                 no_attributes: This variant group has no attributes yet
             btn:
@@ -353,7 +353,7 @@ pim_enrich:
                 deletion_failed: Group could not be deleted.
                 update_successful: Group successfully updated.
                 update_failed: The group could not be updated.
-                field_not_ready: The group cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
             btn:
                 save: Save
             meta:
@@ -402,6 +402,7 @@ pim_enrich:
                         show_products: Show products
                         show_groups: Show groups
                         number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                    association_type_selector: Association type
                 attributes:
                     title: Attributes
                     btn:
@@ -413,8 +414,10 @@ pim_enrich:
                         attributes_selected: "{{ itemsCount }} attribute(s) selected"
                         no_match: No matches found
                         load_more: Loading more results...
+                    attribute_group_selector: Attribute group
                 categories:
                     title: Categories
+                    catalog_selector: Catalog
             panel:
                 completeness:
                     title: Completeness
@@ -955,11 +958,13 @@ job_tracker:
 
 pim_menu:
     tab:
-        collect: Collect
-        enrich: Enrich
+        dashboard: Dashboard
+        imports: Imports
+        products: Products
+        exports: Exports
         settings: Settings
         system: System
-        spread: Spread
+
     item:
         association_type: Association types
         attribute: Attributes
@@ -985,10 +990,16 @@ pim_menu:
         info: System information
         job_tracker: Process tracker
 
-pim_header:
+    navigation:
+        system: System navigation
+        user: Users management navigation
+        settings: Settings navigation
+
     user:
         logout: Logout
         user_account: My Account
 
 pim_notification:
     mark_all_as_read: Mark all as read
+    no_notifications: No notifications
+    loading: Loading...

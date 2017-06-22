@@ -17,7 +17,9 @@ define(
     function (_, __, BaseForm, formTemplate) {
         return BaseForm.extend({
             tagName: 'span',
+
             className: 'AknTitleContainer-metaItem',
+
             template: _.template(formTemplate),
 
             /**

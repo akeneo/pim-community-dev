@@ -2,6 +2,14 @@ extensions:
     pim-variant-group-edit-form:
         module: pim/form/common/edit-form
 
+    pim-variant-group-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-variant-group-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-variant-group
+
     pim-variant-group-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-variant-group-edit-form
@@ -19,19 +27,16 @@ extensions:
         targetZone: title
         position: 100
 
-    pim-variant-group-edit-form-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-variant-group-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-variant-group-edit-form
-        targetZone: back
-        aclResourceId: pim_enrich_variant_group_index
-        position: 80
-        config:
-            backUrl: pim_enrich_variant_group_index
+        targetZone: buttons
+        position: 50
 
     pim-variant-group-edit-form-delete:
         module: pim/variant-group-edit-form/delete
-        parent: pim-variant-group-edit-form
-        targetZone: buttons
+        parent: pim-variant-group-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_variant_group_remove
         position: 100
         config:
@@ -62,24 +67,6 @@ extensions:
         config:
             entity: pim_enrich.entity.variant_group.title
 
-    pim-variant-group-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-variant-group-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.variant_group.meta.created
-            labelBy: pim_enrich.entity.variant_group.meta.created_by
-
-    pim-variant-group-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-variant-group-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.variant_group.meta.updated
-            labelBy: pim_enrich.entity.variant_group.meta.updated_by
-
     pim-variant-group-edit-form-product-count:
         module: pim/group-edit-form/meta/product-count
         parent: pim-variant-group-edit-form
@@ -103,7 +90,7 @@ extensions:
     pim-variant-group-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-variant-group-edit-form-attributes
-        targetZone: sidebar
+        targetZone: attribute-group-selector
         position: 100
 
     pim-variant-group-edit-form-add-attribute:

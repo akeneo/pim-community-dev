@@ -55,10 +55,6 @@
     <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</span>
 {% endblock stats %}
 
-{% block backButton %}
-    {{ elements.backLink(path('oro_user_index')) }}
-{% endblock %}
-
 {% block content_data %}
   <div>
     {% set id = 'user-profile' %}

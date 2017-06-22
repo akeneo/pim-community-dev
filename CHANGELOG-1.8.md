@@ -15,6 +15,19 @@
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 - TIP-730: Reworking of the creation popin for basic entities
 
+## UI/UX Refactoring
+
+- PIM-6288: Update flash messages design
+- PIM-6289: Update JSTree design
+- PIM-6294: Update switch design
+- PIM-6374: Add columns for product navigation
+- PIM-6391: Update comments design
+- PIM-6403: Update panels design to use dropdown selectors
+- PIM-6404: Update buttons design
+- PIM-6409: Update all the title containers design
+- PIM-6290: Update the main navigation design
+- PIM-6397: Enable Search filter on all grids
+
 ## BC breaks
 
 ### Classes
@@ -154,6 +167,10 @@
 - Remove OroNavigationBundle
 - Remove OroNotificationBundle
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+
+### Methods
+
+- Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
 
 ## Requirements
 

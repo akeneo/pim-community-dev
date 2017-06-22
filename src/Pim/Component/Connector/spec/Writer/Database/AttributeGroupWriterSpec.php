@@ -5,10 +5,10 @@ namespace spec\Pim\Component\Connector\Writer\Database;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Connector\Writer\Database\AttributeGroupWriter;
-use PhpSpec\ObjectBehavior;
 
 class AttributeGroupWriterSpec extends ObjectBehavior
 {

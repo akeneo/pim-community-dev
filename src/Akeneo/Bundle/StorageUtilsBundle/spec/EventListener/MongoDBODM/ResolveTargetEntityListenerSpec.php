@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\EventListener\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
-use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @require Doctrine\ODM\MongoDB\Events

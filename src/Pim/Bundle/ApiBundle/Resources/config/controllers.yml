@@ -108,7 +108,6 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.token:
-        scope: request
         class: '%pim_api.controller.token.class%'
         arguments:
             - '@fos_oauth_server.server'

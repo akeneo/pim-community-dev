@@ -19,24 +19,4 @@
     display: flex;
     align-items: stretch;
   }
-
-  &-panels {
-    flex-basis: 450px;
-    flex-grow: 0.1;
-
-    &--closed {
-      display: none;
-    }
-  }
-
-  &-notPanels { }
-
-  &-contentThreeColumns--fullPanel &-notPanels {
-    display: none;
-  }
-
-  &-contentThreeColumns--fullPanel &-panels {
-    border-left: 1px solid @AknBorderColor;
-    flex-basis: 100%;
-  }
 }

@@ -4,6 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -16,7 +17,7 @@ class DateRangeType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -76,7 +77,7 @@ class DateRangeType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'field_type'          => 'date',
+                'field_type'          => DateType::class,
                 'field_options'       => [],
                 'start_field_options' => [],
                 'end_field_options'   => [],

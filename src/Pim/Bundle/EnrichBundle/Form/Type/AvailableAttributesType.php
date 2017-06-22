@@ -57,7 +57,7 @@ class AvailableAttributesType extends AbstractType
     {
         $builder->add(
             'attributes',
-            'light_entity',
+            LightEntityType::class,
             [
                 'repository'         => $this->attributeProvider,
                 'repository_options' => [
@@ -102,7 +102,7 @@ class AvailableAttributesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_available_attributes';
     }

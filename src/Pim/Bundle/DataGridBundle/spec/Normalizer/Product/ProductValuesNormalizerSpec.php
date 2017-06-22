@@ -9,10 +9,10 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior

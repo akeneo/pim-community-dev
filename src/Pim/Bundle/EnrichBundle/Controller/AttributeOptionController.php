@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -213,7 +214,7 @@ class AttributeOptionController
      */
     protected function manageFormSubmission(AttributeOptionInterface $attributeOption, array $data = [])
     {
-        $form = $this->formFactory->createNamed('option', 'pim_enrich_attribute_option', $attributeOption);
+        $form = $this->formFactory->createNamed('option', AttributeOptionType::class, $attributeOption);
 
         $form->submit($data, false);
 

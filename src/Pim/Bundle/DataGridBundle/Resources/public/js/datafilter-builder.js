@@ -13,7 +13,7 @@ function($, _, tools,  mediator, FiltersManager) {
         },
         methods = {
             initBuilder: function () {
-                this.metadata = _.extend({filters: {}}, this.$el.data('metadata'));
+                this.metadata = _.extend({filters: {}, options: {}}, this.$el.data('metadata'));
                 this.modules = {};
                 methods.collectModules.call(this);
                 tools.loadModules(this.modules, _.bind(methods.build, this));
@@ -31,8 +31,10 @@ function($, _, tools,  mediator, FiltersManager) {
             },
 
             build: function () {
+                var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 var options = methods.combineOptions.call(this);
                 options.collection = this.collection;
+                options.displayManageFilters = displayManageFilters;
                 var filtersList = new FiltersManager(options);
                 this.$el.prepend(filtersList.render().$el);
                 mediator.trigger('datagrid_filters:rendered', this.collection);

@@ -25,9 +25,9 @@ define(
                     initSelect2.initSelect($select);
                     $select.trigger('change');
                     $select.select2('data', selectData);
-                    messenger.notificationFlashMessage('success', $field.data('success-message'));
+                    messenger.notify('success', $field.data('success-message'));
                 } else {
-                    messenger.notificationFlashMessage('error', $field.data('error-message'));
+                    messenger.notify('error', $field.data('error-message'));
                 }
             };
             new DialogForm(fieldId, callback);

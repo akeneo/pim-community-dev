@@ -6,8 +6,8 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 class TranslationsUpdateGuesserSpec extends ObjectBehavior
 {

@@ -54,5 +54,6 @@ Feature: Edit an attribute group
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
     When I add available attributes Sole fabric, Size, Side view
+    And I open the group selector
     Then I should see the text "[Z] [X] [Y]"
 

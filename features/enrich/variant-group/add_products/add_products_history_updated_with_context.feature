@@ -36,9 +36,9 @@ Feature: Add products to a variant group
     And I save the variant group
     Then the row "sandal-white-37" should be checked
     When I edit the "sandal-white-37" product
-    And I open the history
+    And I visit the "History" column tab
     Then I should see history:
-      | version | author                                                            | property | value           |
-      | 3       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 2       | John Doe - admin@example.com                                      | Color    | white           |
-      | 1       | John Doe - admin@example.com                                      | SKU      | sandal-white-37 |
+      | version | author                                        | property | value           |
+      | 3       | Julia Stark (Comes from variant group SANDAL) | groups   | SANDAL          |
+      | 2       | John Doe                                      | Color    | white           |
+      | 1       | John Doe                                      | SKU      | sandal-white-37 |

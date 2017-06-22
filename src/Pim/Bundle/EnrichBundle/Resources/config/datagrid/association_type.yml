@@ -3,6 +3,7 @@ datagrid:
         options:
             entityHint: association type
             locale_parameter: localeCode
+            manageFilters: false
         source:
             type: pim_datasource_association_type
             acl_resource: pim_enrich_associationtype_index
@@ -50,6 +51,6 @@ datagrid:
                     label: Code
                     data_name: a.code
                 label:
-                    type: string
+                    type: search
                     label: Label
                     data_name: translation.label

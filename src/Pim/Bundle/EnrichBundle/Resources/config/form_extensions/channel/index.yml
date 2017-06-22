@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.channel.title
 
+    pim-channel-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-channel-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-channel
+
     pim-channel-index-grid:
         module: pim/form/common/index/grid
         parent: pim-channel-index
@@ -19,7 +27,6 @@ extensions:
         position: 100
         aclResourceId: pim_enrich_channel_create
         config:
-            iconName: plus
             label: pim_enrich.index.channel.create_btn
             route: pim_enrich_channel_create
             buttonClass: AknButton--apply

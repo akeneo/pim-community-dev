@@ -28,9 +28,4 @@ class UpdateExtensionSpec extends ObjectBehavior
     {
         $this->getUpdateServerUrl()->shouldReturn('https://updates.akeneo.com/');
     }
-
-    function it_has_a_name()
-    {
-        $this->getName()->shouldBe('pim_analytics_update_extension');
-    }
 }

@@ -39,7 +39,6 @@ parameters:
 
 services:
     pim_enrich.controller.category_tree.product:
-        scope: request
         class: '%pim_enrich.controller.category_tree.class%'
         arguments:
             - '@event_dispatcher'
@@ -49,23 +48,21 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - { related_entity: product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
+            - { related_entity: product, form_type: '%pim_enrich.form.type.category.class%', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.currency:
-        scope: request
         class: '%pim_enrich.controller.currency.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@pim_catalog.saver.currency'
 
     pim_enrich.controller.attribute:
-        scope: request
         class: '%pim_enrich.controller.attribute.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@form.factory'
             - '@translator'
@@ -85,7 +82,6 @@ services:
             - '%akeneo_measure.measures_config%'
 
     pim_enrich.controller.attribute_option:
-        scope: request
         class: '%pim_enrich.controller.attribute_option.class%'
         arguments:
             - '@pim_internal_api_serializer'
@@ -100,7 +96,6 @@ services:
             - '@pim_catalog.repository.attribute_option'
 
     pim_enrich.controller.product:
-        scope: request
         class: '%pim_enrich.controller.product.class%'
         arguments:
             - '@router'
@@ -145,10 +140,9 @@ services:
             - '@pim_enrich.mass_edit_action.operation_job_launcher'
 
     pim_enrich.controller.association_type:
-        scope: request
         class: '%pim_enrich.controller.association_type.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@router'
             - '@translator'
             - '@pim_catalog.repository.association'
@@ -168,7 +162,6 @@ services:
             - ['catalogStorage']
 
     pim_enrich.controller.variant_group:
-        scope: request
         class: '%pim_enrich.controller.variant_group.class%'
         arguments:
             - '@router'
@@ -179,7 +172,6 @@ services:
             - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.sequential_edit:
-        scope: request
         class: '%pim_enrich.controller.sequential_edit.class%'
         arguments:
             - '@router'
@@ -190,7 +182,6 @@ services:
             - '@pim_enrich.saver.sequential_edit'
 
     pim_enrich.controller.job_tracker:
-        scope: request
         class: '%pim_enrich.controller.job_tracker.class%'
         arguments:
             - '@templating'
@@ -204,7 +195,6 @@ services:
             - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
 
     pim_enrich.controller.rest.association_type:
-        scope: request
         class: '%pim_enrich.controller.rest.association_type.class%'
         arguments:
             - '@pim_catalog.repository.association_type'
@@ -290,7 +280,6 @@ services:
             - '@pim_catalog.factory.family'
 
     pim_enrich.controller.rest.form_extension:
-        scope: request
         class: '%pim_enrich.controller.rest.form_extension.class%'
         arguments:
             - '@pim_enrich.provider.form_extension'
@@ -353,7 +342,6 @@ services:
             - '@pim_catalog.repository.product_category'
 
     pim_enrich.controller.rest.product_comment:
-        scope: request
         class: '%pim_enrich.controller.rest.product_comment.class%'
         arguments:
             - '@security.token_storage'
@@ -383,7 +371,6 @@ services:
             - '@pim_enrich.converter.enrich_to_standard.product_value'
 
     pim_enrich.controller.rest.variant_group_attribute:
-        scope: request
         class: '%pim_enrich.controller.rest.variant_group_attribute.class%'
         arguments:
             - '@pim_catalog.repository.group'

@@ -85,7 +85,7 @@ define(
                                 routerParams = {id: entity.meta.id};
                             }
 
-                            messenger.notificationFlashMessage('success', __(this.config.successMessage));
+                            messenger.notify('success', __(this.config.successMessage));
 
                             router.redirectToRoute(
                                 this.config.editRoute,

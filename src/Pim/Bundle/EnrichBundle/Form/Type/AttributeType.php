@@ -4,10 +4,16 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypeRegistry;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * Type for attribute form
@@ -98,7 +104,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldId(FormBuilderInterface $builder)
     {
-        $builder->add('id', 'hidden');
+        $builder->add('id', HiddenType::class);
     }
 
     /**
@@ -108,7 +114,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', ['required' => true]);
+        $builder->add('code', TextType::class, ['required' => true]);
     }
 
     /**
@@ -118,7 +124,7 @@ class AttributeType extends AbstractType
     {
         $builder->add(
             'type',
-            'choice',
+            ChoiceType::class,
             [
                 'choices'   => $this->registry->getSortedAliases(),
                 'select2'   => true,
@@ -137,7 +143,7 @@ class AttributeType extends AbstractType
     {
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             [
                 'field'             => 'label',
                 'translation_class' => $this->attributeTranslation,
@@ -156,7 +162,7 @@ class AttributeType extends AbstractType
     {
         $builder->add(
             'group',
-            'entity',
+            EntityType::class,
             [
                 'class'         => $this->attributeGroupClass,
                 'query_builder' => function (EntityRepository $er) {
@@ -178,7 +184,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridFilter', 'switch');
+        $builder->add('useableAsGridFilter', SwitchType::class);
     }
 
     /**
@@ -188,7 +194,7 @@ class AttributeType extends AbstractType
      */
     protected function addFieldRequired(FormBuilderInterface $builder)
     {
-        $builder->add('required', 'switch');
+        $builder->add('required', SwitchType::class);
     }
 
     /**
@@ -198,8 +204,8 @@ class AttributeType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'         => $this->attributeClass,
-                'cascade_validation' => true
+                'data_class'  => $this->attributeClass,
+                'constraints' => new Valid()
             ]
         );
     }
@@ -207,7 +213,7 @@ class AttributeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attribute';
     }

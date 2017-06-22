@@ -53,12 +53,4 @@ class AttributeExtension extends \Twig_Extension
 
         return $code;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_attribute_extension';
-    }
 }

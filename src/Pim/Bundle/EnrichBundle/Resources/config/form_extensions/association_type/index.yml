@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.association_type.title
 
+    pim-association-type-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-association-type-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-association-type
+
     pim-association-type-index-grid:
         module: pim/form/common/index/grid
         parent: pim-association-type-index

@@ -40,7 +40,7 @@ Feature: Remove attribute from a family
     Then I should not see the text "There are unsaved changes."
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel    | locale                  | state    | message         | ratio |
       | e-commerce | English (United States) | warning  | 1 missing value | 50%   |
@@ -53,7 +53,7 @@ Feature: Remove attribute from a family
     And I save the family
     Then I should not see the text "There are unsaved changes."
     When I am on the "bag-noname" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel    | locale                  | state    | message            | ratio |
       | e-commerce | English (United States) |          | Not yet calculated |       |
@@ -62,7 +62,7 @@ Feature: Remove attribute from a family
       | mobile     | French (France)         |          | Not yet calculated |       |
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel    | locale                  | state    | message  | ratio |
       | e-commerce | English (United States) | success  | Complete | 100%  |

@@ -22,6 +22,10 @@ define(
             events: {
                 'click li a': 'changeLocale'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {

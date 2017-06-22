@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
 
 /**
  * Identifier attribute type
@@ -22,11 +25,11 @@ class IdentifierType extends AbstractAttributeType
         return [
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
-                'fieldType' => 'text'
+                'fieldType' => FormTextType::class
             ],
             'validationRule' => [
                 'name'      => 'validationRule',
-                'fieldType' => 'choice',
+                'fieldType' => ChoiceType::class,
                 'options'   => [
                     'choices' => [
                         null     => 'None',
@@ -40,7 +43,7 @@ class IdentifierType extends AbstractAttributeType
             ],
             'scopable' => [
                 'name'      => 'scopable',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'data'      => false,
                     'disabled'  => true,
@@ -49,7 +52,7 @@ class IdentifierType extends AbstractAttributeType
             ],
             'unique' => [
                 'name'      => 'unique',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'data'      => true,
                     'disabled'  => true,
@@ -58,7 +61,7 @@ class IdentifierType extends AbstractAttributeType
             ],
             'required' => [
                 'name'      => 'required',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'data'      => true,
                     'disabled'  => true,
@@ -67,7 +70,7 @@ class IdentifierType extends AbstractAttributeType
             ],
             'useableAsGridFilter' => [
                 'name'      => 'useableAsGridFilter',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'data'      => true,
                     'disabled'  => true,

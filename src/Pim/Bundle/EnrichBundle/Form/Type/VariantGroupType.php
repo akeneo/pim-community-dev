@@ -14,7 +14,7 @@ class VariantGroupType extends GroupType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_variant_group';
     }

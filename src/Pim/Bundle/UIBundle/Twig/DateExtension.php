@@ -25,8 +25,8 @@ class DateExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            'age'        => new \Twig_Filter_Method($this, 'getAge'),
-            'age_string' => new \Twig_Filter_Method($this, 'getAgeAsString'),
+            new \Twig_SimpleFilter('getAge', [$this, 'getAge']),
+            new \Twig_SimpleFilter('getAgeAsString', [$this, 'getAgeAsString']),
         ];
     }
 
@@ -73,15 +73,5 @@ class DateExtension extends \Twig_Extension
             $date = \DateTime::createFromFormat($format, $date, $tz);
         }
         return $date->diff(new \DateTime('now'));
-    }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'oro_ui.date';
     }
 }

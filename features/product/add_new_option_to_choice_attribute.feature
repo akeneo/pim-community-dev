@@ -34,7 +34,8 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |
       | en   | Extremely wet |
-    And I save and back to the grid
+    And I save the product
+    And I should not see the text "There are unsaved changes"
     And I am on the "shoes" product page
     And I should be on the product "shoes" edit page
     And I change the "Weather conditions" to "Extremely wet"

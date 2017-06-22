@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductRawValuesSubscriber;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductRawValuesSubscriber;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;

@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer;
 use Prophecy\Argument;
 

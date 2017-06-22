@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.user_role.title
 
+    pim-user-role-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-role-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-user-role
+
     pim-user-role-index-grid:
         module: pim/form/common/index/grid
         parent: pim-user-role-index
@@ -19,7 +27,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_role_create
         config:
-            iconName: plus
             label: pim_enrich.index.user_role.create_btn
             route: oro_user_role_create
             buttonClass: AknButton--apply

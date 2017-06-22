@@ -83,7 +83,7 @@ define(
             postSave: function () {
                 this.getRoot().trigger('pim_enrich:form:entity:post_save');
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     this.updateSuccessMessage
                 );
@@ -112,7 +112,7 @@ define(
                     default:
                 }
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'error',
                     this.updateFailureMessage
                 );

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\DependencyInjection;
 
+use Pim\Bundle\UserBundle\Form\Type\AclAccessLevelSelectorType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -60,7 +61,7 @@ class Configuration implements ConfigurationInterface
                                 'label'         => 'Capabilities',
                                 'view_type'     => 'list',
                                 'types'         => ['action'],
-                                'field_type'    => 'pim_acl_access_level_selector',
+                                'field_type'    => AclAccessLevelSelectorType::class,
                                 'default_value' => 1,
                                 'show_default'  => false,
                             ]

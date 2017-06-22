@@ -70,7 +70,7 @@ class VersionNormalizer implements NormalizerInterface
             'context'      => $version->getContext(),
             'version'      => $version->getVersion(),
             'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $context),
-            'pending'      => $version->isPending()
+            'pending'      => $version->isPending(),
         ];
     }
 
@@ -95,7 +95,7 @@ class VersionNormalizer implements NormalizerInterface
             if (null === $user) {
                 $userName = sprintf('%s - %s', $author, $this->translator->trans('Removed user'));
             } else {
-                $userName = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
+                $userName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
             }
 
             $this->authorCache[$author] = $userName;

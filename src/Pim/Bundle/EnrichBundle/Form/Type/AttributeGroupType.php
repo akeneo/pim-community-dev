@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -40,15 +43,15 @@ class AttributeGroupType extends AbstractType
             ->add('code')
             ->add(
                 'label',
-                'pim_translatable_field',
+                TranslatableFieldType::class,
                 [
                     'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
+                    'translation_class' => AttributeGroupTranslation::class,
+                    'entity_class'      => AttributeGroup::class,
                     'property_path'     => 'translations'
                 ]
             )
-            ->add('sort_order', 'hidden')
+            ->add('sort_order', HiddenType::class)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         foreach ($this->subscribers as $subscriber) {
@@ -71,7 +74,7 @@ class AttributeGroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_attributegroup';
     }

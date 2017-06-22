@@ -1,16 +1,15 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
-    {% set buttons %}
-        <a href="{{ path('pim_analytics_system_info_download') }}" class="AknButton AknButton--withIcon AknButton--grey no-hash">
-            <i class="AknButton-icon icon-download-alt"></i>
-            {{ 'pim_analytics.system_info.download'|trans }}
-        </a>
-    {% endset %}
+    <div class="AknDefault-mainContent">
+        {% set buttons %}
+            <a href="{{ path('pim_analytics_system_info_download') }}" class="AknButton AknButton--grey no-hash">
+                {{ 'pim_analytics.system_info.download'|trans }}
+            </a>
+        {% endset %}
 
-    {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
+        {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
 
-    <div class="AknGridContainer row-fluid tab-content">
         <table class="AknGrid AknGrid--unclickable AknGrid--condensed table">
             {% for infoType,info in data %}
                 <tr class="AknGrid-bodyRow">

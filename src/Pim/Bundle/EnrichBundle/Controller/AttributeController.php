@@ -23,6 +23,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -37,8 +38,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AttributeController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -98,7 +99,7 @@ class AttributeController
     protected $optionValueFactory;
 
     /**
-     * @param Request                      $request
+     * @param RequestStack                 $requestStack
      * @param RouterInterface              $router
      * @param FormFactoryInterface         $formFactory
      * @param TranslatorInterface          $translator
@@ -118,7 +119,7 @@ class AttributeController
      * @param array                        $measuresConfig
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
@@ -137,7 +138,7 @@ class AttributeController
         SimpleFactoryInterface $optionValueFactory,
         $measuresConfig
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->formFactory = $formFactory;
         $this->translator = $translator;
@@ -202,7 +203,7 @@ class AttributeController
         $attribute = $this->factory->createAttribute($attributeType);
 
         if ($this->attributeHandler->process($attribute)) {
-            $this->request->getSession()->getFlashBag()
+            $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()
                 ->add('success', new Message('flash.attribute.created'));
 
             return new JsonResponse(
@@ -397,10 +398,10 @@ class AttributeController
         }
 
         if (isset($errorMessage)) {
-            if ($this->request->isXmlHttpRequest()) {
+            if ($this->requestStack->getCurrentRequest()->isXmlHttpRequest()) {
                 throw new DeleteException($this->translator->trans($errorMessage, $messageParameters));
             } else {
-                $this->request->getSession()->getFlashBag()
+                $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()
                     ->add('error', new Message($errorMessage, $messageParameters));
 
                 return new JsonResponse(['route' => 'pim_enrich_attribute_index']);

@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Component\Catalog\Validator\Constraints\NotNullProperties;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Validator\Constraints\NotNullProperties;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;

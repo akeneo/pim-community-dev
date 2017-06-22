@@ -3,7 +3,6 @@ parameters:
 
 services:
     pim_comment.controller.comment:
-        scope: request
         class: '%pim_comment.controller.comment.class%'
         arguments:
             - '@security.token_storage'

@@ -402,7 +402,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      *
      * @Then /^I hide the filter "([^"]*)"$/
-     * @Then /^I collapse the "([^"]*)" sidebar$/
      */
     public function iHideTheFilter($filterName)
     {
@@ -429,16 +428,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         if (!$ordered) {
             throw $this->createExpectationException('Filters are not ordered as expected');
         }
-    }
-
-    /**
-     * @param string $filterName
-     *
-     * @Then /^I expand the "([^"]*)" sidebar$/
-     */
-    public function iExpandTheCategoriesSidebar($filterName)
-    {
-        $this->datagrid->expandFilter($filterName);
     }
 
     /**
@@ -759,6 +748,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $value
+     *
+     * @When /^I search "(.*)"$/
+     */
+    public function iSearch($value)
+    {
+        $this->datagrid->search($value);
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I open the "(.*)" filter$/
+     */
+    public function iOpenFilter($filterName)
+    {
+        $this->datagrid->openFilter($filterName);
+    }
+
+    /**
      * @Then /^I should( not)? see the input filter for "([^"]*)"$/
      *
      * @param boolean $not
@@ -801,6 +810,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param boolean $not
      * @param string  $option
      * @param string  $filterName
+     *
+     * @throws ExpectationException
      *
      * @Given /^I should( not)? see the available option "([^"]*)" in the filter "([^"]*)"$/
      */
@@ -956,22 +967,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }, 'Cannot find the button "Back to grid"');
 
         $backButton->click();
-    }
-
-    /**
-     * @Then /^I click on import profile$/
-     */
-    public function iClickOnImportProfile()
-    {
-        $collectLink = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknMainMenu-link:contains("Collect")');
-        }, 'Cannot find the button "Collect"');
-        $collectLink->click();
-
-        $importProfileLink = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknMainMenu-link:contains("Import profiles")');
-        }, 'Cannot find the button "Import profiles"');
-        $importProfileLink->click();
     }
 
     /**
@@ -1150,6 +1145,24 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param string $filterName
+     * @param string $criteria
+     *
+     * @Then /^the criteria of "(.*)" filter should be "(.*)"$/
+     */
+    public function theCriteriaOfFilterShouldBe($filterName, $criteria)
+    {
+        $this->spin(function () use ($filterName, $criteria) {
+            return $this->datagrid->getCriteria($filterName) === $criteria;
+        }, sprintf(
+            'Expected to see "%s" as "%s" criteria, found "%s"',
+            $criteria,
+            $filterName,
+            $this->datagrid->getCriteria($filterName)
+        ));
     }
 
     /**

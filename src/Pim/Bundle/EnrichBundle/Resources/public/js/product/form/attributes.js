@@ -17,7 +17,6 @@ define(
         Attributes
     ) {
         return Attributes.extend({
-
             /**
              * {@inheritdoc}
              */

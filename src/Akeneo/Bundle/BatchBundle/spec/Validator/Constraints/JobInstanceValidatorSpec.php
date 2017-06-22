@@ -2,16 +2,16 @@
 
 namespace spec\Akeneo\Bundle\BatchBundle\Validator\Constraints;
 
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Job\JobInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\BatchBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
+use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Component\Batch\Job\UndefinedJobException;
+use Akeneo\Component\Batch\Model\JobInstance;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
-use Akeneo\Component\Batch\Job\UndefinedJobException;
 
 class JobInstanceValidatorSpec extends ObjectBehavior
 {

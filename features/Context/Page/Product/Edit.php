@@ -60,7 +60,7 @@ class Edit extends ProductEditForm
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
-                'Meta zone'               => ['css' => '.AknTitleContainer-metaItem'],
+                'Meta zone'               => ['css' => '.meta'],
                 'Modal'                   => ['css' => '.modal'],
                 'Progress bar'            => ['css' => '.progress-bar'],
                 'Save'                    => ['css' => '.save'],
@@ -113,15 +113,11 @@ class Edit extends ProductEditForm
     public function findLocaleLink($localeCode, $label = null, $flag = null, $copy = false)
     {
         $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
-        $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
-        $link = $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
+        $link = $this->spin(function () use ($dropdown, $localeCode) {
+            $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
 
-        if (!$link) {
-            throw new ElementNotFoundException(
-                $this->getSession(),
-                sprintf('Locale %s link', $localeCode)
-            );
-        }
+            return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
+        }, 'Can not click on the locale dropdown button');
 
         if ($flag) {
             $flagElement = $link->find('css', 'span.flag-language i');
@@ -367,10 +363,9 @@ class Edit extends ProductEditForm
      */
     public function createComment($message)
     {
-        $textarea = $this->getElement('Comment threads')->find('css', 'li.comment-create textarea');
-        if (!$textarea) {
-            throw new \LogicException('Comment creation box not found !');
-        }
+        $textarea = $this->spin(function () {
+            return $this->getElement('Comment threads')->find('css', 'li.comment-create textarea');
+        }, 'Comment creation box not found !');
 
         $textarea->click();
         $textarea->setValue($message);
@@ -386,7 +381,7 @@ class Edit extends ProductEditForm
     public function replyComment(NodeElement $comment, $message)
     {
         $comment->click();
-        $replyBox = $this->getElement('Comment threads')->find('css', 'li.reply-to-comment');
+        $replyBox = $this->getElement('Comment threads')->find('css', '.reply-to-comment');
         if (!$replyBox) {
             throw new \LogicException('Comment reply box not found !');
         }
@@ -433,48 +428,27 @@ class Edit extends ProductEditForm
      * @param string $message
      * @param string $author
      *
-     * @throws \LogicException in case the comment does not exist
-     *
      * @return NodeElement the comment
      */
     public function findComment($message, $author)
     {
-        $comments = array_merge($this->findCommentTopics(), $this->findCommentReplies());
-        if (empty($comments)) {
-            throw new \InvalidArgumentException('No comment nodes found !');
-        }
+        return $this->spin(function () use ($message, $author) {
+            $comments = array_merge($this->findCommentTopics(), $this->findCommentReplies());
+            foreach ($comments as $index => $thread) {
+                if (null !== $currentMessage = $this->findCommentMessage($thread)) {
+                    $currentMessage = $currentMessage->getText();
+                }
+                if (null !== $currentAuthor = $this->findCommentAuthor($thread)) {
+                    $currentAuthor = $currentAuthor->getText();
+                }
 
-        $columnIdx = null;
-        foreach ($comments as $index => $thread) {
-            if (null !== $currentMessage = $this->findCommentMessage($thread)) {
-                $currentMessage = $currentMessage->getText();
-            }
-            if (null !== $currentAuthor = $this->findCommentAuthor($thread)) {
-                $currentAuthor = $currentAuthor->getText();
-            }
-
-            /*
-            if (null !== $currentDate = $this->findCommentDate($thread)) {
-                $currentDate = preg_replace('/[^a-zA-Z0-9 -]/', ' ', $currentDate->getText());
-                if (false !== $atIdx = strpos($currentDate, 'at')) {
-                    $currentDate = trim(substr($currentDate, 0, $atIdx));
+                if ($currentMessage === $message && $currentAuthor === $author) {
+                    return $comments[$index];
                 }
             }
-            */
 
-            if ($currentMessage === $message && $currentAuthor === $author) {
-                $columnIdx = $index;
-                break;
-            }
-        }
-
-        if (null === $columnIdx) {
-            throw new \LogicException(
-                sprintf('Comment "%s" from "%s" not found.', $message, $author)
-            );
-        }
-
-        return $comments[$columnIdx];
+            return null;
+        }, sprintf('Comment "%s" from "%s" not found.', $message, $author));
     }
 
     /**
@@ -531,30 +505,7 @@ class Edit extends ProductEditForm
      */
     protected function findCommentMessage(NodeElement $element)
     {
-        return $element->find('css', 'span.message');
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return Edit
-     */
-    public function selectTree($category)
-    {
-        if (null !== $treeSelect = $this->findById('tree_select')) {
-            $treeSelect->selectOption($category);
-
-            return $this;
-        }
-
-        $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-
-        if (null === $link) {
-            throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
-        }
-        $link->click();
-
-        return $this;
+        return $element->find('css', '.message');
     }
 
     /**
@@ -601,7 +552,7 @@ class Edit extends ProductEditForm
     public function changeFamily($family)
     {
         $changeLink = $this->spin(function () {
-            return $this->getElement('Meta zone')->find('css', '.AknTitleContainer-metaItem .change-family');
+            return $this->getElement('Meta zone')->find('css', '.change-family');
         }, 'Cannot find the Change Family button element');
 
         $changeLink->click();
@@ -630,7 +581,7 @@ class Edit extends ProductEditForm
         return $this->spin(function () use ($family) {
             return $this
                 ->getElement('Meta zone')
-                ->find('css', '.AknTitleContainer-metaItem .product-family');
+                ->find('css', '.product-family');
         }, 'Cannot find Product Family element')->getHTML();
     }
 

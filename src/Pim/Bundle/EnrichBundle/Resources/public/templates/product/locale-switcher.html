@@ -4,6 +4,6 @@
 </a>
 <ul class="AknDropdown-menu">
     <% _.each(locales, function (locale) { %>
-        <li><a class="AknDropdown-menuLink" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a></li>
+        <li><a class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a></li>
     <% }); %>
 </ul>

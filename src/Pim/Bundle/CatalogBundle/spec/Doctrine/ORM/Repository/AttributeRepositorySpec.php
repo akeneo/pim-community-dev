@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 
 class AttributeRepositorySpec extends ObjectBehavior
 {

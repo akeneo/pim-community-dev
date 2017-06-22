@@ -56,6 +56,8 @@ class CatalogConfigurationContext extends RawMinkContext
         $this->initializeReferenceRepository();
 
         $this->loadCatalog($this->getConfigurationFiles($catalog));
+        
+        $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**

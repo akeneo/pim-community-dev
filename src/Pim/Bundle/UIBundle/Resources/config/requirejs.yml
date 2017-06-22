@@ -81,5 +81,8 @@ config:
         oro/error:                 pimui/js/pim-error
         pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
 
-        pim/form/system/config/group/loading-message: pimui/js/form/system/group/loading-message
-        pim/template/system/group/loading-message: pimui/js/templates/system/group/loading-message.html
+        pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
+
+        # Templates
+        pim/template/flash-message:              pimui/js/templates/flash-message.html
+        pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
