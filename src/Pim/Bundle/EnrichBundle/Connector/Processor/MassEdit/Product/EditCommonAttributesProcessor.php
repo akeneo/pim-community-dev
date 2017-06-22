@@ -146,11 +146,11 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function isAttributeEditable(ProductInterface $product, $attributeCode)
     {
-        if (!$this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode)) {
+        if (!$this->productRepository->hasAttributeInFamily($product->getId()->getBytes(), $attributeCode)) {
             return false;
         }
 
-        if ($this->productRepository->hasAttributeInVariantGroup($product->getId(), $attributeCode)) {
+        if ($this->productRepository->hasAttributeInVariantGroup($product->getId()->getBytes(), $attributeCode)) {
             return false;
         }
 
