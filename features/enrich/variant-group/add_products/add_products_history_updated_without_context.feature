@@ -37,7 +37,7 @@ Feature: Add products to a variant group
     And I save the variant group
     Then the row "sandal-white-37" should be checked
     When I am on the variant groups page
-    And I click on the "Delete" action of the row which contains "SANDAL"
+    And I click on the "Delete" action of the row which contains "Sandal"
     And I confirm the deletion
     Then I edit the "sandal-white-37" product
     And I visit the "History" column tab

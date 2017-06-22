@@ -11,18 +11,12 @@ Feature: Browse association types
     And the grid should contain 4 elements
 
   Scenario: Successfully view, sort and filter association types
-    And I should see the columns Code and Label
-    And I should see association types X_SELL, UPSELL, SUBSTITUTION and PACK
-    And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code and Label
-
-  Scenario: Successfully filter association types
-    When I show the filter "code"
-    And I filter by "code" with operator "contains" and value "UP"
-    Then the grid should contain 1 element
-    Then I should see entity UPSELL
+    And I should see the column Label
+    And I should see association types Cross sell, Pack, Substitution and Upsell
+    And the rows should be sorted ascending by Label
+    And I should be able to sort the rows by Label
 
   Scenario: Successfully search on label
     When I search "sell"
     Then the grid should contain 2 elements
-    And I should see entity X_SELL and UPSELL
+    And I should see entity Cross sell and Upsell

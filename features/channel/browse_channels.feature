@@ -9,12 +9,12 @@ Feature: Browse channels
     And I am logged in as "Peter"
     And I am on the channels page
     Then the grid should contain 3 elements
-    And I should see the columns Code, Label and Category tree
+    And I should see the columns Label and Category tree
 
   Scenario: Successfully view, sort channels
-    And I should see channels ecommerce, tablet and print
-    And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code, Label and Category tree
+    And I should see channels Ecommerce, Tablet and Print
+    And the rows should be sorted ascending by Label
+    And I should be able to sort the rows by Label and Category tree
 
   Scenario Outline: Successfully filter channels
     When I show the filter "<filter>"
@@ -23,11 +23,10 @@ Feature: Browse channels
     Then I should see entities <result>
 
     Examples:
-      | filter   | operator | value           | result               | count |
-      | code     | contains | t               | tablet and print     | 2     |
-      | category |          | 2015 collection | print                | 1     |
+      | filter   | operator | value           | result | count |
+      | category |          | 2015 collection | Print  | 1     |
 
   Scenario: Successfully search on label
     When I search "e"
     Then the grid should contain 2 elements
-    And I should see entities ecommerce and tablet
+    And I should see entities Ecommerce and Tablet

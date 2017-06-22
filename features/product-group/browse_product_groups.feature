@@ -22,12 +22,12 @@ Feature: Browse product groups
     And I am logged in as "Julia"
     And I am on the product groups page
     Then the grid should contain 2 elements
-    And I should see the columns Code, Label and Type
-    And I should see groups CROSS_SELL_1 and CROSS_SELL_2
-    And the rows should be sorted ascending by Code
+    And I should see the columns Label and Type
+    And I should see groups Cross Sell and Relational
+    And the rows should be sorted ascending by Label
 
   Scenario: Successfully sort product groups
-    And I should be able to sort the rows by Code, Label and Type
+    And I should be able to sort the rows by Label and Type
 
   Scenario Outline: Successfully filter product groups
     When I show the filter "<filter>"
@@ -36,11 +36,10 @@ Feature: Browse product groups
     Then I should see entities <result>
 
     Examples:
-      | filter | operator | value      | result                        | count |
-      | code   | contains | 2          | CROSS_SELL_2                  | 1     |
-      | type   |          | Cross sell | CROSS_SELL_1 and CROSS_SELL_2 | 2     |
+      | filter | operator | value      | result                    | count |
+      | type   |          | Cross sell | Cross Sell and Relational | 2     |
 
   Scenario: Successfully search on label
     When I search "Cross"
     Then the grid should contain 1 element
-    Then I should see entity CROSS_SELL_1
+    Then I should see entity Cross Sell

@@ -11,10 +11,10 @@ Feature: Browse imports
 
   @ce
   Scenario: Successfully view and sort import jobs
-    Then I should see the columns Code, Label, Job, Connector and Status
+    Then I should see the columns Label, Job, Connector and Status
     And I should see import profiles product_import, category_import, association_type_import, group_import, variant_group_import, attribute_import, option_import and xlsx_product_import
-    And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code, Label, Connector and Status
+    And the rows should be sorted ascending by Label
+    And I should be able to sort the rows by Label, Connector and Status
 
   @ce
   Scenario Outline: Successfully filter import jobs with values
@@ -25,7 +25,6 @@ Feature: Browse imports
 
     Examples:
       | filter    | operator | value                | result                                                                                                                                                | count |
-      | code      | contains | at                   | association_type_import, attribute_import and category_import                                                                                         | 3     |
       | job_name  | contains | Group import in CSV  | group_import                                                                                                                                          | 1     |
       | connector | contains | Akeneo CSV Connector | product_import, category_import, association_type_import, variant_group_import, group_import, attribute_import, option_import                         | 7     |
       | status    | contains | Ready                | product_import, category_import, association_type_import, variant_group_import, group_import, attribute_import, option_import and xlsx_product_import | 8     |

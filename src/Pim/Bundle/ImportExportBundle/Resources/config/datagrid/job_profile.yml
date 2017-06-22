@@ -56,7 +56,7 @@ datagrid:
                 status:
                     data_name: statusLabel
             default:
-                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
                 label:

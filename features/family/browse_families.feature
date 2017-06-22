@@ -11,10 +11,10 @@ Feature: Browse families
     Then the grid should contain 5 elements
 
   Scenario: Successfully view and sort families
-    Then I should see the columns Code, Label and Attribute as label
-    And I should see families boots, sandals and sneakers
-    And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code, Label and Attribute as label
+    Then I should see the columns Label and Attribute as label
+    And I should see families Boots, Sandals and Sneakers
+    And the rows should be sorted ascending by Label
+    And I should be able to sort the rows by Label and Attribute as label
 
   Scenario Outline: Successfully filter families
     When I show the filter "<filter>"
@@ -24,26 +24,25 @@ Feature: Browse families
 
     Examples:
       | filter           | operator | value | result                                      | count |
-      | code             | contains | a     | sandals and sneakers                        | 2     |
-      | attributeAsLabel |          | Name  | boots, heels, led_tvs, sandals and sneakers | 5     |
+      | attributeAsLabel |          | Name  | Boots, Heels, LED TVs, Sandals and Sneakers | 5     |
 
   Scenario: Successfully search on label
     When I search "Boo"
     Then the grid should contain 1 element
-    And I should see entity boots
+    And I should see entity Boots
 
   Scenario: Successfully keep descending sorting order after refreshing the page
-    And I sort by "code" value descending
+    And I sort by "Label" value descending
     When I refresh current page
     And I wait 3 seconds
-    Then the rows should be sorted descending by Code
+    Then the rows should be sorted descending by Label
 
   Scenario: Successfully keep ascending sorting order after refreshing the page
-    And I sort by "code" value descending
-    And I sort by "code" value ascending
+    And I sort by "Label" value descending
+    And I sort by "Label" value ascending
     When I refresh current page
     And I wait 3 seconds
-    Then the rows should be sorted ascending by code
+    Then the rows should be sorted ascending by Label
 
   @jira https://akeneo.atlassian.net/browse/PIM-4494
   Scenario: Successfully sort families and use them for mass edit

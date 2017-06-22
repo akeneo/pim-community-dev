@@ -16,7 +16,7 @@ Feature: Display the variant group history
       | Axis | Size              |
     And I press the "Save" button in the popin
     And I am on the variant groups page
-    Then I should see groups converse_sneakers and caterpillar_boots
+    Then I should see groups [converse_sneakers] and Caterpillar boots
     When I am on the "converse_sneakers" variant group page
     And I visit the "History" tab
     Then there should be 1 update

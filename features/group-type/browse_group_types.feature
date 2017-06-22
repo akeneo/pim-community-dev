@@ -9,5 +9,5 @@ Feature: Browse group types
     And I am logged in as "Peter"
     When I am on the group types page
     Then the grid should contain 3 elements
-    And I should see the columns Code and Label
-    And I should see group types VARIANT, RELATED and XSELL
+    And I should see the columns Label
+    And I should see group types [VARIANT], [RELATED] and [XSELL]
