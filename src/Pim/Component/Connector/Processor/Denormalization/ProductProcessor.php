@@ -87,9 +87,14 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $familyCode = $this->getFamilyCode($item);
         $filteredItem = $this->filterItemData($item);
 
-        $product = $this->findOrCreateProduct($identifier, $familyCode);
+        $productCreated = false;
+        $product = $this->findProduct($identifier);
+        if (null === $product) {
+            $productCreated = true;
+            $product = $this->createProduct($identifier, $familyCode);
+        }
 
-        if (false === $itemHasStatus && null !== $product->getId()) {
+        if (false === $itemHasStatus && !$productCreated) {
             unset($filteredItem['enabled']);
         }
 
@@ -98,7 +103,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
-            if (empty($filteredItem) && null !== $product->getId()) {
+            if (empty($filteredItem) && !$productCreated) {
                 $this->detachProduct($product);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
@@ -175,19 +180,24 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     }
 
     /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     */
+    protected function findProduct($identifier)
+    {
+        return $this->repository->findOneByIdentifier($identifier);
+    }
+
+    /**
      * @param string      $identifier
      * @param string|null $familyCode
      *
      * @return ProductInterface
      */
-    protected function findOrCreateProduct($identifier, $familyCode)
+    protected function createProduct($identifier, $familyCode)
     {
-        $product = $this->repository->findOneByIdentifier($identifier);
-        if (!$product) {
-            $product = $this->builder->createProduct($identifier, $familyCode);
-        }
-
-        return $product;
+        return $this->builder->createProduct($identifier, $familyCode);
     }
 
     /**
