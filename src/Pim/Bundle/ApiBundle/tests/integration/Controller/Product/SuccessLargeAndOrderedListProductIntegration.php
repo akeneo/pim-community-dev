@@ -73,7 +73,7 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 
     /**
