@@ -642,9 +642,11 @@ config:
         pim/family-edit-form/properties/general/attribute-as-label:         pimenrich/js/family/form/properties/general/attribute-as-label
         pim/family-edit-form/properties/general/translation:                pimenrich/js/family/form/properties/general/translation
         pim/family-edit-form/attributes/toolbar/add-select/attribute-group: pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select
-        pim/family-edit-form/attributes/attributes:                         pimenrich/js/family/form/attributes/attributes
         pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select
         pim/family-edit-form/attributes/toolbar:                            pimenrich/js/family/form/attributes/toolbar
+        pim/family-edit-form/attributes/attributes:                         pimenrich/js/family/form/attributes/attributes
+        pim/family-edit-form/attributes/toolbar:                            pimenrich/js/family/form/attributes/toolbar
+        pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
         pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
         pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
 
