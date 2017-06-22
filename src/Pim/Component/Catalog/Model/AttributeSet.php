@@ -14,13 +14,6 @@ class AttributeSet implements AttributeSetInterface
     /** @var int */
     private $id;
 
-    /**
-     * TODO: shoud we keep it ?
-     *
-     * @var int
-     */
-    private $level;
-
     /** @var ArrayCollection */
     private $attributes;
 
@@ -44,22 +37,6 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLevel(int $level)
-    {
-        $this->level = $level;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAttributes(): ArrayCollection
     {
         return $this->attributes;
@@ -68,9 +45,9 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributes(ArrayCollection $attributes)
+    public function setAttributes(array $attributes)
     {
-        $this->attributes = $attributes;
+        $this->attributes = new ArrayCollection($attributes);
     }
 
     /**
@@ -84,8 +61,8 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function setAxes(ArrayCollection $axes)
+    public function setAxes(array $axes)
     {
-        $this->axes = $axes;
+        $this->axes = new ArrayCollection($axes);
     }
 }

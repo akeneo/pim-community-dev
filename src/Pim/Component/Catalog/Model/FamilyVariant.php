@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -11,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
+class FamilyVariant implements FamilyVariantInterface
 {
     /** @var int */
     private $id;
@@ -64,7 +63,7 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     /**
      * {@inheritdoc}
      */
-    public function getCommonAttributeSets(): ArrayCollection
+    public function getCommonAttributeSet(): AttributeSetInterface
     {
         return $this->variantAttributeSets->first();
     }
@@ -72,21 +71,41 @@ class FamilyVariant implements FamilyVariantInterface, TranslatableInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariantAttributeSets($level = null): ArrayCollection
+    public function getVariantAttributeSet(int $level): AttributeSetInterface
     {
-        if (null !== $level) {
-            $this->variantAttributeSets->get($level);
+        if ($level <= 0) {
+            throw new \InvalidArgumentException('The level must be greater than 0');
         }
 
-        return $this->variantAttributeSets->slice(1);
+        return $this->variantAttributeSets->get($level);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setVariantAttributeSets(ArrayCollection $variantAttributeSets)
+    public function getVariantAttributeSets($level = null): ArrayCollection
     {
-        $this->variantAttributeSets = $variantAttributeSets;
+        return new ArrayCollection($this->variantAttributeSets->slice(1));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addVariantAttributeSet(int $level, AttributeSetInterface $variantAttributeSets)
+    {
+        if ($level <= 0) {
+            throw new \InvalidArgumentException('The level must be greater than 0');
+        }
+
+        $this->variantAttributeSets->set($level, $variantAttributeSets);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets)
+    {
+        $this->variantAttributeSets->set(0, $variantAttributeSets);
     }
 
     /**
