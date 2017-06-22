@@ -72,7 +72,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
         $product->setValues($template->getValues());
 
         foreach ($attributes as $attribute) {
-            $this->productBuilder->addAttributeToProduct($product, $attribute);
+            $this->productBuilder->addAttribute($product, $attribute);
         }
 
         $this->productBuilder->addMissingProductValues($product);

@@ -7,7 +7,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -16,7 +16,7 @@ use Prophecy\Argument;
 class MediaAttributeSetterSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilderInterface $builder,
+        EntityWithValuesBuilderInterface $builder,
         FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository
     ) {
@@ -85,8 +85,8 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $storer->store(Argument::cetera())->shouldNotBeCalled();
 
-        $builder->addOrReplaceProductValue($product, $fileAttribute, null, null, null);
-        $builder->addOrReplaceProductValue($product, $imageAttribute, 'en_US', 'ecommerce', null);
+        $builder->addOrReplaceValue($product, $fileAttribute, null, null, null);
+        $builder->addOrReplaceValue($product, $imageAttribute, 'en_US', 'ecommerce', null);
 
         $this->setAttributeData($product, $fileAttribute, null, ['locale' => null, 'scope' => null]);
         $this->setAttributeData($product, $imageAttribute, null, ['locale' => 'en_US', 'scope' => 'ecommerce']);
@@ -107,7 +107,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer->store(Argument::cetera())->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn($data);
 
-        $builder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
+        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -130,7 +130,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer->store(Argument::cetera())->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn($data);
 
-        $builder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
+        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -153,7 +153,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer->store(Argument::cetera())->shouldNotBeCalled();
         $fileInfo->getKey()->willReturn($data);
 
-        $builder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
+        $builder->addOrReplaceValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,16 +22,16 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     protected $normalizer;
 
     /**
-     * @param ProductBuilderInterface     $productBuilder
-     * @param NormalizerInterface         $normalizer
-     * @param array                       $supportedTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param NormalizerInterface              $normalizer
+     * @param array                            $supportedTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         NormalizerInterface $normalizer,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder);
+        parent::__construct($entityWithValuesBuilder);
 
         $this->normalizer = $normalizer;
         $this->supportedTypes = $supportedTypes;
@@ -53,7 +53,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * ]
      */
     public function addAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -68,30 +68,35 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
             );
         }
 
-        $this->addPrices($product, $attribute, $data, $options['locale'], $options['scope']);
+        $this->addPrices($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
-     * Add prices into the product value
+     * Add prices into the value
      *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     * @param string             $locale
-     * @param string             $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param mixed                     $data
+     * @param string                    $locale
+     * @param string                    $scope
      */
-    protected function addPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
-    {
-        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+    protected function addPrices(
+        EntityWithValuesInterface $entityWithValues,
+        AttributeInterface $attribute,
+        $data,
+        $locale,
+        $scope
+    ) {
+        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
         if (null !== $value) {
             $data = $this->addNewPrices($value->getData(), $data);
         }
 
-        $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $data);
+        $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $locale, $scope, $data);
     }
 
     /**
-     * Returns the combination of the previous product prices and the new prices
+     * Returns the combination of the previous prices and the new prices
      * to add, all of them in PIM standard format.
      *
      * It is possible to have several prices for the same currency, this will be

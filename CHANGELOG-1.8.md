@@ -78,8 +78,23 @@
 - Change the constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor` to remove `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\ProductDatasource` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
-- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
-- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\ProductUpdater` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface` as the 3rd argument.
+- Change the constructor of `Pim\Component\Catalog\Converter\MetricConverter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\AbstractAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\AttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
 
 ### Others
 
@@ -162,11 +177,20 @@
 - Remove all standard denormalizers classes `Pim\Component\Catalog\Denormalizer\Standard\*` and services `pim_catalog.denormalizer.standard.*`
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
-
-### Methods
-
 - Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
-
+- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
+- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
+- Remove methods `addAttributeToProduct` and `addOrReplaceProductValue` from `Pim\Component\Catalog\Builder\ProductBuilderInterface`. 
+    These methods are now in `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` and have been renamed to `addAttribute` and `addOrReplaceValue`. 
+    For both methods, the `Pim\Component\Catalog\Model\ProductInterface` has been replaced by `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
+- Remove methods `getRawValues`, `setRawValues`, `getValues`, `setValues`, `getValue`, `addValue`, `removeValue`, `getAttributes`, `hasAttribute` and `getUsedAttributeCodes` from `Pim\Component\Catalog\Model\ProductInterface`.
+    These methods are now in the `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
+- Change method `convert` of `Pim\Component\Catalog\Converter\MetricConverter` to use `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` instead of a `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+- Change method `addAttributeData` of `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `copyAttributeData` of `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface` to use 2 `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of 2 `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `removeAttributeData` of `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `setAttributeData` of `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`. 
+    
 ## Requirements
 
 - GITHUB-5937: Remove the need to have mcrypt installed

@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\Association;
@@ -36,6 +37,7 @@ class ProductBuilderSpec extends ObjectBehavior
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         ProductValueFactory $productValueFactory
     ) {
         $entityConfig = [
@@ -51,6 +53,7 @@ class ProductBuilderSpec extends ObjectBehavior
             $eventDispatcher,
             $valuesResolver,
             $productValueFactory,
+            $entityWithValuesBuilder,
             $entityConfig
         );
     }
@@ -66,38 +69,33 @@ class ProductBuilderSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $eventDispatcher,
-        $productValueFactory,
+        $entityWithValuesBuilder,
         FamilyInterface $tshirtFamily,
         AttributeInterface $identifierAttribute,
         ProductValueInterface $identifierValue
     ) {
-        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $entityWithValuesBuilder->addOrReplaceValue(
+            Argument::type(ProductInterface::class),
+            $identifierAttribute,
+            null,
+            null,
+            'mysku'
+        );
 
         $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
-        $identifierAttribute->isUnique()->willReturn(false);
-        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
-        $identifierAttribute->getCode()->willReturn('sku');
-        $identifierAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
 
-        $productValueFactory->create($identifierAttribute, null, null, 'mysku')->willReturn($identifierValue);
-        $identifierValue->getData()->willReturn('mysku');
-        $identifierValue->getAttribute()->willReturn($identifierAttribute);
-        $identifierValue->getLocale()->willReturn(null);
-        $identifierValue->getScope()->willReturn(null);
-
-        $product = $this->createProduct('mysku', 'tshirt')->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
-
-        if ('mysku' !== $product->getIdentifier()) {
-            throw new FailedPredictionException('Expecting "mysku" as identifier for the product.');
-        }
+        $product = $this->createProduct('mysku', 'tshirt');
+        $product->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
     function it_adds_missing_product_values_from_family_on_new_product(
         $valuesResolver,
-        $productValueFactory,
+        $entityWithValuesBuilder,
         FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
@@ -105,9 +103,6 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $desc,
         ProductValueInterface $skuValue
     ) {
-        $valueClass = ScalarProductValue::class;
-        $attributeClass = Attribute::class;
-
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
@@ -181,19 +176,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $skuValue->getScope()->willReturn(null);
         $product->getValues()->willReturn([$skuValue]);
 
-        // Create 6 empty product values and add them to the product
-        $product->getValue(Argument::cetera())->shouldBeCalledTimes(6)->willReturn(null);
-        $product->removeValue(Argument::any())->shouldNotBeCalled();
-
-        $attribute = new $attributeClass();
-        $attribute->setCode('attribute');
-        $attribute->setBackendType('text');
-
-        $productValueFactory->create(Argument::cetera())
-            ->shouldBeCalledTimes(6)
-            ->willReturn(new $valueClass($attribute, null, null, null));
-
-        $product->addValue(Argument::any())->shouldBeCalledTimes(6);
+        $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(6);
 
         $this->addMissingProductValues($product);
     }
@@ -243,8 +226,8 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue($sizeValue)->willReturn($product);
         $product->addValue($colorValue)->willReturn($product);
 
-        $this->addOrReplaceProductValue($product, $size, null, null, null);
-        $this->addOrReplaceProductValue($product, $color, 'en_US', 'ecommerce', null);
+        $this->addOrReplaceValue($product, $size, null, null, null);
+        $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', null);
     }
 
     function it_adds_a_non_empty_product_value(
@@ -277,8 +260,8 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue($sizeValue)->willReturn($product);
         $product->addValue($colorValue)->willReturn($product);
 
-        $this->addOrReplaceProductValue($product, $size, null, null, null);
-        $this->addOrReplaceProductValue($product, $color, 'en_US', 'ecommerce', 'red');
+        $this->addOrReplaceValue($product, $size, null, null, null);
+        $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', 'red');
     }
 
     function it_adds_a_product_value_if_there_was_not_a_previous_one(
@@ -300,6 +283,6 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $product->addValue($value)->willReturn($product);
 
-        $this->addOrReplaceProductValue($product, $label, null, null, 'foobar');
+        $this->addOrReplaceValue($product, $label, null, null, 'foobar');
     }
 }

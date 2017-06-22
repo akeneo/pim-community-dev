@@ -3,9 +3,9 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -17,30 +17,30 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MultiSelectAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /**
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param ProductBuilderInterface  $productBuilder
-     * @param string[]                 $supportedTypes
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param string[]                         $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        ProductBuilderInterface $productBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->productBuilder = $productBuilder;
-        $this->supportedTypes = $supportedTypes;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->supportedTypes          = $supportedTypes;
     }
 
     /**
      * {@inheritdoc}
      */
     public function removeAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -48,34 +48,40 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         $options = $this->resolver->resolve($options);
         $this->checkData($attribute, $data);
 
-        $this->removeOptions($product, $attribute, $data, $options['locale'], $options['scope']);
+        $this->removeOptions($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param string[]           $optionCodes
-     * @param string|null        $locale
-     * @param string|null        $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param string[]                  $optionCodes
+     * @param string|null               $locale
+     * @param string|null               $scope
      */
     protected function removeOptions(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $optionCodes,
         $locale,
         $scope
     ) {
-        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
+        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
-        if (null !== $productValue) {
+        if (null !== $value) {
             $newOptionCodes = [];
-            foreach ($productValue->getData() as $originalOption) {
+            foreach ($value->getData() as $originalOption) {
                 if (!in_array($originalOption->getCode(), $optionCodes)) {
                     $newOptionCodes[] = $originalOption->getCode();
                 }
             }
 
-            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $entityWithValues,
+                $attribute,
+                $locale,
+                $scope,
+                $newOptionCodes
+            );
         }
     }
 

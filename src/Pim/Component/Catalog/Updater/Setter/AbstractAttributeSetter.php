@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,18 +18,18 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
     /** @var string[] */
     protected $supportedTypes = [];
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /** @var OptionsResolver */
     protected $resolver;
 
     /**
-     * @param ProductBuilderInterface $productBuilder
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
      */
-    public function __construct(ProductBuilderInterface $productBuilder)
+    public function __construct(EntityWithValuesBuilderInterface $entityWithValuesBuilder)
     {
-        $this->productBuilder = $productBuilder;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setRequired(['locale', 'scope']);
