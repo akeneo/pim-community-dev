@@ -17,24 +17,14 @@ interface AttributeSetInterface
     public function getId(): int;
 
     /**
-     * @return int
-     */
-    public function getLevel(): int;
-
-    /**
-     * @param int $level
-     */
-    public function setLevel(int $level);
-
-    /**
      * @return ArrayCollection
      */
     public function getAttributes(): ArrayCollection;
 
     /**
-     * @param ArrayCollection $attributes
+     * @param array $attributes
      */
-    public function setAttributes(ArrayCollection $attributes);
+    public function setAttributes(array $attributes);
 
     /**
      * @return ArrayCollection
@@ -42,7 +32,7 @@ interface AttributeSetInterface
     public function getAxes(): ArrayCollection;
 
     /**
-     * @param ArrayCollection $axes
+     * @param array $axes
      */
-    public function setAxes(ArrayCollection $axes);
+    public function setAxes(array $axes);
 }
