@@ -152,7 +152,7 @@ Feature: Select a project to display products to enrich
     When I click on the notification "A new project for you"
     Then I should be on the products page
     And I should see the text "2016 summer collection"
-    And I should see the text "Project progress: Todo"
+    And the criteria of "project_completeness" filter should be "Todo"
     And the grid should contain 0 element
 
   Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
