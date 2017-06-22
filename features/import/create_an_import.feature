@@ -20,7 +20,7 @@ Feature: Create an import
     And I should not see the text "There are unsaved changes"
     And I am on the imports page
     And the grid should contain 2 element
-    And I should see import profile PRODUCT_IMPORT
+    And I should see import profile Products import
 
   Scenario: Fail to create a job import
     Given I create a new import

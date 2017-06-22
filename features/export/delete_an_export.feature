@@ -13,17 +13,17 @@ Feature: Delete export
     Then the grid should contain 23 elements
 
   Scenario: Successfully delete an export job from the export grid
-    Given I delete the "csv_footwear_product_export" job
+    Given I delete the "CSV footwear product export" job
     When I confirm the deletion
     Then I should see the flash message "Export profile successfully removed"
     And the grid should contain 22 elements
-    And I should not see export profile "csv_footwear_product_export"
+    And I should not see export profile "CSV footwear product export"
 
   Scenario: Successfully cancel the deletion of an export job
-    Given I delete the "csv_footwear_product_export" job
+    Given I delete the "CSV footwear product export" job
     When I cancel the deletion
     Then the grid should contain 23 elements
-    And I should see export profile "csv_footwear_product_export"
+    And I should see export profile "CSV footwear product export"
 
   Scenario: Successfully delete an export job from the job edit page
     Given I am on the "csv_footwear_product_export" import job edit page
@@ -31,4 +31,4 @@ Feature: Delete export
     And I confirm the deletion
     Then I should see the flash message "Job instance successfully removed"
     And the grid should contain 22 elements
-    And I should not see export profile "csv_footwear_product_export"
+    And I should not see export profile "CSV footwear product export"

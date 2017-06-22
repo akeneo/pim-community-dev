@@ -22,20 +22,10 @@ datagrid:
         columns:
             username:
                 label: oro.user.grid.users.columns.username
-            email:
-                label: oro.user.grid.users.columns.email
             firstName:
                 label: oro.user.grid.users.columns.firstName
             lastName:
                 label: oro.user.grid.users.columns.lastName
-            createdAt:
-                label: oro.user.grid.users.columns.createdAt
-                type: product_value_datetime
-                frontend_type: datetime
-            updatedAt:
-                label: oro.user.grid.users.columns.updatedAt
-                type: product_value_datetime
-                frontend_type: datetime
             enabled:
                 label: oro.user.grid.users.columns.enabled
                 frontend_type: select
@@ -64,16 +54,10 @@ datagrid:
             columns:
                 username:
                     data_name: u.username
-                email:
-                    data_name: u.email
                 firstName:
                     data_name: u.firstName
                 lastName:
                     data_name: u.lastName
-                createdAt:
-                    data_name: u.createdAt
-                updatedAt:
-                    data_name: u.updatedAt
                 enabled:
                     data_name: u.enabled
             default:
@@ -84,21 +68,12 @@ datagrid:
                 username:
                     type: search
                     data_name: u.username
-                email:
-                    type: string
-                    data_name: u.email
                 firstName:
                     type: string
                     data_name: u.firstName
                 lastName:
                     type: string
                     data_name: u.lastName
-                createdAt:
-                    type: datetime
-                    data_name: u.createdAt
-                updatedAt:
-                    type: datetime
-                    data_name: u.updatedAt
                 enabled:
                     type: choice
                     data_name: u.enabled
