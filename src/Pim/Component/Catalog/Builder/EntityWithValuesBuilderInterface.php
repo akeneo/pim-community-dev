@@ -13,17 +13,17 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 interface EntityWithValuesBuilderInterface
 {
     /**
-     * Creates required value(s) to add the attribute to the product
+     * Creates required value(s) to add the attribute to entity
      *
-     * @param EntityWithValuesInterface $values
+     * @param EntityWithValuesInterface $entityWithValues
      * @param AttributeInterface        $attribute
      */
-    public function addAttribute(EntityWithValuesInterface $values, AttributeInterface $attribute);
+    public function addAttribute(EntityWithValuesInterface $entityWithValues, AttributeInterface $attribute);
 
     /**
-     * Add or replace a product value.
+     * Add or replace a value to an entity
      *
-     * @param EntityWithValuesInterface $values
+     * @param EntityWithValuesInterface $entityWithValues
      * @param AttributeInterface        $attribute
      * @param string                    $locale
      * @param string                    $scope
@@ -32,7 +32,7 @@ interface EntityWithValuesBuilderInterface
      * @return EntityWithValuesInterface
      */
     public function addOrReplaceValue(
-        EntityWithValuesInterface $values,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $locale,
         $scope,

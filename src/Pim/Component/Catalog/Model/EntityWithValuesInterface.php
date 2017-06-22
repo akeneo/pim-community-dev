@@ -3,6 +3,9 @@
 namespace Pim\Component\Catalog\Model;
 
 /**
+ * This interface wears the responsibility of having values.
+ * A value is defined by an attribute, a locale, a scope and a data.
+ *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)

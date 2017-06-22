@@ -10,6 +10,11 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
+ * Update values of an entity with values.
+ *
+ * Note that this updater acts simply by putting values into the entity, whatever
+ * theses values should be in this entity or not.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
