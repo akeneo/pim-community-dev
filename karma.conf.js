@@ -5,9 +5,11 @@ const path = require('path')
 const _ = require('lodash')
 const runnerPath = path.resolve(__dirname, 'frontend/jasmine-runner.js')
 
-webpack.plugins = _.dropRight(webpack.plugins, 4)
+webpack.plugins = _.dropRight(webpack.plugins, 5)
 
 delete webpack.devtool
+
+console.log(webpack)
 
 module.exports = function(config) {
     config.set({
