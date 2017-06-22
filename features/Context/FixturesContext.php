@@ -877,7 +877,9 @@ class FixturesContext extends BaseFixturesContext
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute));
-        $this->assertDataEquals($productValue->getData(), $value);
+        $data = (null !== $productValue) ? $productValue->getData() : '';
+
+        $this->assertDataEquals($data, $value);
     }
 
     /**
@@ -988,29 +990,29 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $options      = $productValue->getData();
-            $optionCodes  = array_map(
-                function ($option) {
+            $expectedValues = array_filter(array_column($table->getHash(), 'value'));
+
+            if (empty($expectedValues)) {
+                assertNull($productValue);
+            } else {
+                $options = $productValue->getData();
+                $optionCodes = array_map(function ($option) {
                     return $option->getCode();
-                },
-                $options
-            );
+                }, $options);
 
-            $values = array_map(
-                function ($row) {
-                    return $row['value'];
-                },
-                $table->getHash()
-            );
-            $values = array_filter($values);
+                assertEquals(count($expectedValues), count($options));
 
-            assertEquals(count($values), count($options));
-            foreach ($values as $value) {
-                assertContains(
-                    $value,
-                    $optionCodes,
-                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes), $value)
-                );
+                foreach ($expectedValues as $value) {
+                    if ('' === trim($value)) {
+                        assertNull($productValue);
+                    } else {
+                        assertContains(
+                            $value,
+                            $optionCodes,
+                            sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes), $value)
+                        );
+                    }
+                }
             }
         }
     }
@@ -1027,12 +1029,10 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $media        = $productValue->getData();
             if ('' === trim($filename)) {
-                if ($media) {
-                    assertNull($media->getOriginalFilename());
-                }
+                assertNull($productValue);
             } else {
+                $media = $productValue->getData();
                 assertEquals($filename, $media->getOriginalFilename());
             }
         }
@@ -1139,50 +1139,54 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->spin(function () use ($identifier, $table) {
+        $product = $this->spin(function () use ($identifier) {
             $this->getMainContext()->getSubcontext('hook')->clearUOW();
 
-            $product = $this->getProduct($identifier);
-
-            foreach ($table->getRowsHash() as $rawCode => $value) {
-                $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
-
-                $attribute     = $infos['attribute'];
-                $attributeCode = $attribute->getCode();
-                $localeCode    = $infos['locale_code'];
-                $scopeCode     = $infos['scope_code'];
-                $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-                $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
-
-                if ('' === $value) {
-                    assertEmpty((string) $productValue);
-                } elseif ('media' === $attribute->getBackendType()) {
-                    // media filename is auto generated during media handling and cannot be guessed
-                    // (it contains a timestamp)
-                    if ('**empty**' === $value) {
-                        assertEmpty((string) $productValue);
-                    } else {
-                        assertTrue(
-                            null !== $productValue->getData() &&
-                            false !== strpos($productValue->getData()->getOriginalFilename(), $value)
-                        );
-                    }
-                } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
-                    // $priceCurrency can be null if we want to test all the currencies at the same time
-                    // in this case, it's a simple string comparison
-                    // example: 180.00 EUR, 220.00 USD
-
-                    $price = $productValue->getPrice($priceCurrency);
-                    assertEquals($value, $price->getData());
-                } elseif ('date' === $attribute->getBackendType()) {
-                    assertEquals($value, $productValue->getData()->format('Y-m-d'));
-                } else {
-                    assertEquals($value, (string) $productValue);
-                }
-            }
-
-            return true;
+            return $this->getProduct($identifier);
         }, sprintf('Cannot get the product %s', $identifier));
+
+        foreach ($table->getRowsHash() as $rawCode => $value) {
+            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+
+            $attribute     = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $localeCode    = $infos['locale_code'];
+            $scopeCode     = $infos['scope_code'];
+            $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
+            $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
+
+            if ('' === $value) {
+                assertNull($productValue);
+            } elseif ('media' === $attribute->getBackendType()) {
+                // media filename is auto generated during media handling and cannot be guessed
+                // (it contains a timestamp)
+                if ('**empty**' === $value) {
+                    assertNull($productValue);
+                } else {
+                    assertTrue(
+                        null !== $productValue->getData() &&
+                        false !== strpos($productValue->getData()->getOriginalFilename(), $value)
+                    );
+                }
+            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                // $priceCurrency can be null if we want to test all the currencies at the same time
+                // in this case, it's a simple string comparison
+                // example: 180.00 EUR, 220.00 USD
+
+                $price = $productValue->getPrice($priceCurrency);
+                assertEquals($value, $price->getData());
+            } elseif ('date' === $attribute->getBackendType()) {
+                assertEquals($value, $productValue->getData()->format('Y-m-d'));
+            } elseif ('boolean' === $attribute->getBackendType()) {
+                if ($value === '0') {
+                    assertFalse($productValue->getData());
+                } elseif ($value === '1') {
+                    assertTrue($productValue->getData());
+                }
+            } else {
+                assertEquals($value, (string) $productValue);
+            }
+        }
     }
 
     /**
@@ -1697,7 +1701,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface|null
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1705,18 +1709,7 @@ class FixturesContext extends BaseFixturesContext
             throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
         }
 
-        if (null === $value = $product->getValue($attribute, $locale, $scope)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
-                    $attribute,
-                    $locale,
-                    $scope
-                )
-            );
-        }
-
-        return $value;
+        return $product->getValue($attribute, $locale, $scope);
     }
 
     /**

@@ -148,6 +148,16 @@ class ProductValueCollection implements ProductValueCollectionInterface
     /**
      * {@inheritDoc}
      */
+    public function removeByCodes($attributeCode, $channelCode = null, $localeCode = null)
+    {
+        $key = $this->buildKey($attributeCode, $channelCode, $localeCode);
+
+        return $this->removeKey($key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function containsKey($key)
     {
         return array_key_exists($key, $this->values);
@@ -174,9 +184,7 @@ class ProductValueCollection implements ProductValueCollectionInterface
      */
     public function getByCodes($attributeCode, $channelCode = null, $localeCode = null)
     {
-        $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
-        $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+        $key = $this->buildKey($attributeCode, $channelCode, $localeCode);
 
         return $this->getByKey($key);
     }
@@ -215,9 +223,7 @@ class ProductValueCollection implements ProductValueCollectionInterface
         }
 
         $attribute = $value->getAttribute();
-        $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
-        $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attribute->getCode(), $channelCode, $localeCode);
+        $key = $this->buildKey($attribute->getCode(), $value->getScope(), $value->getLocale());
 
         $this->values[$key] = $value;
 
@@ -308,5 +314,20 @@ class ProductValueCollection implements ProductValueCollectionInterface
                 $this->attributes[$attributeCode] = $attribute;
             }
         }
+    }
+
+    /**
+     * @param string      $attributeCode
+     * @param string|null $channelCode
+     * @param string|null $localeCode
+     *
+     * @return string
+     */
+    private function buildKey($attributeCode, $channelCode = null, $localeCode = null)
+    {
+        $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
+        $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
+
+        return sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
     }
 }

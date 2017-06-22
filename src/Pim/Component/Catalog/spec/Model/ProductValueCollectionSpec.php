@@ -294,6 +294,31 @@ class ProductValueCollectionSpec extends ObjectBehavior
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
 
+    function it_removes_values_by_codes(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6
+    ) {
+        $this->removeByCodes('nope')->shouldReturn(null);
+        $this->removeByCodes('nope', 'ecommerce', 'fr_FR')->shouldReturn(null);
+        $this->removeByCodes('description', 'nope', 'fr_FR')->shouldReturn(null);
+        $this->removeByCodes('description', 'ecommerce', 'nope')->shouldReturn(null);
+        $this->removeByCodes('description', 'ecommerce', 'fr_FR')->shouldReturn($value4);
+        $this->removeByCodes('length')->shouldReturn($value1);
+
+        $this->toArray()->shouldReturn([
+            'price-<all_channels>-<all_locales>'        => $value2,
+            'description-ecommerce-en_US'               => $value3,
+            'description-print-en_US'                   => $value5,
+            'release_date-<all_channels>-<all_locales>' => $value6
+        ]);
+
+        $this->getAttributesKeys()->shouldReturn(['price', 'description', 'release_date']);
+    }
+
     function it_contains_a_key()
     {
         $this->containsKey('nope')->shouldReturn(false);

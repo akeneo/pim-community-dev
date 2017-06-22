@@ -74,6 +74,17 @@ interface ProductValueCollectionInterface extends ProductUniqueValueCollectionIn
     public function removeByAttribute(AttributeInterface $attribute);
 
     /**
+     * Remove the value of the specified attribute, channel and locale codes.
+     *
+     * @param string      $attributeCode
+     * @param string|null $channelCode
+     * @param string|null $localeCode
+     *
+     * @return bool TRUE if this collection contained values for the specified attribute, FALSE otherwise.
+     */
+    public function removeByCodes($attributeCode, $channelCode = null, $localeCode = null);
+
+    /**
      * Checks whether the collection contains a value with the specified key/index.
      *
      * @param string $key The key/index to check for.

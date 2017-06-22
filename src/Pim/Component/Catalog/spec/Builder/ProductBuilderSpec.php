@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\ProductValue\ScalarProductValue;
@@ -213,13 +214,13 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->addMissingAssociations($productTwo);
     }
 
-    function it_adds_an_empty_product_value(
-        $productValueFactory,
+    function it_removes_an_empty_product_value(
         ProductInterface $product,
         AttributeInterface $size,
         AttributeInterface $color,
         ProductValueInterface $sizeValue,
-        ProductValueInterface $colorValue
+        ProductValueInterface $colorValue,
+        ProductValueCollectionInterface $values
     ) {
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
@@ -237,11 +238,10 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->create($color, 'ecommerce', 'en_US', null)->willReturn($colorValue);
+        $product->getValues()->willReturn($values);
 
-        $product->addValue($sizeValue)->willReturn($product);
-        $product->addValue($colorValue)->willReturn($product);
+        $values->removeByCodes('size', null, null)->shouldBeCalled();
+        $values->removeByCodes('color', 'ecommerce', 'en_US')->shouldBeCalled();
 
         $this->addOrReplaceProductValue($product, $size, null, null, null);
         $this->addOrReplaceProductValue($product, $color, 'en_US', 'ecommerce', null);
@@ -253,7 +253,8 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $size,
         AttributeInterface $color,
         ProductValueInterface $sizeValue,
-        ProductValueInterface $colorValue
+        ProductValueInterface $colorValue,
+        ProductValueCollectionInterface $values
     ) {
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
@@ -271,11 +272,12 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $productValueFactory->create($size, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->create($color, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
+        $product->getValues()->willReturn($values);
 
-        $product->addValue($sizeValue)->willReturn($product);
+        $productValueFactory->create($color, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
         $product->addValue($colorValue)->willReturn($product);
+
+        $values->removeByCodes('size', null, null)->shouldBeCalled();
 
         $this->addOrReplaceProductValue($product, $size, null, null, null);
         $this->addOrReplaceProductValue($product, $color, 'en_US', 'ecommerce', 'red');

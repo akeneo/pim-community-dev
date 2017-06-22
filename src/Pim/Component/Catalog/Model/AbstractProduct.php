@@ -192,6 +192,10 @@ abstract class AbstractProduct implements ProductInterface
     {
         $this->values->add($value);
 
+        if ($value->getAttribute()->getType() === AttributeTypes::IDENTIFIER) {
+            $this->setIdentifier($value);
+        }
+
         return $this;
     }
 
@@ -329,6 +333,12 @@ abstract class AbstractProduct implements ProductInterface
     public function setValues(ProductValueCollectionInterface $values)
     {
         $this->values = $values;
+
+        foreach ($values->getValues() as $value) {
+            if ($value->getAttribute()->getType() === AttributeTypes::IDENTIFIER) {
+                $this->setIdentifier($value);
+            }
+        }
 
         return $this;
     }

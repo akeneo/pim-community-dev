@@ -10,9 +10,9 @@ Feature: Join an image to a product
     And the following attribute:
       | label-en_US | type              | allowed_extensions | group | code   |
       | Visual      | pim_catalog_image | jpg,gif            | other | visual |
-    And the "Car" product has the "visual" attribute
     And I am logged in as "Mary"
     And I am on the "Car" product page
+    And I add available attributes Visual
 
   @ce
   Scenario: Successfully leave the image empty
@@ -61,9 +61,6 @@ Feature: Join an image to a product
     And I remove the "Visual" file
     And I save the product
     Then I should not see the text "akeneo.jpg"
-    When I remove the "Visual" attribute
-    And I confirm the deletion
-    And I save the product
     Then I should see available attribute Visual in group "Other"
     And The file with original filename "akeneo.jpg" should exists in database
 

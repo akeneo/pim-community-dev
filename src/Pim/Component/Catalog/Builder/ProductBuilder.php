@@ -125,13 +125,19 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addOrReplaceProductValue(
-                $product,
-                $attributes[$value['attribute']],
-                $value['locale'],
+            $attribute = $attributes[$value['attribute']];
+            $productValue = $product->getValue($attribute->getCode(), $value['locale'], $value['scope']);
+            if (null !== $productValue) {
+                $product->removeValue($productValue);
+            }
+
+            $productValue = $this->productValueFactory->create(
+                $attribute,
                 $value['scope'],
+                $value['locale'],
                 null
             );
+            $product->addValue($productValue);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -183,12 +189,14 @@ class ProductBuilder implements ProductBuilderInterface
             $product->removeValue($productValue);
         }
 
-        $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
-        $product->addValue($productValue);
+        $providedData = ('' === $data || [] === $data || null === $data) ? false : true;
 
-        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            $product->setIdentifier($productValue);
+        if ($providedData || AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
+            $product->addValue($productValue);
+        } else {
+            $productValue = null;
+            $product->getValues()->removeByCodes($attribute->getCode(), $scope, $locale);
         }
 
         return $productValue;
@@ -267,7 +275,13 @@ class ProductBuilder implements ProductBuilderInterface
                     }
                 }
 
-                $this->addOrReplaceProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
+                $productValue = $this->productValueFactory->create(
+                    $attribute,
+                    $value->getScope(),
+                    $value->getLocale(),
+                    $prices
+                );
+                $product->addValue($productValue);
             }
         }
     }

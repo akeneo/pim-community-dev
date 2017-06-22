@@ -25,15 +25,3 @@ Feature: Remove an attribute from a product
     Then I confirm the deletion
     And I press the "Save" button
     And attribute in group "Colors" should be Color
-
-  Scenario: Successfully remove a scopable attribute from a product
-    Given the following attribute:
-      | code            | label-en_US     | scopable | group | type             |
-      | scopable_length | Scopable length | 1        | sizes | pim_catalog_text |
-    And the "nike" product has the "scopable_length" attribute
-    And I am on the "nike" product page
-    When I visit the "Sizes" group
-    And I remove the "Scopable length" attribute
-    Then I confirm the deletion
-    And I press the "Save" button
-    And attribute in group "Sizes" should be Size
