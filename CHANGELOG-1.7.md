@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6393: context kept when creating category tree
+
 # 1.7.4 (2017-05-10)
 
 ## Bug fixes
