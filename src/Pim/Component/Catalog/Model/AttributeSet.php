@@ -9,12 +9,16 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantAttributeSet implements VariantAttributeSetInterface
+class AttributeSet implements AttributeSetInterface
 {
     /** @var int */
     private $id;
 
-    /** @var int */
+    /**
+     * TODO: shoud we keep it ?
+     *
+     * @var int
+     */
     private $level;
 
     /** @var ArrayCollection */
@@ -23,8 +27,14 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     /** @var ArrayCollection */
     private $axes;
 
+    public function __construct()
+    {
+        $this->attributes = new ArrayCollection();
+        $this->axes = new ArrayCollection();
+    }
+
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId(): int
     {

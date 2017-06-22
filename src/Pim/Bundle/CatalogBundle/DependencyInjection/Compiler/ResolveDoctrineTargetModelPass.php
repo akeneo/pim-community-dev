@@ -48,7 +48,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\ChannelTranslationInterface'        => 'pim_catalog.entity.channel_translation.class',
             'Pim\Component\Catalog\Model\FamilyVariantInterface'             => 'pim_catalog.entity.family_variant.class',
             'Pim\Component\Catalog\Model\FamilyVariantTranslationInterface'  => 'pim_catalog.entity.family_variant_translation.class',
-            'Pim\Component\Catalog\Model\VariantAttributeSetInterface'       => 'pim_catalog.entity.variant_attribute_set.class',
+            'Pim\Component\Catalog\Model\AttributeSetInterface'              => 'pim_catalog.entity.variant_attribute_set.class',
         ];
     }
 }
