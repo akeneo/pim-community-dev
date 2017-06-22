@@ -46,7 +46,7 @@ define(
                 if (0 === $grid.length) {
                     $grid = $('[data-type="datagrid"]:first');
                 }
-                this.$el.addClass('AknFilterBox-filter--inline').insertBefore($grid.find('.actions-panel'));
+                this.$el.addClass('AknFilterBox-filterContainer--inline').insertBefore($grid.find('.actions-panel'));
 
                 var $filterChoices = $grid.find('#add-filter-select');
                 $filterChoices.find('option[value="scope"]').remove();
@@ -119,7 +119,7 @@ define(
              * @see Oro.Filter.SelectFilter
              */
             template: _.template(
-                '<div class="AknActionButton filter-select filter-criteria-selector scope-filter">' +
+                '<div class="AknFilterBox-filter filter-select filter-criteria-selector scope-filter">' +
                     '<i class="icon-eye-open" title="<%= label %>"></i>' +
                     '<select>' +
                         '<% _.each(options, function (option) { %>' +

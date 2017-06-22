@@ -30,11 +30,27 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         tagName: 'div',
 
         /**
+         * Display the "manage filters" button or not
+         *
+         * @property
+         */
+        displayManageFilters: function() {
+            return _.result(this.options, 'displayManageFilters', true);
+        },
+
+        /**
          * Container classes
          *
          * @property
          */
-        className: 'AknFilterBox filter-box oro-clearfix-width',
+        className: function () {
+            var name = 'AknFilterBox filter-box oro-clearfix-width';
+            if (true !== this.displayManageFilters()) {
+                name += ' AknFilterBox--search';
+            }
+
+            return name;
+        },
 
         /**
          * Filter list template
@@ -110,6 +126,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param {Object} options
          * @param {Object} [options.filters]
          * @param {String} [options.addButtonHint]
+         * @param {Boolean} [options.displayManageFilters]
          */
         initialize: function (options)
         {
@@ -235,7 +252,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.attr('selected', true);
             }
 
-            if (optionsSelectors.length) {
+            if (this.displayManageFilters() && optionsSelectors.length) {
                 this.selectWidget.multiselect('refresh');
             }
 
@@ -297,7 +314,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             if (_.isEmpty(this.filters)) {
                 this.$el.hide();
             } else {
-                this.$el.append(this.addButtonTemplate({filters: this.filters}));
+                if (this.displayManageFilters()) {
+                    this.$el.append(this.addButtonTemplate({filters: this.filters}));
+                }
                 this.$el.append(fragment);
                 this._initializeSelectWidget();
             }
@@ -311,6 +330,10 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @protected
          */
         _initializeSelectWidget: function () {
+            if (!this.displayManageFilters()) {
+                return;
+            }
+
             this.selectWidget = new MultiselectDecorator({
                 element: this.$(this.filterSelector),
                 parameters: {

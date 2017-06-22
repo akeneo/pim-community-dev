@@ -16,7 +16,7 @@ Feature: Products back to the grid
     And the grid should contain 1 element
     And I am on the products page
     Then the grid should contain 1 element
-    And I should see "SKU: contains \"boots_1\""
+    And the criteria of "sku" filter should be "contains "boots_1""
     And I should see product boots_1
     And I should not see product sneakers_1
 
@@ -27,7 +27,7 @@ Feature: Products back to the grid
     And I should be on the product "sneakers_1" edit page
     And I am on the products page
     Then the grid should contain 1 element
-    And I should see "SKU: contains \"sneakers_1\""
+    And the criteria of "sku" filter should be "contains "sneakers_1""
     And I should see product sneakers_1
     And I should not see product boots_1
 

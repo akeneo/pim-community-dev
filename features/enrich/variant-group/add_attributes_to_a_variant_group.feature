@@ -67,15 +67,15 @@ Feature: Add attributes to a variant group
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 39   |
     And I am on the "caterpillar_boots" variant group page
-    When I visit the "Attributes" tab
+    And I visit the "Attributes" tab
     And I add available attributes Name, Description
     And I save the variant group
-    Then I am on the attributes page
-    When I filter by "label" with operator "is equal to" and value "Name"
+    And I am on the attributes page
+    And I search "Name"
     And I click on the "Delete" action of the row which contains "Name"
     And I confirm the deletion
-    Then I am on the "caterpillar_boots" variant group page
-    And I should not see available attribute Name in group "Product information"
+    When I am on the "caterpillar_boots" variant group page
+    Then I should not see available attribute Name in group "Product information"
 
   Scenario: The price attribute should be visible once added
     Given I am on the "caterpillar_boots" variant group page

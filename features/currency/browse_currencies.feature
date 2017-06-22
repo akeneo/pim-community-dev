@@ -9,20 +9,26 @@ Feature: Browse currencies
     And I am logged in as "Peter"
     And I am on the currencies page
 
-  Scenario: Successfully view, sort and filter currencies
+  Scenario: Successfully view and sort currencies
     Then I should see the columns Code and Activated
     And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code and Activated
-    And I should be able to use the following filters:
-      | filter    | operator | value | result      |
-      | code      | contains | EU    | EUR and XEU |
-      | activated |          | yes   | USD and EUR |
+
+  Scenario: Successfully filter currencies
+    When I show the filter "activated"
+    And I filter by "activated" with operator "" and value "yes"
+    Then the grid should contain 2 elements
+    Then I should see entity USD and EUR
+
+  Scenario: Successfully search on code
+    When I search "EU"
+    Then the grid should contain 2 elements
+    And I should see entities EUR and XEU
 
   Scenario: Successfully activate a currency
-    Given I filter by "code" with operator "is equal to" and value "GBP"
+    Given I search "GBP"
     And I activate the GBP currency
-    When I hide the filter "code"
-    And I filter by "activated" with operator "equals" and value "yes"
+    And I search ""
+    When I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 3 elements
     Then I should see currencies GBP, USD and EUR
 

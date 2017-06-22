@@ -79,4 +79,4 @@ Feature: Filter products by boolean field
     And I filter by "handmade" with operator "" and value "yes"
     When I am on the dashboard page
     And I am on the products page
-    Then I should see the text "handmade: yes"
+    Then the criteria of "handmade" filter should be "yes"

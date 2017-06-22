@@ -67,19 +67,27 @@ class ComparisonPanelDecorator extends ElementDecorator
      */
     public function switchSource($source)
     {
-        $dropdown = $this->spin(function () {
-            return $this->find('css', $this->selectors['Copy source dropdown']);
-        }, 'Cannot find the comparison source dropdown');
+        $this->spin(function () use ($source) {
+            $dropdown = $this->find('css', $this->selectors['Copy source dropdown']);
+            if (null === $dropdown) {
+                return false;
+            }
 
-        $toggle = $this->spin(function () use ($dropdown) {
-            return $dropdown->find('css', '.AknActionButton');
-        }, 'Could not find copy source switcher.');
-        $toggle->click();
+            $toggle = $dropdown->find('css', '.AknActionButton');
+            if (null === $toggle) {
+                return false;
+            }
+            $toggle->click();
 
-        $option = $this->spin(function () use ($dropdown, $source) {
-            return $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
-        }, sprintf('Could not find source "%s" in switcher', $source));
-        $option->click();
+            $option = $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
+            if (null === $option) {
+                return false;
+            }
+            $option->click();
+
+            return true;
+        }, 'Can not switch source ');
+
     }
 
     /**

@@ -191,9 +191,9 @@ Feature: Associate a product
     When I edit the "gray-boots" product
     Then I should see the text "Association type: Substitution"
     And I should see the text "Show products"
-    And I should see the text "Type: [RELATED]"
+    And the criteria of "type" filter should be "[RELATED]"
     When I press the "Show products" button
-    Then I should see the text "SKU: Contains \"gr\""
+    Then the criteria of "sku" filter should be "contains "gr""
 
   @jira https://akeneo.atlassian.net/browse/PIM-6110
   Scenario: Product associations are not erased when an attribute is saved

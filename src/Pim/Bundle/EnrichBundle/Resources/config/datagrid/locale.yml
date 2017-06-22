@@ -2,6 +2,7 @@ datagrid:
     locale-grid:
         options:
             entityHint: locale
+            manageFilters: false
         source:
             acl_resource: pim_enrich_locale_index
             type: pim_datasource_locale
@@ -26,7 +27,7 @@ datagrid:
         filters:
             columns:
                 code:
-                    type:      string
+                    type:      search
                     label:     Code
                     data_name: l.code
                 activated:
