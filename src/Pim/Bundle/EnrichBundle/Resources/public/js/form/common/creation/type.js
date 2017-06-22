@@ -75,40 +75,16 @@ define(
                     results: []
                 };
 
-                types.forEach(value => {
-                    const { code, labels } = value
+                _.reject(types, { is_variant: true }).forEach(value => {
+                    const { code, labels } = value;
+
                     data.results.push({
                         id: code,
                         text: i18n.getLabel(labels, locale, code)
                     });
-                })
+                });
 
                 return data;
-            },
-
-
-            /**
-             * Uses the fetcher registry to get a list of group types to use in the select2
-             *
-             * @param  {Object} formData An object containing group code and type
-             * @param  {jQueryElement} element  The select2 element
-             * @param  {Function} callback
-             */
-            fetchGroupTypes(formData, element, callback) {
-                if (!formData.type) return;
-
-                FetcherRegistry.getFetcher('grouptype')
-                .fetch(formData.type)
-                .then(type => {
-                    callback({
-                        id: type.code,
-                        text: i18n.getLabel(
-                            type.labels,
-                            UserContext.get('catalogLocale'),
-                            type.code
-                        )
-                    });
-                });
             },
 
             /**
@@ -120,7 +96,7 @@ define(
                 if (!this.configured) return this;
 
                 const formData = this.getFormData();
-                const locale = UserContext.get('catalogLocale')
+                const locale = UserContext.get('catalogLocale');
 
                 this.$el.html(this.template({
                     label: __('pim_enrich.form.group.tab.properties.type'),
@@ -131,7 +107,6 @@ define(
                 this.delegateEvents();
 
                 var options = {
-                    initSelection: this.fetchGroupTypes.bind(this, formData),
                     allowClear: true,
                     ajax: {
                         url: Routing.generate('pim_enrich_grouptype_rest_index'),
