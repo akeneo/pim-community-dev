@@ -146,7 +146,7 @@ JSON;
     "labels": {
         "en_US": ""
     }
-}        
+}
 JSON;
         $client->request('PATCH', '/api/rest/v1/channels/ecommerce', [], [], [], $data);
 
@@ -180,7 +180,7 @@ JSON;
     "conversion_units" : {
         "a_metric_without_decimal": null
     }
-}        
+}
 JSON;
         $client->request('PATCH', '/api/rest/v1/channels/ecommerce', [], [], [], $data);
 
@@ -270,6 +270,32 @@ JSON;
         {
             "property": "locales",
             "message": "This collection should contain 1 element or more."
+        }
+    ]
+}
+JSON;
+        $client->request('PATCH', '/api/rest/v1/channels/ecommerce', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testResponseWhenCurrencyDoesNotExist()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = '{ "currencies": ["ADP"] }';
+
+        $expectedContent =
+<<<JSON
+{
+    "code":422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "property": "currencies",
+            "message": "The currency \"ADP\" has to be activated."
         }
     ]
 }

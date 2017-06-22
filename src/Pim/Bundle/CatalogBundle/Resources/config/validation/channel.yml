@@ -22,7 +22,9 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
         currencies:
             - Count: { min: 1 }
             - All:
-                - Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated: ~
+                - Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated:
+                    payload:
+                      standardPropertyName: currencies
         locales:
             - Count: { min: 1 }
         translations:
