@@ -4,14 +4,14 @@ namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
 
 class MultiSelectAttributeAdderSpec extends ObjectBehavior
 {
-    function let(ValuesContainerBuilderInterface $builder)
+    function let(EntityWithValuesBuilderInterface $builder)
     {
         $this->beConstructedWith($builder, ['pim_catalog_multiselect']);
     }

@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Sets a data in a product.
@@ -17,12 +17,12 @@ use Pim\Component\Catalog\Model\ValuesContainerInterface;
 class AttributeSetter extends AbstractAttributeSetter
 {
     /**
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
-     * @param string[]                        $supportedTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param string[]                         $supportedTypes
      */
-    public function __construct(ValuesContainerBuilderInterface $valuesContainerBuilder, array $supportedTypes)
+    public function __construct(EntityWithValuesBuilderInterface $entityWithValuesBuilder, array $supportedTypes)
     {
-        parent::__construct($valuesContainerBuilder);
+        parent::__construct($entityWithValuesBuilder);
 
         $this->supportedTypes = $supportedTypes;
     }
@@ -31,15 +31,15 @@ class AttributeSetter extends AbstractAttributeSetter
      * {@inheritdoc}
      */
     public function setAttributeData(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
 
-        $this->valuesContainerBuilder->addOrReplaceValue(
-            $valuesContainer,
+        $this->entityWithValuesBuilder->addOrReplaceValue(
+            $entityWithValues,
             $attribute,
             $options['locale'],
             $options['scope'],

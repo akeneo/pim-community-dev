@@ -3,13 +3,13 @@
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 class AttributeSetterSpec extends ObjectBehavior
 {
-    function let(ValuesContainerBuilderInterface $builder)
+    function let(EntityWithValuesBuilderInterface $builder)
     {
         $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea']);
     }

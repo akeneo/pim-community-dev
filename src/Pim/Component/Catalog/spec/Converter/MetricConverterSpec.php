@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 
 class MetricConverterSpec extends ObjectBehavior
 {
-    function let(MeasureConverter $converter, ValuesContainerBuilderInterface $productBuilder)
+    function let(MeasureConverter $converter, EntityWithValuesBuilderInterface $productBuilder)
     {
         $this->beConstructedWith($converter, $productBuilder);
     }

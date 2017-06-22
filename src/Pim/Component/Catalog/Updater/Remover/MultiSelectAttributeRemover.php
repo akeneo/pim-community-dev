@@ -3,9 +3,9 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -17,30 +17,30 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MultiSelectAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var ValuesContainerBuilderInterface */
-    protected $valuesContainerBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /**
-     * @param AttributeValidatorHelper        $attrValidatorHelper
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
-     * @param string[]                        $supportedTypes
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param string[]                         $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->valuesContainerBuilder = $valuesContainerBuilder;
-        $this->supportedTypes = $supportedTypes;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->supportedTypes          = $supportedTypes;
     }
 
     /**
      * {@inheritdoc}
      */
     public function removeAttributeData(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -48,24 +48,24 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         $options = $this->resolver->resolve($options);
         $this->checkData($attribute, $data);
 
-        $this->removeOptions($valuesContainer, $attribute, $data, $options['locale'], $options['scope']);
+        $this->removeOptions($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
-     * @param ValuesContainerInterface $valuesContainer
-     * @param AttributeInterface       $attribute
-     * @param string[]                 $optionCodes
-     * @param string|null              $locale
-     * @param string|null              $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param string[]                  $optionCodes
+     * @param string|null               $locale
+     * @param string|null               $scope
      */
     protected function removeOptions(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $optionCodes,
         $locale,
         $scope
     ) {
-        $value = $valuesContainer->getValue($attribute->getCode(), $locale, $scope);
+        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $value) {
             $newOptionCodes = [];
@@ -75,8 +75,8 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                 }
             }
 
-            $this->valuesContainerBuilder->addOrReplaceValue(
-                $valuesContainer,
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $entityWithValues,
                 $attribute,
                 $locale,
                 $scope,

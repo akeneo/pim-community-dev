@@ -24,7 +24,7 @@ interface ProductInterface extends
     CommentSubjectInterface,
     ReferableInterface,
     CategoryAwareInterface,
-    ValuesContainerInterface
+    EntityWithValuesInterface
 {
     /**
      * Get the ID of the product

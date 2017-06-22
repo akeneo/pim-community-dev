@@ -5,7 +5,7 @@ namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 
 class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ValuesContainerBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
+    function let(EntityWithValuesBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,

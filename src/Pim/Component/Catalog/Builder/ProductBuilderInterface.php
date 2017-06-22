@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductBuilderInterface extends ValuesContainerBuilderInterface
+interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
 {
     /**
      * Create product with its identifier value,
@@ -39,7 +39,7 @@ interface ProductBuilderInterface extends ValuesContainerBuilderInterface
      * @param ChannelInterface[] $channels
      * @param LocaleInterface[]  $locales
      *
-     * @return ValuesContainerBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null);
 
@@ -48,7 +48,7 @@ interface ProductBuilderInterface extends ValuesContainerBuilderInterface
      *
      * @param ProductInterface $product
      *
-     * @return ValuesContainerBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     public function addMissingAssociations(ProductInterface $product);
 }

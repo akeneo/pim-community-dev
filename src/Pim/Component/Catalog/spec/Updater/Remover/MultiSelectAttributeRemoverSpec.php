@@ -5,22 +5,22 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         AttributeValidatorHelper $attrValidatorHelper,
-        ValuesContainerBuilderInterface $valuesContainerBuilder
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $valuesContainerBuilder,
+            $entityWithValuesBuilder,
             ['pim_catalog_multiselect']
         );
     }
@@ -41,10 +41,10 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_removes_an_attribute_data_multi_select_value_from_a_values_container(
-        $valuesContainerBuilder,
+    function it_removes_an_attribute_data_multi_select_value_from_an_entity_with_values(
+        $entityWithValuesBuilder,
         AttributeInterface $attribute,
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         ProductValueInterface $productValue,
         ArrayCollection $options,
         AttributeOptionInterface $vneck,
@@ -53,7 +53,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('tshirt_style');
 
-        $valuesContainer->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($productValue);
+        $entityWithValues->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($productValue);
 
         $productValue->getData()->willReturn($options);
 
@@ -66,14 +66,14 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $round->getCode()->willReturn('round');
         $vneck->getCode()->willReturn('vneck');
 
-        $valuesContainerBuilder->addOrReplaceValue($valuesContainer, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
+        $entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
 
-        $this->removeAttributeData($valuesContainer, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $this->removeAttributeData($entityWithValues, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_throws_an_error_if_attribute_data_value_is_not_an_array(
         AttributeInterface $attribute,
-        ValuesContainerInterface $valuesContainer
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -84,12 +84,12 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_array_is_not_string(
         AttributeInterface $attribute,
-        ValuesContainerInterface $valuesContainer
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -101,6 +101,6 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$valuesContainer, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 }

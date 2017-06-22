@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -25,8 +25,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductBuilder implements ProductBuilderInterface
 {
-    /** @var ValuesContainerBuilderInterface */
-    protected $valuesContainerBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -65,7 +65,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
      * @param ProductValueFactory                $productValueFactory Product value factory
-     * @param ValuesContainerBuilderInterface    $valuesContainerBuilder
+     * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
      */
     public function __construct(
@@ -76,19 +76,19 @@ class ProductBuilder implements ProductBuilderInterface
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
         ProductValueFactory $productValueFactory,
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->familyRepository = $familyRepository;
-        $this->currencyRepository = $currencyRepository;
-        $this->assocTypeRepository = $assocTypeRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->valuesResolver = $valuesResolver;
-        $this->productValueFactory = $productValueFactory;
-        $this->productClass = $classes['product'];
-        $this->associationClass = $classes['association'];
-        $this->valuesContainerBuilder = $valuesContainerBuilder;
+        $this->attributeRepository     = $attributeRepository;
+        $this->familyRepository        = $familyRepository;
+        $this->currencyRepository      = $currencyRepository;
+        $this->assocTypeRepository     = $assocTypeRepository;
+        $this->eventDispatcher         = $eventDispatcher;
+        $this->valuesResolver          = $valuesResolver;
+        $this->productValueFactory     = $productValueFactory;
+        $this->productClass            = $classes['product'];
+        $this->associationClass        = $classes['association'];
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
     }
 
     /**
@@ -213,22 +213,22 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(ValuesContainerInterface $values, AttributeInterface $attribute)
+    public function addAttribute(EntityWithValuesInterface $values, AttributeInterface $attribute)
     {
-        $this->valuesContainerBuilder->addAttribute($values, $attribute);
+        $this->entityWithValuesBuilder->addAttribute($values, $attribute);
     }
 
     /**
      * {@inheritdoc}
      */
     public function addOrReplaceValue(
-        ValuesContainerInterface $values,
+        EntityWithValuesInterface $values,
         AttributeInterface $attribute,
         $locale,
         $scope,
         $data
     ) {
-        $this->valuesContainerBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
+        $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
     }
 
     /**

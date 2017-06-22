@@ -4,9 +4,9 @@ namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -22,26 +22,26 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var ValuesContainerBuilderInterface */
-    protected $valuesContainerBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /**
-     * @param AttributeValidatorHelper        $attrValidatorHelper
-     * @param CurrencyRepositoryInterface     $currencyRepository
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
-     * @param string[]                        $supportedTypes
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param CurrencyRepositoryInterface      $currencyRepository
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param string[]                         $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->currencyRepository     = $currencyRepository;
-        $this->valuesContainerBuilder = $valuesContainerBuilder;
-        $this->supportedTypes         = $supportedTypes;
+        $this->currencyRepository      = $currencyRepository;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->supportedTypes          = $supportedTypes;
     }
 
     /**
@@ -61,7 +61,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * "data" index is not used so it can be null
      */
     public function removeAttributeData(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -69,26 +69,26 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         $options = $this->resolver->resolve($options);
         $this->checkData($attribute, $data);
 
-        $this->removePrices($valuesContainer, $attribute, $data, $options['locale'], $options['scope']);
+        $this->removePrices($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
-     * Remove prices from the given $valuesContainer
+     * Remove prices from the given $entityWithValues
      *
-     * @param ValuesContainerInterface $valuesContainer
-     * @param AttributeInterface       $attribute
-     * @param mixed                    $data
-     * @param string                   $locale
-     * @param string                   $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param mixed                     $data
+     * @param string                    $locale
+     * @param string                    $scope
      */
     protected function removePrices(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         $locale,
         $scope
     ) {
-        $productValue = $valuesContainer->getValue($attribute->getCode(), $locale, $scope);
+        $productValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         $currencyToRemove = [];
         foreach ($data as $priceToRemove) {
@@ -103,7 +103,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 }
             }
 
-            $this->valuesContainerBuilder->addOrReplaceValue($valuesContainer, $attribute, $locale, $scope, $prices);
+            $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $locale, $scope, $prices);
         }
     }
 

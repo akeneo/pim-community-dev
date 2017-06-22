@@ -7,14 +7,14 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ValuesContainerUpdater implements ObjectUpdaterInterface
+class EntityWithValuesUpdater implements ObjectUpdaterInterface
 {
     /** @var PropertySetterInterface */
     protected $propertySetter;
@@ -30,56 +30,56 @@ class ValuesContainerUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($valuesContainer, array $values, array $options = [])
+    public function update($entityWithValues, array $values, array $options = [])
     {
-        if (!$valuesContainer instanceof ValuesContainerInterface) {
+        if (!$entityWithValues instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($valuesContainer),
-                ValuesContainerInterface::class
+                ClassUtils::getClass($entityWithValues),
+                EntityWithValuesInterface::class
             );
         }
 
         $this->checkValuesData($values);
-        $this->updateValuesContainer($valuesContainer, $values);
+        $this->updateEntityWithValues($entityWithValues, $values);
 
         return $this;
     }
 
     /**
-     * Sets the values of the values container,
+     * Update values of an entity with values
      *
-     * @param ValuesContainerInterface $valuesContainer
-     * @param array                    $values
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param array                     $values
      */
-    protected function updateValuesContainer(ValuesContainerInterface $valuesContainer, array $values)
+    protected function updateEntityWithValues(EntityWithValuesInterface $entityWithValues, array $values)
     {
         foreach ($values as $code => $value) {
             foreach ($value as $data) {
-                $hasValue = $valuesContainer->getValue($code, $data['locale'], $data['scope']);
+                $hasValue = $entityWithValues->getValue($code, $data['locale'], $data['scope']);
                 $providedData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']) ? false : true;
 
                 if ($providedData || $hasValue) {
                     $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
-                    $this->propertySetter->setData($valuesContainer, $code, $data['data'], $options);
+                    $this->propertySetter->setData($entityWithValues, $code, $data['data'], $options);
                 }
             }
         }
     }
 
     /**
-     * Check the structure of the values container.
+     * Check the structure of the given entity with values.
      *
-     * @param mixed $valuesContainer
+     * @param mixed $entityWithValues
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkValuesData($valuesContainer)
+    protected function checkValuesData($entityWithValues)
     {
-        if (!is_array($valuesContainer)) {
-            throw InvalidPropertyTypeException::arrayExpected('values', static::class, $valuesContainer);
+        if (!is_array($entityWithValues)) {
+            throw InvalidPropertyTypeException::arrayExpected('values', static::class, $entityWithValues);
         }
 
-        foreach ($valuesContainer as $code => $values) {
+        foreach ($entityWithValues as $code => $values) {
             if (!is_array($values)) {
                 throw InvalidPropertyTypeException::arrayExpected($code, static::class, $values);
             }

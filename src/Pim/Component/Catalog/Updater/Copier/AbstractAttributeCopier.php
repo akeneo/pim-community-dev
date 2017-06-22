@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,8 +23,8 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /** @var array */
     protected $supportedToTypes = [];
 
-    /** @var ValuesContainerBuilderInterface */
-    protected $valuesContainerBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
@@ -33,15 +33,15 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     protected $resolver;
 
     /**
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
-     * @param AttributeValidatorHelper        $attrValidatorHelper
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param AttributeValidatorHelper         $attrValidatorHelper
      */
     public function __construct(
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
-        $this->valuesContainerBuilder = $valuesContainerBuilder;
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);

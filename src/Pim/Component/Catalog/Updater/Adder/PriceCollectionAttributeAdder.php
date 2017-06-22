@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,16 +22,16 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     protected $normalizer;
 
     /**
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
-     * @param NormalizerInterface             $normalizer
-     * @param array                           $supportedTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param NormalizerInterface              $normalizer
+     * @param array                            $supportedTypes
      */
     public function __construct(
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         NormalizerInterface $normalizer,
         array $supportedTypes
     ) {
-        parent::__construct($valuesContainerBuilder);
+        parent::__construct($entityWithValuesBuilder);
 
         $this->normalizer = $normalizer;
         $this->supportedTypes = $supportedTypes;
@@ -53,7 +53,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * ]
      */
     public function addAttributeData(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
@@ -68,31 +68,31 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
             );
         }
 
-        $this->addPrices($valuesContainer, $attribute, $data, $options['locale'], $options['scope']);
+        $this->addPrices($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
      * Add prices into the value
      *
-     * @param ValuesContainerInterface $valuesContainer
-     * @param AttributeInterface       $attribute
-     * @param mixed                    $data
-     * @param string                   $locale
-     * @param string                   $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param mixed                     $data
+     * @param string                    $locale
+     * @param string                    $scope
      */
     protected function addPrices(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         $locale,
         $scope
     ) {
-        $value = $valuesContainer->getValue($attribute->getCode(), $locale, $scope);
+        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
         if (null !== $value) {
             $data = $this->addNewPrices($value->getData(), $data);
         }
 
-        $this->valuesContainerBuilder->addOrReplaceValue($valuesContainer, $attribute, $locale, $scope, $data);
+        $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $locale, $scope, $data);
     }
 
     /**

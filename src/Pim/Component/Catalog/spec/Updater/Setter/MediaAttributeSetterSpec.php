@@ -7,7 +7,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -16,7 +16,7 @@ use Prophecy\Argument;
 class MediaAttributeSetterSpec extends ObjectBehavior
 {
     function let(
-        ValuesContainerBuilderInterface $builder,
+        EntityWithValuesBuilderInterface $builder,
         FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository
     ) {

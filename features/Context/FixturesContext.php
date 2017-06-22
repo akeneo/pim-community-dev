@@ -27,7 +27,7 @@ use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -1979,7 +1979,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ValuesContainerBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     protected function getProductBuilder()
     {

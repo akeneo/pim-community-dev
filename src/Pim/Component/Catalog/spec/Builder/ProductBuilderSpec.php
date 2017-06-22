@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\Association;
@@ -37,7 +37,7 @@ class ProductBuilderSpec extends ObjectBehavior
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         ProductValueFactory $productValueFactory
     ) {
         $entityConfig = [
@@ -53,7 +53,7 @@ class ProductBuilderSpec extends ObjectBehavior
             $eventDispatcher,
             $valuesResolver,
             $productValueFactory,
-            $valuesContainerBuilder,
+            $entityWithValuesBuilder,
             $entityConfig
         );
     }
@@ -69,13 +69,13 @@ class ProductBuilderSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $eventDispatcher,
-        $valuesContainerBuilder,
+        $entityWithValuesBuilder,
         FamilyInterface $tshirtFamily,
         AttributeInterface $identifierAttribute,
         ProductValueInterface $identifierValue
     ) {
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
-        $valuesContainerBuilder->addOrReplaceValue(
+        $entityWithValuesBuilder->addOrReplaceValue(
             Argument::type(ProductInterface::class),
             $identifierAttribute,
             null,
@@ -95,7 +95,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
     function it_adds_missing_product_values_from_family_on_new_product(
         $valuesResolver,
-        $valuesContainerBuilder,
+        $entityWithValuesBuilder,
         FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
@@ -176,7 +176,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $skuValue->getScope()->willReturn(null);
         $product->getValues()->willReturn([$skuValue]);
 
-        $valuesContainerBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(6);
+        $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(6);
 
         $this->addMissingProductValues($product);
     }

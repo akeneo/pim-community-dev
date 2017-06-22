@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 {
-    function let(ValuesContainerBuilderInterface $builder, NormalizerInterface $normalizer)
+    function let(EntityWithValuesBuilderInterface $builder, NormalizerInterface $normalizer)
     {
         $this->beConstructedWith($builder, $normalizer, ['pim_catalog_price_collection']);
     }

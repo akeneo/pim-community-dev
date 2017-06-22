@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -13,7 +13,7 @@ use Prophecy\Argument;
 
 class ReferenceDataAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ValuesContainerBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
+    function let(EntityWithValuesBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,

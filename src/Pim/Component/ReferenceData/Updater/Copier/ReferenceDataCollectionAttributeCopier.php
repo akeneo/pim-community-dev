@@ -2,10 +2,10 @@
 
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -19,18 +19,18 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
 {
     /**
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
-     * @param AttributeValidatorHelper        $attrValidatorHelper
-     * @param array                           $supportedFromTypes
-     * @param array                           $supportedToTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param array                            $supportedFromTypes
+     * @param array                            $supportedToTypes
      */
     public function __construct(
-        ValuesContainerBuilderInterface $valuesContainerBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($valuesContainerBuilder, $attrValidatorHelper);
+        parent::__construct($entityWithValuesBuilder, $attrValidatorHelper);
 
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
@@ -40,8 +40,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
      * {@inheritdoc}
      */
     public function copyAttributeData(
-        ValuesContainerInterface $fromValuesContainer,
-        ValuesContainerInterface $toValuesContainer,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
@@ -56,8 +56,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
-            $fromValuesContainer,
-            $toValuesContainer,
+            $fromEntityWithValues,
+            $toEntityWithValues,
             $fromAttribute,
             $toAttribute,
             $fromLocale,
@@ -82,18 +82,18 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Copy single value
      *
-     * @param ValuesContainerInterface $fromValuesContainer
-     * @param ValuesContainerInterface $toValuesContainer
-     * @param AttributeInterface       $fromAttribute
-     * @param AttributeInterface       $toAttribute
-     * @param string                   $fromLocale
-     * @param string                   $toLocale
-     * @param string                   $fromScope
-     * @param string                   $toScope
+     * @param EntityWithValuesInterface $fromEntityWithValues
+     * @param EntityWithValuesInterface $toEntityWithValues
+     * @param AttributeInterface        $fromAttribute
+     * @param AttributeInterface        $toAttribute
+     * @param string                    $fromLocale
+     * @param string                    $toLocale
+     * @param string                    $fromScope
+     * @param string                    $toScope
      */
     protected function copySingleValue(
-        ValuesContainerInterface $fromValuesContainer,
-        ValuesContainerInterface $toValuesContainer,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -101,10 +101,10 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $fromValuesContainer->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $this->valuesContainerBuilder->addOrReplaceValue(
-                $toValuesContainer,
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $toEntityWithValues,
                 $toAttribute,
                 $toLocale,
                 $toScope,

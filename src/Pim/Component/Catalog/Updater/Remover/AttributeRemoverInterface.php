@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Remove a value from a values container
@@ -17,15 +17,15 @@ interface AttributeRemoverInterface extends RemoverInterface
     /**
      * Remove attribute data
      *
-     * @param ValuesContainerInterface $valuesContainer The values container to modify
-     * @param AttributeInterface       $attribute       The attribute of the values container to modify
-     * @param mixed                    $data            The data to remove
-     * @param array                    $options         Options passed to the remover
+     * @param EntityWithValuesInterface $entityWithValues The values container to modify
+     * @param AttributeInterface        $attribute        The attribute of the values container to modify
+     * @param mixed                     $data             The data to remove
+     * @param array                     $options          Options passed to the remover
      *
      * @return
      */
     public function removeAttributeData(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []

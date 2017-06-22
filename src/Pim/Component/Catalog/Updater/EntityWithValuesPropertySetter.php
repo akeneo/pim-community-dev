@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
 
@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ValuesContainerPropertySetter implements PropertySetterInterface
+class EntityWithValuesPropertySetter implements PropertySetterInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
@@ -41,12 +41,12 @@ class ValuesContainerPropertySetter implements PropertySetterInterface
     /**
      * {@inheritdoc}
      */
-    public function setData($valuesContainer, $field, $data, array $options = [])
+    public function setData($entityWithValues, $field, $data, array $options = [])
     {
-        if (!$valuesContainer instanceof ValuesContainerInterface) {
+        if (!$entityWithValues instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($valuesContainer),
-                ValuesContainerInterface::class
+                ClassUtils::getClass($entityWithValues),
+                EntityWithValuesInterface::class
             );
         }
 
@@ -57,13 +57,13 @@ class ValuesContainerPropertySetter implements PropertySetterInterface
 
         if (!$setter instanceof AttributeSetterInterface) {
             throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($valuesContainer),
+                ClassUtils::getClass($entityWithValues),
                 AttributeSetterInterface::class
             );
         }
 
         $attribute = $this->getAttribute($field);
-        $setter->setAttributeData($valuesContainer, $attribute, $data, $options);
+        $setter->setAttributeData($entityWithValues, $attribute, $data, $options);
 
         return $this;
     }

@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Convert value into channel conversion unit if selected
@@ -20,29 +20,29 @@ class MetricConverter
     /** @var MeasureConverter */
     protected $converter;
 
-    /** @var ValuesContainerBuilderInterface */
-    protected $valuesContainerBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /**
-     * @param MeasureConverter                $converter
-     * @param ValuesContainerBuilderInterface $valuesContainerBuilder
+     * @param MeasureConverter                 $converter
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
      */
-    public function __construct(MeasureConverter $converter, ValuesContainerBuilderInterface $valuesContainerBuilder)
+    public function __construct(MeasureConverter $converter, EntityWithValuesBuilderInterface $entityWithValuesBuilder)
     {
-        $this->converter = $converter;
-        $this->valuesContainerBuilder = $valuesContainerBuilder;
+        $this->converter               = $converter;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
     }
 
     /**
      * Convert all the metric values into the channel configured conversion units
      *
-     * @param ValuesContainerInterface $valuesContainer
-     * @param ChannelInterface         $channel
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param ChannelInterface          $channel
      */
-    public function convert(ValuesContainerInterface $valuesContainer, ChannelInterface $channel)
+    public function convert(EntityWithValuesInterface $entityWithValues, ChannelInterface $channel)
     {
         $channelUnits = $channel->getConversionUnits();
-        foreach ($valuesContainer->getValues() as $value) {
+        foreach ($entityWithValues->getValues() as $value) {
             $data = $value->getData();
             $attribute = $value->getAttribute();
             if ($data instanceof MetricInterface && isset($channelUnits[$attribute->getCode()])) {
@@ -56,8 +56,8 @@ class MetricConverter
                     ->setFamily($measureFamily)
                     ->convert($data->getUnit(), $channelUnit, $data->getData());
 
-                $this->valuesContainerBuilder->addOrReplaceValue(
-                    $valuesContainer,
+                $this->entityWithValuesBuilder->addOrReplaceValue(
+                    $entityWithValues,
                     $attribute,
                     $value->getLocale(),
                     $value->getScope(),

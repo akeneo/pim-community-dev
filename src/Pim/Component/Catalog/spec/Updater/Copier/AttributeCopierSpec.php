@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ValuesContainerBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductValue\ScalarProductValue;
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeCopierSpec extends ObjectBehavior
 {
     function let(
-        ValuesContainerBuilderInterface $builder,
+        EntityWithValuesBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
         NormalizerInterface $normalizer
     ) {

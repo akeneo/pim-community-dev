@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Adder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValuesContainerInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Adds a data into a product's attribute
@@ -17,16 +17,16 @@ interface AttributeAdderInterface extends AdderInterface
     /**
      * Add attribute data
      *
-     * @param ValuesContainerInterface $valuesContainer
-     * @param AttributeInterface       $attribute The attribute of the product to update
-     * @param mixed                    $data      The data to add
-     * @param array                    $options   Options passed to the adder
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute The attribute of the product to update
+     * @param mixed                     $data      The data to add
+     * @param array                     $options   Options passed to the adder
      *
      * @return
      * @internal param ProductInterface $product The product to update
      */
     public function addAttributeData(
-        ValuesContainerInterface $valuesContainer,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
