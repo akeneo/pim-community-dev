@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class OptionNormalizerSpec extends ObjectBehavior

@@ -48,11 +48,6 @@ class ViewElementExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pim_view_element_extension');
-    }
-
     function it_registers_view_element_functions()
     {
         $functions = $this->getFunctions();

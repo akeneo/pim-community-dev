@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
@@ -9,8 +11,6 @@ use Doctrine\ODM\MongoDB\Query\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Akeneo\Component\Versioning\Model\Version;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

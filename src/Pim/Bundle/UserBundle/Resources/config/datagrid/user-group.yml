@@ -2,6 +2,7 @@ datagrid:
     pim-user-group-grid:
         options:
             entityHint: group
+            manageFilters: false
         source:
             acl_resource: pim_user_group_index
             type: orm
@@ -57,5 +58,5 @@ datagrid:
         filters:
             columns:
                 name:
-                    type: string
+                    type: search
                     data_name: g.name

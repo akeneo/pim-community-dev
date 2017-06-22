@@ -17,13 +17,14 @@ define(
         'pim/user-context',
         'pim/common/property'
     ],
-    function (_,
-              __,
-              BaseForm,
-              template,
-              Routing,
-              UserContext,
-              propertyAccessor
+    function (
+        _,
+        __,
+        BaseForm,
+        template,
+        Routing,
+        UserContext,
+        propertyAccessor
     ) {
         return BaseForm.extend({
             template: _.template(template),

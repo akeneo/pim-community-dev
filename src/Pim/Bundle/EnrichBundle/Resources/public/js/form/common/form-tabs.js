@@ -18,13 +18,18 @@ define(
     function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknTabContainer tabbable tabs-top',
+
+            className: 'tabbable tabs-top',
+
             tabs: [],
-            fullPanel: false,
+
             urlParsed: false,
+
             events: {
                 'click header ul.nav-tabs li': 'selectTab'
             },
+
+            currentKey: 'current_form_tab',
 
             /**
              * {@inheritdoc}
@@ -41,9 +46,6 @@ define(
             configure: function () {
                 this.onExtensions('tab:register',  this.registerTab.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
-
-                window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -77,8 +79,7 @@ define(
                 this.$el.html(
                     this.template({
                         tabs: tabs,
-                        currentTab: this.getCurrentTab(),
-                        fullPanel: this.fullPanel
+                        currentTab: this.getCurrentTab()
                     })
                 );
                 this.delegateEvents();
@@ -89,7 +90,6 @@ define(
                     var zone = this.getZone('container');
                     zone.appendChild(currentTab.el);
                     this.renderExtension(currentTab);
-                    this.resize();
                 }
 
                 var panelsExtension = this.getExtension('panels');
@@ -116,16 +116,6 @@ define(
             },
 
             /**
-             * Resize the container to avoid multiple scrollbar
-             */
-            resize: function () {
-                var currentTab = this.getTabExtension(this.getCurrentTab());
-                if (currentTab && _.isFunction(currentTab.resize)) {
-                    currentTab.resize();
-                }
-            },
-
-            /**
              * Select a tab in the form-tabs
              *
              * @param {Event} event
@@ -143,12 +133,7 @@ define(
                 var needRender = false;
 
                 if (this.getCurrentTab() !== tab) {
-                    sessionStorage.setItem('current_form_tab', tab);
-                    needRender = true;
-                }
-
-                if (this.fullPanel) {
-                    this.fullPanel = false;
+                    sessionStorage.setItem(this.currentKey, tab);
                     needRender = true;
                 }
 
@@ -165,28 +150,7 @@ define(
              * @return {string}
              */
             getCurrentTab: function () {
-                return sessionStorage.getItem('current_form_tab');
-            },
-
-            /**
-             * Is the form-tabs in full panel mode ?
-             *
-             * @return {Boolean}
-             */
-            isFullPanel: function () {
-                return this.fullPanel;
-            },
-
-            /**
-             * Set the form tabs in full panel or not
-             *
-             * @param {Boolean} fullPanel
-             */
-            setFullPanel: function (fullPanel) {
-                if (this.fullPanel !== fullPanel) {
-                    this.fullPanel = fullPanel;
-                    this.render();
-                }
+                return sessionStorage.getItem(this.currentKey);
             },
 
             /**

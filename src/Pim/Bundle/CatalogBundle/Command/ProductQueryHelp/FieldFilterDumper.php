@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use Pim\Bundle\CatalogBundle\Command\DumperInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
-use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -30,7 +30,7 @@ class FieldFilterDumper implements DumperInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(OutputInterface $output, HelperSet $helperSet)
+    public function dump(OutputInterface $output)
     {
         $output->writeln("<info>Useable field filters...</info>");
 
@@ -43,8 +43,8 @@ class FieldFilterDumper implements DumperInterface
             }
         }
         $headers = ['field', 'operators', 'filter_class'];
-        $table = $helperSet->get('table');
+        $table = new Table($output);
         $table->setHeaders($headers)->setRows($rows);
-        $table->render($output);
+        $table->render();
     }
 }

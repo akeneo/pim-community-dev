@@ -7,9 +7,9 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\Xlsx\ProductAssociationReader;
 use Pim\Component\Connector\Reader\File\Xlsx\Reader;
-use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 
 class ProductAssociationReaderSpec extends ObjectBehavior
 {

@@ -45,7 +45,7 @@ services:
                 datagrid: product-grid
                 operation_group: mass-edit
                 acl: pim_enrich_product_change_state
-                form_type: pim_enrich_mass_change_status
+                form_type: '%pim_enrich.form.type.change_status.class%'
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
@@ -75,7 +75,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'add_product_value'
-            - 'pim_enrich_mass_classify'
+            - '%pim_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -89,7 +89,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'update_product_value'
-            - 'pim_enrich_mass_classify'
+            - '%pim_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -103,7 +103,7 @@ services:
         class: '%pim_enrich.mass_edit_action.classify.class%'
         arguments:
             - 'remove_product_value'
-            - 'pim_enrich_mass_classify'
+            - '%pim_enrich.form.type.classify.class%'
         tags:
             -
                 name: pim_enrich.mass_edit_action

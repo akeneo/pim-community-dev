@@ -7,7 +7,9 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Decorator\Common\DropdownMenuDecorator;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -25,19 +27,22 @@ class Base extends Page
     use ClosestTrait;
 
     protected $elements = [
-        'Body'             => ['css' => 'body'],
-        'Dialog'           => ['css' => 'div.modal'],
-        'Title'            => ['css' => '.AknTitleContainer-title'],
-        'Product title'    => ['css' => '.entity-title'],
-        'HeadTitle'        => ['css' => 'title'],
-        'Flash messages'   => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'   => ['css' => '.AknHeader-menus'],
-        'Container'        => ['css' => '#container'],
-        'Locales dropdown' => ['css' => '#locale-switcher'],
-        'Tabs'             => ['css' => '#form-navbar'],
-        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
-        'Form tabs'        => ['css' => '.nav-tabs.form-tabs'],
-        'Active tab'       => ['css' => '.form-horizontal .tab-pane.active'],
+        'Body'                   => ['css' => 'body'],
+        'Dialog'                 => ['css' => 'div.modal'],
+        'Title'                  => ['css' => '.AknTitleContainer-title'],
+        'Product title'          => ['css' => '.entity-title'],
+        'HeadTitle'              => ['css' => 'title'],
+        'Flash messages'         => ['css' => '.flash-messages-holder'],
+        'Navigation Bar'         => ['css' => '.AknHeader-menu'],
+        'Container'              => ['css' => '#container'],
+        'Locales dropdown'       => ['css' => '#locale-switcher'],
+        'Tabs'                   => ['css' => '#form-navbar'],
+        'Oro tabs'               => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
+        'Form tabs'              => ['css' => '.nav-tabs.form-tabs'],
+        'Active tab'             => ['css' => '.form-horizontal .tab-pane.active'],
+        'Column navigation link' => ['css' => '.column-navigation-link'],
+        'Current column link'    => ['css' => '.AknColumn-navigationLink--active'],
+        'Secondary actions'      => ['css' => '.secondary-actions', 'decorators' => [DropdownMenuDecorator::class]],
     ];
 
     /**
@@ -195,7 +200,7 @@ class Base extends Page
      */
     public function pressButton($locator, $forceVisible = false)
     {
-        $button = $this->spin(function () use ($locator, $forceVisible) {
+        $this->spin(function () use ($locator, $forceVisible) {
             $result = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
 
             if (null === $result) {
@@ -207,11 +212,12 @@ class Base extends Page
                     ]
                 );
             }
+            if (null !== $result) {
+                $result->click();
 
-            return $result;
+                return true;
+            }
         }, sprintf('Can not find any "%s" button', $locator));
-
-        $button->click();
     }
 
     /**
@@ -373,7 +379,7 @@ class Base extends Page
     public function clickOnAkeneoLogo()
     {
         $this->spin(function () {
-            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logo img');
+            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logoImage');
         }, 'Cannot find Akeneo logo')->click();
     }
 
@@ -386,10 +392,13 @@ class Base extends Page
     public function getDropdownButtonItem($item, $button)
     {
         $dropdownToggle = $this->spin(function () use ($button) {
-            return $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
-        }, sprintf('Dropdown button "%s" not found', $button));
+            $toggle = $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
+            if (null !== $toggle) {
+                $toggle->click();
 
-        $dropdownToggle->click();
+                return $toggle;
+            }
+        }, sprintf('Dropdown button "%s" not found', $button));
 
         $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 
@@ -453,22 +462,39 @@ class Base extends Page
     }
 
     /**
-     * Get the tabs in the current page
+     * @param string $tabName
      *
+     * @throws TimeoutException
+     */
+    public function visitColumnTab($tabName)
+    {
+        $this->spin(function () use ($tabName) {
+            foreach ($this->getColumnTabs() as $tab) {
+                if (trim($tab->getText()) === $tabName) {
+                    $tab->click();
+
+                    return true;
+                }
+            }
+
+            return null;
+        }, sprintf('Can not find any column tab named "%s"', $tabName));
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getCurrentColumnTab()
+    {
+        return $this->find('css', $this->elements['Current column link']['css']);
+    }
+
+    /**
      * @return NodeElement[]
      */
-    public function getTabs()
+    public function getColumnTabs()
     {
-        $tabs = $this->spin(function () {
-            return $this->find('css', $this->elements['Tabs']['css']);
-        }, sprintf('Cannot find "%s" tab', $this->elements['Tabs']['css']));
-
-        // Is this dead code?
-        if (null === $tabs) {
-            $tabs = $this->getElement('Oro tabs');
-        }
-
-        return $tabs->findAll('css', 'a');
+        return $this->findAll('css', $this->elements['Column navigation link']['css']);
     }
 
     /**
@@ -491,16 +517,6 @@ class Base extends Page
         }
 
         return $node;
-    }
-
-    /**
-     * Get the specified tab
-     *
-     * @return NodeElement
-     */
-    public function getTab($tab)
-    {
-        return $this->find('css', sprintf('a:contains("%s")', $tab));
     }
 
     /**

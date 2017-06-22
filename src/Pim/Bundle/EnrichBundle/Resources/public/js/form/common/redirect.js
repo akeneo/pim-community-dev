@@ -44,7 +44,6 @@ define(
 
                     this.$el.html(this.template({
                         label: __(this.config.label),
-                        iconName: this.config.iconName,
                         buttonClass: this.config.buttonClass || 'AknButton--action'
                     }));
                 }.bind(this));

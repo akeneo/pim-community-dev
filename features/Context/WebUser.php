@@ -7,14 +7,11 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
@@ -34,8 +31,8 @@ class WebUser extends RawMinkContext
 {
     use SpinCapableTrait;
     use ClosestTrait;
-    /* -------------------- Page-related methods -------------------- */
 
+    /* -------------------- Page-related methods -------------------- */
 
     /**
      * @param string $name
@@ -145,6 +142,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $tab
      *
+     * @Given /^I visit the "([^"]*)" column tab$/
+     */
+    public function iVisitTheColumnTab($tab)
+    {
+        return $this->getCurrentPage()->visitColumnTab($tab);
+    }
+
+    /**
+     * @param string $tab
+     *
      * @throws ExpectationException
      *
      * @Then /^I should be on the "([^"]*)" tab$/
@@ -162,6 +169,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $tabName
+     *
+     * @Then /^I should be on the "([^"]*)" column tab$/
+     */
+    public function iShouldBeOnTheColumnTab($tabName)
+    {
+        $this->spin(function () use ($tabName) {
+            $tab = $this->getCurrentPage()->getCurrentColumnTab($tabName);
+
+            return null !== $tab && $tabName === trim($tab->getText());
+        }, sprintf('Failed to check current column tab is "%s"', $tabName));
+    }
+
+    /**
      * @Then /^I should see the "([^"]*)" tab$/
      */
     public function iShouldSeeTheTab($tab)
@@ -170,6 +191,32 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param $not     string|null
+     * @param $tabName string
+     *
+     * @Then /^I should (?P<not>not )?see the "(?P<tabName>[^"]*)" column tab$/
+     */
+    public function iShouldSeeTheColumnTab($tabName, $not = null)
+    {
+        $this->spin(function () use ($not, $tabName) {
+            $found = false;
+            foreach ($this->getCurrentPage()->getColumnTabs() as $tab) {
+                if (trim($tab->getText()) === $tabName) {
+                    $found = true;
+                }
+            }
+
+            if (!$not) {
+                return $found;
+            } else {
+                return !$found;
+            }
+        }, sprintf('Expected to %ssee the "%s" column tab', $not, $tabName));
+    }
+
+    /**
+     * @param string $tab
+     *
      * @Then /^I should not see the "([^"]*)" tab$/
      */
     public function iShouldNotSeeTheTab($tab)
@@ -178,35 +225,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I open the history$/
+     * @param string $expectedCount
      *
-     * @throws ExpectationException
-     */
-    public function iOpenTheHistory()
-    {
-        $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
-        $this->getMainContext()->spin(function () {
-            $fullPanel = $this->getCurrentPage()->find(
-                'css',
-                '.AknTabContainer-contentThreeColumns.AknTabContainer-contentThreeColumns--fullPanel'
-            );
-
-            if ((null === $fullPanel) || !$fullPanel->isVisible()) {
-                $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
-                if (null !== $expandHistory && $expandHistory->isVisible()) {
-                    $expandHistory->click();
-                }
-
-                return false;
-            }
-
-            return true;
-        }, 'Cannot expand history');
-
-        $this->wait();
-    }
-
-    /**
      * @Then /^I should see (\d+) versions in the history$/
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
@@ -222,13 +242,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $group
+     * @param string      $group
+     * @param string|null $type
      *
-     * @Given /^I visit the "([^"]*)" group$/
+     * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
      */
-    public function iVisitTheGroup($group)
+    public function iVisitTheGroup($group, $type)
     {
-        $this->getCurrentPage()->visitGroup($group);
+        $this->getCurrentPage()->visitGroup($group, ucfirst($type));
+    }
+
+    /**
+     * @param string $type
+     *
+     * @Given /^I open the (group|association type|tree) selector$/
+     */
+    public function iOpenTheGroup($type)
+    {
+        $this->getCurrentPage()->openGroupSelector(ucfirst($type));
     }
 
     /**
@@ -251,9 +282,7 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
-        $tab = $this->spin(function () use ($tabName) {
-            return $this->getCurrentPage()->getTab($tabName);
-        }, sprintf('Tab "%s" not found', $tabName));
+        $tab = $this->getCurrentPage()->getTab($tabName);
 
         $this->spin(function () use ($tab, $expectedErrorsCount) {
             return $this->getTabErrorsCount($tab) === intval($expectedErrorsCount);
@@ -287,7 +316,13 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleShouldBeSelected($locale)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->hasSelectedLocale($locale);
+        $this->spin(function () use ($locale) {
+            return $this->getCurrentPage()->getElement('Main context selector')->getSelectedLocale() === $locale;
+        }, sprintf(
+            'Expected to have locale "%s", found "%s"',
+            $locale,
+            $this->getCurrentPage()->getElement('Main context selector')->getSelectedLocale()
+        ));
     }
 
     /**
@@ -1129,7 +1164,7 @@ class WebUser extends RawMinkContext
      * @When /^I remove the "([^"]*)" attribute$/
      *
      * @throws ExpectationException
-     * @throws \Behat\Mink\Exception\ElementNotFoundException
+     * @throws ElementNotFoundException
      */
     public function iRemoveTheAttribute($field)
     {
@@ -1636,21 +1671,6 @@ class WebUser extends RawMinkContext
         }, sprintf('Cannot click on item %s ', $item));
 
         $this->wait();
-    }
-
-    /**
-     * @When /^I save and back to the grid$/
-     */
-    public function iSaveAndBackToTheGrid()
-    {
-        $this->spin(function () {
-            $this
-                ->getCurrentPage()
-                ->getSaveAndBackButton()
-                ->click();
-
-            return true;
-        }, 'Cannot click on the back to the grid button');
     }
 
     /**
@@ -2251,7 +2271,6 @@ class WebUser extends RawMinkContext
      *
      * @return array
      *
-     *
      * @Given /^I should see the following product comments:$/
      */
     public function iShouldSeeTheFollowingProductComments(TableNode $table)
@@ -2586,6 +2605,24 @@ class WebUser extends RawMinkContext
         } else {
             assertEquals((int) $expectedCount, count($items));
         }
+    }
+
+    /**
+     * @When /^I collapse the column$/
+     */
+    public function iCollapseTheColumn()
+    {
+        $this->spin(function () {
+            $collapseButtons = $this->getCurrentPage()->findAll('css', '.AknColumn-collapseButton');
+
+            foreach ($collapseButtons as $collapseButton) {
+                if ($collapseButton->isVisible()) {
+                    $collapseButton->click();
+                }
+            }
+
+            return null !== $this->getCurrentPage()->find('css', '.AknColumn--collapsed');
+        }, 'Could not collapse the column');
     }
 
     /**

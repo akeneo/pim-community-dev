@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
 use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;

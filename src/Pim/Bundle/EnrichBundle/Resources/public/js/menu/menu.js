@@ -10,14 +10,25 @@
 define(
     [
         'underscore',
-        'pim/form'
+        'pim/form',
+        'pim/template/menu/menu'
     ],
     function (
         _,
-        BaseForm
+        BaseForm,
+        template
     ) {
         return BaseForm.extend({
-            tagName: 'ul',
-            className: 'AknMainMenu'
+            className: 'AknHeader',
+            template: _.template(template),
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                this.$el.empty().append(this.template());
+
+                return BaseForm.prototype.render.apply(this, arguments);
+            }
         });
     });

@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
 
 /**
  * Text attribute type
@@ -22,11 +24,11 @@ class TextType extends AbstractAttributeType
         $properties = parent::defineCustomAttributeProperties($attribute) + [
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
-                'fieldType' => 'text'
+                'fieldType' => FormTextType::class
             ],
             'validationRule' => [
                 'name'      => 'validationRule',
-                'fieldType' => 'choice',
+                'fieldType' => ChoiceType::class,
                 'options'   => [
                     'choices' => [
                         null     => 'None',

@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\TextAreaNormalizer;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -63,7 +63,7 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
         return [
             [
                 'defaultOptions' => [
-                    'field_type' => DateTimeRangeType::NAME,
+                    'field_type' => DateTimeRangeType::class,
                 ]
             ]
         ];

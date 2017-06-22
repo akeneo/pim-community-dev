@@ -63,4 +63,4 @@ Feature: Filter products per option
     When I show the filter "color"
     And I filter by "color" with operator "in list" and value "Black, White"
     And I reload the page
-    Then I should see the text "Color: \"[Black], [White]\""
+    Then the criteria of "color" filter should be ""[Black], [White]""

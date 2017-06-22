@@ -245,8 +245,7 @@ services:
 
     pim_catalog.repository.product:
         class: '%pim_catalog.repository.product.class%'
-        factory_service: pim_catalog.object_manager.product
-        factory_method: getRepository
+        factory: 'pim_catalog.object_manager.product:getRepository'
         arguments: ['%pim_catalog.entity.product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]

@@ -56,7 +56,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             $property = $this->getIdPropertyPathFromEntityManager($em, $className);
         }
         $this->property = $property;
-        $this->propertyAccessor = PropertyAccess::getPropertyAccessor();
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->propertyPath = new PropertyPath($this->property);
         if (null !== $queryBuilderCallback && !is_callable($queryBuilderCallback)) {
             throw new UnexpectedTypeException($queryBuilderCallback, 'callable');

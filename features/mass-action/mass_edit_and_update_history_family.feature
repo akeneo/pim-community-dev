@@ -41,17 +41,17 @@ Feature: Update product history when mass editing products
     And I move on to the next step
     And I wait for the "change-family" mass-edit job to finish
     When I edit the "boots" product
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
       | 2       | family   | sandals |
     When I edit the "sneakers" product
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
       | 2       | family   | sandals |
     When I edit the "sandals" product
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 1 update

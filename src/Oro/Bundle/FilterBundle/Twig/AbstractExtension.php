@@ -29,12 +29,4 @@ abstract class AbstractExtension extends \Twig_Extension
     {
         $this->templateName = $templateName;
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return static::NAME;
-    }
 }

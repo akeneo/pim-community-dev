@@ -60,5 +60,5 @@ Feature: Filter products per family
       | code21 | code21fr    | code21en    | code21de    |
     And I am on the products page
     And I should see the filter family
-    When I press the "Family:" button
+    When I open the "family" filter
     Then I should see 20 items in the autocomplete

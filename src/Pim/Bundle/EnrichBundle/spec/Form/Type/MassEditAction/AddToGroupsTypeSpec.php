@@ -3,8 +3,12 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,19 +18,19 @@ class AddToGroupsTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $groupRepository,
-            'Pim\CatalogBundle\Model\Group',
-            'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\AddToGroups'
+            Group::class,
+            AddToGroups::class
         );
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_mass_add_to_groups');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_mass_add_to_groups');
     }
 
     function it_sets_default_options(
@@ -40,7 +44,7 @@ class AddToGroupsTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\AddToGroups',
+                'data_class' => AddToGroups::class,
                 'groups' => [$minimalGroup, $progressiveGroup],
             ]
         )->shouldHaveBeenCalled();
@@ -54,9 +58,9 @@ class AddToGroupsTypeSpec extends ObjectBehavior
 
         $builder->add(
             'groups',
-            'entity',
+            EntityType::class,
             [
-                'class'    => 'Pim\CatalogBundle\Model\Group',
+                'class'    => Group::class,
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,

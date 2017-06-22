@@ -41,14 +41,6 @@ class AttributeExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'pim_localization.twig.attribute_extension';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [

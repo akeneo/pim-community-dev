@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.user.title
 
+    pim-user-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-user-user
+
     pim-user-index-grid:
         module: pim/form/common/index/grid
         parent: pim-user-index
@@ -19,7 +27,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_user_create
         config:
-            iconName: plus
             label: pim_enrich.index.user.create_btn
             route: oro_user_create
             buttonClass: AknButton--apply

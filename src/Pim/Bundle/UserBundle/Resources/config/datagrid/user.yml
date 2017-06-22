@@ -3,6 +3,7 @@ datagrid:
         extended_entity_name: '%oro_user.entity.class%'
         options:
             entityHint: user
+            manageFilters: false
         source:
             acl_resource: pim_user_user_index
             type: orm
@@ -81,7 +82,7 @@ datagrid:
         filters:
             columns:
                 username:
-                    type: string
+                    type: search
                     data_name: u.username
                 email:
                     type: string

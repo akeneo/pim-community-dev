@@ -16,7 +16,6 @@ framework:
     validation:
         enable_annotations: true
         enabled: true
-        api: 2.5
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~

@@ -10,7 +10,7 @@ class CeilExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            'ceil' => new \Twig_Filter_Method($this, 'ceil'),
+            new \Twig_SimpleFilter('ceil', array($this, 'ceil')),
         ];
     }
 
@@ -23,13 +23,5 @@ class CeilExtension extends \Twig_Extension
     public function ceil($number)
     {
         return ceil($number);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_ceil';
     }
 }

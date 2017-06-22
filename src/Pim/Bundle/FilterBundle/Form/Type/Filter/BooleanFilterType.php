@@ -25,7 +25,7 @@ class BooleanFilterType extends AbstractChoiceType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -35,7 +35,7 @@ class BooleanFilterType extends AbstractChoiceType
      */
     public function getParent()
     {
-        return ChoiceFilterType::NAME;
+        return ChoiceFilterType::class;
     }
 
     /**

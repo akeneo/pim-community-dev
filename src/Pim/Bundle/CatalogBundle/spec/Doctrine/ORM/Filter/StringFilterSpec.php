@@ -7,7 +7,9 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -25,7 +27,7 @@ class StringFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()
@@ -57,7 +59,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -76,7 +78,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -95,7 +97,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -114,7 +116,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->andWhere(Argument::any())->willReturn('p');
 
@@ -135,7 +137,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
@@ -159,7 +161,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn($expr);
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $expr->literal('')->shouldBeCalled()->willReturn($literal);
         $expr->isNotNull(Argument::type('string'))->shouldBeCalled();
@@ -185,7 +187,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn(new Expr());
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
 
         $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
         $queryBuilder->andWhere(Argument::any())->shouldBeCalled();
@@ -211,7 +213,7 @@ class StringFilterSpec extends ObjectBehavior
         $sku->isScopable()->willReturn(false);
 
         $queryBuilder->expr()->willReturn($expr);
-        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->getRootAliases()->willReturn(['p']);
         $expr->literal('My Sku')->willReturn($literal);
         $expr->notLike(Argument::any(), 'My Sku')->shouldBeCalled()->willReturn($comp);
         $literal->__toString()->willReturn('My Sku');
@@ -232,7 +234,7 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $this->shouldThrow(InvalidPropertyTypeException::stringExpected(
             'attributeCode',
-            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter',
+            StringFilter::class,
             123
         ))->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
@@ -246,7 +248,7 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($attribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter', $e)
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', StringFilter::class, $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
 
@@ -259,7 +261,7 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attrValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
         $this->shouldThrow(
-            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter', $e)
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', StringFilter::class, $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, 'en_US', 'ecommerce', ['field' => 'attributeCode']]);
     }
 
@@ -272,7 +274,7 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
         $this->shouldThrow(
-            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter', $e)
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', StringFilter::class, $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, 'uz-UZ', 'ecommerce', ['field' => 'attributeCode']]);
     }
 
@@ -287,7 +289,7 @@ class StringFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter', $e)
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', StringFilter::class, $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
 
@@ -302,7 +304,7 @@ class StringFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter', $e)
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', StringFilter::class, $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, 'ecommerce', ['field' => 'attributeCode']]);
     }
 
@@ -317,7 +319,7 @@ class StringFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter', $e)
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', StringFilter::class, $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, 'ecommerce', ['field' => 'attributeCode']]);
     }
 }

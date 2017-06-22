@@ -66,14 +66,14 @@ Feature: Display the completeness of a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values         | ratio |
       | mobile  | en_US  | success |                        | 100%  |
       | mobile  | fr_FR  | success |                        | 100%  |
       | tablet  | fr_FR  | warning | Description, Side view | 77%   |
     When I am on the "sandals" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                 | ratio |
       | mobile  | en_US  | warning | Name, Price, Size              | 40%   |

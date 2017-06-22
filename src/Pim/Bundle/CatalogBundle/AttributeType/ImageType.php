@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\UIBundle\Form\Type\NumberType as FormNumberType;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -22,7 +23,7 @@ class ImageType extends AbstractAttributeType
         return parent::defineCustomAttributeProperties($attribute) + [
             'maxFileSize' => [
                 'name'      => 'maxFileSize',
-                'fieldType' => 'pim_number',
+                'fieldType' => FormNumberType::class,
             ],
             'allowedExtensions' => [
                 'name'    => 'allowedExtensions',

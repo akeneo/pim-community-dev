@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -27,7 +30,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @var string
      */
-    protected $formType = 'text';
+    protected $formType = FormTextType::class;
 
     /**
      * Constructor
@@ -77,7 +80,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
         $types = [];
 
         foreach ($properties as $property) {
-            $fieldType = 'text';
+            $fieldType = FormTextType::class;
             if (isset($property['fieldType'])) {
                 $fieldType = $property['fieldType'];
             }
@@ -122,7 +125,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
         return [
             'localizable' => [
                 'name'      => 'localizable',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -130,11 +133,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             ],
             'availableLocales' => [
                 'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
+                'fieldType' => AvailableLocalesType::class
             ],
             'scopable' => [
                 'name'      => 'scopable',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -142,7 +145,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             ],
             'unique' => [
                 'name'      => 'unique',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'disabled'  => true,
                     'read_only' => true

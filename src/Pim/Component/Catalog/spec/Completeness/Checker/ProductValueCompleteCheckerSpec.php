@@ -3,11 +3,11 @@
 namespace spec\Pim\Component\Catalog\Completeness\Checker;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 
 class ProductValueCompleteCheckerSpec extends ObjectBehavior
 {

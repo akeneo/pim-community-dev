@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;

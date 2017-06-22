@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\UIBundle\Form\Type\NumberType as FormNumberType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -22,11 +24,11 @@ class OptionSimpleSelectType extends AbstractAttributeType
         return parent::defineCustomAttributeProperties($attribute) + [
             'minimumInputLength' => [
                 'name'      => 'minimumInputLength',
-                'fieldType' => 'pim_number'
+                'fieldType' => FormNumberType::class
             ],
             'autoOptionSorting' => [
                 'name'      => 'autoOptionSorting',
-                'fieldType' => 'switch',
+                'fieldType' => SwitchType::class,
                 'options'   => [
                     'label'         => 'Automatic option sorting',
                     'property_path' => 'properties[autoOptionSorting]',

@@ -15,7 +15,7 @@ Feature: Change user locale
      | UI locale | French (France) |
     And I save the user
     Then I should see the flash message "Utilisateur enregistré"
-    And I should see the text "Collecter"
+    And I should see the text "Langue de l'interface"
 
   Scenario: Successfully change Mary's locale
     Given I edit the "mary" user

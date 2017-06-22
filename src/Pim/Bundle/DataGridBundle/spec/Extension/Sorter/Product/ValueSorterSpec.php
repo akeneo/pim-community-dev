@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 class ValueSorterSpec extends ObjectBehavior

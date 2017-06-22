@@ -195,7 +195,7 @@ abstract class AbstractMassEditController
                 ->getSession()
                 ->getFlashBag()
                 ->add(
-                    'success',
+                    'info',
                     new Message(sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias))
                 );
 

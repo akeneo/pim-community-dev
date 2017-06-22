@@ -27,14 +27,6 @@ class AclGroupsExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'pim_acl_groups_extension';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [

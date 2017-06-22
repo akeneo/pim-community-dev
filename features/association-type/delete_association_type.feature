@@ -17,7 +17,7 @@ Feature: Delete an association type
 
   Scenario: Successfully delete a association type from the edit page
     Given I edit the "UPSELL" association type
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then the grid should contain 3 elements
     And I should not see association type UPSELL

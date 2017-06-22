@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Mass action controller for edit and delete actions
@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MassActionController
 {
-    /** @var Request $request */
-    protected $request;
+    /** @var RequestStack $requestStack */
+    protected $requestStack;
 
     /**
      * @var MassActionDispatcher
@@ -26,12 +26,12 @@ class MassActionController
     /**
      * Constructor
      *
-     * @param Request              $request
+     * @param RequestStack         $requestStack
      * @param MassActionDispatcher $massActionDispatcher
      */
-    public function __construct(Request $request, MassActionDispatcher $massActionDispatcher)
+    public function __construct(RequestStack $requestStack, MassActionDispatcher $massActionDispatcher)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->massActionDispatcher = $massActionDispatcher;
     }
 
@@ -42,7 +42,7 @@ class MassActionController
      */
     public function massActionAction()
     {
-        $response = $this->massActionDispatcher->dispatch($this->request);
+        $response = $this->massActionDispatcher->dispatch($this->requestStack->getCurrentRequest());
 
         $data = [
             'successful' => $response->isSuccessful(),

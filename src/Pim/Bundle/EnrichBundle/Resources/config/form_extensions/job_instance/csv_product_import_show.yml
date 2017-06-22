@@ -2,6 +2,13 @@ extensions:
     pim-job-instance-csv-product-import-show:
         module: pim/form/common/edit-form
 
+    pim-job-instance-csv-product-import-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-product-import-show
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-imports
+
     pim-job-instance-csv-product-import-show-tabs:
         module: pim/form/common/form-tabs
         parent: pim-job-instance-csv-product-import-show
@@ -211,22 +218,12 @@ extensions:
         targetZone: meta
         position: 100
 
-    pim-job-instance-csv-product-import-show-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-job-instance-csv-product-import-show
-        targetZone: back
-        aclResourceId: pim_importexport_import_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_import_profile_index
-
     pim-job-instance-csv-product-import-show-edit:
         module: pim/common/redirect
         parent: pim-job-instance-csv-product-import-show
         targetZone: buttons
         position: 100
         config:
-            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
             identifier:

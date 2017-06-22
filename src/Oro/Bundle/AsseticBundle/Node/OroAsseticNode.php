@@ -160,9 +160,9 @@ class OroAsseticNode extends \Twig_Node
     {
         return new \Twig_Node_Expression_Function(
             version_compare(\Twig_Environment::VERSION, '1.2.0-DEV', '<')
-            ? new \Twig_Node_Expression_Name('path', $this->getLine()) : 'path',
-            new \Twig_Node([new \Twig_Node_Expression_Constant('_assetic_' . $name, $this->getLine())]),
-            $this->getLine()
+            ? new \Twig_Node_Expression_Name('path', $this->getTemplateLine()) : 'path',
+            new \Twig_Node([new \Twig_Node_Expression_Constant('_assetic_' . $name, $this->getTemplateLine())]),
+            $this->getTemplateLine()
         );
     }
 }

@@ -2,6 +2,8 @@ datagrid:
     job-execution-grid:
         source:
             type: pim_datasource_job_execution
+        options:
+            manageFilters: false
         columns:
             code:
                 label:     Code
@@ -65,7 +67,7 @@ datagrid:
                     type:      string
                     data_name: j.code
                 label:
-                    type:      string
+                    type:      search
                     data_name: j.label
                 job_name:
                     type:      choice

@@ -14,10 +14,9 @@ use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
-use Pim\Behat\Context\Domain\Enrich\PanelContext;
-use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\SecondaryActionsContext;
 use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
 use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
@@ -73,9 +72,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-xlsx-files', new XlsxFileContext());
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-pagination-grid', new GridPaginationContext());
-        $this->useContext('domain-panel', new PanelContext());
-        $this->useContext('domain-product-association-tab', new AssociationTabContext());
         $this->useContext('domain-tree', new TreeContext());
+        $this->useContext('domain-secondary-actions', new SecondaryActionsContext());
         $this->useContext('domain-variant-group', new VariantGroupContext());
         $this->useContext('domain-group', new ProductGroupContext());
         $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
@@ -224,7 +222,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 "document.readyState == 'complete'",           // Page is ready
                 "typeof $ != 'undefined'",                     // jQuery is loaded
                 "!$.active",                                   // No ajax request is active
-                "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
+                "$('#page').css('display') != 'none'",         // Page is displayed (no progress bar)
                 // Page is not loading (no black mask loading page)
                 "($('.hash-loading-mask .loading-mask').length == 0 || $('.hash-loading-mask .loading-mask').css('display') == 'none')",
                 "$('.jstree-loading').length == 0",            // Jstree has finished loading

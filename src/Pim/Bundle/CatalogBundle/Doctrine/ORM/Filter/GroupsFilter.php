@@ -34,7 +34,7 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
         }
 
-        $rootAlias = $this->qb->getRootAlias();
+        $rootAlias = current($this->qb->getRootAliases());
         $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
@@ -79,7 +79,7 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
         $notInQb->select($notInAlias . '.code')
             ->from($rootEntity, $notInAlias, $notInAlias . '.code')
             ->innerJoin(
-                sprintf('%s.%s', $notInQb->getRootAlias(), $field),
+                sprintf('%s.%s', current($notInQb->getRootAliases()), $field),
                 $joinAlias
             )
             ->where($notInQb->expr()->in($joinAlias . '.code', $value));

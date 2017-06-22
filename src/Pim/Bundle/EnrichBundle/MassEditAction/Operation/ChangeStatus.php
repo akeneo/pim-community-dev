@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType;
+
 /**
  * Mass edit operation to change products status
  *
@@ -47,7 +49,7 @@ class ChangeStatus extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_change_status';
+        return ChangeStatusType::class;
     }
 
     /**

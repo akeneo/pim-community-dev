@@ -17,7 +17,8 @@ Feature: Create an import
       | Label | Products import       |
       | Job   | Product import in CSV |
     And I press the "Save" button
-    Then I click back to grid
+    And I should not see the text "There are unsaved changes"
+    And I am on the imports page
     And the grid should contain 2 element
     And I should see import profile PRODUCT_IMPORT
 

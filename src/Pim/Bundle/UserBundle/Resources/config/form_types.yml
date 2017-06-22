@@ -18,11 +18,10 @@ services:
             - { name: form.type, alias: pim_acl_access_level_selector }
 
     pim_user.form.type.user:
-        scope: request
         class: '%pim_user.form.type.user.class%'
         arguments:
             - '@security.token_storage'
-            - '@request'
+            - '@request_stack'
             - '@pim_user.form.subscriber.user_preferences'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'

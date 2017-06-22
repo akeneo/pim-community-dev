@@ -57,7 +57,7 @@ define(
                             data: JSON.stringify(form.getFormData())
                         }).done(function (option) {
                             modal.close();
-                            messenger.notificationFlashMessage(
+                            messenger.notify(
                                 'success',
                                 _.__('pim_enrich.form.attribute_option.flash.option_created')
                             );
@@ -72,7 +72,7 @@ define(
                                     })
                                 );
                             } else {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
                                 );

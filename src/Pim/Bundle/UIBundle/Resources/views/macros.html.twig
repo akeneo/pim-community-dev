@@ -52,11 +52,8 @@
 #}
 {% macro button(parameters) %}
     <a href="#{{ parameters.path }}"
-       class="AknButton{% if parameters.iClass is defined %} AknButton--withIcon{% endif %} {{ parameters.aClass is defined? parameters.aClass : '' }}"
+       class="AknButton {{ parameters.aClass is defined? parameters.aClass : '' }}"
        title="{{ parameters.title|trans }}">
-        {% if parameters.iClass is defined %}
-            <i class="AknButton-icon {{ parameters.iClass }}" ></i>
-        {% endif %}
         {{ parameters.label|trans }}
     </a>
 {% endmacro %}
@@ -75,7 +72,7 @@
         ]
 #}
 {% macro deleteButton(parameters) %}
-    <a href="javascript: void(0);" class="AknButton AknButton--important AknButton--withIcon {{ parameters.aCss is defined? parameters.aCss : '' }}"
+    <a href="javascript: void(0);" class="AknButton AknButton--important {{ parameters.aCss is defined? parameters.aCss : '' }}"
         {% if (parameters.id is defined) %}
             id="{{ parameters.id }}"
         {% endif %}
@@ -98,7 +95,7 @@
         {% if (parameters.title is defined) %}
             title="{{ parameters.title|trans }}"
         {% endif %}
-        ><i class="AknButton-icon icon-trash"></i>{{ parameters.label|trans -}}
+        >{{ parameters.label|trans -}}
     </a>
 {% endmacro %}
 
@@ -114,9 +111,8 @@
 {% macro buttonType(parameters) %}
     <button
             type="{{ parameters.type }}"
-            class="AknButton{% if (parameters.iClass is defined) %} AknButton--withIcon{% endif %}{% if (parameters.class is defined) %} {{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
+            class="AknButton{% if (parameters.class is defined) %} {{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
             {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
-        {% if (parameters.iClass is defined) %}<i class="AknButton-icon {{ parameters.iClass }}"></i>{% endif %}
         {{ parameters.label|trans }}
     </button>
 {% endmacro %}

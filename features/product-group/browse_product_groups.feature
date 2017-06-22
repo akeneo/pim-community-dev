@@ -4,7 +4,7 @@ Feature: Browse product groups
   As a product manager
   I need to be able to see product groups
 
-  Scenario: Successfully view, sort and filter product groups
+  Background:
     Given the "default" catalog configuration
     And the following attributes:
       | code  | label-en_US | type                     | group |
@@ -25,9 +25,22 @@ Feature: Browse product groups
     And I should see the columns Code, Label and Type
     And I should see groups CROSS_SELL_1 and CROSS_SELL_2
     And the rows should be sorted ascending by Code
+
+  Scenario: Successfully sort product groups
     And I should be able to sort the rows by Code, Label and Type
-    And I should be able to use the following filters:
-      | filter | operator | value      | result                        |
-      | code   | contains | 2          | CROSS_SELL_2                  |
-      | label  | contains | Cross      | CROSS_SELL_1                  |
-      | type   |          | Cross sell | CROSS_SELL_1 and CROSS_SELL_2 |
+
+  Scenario Outline: Successfully filter product groups
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    Then I should see entities <result>
+
+    Examples:
+      | filter | operator | value      | result                        | count |
+      | code   | contains | 2          | CROSS_SELL_2                  | 1     |
+      | type   |          | Cross sell | CROSS_SELL_1 and CROSS_SELL_2 | 2     |
+
+  Scenario: Successfully search on label
+    When I search "Cross"
+    Then the grid should contain 1 element
+    Then I should see entity CROSS_SELL_1

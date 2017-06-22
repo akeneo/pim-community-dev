@@ -3,7 +3,13 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeGroupType;
+use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,17 +17,17 @@ class AttributeGroupTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Entity\AttributeGroup');
+        $this->beConstructedWith(AttributeGroup::class);
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_attributegroup');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_attributegroup');
     }
 
     function it_builds_form(FormBuilderInterface $builder)
@@ -29,16 +35,16 @@ class AttributeGroupTypeSpec extends ObjectBehavior
         $builder->add('code')->willReturn($builder);
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             [
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
+                'translation_class' => AttributeGroupTranslation::class,
+                'entity_class'      => AttributeGroup::class,
                 'property_path'     => 'translations'
             ]
         )->willReturn($builder);
 
-        $builder->add('sort_order', 'hidden')->willReturn($builder);
+        $builder->add('sort_order', HiddenType::class)->willReturn($builder);
         $builder->addEventSubscriber(new DisableFieldSubscriber('code'))->shouldBeCalled();
 
         $this->buildForm($builder, []);
@@ -50,7 +56,7 @@ class AttributeGroupTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup',
+                'data_class' => AttributeGroup::class,
             ]
         )->shouldHaveBeenCalled();
     }

@@ -23,7 +23,7 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'AknTabContainer-content attributes',
+            className: 'attributes',
             template: _.template(template),
 
             /**

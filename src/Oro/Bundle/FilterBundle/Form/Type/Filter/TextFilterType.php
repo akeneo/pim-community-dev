@@ -3,6 +3,7 @@
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -31,7 +32,7 @@ class TextFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -41,7 +42,7 @@ class TextFilterType extends AbstractType
      */
     public function getParent()
     {
-        return FilterType::NAME;
+        return FilterType::class;
     }
 
     /**
@@ -59,7 +60,7 @@ class TextFilterType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'field_type'       => 'text',
+                'field_type'       => TextType::class,
                 'operator_choices' => $choices,
             ]
         );

@@ -25,8 +25,6 @@ define(
               securityContext
     ) {
         return BaseForm.extend({
-            tagName: 'a',
-            className: 'AknButtonList',
             template: _.template(template),
 
             /**

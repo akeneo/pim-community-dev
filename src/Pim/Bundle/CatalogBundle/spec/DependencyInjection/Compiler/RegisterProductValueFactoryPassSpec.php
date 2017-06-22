@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueFactoryPass;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueFactoryPass;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

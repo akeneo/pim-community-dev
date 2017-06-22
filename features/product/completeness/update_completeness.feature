@@ -24,19 +24,19 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully update the completeness at product save
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values         | ratio |
       | mobile  | en_US  | success |                        | 100%  |
       | tablet  | en_US  | warning | Side view              | 88%   |
       | mobile  | fr_FR  | success |                        | 100%  |
       | tablet  | fr_FR  | warning | Description, Side view | 77%   |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
     Then I should be on the product "sneakers" edit page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
       | mobile  | en_US  | success |                | 100%  |

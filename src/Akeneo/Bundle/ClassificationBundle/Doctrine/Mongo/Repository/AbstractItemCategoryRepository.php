@@ -163,7 +163,7 @@ abstract class AbstractItemCategoryRepository implements
         $categoryIds = [];
 
         if (null !== $categoryQb) {
-            $categoryAlias = $categoryQb->getRootAlias();
+            $categoryAlias = current($categoryQb->getRootAliases());
             $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
         } else {
             $categories = [['id' => $category->getId()]];

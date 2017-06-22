@@ -21,7 +21,7 @@ Feature: Leave a comment on a product
   Scenario: Successfully add a new comment on a product
     Given I am logged in as "Julia"
     And I am on the "rangers" product page
-    And I open the "Comments" panel
+    And I visit the "Comments" column tab
     Then I should see "No comment for now"
     When I add a new comment "My comment"
     Then I should not see "No comment for now"
@@ -32,7 +32,7 @@ Feature: Leave a comment on a product
   Scenario: View the list of comments on a product
     Given I am logged in as "Julia"
     And I am on the "high-heels" product page
-    And I open the "Comments" panel
+    And I visit the "Comments" column tab
     Then I should see the following product comments:
       | product    | # | author | message                                                        | parent |
       | high-heels | 1 | Mary   | The price is outdated.                                         |        |
@@ -44,7 +44,7 @@ Feature: Leave a comment on a product
   Scenario: Successfully reply to an existing comment
     Given I am logged in as "Julia"
     And I am on the "high-heels" product page
-    And I open the "Comments" panel
+    And I visit the "Comments" column tab
     When I reply to the comment "Should be associated with red heel." of "Mary" with "No, with black heels."
     Then I should see the following product comments:
       | product    | # | author | message                                                        | parent |
@@ -58,7 +58,7 @@ Feature: Leave a comment on a product
   Scenario: Successfully remove my own comments
     Given I am logged in as "Julia"
     And I am on the "rangers" product page
-    And I open the "Comments" panel
+    And I visit the "Comments" column tab
     And I add a new comment "My comment"
     When I delete the "My comment" comment
     Then I should see "Confirm deletion"
@@ -68,7 +68,7 @@ Feature: Leave a comment on a product
   Scenario: Not being able to remove a comment that is not mine
     Given I am logged in as "Julia"
     And I am on the "high-heels" product page
-    And I open the "Comments" panel
+    And I visit the "Comments" column tab
     Then I should not see the link to delete the "Should be associated with red heel." comment of "Mary"
 
   Scenario: Not being able to view comments if I don't have the permission

@@ -11,11 +11,6 @@ class StyleExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pim_ui_style_extension');
-    }
-
     function it_defines_filters()
     {
         $filters = $this->getFilters();

@@ -79,14 +79,6 @@ class TranslationsExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_translations_extension';
-    }
-
-    /**
      * Get user's locale
      *
      * @return string

@@ -12,18 +12,17 @@
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
-  padding: 0 @AknButtonsPadding;
-  border-radius: 2px;
+  padding: 0 @AknDefaultButtonSize/2;
+  border-radius: 100px;
   border: none;
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
-  transition: background 0.1s ease;
+  transition:
+    background 0.1s ease,
+    color 0.1s ease,
+    border-color 0.1s ease;
   position: relative;
-
-  &--withIcon {
-    padding-left: @AknButtonsPadding + @AknDefaultButtonSize;
-  }
 
   &:hover,
   &--active {
@@ -32,25 +31,7 @@
   }
 
   &-icon {
-    height: @AknDefaultButtonSize;
-    width: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
-    background: darken(@AknLightGray, @darken);
-    margin-right: @AknButtonsPadding;
-    position: absolute;
-    top: 0;
-    left: 0;
-    text-align: center;
-    margin-left: 0;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    display: inline-block !important; // Used for preemption of .icon class
-  }
-
-  &--disabled,
-  &--disabled &-icon {
-    background: lighten(@AknLightGray, @lighten);
-    cursor: not-allowed;
+    display: none !important; // Used for preemption of .icon class
   }
 
   // Apply color
@@ -60,14 +41,12 @@
   }
 
   &--apply:hover,
-  &--apply&--active,
-  &--apply &-icon {
+  &--apply&--active {
     background: darken(@AknGreen, @darken);
     color: white;
   }
 
-  &--apply&--disabled,
-  &--apply&--disabled &-icon {
+  &--apply&--disabled {
     background: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
   }
@@ -79,15 +58,34 @@
   }
 
   &--grey:hover,
-  &--grey&--active,
-  &--grey &-icon {
+  &--grey&--active {
     background: darken(@AknGrey, @darken);
     color: white;
   }
 
-  &--grey&--disabled,
-  &--grey&--disabled &-icon {
+  &--grey&--disabled {
     background: lighten(@AknGrey, @lighten);
+    cursor: not-allowed;
+  }
+
+  // GreyLight
+  &--greyLight {
+    background-color: white;
+    border: 1px solid @AknGrey;
+    color: @AknGrey;
+  }
+
+  &--greyLight:hover,
+  &--greyLight&--active {
+    background-color: white;
+    border-color: darken(@AknGrey, 20%);
+    color: darken(@AknGrey, 20%);
+  }
+
+  &--greyLight&--disabled {
+    background-color: white;
+    border-color: lighten(@AknGrey, 20%);
+    color: lighten(@AknGrey, 20%);
     cursor: not-allowed;
   }
 
@@ -98,14 +96,12 @@
   }
 
   &--important:hover,
-  &--important&--active,
-  &--important &-icon {
+  &--important&--active {
     background: darken(@AknRed, @darken);
     color: white;
   }
 
-  &--important&--disabled,
-  &--important&--disabled &-icon {
+  &--important&--disabled {
     background: lighten(@AknRed, @lighten);
     cursor: not-allowed;
   }
@@ -117,14 +113,12 @@
   }
 
   &--action:hover,
-  &--action&--active,
-  &--action &-icon {
+  &--action&--active {
     background: darken(@AknBlue, @darken);
     color: white;
   }
 
-  &--action&--disabled,
-  &--action&--disabled &-icon {
+  &--action&--disabled {
     background: lighten(@AknBlue, @lighten);
     cursor: not-allowed;
   }
@@ -137,13 +131,6 @@
     font-size: @AknFontSizeBig;
   }
 
-  &--big &-icon {
-    height: @AknBigButtonSize;
-    width: @AknBigButtonSize;
-    line-height: @AknBigButtonSize;
-    font-size: @AknFontSizeBig;
-  }
-
   &--small {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
@@ -151,32 +138,10 @@
     font-size: @AknDefaultFontSize;
   }
 
-  &--small &-icon {
-    height: @AknLittleButtonSize;
-    width: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
-    font-size: @AknDefaultFontSize;
-  }
-
-  &--small&--withIcon {
-    padding-left: @AknButtonsPadding + @AknLittleButtonSize;
-  }
-
   &--micro {
     height: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
     min-width: @AknMicroButtonSize;
-    font-size: @AknDefaultFontSize;
-  }
-
-  &--micro&--withIcon {
-    padding-left: @AknButtonsPadding + @AknMicroButtonSize;
-  }
-
-  &--micro &-icon {
-    height: @AknMicroButtonSize;
-    width: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
 

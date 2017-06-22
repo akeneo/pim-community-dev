@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,7 +32,7 @@ class SetAttributeRequirementsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('values', 'hidden');
+        $builder->add('values', HiddenType::class);
     }
 
     /**
@@ -49,7 +50,7 @@ class SetAttributeRequirementsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_mass_set_attribute_requirements';
     }
