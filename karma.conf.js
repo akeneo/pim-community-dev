@@ -7,6 +7,8 @@ const runnerPath = path.resolve(__dirname, 'frontend/jasmine-runner.js')
 
 webpack.plugins = _.dropRight(webpack.plugins, 4)
 
+delete webpack.devtool
+
 module.exports = function(config) {
     config.set({
         files: [
@@ -33,7 +35,7 @@ module.exports = function(config) {
             require('karma-jasmine'),
             require('karma-es6-shim'),
             require('karma-phantomjs-launcher'),
-            require('karma-spec-reporter'),
+            require('karma-spec-reporter')
         ],
 
         frameworks: [
