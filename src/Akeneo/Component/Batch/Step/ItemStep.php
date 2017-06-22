@@ -278,7 +278,14 @@ class ItemStep extends AbstractStep
             $warningName = get_class($element);
         }
 
-        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getMessageParameters(), $e->getItem());
+        $this->jobRepository->insertWarning(
+            $stepExecution,
+            $warningName,
+            $e->getMessage(),
+            $e->getMessageParameters(),
+            $e->getItem()
+        );
+
         $this->dispatchInvalidItemEvent(
             get_class($element),
             $e->getMessage(),

@@ -4,6 +4,7 @@
 
 - PIM-6429: Improve the loading of the completeness widget on dashboard in ORM
 - PIM-6399: Stores images as PNG instead of JPG
+- PIM-6129: Fix a memory leak when import or exports contains too much warnings
 
 # 1.5.22 (2017-05-22)
 
