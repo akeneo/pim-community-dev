@@ -3,7 +3,7 @@ const process = require('process')
 const rootDir = process.cwd()
 const webpack = require('webpack')
 const { resolve } = require('path')
-const { values } = require('lodash')
+const { values, mapKeys } = require('lodash')
 const { getModulePaths } = require('./frontend/requirejs-utils')
 const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
@@ -30,7 +30,7 @@ module.exports = {
     devtool: 'cheap-source-map',
     resolve: {
         symlinks: false,
-        alias: aliases
+        alias: mapKeys(aliases, (path, key) => `${key}$`)
     },
     module: {
         rules: [
