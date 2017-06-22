@@ -36,10 +36,10 @@ Feature: Catalog updates - Remove a channel used by a project
 
   Scenario: Remove a channel used by a project from the grid
     Given I am on the channels page
-    When I click on the "Delete" action of the row which contains "ecommerce"
+    When I click on the "Delete" action of the row which contains "E-Commerce"
     And I confirm the deletion
     Then I should see the flash message "Channel successfully removed"
-    And I should not see channel ecommerce
+    And I should not see channel E-Commerce
     When I am on the dashboard page
     Then I should not see the "Collection Summer 2030" project in the widget
     But I should see the "Collection Winter 2030" project in the widget

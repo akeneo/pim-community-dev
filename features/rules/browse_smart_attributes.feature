@@ -10,7 +10,7 @@ Feature: Browse smart attributes in the attribute grid
 
   Scenario: Successfully display the smart column in the attribute grid
     Given I am on the attributes page
-    Then I should see the columns Code, Label, Type, Scopable, Localizable, Group and Smart
+    Then I should see the columns Label, Type, Group, Scopable, Localizable and Smart
 
   Scenario Outline: Successfully filter by the smart property in the attribute grid
     Given I am on the attributes page
@@ -35,9 +35,9 @@ Feature: Browse smart attributes in the attribute grid
     And I should see entities <result>
 
     Examples:
-      | filter | operator | value | result       | count |
-      | smart  | equals   | yes   | name         | 1     |
-      | smart  | equals   | no    | 123, comment | 2     |
+      | filter | operator | value | result                 | count |
+      | smart  | equals   | yes   | Name                   | 1     |
+      | smart  | equals   | no    | Attribute 123, Comment | 2     |
 
   @info https://akeneo.atlassian.net/browse/PIM-5056
   Scenario: Successfully display the correct amount of smart attribute on grid

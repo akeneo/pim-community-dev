@@ -53,7 +53,7 @@ Feature: Ensure that a published product is safe
     And I press the secondary action "Delete"
     And I confirm the removal
     When I am on the families page
-    Then I should not see family pants
+    Then I should not see family Pants
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a group that is linked to a published product
@@ -67,21 +67,21 @@ Feature: Ensure that a published product is safe
     And I press the secondary action "Delete"
     And I confirm the removal
     When I am on the variant groups page
-    Then I should not see group hm_jackets
+    Then I should not see group H&M jackets
 
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page
     And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the attributes page
-    And I should see attribute handmade
+    And I should see attribute Handmade
 
   Scenario: Successfully remove an attribute that is not linked to a published product
     Given I am on the "comment" attribute page
     And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the attributes page
-    And I should not see attribute comment
+    And I should not see attribute Comment
 
   Scenario: Fail to mass delete products if one of them has been published
     Given the following products:

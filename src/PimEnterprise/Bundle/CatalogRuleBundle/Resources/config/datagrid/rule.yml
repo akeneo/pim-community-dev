@@ -1,5 +1,7 @@
 datagrid:
     rule-grid:
+        options:
+            manageFilters: false
         source:
             acl_resource: pimee_catalog_rule_rule_view_permissions
             repository_method: createDatagridQueryBuilder
@@ -58,8 +60,8 @@ datagrid:
         filters:
             columns:
                 code:
-                    type: string
-                    data_name:   r.code
+                    type: search
+                    data_name: r.code
         sorters:
             columns:
                 code:

@@ -136,9 +136,10 @@ Feature: List all rules
       | Action    | Then name [ en ] is copied into name [ de ]                         |
       | Action    | Then true is set into enabled                                       |
 
-    And I should be able to use the following filters:
-      | filter | operator | value       | result           |
-      | code   | contains | description | copy_description |
+  Scenario: Successfully search rules
+    When I search "description"
+    Then the grid should contain 1 element
+    And I should see entity copy_description
 
   Scenario: Successfully delete a rule
     When I click on the "Delete" action of the row which contains "copy_description"
