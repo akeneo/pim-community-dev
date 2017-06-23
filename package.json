@@ -17,5 +17,8 @@
   },
   "bugs": {
     "url": "https://github.com/akeneo/pim-enterprise-dev/issues"
+  },
+  "dependencies": {
+    "pim-community-dev": "file:vendor/akeneo/pim-community-dev"
   }
 }
