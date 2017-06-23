@@ -54,9 +54,8 @@ class ItemStep extends AbstractStep
         ItemWriterInterface $writer,
         $batchSize = 100
     ) {
-        $this->name = $name;
-        $this->jobRepository = $jobRepository;
-        $this->eventDispatcher = $eventDispatcher;
+        parent::__construct($name, $eventDispatcher, $jobRepository);
+
         $this->reader = $reader;
         $this->processor = $processor;
         $this->writer = $writer;
@@ -181,8 +180,6 @@ class ItemStep extends AbstractStep
 
     /**
      * @param array $processedItems
-     *
-     * @return null
      */
     protected function write($processedItems)
     {
@@ -205,7 +202,13 @@ class ItemStep extends AbstractStep
         $element,
         InvalidItemException $e
     ) {
-        $stepExecution->addWarning($e->getMessage(), $e->getMessageParameters(), $e->getItem());
+        $this->jobRepository->insertWarning(
+            $stepExecution,
+            $e->getMessage(),
+            $e->getMessageParameters(),
+            $e->getItem()
+        );
+
         $this->dispatchInvalidItemEvent(
             get_class($element),
             $e->getMessage(),
