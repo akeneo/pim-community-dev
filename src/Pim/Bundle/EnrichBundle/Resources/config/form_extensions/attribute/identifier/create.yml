@@ -42,7 +42,8 @@ extensions:
             updateSuccessMessage: pim_enrich.entity.attribute.info.update_successful
             updateFailureMessage: pim_enrich.entity.attribute.info.update_failed
             notReadyMessage: pim_enrich.entity.attribute.info.field_not_ready
-            url: pim_enrich_attribute_rest_post
+            url: pim_enrich_attribute_rest_create
+            method: PUT
             redirectAfter: pim_enrich_attribute_edit
             identifierParamName: code
             excludedProperties: [empty_value, field_type, filter_types, is_locale_specific]
