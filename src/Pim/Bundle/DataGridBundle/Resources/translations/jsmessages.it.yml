@@ -27,6 +27,9 @@ Action performed.: Azione eseguita.
 Action is not performed.: Azione non eseguita.
 Please, select item to perform action.: Per favore, seleziona l'articolo per eseguire l'azione.
 View per page: Mostra per pagina
+Enabled: Abilitato
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
 oro.datagrid.noresults: "Nessun risultato trovato. Prova a cambiare i criteri di ricerca."
@@ -86,4 +89,4 @@ grid.view_selector:
   confirmation:
     remove: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
     delete: Conferma cancellazione
-grid.view_selector.flash.updated: La griglia di dati è stata caricata con successo
+grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo

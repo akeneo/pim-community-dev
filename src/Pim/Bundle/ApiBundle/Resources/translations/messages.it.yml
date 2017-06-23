@@ -8,6 +8,7 @@ pim_api:
       edit: Crea e aggiorna opzioni attributi
       list: Elenca le opzioni degli attributi
     attribute_group:
+      edit: Crea e aggiorna gruppi di attributi
       list: Elenco attributi di gruppo
     category:
       edit: Crea e aggiorna categorie
