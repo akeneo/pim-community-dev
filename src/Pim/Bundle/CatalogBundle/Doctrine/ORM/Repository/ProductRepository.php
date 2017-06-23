@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product repository
@@ -159,12 +160,14 @@ class ProductRepository extends EntityRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
+        $productIdsAsBytes = array_map(function (UuidInterface $productId) { return $productId->getBytes(); }, $productIds);
+
         $qb = $this->createQueryBuilder('p');
         $qb
             ->select('a.id')
             ->innerJoin('p.values', 'v')
             ->innerJoin('v.attribute', 'a')
-            ->where($qb->expr()->in('p.id', $productIds))
+            ->where($qb->expr()->in('p.id', $productIdsAsBytes))
             ->distinct(true);
 
         $attributes = $qb->getQuery()->getArrayResult();
@@ -223,7 +226,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily($productId, $attributeCode)
+    public function hasAttributeInFamily(UuidInterface $productId, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.family', 'f')
@@ -231,7 +234,7 @@ class ProductRepository extends EntityRepository implements
             ->where('p.id = :id')
             ->andWhere('a.code = :code')
             ->setParameters([
-                'id'   => $productId,
+                'id'   => $productId->getBytes(),
                 'code' => $attributeCode,
             ])
             ->setMaxResults(1);
@@ -242,14 +245,14 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup($productId, $attributeCode)
+    public function hasAttributeInVariantGroup(UuidInterface $productId, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->select('g.id')
             ->leftJoin('p.groups', 'g')
             ->where('p.id = :id')
             ->setParameters([
-                'id' => $productId,
+                'id' => $productId->getBytes(),
             ]);
 
         $groupIds = $queryBuilder->getQuery()->getScalarResult();

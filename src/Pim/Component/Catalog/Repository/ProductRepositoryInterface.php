@@ -9,6 +9,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product repository interface
@@ -39,7 +40,7 @@ interface ProductRepositoryInterface extends ObjectRepository
     /**
      * Get available attribute ids from a product ids list
      *
-     * @param array $productIds
+     * @param UuidInterface[] $productIds
      *
      * @return array
      */
@@ -84,22 +85,22 @@ interface ProductRepositoryInterface extends ObjectRepository
     /**
      * Checks if the family has the specified attribute
      *
-     * @param mixed  $productId
-     * @param string $attributeCode
+     * @param UuidInterface $productId
+     * @param string        $attributeCode
      *
      * @return bool
      */
-    public function hasAttributeInFamily($productId, $attributeCode);
+    public function hasAttributeInFamily(UuidInterface $productId, $attributeCode);
 
     /**
      * Checks if the group has the specified attribute
      *
-     * @param mixed  $productId
-     * @param string $attributeCode
+     * @param UuidInterface $productId
+     * @param string        $attributeCode
      *
      * @return bool
      */
-    public function hasAttributeInVariantGroup($productId, $attributeCode);
+    public function hasAttributeInVariantGroup(UuidInterface $productId, $attributeCode);
 
     /**
      * @param GroupInterface $variantGroup
