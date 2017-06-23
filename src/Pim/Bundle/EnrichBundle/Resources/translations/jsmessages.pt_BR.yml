@@ -568,7 +568,6 @@ pim_enrich:
           title: Condição temporal
           operators:
             ALL: Sem restrição de data
-            "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Status
           value:
@@ -578,8 +577,6 @@ pim_enrich:
         completeness:
           title: Completude
           operators:
-            ">=": Completo em pelo menos uma das linguagens selecionadas
-            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         category:
           title: Categoria
