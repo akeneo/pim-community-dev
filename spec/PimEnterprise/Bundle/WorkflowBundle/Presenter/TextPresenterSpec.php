@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class TextPresenterSpec extends ObjectBehavior
@@ -21,7 +21,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_presents_text_change_using_the_injected_renderer(
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getData()->willReturn('bar');
@@ -35,7 +35,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_explodes_text_paragraph_before_rendering_diff(
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getData()->willReturn('<p>foo</p> <p>bar</p>');
@@ -49,7 +49,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_explodes_text_paragraph_without_space_before_rendering_diff(
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getData()->willReturn('<p>foo</p><p>bar</p>');

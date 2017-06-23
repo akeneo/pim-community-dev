@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ImagePresenterSpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_supports_media(
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $attribute->getType()->willReturn('pim_catalog_image');
@@ -32,7 +32,7 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_does_not_presents_original_if_original_is_empty(
-        ProductValueInterface $value
+        ValueInterface $value
     ) {
         $value->getData()->willReturn(null);
 
@@ -42,7 +42,7 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_does_not_presents_new_if_new_is_empty(
-        ProductValueInterface $value,
+        ValueInterface $value,
         FileInfoInterface $media
     ) {
         $value->getData()->willReturn($media);
@@ -54,7 +54,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_presents_image(
         $generator,
-        ProductValueInterface $value,
+        ValueInterface $value,
         FileInfoInterface $media,
         FileInfoInterface $changedMedia,
         FileInfoRepositoryInterface $repository

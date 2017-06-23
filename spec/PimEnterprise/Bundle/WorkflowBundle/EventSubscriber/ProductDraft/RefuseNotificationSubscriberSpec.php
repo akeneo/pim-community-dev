@@ -10,7 +10,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
@@ -122,7 +122,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         ProductDraftInterface $draft,
         ProductInterface $product,
         NotificationInterface $notification,
-        ProductValueInterface $identifier
+        ValueInterface $identifier
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());
         $values = [
@@ -184,7 +184,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductValueInterface $identifier,
+        ValueInterface $identifier,
         AttributeInterface $attribute,
         NotificationInterface $notification
     ) {

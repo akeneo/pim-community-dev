@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class OptionsPresenterSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class OptionsPresenterSpec extends ObjectBehavior
     function it_presents_options_change_using_the_injected_renderer(
         $repository,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         AttributeOptionInterface $red,
         AttributeOptionInterface $green,

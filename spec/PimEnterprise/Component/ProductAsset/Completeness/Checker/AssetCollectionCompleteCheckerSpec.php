@@ -6,18 +6,18 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
     }
 
     public function it_suports_asset_collection_attribute(
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         AttributeInterface $attribute,
         ChannelInterface $channel,
         LocaleInterface $locale
@@ -31,7 +31,7 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
     }
 
     public function it_succesfully_checks_empty_asset_collection(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
@@ -44,7 +44,7 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
     }
 
     public function it_successfully_checks_incomplete_asset_collection(
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         ChannelInterface $channel,
         LocaleInterface $locale,
         AssetInterface $asset1

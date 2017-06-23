@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Factory\AttributeFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Factory\ValueFactory;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
@@ -49,21 +49,21 @@ class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Exten
     /** @var \Twig_Environment */
     protected $twig;
 
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     protected $valueFactory;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param RendererInterface                     $renderer
      * @param TranslatorInterface                   $translator
-     * @param ProductValueFactory                   $valueFactory
+     * @param ValueFactory                          $valueFactory
      * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ProductValueFactory $valueFactory,
+        ValueFactory $valueFactory,
         AttributeFactory $attributeFactory
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -186,7 +186,7 @@ class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Exten
      *
      * @param string $code
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     protected function createFakeValue($code)
     {

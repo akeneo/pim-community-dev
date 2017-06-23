@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
@@ -37,11 +37,11 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ConfigurationInterface $configuration,
         RendererInterface $renderer,
-        CustomProductValuePresenterCollection $value,
+        CustomValuePresenterCollection $value,
         AttributeInterface $attribute,
-        CustomProductValuePresenterCollection $leather,
-        CustomProductValuePresenterCollection $neoprene,
-        CustomProductValuePresenterCollection $kevlar
+        CustomValuePresenterCollection $leather,
+        CustomValuePresenterCollection $neoprene,
+        CustomValuePresenterCollection $kevlar
     ) {
         $leather->__toString()->willReturn('Leather');
         $leather->getReferenceDataName()->willReturn('fabrics');
@@ -64,7 +64,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
     }
 }
 
-interface CustomProductValuePresenterCollection extends ProductValueInterface
+interface CustomValuePresenterCollection extends ValueInterface
 {
     public function getReferenceDataName();
     public function getCode();

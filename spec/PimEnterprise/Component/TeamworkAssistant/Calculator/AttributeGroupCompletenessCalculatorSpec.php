@@ -3,14 +3,14 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Calculator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\AttributeGroupCompletenessCalculator;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
@@ -20,16 +20,16 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
 {
     function let(
         FamilyRequirementRepositoryInterface $familyRequirementRepository,
-        ProductValueCompleteCheckerInterface $productValueChecker,
+        ValueCompleteCheckerInterface $productValueChecker,
         FamilyInterface $family,
         ProductInterface $product,
         ChannelInterface $projectChannel,
         LocaleInterface $projectLocale,
-        ProductValueInterface $skuValue,
-        ProductValueInterface $nameValue,
-        ProductValueInterface $weightValue,
-        ProductValueInterface $heightValue,
-        ProductValueInterface $documentationValue,
+        ValueInterface $skuValue,
+        ValueInterface $nameValue,
+        ValueInterface $weightValue,
+        ValueInterface $heightValue,
+        ValueInterface $documentationValue,
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
         AttributeInterface $weightAttribute,

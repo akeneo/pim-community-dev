@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -45,7 +45,7 @@ class FilePresenter implements PresenterInterface
      */
     public function supports($data)
     {
-        return $data instanceof ProductValueInterface
+        return $data instanceof ValueInterface
             && AttributeTypes::FILE === $data->getAttribute()->getType();
     }
 

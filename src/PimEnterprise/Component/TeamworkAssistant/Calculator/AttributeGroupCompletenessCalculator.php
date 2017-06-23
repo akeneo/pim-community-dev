@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -23,18 +23,18 @@ use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementReposi
  */
 class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInterface
 {
-    /** @var ProductValueCompleteCheckerInterface */
+    /** @var ValueCompleteCheckerInterface */
     protected $productValueChecker;
 
     /** @var FamilyRequirementRepositoryInterface */
     protected $familyRequirementRepository;
 
     /**
-     * @param ProductValueCompleteCheckerInterface $productValueChecker
+     * @param ValueCompleteCheckerInterface        $productValueChecker
      * @param FamilyRequirementRepositoryInterface $familyRequirementRepository
      */
     public function __construct(
-        ProductValueCompleteCheckerInterface $productValueChecker,
+        ValueCompleteCheckerInterface $productValueChecker,
         FamilyRequirementRepositoryInterface $familyRequirementRepository
     ) {
         $this->productValueChecker = $productValueChecker;

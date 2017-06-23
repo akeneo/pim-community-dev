@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvent;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
@@ -138,9 +138,9 @@ class ProductDraftChangesApplier
     /**
      * Mark a value as modified
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      */
-    protected function markValueAsModified(ProductValueInterface $value)
+    protected function markValueAsModified(ValueInterface $value)
     {
         $options = [];
         $attribute = $value->getAttribute();

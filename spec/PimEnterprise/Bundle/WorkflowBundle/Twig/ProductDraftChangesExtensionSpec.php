@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\AttributeFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
@@ -23,7 +23,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         PresenterInterface $attributePresenter,
         PresenterInterface $valuePresenter,
         AttributeFactory $attributeFactory,
-        ProductValueFactory $valueFactory
+        ValueFactory $valueFactory
     ) {
         $this->beConstructedWith(
             $attributeRepository,
@@ -52,7 +52,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     function it_presents_product_draft_using_a_supporting_presenter(
         $attributePresenter,
         $valuePresenter,
-        Model\ProductValueInterface $value,
+        Model\ValueInterface $value,
         Model\ProductInterface $product,
         ProductDraftInterface $productDraft
     ) {
@@ -75,7 +75,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $translator,
         $attributePresenter,
         $valuePresenter,
-        Model\ProductValueInterface $value,
+        Model\ValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraftInterface $productDraft
@@ -104,7 +104,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $renderer,
         $attributePresenter,
         $valuePresenter,
-        Model\ProductValueInterface $value,
+        Model\ValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraftInterface $productDraft
@@ -132,7 +132,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     function it_injects_twig_in_twig_aware_presenter(
         $attributePresenter,
         $valuePresenter,
-        Model\ProductValueInterface $value,
+        Model\ValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,

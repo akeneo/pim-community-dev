@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
@@ -37,10 +37,10 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ConfigurationInterface $configuration,
         RendererInterface $renderer,
-        CustomProductValuePresenter $value,
+        CustomValuePresenter $value,
         AttributeInterface $attribute,
-        CustomProductValuePresenter $red,
-        CustomProductValuePresenter $blue
+        CustomValuePresenter $red,
+        CustomValuePresenter $blue
     ) {
         $red->__toString()->willReturn('[Red]');
         $red->getReferenceDataName()->willReturn('color');
@@ -60,7 +60,7 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
     }
 }
 
-interface CustomProductValuePresenter extends ProductValueInterface
+interface CustomValuePresenter extends ValueInterface
 {
     public function getReferenceDataName();
     public function getCode();

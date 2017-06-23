@@ -11,27 +11,27 @@
 
 namespace PimEnterprise\Component\ProductAsset\Completeness\Checker;
 
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInterface
+class AssetCollectionCompleteChecker implements ValueCompleteCheckerInterface
 {
     /**
-     * @param ProductValueInterface $productValue
+     * @param ValueInterface        $productValue
      * @param ChannelInterface|null $channel
      * @param LocaleInterface|null  $locale
      *
      * @return bool
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
@@ -79,7 +79,7 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {

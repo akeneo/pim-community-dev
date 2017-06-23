@@ -541,7 +541,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ValueInterface
      */
     protected function getPublishedProductValue($identifier, $attribute, $locale = null, $scope = null)
     {

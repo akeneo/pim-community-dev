@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,7 +28,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
     function it_does_not_filter_a_product_value_if_the_user_is_granted_to_see_its_locale(
         $authorizationChecker,
         $localeRepository,
-        ProductValueInterface $price,
+        ValueInterface $price,
         AttributeInterface $priceAttribute,
         LocaleInterface $enUS
     ) {
@@ -46,7 +46,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
     function it_filters_a_product_value_if_the_user_is_not_granted_to_see_its_locale(
         $authorizationChecker,
         $localeRepository,
-        ProductValueInterface $price,
+        ValueInterface $price,
         AttributeInterface $priceAttribute,
         LocaleInterface $enUS
     ) {
@@ -62,7 +62,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
     }
 
     function it_does_not_filter_a_product_value_if_the_attribute_is_not_localizable(
-        ProductValueInterface $price,
+        ValueInterface $price,
         AttributeInterface $priceAttribute
     ) {
         $price->getAttribute()->willReturn($priceAttribute);
@@ -75,7 +75,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
     function it_filters_a_locale_specific_product_value_if_the_user_is_not_granted_on_all_locales(
         $authorizationChecker,
         $localeRepository,
-        ProductValueInterface $price,
+        ValueInterface $price,
         AttributeInterface $priceAttribute,
         LocaleInterface $enUS,
         LocaleInterface $frFR
@@ -96,7 +96,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
     function it_does_not_filter_a_locale_specific_product_value_if_the_user_is_granted_on_at_least_one_locale(
         $authorizationChecker,
         $localeRepository,
-        ProductValueInterface $price,
+        ValueInterface $price,
         AttributeInterface $priceAttribute,
         LocaleInterface $enUS,
         LocaleInterface $frFR
