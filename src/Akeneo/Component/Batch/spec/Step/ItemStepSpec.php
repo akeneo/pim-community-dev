@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Component\Batch\Step;
 
+use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -10,7 +11,6 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,7 +20,7 @@ class ItemStepSpec extends ObjectBehavior
 {
     function let(
         EventDispatcherInterface $dispatcher,
-        JobRepositoryInterface $repository,
+        DoctrineJobRepository $repository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer
@@ -32,9 +32,9 @@ class ItemStepSpec extends ObjectBehavior
         $reader,
         $processor,
         $writer,
-        StepExecution $execution,
         $dispatcher,
         $repository,
+        StepExecution $execution,
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
@@ -75,9 +75,9 @@ class ItemStepSpec extends ObjectBehavior
         $reader,
         $processor,
         $writer,
-        StepExecution $execution,
         $dispatcher,
         $repository,
+        StepExecution $execution,
         BatchStatus $status,
         ExitStatus $exitStatus
     ) {
@@ -99,7 +99,10 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process('r4')->shouldBeCalled()->willThrow(
             new InvalidItemException('my msg', new FileInvalidItem(['r4'], 7))
         );
-        $execution->addWarning(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
+
+        $repository
+            ->insertWarning(Argument::cetera())
+            ->shouldBeCalled();
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
         $processor->process(null)->shouldNotBeCalled();
