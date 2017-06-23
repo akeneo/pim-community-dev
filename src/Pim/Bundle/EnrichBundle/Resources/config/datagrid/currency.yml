@@ -2,6 +2,7 @@ datagrid:
     currency-grid:
         options:
             entityHint: currency
+            manageFilters: false
         source:
             acl_resource: pim_enrich_currency_index
             type: pim_datasource_currency
@@ -41,7 +42,7 @@ datagrid:
         filters:
             columns:
                 code:
-                    type:      string
+                    type:      search
                     label:     Code
                     data_name: c.code
                 activated:

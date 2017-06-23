@@ -24,13 +24,13 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface               $productBuilder
+     * @param ProductBuilderInterface               $productBuilder
      * @param array                                 $supportedFields
      */
     public function __construct(

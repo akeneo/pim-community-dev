@@ -90,6 +90,7 @@ config:
         jquery.multiselect.filter:                  pimdatagrid/lib/multiselect/jquery.multiselect.filter
         oro/multiselect-decorator:                  pimdatagrid/js/multiselect-decorator
 
+        oro/datafilter/search-filter:               pimdatagrid/js/datafilter/filter/search-filter
         oro/datafilter/price-filter:                pimdatagrid/js/datafilter/filter/price-filter
         oro/datafilter/metric-filter:               pimdatagrid/js/datafilter/filter/metric-filter
         oro/datafilter/product_scope-filter:        pimdatagrid/js/datafilter/filter/product_scope-filter
@@ -130,4 +131,5 @@ config:
         pim/template/datagrid/configure-columns-action:         pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/filter/select2-choice-filter:     pimdatagrid/templates/filter/select2-choice-filter.html
         pim/template/datagrid/filter/date-filter:               pimdatagrid/templates/filter/date-filter.html
-        pim/template/datagrid/filter/metric-filter:               pimdatagrid/templates/filter/metric-filter.html
+        pim/template/datagrid/filter/metric-filter:             pimdatagrid/templates/filter/metric-filter.html
+        pim/template/datagrid/filter/search-filter:             pimdatagrid/templates/filter/search-filter.html

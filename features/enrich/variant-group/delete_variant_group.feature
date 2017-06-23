@@ -10,11 +10,11 @@ Feature: Delete a variant group
 
   Scenario: Successfully delete a variant group from the grid
     Given I am on the variant groups page
-    Then I should see group caterpillar_boots
-    When I click on the "Delete" action of the row which contains "caterpillar_boots"
+    Then I should see group Caterpillar boots
+    When I click on the "Delete" action of the row which contains "Caterpillar boots"
     And I confirm the deletion
     Then the grid should contain 0 elements
-    And I should not see group "caterpillar_boots"
+    And I should not see group "Caterpillar boots"
 
   Scenario: Successfully delete a variant group
     Given I edit the "caterpillar_boots" variant group

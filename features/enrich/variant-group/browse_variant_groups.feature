@@ -4,7 +4,7 @@ Feature: Browse variant groups
   As a product manager
   I need to be able to see variant groups
 
-  Scenario: Successfully view, sort and filter variant groups
+  Background:
     Given the "default" catalog configuration
     And the following attributes:
       | code      | label-en_US | type                     | group |
@@ -29,13 +29,27 @@ Feature: Browse variant groups
       | cross_sell | Cross Sell  | X_SELL |
     And I am logged in as "Julia"
     And I am on the variant groups page
+
+  Scenario: The grid should be complete
     Then the grid should contain 10 elements
-    And I should see the columns Code, Label and Axis
-    And I should see groups bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo, watch_akeneo
-    And the rows should be sorted ascending by Code
-    And I should be able to sort the rows by Code and Label
-    And I should be able to use the following filters:
-      | filter         | operator | value  | result                                                                                                                            |
-      | code           | contains | mug    | mug, mug_akeneo                                                                                                                   |
-      | label          | contains | Akeneo | bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo and watch_akeneo |
-      | axisAttributes |          | Color  | tshirt_akeneo and mug                                                                                                             |
+    And I should see the columns Label and Axis
+    And I should see groups Akeneo Bike, Akeneo Boat, Akeneo Car, Akeneo Helicopter, Mug, Mug Akeneo, Akeneo Plane, Akeneo T-Shirt, Akeneo Sticker, Akeneo Watch
+
+  Scenario: Successfully view and sort variant groups
+    And the rows should be sorted ascending by Label
+    And I should be able to sort the rows by Label
+
+  Scenario Outline: Successfully filter variant groups
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    Then I should see entities <result>
+
+    Examples:
+      | filter         | operator | value  | result                 | count |
+      | axisAttributes |          | Color  | Akeneo T-Shirt and Mug | 2     |
+
+  Scenario: Successfully search on label
+    When I search "Akeneo"
+    Then the grid should contain 9 elements
+    And I should see entities Akeneo Bike, Akeneo Boat, Akeneo Car, Akeneo Helicopter, Mug Akeneo, Akeneo Plane, Akeneo T-Shirt, Akeneo Sticker and Akeneo Watch

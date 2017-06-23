@@ -44,12 +44,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     protected $productFilter;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository         product repository
-     * @param ProductBuilderInterface               $builder            product builder
-     * @param ObjectUpdaterInterface                $updater            product updater
-     * @param ValidatorInterface                    $validator          product validator
-     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
-     * @param ProductFilterInterface                $productFilter      product filter
+     * @param IdentifiableObjectRepositoryInterface $repository    product repository
+     * @param ProductBuilderInterface               $builder       product builder
+     * @param ObjectUpdaterInterface                $updater       product updater
+     * @param ValidatorInterface                    $validator     product validator
+     * @param ObjectDetacherInterface               $detacher      detacher to remove it from UOW when skip
+     * @param ProductFilterInterface                $productFilter product filter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,

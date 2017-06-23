@@ -27,7 +27,7 @@ class AssociationController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var EngineInterface */

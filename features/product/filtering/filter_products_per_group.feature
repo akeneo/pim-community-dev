@@ -52,5 +52,5 @@ Feature: Filter products
     Given I am on the products page
     When I filter by "groups" with operator "in list" and value "Mug"
     And I reload the page
-    Then I should see the text "Groups: \"Mug\""
+    Then the criteria of "groups" filter should be ""Mug""
     And the grid should contain 2 elements

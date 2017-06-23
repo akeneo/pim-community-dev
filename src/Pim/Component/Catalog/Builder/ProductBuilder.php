@@ -6,6 +6,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -24,6 +25,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductBuilder implements ProductBuilderInterface
 {
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
+
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -61,6 +65,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
      * @param ProductValueFactory                $productValueFactory Product value factory
+     * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
      */
     public function __construct(
@@ -71,17 +76,19 @@ class ProductBuilder implements ProductBuilderInterface
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
         ProductValueFactory $productValueFactory,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->familyRepository = $familyRepository;
-        $this->currencyRepository = $currencyRepository;
-        $this->assocTypeRepository = $assocTypeRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->valuesResolver = $valuesResolver;
-        $this->productValueFactory = $productValueFactory;
-        $this->productClass = $classes['product'];
-        $this->associationClass = $classes['association'];
+        $this->attributeRepository     = $attributeRepository;
+        $this->familyRepository        = $familyRepository;
+        $this->currencyRepository      = $currencyRepository;
+        $this->assocTypeRepository     = $assocTypeRepository;
+        $this->eventDispatcher         = $eventDispatcher;
+        $this->valuesResolver          = $valuesResolver;
+        $this->productValueFactory     = $productValueFactory;
+        $this->productClass            = $classes['product'];
+        $this->associationClass        = $classes['association'];
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
     }
 
     /**
@@ -93,7 +100,7 @@ class ProductBuilder implements ProductBuilderInterface
 
         if (null !== $identifier) {
             $identifierAttribute = $this->attributeRepository->getIdentifier();
-            $this->addOrReplaceProductValue($product, $identifierAttribute, null, null, $identifier);
+            $this->addOrReplaceValue($product, $identifierAttribute, null, null, $identifier);
         }
 
         if (null !== $familyCode) {
@@ -125,7 +132,7 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addOrReplaceProductValue(
+            $this->addOrReplaceValue(
                 $product,
                 $attributes[$value['attribute']],
                 $value['locale'],
@@ -154,44 +161,6 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
-    {
-        $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
-
-        foreach ($requiredValues as $value) {
-            $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], null);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addOrReplaceProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale,
-        $scope,
-        $data
-    ) {
-        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null !== $productValue) {
-            $product->removeValue($productValue);
-        }
-
-        $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
-        $product->addValue($productValue);
-
-        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            $product->setIdentifier($productValue);
-        }
-
-        return $productValue;
     }
 
     /**
@@ -242,6 +211,27 @@ class ProductBuilder implements ProductBuilderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function addAttribute(EntityWithValuesInterface $values, AttributeInterface $attribute)
+    {
+        $this->entityWithValuesBuilder->addAttribute($values, $attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addOrReplaceValue(
+        EntityWithValuesInterface $values,
+        AttributeInterface $attribute,
+        $locale,
+        $scope,
+        $data
+    ) {
+        $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
+    }
+
+    /**
      * Add missing prices (a price per currency)
      *
      * @param ProductInterface $product the product
@@ -267,7 +257,7 @@ class ProductBuilder implements ProductBuilderInterface
                     }
                 }
 
-                $this->addOrReplaceProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
+                $this->addOrReplaceValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
             }
         }
     }
@@ -296,7 +286,7 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], false);
+                    $this->addOrReplaceValue($product, $attribute, $value['scope'], $value['locale'], false);
                 }
             }
         }
