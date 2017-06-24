@@ -3,6 +3,7 @@ confirmation:
     item: Sei sicuro di voler eliminare questo articolo?
     association_type: Sei sicuro di voler eliminare questo tipo di associazione?
     attribute: Sei sicuro di voler eliminare questo attributo?
+    attribute_group: Sei sicuro di voler eliminare questo gruppo di attributi?
     family: Sei sicuro di voler eliminare questa famiglia?
     product: Sei sicuro di voler eliminare questo prodotto?
     channel: Sei sicuro di voler eliminare questo canale?
@@ -59,6 +60,7 @@ flash:
   role:
     removed: Ruolo rimosso con successo
 error:
+  common: Si è verificato un errore
   creating:
     product: Nessun attributo è configurato come identificatore di prodotto o non hai i diritti per modificarlo.
   removing:
@@ -143,13 +145,10 @@ pim_enrich:
         compare_translate: Confronta / Traduci
         delete: Eliminare
         save: Salva
-        save_and_back: Salva e torna alla griglia
       history:
         version: Versione
         author: Autore
         logged_at: Loggato il
-        more: Altro
-        less: Meno
         from: Da
         modified: Modificato
         property: Proprietà
@@ -167,8 +166,8 @@ pim_enrich:
         upload: Si è verificato un errore durante il caricamento del file
       meta:
         created: Creato
-        created_by: Di
-        updated_by: Di
+        created_by: Da
+        updated_by: Da
         updated: Ultimo aggiornamento
         family:
           title: Famiglia
@@ -215,9 +214,6 @@ pim_enrich:
         deletion_failed: Il tipo di associazione non può essere eliminato.
         update_successful: Tipo di associazione aggiornato con successo.
         update_failed: Il tipo di associazione non può essere aggiornato.
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - campi
       meta:
         created: Creato
         created_by: Creato da
@@ -232,9 +228,6 @@ pim_enrich:
         deletion_failed: Il tipo di gruppo non può essere eliminato.
         update_successful: Il tipo di gruppo è stato aggiornato correttamente.
         update_failed: Il tipo di gruppo non può essere aggiornato.
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - campi
       meta:
         created: Creato
         created_by: Creato da
@@ -252,9 +245,6 @@ pim_enrich:
         update_failed: Il canale non può essere aggiornato.
         create_successful: Canale creato con successo.
         create_failed: Il canale non può essere creato.
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - campi
       meta:
         created: Creato
         created_by: Creato da
@@ -303,9 +293,6 @@ pim_enrich:
         deletion_failed: Il gruppo di varianti non può essere eliminato.
         update_successful: Gruppo di varianti aggiornato con successo.
         update_failed: Il gruppo di varianti non può essere aggiornato.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - campi
         already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
         no_attributes: Questo gruppo di varianti non ha ancora attributi
       btn:
@@ -323,9 +310,6 @@ pim_enrich:
         deletion_failed: Il gruppo non può essere eliminato.
         update_successful: Gruppo aggiornato con successo.
         update_failed: Il gruppo non può essere aggiornato.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - campi
       btn:
         save: Salva
       meta:
@@ -378,6 +362,7 @@ pim_enrich:
             attributes_selected: "{{ itemsCount }} attributo(i) selezionato(i)"
             no_match: Nessuna corrispondenza trovata
             load_more: Carica ulteriori risultati...
+          attribute_group_selector: Attributo di gruppo
         categories:
           title: Categorie
       panel:
@@ -472,7 +457,7 @@ pim_enrich:
       add_option_modal:
         title: Aggiungi l'opzione dell'attributo
         confirm: Aggiungi
-        cancel: Cancella
+        cancel: Annulla
     entity:
       switch:
         "no": "No"
@@ -536,7 +521,7 @@ pim_enrich:
         status.title: Stato
       button:
         show_profile.title: Visualizza profilo
-        download_log.title: Protocollo download
+        download_log.title: Scarica il log
         download_file.title: Scarica file generati
         download_archive.title: Scarica archivi generati
       summary:
@@ -544,7 +529,6 @@ pim_enrich:
         warning: Attenzione
         header.step: Passo
         header.status: Stato
-        header.warnings: Avvertenze
         header.summary: Riepilogo
         header.start: Inizio
         header.end: Fine
@@ -860,11 +844,10 @@ batch_jobs:
       label: Aggiungi al gruppo di varianti
 pim_menu:
   tab:
-    collect: Importazioni
-    enrich: Catalogo
+    dashboard: Dashboard
+    products: Articoli
     settings: Impostazioni
     system: Sistema
-    spread: Esportazioni
   item:
     association_type: Tipi di associazione
     attribute: Attributi
@@ -889,9 +872,9 @@ pim_menu:
     user_role: Ruoli
     info: Informazioni sistema
     job_tracker: Tracker di processo
-pim_header:
   user:
     logout: Disconnetti
     user_account: Il mio profilo
 pim_notification:
   mark_all_as_read: Segna tutti come già letti
+  loading: Caricamento in corso...

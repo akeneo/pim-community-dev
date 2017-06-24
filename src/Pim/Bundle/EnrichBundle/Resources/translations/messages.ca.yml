@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: No podeu agrupar els següents productes perquè ja es troba en un grup de variants o no té l'eix del grup.
       no_variant_group: Cap grup de variants de moment. Si us plau, comenceu creant un grup de variants.
       no_valid_variant_group: Cap grup de variants comparteix atributs amb els productes seleccionats.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: L'acció en massa "afegir a grup de variants" ja s'ha engegat. Se li notificarà una cop acabi.
     set-attribute-requirements:
       label: Establir els requeriments d'atribut
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
   edit: editar
   save: guardar
-  save and back: guardar i tornar a la quadrícula
   save and create: guardar i crear-ne de nous
   save and next: guardar i seguir
   save and finish: guardar i finalitzar

@@ -131,13 +131,10 @@ pim_enrich:
         compare_translate: Porównaj / Tłumacz
         delete: Usuń
         save: Zapisz
-        save_and_back: Zapisz i wróć do listy
       history:
         version: Wersja
         author: Autor
         logged_at: Zalogowano jako
-        more: Więcej
-        less: Mniej
         from: Od
         modified: Zmodyfikowany
         property: Właściwości
@@ -192,10 +189,6 @@ pim_enrich:
       scopable: Określaj zasięg
       global: Globalnie
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -203,10 +196,6 @@ pim_enrich:
         save: Zapisz
       title: typ powiązania
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -215,10 +204,6 @@ pim_enrich:
       title: typ grupy
     channel:
       title: kanał
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -252,9 +237,6 @@ pim_enrich:
       actions: Działania
     variant_group:
       info:
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - pola
         no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
       btn:
         save: Zapisz
@@ -264,10 +246,6 @@ pim_enrich:
         updated: Zaktualizowano
     group:
       title: Grupa
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - pola
       btn:
         save: Zapisz
       meta:
@@ -311,6 +289,7 @@ pim_enrich:
             no_available_attributes: Nie ma więcej atrybutów do dodania
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
+          attribute_group_selector: Grupa atrybutów
         categories:
           title: Kategorie
       panel:
@@ -663,11 +642,10 @@ batch_jobs:
       label: Określ wymagania atrybutów
 pim_menu:
   tab:
-    collect: Gromadzenie
-    enrich: Uzupełnianie
+    dashboard: Kokpit
+    products: Produkty
     settings: Ustawienia
     system: System
-    spread: Propagowanie
   item:
     association_type: Typy powiązań
     attribute: Atrybuty
@@ -692,9 +670,9 @@ pim_menu:
     user_role: Role
     info: Informacje o systemie
     job_tracker: Śledzenie procesu
-pim_header:
   user:
     logout: Wyloguj się
     user_account: Moje konto
 pim_notification:
   mark_all_as_read: Oznacz wszystkie jako przeczytane
+  loading: Ładuję...
