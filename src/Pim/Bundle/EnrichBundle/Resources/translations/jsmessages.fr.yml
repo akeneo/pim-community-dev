@@ -532,7 +532,7 @@ pim_enrich:
             help: Activer automatiquement les produits importés
           enabled_comparison:
             title: Comparer les valeurs
-            help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine
+            help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les imports si les valeurs importées sont très similaires aux valeurs d'origine
           real_time_versioning:
             title: Mise à jour de l'historique en temps réel
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
