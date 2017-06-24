@@ -19,7 +19,7 @@ pimee_catalog_rule:
     label: Se %field% %operator% %value%
     operators:
       "STARTS WITH": inizia con
-      "ENDS WITH": conclude con
+      "ENDS WITH": finisce per
       "CONTAINS": contiene
       "DOES NOT CONTAIN": non contiene
       "EMPTY": vuoto
