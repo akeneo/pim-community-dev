@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Non è possibile raggruppare il seguente prodotto perché è già in un gruppo di varianti o non ha la dimensione gruppo.
       no_variant_group: Al momento non c'è nessun gruppo di varianti. Si prega di iniziare con la creazione di un gruppo di varianti.
       no_valid_variant_group: Nessun gruppo di varianti condivide gli attributi con i prodotti selezionati.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: L'azione di massa "aggiungi al gruppo di varianti" è stata lanciata. Sarai avvisato quando finisce.
     set-attribute-requirements:
       label: Impostare gli attributi richiesti
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
   edit: modifica
   save: salva
-  save and back: Salva e torna alla griglia
   save and create: salva e crea nuovo
   save and next: salva e successivo
   save and finish: salva e termina
@@ -485,7 +482,7 @@ info:
     none exist: Nessun tipo di associazione esistente.
     create one: Cliccare qui per crearne una
   attribute:
-    auto option sorting: Se attivate, le opzioni verranno ordinate automaticamente secondo le loro etichette
+    auto option sorting: Se abilitato, le opzioni verranno ordinate automaticamente secondo le loro etichette
   completeness:
     not calculated: Non ancora calcolato
 Options: Opzioni
@@ -494,7 +491,6 @@ Updated at: Caricato il
 Created: Creato
 Updated: Caricato
 Last update: Ultimo aggiornamento
-by: Di
 N/A: N/A
 Manage products: Gestione articoli
 Manage groups: Gestione gruppi
@@ -789,7 +785,6 @@ oro.locale:
       province: "provincia"
   form:
     tooltip:
-      locale: "Selezionare le impostazioni locali utilizzato per formattare numeri, indirizzi, nomi e date"
       location: " Verrà utilizzato per formattare gli indirizzi quando l'opzione 'Formato indirizzo in base alle impostazioni locali' è disabilitata"
       format_address_by_address_country: "Selezionando questa opzione gli indirizzi verranno formattati in base alle impostazioni locali. Disabilitando questa opzione gli indirizzi saranno formattati in base al Paese"
       language: "Selezionare la lingua di sistema che si desidera utilizzare"

@@ -141,13 +141,10 @@ pim_enrich:
         compare_translate: Usporedi / prevedi
         delete: Obriši
         save: Spremi
-        save_and_back: Spremi i nazad na tablični prikaz
       history:
         version: Verzija
         author: Autor
         logged_at: Prijavljen u
-        more: Više
-        less: Manje
         from: Od
         modified: Promjenjeno
         property: Svojstvo
@@ -207,10 +204,6 @@ pim_enrich:
       scopable: Moguće je odrediti djelokrug
       global: Globalno
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - polja
       meta:
         created: Kreirano
         created_by: Kreirao korisnik
@@ -220,10 +213,6 @@ pim_enrich:
         save: Spremi
       title: tip pridruživanja
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - polja
       meta:
         created: Kreirano
         created_by: Kreirao korisnik
@@ -234,10 +223,6 @@ pim_enrich:
       title: tip grupe
     channel:
       title: kanal
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - polja
       meta:
         created: Kreirano
         created_by: Kreirao korisnik
@@ -280,9 +265,6 @@ pim_enrich:
         deletion_failed: Varijantu grupe nije moguće izbrisati.
         update_successful: Varijanta grupe je uspješno ažurirana.
         update_failed: Varijantu grupe nije moguće ažurirati.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - polja
         already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
         no_attributes: Ova varijanta grupe još nema atribute
       btn:
@@ -300,9 +282,6 @@ pim_enrich:
         deletion_failed: Nije moguće izbrisati grupu.
         update_successful: Grupa je uspješno ažurirana.
         update_failed: Grupa se ne može ažurirati.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - polja
       btn:
         save: Spremi
       meta:
@@ -349,6 +328,7 @@ pim_enrich:
             no_available_attributes: Nema više atributa koje se može dodati
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
+          attribute_group_selector: Grupa atributa
         categories:
           title: Kategorije
       panel:
@@ -795,11 +775,10 @@ batch_jobs:
       label: Dodaj u varijantu grupe
 pim_menu:
   tab:
-    collect: Prikupi
-    enrich: Obogati
+    dashboard: Nadzorna ploča
+    products: Proizvodi
     settings: Postavke
     system: Sustav
-    spread: Proširi
   item:
     association_type: Tipovi pridruživanja
     attribute: Atributi
@@ -824,9 +803,9 @@ pim_menu:
     user_role: Role
     info: Informacije o sustavu
     job_tracker: Proces praćenja
-pim_header:
   user:
     logout: Odjava
     user_account: Moj korisnički račun
 pim_notification:
   mark_all_as_read: Označi sve kao pročitano
+  loading: Učitavanje...

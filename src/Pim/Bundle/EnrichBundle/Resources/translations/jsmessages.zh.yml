@@ -141,13 +141,10 @@ pim_enrich:
         compare_translate: 比较/翻译
         delete: 删除
         save: 保存
-        save_and_back: 保存并返回到列表
       history:
         version: 版本
         author: 作者
         logged_at: 登录
-        more: 更多
-        less: 更少
         from: 从
         modified: 已修改
         property: 属性
@@ -207,10 +204,6 @@ pim_enrich:
       scopable: 范围允许
       global: 全局
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - 字段
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -220,10 +213,6 @@ pim_enrich:
         save: 保存
       title: 关联类型
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - 字段
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -234,10 +223,6 @@ pim_enrich:
       title: 分组类型
     channel:
       title: 频道
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - 字段
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -280,9 +265,6 @@ pim_enrich:
         deletion_failed: 款式组不能被删除。
         update_successful: 款式组已更新
         update_failed: 款式组不能被删除。
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - 字段
         already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
         no_attributes: 这个款式组还没有属性
       btn:
@@ -295,10 +277,6 @@ pim_enrich:
         updated_by: 更新者：
     group:
       title: 分组
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - 字段
       btn:
         save: 保存
       meta:
@@ -343,6 +321,7 @@ pim_enrich:
             no_available_attributes: 没有需要添加的属性
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
+          attribute_group_selector: 属性组
         categories:
           title: 分类
       panel:
@@ -764,11 +743,10 @@ batch_jobs:
       label: 添加到款式组
 pim_menu:
   tab:
-    collect: 收集
-    enrich: 添加
+    dashboard: 主界面
+    products: 商品
     settings: 设置 
     system: 系统
-    spread: 传播
   item:
     association_type: 关联类型
     attribute: 属性
@@ -793,9 +771,9 @@ pim_menu:
     user_role: 角色
     info: 系统信息
     job_tracker: 过程跟踪器
-pim_header:
   user:
     logout: 退出登录
     user_account: 我的帐户
 pim_notification:
   mark_all_as_read: 标记所有为已读
+  loading: 正在加载...
