@@ -103,6 +103,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: Zahvaćeni proizvodi za pravila
     perform.label: Izračunaj zahvaćene proizvode
+    execute_rules.label: Izvođenje pravila
   csv_product_import_with_rules:
     label: Uvoz proizvoda u CSV s pravilima
     execute_rules.label: Izvođenje pravila

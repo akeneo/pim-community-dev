@@ -103,6 +103,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: Productes afectats per les regles
     perform.label: Comptar productes afectats
+    execute_rules.label: Execució de les regles
   csv_product_import_with_rules:
     label: Importació de productes amb regles a CSV
     execute_rules.label: Execució de les regles
