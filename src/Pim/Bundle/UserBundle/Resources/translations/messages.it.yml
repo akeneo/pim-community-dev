@@ -19,7 +19,7 @@ oro.user.grid.users:
     firstName: "Nome"
     lastName: "Cognome"
     createdAt: "Creato il"
-    updatedAt: "Caricato il"
+    updatedAt: "Aggiornato il"
     enabled: "Stato"
 oro.user.grid.roles:
   columns:
