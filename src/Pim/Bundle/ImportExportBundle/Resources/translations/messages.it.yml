@@ -16,8 +16,8 @@ pim_import_export:
     8: SCONOSCIUTO
   download_archive:
     archive: scarica l'archivio generato |scarica gli archivi generati
-    output: scaricare il file generato |scaricare i files generati
-    input: scaricare il file letto |scaricare i files letti
+    output: scarica il file generato |scarica i files generati
+    input: scarica il file letto |scarica i files letti
     invalid_xlsx: Scarica dati non validi
     invalid_csv: Scarica dati non validi
   notification:
@@ -135,7 +135,7 @@ popin.create:
 'Hide item': Nascondi articoli
 'Collecting data about job execution...': Raccolta di dati sull'esecuzione del lavoro...
 'You must select a file to upload': È necessario selezionare un file da caricare
-Download log: Protocollo download
+Download log: Scarica il log
 Show profile: Visualizza profilo
 execution details: dettagli esecuzione
 job_execution.summary:
