@@ -97,6 +97,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: 受规则影响的产品
     perform.label: 计算所影响的产品
+    execute_rules.label: 执行规则
   csv_product_import_with_rules:
     label: 按规则用CSV导入产品
     execute_rules.label: 执行规则
