@@ -100,6 +100,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: Затрагиваемые продукты для правил
     perform.label: Вычислить затрагиваемые продукты
+    execute_rules.label: Выполнение правил
   csv_product_import_with_rules:
     label: Импорт продуктов из CSV с правилами
     execute_rules.label: Выполнение правил

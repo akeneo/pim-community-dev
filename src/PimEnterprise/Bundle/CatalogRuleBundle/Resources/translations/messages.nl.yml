@@ -79,6 +79,8 @@ batch_jobs:
   yml_rule_export:
     label: Regel exporteren in YAML
     export.label: Regel exporteren
+  rule_impacted_product_count:
+    execute_rules.label: Uitvoering van regels
   csv_product_import_with_rules:
     label: Product import in CSV met regels
     execute_rules.label: Uitvoering van regels

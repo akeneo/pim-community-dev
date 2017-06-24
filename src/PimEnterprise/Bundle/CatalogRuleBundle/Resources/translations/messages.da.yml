@@ -103,6 +103,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: De berørte produkter for reglerne, der
     perform.label: Tælle påvirket produkter
+    execute_rules.label: Regler udførelse
   csv_product_import_with_rules:
     label: Produkt import i CSV med regler
     execute_rules.label: Regler udførelse
