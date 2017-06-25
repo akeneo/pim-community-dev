@@ -189,7 +189,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
             }
         }
 
-        $qb->groupBy(sprintf('%s.id', $this->getAlias()));
+        $qb->distinct(true);
 
         return $qb;
     }
@@ -219,7 +219,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     public function createAssetDatagridQueryBuilder(array $parameters = [])
     {
         $qb = $this->createQueryBuilder($this->getAlias());
-        $qb->addGroupBy($this->getAlias().'.id');
+        $qb->distinct(true);
 
         return $qb;
     }
