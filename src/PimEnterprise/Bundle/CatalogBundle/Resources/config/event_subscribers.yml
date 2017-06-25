@@ -1,6 +1,7 @@
 parameters:
     pimee_catalog.event_subscriber.index_products.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber
     pimee_catalog.event_subscriber.filter_not_granted_product_data.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductDataSubscriber
+    pimee_catalog.event_subscriber.merger_not_granted_product_data.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\MergeNotGrantedProductDataSubscriber
 
 services:
     # CE override
@@ -18,3 +19,10 @@ services:
             - '@service_container'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pimee_catalog.event_subscriber.merger_not_granted_product_data:
+        class: '%pimee_catalog.event_subscriber.merger_not_granted_product_data.class%'
+        arguments:
+            - '@pimee_catalog.security.merger.not_granted_category'
+        tags:
+            - { name: kernel.event_subscriber }
