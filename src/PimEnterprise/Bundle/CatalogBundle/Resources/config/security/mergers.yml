@@ -1,0 +1,9 @@
+parameters:
+    pimee_catalog.security.merger.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedCategoryMerger
+
+services:
+    pimee_catalog.security.merger.not_granted_category:
+        class: '%pimee_catalog.security.merger.not_granted_category.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_category'

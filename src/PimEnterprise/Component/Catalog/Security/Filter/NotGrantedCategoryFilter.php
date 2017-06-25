@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Filter not granted categories from product
+ * Filter not granted categories from a product
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -51,17 +51,22 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
             return $product;
         }
 
+        $categoriesToRemove = [];
         foreach ($product->getCategories() as $index => $category) {
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
-                $product->getCategories()->remove($index);
+                $categoriesToRemove[$index] = $category;
             }
         }
 
-        if (0 === $product->getCategories()->count()) {
+        if (count($categoriesToRemove) === $product->getCategories()->count()) {
             throw new ResourceAccessDeniedException($product, sprintf(
                 'You can neither view, nor update, nor delete the product "%s", as it is only categorized in categories on which you do not have a view permission.',
                 $product->getIdentifier()
             ));
+        }
+
+        foreach ($categoriesToRemove as $index => $category) {
+            $product->getCategories()->remove($index);
         }
 
         return $product;

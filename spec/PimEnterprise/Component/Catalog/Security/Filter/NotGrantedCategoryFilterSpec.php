@@ -45,12 +45,9 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $categories->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
         $iterator->valid()->willReturn(true, true, false);
-        $iterator->current()->willReturn($categoryA);
-        $iterator->key()->willReturn(1);
+        $iterator->current()->willReturn($categoryA, $categoryB);
+        $iterator->key()->willReturn(1, 2);
         $iterator->next()->shouldBeCalled();
-
-        $iterator->current()->willReturn($categoryB);
-        $iterator->key()->willReturn(2);
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(true);
         $categories->remove(1)->shouldNotBeCalled();
@@ -71,20 +68,17 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
     ) {
         $product->getIdentifier()->willReturn('product_a');
         $product->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 0);
+        $categories->count()->willReturn(2, 2);
 
         $categories->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
         $iterator->valid()->willReturn(true, true, false);
-        $iterator->key()->willReturn(1);
-        $iterator->current()->willReturn($categoryA);
+        $iterator->key()->willReturn(1, 2);
+        $iterator->current()->willReturn($categoryA, $categoryB);
         $iterator->next()->shouldBeCalled();
 
-        $iterator->key()->willReturn(2);
-        $iterator->current()->willReturn($categoryB);
-
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
-        $categories->remove(2)->shouldBeCalled();
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
 
         $this->shouldThrow(
             new ResourceAccessDeniedException(
