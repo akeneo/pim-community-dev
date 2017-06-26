@@ -521,6 +521,7 @@ pim_enrich:
                 "no": "No"
                 "yes": "Yes"
         variant_group:
+            axis.help: Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group
             tab:
                 properties:
                     title: Properties

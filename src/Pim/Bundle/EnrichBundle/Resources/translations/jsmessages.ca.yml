@@ -447,6 +447,7 @@ pim_enrich:
         "no": "No"
         "yes": "Sí"
     variant_group:
+      axis.help: 'Els eixos defineixen els atributs sobre els que els productes del grup han de variar. Els eixos són atributs amb opcions, sense configuració regional i sense abast. No es poden canviar després de la creació del grup de variants.'
       tab:
         properties:
           title: Propietats

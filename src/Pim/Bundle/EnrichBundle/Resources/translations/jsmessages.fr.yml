@@ -470,6 +470,7 @@ pim_enrich:
         "no": "Non"
         "yes": "Oui"
     variant_group:
+      axis.help: 'Les axes sont des attributs qui définissent les groupes de variantes. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Ils ne peuvent pas être modifiés après leur création.'
       tab:
         properties:
           title: Propriétés

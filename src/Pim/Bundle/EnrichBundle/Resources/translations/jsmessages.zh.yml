@@ -441,6 +441,7 @@ pim_enrich:
         "no": "否　"
         "yes": "是"
     variant_group:
+      axis.help: 'Axis定义了一组产品中可以不同的属性。Axis就是一组带选项的属性，不可以本地化也没有范围（全局）。在创建好款式组后，他们是不能被修改的。'
       tab:
         properties:
           title: 属性
@@ -766,7 +767,7 @@ pim_menu:
   tab:
     collect: 收集
     enrich: 添加
-    settings: 设置 
+    settings: 设置
     system: 系统
     spread: 传播
   item:

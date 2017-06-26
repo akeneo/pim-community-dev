@@ -46,7 +46,7 @@ define([
         fetchGroupTypes(element, callback) {
             const fetcher = FetcherRegistry.getFetcher('group-type');
             fetcher.fetchAll().then((types) => {
-                const firstGroupType = this.parseResults(types).results[0]
+                const firstGroupType = this.parseResults(types).results[0];
                 this.getFormModel().set('type', firstGroupType);
                 callback(firstGroupType);
             });

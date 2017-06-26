@@ -479,6 +479,7 @@ pim_enrich:
         "no": "Nein"
         "yes": "Ja"
     variant_group:
+      axis.help: 'Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.'
       tab:
         properties:
           title: Eigenschaften

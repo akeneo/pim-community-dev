@@ -478,6 +478,7 @@ pim_enrich:
         "no": "No"
         "yes": "Sì"
     variant_group:
+      axis.help: 'Gli assi definiscono gli attributi sui quali i prodotti di un gruppo dovrebbero variare. Gli assi sono attributi con opzioni, non localizzabili e senza ambito. Non possono essere modificati dopo la creazione del gruppo di varianti.'
       tab:
         properties:
           title: Proprietà

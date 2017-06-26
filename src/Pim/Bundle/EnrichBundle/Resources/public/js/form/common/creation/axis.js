@@ -83,7 +83,7 @@ define([
              * @return {Object}
              */
         parseResults(axes) {
-            return { results: this.formatAxes(axes) }
+            return { results: this.formatAxes(axes) };
         },
 
         fetchAxes(element, callback) {
@@ -107,7 +107,8 @@ define([
 
             this.$el.html(this.template({
                 label: 'Axis',
-                required: __('pim_enrich.form.required')
+                required: __('pim_enrich.form.required'),
+                help: __('pim_enrich.form.variant_group.axis.help')
             }));
 
             this.delegateEvents();
@@ -128,6 +129,7 @@ define([
             };
 
             initSelect2.init(this.$('input'), options).select2('val', []);
+            this.$('[data-toggle="tooltip"]').tooltip();
         }
     });
 });
