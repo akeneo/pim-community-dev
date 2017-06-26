@@ -231,4 +231,26 @@ class VariantGroupController
 
         return $data;
     }
+
+    public function createAction(Request $request)
+    {
+        $group = $this->groupFactory->createGroup('VARIANT');
+        $group->setProductTemplate($this->productTemplateBuilder->createProductTemplate());
+
+        if ($this->groupHandler->process($group)) {
+            $request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
+
+            $url = $this->router->generate(
+                'pim_enrich_variant_group_edit',
+                ['code' => $group->getCode()]
+            );
+            $response = ['status' => 1, 'url' => $url];
+
+            return new Response(json_encode($response));
+        }
+
+        return [
+            'form' => $this->groupForm->createView()
+        ];
+    }
 }

@@ -346,6 +346,10 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+            create_popin:
+                title: Create a new variant group
+            message:
+                created: Variant group successfully created
         group:
             title: Group
             info:

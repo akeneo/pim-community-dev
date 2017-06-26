@@ -6,124 +6,120 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'routing',
-        'pim/form',
-        'pim/user-context',
-        'pim/i18n',
-        'oro/translator',
-        'pim/fetcher-registry',
-        'pim/initselect2',
-        'pim/template/form/creation/type'
-    ],
-    function (
-        $,
-        _,
-        Backbone,
-        Routing,
-        BaseForm,
-        UserContext,
-        i18n,
-        __,
-        FetcherRegistry,
-        initSelect2,
-        template
-    ) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'routing',
+    'pim/form',
+    'pim/user-context',
+    'pim/i18n',
+    'oro/translator',
+    'pim/fetcher-registry',
+    'pim/initselect2',
+    'pim/template/form/creation/type'
+], function($, _, Backbone, Routing, BaseForm, UserContext, i18n, __, FetcherRegistry, initSelect2, template) {
 
-        return BaseForm.extend({
-            template: _.template(template),
-            events: {
-                'change input': 'updateModel'
-            },
+    return BaseForm.extend({
+        options: {},
+        template: _.template(template),
+        events: {
+            'change input': 'updateModel'
+        },
 
-            /**
+        /**
              * Configure the form
              *
              * @return {Promise}
              */
-            configure() {
-                return $.when(
-                    FetcherRegistry.initialize(),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
-            },
+        configure() {
+            return $.when(FetcherRegistry.initialize(), BaseForm.prototype.configure.apply(this, arguments));
+        },
 
-            /**
+        /**
              * Model update callback
              */
-            updateModel(event) {
-                this.getFormModel().set('type', event.target.value);
-            },
+        updateModel(event) {
+            this.getFormModel().set('type', event.target.value);
+        },
 
+        fetchGroupTypes(element, callback) {
+            const fetcher = FetcherRegistry.getFetcher('group-type');
+            fetcher.fetchAll().then((types) => {
+                callback(this.parseResults(types).results[0])
+            });
 
-            /**
+        },
+
+        /**
              * Parses each group type for the select display
              *
              * @param  {Array} types The search results
              * @return {Object}
              */
-            parseResults(types) {
-                const resultLength = Object.keys(types).length;
-                const locale = UserContext.get('catalogLocale');
+        parseResults(types) {
+            const resultLength = Object.keys(types).length;
+            const locale = UserContext.get('catalogLocale');
 
-                const data = {
-                    more: 20 === resultLength,
-                    results: []
-                };
+            const data = {
+                more: 20 === resultLength,
+                results: []
+            };
 
-                _.reject(types, { is_variant: true }).forEach(value => {
-                    const { code, labels } = value;
-
-                    data.results.push({
-                        id: code,
-                        text: i18n.getLabel(labels, locale, code)
-                    });
+            _.reject(types, { is_variant: !this.options.config.include_variant })
+            .forEach(value => {
+                const {code, labels} = value;
+                data.results.push({
+                    id: code,
+                    text: i18n.getLabel(labels, locale, code)
                 });
+            });
 
-                return data;
-            },
+            return data;
+        },
 
-            /**
+        /**
              * Renders the form
              *
              * @return {Promise}
              */
-            render() {
-                if (!this.configured) return this;
+        render() {
+            if (!this.configured) return this;
 
-                const formData = this.getFormData();
-                const locale = UserContext.get('catalogLocale');
+            const formData = this.getFormData();
+            const locale = UserContext.get('catalogLocale');
 
-                this.$el.html(this.template({
-                    label: __('pim_enrich.form.group.tab.properties.type'),
-                    type: formData.type,
-                    required: __('pim_enrich.form.required')
-                }));
+            this.$el.html(this.template({
+                label: __('pim_enrich.form.group.tab.properties.type'),
+                type: formData.type,
+                required: __('pim_enrich.form.required'),
+                isEditable: this.options.config.editable
+            }));
 
-                this.delegateEvents();
+            this.delegateEvents();
 
-                var options = {
-                    allowClear: true,
-                    ajax: {
-                        url: Routing.generate('pim_enrich_grouptype_rest_index'),
-                        results: this.parseResults,
-                        quietMillis: 250,
-                        cache: true,
-                        data(search, page) {
-                            return {
-                                search,
-                                options: { limit: 20, page, locale }
-                            };
-                        }
+            const options = {
+                initSelection: this.fetchGroupTypes.bind(this),
+                allowClear: true,
+                ajax: {
+                    url: Routing.generate('pim_enrich_grouptype_rest_index'),
+                    results: this.parseResults.bind(this),
+                    quietMillis: 250,
+                    cache: true,
+                    data(search, page) {
+                        return {
+                            search,
+                            options: {
+                                limit: 20,
+                                page,
+                                locale
+                            }
+                        };
                     }
-                };
+                }
+            };
 
-                initSelect2.init(this.$('[data-code="type"] input'), options);
-            }
-        });
-    }
-);
+            initSelect2.init(this.$('[data-code="type"] input'), options).select2('val', []);
+        }
+    });
+});

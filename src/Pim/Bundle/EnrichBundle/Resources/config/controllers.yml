@@ -9,7 +9,6 @@ parameters:
     pim_enrich.controller.association.class:                  Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
-    pim_enrich.controller.variant_group.class:                Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.sequential_edit.class:              Pim\Bundle\EnrichBundle\Controller\SequentialEditController
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
     pim_enrich.controller.rest.attribute.class:               Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
@@ -160,16 +159,6 @@ services:
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage']
-
-    pim_enrich.controller.variant_group:
-        class: '%pim_enrich.controller.variant_group.class%'
-        arguments:
-            - '@router'
-            - '@pim_catalog.repository.group_type'
-            - '@pim_enrich.form.handler.variant_group'
-            - '@pim_enrich.form.variant_group'
-            - '@pim_catalog.factory.group'
-            - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.sequential_edit:
         class: '%pim_enrich.controller.sequential_edit.class%'
@@ -369,6 +358,7 @@ services:
             - '@pim_enrich.normalizer.variant_group_violation'
             - '@pim_enrich.filter.variant_group_edit_data'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.factory.group'
 
     pim_enrich.controller.rest.variant_group_attribute:
         class: '%pim_enrich.controller.rest.variant_group_attribute.class%'
