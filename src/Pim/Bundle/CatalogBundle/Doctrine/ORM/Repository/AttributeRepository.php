@@ -143,14 +143,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findAvailableAxes($locale)
     {
-        $query = $this->findAllAxesQB()
-            ->select('a.id')
-            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')
-            ->leftJoin('a.translations', 't')
-            ->andWhere('t.locale = :locale')
-            ->setParameter('locale', $locale)
-            ->orderBy('t.label')
-            ->getQuery();
+        $query = $this->getAxesQuery($locale);
 
         $axis = [];
         foreach ($query->getArrayResult() as $code) {
@@ -158,6 +151,22 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return $axis;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAxesQuery($locale)
+    {
+        return $this->findAllAxesQB()
+            ->select('a.id')
+            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')
+            ->addSelect('a.code')
+            ->leftJoin('a.translations', 't')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('t.label')
+            ->getQuery();
     }
 
     /**

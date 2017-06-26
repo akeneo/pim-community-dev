@@ -37,8 +37,8 @@ define([
         },
 
         /**
-             * Model update callback
-             */
+         * Model update callback
+         */
         updateModel(event) {
             this.getFormModel().set('type', event.target.value);
         },
@@ -46,9 +46,10 @@ define([
         fetchGroupTypes(element, callback) {
             const fetcher = FetcherRegistry.getFetcher('group-type');
             fetcher.fetchAll().then((types) => {
-                callback(this.parseResults(types).results[0])
+                const firstGroupType = this.parseResults(types).results[0]
+                this.getFormModel().set('type', firstGroupType);
+                callback(firstGroupType);
             });
-
         },
 
         /**
@@ -119,7 +120,7 @@ define([
                 }
             };
 
-            initSelect2.init(this.$('[data-code="type"] input'), options).select2('val', []);
+            initSelect2.init(this.$('input'), options).select2('val', []);
         }
     });
 });

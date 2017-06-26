@@ -68,6 +68,7 @@ class GroupController
      * @param NormalizerInterface        $violationNormalizer
      * @param SaverInterface             $saver
      * @param RemoverInterface           $remover
+     * @param GroupFactory               $groupFactory
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -79,7 +80,7 @@ class GroupController
         NormalizerInterface $violationNormalizer,
         SaverInterface $saver,
         RemoverInterface $remover,
-        groupFactory $groupFactory
+        GroupFactory $groupFactory
     ) {
         $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;

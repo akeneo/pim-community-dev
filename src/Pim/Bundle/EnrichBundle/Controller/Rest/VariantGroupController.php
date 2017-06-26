@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +61,9 @@ class VariantGroupController
     /** @var ConverterInterface */
     protected $productValueConverter;
 
+    /** @var GroupFactory */
+    protected $groupFactory;
+
     /**
      * @param GroupRepositoryInterface $repository
      * @param NormalizerInterface                       $normalizer
@@ -72,6 +76,7 @@ class VariantGroupController
      * @param NormalizerInterface                       $violationNormalizer
      * @param CollectionFilterInterface                 $variantGroupDataFilter
      * @param ConverterInterface                        $productValueConverter
+     * @param GroupFactory                              $groupFactory
      */
     public function __construct(
         GroupRepositoryInterface $repository,
@@ -84,7 +89,8 @@ class VariantGroupController
         ValidatorInterface $validator,
         NormalizerInterface $violationNormalizer,
         CollectionFilterInterface $variantGroupDataFilter,
-        ConverterInterface $productValueConverter
+        ConverterInterface $productValueConverter,
+        GroupFactory $groupFactory
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -97,6 +103,7 @@ class VariantGroupController
         $this->violationNormalizer = $violationNormalizer;
         $this->variantGroupDataFilter = $variantGroupDataFilter;
         $this->productValueConverter = $productValueConverter;
+        $this->groupFactory = $groupFactory;
     }
 
     /**
@@ -234,23 +241,25 @@ class VariantGroupController
 
     public function createAction(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
         $group = $this->groupFactory->createGroup('VARIANT');
-        $group->setProductTemplate($this->productTemplateBuilder->createProductTemplate());
 
-        if ($this->groupHandler->process($group)) {
-            $request->getSession()->getFlashBag()->add('success', new Message('flash.variant group.created'));
+        $this->updater->update($group, $data);
 
-            $url = $this->router->generate(
-                'pim_enrich_variant_group_edit',
-                ['code' => $group->getCode()]
-            );
-            $response = ['status' => 1, 'url' => $url];
+        $violations = $this->validator->validate($group);
+        if (0 < $violations->count()) {
+            $errors = [
+                'values' => $this->normalizer->normalize($violations, 'internal_api', ['variant_group' => $group])
+            ];
 
-            return new Response(json_encode($response));
+            return new JsonResponse($errors, 400);
         }
 
-        return [
-            'form' => $this->groupForm->createView()
-        ];
+        $this->saver->save($group);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $group,
+            'internal_api'
+        ));
     }
 }

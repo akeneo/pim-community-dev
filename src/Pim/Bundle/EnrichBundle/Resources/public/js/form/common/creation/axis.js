@@ -6,129 +6,128 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'routing',
-        'pim/form',
-        'pim/user-context',
-        'pim/i18n',
-        'oro/translator',
-        'pim/fetcher-registry',
-        'pim/initselect2',
-        'pim/template/form/creation/axis'
-    ],
-    function (
-        $,
-        _,
-        Backbone,
-        Routing,
-        BaseForm,
-        UserContext,
-        i18n,
-        __,
-        FetcherRegistry,
-        initSelect2,
-        template
-    ) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'routing',
+    'pim/form',
+    'pim/user-context',
+    'pim/i18n',
+    'oro/translator',
+    'pim/fetcher-registry',
+    'pim/initselect2',
+    'pim/template/form/creation/axis'
+], function (
+    $,
+    _,
+    Backbone,
+    Routing,
+    BaseForm,
+    UserContext,
+    i18n,
+    __,
+    FetcherRegistry,
+    initSelect2,
+    template
+) {
+    return BaseForm.extend({
+        template: _.template(template),
+        events: {
+            'change input': 'updateModel'
+        },
 
-        console.log('axis');
-
-        return BaseForm.extend({
-            template: _.template(template),
-            events: {
-                'change input': 'updateModel'
-            },
-
-            /**
+        /**
              * Configure the form
              *
              * @return {Promise}
              */
-            configure() {
-                return $.when(
-                    FetcherRegistry.initialize(),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
-            },
+        configure() {
+            return $.when(
+                FetcherRegistry.initialize(),
+                BaseForm.prototype.configure.apply(this, arguments)
+            );
+        },
 
-            /**
+        /**
              * Model update callback
              */
-            updateModel(event) {
-                this.getFormModel().set('type', event.target.value);
-            },
+        updateModel(event) {
+            const axes = event.target.value.split(',');
+            this.getFormModel().set('axes', axes);
+        },
+
+        formatAxes(axes, useTranslation) {
+            const locale = UserContext.get('catalogLocale');
+            const formatted = [];
+
+            axes.forEach(axis => {
+                const id = axis.code;
+                let text = axis.label;
+
+                if (useTranslation) {
+                    text = i18n.getLabel(axis.labels, locale, id);
+                }
+
+                formatted.push({ id, text });
+            });
+
+            return formatted;
+        },
 
 
-            /**
+        /**
              * Parses each group type for the select display
              *
              * @param  {Array} types The search results
              * @return {Object}
              */
-            parseResults(types) {
-                console.log('parseResults', this);
-                const resultLength = Object.keys(types).length;
-                const locale = UserContext.get('catalogLocale');
+        parseResults(axes) {
+            return { results: this.formatAxes(axes) }
+        },
 
-                const data = {
-                    more: 20 === resultLength,
-                    results: []
-                };
+        fetchAxes(element, callback) {
+            const axes = this.getFormData().axes;
+            if (!axes) return;
 
-                _.reject(types, { is_variant: true }).forEach(value => {
-                    const { code, labels } = value;
+            FetcherRegistry.getFetcher('attribute')
+            .fetchByIdentifiers(axes)
+            .then(fetchedAxes => callback(this.formatAxes(fetchedAxes, true)));
+        },
 
-                    data.results.push({
-                        id: code,
-                        text: i18n.getLabel(labels, locale, code)
-                    });
-                });
+        /**
+         * Renders the form
+         *
+         * @return {Promise}
+         */
+        render() {
+            if (!this.configured) return this;
 
-                return data;
-            },
+            const locale = UserContext.get('catalogLocale');
 
-            /**
-             * Renders the form
-             *
-             * @return {Promise}
-             */
-            render() {
-                console.log('render', this);
+            this.$el.html(this.template({
+                label: 'Axis',
+                required: __('pim_enrich.form.required')
+            }));
 
-                if (!this.configured) return this;
+            this.delegateEvents();
 
-                const formData = this.getFormData();
-                const locale = UserContext.get('catalogLocale');
-
-                this.$el.html(this.template({
-                    label: __('pim_enrich.form.group.tab.properties.type'),
-                    type: formData.type,
-                    required: __('pim_enrich.form.required')
-                }));
-
-                this.delegateEvents();
-
-                var options = {
-                    allowClear: true,
-                    ajax: {
-                        url: Routing.generate('pim_enrich_grouptype_rest_index'),
-                        results: this.parseResults,
-                        quietMillis: 250,
-                        cache: true,
-                        data(search, page) {
-                            return {
-                                search,
-                                options: { limit: 20, page, locale }
-                            };
-                        }
+            var options = {
+                allowClear: true,
+                multiple: true,
+                initSelection: this.fetchAxes.bind(this),
+                ajax: {
+                    url: Routing.generate('pim_enrich_attribute_axes_index'),
+                    results: this.parseResults.bind(this),
+                    quietMillis: 250,
+                    cache: true,
+                    data() {
+                        return { locale };
                     }
-                };
+                }
+            };
 
-                initSelect2.init(this.$('[data-code="type"] input'), options);
-            }
-        });
-    }
-);
+            initSelect2.init(this.$('input'), options).select2('val', []);
+        }
+    });
+});

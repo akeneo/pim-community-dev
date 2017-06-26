@@ -126,4 +126,11 @@ class AttributeController
 
         return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));
     }
+
+    public function listAxesAction(Request $request)
+    {
+        $locale = $request->get('locale');
+        $attributeAxes = $this->attributeRepository->getAxesQuery($locale)->getArrayResult();
+        return new JsonResponse($attributeAxes);
+    }
 }
