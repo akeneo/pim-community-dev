@@ -27,18 +27,18 @@ interface EntityWithValuesInterface
     /**
      * Get values
      *
-     * @return ProductValueCollectionInterface
+     * @return ValueCollectionInterface
      */
     public function getValues();
 
     /**
      * Set values
      *
-     * @param ProductValueCollectionInterface $values
+     * @param ValueCollectionInterface $values
      *
      * @return ProductInterface
      */
-    public function setValues(ProductValueCollectionInterface $values);
+    public function setValues(ValueCollectionInterface $values);
 
     /**
      * Get value related to attribute code
@@ -47,27 +47,27 @@ interface EntityWithValuesInterface
      * @param string $localeCode
      * @param string $scopeCode
      *
-     * @return ProductValueInterface
+     * @return ValueInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
 
     /**
      * Add value, override to deal with relation owner side
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return ProductInterface
      */
-    public function addValue(ProductValueInterface $value);
+    public function addValue(ValueInterface $value);
 
     /**
      * Remove value
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return ProductInterface
      */
-    public function removeValue(ProductValueInterface $value);
+    public function removeValue(ValueInterface $value);
 
     /**
      * Get the attributes of the product

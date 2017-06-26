@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -76,8 +76,8 @@ class AttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ScalarProductValue $fromProductValue,
-        ScalarProductValue $toProductValue
+        ScalarValue $fromValue,
+        ScalarValue $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -90,17 +90,17 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')
+        $normalizer->normalize($fromValue, 'standard')
             ->willReturn([
                 'locale' => 'fr_FR',
                 'scope' => 'mobile',
                 'data' => true
             ]);
 
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, true)
-            ->willReturn($toProductValue);
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
@@ -132,8 +132,8 @@ class AttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ScalarProductValue $fromProductValue,
-        ScalarProductValue $toProductValue
+        ScalarValue $fromValue,
+        ScalarValue $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -146,16 +146,16 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn([
+        $normalizer->normalize($fromValue, 'standard')->willReturn([
             'locale' => 'fr_FR',
             'scope' => 'mobile',
             'data' => '1970-01-01'
         ]);
 
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, '1970-01-01')
-            ->willReturn($toProductValue);
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
@@ -187,8 +187,8 @@ class AttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ScalarProductValue $fromProductValue,
-        ScalarProductValue $toProductValue
+        ScalarValue $fromValue,
+        ScalarValue $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -201,16 +201,16 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn([
+        $normalizer->normalize($fromValue, 'standard')->willReturn([
             'locale' => 'fr_FR',
             'scope' => 'mobile',
             'data' => 123
         ]);
 
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 123)
-            ->willReturn($toProductValue);
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
@@ -242,8 +242,8 @@ class AttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ScalarProductValue $fromProductValue,
-        ScalarProductValue $toProductValue
+        ScalarValue $fromValue,
+        ScalarValue $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -256,16 +256,16 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn([
+        $normalizer->normalize($fromValue, 'standard')->willReturn([
                 'locale' => 'fr_FR',
                 'scope' => 'mobile',
                 'data' => 'data'
             ]);
 
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 'data')
-            ->willReturn($toProductValue);
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder

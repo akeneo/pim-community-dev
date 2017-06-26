@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 
 class FileNormalizerSpec extends ObjectBehavior
 {
@@ -18,23 +18,23 @@ class FileNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_datagrid_format_and_product_value(MediaProductValueInterface $productValue)
+    function it_supports_datagrid_format_and_product_value(MediaValueInterface $value)
     {
-        $this->supportsNormalization($productValue, 'datagrid')->shouldReturn(true);
-        $this->supportsNormalization($productValue, 'other_format')->shouldReturn(false);
+        $this->supportsNormalization($value, 'datagrid')->shouldReturn(true);
+        $this->supportsNormalization($value, 'other_format')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'datagrid')->shouldReturn(false);
     }
 
     function it_normalizes_a_media_product_value(
-        MediaProductValueInterface $productValue,
+        MediaValueInterface $value,
         FileInfoInterface $fileInfo
     ) {
-        $productValue->getData()->willReturn($fileInfo);
+        $value->getData()->willReturn($fileInfo);
         $fileInfo->getOriginalFilename()->willReturn('cat.jpg');
         $fileInfo->getKey()->willReturn('1/2/3/4/zertyj_cat.jpg');
-        $productValue->getLocale()->willReturn(null);
-        $productValue->getScope()->willReturn(null);
+        $value->getLocale()->willReturn(null);
+        $value->getScope()->willReturn(null);
 
         $data =  [
             'locale' => null,
@@ -45,6 +45,6 @@ class FileNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $this->normalize($productValue, 'datagrid')->shouldReturn($data);
+        $this->normalize($value, 'datagrid')->shouldReturn($data);
     }
 }

@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 
 class MetricConverterSpec extends ObjectBehavior
@@ -22,9 +22,9 @@ class MetricConverterSpec extends ObjectBehavior
     function it_converts_metric_values_given_the_configured_base_unit_in_the_channel(
         $converter,
         $productBuilder,
-        ProductValueInterface $weightValue,
-        ProductValueInterface $surfaceValue,
-        ProductValueInterface $nameValue,
+        ValueInterface $weightValue,
+        ValueInterface $surfaceValue,
+        ValueInterface $nameValue,
         AttributeInterface $weight,
         AttributeInterface $surface,
         AttributeInterface $name,
@@ -78,7 +78,7 @@ class MetricConverterSpec extends ObjectBehavior
     function it_does_not_convert_null_metric_values_in_the_channel(
         $converter,
         $productBuilder,
-        ProductValueInterface $weightValue,
+        ValueInterface $weightValue,
         AttributeInterface $weight,
         MetricInterface $weightMetric,
         ProductInterface $product,

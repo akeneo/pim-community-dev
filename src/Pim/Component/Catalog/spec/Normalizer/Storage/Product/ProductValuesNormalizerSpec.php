@@ -6,11 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
@@ -37,11 +37,11 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('attribute');
         $attribute->setBackendType('text');
-        $realValue = new ScalarProductValue($attribute, null, null, null);
+        $realValue = new ScalarValue($attribute, null, null, null);
 
-        $valuesCollection = new ProductValueCollection([$realValue]);
+        $valuesCollection = new ValueCollection([$realValue]);
         $valuesArray = [$realValue];
-        $emptyValuesCollection = new ProductValueCollection();
+        $emptyValuesCollection = new ValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
@@ -57,13 +57,13 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_collection_of_product_values_in_storage_format(
         $serializer,
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute,
-        ProductValueInterface $descriptionEcommerceFrValue,
-        ProductValueInterface $descriptionEcommerceEnValue,
-        ProductValueInterface $descriptionPrintFrValue,
+        ValueInterface $descriptionEcommerceFrValue,
+        ValueInterface $descriptionEcommerceEnValue,
+        ValueInterface $descriptionPrintFrValue,
         AttributeInterface $descriptionAttribute,
-        ProductValueCollectionInterface $values,
+        ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator
     ) {
         $values->getIterator()->willReturn($valuesIterator);

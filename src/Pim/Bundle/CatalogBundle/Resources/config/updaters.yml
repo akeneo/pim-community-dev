@@ -171,7 +171,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.factory.product_value'
+            - '@pim_catalog.factory.value'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.query.product_query_builder_factory'

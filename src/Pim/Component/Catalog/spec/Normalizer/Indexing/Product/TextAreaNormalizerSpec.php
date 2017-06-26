@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\TextAreaNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,8 +22,8 @@ class TextAreaNormalizerSpec extends ObjectBehavior
     }
 
     function it_supports_text_area_product_value(
-        ProductValueInterface $numberValue,
-        ProductValueInterface $textAreaValue,
+        ValueInterface $numberValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $numberAttribute,
         AttributeInterface $textAreaAttribute
     ) {
@@ -42,7 +42,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_simple_text_area(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -63,7 +63,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_simple_text_area(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -84,7 +84,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_text_area_with_new_lines(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -106,7 +106,7 @@ description\r\n");
     }
 
     function it_normalizes_a_text_area_with_html_tags(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -127,7 +127,7 @@ description\r\n");
     }
 
     function it_normalizes_a_text_area_with_html_tags_and_new_lines(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -149,7 +149,7 @@ description\r\n");
     }
 
     function it_normalizes_a_text_area_product_value_with_locale_and_no_scope(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -170,7 +170,7 @@ description\r\n");
     }
 
     function it_normalizes_a_text_area_product_value_with_no_scope_and_no_locale(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
@@ -191,7 +191,7 @@ description\r\n");
     }
 
     function it_normalizes_a_text_area_product_value_with_locale_and_scope(
-        ProductValueInterface $textAreaValue,
+        ValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute
     ) {
         $textAreaValue->getAttribute()->willReturn($textAreaAttribute);

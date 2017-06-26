@@ -32,6 +32,33 @@
 ### Classes
 
 - Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
+- PIM-6442: Rename `Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractProductValueDataNormalizer` to `Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractValueDataNormalizer`
+- PIM-6442: Rename `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer` to `Pim\Bundle\VersioningBundle\Normalizer\Flat\ValueNormalizer`
+- PIM-6442: Rename `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker` to `Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker`
+- PIM-6442: Rename `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface` to `Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\DateValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\MediaValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\MetricValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\OptionValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\OptionsValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\PriceCollectionValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface` to `Pim\Component\Catalog\Factory\ProductValue\ValueFactoryInterface`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\ScalarValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueCollectionFactory` to `Pim\Component\Catalog\Factory\ProductValueCollectionFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueFactory` to `Pim\Component\Catalog\Factory\ValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\DateProductValue` to `Pim\Component\Catalog\ProductValue\DateValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MediaProductValue` to `Pim\Component\Catalog\ProductValue\MediaValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MetricProductValue` to `Pim\Component\Catalog\ProductValue\MetricValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionProductValue` to `Pim\Component\Catalog\ProductValue\OptionValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionsProductValue` to `Pim\Component\Catalog\ProductValue\OptionsValue`
+- PIM-6442: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Value`
+- PIM-6442: Rename `Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter` to `Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter`
+- PIM-6442: Rename `Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter` to `Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter`
+- PIM-6442: Rename `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory` to `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionValueFactory`
+- PIM-6442: Rename `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory` to `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataValueFactory`
+- PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValue`
+- PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\ProductValue\ReferenceDataValue`
+- PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 
 ### Constructors
 
@@ -190,7 +217,46 @@
 - Change method `copyAttributeData` of `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface` to use 2 `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of 2 `Pim\Component\Catalog\Model\ProductInterface`.
 - Change method `removeAttributeData` of `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
 - Change method `setAttributeData` of `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`. 
-    
+- Rename class `pim_catalog.factory.product_value_collection.class` to `pim_catalog.factory.value_collection.class`
+- Rename class `pim_catalog.factory.product_value.class` to `pim_catalog.factory.value.class`
+- Rename class `pim_catalog.factory.product_value.scalar.class` to `pim_catalog.factory.value.scalar.class`
+- Rename class `pim_catalog.factory.product_value.metric.class` to `pim_catalog.factory.value.metric.class`
+- Rename class `pim_catalog.factory.product_value.price_collection.class` to `pim_catalog.factory.value.price_collection.class`
+- Rename class `pim_catalog.factory.product_value.option.class` to `pim_catalog.factory.value.option.class`
+- Rename class `pim_catalog.factory.product_value.options.class` to `pim_catalog.factory.value.options.class`
+- Rename class `pim_catalog.factory.product_value.media.class` to `pim_catalog.factory.value.media.class`
+- Rename class `pim_catalog.factory.product_value.date.class` to `pim_catalog.factory.value.date.class`
+- Rename class `pim_serializer.normalizer.flat.product_value.class` to `pim_serializer.normalizer.flat.value.class`
+- Rename class `pim_catalog.entity.product_value.scalar.class` to `pim_catalog.entity.value.scalar.class`
+- Rename class `pim_catalog.entity.product_value.media.class` to `pim_catalog.entity.value.media.class`
+- Rename class `pim_catalog.entity.product_value.metric.class` to `pim_catalog.entity.value.metric.class`
+- Rename class `pim_catalog.entity.product_value.option.class` to `pim_catalog.entity.value.option.class`
+- Rename class `pim_catalog.entity.product_value.options.class` to `pim_catalog.entity.value.options.class`
+- Rename class `pim_catalog.entity.product_value.date.class` to `pim_catalog.entity.value.date.class`
+- Rename class `pim_catalog.entity.product_value.price_collection.class` to `pim_catalog.entity.value.price_collection.class`
+- Rename class `pim_enrich.converter.standard_to_enrich.product_value.class` to `pim_enrich.converter.standard_to_enrich.value.class`
+- Rename class `pim_enrich.converter.enrich_to_standard.product_value.class` to `pim_enrich.converter.enrich_to_standard.value.class`
+- Rename class `pim_reference_data.factory.product_value.reference_data.class` to `pim_reference_data.factory.value.reference_data.class`
+- Rename class `pim_reference_data.factory.product_value.reference_data_collection.class` to `pim_reference_data.factory.value.reference_data_collection.class`
+- Rename class `pim_reference_data.product_value.reference_data.class` to `pim_reference_data.value.reference_data.class`
+- Rename class `pim_reference_data.product_value.reference_data_collection.class` to `pim_reference_data.value.reference_data_collection.class`
+- Rename service `pim_catalog.factory.product_value` to `pim_catalog.factory.value`
+- Rename service `pim_catalog.factory.product_value_collection` to `pim_catalog.factory.value_collection`
+- Rename service `pim_catalog.factory.product_value.text` to `pim_catalog.factory.value.text`
+- Rename service `pim_catalog.factory.product_value.textarea` to `pim_catalog.factory.value.textarea`
+- Rename service `pim_catalog.factory.product_value.number` to `pim_catalog.factory.value.number`
+- Rename service `pim_catalog.factory.product_value.boolean` to `pim_catalog.factory.value.boolean`
+- Rename service `pim_catalog.factory.product_value.identifier` to `pim_catalog.factory.value.identifier`
+- Rename service `pim_catalog.factory.product_value.metric` to `pim_catalog.factory.value.metric`
+- Rename service `pim_catalog.factory.product_value.price_collection` to `pim_catalog.factory.value.price_collection`
+- Rename service `pim_catalog.factory.product_value.option` to `pim_catalog.factory.value.option`
+- Rename service `pim_catalog.factory.product_value.options` to `pim_catalog.factory.value.options`
+- Rename service `pim_catalog.factory.product_value.file` to `pim_catalog.factory.value.file`
+- Rename service `pim_catalog.factory.product_value.image` to `pim_catalog.factory.value.image`
+- Rename service `pim_catalog.factory.product_value.date` to `pim_catalog.factory.value.date`
+- Rename service `pim_catalog.model.product_value.interface` to `pim_catalog.model.value.interface`
+- Rename service `pim_versioning.serializer.normalizer.flat.product_value` to `pim_versioning.serializer.normalizer.flat.value`
+
 ## Requirements
 
 - GITHUB-5937: Remove the need to have mcrypt installed

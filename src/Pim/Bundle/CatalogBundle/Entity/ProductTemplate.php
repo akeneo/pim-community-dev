@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product template model, contains common product values as raw data
@@ -20,7 +20,7 @@ class ProductTemplate implements ProductTemplateInterface
     /** @var int $id */
     protected $id;
 
-    /** @var ProductValueCollectionInterface */
+    /** @var ValueCollectionInterface */
     protected $values;
 
     /** @var array */
@@ -31,7 +31,7 @@ class ProductTemplate implements ProductTemplateInterface
      */
     public function __construct()
     {
-        $this->values = new ProductValueCollection();
+        $this->values = new ValueCollection();
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductTemplate implements ProductTemplateInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ProductValueCollectionInterface $values)
+    public function setValues(ValueCollectionInterface $values)
     {
         $this->values = $values;
 
@@ -81,7 +81,7 @@ class ProductTemplate implements ProductTemplateInterface
     /**
      * {@inheritdoc}
      */
-    public function hasValue(ProductValueInterface $value)
+    public function hasValue(ValueInterface $value)
     {
         $attributeCode = $value->getAttribute()->getCode();
         if (!isset($this->valuesData[$attributeCode])) {

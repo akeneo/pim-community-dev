@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Check if a product value data is complete or not. This checker should be registered as the last one so that
@@ -18,20 +18,20 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @internal for internal use only, please use
- *           \Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker
+ *           \Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker
  *           to calculate the completeness on a product value
  */
-class SimpleCompleteChecker implements ProductValueCompleteCheckerInterface
+class SimpleCompleteChecker implements ValueCompleteCheckerInterface
 {
     /**
      * {@inheritdoc}
      */
     public function isComplete(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $data = $productValue->getData();
+        $data = $value->getData();
 
         if ((is_array($data) || $data instanceof \Countable) && 0 === count($data)) {
             return false;
@@ -54,7 +54,7 @@ class SimpleCompleteChecker implements ProductValueCompleteCheckerInterface
      * {@inheritdoc}
      */
     public function supportsValue(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {

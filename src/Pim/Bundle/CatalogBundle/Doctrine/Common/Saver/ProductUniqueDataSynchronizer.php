@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
 /**
  * Synchronize the $uniqueData persistent collection of the product with the unique values of the product.
  * Those unique values come from the $values collection
- * {@see Pim\Component\Catalog\Model\ProductValueCollectionInterface}.
+ * {@see Pim\Component\Catalog\Model\ValueCollectionInterface}.
  *
  * The only aim of the $uniqueData collection is to be able to save these information in the database via Doctrine.
  *

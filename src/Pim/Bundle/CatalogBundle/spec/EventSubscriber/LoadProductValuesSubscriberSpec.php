@@ -5,26 +5,21 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
-use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Factory\ValueCollectionFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LoadProductValuesSubscriberSpec extends ObjectBehavior
 {
     function let(
         ContainerInterface $container,
-        ProductValueCollectionFactory $valueCollectionFactory
+        ValueCollectionFactory $valueCollectionFactory
     ) {
         $this->beConstructedWith($container);
 
-        $container->get('pim_catalog.factory.product_value_collection')->willReturn($valueCollectionFactory);
+        $container->get('pim_catalog.factory.value_collection')->willReturn($valueCollectionFactory);
     }
 
     function it_is_initializable()
@@ -41,7 +36,7 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
         $valueCollectionFactory,
         LifecycleEventArgs $event,
         ProductInterface $product,
-        ProductValueCollectionInterface $values
+        ValueCollectionInterface $values
     ) {
         $event->getObject()->willReturn($product);
         $product->getIdentifier()->willReturn('foo');

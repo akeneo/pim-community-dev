@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\ScopableValue;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -33,7 +33,7 @@ class ScopableValueValidatorSpec extends ObjectBehavior
     function it_does_not_add_violations_if_value_is_scopable_and_has_an_existing_scope(
         $context,
         $channelRepository,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $scopableAttribute,
         ChannelInterface $existingChannel,
         ScopableValue $constraint
@@ -49,7 +49,7 @@ class ScopableValueValidatorSpec extends ObjectBehavior
 
     function it_adds_violations_if_value_is_scopable_and_does_not_have_scope(
         $context,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $scopableAttribute,
         ScopableValue $constraint,
         ConstraintViolationBuilderInterface $violation
@@ -71,7 +71,7 @@ class ScopableValueValidatorSpec extends ObjectBehavior
 
     function it_adds_violations_if_value_is_not_scopable_and_a_scope_is_provided(
         $context,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $notScopableAttribute,
         ScopableValue $constraint,
         ConstraintViolationBuilderInterface $violation
@@ -94,7 +94,7 @@ class ScopableValueValidatorSpec extends ObjectBehavior
     function it_adds_violations_if_value_is_scopable_and_its_scope_does_not_exist(
         $context,
         $channelRepository,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $scopableAttribute,
         ScopableValue $constraint,
         ConstraintViolationBuilderInterface $violation

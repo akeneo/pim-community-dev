@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -47,7 +47,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
-        ProductValueInterface $sku,
+        ValueInterface $sku,
         Collection $values,
         FamilyInterface $family,
         $serializer
@@ -86,7 +86,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
-        ProductValueInterface $sku,
+        ValueInterface $sku,
         Association $myCrossSell,
         AssociationTypeInterface $crossSell,
         Association $myUpSell,
@@ -95,8 +95,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupInterface $associatedGroup2,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
-        ProductValueInterface $skuAssocProduct1,
-        ProductValueInterface $skuAssocProduct2,
+        ValueInterface $skuAssocProduct1,
+        ValueInterface $skuAssocProduct2,
         Collection $values,
         FamilyInterface $family,
         $serializer
@@ -158,8 +158,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $skuAttribute,
         AttributeInterface $colorsAttribute,
-        ProductValueInterface $sku,
-        ProductValueInterface $colors,
+        ValueInterface $sku,
+        ValueInterface $colors,
         AttributeOptionInterface $red,
         AttributeOptionInterface $blue,
         Collection $values,
@@ -209,7 +209,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         AttributeInterface $priceAttribute,
-        ProductValueInterface $price,
+        ValueInterface $price,
         Collection $prices,
         Collection $values,
         ProductPriceInterface $productPrice,

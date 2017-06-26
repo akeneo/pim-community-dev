@@ -4,11 +4,11 @@ namespace spec\Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\AbstractReferenceData;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataNormalizer;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior
@@ -24,8 +24,8 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_reference_data_product_value(
-        ReferenceDataProductValue $referenceDataProductValue,
-        ProductValueInterface $textValue,
+        ReferenceDataValue $referenceDataProductValue,
+        ValueInterface $textValue,
         AttributeInterface $referenceData,
         AttributeInterface $textAttribute
     ) {
@@ -41,7 +41,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_an_empty_reference_data_product_value(
-        ReferenceDataProductValue $referenceDataValue,
+        ReferenceDataValue $referenceDataValue,
         AttributeInterface $referenceData
     ) {
         $referenceDataValue->getAttribute()->willReturn($referenceData);
@@ -66,7 +66,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalize_a_reference_data_product_value_with_no_locale_and_no_channel(
-        ReferenceDataProductValue $referenceDataValue,
+        ReferenceDataValue $referenceDataValue,
         AttributeInterface $referenceData,
         Color $color
     ) {
@@ -93,7 +93,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_option_product_value_with_locale(
-        ReferenceDataProductValue $referenceDataValue,
+        ReferenceDataValue $referenceDataValue,
         AttributeInterface $referenceData,
         Color $color
     ){
@@ -120,7 +120,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_reference_data_product_value_with_channel(
-        ReferenceDataProductValue $referenceDataValue,
+        ReferenceDataValue $referenceDataValue,
         AttributeInterface $referenceData,
         Color $color
     ){
@@ -147,7 +147,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_reference_data_product_value_with_locale_and_channel(
-        ReferenceDataProductValue $referenceDataValue,
+        ReferenceDataValue $referenceDataValue,
         AttributeInterface $referenceData,
         Color $color
     ) {

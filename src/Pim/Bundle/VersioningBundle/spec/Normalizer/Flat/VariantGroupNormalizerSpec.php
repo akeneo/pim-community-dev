@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantGroupNormalizerSpec extends ObjectBehavior
@@ -53,7 +53,7 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         GroupInterface $group,
         GroupTypeInterface $groupType,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attr1,
         AttributeInterface $attr2,
         AttributeInterface $attr3
@@ -68,8 +68,8 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 
         $group->getProductTemplate()->willReturn($productTemplate);
 
-        $productTemplate->getValues()->willReturn([$productValue]);
-        $valuesNormalizer->normalize($productValue, 'flat', [])->willReturn(['name' => 'Light saber model']);
+        $productTemplate->getValues()->willReturn([$value]);
+        $valuesNormalizer->normalize($value, 'flat', [])->willReturn(['name' => 'Light saber model']);
 
         $group->getAxisAttributes()->willReturn([$attr1, $attr2, $attr3]);
 
@@ -93,8 +93,8 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         GroupTypeInterface $groupType,
         AttributeInterface $attr,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue1,
-        ProductValueInterface $productValue2
+        ValueInterface $value1,
+        ValueInterface $value2
     ) {
         $groupType->getCode()->willReturn('VARIANT');
         $groupType->isVariant()->willReturn(true);
@@ -105,13 +105,13 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 
         $productTemplate->getValues()->willReturn(
             [
-                $productValue1,
-                $productValue2
+                $value1,
+                $value2
             ]
         );
 
-        $valuesNormalizer->normalize($productValue1, $format, [])->willReturn(['name' => 'Light saber model']);
-        $valuesNormalizer->normalize($productValue2, $format, [])->willReturn(['size' => '120']);
+        $valuesNormalizer->normalize($value1, $format, [])->willReturn(['name' => 'Light saber model']);
+        $valuesNormalizer->normalize($value2, $format, [])->willReturn(['size' => '120']);
 
         $group->getProductTemplate()->willReturn($productTemplate);
         $group->getType()->willReturn($groupType);

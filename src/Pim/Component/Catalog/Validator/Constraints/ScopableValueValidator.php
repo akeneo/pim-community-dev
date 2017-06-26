@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -33,8 +33,8 @@ class ScopableValueValidator extends ConstraintValidator
      */
     public function validate($productValue, Constraint $constraint)
     {
-        /** @var ProductValueInterface */
-        if ($productValue instanceof ProductValueInterface) {
+        /** @var ValueInterface */
+        if ($productValue instanceof ValueInterface) {
             $isScopable = $productValue->getAttribute()->isScopable();
             $channelCode = $productValue->getScope();
 
@@ -61,10 +61,10 @@ class ScopableValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param ScopableValue         $constraint
-     * @param ProductValueInterface $value
+     * @param ScopableValue  $constraint
+     * @param ValueInterface $value
      */
-    protected function addExpectedScopeViolation(ScopableValue $constraint, ProductValueInterface $value)
+    protected function addExpectedScopeViolation(ScopableValue $constraint, ValueInterface $value)
     {
         $this->context->buildViolation(
             $constraint->expectedScopeMessage,
@@ -75,13 +75,13 @@ class ScopableValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param ScopableValue         $constraint
-     * @param ProductValueInterface $value
-     * @param string                $channelCode
+     * @param ScopableValue  $constraint
+     * @param ValueInterface $value
+     * @param string         $channelCode
      */
     protected function addUnexistingScopeViolation(
         ScopableValue $constraint,
-        ProductValueInterface $value,
+        ValueInterface $value,
         $channelCode
     ) {
         $this->context->buildViolation(
@@ -94,10 +94,10 @@ class ScopableValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param ScopableValue         $constraint
-     * @param ProductValueInterface $value
+     * @param ScopableValue  $constraint
+     * @param ValueInterface $value
      */
-    protected function addUnexpectedScopeViolation(ScopableValue $constraint, ProductValueInterface $value)
+    protected function addUnexpectedScopeViolation(ScopableValue $constraint, ValueInterface $value)
     {
         $this->context->buildViolation(
             $constraint->unexpectedScopeMessage,
