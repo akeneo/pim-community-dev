@@ -29,6 +29,11 @@ services:
             - '@pim_catalog.repository.attribute'
             - '%pim_catalog.entity.family.class%'
 
+    pim_catalog.factory.family_variant:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.family_variant.class%'
+
     pim_catalog.factory.channel:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
