@@ -13,6 +13,7 @@ parameters:
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
+    pim_catalog.updater.family_variant.class:                 Pim\Component\Catalog\Updater\FamilyVariantUpdater
     pim_catalog.updater.channel.class:                        Pim\Component\Catalog\Updater\ChannelUpdater
     pim_catalog.updater.locale.class:                         Pim\Component\Catalog\Updater\LocaleUpdater
     pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
@@ -137,6 +138,13 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute_requirement'
             - '@pim_localization.updater.translatable'
+
+    pim_catalog.updater.family_variant:
+        class: '%pim_catalog.updater.family_variant.class%'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_localization.updater.translatable'
+            - '@pim_catalog.repository.family'
 
     pim_catalog.updater.channel:
         class: '%pim_catalog.updater.channel.class%'

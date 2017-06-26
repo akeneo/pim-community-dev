@@ -49,12 +49,19 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
 
-    pim_catalog.saver.association_type:
+    pim_catalog.saver.family_variant:
         class: '%pim_catalog.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_catalog.model.association_type.interface%'
+
+    pim_catalog.saver.association_type:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.family_variant.interface%'
 
     pim_catalog.saver.attribute_group:
         class: '%pim_catalog.saver.base.class%'
