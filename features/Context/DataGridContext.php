@@ -808,8 +808,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param boolean $not
-     * @param string  $option
-     * @param string  $filterName
+     * @param string $option
+     * @param string $filterName
+     *
+     * @throws ExpectationException
      *
      * @throws ExpectationException
      *

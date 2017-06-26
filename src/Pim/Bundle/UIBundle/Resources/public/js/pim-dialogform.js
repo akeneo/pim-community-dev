@@ -43,6 +43,8 @@ define(
                 var $form = $(data);
                 var formTitle = $form.data('title');
                 var formId = '#' + $form.attr('id');
+                var loadingMask = $('<div class="AknLoadingMask-wrapper">').hide();
+                $('body').append(loadingMask);
 
                 var formButtons = [];
                 var submitButton = $form.data('button-submit');
@@ -60,6 +62,7 @@ define(
                                 success: function (data) {
                                     processResponse(data);
                                     mediator.trigger('dialog:open:after', this);
+                                    loadingMask.remove();
                                 }
                             });
                         }
@@ -71,6 +74,7 @@ define(
                         'class': 'btn',
                         click: function () {
                             destroyDialog();
+                            loadingMask.remove();
                         }
                     });
                 }
@@ -81,6 +85,8 @@ define(
                     resizable: false,
                     width: width,
                     buttons: formButtons,
+                    draggable: false,
+
                     open: function () {
                         $(this).parent().keypress(function (e) {
                             if (e.keyCode === $.ui.keyCode.ENTER) {
@@ -89,9 +95,12 @@ define(
                                 $(this).find('button.btn-primary:eq(0)').click();
                             }
                         });
+                        loadingMask.show();
                     },
+
                     close: function () {
                         $(this).remove();
+                        loadingMask.remove();
                     }
                 });
 

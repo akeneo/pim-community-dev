@@ -7,6 +7,7 @@ use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
@@ -460,25 +461,39 @@ class Form extends Base
      * @param string $label
      * @param array  $choices
      * @param bool   $isExpected
+     * @param bool   $strict
      *
      * @throws ExpectationException
      */
-    public function checkFieldChoices($label, array $choices, $isExpected = true)
+    public function checkFieldChoices($label, array $choices, $isExpected = true, $strict = false)
     {
-        $labelElement = $this->extractLabelElement($label);
-        $container = $this->getClosest($labelElement, 'AknFieldContainer');
-        $select2 = $this->spin(function () use ($container) {
-            return $container->find('css', '.select2');
+        $select2 = $this->spin(function () use ($label) {
+            $labelElement = $this->extractLabelElement($label);
+            $container = $this->getClosest($labelElement, 'AknFieldContainer');
+            if (null === $container) {
+                return false;
+            }
+
+            return $container->find('css', '.select2, .select2-default');
         }, 'Impossible to find the select');
         $select2 = $this->decorate($select2, [Select2Decorator::class]);
         $selectChoices = $select2->getAvailableValues();
-        if ($isExpected) {
+
+        if ($isExpected && true === $strict) {
+            if ($selectChoices !== $choices) {
+                throw new ExpectationException(sprintf(
+                    'Expecting to see exactly %s, %s found',
+                    json_encode($choices),
+                    json_encode($selectChoices)
+                ), $this->getSession());
+            }
+        } elseif ($isExpected) {
             foreach ($choices as $choice) {
                 if (!in_array($choice, $selectChoices)) {
                     throw new ExpectationException(sprintf(
                         'Expecting to find choice "%s" in field "%s"',
                         $choice,
-                        $labelElement
+                        $label
                     ), $this->getSession());
                 }
             }
@@ -488,13 +503,20 @@ class Form extends Base
                     throw new ExpectationException(sprintf(
                         'Choice "%s" should not be in available for field "%s"',
                         $choice,
-                        $labelElement
+                        $label
                     ), $this->getSession());
                 }
             }
         }
     }
 
+    /**
+     * Returns the 'Add attributes' node element
+     *
+     * @throws SpinException
+     *
+     * @return NodeElement
+     */
     public function getAttributeAddSelect()
     {
         return $this->spin(function () {
@@ -502,6 +524,13 @@ class Form extends Base
         }, 'Cannot find the add attribute element');
     }
 
+    /**
+     * Returns the 'Add attributes by group' node element
+     *
+     * @throws SpinException
+     *
+     * @return NodeElement
+     */
     public function getAttributeGroupAddSelect()
     {
         return $this->spin(function () {
@@ -575,9 +604,9 @@ class Form extends Base
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
             }, sprintf('Cannot find "%s" label', $labelContent));
         } else {
-            $labeParts = explode(' ', $labelContent);
-            $channel   = in_array(reset($labeParts), ['mobile', 'ecommerce', 'print', 'tablet']) ?
-                reset($labeParts) :
+            $labelParts = explode(' ', $labelContent);
+            $channel   = in_array(reset($labelParts), ['mobile', 'ecommerce', 'print', 'tablet']) ?
+                reset($labelParts) :
                 null;
 
             if (null !== $channel) {
