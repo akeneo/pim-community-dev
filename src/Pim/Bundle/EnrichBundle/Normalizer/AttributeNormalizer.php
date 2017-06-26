@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,13 +40,17 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
+    /** @var StructureVersionProviderInterface */
+    protected $structureVersionProvider;
+
     /**
-     * @param NormalizerInterface         $normalizer
-     * @param FieldProviderInterface      $fieldProvider
-     * @param EmptyValueProviderInterface $emptyValueProvider
-     * @param FilterProviderInterface     $filterProvider
-     * @param VersionManager              $versionManager
-     * @param NormalizerInterface         $versionNormalizer
+     * @param NormalizerInterface               $normalizer
+     * @param FieldProviderInterface            $fieldProvider
+     * @param EmptyValueProviderInterface       $emptyValueProvider
+     * @param FilterProviderInterface           $filterProvider
+     * @param VersionManager                    $versionManager
+     * @param NormalizerInterface               $versionNormalizer
+     * @param StructureVersionProviderInterface $structureVersionProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -53,7 +58,8 @@ class AttributeNormalizer implements NormalizerInterface
         EmptyValueProviderInterface $emptyValueProvider,
         FilterProviderInterface $filterProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        StructureVersionProviderInterface $structureVersionProvider
     ) {
         $this->normalizer = $normalizer;
         $this->fieldProvider = $fieldProvider;
@@ -61,6 +67,7 @@ class AttributeNormalizer implements NormalizerInterface
         $this->filterProvider = $filterProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
+        $this->structureVersionProvider = $structureVersionProvider;
     }
 
     /**
@@ -94,9 +101,11 @@ class AttributeNormalizer implements NormalizerInterface
             null;
 
         $normalizedAttribute['meta'] = [
-            'id'      => $attribute->getId(),
-            'created' => $firstVersion,
-            'updated' => $lastVersion,
+            'id'                => $attribute->getId(),
+            'created'           => $firstVersion,
+            'updated'           => $lastVersion,
+            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
+            'model_type'        => 'attribute',
         ];
 
         return $normalizedAttribute;

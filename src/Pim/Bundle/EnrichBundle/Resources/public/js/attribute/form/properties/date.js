@@ -57,7 +57,8 @@ function (
                 )
                 .on('changeDate', function () {
                     this.errors = [];
-                    this.updateModel(this.$('input')[0]);
+                    this.updateModel(this.getFieldValue(this.$('input')[0]));
+                    this.$('.date-wrapper').datetimepicker('destroy');
                     this.getRoot().render();
                 }.bind(this));
         },

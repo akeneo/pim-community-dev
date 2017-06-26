@@ -164,7 +164,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
-        $this->openPage(sprintf('%s edit', 'AttributeGroup'), ['identifier' => $identifier]);
+        $this->openPage('AttributeGroup edit', ['identifier' => $identifier]);
     }
 
     /**
@@ -174,7 +174,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheAttributeEditPage($identifier)
     {
-        $this->openPage(sprintf('%s edit', 'Attribute'), ['identifier' => $identifier]);
+        $this->openPage('Attribute edit', ['identifier' => $identifier]);
     }
 
     /**

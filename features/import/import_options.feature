@@ -87,9 +87,8 @@ Feature: Import options
     When I am on the "option_import" import job page
     And I launch the import job
     Then I wait for the "option_import" job to finish
-    And I edit the "Test" attribute
-    And I visit the "Values" tab
-    Then I should see the "Options" section
+    And I am on the "Test" attribute page
+    And I visit the "Options" tab
     And I should see the text "04FR"
     And I should see the text "04US"
     And I should see the text "04DE"

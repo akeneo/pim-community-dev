@@ -145,6 +145,7 @@ services:
             - '@pim_enrich.provider.filter.chained'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
+            - '@pim_enrich.provider.structure_version.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -176,13 +177,11 @@ services:
         class: '%pim_enrich.normalizer.product_violation.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer, priority: 110 }
 
     pim_enrich.normalizer.variant_group_violation:
         class: '%pim_enrich.normalizer.variant_group_violation.class%'
         arguments:
-            - '@pim_internal_api_serializer'
+            - '@pim_enrich.normalizer.product_violation'
 
     pim_enrich.normalizer.violation:
         class: '%pim_enrich.normalizer.violation.class%'

@@ -1074,6 +1074,7 @@ config:
         pim/template/attribute/tab/properties/boolean:      pimenrich/templates/attribute/tab/properties/boolean.html
         pim/template/attribute/tab/properties/date:         pimenrich/templates/attribute/tab/properties/date.html
         pim/template/attribute/tab/properties/field:        pimenrich/templates/attribute/tab/properties/field.html
+        pim/template/attribute/tab/properties/group:        pimenrich/templates/attribute/tab/properties/group.html
         pim/template/attribute/tab/properties/text:         pimenrich/templates/attribute/tab/properties/text.html
         pim/template/attribute/tab/properties/select:       pimenrich/templates/attribute/tab/properties/select.html
         pim/template/attribute/tab/choices/options-grid:    pimenrich/templates/attribute/tab/choices/options-grid.html

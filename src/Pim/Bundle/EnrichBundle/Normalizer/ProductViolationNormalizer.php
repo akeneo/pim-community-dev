@@ -85,6 +85,11 @@ class ProductViolationNormalizer implements NormalizerInterface
                 'message'   => $violation->getMessage(),
             ];
         }
+
+        return [
+            'global'  => true,
+            'message' => $violation->getMessage(),
+        ];
     }
 
     /**

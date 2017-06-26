@@ -331,8 +331,14 @@ pim_enrich:
                 update_failed: The job profile could not be updated.
                 update_successful: The job profile has been successfully updated.
         attribute:
+            info:
+                deletion_successful: Attribute successfully deleted.
+                deletion_failed: The attribute could not be deleted.
+                update_successful: Attribute successfully updated.
+                update_failed: The attribute could not be updated.
+                create_successful: Attribute successfully created.
+                create_failed: The attribute could not be created.
             scopable: Scopable
-            global: Global
             type:
                 pim_catalog_identifier:             Identifier
                 pim_catalog_text:                   Text

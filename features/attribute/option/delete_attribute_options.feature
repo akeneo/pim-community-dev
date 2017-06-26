@@ -9,13 +9,13 @@ Feature: Delete attribute options
     And I am logged in as "Julia"
     And I am on the attributes page
     And I create a "Simple select" attribute
-    And I change the "Attribute group" to "Other"
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    Then I should see the text "To manage options, please save the attribute first"
+    And I fill in the following information:
+      | Code            | size  |
+      | Attribute group | Other |
     And I save the attribute
+    When I visit the "Options" tab
     Then I should see the flash message "Attribute successfully created"
-    And I check the "Automatic option sorting" switch
+    And I check the "Sort automatically options by alphabetical order" switch
 
   @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Successfully delete some attribute options

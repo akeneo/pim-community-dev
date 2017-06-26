@@ -41,14 +41,14 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I change the "Weather conditions" to "Extremely wet"
 
   Scenario: Prevent product updates when a new attribute option is created
-    Given I edit the "weather_conditions" attribute
+    Given I am on the "weather_conditions" attribute page
     And I fill in "Usable in grid" with "1"
     And I save the attribute
     When I am on the products page
     And I display the columns Weather conditions
     Then I should see the text "wet"
-    Given I edit the "weather_conditions" attribute
-    And I visit the "Values" tab
+    Given I am on the "weather_conditions" attribute page
+    And I visit the "Options" tab
     And I create the following attribute options:
       | Code    | en_US   |
       | not_wet | Not wet |

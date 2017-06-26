@@ -149,3 +149,11 @@ services:
             - '@pim_versioning.repository.version'
         calls:
             - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_enrich.provider.structure_version.attribute:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@pim_versioning.repository.version'
+        calls:
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]

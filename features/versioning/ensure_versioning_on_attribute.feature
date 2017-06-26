@@ -12,7 +12,7 @@ Feature: Ensure versioning on attribute
     Given I am on the "comment" attribute page
     And I visit the "History" tab
     Then there should be 1 update
-    Then I visit the "Values" tab
+    Then I visit the "Label translations" tab
     When I fill in the following information:
       | English (United States) | My comment |
     And I press the "Save" button

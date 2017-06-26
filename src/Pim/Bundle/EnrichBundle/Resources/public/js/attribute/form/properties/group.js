@@ -13,7 +13,7 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'pim/template/attribute/tab/properties/select'
+    'pim/template/attribute/tab/properties/group'
 ],
 function (
     $,
@@ -48,11 +48,9 @@ function (
         renderInput: function (templateContext) {
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
-                choices: this.formatChoices(
-                    _.sortBy(this.attributeGroups, 'sort_order'),
-                    UserContext.get('catalogLocale')
-                ),
-                multiple: false,
+                groups: _.sortBy(this.attributeGroups, 'sort_order'),
+                i18n: i18n,
+                locale: UserContext.get('catalogLocale'),
                 labels: {
                     defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.group')
                 }
@@ -64,16 +62,6 @@ function (
          */
         postRender: function () {
             this.$('select.select2').select2();
-        },
-
-        /**
-         * @param {Object} attributeGroups
-         * @param {String} currentLocale
-         */
-        formatChoices: function (attributeGroups, currentLocale) {
-            return _.mapObject(attributeGroups, function (group) {
-                return i18n.getLabel(group.labels, currentLocale, group.code);
-            });
         },
 
         /**

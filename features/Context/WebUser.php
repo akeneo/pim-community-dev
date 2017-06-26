@@ -1252,20 +1252,27 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string|null $not
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^I should( not)? see reorder handles$/
+     * @Then /^I should see reorder handles$/
      */
-    public function iShouldSeeReorderHandles($not = null)
+    public function iShouldSeeReorderHandles()
     {
-        $count = $this->getCurrentPage()->countOrderableOptions();
-        if ((null === $not && $count <= 0) || (null !== $not && $count > 0)) {
-            throw $this->createExpectationException(
-                sprintf("Expected to%s see reorder handle, %d found", $not, $count)
-            );
-        }
+        $this->spin(function () {
+            $count = $this->getCurrentPage()->countOrderableOptions();
+
+            return $count > 0;
+        }, 'Expected to see reorder handles.');
+    }
+
+    /**
+     * @Then /^I should not see reorder handles$/
+     */
+    public function iShouldNotSeeReorderHandles()
+    {
+        $this->spin(function () {
+            $count = $this->getCurrentPage()->countOrderableOptions();
+
+            return $count <= 0;
+        }, 'Expected not to see reorder handles.');
     }
 
     /**
@@ -1500,7 +1507,7 @@ class WebUser extends PimContext
      */
     public function iUpdateTheLastAttributeOption()
     {
-        $this->getCurrentPage()->saveLastOption();
+        $this->getCurrentPage()->saveNewOption();
     }
 
     /**
