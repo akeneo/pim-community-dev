@@ -14,13 +14,7 @@ Feature: Filter group types
     Given I am on the group types page
     Then the grid should contain 4 elements
 
-  Scenario: Successfully filter group types
-    When I show the filter "code"
-    And I filter by "code" with operator "contains" and value "rel"
-    Then the grid should contain 1 element
-    Then I should see entity related
-
   Scenario: Successfully search on label
     When I search "Spec"
     Then the grid should contain 1 element
-    Then I should see entity special
+    Then I should see entity Special

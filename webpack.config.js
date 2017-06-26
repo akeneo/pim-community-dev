@@ -3,12 +3,13 @@ const process = require('process')
 const rootDir = process.cwd()
 const webpack = require('webpack')
 const { resolve } = require('path')
-const { values } = require('lodash')
+const { values, mapKeys } = require('lodash')
 const { getModulePaths } = require('./frontend/requirejs-utils')
 const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
@@ -29,7 +30,7 @@ module.exports = {
     devtool: 'cheap-source-map',
     resolve: {
         symlinks: false,
-        alias: aliases
+        alias: mapKeys(aliases, (path, key) => `${key}$`)
     },
     module: {
         rules: [
@@ -158,6 +159,9 @@ module.exports = {
         moduleExtensions: ['-loader']
     },
     plugins: [
+        // Clean up the dist folder and source maps before rebuild
+        new WebpackCleanupPlugin(),
+
         // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
 

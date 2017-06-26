@@ -110,7 +110,7 @@ TODO
 
 ## Building the front-end with webpack
 
-1. Install the latest npm and nodejs https://nodejs.org/en/download/package-manager/
+1. Install the node v6.11.0 and npm v5.0.3, you can follow the instructions here - https://nodejs.org/en/download/package-manager/ or install with homebrew - `brew install node@6` should install both these versions
 2. Run `php app/console pim:installer:dump-require-paths`
 3. Run `php app/console assets:install --symlink`
 4. Create a file in your project root called `package.json` with the following contents:

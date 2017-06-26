@@ -8,7 +8,7 @@ use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,7 +19,7 @@ use Prophecy\Argument;
 class MediaAttributeCopierSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilderInterface $builder,
+        EntityWithValuesBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
@@ -114,7 +114,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $fileInfo->getKey()->willReturn('key');
 
-        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, 'key');
+        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, 'key');
 
         $this->copyAttributeData(
             $product,
@@ -161,7 +161,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $fileInfo->getKey()->shouldNotBeCalled();
 
-        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, null);
+        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, null);
 
         $this->copyAttributeData(
             $product,
@@ -220,7 +220,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $toProductValue->getData()->willReturn($toMedia);
 
-        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
+        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 
         $this->copyAttributeData(
             $product,

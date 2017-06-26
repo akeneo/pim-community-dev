@@ -601,12 +601,12 @@ config:
         pim/family-edit-form/properties/general/code:                       pimenrich/js/family/form/properties/general/code
         pim/family-edit-form/properties/general/attribute-as-label:         pimenrich/js/family/form/properties/general/attribute-as-label
         pim/family-edit-form/properties/general/translation:                pimenrich/js/family/form/properties/general/translation
+        pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
         pim/family-edit-form/attributes/toolbar/add-select/attribute-group: pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select
         pim/family-edit-form/attributes/attributes:                         pimenrich/js/family/form/attributes/attributes
         pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select
         pim/family-edit-form/attributes/toolbar:                            pimenrich/js/family/form/attributes/toolbar
         pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
-        pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
 
         # Variant group
         pim/variant-group-edit-form/save: pimenrich/js/variant-group/form/save
@@ -652,11 +652,11 @@ config:
 
         # Exports
         pim/job/product/edit/content/readonly:                       pimenrich/js/job/product/edit/content/readonly
+        pim/job/product/edit/content/structure:                      pimenrich/js/job/product/edit/content/structure
         pim/job/product/edit/content/structure/scope:                pimenrich/js/job/product/edit/content/structure/scope
         pim/job/product/edit/content/structure/locales:              pimenrich/js/job/product/edit/content/structure/locales
         pim/job/product/edit/content/structure/attributes:           pimenrich/js/job/product/edit/content/structure/attributes
         pim/job/product/edit/content/structure/attributes-selector:  pimenrich/js/job/product/edit/content/structure/attributes-selector
-        pim/job/product/edit/content/structure:                      pimenrich/js/job/product/edit/content/structure
         pim/job/product/edit/content/data/add-select/attribute:      pimenrich/js/job/product/edit/content/data/add-select/attribute/select
         pim/job/product/edit/content/data/default-attribute-filters: pimenrich/js/job/product/edit/content/data/default-attribute-filters
         pim/job/common/edit/content/data/help:                       pimenrich/js/job/common/edit/content/data/help
@@ -742,9 +742,9 @@ config:
         pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
         pim/common/properties/general:     pimenrich/js/form/common/properties/general
+        pim/common/add-select:             pimenrich/js/form/common/add-select/select
         pim/common/add-select/line:        pimenrich/js/form/common/add-select/line
         pim/common/add-select/footer:      pimenrich/js/form/common/add-select/footer
-        pim/common/add-select:             pimenrich/js/form/common/add-select/select
         pim/create/properties/general:     pimenrich/js/create/form/properties/general
 
         # Root

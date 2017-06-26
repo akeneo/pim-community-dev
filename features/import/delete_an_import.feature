@@ -12,17 +12,17 @@ Feature: Delete import
     And I change the page size to 25
 
   Scenario: Successfully delete a CSV import job from the jobs page
-    Given I delete the "csv_footwear_product_import" job
+    Given I delete the "CSV footwear product import" job
     When I confirm the deletion
     Then I should see the flash message "Import profile successfully removed"
     And the grid should contain 26 elements
-    And I should not see import profile "csv_footwear_product_import"
+    And I should not see import profile "CSV footwear product import"
 
   Scenario: Successfully cancel the deletion of a CSV import job
-    Given I delete the "csv_footwear_product_import" job
+    Given I delete the "CSV footwear product import" job
     When I cancel the deletion
     Then the grid should contain 27 elements
-    And I should see import profile "csv_footwear_product_import"
+    And I should see import profile "CSV footwear product import"
 
   Scenario: Successfully delete a CSV import job from the job edit page
     Given I am on the "csv_footwear_product_import" import job edit page
@@ -30,4 +30,4 @@ Feature: Delete import
     And I confirm the deletion
     Then I should see the flash message "Job instance successfully removed"
     And the grid should contain 26 elements
-    And I should not see import profile "csv_footwear_product_import"
+    And I should not see import profile "CSV footwear product import"
