@@ -32,7 +32,7 @@ pimee_workflow:
         title: Approva le modifiche parzialmente
         label: Lascia un commento (facoltativo)
         error: Si è verificato un errore, la proposta non è stata approvata parzialmente
-        success: Le modifiche sono state approvate con successo
+        success: Le modifiche sono state salvate con successo
     partial_reject:
       modal:
         title: Respingi le modifiche parzialmente

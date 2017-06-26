@@ -34,7 +34,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Revert a product with simple reference data
     Given I am on the "red-heels" product page
-    And I add available attribute color
+    And I add available attribute Color
     And I visit the "Other" group
     And I fill in the following information:
       | Main color | Green |
@@ -60,7 +60,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Revert a product with multiple reference data
     Given I am on the "red-heels" product page
-    And I add available attribute color
+    And I add available attribute Color
     And I visit the "Other" group
     And I fill in the following information:
       | Main fabric | Cashmerewool, neoprene |
