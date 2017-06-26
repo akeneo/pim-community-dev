@@ -36,6 +36,9 @@ define(
                 var metaData = this.config.metadata || {};
                 metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
 
+                // TODO Do not set this manually
+                metaData['jobCode'] = 'csv_product_import';
+
                 this.grid = new Grid(this.config.alias, metaData);
 
                 BaseForm.prototype.configure.apply(this, arguments);
