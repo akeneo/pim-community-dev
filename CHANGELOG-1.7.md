@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6420: Fix autosorting of attribute options
+- PIM-5962: Fix NumberLocalizer, force negative symbol to '-'
 
 # 1.7.5 (2017-06-02)
 
@@ -24,7 +25,7 @@
 - PIM-6399: Stores images as PNG instead of JPG
 - PIM-6414: Fix datetime filter display issue
 - PIM-6384: Fix product export builder localisable and scopable fields display issue
-- IM-809: Fix missing shadows behind dialog popins
+- PIM-809: Fix missing shadows behind dialog popins
 - PIM-6423: Fix select2 display on attribute edition
 
 # 1.7.4 (2017-05-10)

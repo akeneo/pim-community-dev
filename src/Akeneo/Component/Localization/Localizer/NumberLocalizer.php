@@ -60,6 +60,10 @@ class NumberLocalizer implements LocalizerInterface
                 $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
             }
 
+            if (0 > $number) {
+                $numberFormatter->setSymbol(\NumberFormatter::MINUS_SIGN_SYMBOL, '-');
+            }
+
             return $numberFormatter->format($number);
         }
 
@@ -89,7 +93,7 @@ class NumberLocalizer implements LocalizerInterface
             return str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
         }
 
-        return (string) $number;
+        return (string)$number;
     }
 
     /**
@@ -97,7 +101,7 @@ class NumberLocalizer implements LocalizerInterface
      */
     public function validate($number, $attributeCode, array $options = [])
     {
-        if (null === $number || ''  === $number || is_int($number) || is_float($number)) {
+        if (null === $number || '' === $number || is_int($number) || is_float($number)) {
             return null;
         }
 
