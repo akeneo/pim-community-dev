@@ -2,10 +2,14 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\PaginatorInterface;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
@@ -20,6 +24,9 @@ class MeasureFamilyController
     /** @var ArrayConverterInterface */
     protected $measureFamilyConverter;
 
+    /** @var ParameterValidatorInterface */
+    protected $parameterValidator;
+
     /** @var PaginatorInterface */
     protected $paginator;
 
@@ -27,19 +34,22 @@ class MeasureFamilyController
     protected $apiConfiguration;
 
     /**
-     * @param ArrayConverterInterface $measureFamilyConverter
-     * @param PaginatorInterface      $paginator
-     * @param array                   $measures
-     * @param array                   $apiConfiguration
+     * @param ArrayConverterInterface     $measureFamilyConverter
+     * @param ParameterValidatorInterface $parameterValidator
+     * @param PaginatorInterface          $paginator
+     * @param array                       $measures
+     * @param array                       $apiConfiguration
      */
     public function __construct(
         ArrayConverterInterface $measureFamilyConverter,
+        ParameterValidatorInterface $parameterValidator,
         PaginatorInterface $paginator,
         array $measures,
         array $apiConfiguration
     ) {
         $this->measuresConfig = $measures['measures_config'];
         $this->measureFamilyConverter = $measureFamilyConverter;
+        $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
     }
@@ -70,33 +80,61 @@ class MeasureFamilyController
     }
 
     /**
+     * @param Request $request
+     *
+     * @throws UnprocessableEntityHttpException
+     *
      * @return JsonResponse
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
+        try {
+            $this->parameterValidator->validate($request->query->all());
+        } catch (PaginationParametersException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
+
+        $defaultParameters = [
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $parameters = [
+            'query_parameters' => $queryParameters,
+            'list_route_name'  => 'pim_api_measure_family_list',
+            'item_route_name'  => 'pim_api_measure_family_get',
+        ];
+
+        $convertedMeasureFamilies = $this->convertMeasureFamilies($queryParameters);
+
+        $count = true === $request->query->getBoolean('with_count') ? count($this->measuresConfig) : null;
+        $paginatedMeasureFamilies = $this->paginator->paginate(
+            $convertedMeasureFamilies,
+            $parameters,
+            $count
+        );
+
+        return new JsonResponse($paginatedMeasureFamilies);
+    }
+
+    /**
+     * @return array
+     */
+    protected function convertMeasureFamilies(array $queryParameters)
+    {
+        $limit = $queryParameters['limit'];
+        $offset = $limit * ($queryParameters['page'] - 1);
+
+        $measureConfig = array_slice($this->measuresConfig, $offset, $queryParameters['limit']);
+
         $convertedMeasureFamilies= [];
-        foreach ($this->measuresConfig as $familyCode => $units) {
+        foreach ($measureConfig as $familyCode => $units) {
             $convertedMeasureFamilies[] = $this->measureFamilyConverter
                 ->convert(['family_code' => $familyCode, 'units' => $units]);
         }
 
-        $parameters = [
-            'query_parameters' => [
-                'page'  => 1,
-                'limit' => count($this->measuresConfig) + 1,
-            ],
-            'list_route_name' => 'pim_api_measure_family_list',
-            'item_route_name' => 'pim_api_measure_family_get',
-        ];
-
-        $paginatedMeasureFamilies = $this->paginator->paginate(
-            $convertedMeasureFamilies,
-            $parameters,
-            null
-        );
-
-        unset($paginatedMeasureFamilies['_links']['next']);
-
-        return new JsonResponse($paginatedMeasureFamilies);
+        return $convertedMeasureFamilies;
     }
 }

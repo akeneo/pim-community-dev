@@ -10,13 +10,9 @@ class GetMeasureFamilyIntegration extends ApiTestCase
 {
     public function testGetAMeasureFamily()
     {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/measure-families/Area');
-
-        $standardAttribute = <<<JSON
+        $standardMeasureFamily = <<<JSON
 {
-  "code": "Area",
+  "code": "area",
   "standard": "SQUARE_METER",
   "units": [
     {
@@ -149,9 +145,17 @@ class GetMeasureFamilyIntegration extends ApiTestCase
 }
 JSON;
 
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/measure-families/Area');
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($standardAttribute, $response->getContent());
+        $this->assertJsonStringEqualsJsonString($standardMeasureFamily, $response->getContent());
+
+        $client->request('GET', '/api/rest/v1/measure-families/area');
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($standardMeasureFamily, $response->getContent());
     }
 
     public function testNotFoundAMeasureFamily()
@@ -162,10 +166,8 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $content = json_decode($response->getContent(), true);
-        $this->assertCount(2, $content, 'response contains 2 items');
-        $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame('Measure family with code "not_found" does not exist.', $content['message']);
+        $expected = '{"code":404,"message":"Measure family with code \"not_found\" does not exist."}';
+        $this->assertSame($expected, $response->getContent());
     }
 
     /**

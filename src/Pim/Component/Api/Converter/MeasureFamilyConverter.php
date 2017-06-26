@@ -19,9 +19,9 @@ class MeasureFamilyConverter implements ArrayConverterInterface
     public function convert(array $item, array $options = [])
     {
         $convertedItem = [
-            'code' => $item['family_code'],
+            'code'     => strtolower($item['family_code']),
             'standard' => $item['units']['standard'],
-            'units' => $this->convertUnits($item['units']),
+            'units'    => $this->convertUnits($item['units']),
         ];
 
         return $convertedItem;
@@ -43,9 +43,9 @@ class MeasureFamilyConverter implements ArrayConverterInterface
         $convertedUnits = [];
         foreach ($units['units'] as $code => $unit) {
             $convertedUnits[] = [
-                'code' => $code,
+                'code'    => $code,
                 'convert' => call_user_func_array('array_merge', $unit['convert']),
-                'symbol' => $unit['symbol'],
+                'symbol'  => $unit['symbol'],
             ];
         }
 

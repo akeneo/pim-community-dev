@@ -22,7 +22,7 @@ class MeasureFamilyConverterSpec extends ObjectBehavior
     function it_converts_a_measure_family()
     {
         $item = [
-            'family_code' => 'Area',
+            'family_code' => 'area',
             'units' => [
                 'standard' => 'SQUARE_METER',
                 'units' => [

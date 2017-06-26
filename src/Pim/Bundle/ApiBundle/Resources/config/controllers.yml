@@ -179,6 +179,7 @@ services:
         class: '%pim_api.controller.measure_family.class%'
         arguments:
             - '@pim_api.converter.measure_family'
+            - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '%akeneo_measure.measures_config%'
             - '%pim_api.configuration%'
