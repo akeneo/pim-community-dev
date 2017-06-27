@@ -123,7 +123,10 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         foreach ($referenceDataCodes as $referenceDataCode) {
-            $collection[] = $this->getReferenceData($attribute, $repository, $referenceDataCode);
+            $referenceData = $this->getReferenceData($attribute, $repository, $referenceDataCode);
+            if (!in_array($referenceData, $collection)) {
+                $collection[] = $referenceData;
+            }
         }
 
         return $collection;

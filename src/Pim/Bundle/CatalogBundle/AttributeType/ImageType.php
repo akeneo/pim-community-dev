@@ -32,6 +32,7 @@ class ImageType extends AbstractAttributeType
                     'by_reference' => false,
                     'select2'      => true,
                     'attr'         => [
+                        'class'     => 'AknTextField--select2',
                         'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
                     ]
                 ]

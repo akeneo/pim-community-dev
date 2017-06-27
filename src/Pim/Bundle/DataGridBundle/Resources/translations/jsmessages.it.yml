@@ -86,4 +86,4 @@ grid.view_selector:
   confirmation:
     remove: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
     delete: Conferma cancellazione
-grid.view_selector.flash.updated: La griglia di dati è stata caricata con successo
+grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
