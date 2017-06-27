@@ -13,10 +13,22 @@ define(
         'oro/translator',
         'pim/job/common/edit/launch',
         'pim/router',
-        'oro/messenger'
+        'oro/messenger',
+        'pim/template/import/upload-launch'
     ],
-    function ($, _, __, BaseLaunch, router, messenger) {
+    function (
+        $,
+        _,
+        __,
+        BaseLaunch,
+        router,
+        messenger,
+        template
+    ) {
         return BaseLaunch.extend({
+            className: 'AknCenteredBox',
+            template: _.template(template),
+
             /**
              * {@inherit}
              */
@@ -31,6 +43,7 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
+                    path: this.getFormData().configuration.filePath,
                     label: __(this.getFormData().file ? this.config.upload : this.config.launch)
                 }));
 

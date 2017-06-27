@@ -969,7 +969,8 @@ config:
         pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
 
         # Imports
-        pim/template/import/switcher: pimenrich/templates/import/switcher.html
+        pim/template/import/switcher:      pimenrich/templates/import/switcher.html
+        pim/template/import/upload-launch: pimenrich/templates/import/upload-launch.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html

@@ -22,7 +22,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'click': 'launch'
+                'click .AknButton': 'launch'
             },
 
             /**
