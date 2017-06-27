@@ -2,6 +2,14 @@ extensions:
     pim-job-instance-csv-base-import-show:
         module: pim/form/common/edit-form
 
+    pim-job-instance-csv-base-import-show-mainImage:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-csv-base-import-show
+        targetZone: main-image
+        config:
+            # TODO It's not the right path. Wait for @yulldesign to have right one.
+            path: bundles/pimui/images/icon-download-purple.svg
+
     pim-job-instance-csv-base-import-show-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-job-instance-csv-base-import-show

@@ -6,7 +6,7 @@
   margin-bottom: 40px;
   display: flex;
   flex-wrap: wrap-reverse;
-  align-items: flex-end;
+  align-items: stretch;
 
   &-imageContainer:not(:empty) {
     width: @imageSize;
@@ -17,6 +17,8 @@
   &-image {
     width: @imageSize;
     height: @imageSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 4px;
   }
 
   &-mainContainer {
@@ -24,6 +26,11 @@
     display: flex;
     flex-direction: column;
     max-width: 100%;
+    justify-content: space-between;
+  }
+
+  &-meta:empty {
+    display: none;
   }
 
   &-breadcrumbs:not(:empty) {
@@ -50,7 +57,6 @@
   &-buttonsContainer {
     display: flex;
     justify-content: flex-end;
-    height: @AknDefaultButtonSize;
     flex-grow: 1;
   }
 
@@ -71,6 +77,7 @@
     border-right: 1px solid @AknBorderColor;
     margin-right: @AknDefaultButtonSize / 2;
     padding-right: @AknDefaultButtonSize / 2;
+    height: @AknDefaultButtonSize;
   }
 
   &-userIcon {
