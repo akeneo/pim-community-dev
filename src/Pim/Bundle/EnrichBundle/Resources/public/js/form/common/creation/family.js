@@ -68,17 +68,31 @@ define([
                 results: []
             };
 
-            families.forEach(family => {
-                console.log(family)
-            })
-            _.each(families, function(value, key) {
+            for (const family in families) {
                 data.results.push({
-                    id: key,
-                    text: i18n.getLabel(value.labels, locale, value.code)
+                    id: family,
+                    text: i18n.getLabel(families[family].labels, locale, family)
                 });
-            });
+            };
 
             return data;
+        },
+
+        fetchFamilies(element, callback) {
+            const locale = UserContext.get('catalogLocale');
+            const formData = this.getFormData().family;
+
+            if (formData) {
+                FetcherRegistry.getFetcher('family')
+                .fetch(formData)
+                .then(function(family) {
+                    const { labels, code } = family;
+                    callback({
+                        id: code,
+                        text: i18n.getLabel(labels, locale, code)
+                    });
+                });
+            }
         },
 
         /**
@@ -99,25 +113,26 @@ define([
 
             var options = {
                 allowClear: true,
+                initSelection: this.fetchFamilies.bind(this),
                 ajax: {
                     url: Routing.generate('pim_enrich_family_rest_index'),
+                    results: this.parseResults.bind(this),
                     quietMillis: 250,
                     cache: true,
-                    data(search, page) {
+                    data(term, page) {
                         return {
-                            search,
+                            search: term,
                             options: {
                                 limit: 20,
                                 page: page,
                                 locale: UserContext.get('catalogLocale')
                             }
                         };
-                    },
-                    results: this.parseResults.bind(this)
+                    }
                 }
             };
 
-            initSelect2.init(this.$('[data-code="family"] input'), options);
+            initSelect2.init(this.$('input'), options).select2('val', []);
         }
     });
 });
