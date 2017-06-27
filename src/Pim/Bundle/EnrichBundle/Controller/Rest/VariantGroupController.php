@@ -239,17 +239,25 @@ class VariantGroupController
         return $data;
     }
 
+    /**
+     * Create a variant group
+     *
+     * @param array $data
+     *
+     * @return array
+     */
     public function createAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         $group = $this->groupFactory->createGroup('VARIANT');
-
         $this->updater->update($group, $data);
-
         $violations = $this->validator->validate($group);
+
         if (0 < $violations->count()) {
             $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['variant_group' => $group])
+                'values' => $this->normalizer->normalize($violations, 'internal_api',
+                ['variant_group' => $group]
+                )
             ];
 
             return new JsonResponse($errors, 400);
