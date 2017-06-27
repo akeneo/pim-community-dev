@@ -22,7 +22,7 @@ extensions:
         position: 1000
         targetZone: content
         config:
-            alias: job-instance-import-show-grid
+            alias: last-import-executions-grid
             metadata:
                 jobType: import
 

@@ -1,5 +1,5 @@
 datagrid:
-    job-instance-import-show-grid:
+    last-import-executions-grid:
         source:
             type: pim_datasource_job_execution
             acl_resource: pim_importexport_import_execution_index
@@ -12,7 +12,7 @@ datagrid:
             date:
                 label:         job_tracker.filter.started_at
                 data_name:     createTime
-                type:          product_value_datetime
+#                type:          product_value_datetime
                 frontend_type: datetime
             status:
                 label:         Status
