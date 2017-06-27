@@ -106,7 +106,11 @@ class CategoryTreeController extends BaseCategoryTreeController
         $context = $request->get('context', false);
 
         if (self::CONTEXT_MANAGE === $context) {
-            $selectNode = $this->userContext->getDefaultTree();
+            try {
+                $selectNode = $this->findCategory($selectNodeId);
+            } catch (NotFoundHttpException $e) {
+                $selectNode = $this->userContext->getDefaultTree();
+            }
             $grantedTrees = $this->categoryRepository->getTrees();
         } else {
             try {

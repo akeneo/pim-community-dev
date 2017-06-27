@@ -45,7 +45,7 @@ stage("Checkout") {
 
     node('docker') {
         deleteDir()
-        docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+        docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
             unstash "project_files"
 
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -127,7 +127,7 @@ def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "project_files"
 
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -158,7 +158,7 @@ def runIntegrationTest(phpVersion) {
         try {
             docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
                 docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                         unstash "project_files"
 
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -189,7 +189,7 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "project_files"
 
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -225,7 +225,7 @@ def runBehatTest(features, phpVersion) {
             sh "cp behat.ci.yml behat.yml"
 
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat ${env.BUILD_NUMBER} orm ${features} ${env.JOB_NAME} 5 ${phpVersion} 5.7 \"${tags}\" \"behat\" -e 5.2 --exit_on_failure"
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat ${env.BUILD_NUMBER} orm ${features} ${env.JOB_NAME} 5 ${phpVersion} 5.7 \"${tags}\" \"behat\" -e 5 --exit_on_failure"
             } finally {
                 sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[behat] /\""
                 junit 'app/build/logs/behat/*.xml'
@@ -240,7 +240,7 @@ def runPhpCouplingDetectorTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "project_files"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
