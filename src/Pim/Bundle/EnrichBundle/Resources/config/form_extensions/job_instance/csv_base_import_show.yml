@@ -9,21 +9,22 @@ extensions:
         config:
             tab: pim-menu-imports
 
+    pim-job-instance-csv-base-import-show-subsection:
+        module: pim/form/common/subsection
+        parent: pim-job-instance-csv-base-import-show
+        targetZone: content
+        config:
+            title: pim_enrich.form.job_instance.subsection.last_executions
+
     pim-job-instance-csv-base-import-show-grid:
         module: pim/job/common/grid
-        parent: pim-job-instance-csv-base-import-show
+        parent: pim-job-instance-csv-base-import-show-subsection
         position: 1000
         targetZone: content
         config:
             alias: job-instance-import-show-grid
             metadata:
                 jobType: import
-
-
-
-
-
-
 
     pim-job-instance-csv-base-import-show-upload:
         module: pim/job/common/edit/upload
