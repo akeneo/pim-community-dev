@@ -682,6 +682,7 @@ config:
         pim/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch
         pim/job/common/edit/upload:                                  pimenrich/js/job/common/edit/upload
         pim/job/common/edit/upload-launch:                           pimenrich/js/job/common/edit/upload-launch
+        pim/job/common/file-path:                                    pimenrich/js/job/common/file-path
         pim/job/common/label:                                        pimenrich/js/job/common/label
         pim/job/common/grid:                                         pimenrich/js/job/common/grid
         pim/job/execution/summary-table:                             pimenrich/js/job/execution/summary-table
@@ -970,7 +971,7 @@ config:
 
         # Imports
         pim/template/import/switcher:      pimenrich/templates/import/switcher.html
-        pim/template/import/upload-launch: pimenrich/templates/import/upload-launch.html
+        pim/template/import/file-path:     pimenrich/templates/import/file-path.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html

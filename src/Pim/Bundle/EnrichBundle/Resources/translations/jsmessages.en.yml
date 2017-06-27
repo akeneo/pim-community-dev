@@ -640,6 +640,7 @@ pim_enrich:
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                 history:
                     title: History
+            file_path: File path
         mass_edit:
             family:
                 attributes:

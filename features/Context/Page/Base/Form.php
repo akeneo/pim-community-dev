@@ -126,6 +126,12 @@ class Form extends Base
      */
     public function visitGroup($groupName, $type = 'Group')
     {
+        $this->spin(function () {
+            $loadingMask = $this->find('css', '.loading-wrapper');
+
+            return null === $loadingMask || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
+
         $this->getGroup($groupName, $type)->click();
     }
 

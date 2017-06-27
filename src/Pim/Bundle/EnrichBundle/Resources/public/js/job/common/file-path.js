@@ -1,7 +1,6 @@
 'use strict';
-
 /**
- * Grid renderer for last job execution list
+ * Displays the file path to upload
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -9,17 +8,20 @@
  */
 define(
     [
+        'underscore',
+        'oro/translator',
         'pim/form',
-        'pim/common/grid',
-        'pim/user-context'
+        'pim/template/import/file-path'
     ],
     function (
+        _,
+        __,
         BaseForm,
-        Grid,
-        UserContext
+        template
     ) {
         return BaseForm.extend({
-            grid: null,
+            className: 'AknCenteredBox',
+            template: _.template(template),
 
             /**
              * {@inheritdoc}
@@ -34,15 +36,13 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                var metaData = this.config.metadata || {};
-                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
-                metaData.jobCode = this.getFormData().code;
+                this.$el.html(this.template({
+                    path: this.getFormData().configuration.filePath,
+                    label: __(this.config.label)
+                }));
 
-                this.grid = new Grid(this.config.alias, metaData);
-
-                this.$el.empty().append(this.grid.render().$el);
-
-                return this;
+                return BaseForm.prototype.render.apply(this, arguments);
             }
         });
-    });
+    }
+);

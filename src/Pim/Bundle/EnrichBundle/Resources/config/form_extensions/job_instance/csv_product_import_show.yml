@@ -41,6 +41,7 @@ extensions:
             identifier:
                 path: code
                 name: code
+
     pim-job-instance-csv-product-import-show-upload-switcher-item:
         module: pim/job-instance/import/switcher-item
         parent: pim-job-instance-csv-product-import-show
@@ -52,7 +53,7 @@ extensions:
 
     pim-job-instance-csv-product-import-show-upload:
         module: pim/job/common/edit/upload
-        parent: pim-job-instance-csv-product-import-show
+        parent: pim-job-instance-csv-product-import-show-upload-switcher-item
 
     pim-job-instance-csv-product-import-show-subsection:
         module: pim/form/common/subsection

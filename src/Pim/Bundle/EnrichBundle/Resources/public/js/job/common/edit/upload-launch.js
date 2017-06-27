@@ -13,8 +13,7 @@ define(
         'oro/translator',
         'pim/job/common/edit/launch',
         'pim/router',
-        'oro/messenger',
-        'pim/template/import/upload-launch'
+        'oro/messenger'
     ],
     function (
         $,
@@ -22,13 +21,9 @@ define(
         __,
         BaseLaunch,
         router,
-        messenger,
-        template
+        messenger
     ) {
         return BaseLaunch.extend({
-            className: 'AknCenteredBox',
-            template: _.template(template),
-
             /**
              * {@inherit}
              */
@@ -39,19 +34,7 @@ define(
             },
 
             /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    path: this.getFormData().configuration.filePath,
-                    label: __(this.getFormData().file ? this.config.upload : this.config.launch)
-                }));
-
-                return this;
-            },
-
-            /**
-             * Launch the job
+             * {@inherit}
              */
             launch: function () {
                 if (this.getFormData().file) {
@@ -75,16 +58,14 @@ define(
                         messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
                     })
                     .always(router.hideLoadingMask());
-                } else {
-                    $.post(this.getUrl(), {method: 'POST'}).
-                        then(function (response) {
-                            router.redirect(response.redirectUrl);
-                        })
-                        .fail(function () {
-                            messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
-                        });
                 }
+            },
 
+            /**
+             * {@inherit}
+             */
+            isVisible: function () {
+                return $.Deferred().resolve(this.getFormData().file).promise();
             }
         });
     }

@@ -31,12 +31,18 @@ extensions:
         config:
             label: IMPORT NOW
 
-    pim-job-instance-csv-base-import-show-launch:
-        module: pim/job/common/edit/upload-launch
+    pim-job-instance-csv-base-import-show-file-path:
+        module: pim/job/common/file-path
         parent: pim-job-instance-csv-base-import-show-launch-switcher-item
         config:
-            launch: pim_enrich.form.job_instance.button.import.launch
-            upload: pim_enrich.form.job_instance.button.import.upload
+            label: pim_enrich.form.job_instance.file_path
+
+    pim-job-instance-csv-base-import-show-import-button:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-csv-base-import-show-file-path
+        targetZone: buttons
+        config:
+            label: pim_enrich.form.job_instance.button.import.launch
             route: pim_enrich_job_instance_rest_import_launch
             identifier:
                 path: code
@@ -54,6 +60,18 @@ extensions:
     pim-job-instance-csv-base-import-show-upload:
         module: pim/job/common/edit/upload
         parent: pim-job-instance-csv-base-import-show-upload-switcher-item
+        position: 50
+
+    pim-job-instance-csv-base-import-show-upload-button:
+        module: pim/job/common/edit/upload-launch
+        parent: pim-job-instance-csv-base-import-show-upload-switcher-item
+        position: 60
+        config:
+            label: pim_enrich.form.job_instance.button.import.upload
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
 
     pim-job-instance-csv-base-import-show-subsection:
         module: pim/form/common/subsection

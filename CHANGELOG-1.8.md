@@ -26,6 +26,7 @@
 - PIM-6409: Update all the title containers design
 - PIM-6290: Update the main navigation design
 - PIM-6397: Enable Search filter on all grids
+- PIM-6406: Update job profile show page to include last executions
 
 ## BC breaks
 

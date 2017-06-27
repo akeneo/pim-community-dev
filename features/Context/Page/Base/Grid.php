@@ -275,6 +275,10 @@ class Grid extends Index
      */
     public function findAction($element, $actionName)
     {
+        $this->spin(function () {
+            return !$this->isLoadingMaskVisible();
+        }, 'Loading mask is still visible');
+
         $rowElement = $this->getRow($element);
         $action     = $rowElement->find('css', sprintf('.AknButtonList-item[title="%s"]', $actionName));
 
@@ -713,8 +717,7 @@ class Grid extends Index
         }
 
         $this->spin(function () use ($manageFilters, $filterName) {
-            $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
-            if (null !== $loadingWrapper && $loadingWrapper->isVisible()) {
+            if ($this->isLoadingMaskVisible()) {
                 return false;
             }
 
@@ -789,8 +792,7 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $this->spin(function () use ($value, $check) {
-            $loadingWrapper = $this->find('css', '#loading-wrapper');
-            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+            if ($this->isLoadingMaskVisible()) {
                 return false;
             }
 
@@ -1049,8 +1051,7 @@ class Grid extends Index
         $selector = $this->getDropdownSelector();
 
         $this->spin(function () use ($selector, $item) {
-            $loadingWrapper = $this->find('css', '#loading-wrapper');
-            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+            if ($this->isLoadingMaskVisible()) {
                 return false;
             }
 
@@ -1094,5 +1095,15 @@ class Grid extends Index
         }
 
         return $cleanValues;
+    }
+
+    /**
+     * Returns true if the loading mask is visible
+     * @return bool
+     */
+    protected function isLoadingMaskVisible() {
+        $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
+
+        return (null !== $loadingWrapper && $loadingWrapper->isVisible());
     }
 }
