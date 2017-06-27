@@ -65,7 +65,7 @@ error:
     attribute: No se puede eliminar este atributo
     family: No se puede eliminar esta familia
     product: No se puede eliminar este producto
-    channel: No se puede eliminar este canal
+    channel: A debe definirse menos un canal, no se puede eliminar este canal.
     group: No se puede eliminar este grupo
     variant group: No se puede eliminar este grupo variante
     group type: No se puede eliminar este tipo de grupo
