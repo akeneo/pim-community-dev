@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Sub section extension
+ * Main image extension
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

@@ -1,7 +1,7 @@
 @import '../base/variables';
 
 .AknTitleContainer {
-  @imageSize: 100px;
+  @imageSize: 120px;
 
   margin-bottom: 40px;
   display: flex;
@@ -29,8 +29,12 @@
     justify-content: space-between;
   }
 
-  &-meta:empty {
-    display: none;
+  &-meta {
+    padding-top: 20px;
+
+    &:empty {
+      display: none;
+    }
   }
 
   &-breadcrumbs:not(:empty) {

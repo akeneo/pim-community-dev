@@ -617,7 +617,11 @@ config:
         # Exports
         pim/job-instance-edit-form/save:        pimenrich/js/job/common/edit/save
         pim/job-instance-export-edit-form/save: pimenrich/js/job/export/edit/save
+
+        # Imports
         pim/job-instance-import-edit-form/save: pimenrich/js/job/import/edit/save
+        pim/job-instance/import/switcher:       pimenrich/js/job/import/switcher
+        pim/job-instance/import/switcher-item:  pimenrich/js/job/import/switcher-item
 
         # Group
         pim/group-edit-form/save: pimenrich/js/group/form/save
@@ -963,6 +967,9 @@ config:
         pim/template/export/common/edit/launch:                                 pimenrich/templates/export/common/edit/launch.html
         pim/template/export/common/edit/upload:                                 pimenrich/templates/export/common/edit/upload.html
         pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
+
+        # Imports
+        pim/template/import/switcher: pimenrich/templates/import/switcher.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html

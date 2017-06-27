@@ -12,7 +12,7 @@ datagrid:
             date:
                 label:         job_tracker.filter.started_at
                 data_name:     createTime
-#                type:          product_value_datetime
+                type:          datetime
                 frontend_type: datetime
             status:
                 label:         Status

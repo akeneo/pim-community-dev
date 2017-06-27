@@ -9,7 +9,7 @@
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
   line-height: @AknDefaultButtonSize;
-  font-size: @AknFontSizeBig;
+  font-size: @AknDefaultFontSize;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
   padding: 0 @AknDefaultButtonSize/2;
@@ -23,6 +23,7 @@
     color 0.1s ease,
     border-color 0.1s ease;
   position: relative;
+  text-transform: uppercase;
 
   &:hover,
   &--active {
@@ -160,5 +161,19 @@
 
   &--disabled:focus {
     outline: -webkit-focus-ring-color auto 0;
+  }
+
+  &--glued {
+    border-radius: 0;
+
+    &:first-child {
+      border-top-left-radius: 100px;
+      border-bottom-left-radius: 100px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 100px;
+      border-bottom-right-radius: 100px;
+    }
   }
 }
