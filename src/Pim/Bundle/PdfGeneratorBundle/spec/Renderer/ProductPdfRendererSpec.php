@@ -12,7 +12,7 @@ use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -86,14 +86,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ProductInterface $blender,
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         FileInfoInterface $fileInfo,
         CacheManager $cacheManager
     ) {
         $blender->getAttributes()->willReturn([$mainImage]);
-        $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
+        $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($value);
 
-        $productValue->getData()->willReturn($fileInfo);
+        $value->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
         $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);

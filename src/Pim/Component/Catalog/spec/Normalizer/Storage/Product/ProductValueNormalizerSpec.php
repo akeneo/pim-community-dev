@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Storage\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,7 +21,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ProductValueNormalizer::class);
     }
 
-    function it_support_values(ProductValueInterface $value)
+    function it_support_values(ValueInterface $value)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'storage')->shouldReturn(false);
@@ -29,7 +29,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($value, 'storage')->shouldReturn(true);
     }
 
-    function it_normalizes_simple_values($stdNormalizer, ProductValueInterface $value, AttributeInterface $attribute)
+    function it_normalizes_simple_values($stdNormalizer, ValueInterface $value, AttributeInterface $attribute)
     {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute');
@@ -46,7 +46,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'storage', ['context'])->shouldReturn($storageValue);
     }
 
-    function it_normalizes_scopable_values($stdNormalizer, ProductValueInterface $value, AttributeInterface $attribute)
+    function it_normalizes_scopable_values($stdNormalizer, ValueInterface $value, AttributeInterface $attribute)
     {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute');
@@ -65,7 +65,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_localizable_values(
         $stdNormalizer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
@@ -85,7 +85,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_scopable_and_localizable_values(
         $stdNormalizer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);

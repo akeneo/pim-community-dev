@@ -9,8 +9,6 @@ use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**

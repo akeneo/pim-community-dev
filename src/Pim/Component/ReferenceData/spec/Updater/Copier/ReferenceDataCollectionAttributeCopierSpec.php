@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -54,8 +54,8 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductValueInterface $fromProductValue,
-        ProductValueInterface $toProductValue,
+        ValueInterface $fromValue,
+        ValueInterface $toValue,
         ArrayCollection $fromCollection,
         Color $black,
         Color $red,
@@ -74,7 +74,7 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn($fromCollection);
+        $fromValue->getData()->willReturn($fromCollection);
         $fromCollection->getIterator()->willReturn($referenceDataIterator);
         $referenceDataIterator->rewind()->shouldBeCalled();
         $referenceDataIterator->valid()->willReturn(true, true, false);
@@ -84,11 +84,11 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         $red->getCode()->willReturn('red');
         $black->getCode()->willReturn('black');
 
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['red', 'black'])
             ->shouldBeCalled()
-            ->willReturn($toProductValue);
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder->addOrReplaceValue($product2, Argument::cetera())->shouldNotBeCalled();

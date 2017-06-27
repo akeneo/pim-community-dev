@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
 
 class MultiSelectAttributeAdderSpec extends ObjectBehavior
 {
@@ -54,17 +54,17 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        OptionsProductValueInterface $productValue
+        OptionsValueInterface $value
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($value);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $productValue->getOptionCodes()->willReturn(['optionCode', 'previousOptionCode']);
+        $value->getOptionCodes()->willReturn(['optionCode', 'previousOptionCode']);
 
         $builder
             ->addOrReplaceValue($product1, $attribute, $locale, $scope, ['optionCode', 'previousOptionCode'])

@@ -2,7 +2,7 @@ parameters:
     pim_datagrid.normalizer.product.class: Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer
     pim_datagrid.normalizer.product_association.class: Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer
     pim_datagrid.normalizer.product.product_values.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer
-    pim_datagrid.normalizer.product.product_value.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValueNormalizer
+    pim_datagrid.normalizer.product.product_value.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer
     pim_datagrid.normalizer.product.option.class: Pim\Bundle\DataGridBundle\Normalizer\Product\OptionNormalizer
     pim_datagrid.normalizer.product.options.class: Pim\Bundle\DataGridBundle\Normalizer\Product\OptionsNormalizer
     pim_datagrid.normalizer.product.file.class: Pim\Bundle\DataGridBundle\Normalizer\Product\FileNormalizer

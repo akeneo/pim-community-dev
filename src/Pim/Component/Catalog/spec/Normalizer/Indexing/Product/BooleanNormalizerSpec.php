@@ -3,9 +3,8 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\BooleanNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,8 +21,8 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_boolean_product_value(
-        ProductValueInterface $textValue,
-        ProductValueInterface $booleanValue,
+        ValueInterface $textValue,
+        ValueInterface $booleanValue,
         AttributeInterface $textAttribute,
         AttributeInterface $booleanAttribute
     ) {
@@ -42,7 +41,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $mediaValue,
+        ValueInterface $mediaValue,
         AttributeInterface $mediaAttribute
     ) {
         $mediaValue->getAttribute()->willReturn($mediaAttribute);
@@ -63,7 +62,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_locale_and_no_scope(
-        ProductValueInterface $mediaValue,
+        ValueInterface $mediaValue,
         AttributeInterface $mediaAttribute
     ) {
         $mediaValue->getAttribute()->willReturn($mediaAttribute);
@@ -84,7 +83,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_scope_and_no_locale(
-        ProductValueInterface $mediaValue,
+        ValueInterface $mediaValue,
         AttributeInterface $mediaAttribute
     ) {
         $mediaValue->getAttribute()->willReturn($mediaAttribute);
@@ -105,7 +104,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_locale_and_scope(
-        ProductValueInterface $mediaValue,
+        ValueInterface $mediaValue,
         AttributeInterface $mediaAttribute
     ) {
         $mediaValue->getAttribute()->willReturn($mediaAttribute);
@@ -126,7 +125,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_boolean_product_value(
-        ProductValueInterface $mediaValue,
+        ValueInterface $mediaValue,
         AttributeInterface $mediaAttribute
     ) {
         $mediaValue->getAttribute()->willReturn($mediaAttribute);

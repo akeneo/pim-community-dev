@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Filter the product values according to locale codes provided in options.
@@ -17,18 +17,18 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
     /**
      * {@inheritdoc}
      */
-    public function filterObject($productValue, $type, array $options = [])
+    public function filterObject($value, $type, array $options = [])
     {
-        if (!$productValue instanceof ProductValueInterface) {
-            throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
+        if (!$value instanceof ValueInterface) {
+            throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
         $localeCodes = isset($options['locales']) ? $options['locales'] : [];
-        $attribute = $productValue->getAttribute();
+        $attribute = $value->getAttribute();
 
         return !empty($localeCodes) &&
             $attribute->isLocalizable() &&
-            !in_array($productValue->getLocale(), $localeCodes);
+            !in_array($value->getLocale(), $localeCodes);
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductValueInterface;
+        return $object instanceof ValueInterface;
     }
 
     /**
@@ -58,6 +58,6 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
      */
     public function supportsCollection($collection, $type, array $options = [])
     {
-        return $collection instanceof ProductValueCollectionInterface;
+        return $collection instanceof ValueCollectionInterface;
     }
 }

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer;
 
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValueInterface;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -38,7 +38,7 @@ class ReferenceDataCollectionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'datagrid' === $format && $data instanceof ReferenceDataCollectionProductValueInterface;
+        return 'datagrid' === $format && $data instanceof ReferenceDataCollectionValueInterface;
     }
 
     /**

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
@@ -16,7 +16,7 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
 {
     function let(
         AttributeConstraintGuesser $guesser,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $color,
         AttributeOptionInterface $red
     ) {

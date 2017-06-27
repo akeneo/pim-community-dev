@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\MetricNormalizer;
-use Pim\Component\Catalog\ProductValue\MetricProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
@@ -23,8 +23,8 @@ class MetricNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_metric_product_value(
-        MetricProductValueInterface $metricValue,
-        ProductValueInterface $textValue,
+        MetricValueInterface $metricValue,
+        ValueInterface $textValue,
         AttributeInterface $metricAttribute,
         AttributeInterface $textAttribute
     ) {
@@ -42,7 +42,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_metric_product_value_with_no_locale_and_no_channel(
-        MetricProductValueInterface $metricValue,
+        MetricValueInterface $metricValue,
         AttributeInterface $metricAttribute
     ) {
         $metricValue->getAttribute()->willReturn($metricAttribute);
@@ -63,7 +63,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_metric_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $metricValue,
+        ValueInterface $metricValue,
         AttributeInterface $metricAttribute,
         MetricInterface $metric
     ) {
@@ -95,7 +95,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_metric_product_value_with_locale(
-        ProductValueInterface $metricValue,
+        ValueInterface $metricValue,
         AttributeInterface $metricAttribute,
         MetricInterface $metric
     ) {
@@ -127,7 +127,7 @@ class MetricNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_integer_product_value_with_locale_and_channel(
-        ProductValueInterface $metricValue,
+        ValueInterface $metricValue,
         AttributeInterface $metricAttribute,
         MetricInterface $metric
     ) {

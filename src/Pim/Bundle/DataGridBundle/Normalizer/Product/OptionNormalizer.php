@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -45,6 +45,6 @@ class OptionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'datagrid' === $format && $data instanceof OptionProductValueInterface;
+        return 'datagrid' === $format && $data instanceof OptionValueInterface;
     }
 }

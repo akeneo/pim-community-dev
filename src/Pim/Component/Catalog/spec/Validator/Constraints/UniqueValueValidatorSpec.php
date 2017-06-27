@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
@@ -27,7 +27,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         Form $form,
         ProductInterface $product,
-        ProductValueInterface $value
+        ValueInterface $value
     ) {
         $this->beConstructedWith($uniqueDataRepository, $uniqueValuesSet);
 
@@ -47,7 +47,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_builds_a_violation_if_the_value_is_already_in_database_for_another_product(
-        ProductValueInterface $value,
+        ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
         ProductInterface $product,
@@ -71,7 +71,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_builds_a_violation_if_the_value_has_already_been_validated_in_a_bulk(
-        ProductValueInterface $value,
+        ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
         ProductInterface $product,
@@ -124,7 +124,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_skips_non_unique_values(
-        ProductValueInterface $value,
+        ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
         $context,
@@ -144,7 +144,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_violation_for_valid_values(
-        ProductValueInterface $value,
+        ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
         ProductInterface $product,

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
@@ -52,7 +52,7 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $associationClass;
 
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     protected $productValueFactory;
 
     /**
@@ -64,7 +64,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
-     * @param ProductValueFactory                $productValueFactory Product value factory
+     * @param ValueFactory                       $productValueFactory Product value factory
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
      */
@@ -75,7 +75,7 @@ class ProductBuilder implements ProductBuilderInterface
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
-        ProductValueFactory $productValueFactory,
+        ValueFactory $productValueFactory,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {

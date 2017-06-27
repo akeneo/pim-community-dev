@@ -9,32 +9,32 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 
 class PriceCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
     }
 
     public function it_suports_price_collection_attribute(
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute,
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getType()->willReturn('pim_catalog_price_collection');
-        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
+        $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
 
         $attribute->getType()->willReturn('other');
-        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(false);
+        $this->supportsValue($value, $channel, $locale)->shouldReturn(false);
     }
 
     public function it_successfully_checks_complete_price_collection(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ArrayCollection $arrayCollection,
@@ -61,7 +61,7 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
     }
 
     public function it_successfully_checks_incomplete_price_collection(
-        ProductValueInterface $value,
+        ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ArrayCollection $arrayCollection,

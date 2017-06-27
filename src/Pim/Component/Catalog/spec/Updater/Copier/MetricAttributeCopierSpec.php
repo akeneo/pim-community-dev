@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -59,8 +59,8 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ScalarProductValue $fromProductValue,
-        ScalarProductValue $toProductValue
+        ScalarValue $fromValue,
+        ScalarValue $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -75,17 +75,17 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
         $normalizer
-            ->normalize($fromProductValue, 'standard')
+            ->normalize($fromValue, 'standard')
             ->willReturn([
                 'locale' => 'fr_FR',
                 'scope'  => 'mobile',
                 'data'   => ['amount' => 123, 'unit' => 'GRAM'],
             ]);
 
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
-            ->willReturn($toProductValue);
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder

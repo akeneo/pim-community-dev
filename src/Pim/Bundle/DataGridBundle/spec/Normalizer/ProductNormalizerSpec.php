@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTranslationInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -52,7 +52,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupTranslationInterface $promotionEN,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $values,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce
@@ -62,8 +62,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             'locales' => ['en_US'], 'channels' => ['ecommerce']
         ];
 
-        $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
-            ->willReturn($productValues);
+        $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
+            ->willReturn($values);
 
         $product->getGroups()->willReturn([$promotion]);
         $promotion->getCode()->willReturn('promotion');
@@ -77,8 +77,8 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->getIdentifier()->willReturn('purple_tshirt');
         $product->isEnabled()->willReturn(true);
-        $product->getValues()->willReturn($productValues);
-        $serializer->normalize($productValues, 'datagrid', $context)->willReturn([
+        $product->getValues()->willReturn($values);
+        $serializer->normalize($values, 'datagrid', $context)->willReturn([
             'text' => [
                 [
                     'locale' => null,
@@ -135,7 +135,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupTranslationInterface $promotionEN,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ProductValueCollectionInterface $productValues,
+        ValueCollectionInterface $productValues,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce

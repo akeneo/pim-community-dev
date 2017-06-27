@@ -9,10 +9,10 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
@@ -41,11 +41,11 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('attribute');
         $attribute->setBackendType('text');
-        $realValue = new ScalarProductValue($attribute, null, null, null);
+        $realValue = new ScalarValue($attribute, null, null, null);
 
-        $valuesCollection = new ProductValueCollection([$realValue]);
+        $valuesCollection = new ValueCollection([$realValue]);
         $valuesArray = [$realValue];
-        $emptyValuesCollection = new ProductValueCollection();
+        $emptyValuesCollection = new ValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
@@ -63,11 +63,11 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $serializer,
         $presenterRegistry,
         $userContext,
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $text,
-        ProductValueInterface $priceValue,
+        ValueInterface $priceValue,
         AttributeInterface $price,
-        ProductValueCollectionInterface $values,
+        ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator,
         PresenterInterface $pricePresenter
     ) {

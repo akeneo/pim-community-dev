@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -27,7 +27,7 @@ class IsStringValidator extends ConstraintValidator
         $code = '';
         $checkedValue = $value;
 
-        if ($value instanceof ProductValueInterface) {
+        if ($value instanceof ValueInterface) {
             $code = $value->getAttribute()->getCode();
             $checkedValue = $value->getData();
         }

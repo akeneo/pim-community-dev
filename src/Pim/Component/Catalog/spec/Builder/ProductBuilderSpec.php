@@ -3,10 +3,9 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
@@ -14,7 +13,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -22,7 +21,6 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
-use Prophecy\Exception\Prediction\FailedPredictionException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductBuilderSpec extends ObjectBehavior
@@ -38,7 +36,7 @@ class ProductBuilderSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
-        ProductValueFactory $productValueFactory
+        ValueFactory $productValueFactory
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
@@ -72,7 +70,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $entityWithValuesBuilder,
         FamilyInterface $tshirtFamily,
         AttributeInterface $identifierAttribute,
-        ProductValueInterface $identifierValue
+        ValueInterface $identifierValue
     ) {
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $entityWithValuesBuilder->addOrReplaceValue(
@@ -101,7 +99,7 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $desc,
-        ProductValueInterface $skuValue
+        ValueInterface $skuValue
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
@@ -201,8 +199,8 @@ class ProductBuilderSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $size,
         AttributeInterface $color,
-        ProductValueInterface $sizeValue,
-        ProductValueInterface $colorValue
+        ValueInterface $sizeValue,
+        ValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
@@ -235,8 +233,8 @@ class ProductBuilderSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $size,
         AttributeInterface $color,
-        ProductValueInterface $sizeValue,
-        ProductValueInterface $colorValue
+        ValueInterface $sizeValue,
+        ValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
@@ -268,7 +266,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $productValueFactory,
         ProductInterface $product,
         AttributeInterface $label,
-        ProductValueInterface $value
+        ValueInterface $value
     ) {
         $label->getCode()->willReturn('label');
         $label->getType()->willReturn(AttributeTypes::TEXT);

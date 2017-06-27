@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\MediaNormalizer;
-use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
+use Pim\Component\Catalog\ProductValue\MediaValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MediaNormalizerSpec extends ObjectBehavior
@@ -23,8 +23,8 @@ class MediaNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_media_product_value(
-        ProductValueInterface $numberValue,
-        MediaProductValueInterface $mediaValue,
+        ValueInterface $numberValue,
+        MediaValueInterface $mediaValue,
         AttributeInterface $numberAttribute,
         AttributeInterface $mediaAttribute
     ) {
@@ -40,7 +40,7 @@ class MediaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_media_product_value_with_no_locale_and_no_channel(
-        MediaProductValueInterface $mediaValue,
+        MediaValueInterface $mediaValue,
         AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo
     ) {
@@ -78,7 +78,7 @@ class MediaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_media_product_value_with_locale_and_no_scope(
-        ProductValueInterface $mediaValue,
+        ValueInterface $mediaValue,
         AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo
     ) {
@@ -116,7 +116,7 @@ class MediaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_media_product_value_with_scope_and_no_locale(
-        MediaProductValueInterface $mediaValue,
+        MediaValueInterface $mediaValue,
         AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo
     ) {
@@ -154,7 +154,7 @@ class MediaNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_media_product_value_with_locale_and_scope(
-        MediaProductValueInterface $mediaValue,
+        MediaValueInterface $mediaValue,
         AttributeInterface $mediaAttribute,
         FileInfoInterface $fileInfo
     ) {
@@ -192,7 +192,7 @@ class MediaNormalizerSpec extends ObjectBehavior
     }
 
     function it_should_normalize_an_empty_product_value(
-        MediaProductValueInterface $mediaValue,
+        MediaValueInterface $mediaValue,
         AttributeInterface $mediaAttribute
     ) {
         $mediaValue->getAttribute()->willReturn($mediaAttribute);

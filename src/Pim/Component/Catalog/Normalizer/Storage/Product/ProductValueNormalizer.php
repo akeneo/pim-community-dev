@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Storage\Product;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -47,6 +47,6 @@ class ProductValueNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && 'storage' === $format;
+        return $data instanceof ValueInterface && 'storage' === $format;
     }
 }
