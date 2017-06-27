@@ -679,6 +679,7 @@ config:
         pim/job/common/edit/upload:                                  pimenrich/js/job/common/edit/upload
         pim/job/common/edit/upload-launch:                           pimenrich/js/job/common/edit/upload-launch
         pim/job/common/label:                                        pimenrich/js/job/common/label
+        pim/job/common/grid:                                         pimenrich/js/job/common/grid
         pim/job/execution/summary-table:                             pimenrich/js/job/execution/summary-table
         pim/job/execution/auto-refresh:                              pimenrich/js/job/execution/auto-refresh
         pim/job/execution/show-profile:                              pimenrich/js/job/execution/show-profile
