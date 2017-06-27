@@ -31,7 +31,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     /**
      * TODO Remove null default on last parameter on master branch
      *
-     * @param ObjectManager                $entityManager
+     * @param EntityManagerInterface       $entityManager
      * @param string                       $entityName
      * @param AttributeRepositoryInterface $attributeRepository
      */
@@ -109,7 +109,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     /**
      * @param string $attributeIdentifier
      *
-     * @returns boolean
+     * @return bool
      */
     protected function isAttributeAutoSorted($attributeIdentifier)
     {
