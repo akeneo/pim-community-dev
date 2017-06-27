@@ -39,7 +39,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "vintage" category
     And I click on the "classy" category
     And I move on to the next step
-    And I wait for the "classify-add" mass-edit job to finish
+    And I wait for the "add_product_value" job to finish
     And I am on the products page
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (2)"
@@ -57,7 +57,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "vintage" category
     And I click on the "classy" category
     And I move on to the next step
-    And I wait for the "classify-move" mass-edit job to finish
+    And I wait for the "update_product_value" job to finish
     And I am on the products page
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (0)"

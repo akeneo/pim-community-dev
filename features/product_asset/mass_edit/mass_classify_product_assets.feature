@@ -18,7 +18,7 @@ Feature: Mass edit assets to change their categories
     And I press the "Next" button
     And I press the "Confirm" button
     And I should be on the assets page
-    When I wait for the "asset-classify-move" mass-edit job to finish
+    When I wait for the "classify_assets" job to finish
     And I am on the assets page
     And I expand the "images" category
     Then I should see the text "Asset main catalog (12)"
@@ -42,7 +42,7 @@ Feature: Mass edit assets to change their categories
     And I press the "Next" button
     And I press the "Confirm" button
     And I should be on the assets page
-    When I wait for the "asset-classify-move" mass-edit job to finish
+    When I wait for the "classify_assets" job to finish
     And I am on the assets page
     And I should see the text "Images (0)"
     And I should see the text "Audio (15)"

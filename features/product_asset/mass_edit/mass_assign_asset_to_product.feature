@@ -31,7 +31,7 @@ Feature: Edit asset collection of many products at once
     And I confirm the asset modification
     Then the "Front view" asset gallery should contain paint, machine
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     And I am on the "boots" product page
     And I visit the "Media" group
     Then the "Front view" asset gallery should contain paint, machine

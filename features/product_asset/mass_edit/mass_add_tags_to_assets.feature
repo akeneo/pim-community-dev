@@ -27,7 +27,7 @@ Feature: Mass edit assets to add them tags
     And I press the "Next" button
     And I press the "Confirm" button
     And I should be on the assets page
-    And I wait for the "add-tags-to-assets" mass-edit job to finish
+    And I wait for the "add_tags_to_assets" job to finish
     Then asset tags of "asset_one" should be "first_tag, second_tag, third_tag"
     And asset tags of "asset_two" should be "first_tag, second_tag, third_tag"
     And asset tags of "asset_three" should be "first_tag, second_tag, third_tag"
@@ -40,7 +40,7 @@ Feature: Mass edit assets to add them tags
     And I press the "Next" button
     And I press the "Confirm" button
     And I should be on the assets page
-    And I wait for the "add-tags-to-assets" mass-edit job to finish
+    And I wait for the "add_tags_to_assets" job to finish
     Then asset tags of "asset_one" should be "first_tag, second_tag, third_tag"
     And asset tags of "asset_two" should be "first_tag, second_tag, third_tag"
     And asset tags of "asset_three" should be ""
@@ -53,7 +53,7 @@ Feature: Mass edit assets to add them tags
     And I press the "Next" button
     And I press the "Confirm" button
     And I should be on the assets page
-    And I wait for the "add-tags-to-assets" mass-edit job to finish
+    And I wait for the "add_tags_to_assets" job to finish
     Then asset tags of "asset_one" should be "another_new_tag, new_tag"
     And asset tags of "asset_two" should be "another_new_tag, new_tag"
     And asset tags of "asset_three" should be ""
@@ -66,7 +66,7 @@ Feature: Mass edit assets to add them tags
     And I press the "Next" button
     And I press the "Confirm" button
     And I should be on the assets page
-    And I wait for the "add-tags-to-assets" mass-edit job to finish
+    And I wait for the "add_tags_to_assets" job to finish
     Then asset tags of "asset_one" should be "another_new_tag, new_tag, third_tag"
     And asset tags of "asset_two" should be "another_new_tag, new_tag, third_tag"
     And asset tags of "asset_three" should be ""

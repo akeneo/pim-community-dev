@@ -20,7 +20,7 @@ Feature: Disabled mass edit status of product when user is not owner
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation
     And I enable the products
-    And I wait for the "change-status" mass-edit job to finish
+    And I wait for the "update_product_value" job to finish
     Then product "boots" should be disabled
     And product "sneakers" should be disabled
     But product "pump" should be enabled

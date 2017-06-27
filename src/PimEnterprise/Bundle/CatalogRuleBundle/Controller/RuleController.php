@@ -18,6 +18,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,6 +56,9 @@ class RuleController
     /** @var CommandLauncher */
     protected $commandLauncher;
 
+    /** @var GridFilterAdapterInterface */
+    protected $parameterParser;
+
     /**
      * @param RuleDefinitionRepositoryInterface     $repository
      * @param RemoverInterface                      $remover
@@ -63,6 +67,7 @@ class RuleController
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
      * @param OroToPimGridFilterAdapter             $gridFilterAdapter
      * @param CommandLauncher                       $commandLauncher
+     * @param GridFilterAdapterInterface            $parameterParser
      */
     public function __construct(
         RuleDefinitionRepositoryInterface $repository,
@@ -71,7 +76,8 @@ class RuleController
         JobLauncherInterface $simpleJobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         OroToPimGridFilterAdapter $gridFilterAdapter,
-        CommandLauncher $commandLauncher
+        CommandLauncher $commandLauncher,
+        GridFilterAdapterInterface $parameterParser
     ) {
         $this->repository = $repository;
         $this->remover = $remover;
@@ -80,6 +86,7 @@ class RuleController
         $this->jobInstanceRepo = $jobInstanceRepo;
         $this->gridFilterAdapter = $gridFilterAdapter;
         $this->commandLauncher = $commandLauncher;
+        $this->parameterParser = $parameterParser;
     }
 
     /**
@@ -119,9 +126,10 @@ class RuleController
     public function massImpactedProductCountAction(Request $request)
     {
         $request->request->add(['actionName' => 'massImpactedProductCount']);
-        $params = $this->gridFilterAdapter->adapt($request);
+        $parameters = $this->parameterParser->parse($request);
+        $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
-        $configuration = ['ruleIds' => $params['values']];
+        $configuration = ['ruleIds' => $filters['values']];
 
         $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 

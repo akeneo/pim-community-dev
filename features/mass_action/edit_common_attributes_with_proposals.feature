@@ -39,7 +39,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I display the Name attribute
     And I change the "Name" to "My awesome name"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then I should see the text "Proposal created 1"
     And I should see the text "skipped products 1"
     And I should see the text "processed 1"

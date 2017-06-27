@@ -23,6 +23,7 @@ services:
             - '@security.authorization_checker'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_catalog.filter.chained'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_workflow.controller.published_product:
         class: '%pimee_workflow.controller.published_product.class%'

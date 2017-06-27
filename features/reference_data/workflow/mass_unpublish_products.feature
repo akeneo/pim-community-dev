@@ -28,7 +28,7 @@ Feature: Unpublish many products at once
     When I choose the "Unpublish products" operation
     Then I should see the text "The 2 selected products will be unpublished"
     When I move on to the next step
-    And I wait for the "unpublish" mass-edit job to finish
+    And I wait for the "unpublish_product" job to finish
     And I am on the published products page
     Then the grid should contain 1 element
 
