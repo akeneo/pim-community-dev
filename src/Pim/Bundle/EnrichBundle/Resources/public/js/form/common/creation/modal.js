@@ -3,7 +3,6 @@
 define(
     [
         'jquery',
-        'underscore',
         'backbone',
         'routing',
         'pim/form',
@@ -16,7 +15,6 @@ define(
     ],
     function (
         $,
-        _,
         Backbone,
         Routing,
         BaseForm,
@@ -33,7 +31,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
+            initialize(meta) {
                 this.config = meta.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -46,7 +44,7 @@ define(
              *
              * @return {Promise}
              */
-            open: function () {
+            open() {
                 var deferred = $.Deferred();
 
                 var modal = new Backbone.BootstrapModal({
@@ -66,7 +64,7 @@ define(
                     .setElement(modalBody)
                     .render();
 
-                modal.on('cancel', function () {
+                modal.on('cancel', () => {
                     deferred.reject();
                     modal.remove();
                 });
@@ -102,7 +100,7 @@ define(
              *
              * @return {Promise}
              */
-            save: function () {
+            save() {
                 this.validationErrors = {};
 
                 var loadingMask = new LoadingMask();

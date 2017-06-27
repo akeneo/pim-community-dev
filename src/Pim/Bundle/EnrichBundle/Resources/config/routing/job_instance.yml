@@ -37,3 +37,8 @@ pim_enrich_job_instance_rest_export_launch:
     path: /rest/export/{code}/launch
     defaults: { _controller: pim_enrich.controller.rest.job_instance:launchExportAction }
     methods: [POST, GET]
+
+pim_enrich_job_instance_rest_jobs_get:
+    path: /rest/jobs
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:getJobNamesAction }
+    methods: [GET]

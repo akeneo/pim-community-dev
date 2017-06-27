@@ -783,6 +783,7 @@ config:
         pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
         pim/form/common/creation/type:                       pimenrich/js/form/common/creation/type
         pim/form/common/creation/axis:                       pimenrich/js/form/common/creation/axis
+        pim/form/common/creation/job:                        pimenrich/js/form/common/creation/job
 
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
@@ -861,6 +862,7 @@ config:
         pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
         pim/template/form/creation/type:                          pimenrich/templates/form/creation/type.html
         pim/template/form/creation/axis:                          pimenrich/templates/form/creation/axis.html
+        pim/template/form/creation/job:                           pimenrich/templates/form/creation/job.html
         pim/template/form/column:                                 pimenrich/templates/form/column.html
         pim/template/form/column-navigation:                      pimenrich/templates/form/column-navigation.html
         pim/template/form/secondary-actions:                      pimenrich/templates/form/secondary-actions.html

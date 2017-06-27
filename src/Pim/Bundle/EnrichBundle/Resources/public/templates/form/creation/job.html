@@ -1,0 +1,19 @@
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label for="job" class="AknFieldContainer-label control-label required">
+            <%- label %> <em><%- required %></em>
+        </label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <select name="job" id="job">
+            <option>Select a job</option>
+            <% for (var job in jobs) { %>
+                <optgroup label="<%- job %>">
+                    <% for (var name in jobs[job]) { %>
+                        <option value="<%- name %>"><%- __(`batch_jobs.${name}.label`) %></option>
+                    <% } %>
+                </optgroup>
+            <% } %>
+        </select>
+    </div>
+</div>

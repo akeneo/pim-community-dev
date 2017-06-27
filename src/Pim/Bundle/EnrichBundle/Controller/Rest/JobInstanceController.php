@@ -393,6 +393,26 @@ class JobInstanceController
     }
 
     /**
+     * Get an array of job names
+     *
+     * @throws NotFoundHttpException
+     *
+     */
+
+    public function getJobNamesAction(Request $request)
+    {
+        $jobType = $request->query->get('jobType');
+        $choices = [];
+        foreach ($this->jobRegistry->allByTypeGroupByConnector($jobType) as $connector => $jobs) {
+            foreach ($jobs as $key => $job) {
+                $choices[$connector][$key] = $job->getName();
+            }
+        }
+
+        return new JsonResponse($choices);
+    }
+
+    /**
      * Aggregate validation errors
      *
      * @param JobInstance $jobInstance
@@ -460,5 +480,10 @@ class JobInstanceController
 
         return $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+    }
+
+    protected function createAction(Request $request)
+    {
+
     }
 }
