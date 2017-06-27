@@ -69,7 +69,7 @@ error:
         attribute:        Cannot delete this attribute
         family:           Cannot delete this family
         product:          Cannot delete this product
-        channel:          Cannot delete this channel
+        channel:          At least one channel must be set, you cannot delete this channel.
         group:            Cannot delete this group
         variant group:    Cannot delete this variant group
         group type:       Cannot delete this group type
