@@ -144,7 +144,8 @@ define(
                             data: JSON.stringify(this.getFormData())
                         }).then(function () {
                             router.redirectToRoute(this.config.backRoute);
-                            messenger.notificationFlashMessage(
+
+                            messenger.notify(
                                 'success',
                                 __('TODO')
                             );

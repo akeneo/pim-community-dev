@@ -47,7 +47,7 @@ Feature: Validate editing common date attributes of multiple products
     And I display the Date attribute
     And I change the Date to "01/01/2015"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Date of "boots" should be "2015-01-01"
     And attribute Date of "sneakers" should be "2015-01-01"
     When I am on the products page
@@ -56,7 +56,7 @@ Feature: Validate editing common date attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Date of "boots" should be ""
     And attribute Date of "sandals" should be ""
     And attribute Date of "sneakers" should be ""

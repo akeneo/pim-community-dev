@@ -30,6 +30,7 @@ services:
             - '@security.token_storage'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pim_datagrid.controller.datagrid_view:
         class: '%pim_datagrid.controller.datagrid_view.class%'

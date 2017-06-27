@@ -47,7 +47,7 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Info attribute
     And I change the "Info" to "Very useful information"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Info of "boots" should be "Very useful information"
     And attribute Info of "sneakers" should be "Very useful information"
     When I am on the products page
@@ -56,7 +56,7 @@ Feature: Validate editing common text attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Info attribute
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Info of "boots" should be ""
     And attribute Info of "sandals" should be ""
     And attribute Info of "sneakers" should be ""
@@ -79,7 +79,7 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Comment attribute
     And I change the "Comment" to "Very nice comment"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Comment of "boots" should be "Very nice comment"
     And attribute Comment of "sneakers" should be "Very nice comment"
     When I am on the products page
@@ -88,7 +88,7 @@ Feature: Validate editing common text attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Comment attribute
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Comment of "boots" should be ""
     And attribute Comment of "sandals" should be ""
     And attribute Comment of "sneakers" should be ""

@@ -1688,7 +1688,7 @@ class WebUser extends PimContext
     {
         $status = $action === 'enable' ? true : false;
         $this->getCurrentPage()->toggleSwitch('To enable', $status);
-        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->configure();
         $this->getCurrentPage()->confirm();
         $this->wait();
     }
@@ -2122,7 +2122,7 @@ class WebUser extends PimContext
         $this->getNavigationContext()->currentPage = $this
             ->getPage('Batch Operation')
             ->chooseOperation($operation)
-            ->next();
+            ->choose();
 
         $this->wait();
     }
@@ -2148,7 +2148,7 @@ class WebUser extends PimContext
         $this->iMoveToTheConfirmPage();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
-        $this->wait();
+        sleep(2);
     }
 
     /**
@@ -2160,7 +2160,7 @@ class WebUser extends PimContext
         $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.next');
         }, 'Could not find next button');
-        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->configure();
     }
 
     /**

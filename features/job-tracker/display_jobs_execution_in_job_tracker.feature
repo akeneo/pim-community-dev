@@ -35,7 +35,7 @@ Feature: Display jobs execution in job tracker
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     When I am on the dashboard page
     When I am on the job tracker page
     Then I should see the "Refresh" button

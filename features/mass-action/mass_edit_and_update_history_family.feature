@@ -39,7 +39,7 @@ Feature: Update product history when mass editing products
     Given I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
     And I move on to the next step
-    And I wait for the "change-family" mass-edit job to finish
+    And I wait for the "update_product_value" job to finish
     When I edit the "boots" product
     And I visit the "History" column tab
     Then there should be 2 updates

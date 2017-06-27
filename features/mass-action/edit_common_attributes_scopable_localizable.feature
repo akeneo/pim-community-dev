@@ -23,7 +23,7 @@ Feature: Edit common attributes of many products at once
     When I display the Customer rating attribute
     And I change the "Customer rating" to "5"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the unlocalized ecommerce customer_rating of "black_jacket" should be "[1]"
     And the unlocalized ecommerce customer_rating of "white_jacket" should be "[3]"
     And the unlocalized print customer_rating of "black_jacket" should be "[5]"
@@ -40,7 +40,7 @@ Feature: Edit common attributes of many products at once
     When I display the Name attribute
     And I change the "Name" to "Une veste"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the german localizable value name of "black_jacket" should be "Une veste"
     And the german localizable value name of "white_jacket" should be "Une veste"
     And the english localizable value name of "black_jacket" should be "A black jacket"

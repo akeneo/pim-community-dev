@@ -47,7 +47,7 @@ Feature: Validate editing common boolean attributes of multiple products
     And I display the Available attribute
     And I check the "Available" switch
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Available of "boots" should be "true"
     And attribute Available of "sneakers" should be "true"
     When I am on the products page
@@ -57,7 +57,7 @@ Feature: Validate editing common boolean attributes of multiple products
     And I display the Available attribute
     And I uncheck the "Available" switch
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute Available of "boots" should be "false"
     And attribute Available of "sneakers" should be "false"
     And attribute Available of "sandals" should be "false"

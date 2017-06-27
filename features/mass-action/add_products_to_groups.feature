@@ -18,5 +18,5 @@ Feature: Add products to many groups at once via a form
     And I choose the "Add to groups" operation
     And I check "Similar boots"
     When I move on to the next step
-    And I wait for the "add-to-groups" mass-edit job to finish
+    And I wait for the "add_product_value" mass-edit job to finish
     Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"

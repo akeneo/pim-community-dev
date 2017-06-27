@@ -41,5 +41,5 @@ Feature: Edit common attributes of many products at once
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the file "side_view" of products sandals and sneakers should be "SNKRS-1R.png"

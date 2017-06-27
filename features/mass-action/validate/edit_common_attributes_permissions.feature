@@ -21,5 +21,5 @@ Feature: Edit common attributes with permissions
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     And the english localizable value name of "boots" should be "boots"

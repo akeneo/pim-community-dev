@@ -63,7 +63,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $attributeLocale;
 
     /** @var string */
-    protected $attributeChannel;z
+    protected $attributeChannel;
 
     /** @var string */
     protected $errors;

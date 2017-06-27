@@ -24,7 +24,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
-    And I wait for the "add-to-variant-group" mass-edit job to finish
+    And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
     When I am on the dashboard page
     Then I should have 1 new notification
@@ -51,7 +51,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
-    And I wait for the "add-to-variant-group" mass-edit job to finish
+    And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots"
     And I should have 1 new notification
     And I should see notification:
@@ -73,7 +73,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
-    And I wait for the "add-to-variant-group" mass-edit job to finish
+    And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots"
     And I should have 1 new notification
     And I should see notification:

@@ -29,8 +29,9 @@ class EditCommonAttributes extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
-                'Next'                      => ['css' => '.AknButtonList .AknButton--apply'],
-                'Confirm'                   => ['css' => '.AknButtonList .AknButton--apply'],
+                'Choose'                    => ['css' => '.AknButtonList.choose .AknButton--apply'],
+                'Configure'                 => ['css' => '.AknButtonList.configure .AknButton--apply'],
+                'Confirm'                   => ['css' => '.AknButtonList.confirm .AknButton--apply'],
                 'Available attributes form' => [
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes',
                 ],
@@ -45,15 +46,33 @@ class EditCommonAttributes extends ProductEditForm
     }
 
     /**
+     * Go to the configuration step
+     *
+     * @return string
+     */
+    public function choose()
+    {
+        $this->spin(function () {
+            $this->getElement('Choose')->click();
+
+            return true;
+        }, 'Cannot got to the configuration step');
+
+        return $this->currentStep;
+    }
+
+    /**
      * Go to the next step
      *
      * @return string
      */
-    public function next()
+    public function configure()
     {
         $this->spin(function () {
-            return $this->getElement('Next')->click();
-        }, 'Cannot got to the next step');
+            $this->getElement('Configure')->click();
+
+            return true;
+        }, 'Cannot got to the confirm step');
 
         return $this->currentStep;
     }
@@ -66,7 +85,9 @@ class EditCommonAttributes extends ProductEditForm
     public function confirm()
     {
         $this->spin(function () {
-            return $this->getElement('Confirm')->click();
+            $this->getElement('Confirm')->click();
+
+            return true;
         }, 'Cannot confirm the wizard');
 
         return $this->currentStep;

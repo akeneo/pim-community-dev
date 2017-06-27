@@ -47,7 +47,7 @@ Feature: Validate editing common image attributes of multiple products
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the file "side_view" of products boots and sneakers should be "SNKRS-1R.png"
     When I am on the products page
     And I select rows boots, sandals and sneakers
@@ -55,7 +55,7 @@ Feature: Validate editing common image attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Side view attribute
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the file "side_view" of products boots, sandals and sneakers should be ""
     When I am on the products page
     And I select rows boots, sandals and sneakers

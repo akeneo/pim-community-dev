@@ -15,7 +15,7 @@ Feature: Mass Edit Families
     And I add available attributes Length
     And I switch the attribute "length" requirement in channel "mobile"
     And I move on to the next step
-    And I wait for the "set-attribute-requirements" mass-edit job to finish
+    And I wait for the "set_attribute_requirements" job to finish
     Then attribute "Length" should be required in family "boots" for channel "Mobile"
     And attribute "Length" should be required in family "sneakers" for channel "Mobile"
     And attribute "Length" should be required in family "sandals" for channel "Mobile"
@@ -34,7 +34,7 @@ Feature: Mass Edit Families
     And I display the Name attribute
     And I switch the attribute "name" requirement in channel "mobile"
     And I move on to the next step
-    And I wait for the "set-attribute-requirements" mass-edit job to finish
+    And I wait for the "set_attribute_requirements" job to finish
     Then attribute "Name" should be required in family "boots" for channel "Mobile"
     And attribute "Name" should be required in family "sneakers" for channel "Mobile"
     And attribute "Name" should be required in family "sandals" for channel "Mobile"
@@ -97,7 +97,7 @@ Feature: Mass Edit Families
     And I choose the "Set attribute requirements" operation
     And I display the Name attribute
     And I move on to the next step
-    And I wait for the "set-attribute-requirements" mass-edit job to finish
+    And I wait for the "set_attribute_requirements" job to finish
     Then I should see notification:
       | type    | message                                              |
       | success | Mass edit Set family attribute requirements finished |
@@ -112,7 +112,7 @@ Feature: Mass Edit Families
     And I add attributes by group "Marketing"
     And I should see attributes "Price, Rate of sale and Rating" in group "Marketing"
     And I move on to the next step
-    And I wait for the "set-attribute-requirements" mass-edit job to finish
+    And I wait for the "set_attribute_requirements" job to finish
     Then attribute "price" should be optional in family "boots" for channel "Tablet"
     Then attributes "price, rate_sale and rating" should be optional in family "boots" for channel "Tablet"
     And attributes "price, rate_sale and rating" should be optional in family "sneakers" for channel "Tablet"

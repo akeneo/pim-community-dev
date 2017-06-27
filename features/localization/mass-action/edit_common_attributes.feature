@@ -31,7 +31,7 @@ Feature: Edit common localized attributes of many products at once
     And I change the "Price" to "100,50 USD"
     And I change the "Price" to "150,75 EUR"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the prices "Price" of products boots and sandals should be:
       | amount | currency |
       | 100.50 | USD      |
@@ -44,7 +44,7 @@ Feature: Edit common localized attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600,55"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the metric "Weight" of products boots and sandals should be "600.55"
 
   Scenario: Successfully update many number values at once
@@ -54,7 +54,7 @@ Feature: Edit common localized attributes of many products at once
     And I display the Time attribute
     And I change the "Time" to "25,75"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the product "boots" should have the following value:
       | time | 25.75 |
     And the product "sandals" should have the following value:
@@ -67,7 +67,7 @@ Feature: Edit common localized attributes of many products at once
     And I display the Date attribute
     And I change the "Date" to "28/05/2015"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "edit_common_attributes" job to finish
     Then the product "boots" should have the following value:
       | date | 2015-05-28 |
     And the product "sandals" should have the following value:

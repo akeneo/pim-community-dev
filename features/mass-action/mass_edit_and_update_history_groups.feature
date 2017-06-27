@@ -39,7 +39,7 @@ Feature: Update product history when mass editing products
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
     And I move on to the next step
-    And I wait for the "add-to-groups" mass-edit job to finish
+    And I wait for the "add_product_value" mass-edit job to finish
     When I edit the "boots" product
     And I visit the "History" column tab
     Then there should be 2 updates
