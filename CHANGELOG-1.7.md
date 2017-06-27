@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6420: Fix autosorting of attribute options
+- PIM-6252: Change channel's error message when deleting the last one  
 
 # 1.7.5 (2017-06-02)
 
