@@ -1,0 +1,42 @@
+datagrid:
+    last-executions-grid:
+        source:
+            type: pim_datasource_job_execution
+        options:
+            manageFilters: false
+            toolbarOptions:
+                hide: true
+        columns:
+            date:
+                label:         job_tracker.filter.started_at
+                data_name:     createTime
+                type:          datetime
+                frontend_type: datetime
+            status:
+                label:         Status
+                template:      PimImportExportBundle:Property:status.html.twig
+                type:          twig
+                frontend_type: html
+                data_name:     statusLabel
+            warning:
+                label:         Warnings
+                template:      PimImportExportBundle:Property:warning.html.twig
+                type:          twig
+                frontend_type: html
+                data_name:     warningCount
+        properties:
+            id: ~
+            show_link:
+                type: url
+                params:
+                    - id
+        actions:
+            show:
+                type:      navigate
+                label:     pim.grid.action.show.title
+                icon:      list-alt
+                link:      show_link
+                rowAction: true
+        sorters:
+            default:
+                date: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
