@@ -3,7 +3,8 @@
 ## Bug fixes
 
 - PIM-6433: Fix product import reference data multi with duplicate code options
-- PIM-6438: Add a link in the notification report of "calculate affected products" rules mass action, that redirects to job process 
+- PIM-6438: Add a link in the notification report of "calculate affected products" rules mass action, that redirects to job process
+- PIM-6475: Generate asset variations, even if reference file has corrupted metadata
 
 # 1.6.16 (2017-05-24)
 
