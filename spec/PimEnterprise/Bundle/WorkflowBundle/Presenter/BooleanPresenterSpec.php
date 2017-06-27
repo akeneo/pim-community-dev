@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -24,7 +24,7 @@ class BooleanPresenterSpec extends ObjectBehavior
     function it_presents_boolean_change_using_the_injected_renderer(
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $translator->trans('Yes')->willReturn('Yes');

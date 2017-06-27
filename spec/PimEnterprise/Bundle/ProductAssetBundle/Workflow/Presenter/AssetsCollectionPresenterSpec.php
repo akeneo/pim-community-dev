@@ -8,7 +8,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes as AssetAttributeType;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -27,14 +27,14 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_an_assets_collection(ProductValueInterface $productValue, AttributeInterface $frontView)
+    function it_supports_an_assets_collection(ValueInterface $productValue, AttributeInterface $frontView)
     {
         $productValue->getAttribute()->willReturn($frontView);
         $frontView->getType()->willReturn(AssetAttributeType::ASSETS_COLLECTION);
         $this->supports($productValue)->shouldBe(true);
     }
 
-    function it_does_not_support_other_attribute_types(ProductValueInterface $productValue, AttributeInterface $frontView)
+    function it_does_not_support_other_attribute_types(ValueInterface $productValue, AttributeInterface $frontView)
     {
         $productValue->getAttribute()->willReturn($frontView);
         $frontView->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
@@ -43,7 +43,7 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
 
     function it_presents_assets_collection_changes(
         $assetRepository,
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         AttributeInterface $attribute,
         AssetInterface $leather,
         AssetInterface $neoprene,

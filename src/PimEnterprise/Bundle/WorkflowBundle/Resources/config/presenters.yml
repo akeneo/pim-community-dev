@@ -16,10 +16,10 @@ parameters:
     pimee_workflow.presenter.options.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionsPresenter
     pimee_workflow.presenter.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter
     pimee_workflow.presenter.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagePresenter
-    pimee_workflow.presenter.product_value.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\DatePresenter
-    pimee_workflow.presenter.product_value.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\BooleanPresenter
-    pimee_workflow.presenter.product_value.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ImagePresenter
-    pimee_workflow.presenter.product_value.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\FilePresenter
+    pimee_workflow.presenter.product_value.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
+    pimee_workflow.presenter.product_value.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
+    pimee_workflow.presenter.product_value.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagePresenter
+    pimee_workflow.presenter.product_value.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter
 
 services:
     ##
@@ -31,7 +31,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
-            - '@pim_catalog.factory.product_value'
+            - '@pim_catalog.factory.value'
             - '@pim_catalog.factory.attribute'
         tags:
             - { name: twig.extension }

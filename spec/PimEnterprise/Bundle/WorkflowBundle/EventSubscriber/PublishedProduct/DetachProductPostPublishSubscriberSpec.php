@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarValue;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
 
@@ -36,14 +36,14 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXTAREA);
 
-        $value = new ScalarProductValue($attribute, null, null, null);
+        $value = new ScalarValue($attribute, null, null, null);
 
         $product->getValues()->willReturn([$value]);
         $product->getCompletenesses()->willReturn(new ArrayCollection());
         $product->getAssociations()->willReturn(new ArrayCollection());
         $event->getProduct()->willReturn($product);
 
-        $publishedValue = new ScalarProductValue($attribute, null, null, null);
+        $publishedValue = new ScalarValue($attribute, null, null, null);
 
         $publishedProduct->getValues()->willReturn([$publishedValue]);
         $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());

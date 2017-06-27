@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
@@ -46,10 +46,10 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
-    /** @var ProductValueCollectionFactory */
+    /** @var ValueCollectionFactory */
     protected $valueCollectionFactory;
 
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     protected $valueFactory;
 
     /**
@@ -58,8 +58,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $productDraftRepo
-     * @param ProductValueCollectionFactory   $valueCollectionFactory
-     * @param ProductValueFactory             $valueFactory
+     * @param ValueCollectionFactory          $valueCollectionFactory
+     * @param ValueFactory                    $valueFactory
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -67,8 +67,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $productDraftRepo,
-        ProductValueCollectionFactory $valueCollectionFactory,
-        ProductValueFactory $valueFactory
+        ValueCollectionFactory $valueCollectionFactory,
+        ValueFactory $valueFactory
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;

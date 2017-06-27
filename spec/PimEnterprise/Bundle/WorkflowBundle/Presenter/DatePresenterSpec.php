@@ -6,7 +6,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class DatePresenterSpec extends ObjectBehavior
@@ -31,7 +31,7 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         \DateTime $date
     ) {
@@ -52,7 +52,7 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $localeResolver->getCurrentLocale()->willReturn('en_US');
@@ -72,7 +72,7 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         \DateTime $date
     ) {

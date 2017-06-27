@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -54,7 +54,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ArrayCollection $blenderValues,
         AttributeGroupInterface $design,
         AttributeInterface $color,
-        ProductValueInterface $blue
+        ValueInterface $blue
     ) {
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
         $blender->getValues()->willReturn($blenderValues);
@@ -96,7 +96,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ArrayCollection $blenderValues,
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         FileInfoInterface $fileInfo
     ) {
         $filterHelper->filter([$productValue], 'en_US')->willReturn([$productValue]);
@@ -151,7 +151,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ArrayCollection $blenderValues,
         AttributeGroupInterface $media,
         AttributeInterface $assetCollectionAttr,
-        ProductValueInterface $productValue,
+        ValueInterface $productValue,
         AssetInterface $assetA,
         AssetInterface $assetB,
         ReferenceInterface $refAEn,

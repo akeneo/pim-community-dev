@@ -37,10 +37,10 @@ class FilterProductValuesHelper
      * Returns values that the current user is allowed to see
      * If locale is specified, only values in this locale are returned
      *
-     * @param \Pim\Component\Catalog\Model\ProductValueInterface[] $values
-     * @param string|null                                          $locale
+     * @param \Pim\Component\Catalog\Model\ValueInterface[] $values
+     * @param string|null                                   $locale
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface[]
+     * @return \Pim\Component\Catalog\Model\ValueInterface[]
      */
     public function filter(array $values, $locale = null)
     {

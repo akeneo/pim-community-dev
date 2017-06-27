@@ -6,7 +6,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class NumberPresenterSpec extends ObjectBehavior
@@ -26,7 +26,7 @@ class NumberPresenterSpec extends ObjectBehavior
     function it_presents_french_format_numbers(
         $numberPresenter,
         $localeResolver,
-        ProductValueInterface $value,
+        ValueInterface $value,
         RendererInterface $renderer,
         AttributeInterface $attribute
     ) {

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * A product value diff presenter
@@ -27,7 +27,7 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
      */
     public function supports($data)
     {
-        if ($data instanceof ProductValueInterface) {
+        if ($data instanceof ValueInterface) {
             return $this->supportsChange($data->getAttribute()->getType());
         }
 

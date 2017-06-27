@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
@@ -34,7 +34,7 @@ class PricesPresenterSpec extends ObjectBehavior
         $pricesPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         Collection $collection,
         ProductPriceInterface $eur,
         ProductPriceInterface $usd,
@@ -87,7 +87,7 @@ class PricesPresenterSpec extends ObjectBehavior
     function it_presents_french_prices(
         $pricesPresenter,
         $localeResolver,
-        ProductValueInterface $value,
+        ValueInterface $value,
         RendererInterface $renderer
     ) {
         $value->getData()->willReturn([]);

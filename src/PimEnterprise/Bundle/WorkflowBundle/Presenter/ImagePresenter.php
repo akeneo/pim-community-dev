@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Present images side by side
@@ -26,7 +26,7 @@ class ImagePresenter extends FilePresenter
      */
     public function supports($data)
     {
-        return $data instanceof ProductValueInterface &&
+        return $data instanceof ValueInterface &&
             AttributeTypes::IMAGE === $data->getAttribute()->getType();
     }
 

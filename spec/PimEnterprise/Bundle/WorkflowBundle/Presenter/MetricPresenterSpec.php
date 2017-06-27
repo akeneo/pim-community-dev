@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\Metric;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -41,7 +41,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute,
         Metric $metric
     ) {
@@ -73,7 +73,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getData()->willReturn(null);
@@ -98,7 +98,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ProductValueInterface $value,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
         $value->getData()->willReturn(null);

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\AttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -49,7 +49,7 @@ class AssetCollectionType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function prepareValueFormName(ProductValueInterface $value)
+    public function prepareValueFormName(ValueInterface $value)
     {
         $referenceDataConf = $this->referenceRegistry->get($value->getAttribute()->getReferenceDataName());
 

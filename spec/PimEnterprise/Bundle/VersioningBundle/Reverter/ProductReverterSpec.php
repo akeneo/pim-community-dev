@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -40,7 +40,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ProductValueCollectionInterface $productValueCollection
+        ValueCollectionInterface $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',
@@ -86,7 +86,7 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectRepository $repository,
         ProductInterface $product,
         ConstraintViolationListInterface $violationsList,
-        ProductValueCollectionInterface $productValueCollection
+        ValueCollectionInterface $productValueCollection
     ) {
         $snapshot = [
             'identifier' => 'sku-1',
