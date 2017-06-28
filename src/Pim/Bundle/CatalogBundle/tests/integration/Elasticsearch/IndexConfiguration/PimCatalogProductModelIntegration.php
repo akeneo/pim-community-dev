@@ -9,7 +9,12 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  */
 class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 {
-    public function testSearchTshirt()
+    public function testDefaultDisplay()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    public function testSearchTshirtInDescription()
     {
         $query = [
             'query' => [
@@ -26,8 +31,143 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['t-shirt-product-model-level-x', 't-shirt-unique-level-x']);
+        $this->assertProducts($productsFound, ['model-tshirt-level-0', 'model-tshirt-unique-level-0']);
     }
+
+    public function testSearchColorRed()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.color-option.<all_channels>.<all_locales>' => ['red'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['model-tshirt-level-1-red', 'model-tshirt-unique-level-0']);
+    }
+
+    public function testSearchColorGrey()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['model-tshirt-level-1-grey', 'model-hat-level-0']);
+    }
+
+    public function testSearchColorBlue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.color-option.<all_channels>.<all_locales>' => ['blue'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['model-tshirt-level-1-blue', 'watch']);
+    }
+
+    public function testSearchSizeS()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.size-option.<all_channels>.<all_locales>' => ['s'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts(
+            $productsFound,
+            ['tshirt-level-2-grey-s', 'tshirt-level-2-blue-s', 'tshirt-level-2-red-s', 'tshirt-uniq-color-size-s']
+        );
+    }
+
+    public function testSearchSizeM()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'tshirt-level-2-grey-m',
+                'tshirt-level-2-blue-m',
+                'tshirt-level-2-red-m',
+                'tshirt-uniq-color-size-m',
+                'hat-m',
+            ]
+        );
+    }
+
+    /** @group todo */
+    public function testSearchColorGreyAndSizeM()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'terms' => [
+                                'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                            ],
+                        ],
+                        [
+                            'terms' => [
+                                'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['tshirt-level-2-grey-m']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -465,6 +605,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     'description-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Metal watch blue/white striped',
+                        ],
+                    ],
+                    'color-option'     => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'blue',
                         ],
                     ],
                 ],
