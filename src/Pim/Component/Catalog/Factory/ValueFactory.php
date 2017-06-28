@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
-use Pim\Component\Catalog\Factory\ProductValue\ValueFactoryInterface;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;

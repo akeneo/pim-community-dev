@@ -12,13 +12,13 @@ parameters:
 
     pim_catalog.factory.value_collection.class:       Pim\Component\Catalog\Factory\ValueCollectionFactory
     pim_catalog.factory.value.class:                  Pim\Component\Catalog\Factory\ValueFactory
-    pim_catalog.factory.value.scalar.class:           Pim\Component\Catalog\Factory\ProductValue\ScalarValueFactory
-    pim_catalog.factory.value.metric.class:           Pim\Component\Catalog\Factory\ProductValue\MetricValueFactory
-    pim_catalog.factory.value.price_collection.class: Pim\Component\Catalog\Factory\ProductValue\PriceCollectionValueFactory
-    pim_catalog.factory.value.option.class:           Pim\Component\Catalog\Factory\ProductValue\OptionValueFactory
-    pim_catalog.factory.value.options.class:          Pim\Component\Catalog\Factory\ProductValue\OptionsValueFactory
-    pim_catalog.factory.value.media.class:            Pim\Component\Catalog\Factory\ProductValue\MediaValueFactory
-    pim_catalog.factory.value.date.class:             Pim\Component\Catalog\Factory\ProductValue\DateValueFactory
+    pim_catalog.factory.value.scalar.class:           Pim\Component\Catalog\Factory\Value\ScalarValueFactory
+    pim_catalog.factory.value.metric.class:           Pim\Component\Catalog\Factory\Value\MetricValueFactory
+    pim_catalog.factory.value.price_collection.class: Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory
+    pim_catalog.factory.value.option.class:           Pim\Component\Catalog\Factory\Value\OptionValueFactory
+    pim_catalog.factory.value.options.class:          Pim\Component\Catalog\Factory\Value\OptionsValueFactory
+    pim_catalog.factory.value.media.class:            Pim\Component\Catalog\Factory\Value\MediaValueFactory
+    pim_catalog.factory.value.date.class:             Pim\Component\Catalog\Factory\Value\DateValueFactory
 
 services:
     pim_catalog.factory.family:

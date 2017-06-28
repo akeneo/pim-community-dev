@@ -10,7 +10,7 @@ use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\ProductValue\MediaValueInterface;
+use Pim\Component\Catalog\Value\MediaValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 class BulkMediaFetcherSpec extends ObjectBehavior

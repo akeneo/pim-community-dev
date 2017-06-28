@@ -74,11 +74,13 @@ rm -rf $PIM_DIR/upgrades/schema
 * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
   You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
 
-```JSON
+```json
+{
     "require": {
-            "your/dependency": "version",
-            "your/other-dependency": "version",
+        "your/dependency": "version",
+        "your/other-dependency": "version"
     }
+}
 ```
 
 * Then run the command to update your dependencies:
@@ -118,28 +120,28 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductValueNormalizer/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ValueNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Completeness\\Checker\\ProductValueCompleteChecker/Pim\\Component\\Catalog\\Completeness\\Checker\\ValueCompleteChecker/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Completeness\\Checker\\ProductValueCompleteCheckerInterface/Pim\\Component\\Catalog\\Completeness\\Checker\\ValueCompleteCheckerInterface/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\DateProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\DateValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\MediaProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\MediaValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\MetricProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\MetricValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\OptionProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\OptionValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\OptionsProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\OptionsValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\PriceCollectionProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\PriceCollectionValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\ProductValueFactoryInterface/Pim\\Component\\Catalog\\Factory\\ProductValue\\ValueFactoryInterface/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\ScalarProductValueFactory/Pim\\Component\\Catalog\\Factory\\ProductValue\\ScalarValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\DateProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\DateValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\MediaProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\MediaValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\MetricProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\MetricValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\OptionProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\OptionValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\OptionsProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\OptionsValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\PriceCollectionProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\PriceCollectionValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\ProductValueFactoryInterface/Pim\\Component\\Catalog\\Factory\\Value\\ValueFactoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValue\\ScalarProductValueFactory/Pim\\Component\\Catalog\\Factory\\Value\\ScalarValueFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValueCollectionFactory/Pim\\Component\\Catalog\\Factory\\ProductValueCollectionFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductValueFactory/Pim\\Component\\Catalog\\Factory\\ValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\DateProductValue/Pim\\Component\\Catalog\\ProductValue\\DateValue/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\MediaProductValue/Pim\\Component\\Catalog\\ProductValue\\MediaValue/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\MetricProductValue/Pim\\Component\\Catalog\\ProductValue\\MetricValue/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\OptionProductValue/Pim\\Component\\Catalog\\ProductValue\\OptionValue/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\OptionsProductValue/Pim\\Component\\Catalog\\ProductValue\\OptionsValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\DateProductValue/Pim\\Component\\Catalog\\Value\\DateValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\MediaProductValue/Pim\\Component\\Catalog\\Value\\MediaValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\MetricProductValue/Pim\\Component\\Catalog\\Value\\MetricValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\OptionProductValue/Pim\\Component\\Catalog\\Value\\OptionValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductValue\\OptionsProductValue/Pim\\Component\\Catalog\\Value\\OptionsValue/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard\\ProductValue/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard\\Value/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Enrich\\Converter\\EnrichToStandard\\ProductValueConverter/Pim\\Component\\Enrich\\Converter\\EnrichToStandard\\ValueConverter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Enrich\\Converter\\StandardToEnrich\\ProductValueConverter/Pim\\Component\\Enrich\\Converter\\StandardToEnrich\\ValueConverter/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Factory\\ProductValue\\ReferenceDataCollectionProductValueFactory/Pim\\Component\\ReferenceData\\Factory\\ProductValue\\ReferenceDataCollectionValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Factory\\ProductValue\\ReferenceDataProductValueFactory/Pim\\Component\\ReferenceData\\Factory\\ProductValue\\ReferenceDataValueFactory/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ProductValue\\ReferenceDataCollectionProductValue/Pim\\Component\\ReferenceData\\ProductValue\\ReferenceDataCollectionValue/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ProductValue\\ReferenceDataProductValue/Pim\\Component\\ReferenceData\\ProductValue\\ReferenceDataValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Factory\\ProductValue\\ReferenceDataCollectionProductValueFactory/Pim\\Component\\ReferenceData\\Factory\\Value\\ReferenceDataCollectionValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Factory\\ProductValue\\ReferenceDataProductValueFactory/Pim\\Component\\ReferenceData\\Factory\\Value\\ReferenceDataValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ProductValue\\ReferenceDataCollectionProductValue/Pim\\Component\\ReferenceData\\Value\\ReferenceDataCollectionValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ProductValue\\ReferenceDataProductValue/Pim\\Component\\ReferenceData\\Value\\ReferenceDataValue/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterProductValueValueFactoryPass/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterValueFactoryPass/g'
 
 ## Services
@@ -193,7 +195,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_reference_data\.product_val
 3. Run `php app/console assets:install --symlink`
 4. Create a file in your project root called `package.json` with the following contents:
 
-```js
+```json
 {
   "name": "your-project-name",
   "version": "1.0.0",
@@ -225,29 +227,29 @@ When you require a html template, you no longer have to use the `text!` prefix.
 Before:
 
 ```javascript
-  define([
-     'text!oro/template/system/tab/system'
-  ],
+define([
+    'text!oro/template/system/tab/system'
+],
 ```
 
 After:
 ```javascript
-  define([
-     'oro/template/system/tab/system'
-  ],
+define([
+    'oro/template/system/tab/system'
+],
 ```
 
 Instead of using `module.config()` to access module configuration, you must instead use `__moduleConfig`.
 
 Before:
 ```javascript
-   Routing.generate(module.config().url, {identifier: datagridView.id});
+    Routing.generate(module.config().url, {identifier: datagridView.id});
 ```
 
 After:
-  ```javascript
+```javascript
     Routing.generate(__moduleConfig.url, {identifier: datagridView.id});
-  ```
+```
 
 You can now write custom Javascript using es2017 (es2015 and above) syntax. We use babel to transpile the JS during the webpack build step. Check out the full guide here - https://babeljs.io/learn-es2015/
 

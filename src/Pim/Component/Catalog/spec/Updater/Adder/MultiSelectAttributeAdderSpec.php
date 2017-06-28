@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
+use Pim\Component\Catalog\Value\OptionsValueInterface;
 
 class MultiSelectAttributeAdderSpec extends ObjectBehavior
 {

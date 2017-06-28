@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer;
 
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValueInterface;
+use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

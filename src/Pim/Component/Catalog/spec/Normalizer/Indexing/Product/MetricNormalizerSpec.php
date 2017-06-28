@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\MetricNormalizer;
-use Pim\Component\Catalog\ProductValue\MetricValueInterface;
+use Pim\Component\Catalog\Value\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior

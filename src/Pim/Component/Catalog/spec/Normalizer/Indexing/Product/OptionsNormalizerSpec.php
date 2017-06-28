@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\OptionsNormalizer;
-use Pim\Component\Catalog\ProductValue\OptionsValue;
-use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
+use Pim\Component\Catalog\Value\OptionsValue;
+use Pim\Component\Catalog\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OptionsNormalizerSpec extends ObjectBehavior

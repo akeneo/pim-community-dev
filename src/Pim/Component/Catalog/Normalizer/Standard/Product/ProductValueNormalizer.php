@@ -4,9 +4,9 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
-use Pim\Component\Catalog\ProductValue\PriceCollectionValueInterface;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValueInterface;
+use Pim\Component\Catalog\Value\OptionsValueInterface;
+use Pim\Component\Catalog\Value\PriceCollectionValueInterface;
+use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;

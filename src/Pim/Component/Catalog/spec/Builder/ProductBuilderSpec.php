@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductEvents;
-use Pim\Component\Catalog\ProductValue\ScalarProductValue;
+use Pim\Component\Catalog\Value\ScalarProductValue;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
