@@ -39,17 +39,23 @@ define([
         /**
          * Model update callback
          */
-        updateModel(event) {
-            this.getFormModel().set('type', event.target.value);
+        updateModel() {
+          const model = this.getFormModel();
+          const type = this.$('input').select2('val')
+          model.set('type', type);
         },
 
         fetchGroupTypes(element, callback) {
-            const fetcher = FetcherRegistry.getFetcher('group-type');
-            fetcher.fetchAll().then((types) => {
-                const firstGroupType = this.parseResults(types).results[0];
-                this.getFormModel().set('type', firstGroupType);
-                callback(firstGroupType);
-            });
+          const fetcher = FetcherRegistry.getFetcher('group-type');
+          const modelType = this.getFormData().type;
+
+          fetcher.fetchAll().then((types) => {
+              const results = this.parseResults(types).results
+              const selectedType = modelType || results[0].id;
+
+              this.getFormModel().set('type', selectedType);
+              callback(results[0]);
+          });
         },
 
         /**
@@ -97,11 +103,9 @@ define([
                 isEditable: this.options.config.editable
             }));
 
-            this.delegateEvents();
-
             const options = {
                 initSelection: this.fetchGroupTypes.bind(this),
-                allowClear: true,
+                allowClear: false,
                 ajax: {
                     url: Routing.generate('pim_enrich_grouptype_rest_index'),
                     results: this.parseResults.bind(this),
@@ -120,7 +124,10 @@ define([
                 }
             };
 
-            initSelect2.init(this.$('input'), options).select2('val', []);
+            initSelect2.init(this.$('input'), options)
+            .select2('val', []);
+
+            this.delegateEvents();
         }
     });
 });

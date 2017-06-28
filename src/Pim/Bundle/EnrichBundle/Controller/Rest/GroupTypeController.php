@@ -192,7 +192,7 @@ class GroupTypeController
 
     function getValidationErrors(GroupTypeInterface $groupType)
     {
-      $globalViolations = $this->validator->validate($groupType, ['Default']);
+      $globalViolations = $this->validator->validate($groupType);
       $errors = [];
 
       if ($globalViolations->count() > 0) {

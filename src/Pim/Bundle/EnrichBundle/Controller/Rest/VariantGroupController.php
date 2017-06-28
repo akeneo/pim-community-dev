@@ -239,6 +239,22 @@ class VariantGroupController
         return $data;
     }
 
+    function formatValidationErrors($violations)
+    {
+      $errors = [];
+
+      if ($violations->count() > 0) {
+          foreach ($violations as $error) {
+              $errors['values'][] = [
+                  'attribute' => $error->getPropertyPath(),
+                  'message' =>  $error->getMessage()
+              ];
+          }
+      }
+
+      return $errors;
+    }
+
     /**
      * Create a variant group
      *
@@ -252,14 +268,9 @@ class VariantGroupController
         $group = $this->groupFactory->createGroup('VARIANT');
         $this->updater->update($group, $data);
         $violations = $this->validator->validate($group);
+        $errors = $this->formatValidationErrors($violations);
 
-        if (0 < $violations->count()) {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api',
-                ['variant_group' => $group]
-                )
-            ];
-
+        if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
 

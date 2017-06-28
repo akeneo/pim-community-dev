@@ -201,6 +201,22 @@ class GroupController
     }
 
 
+    function formatValidationErrors($violations)
+    {
+      $errors = [];
+
+      if ($violations->count() > 0) {
+          foreach ($violations as $error) {
+              $errors['values'][] = [
+                  'attribute' => $error->getPropertyPath(),
+                  'message' =>  $error->getMessage()
+              ];
+          }
+      }
+
+      return $errors;
+    }
+
     /**
      * Creates group
      *
@@ -211,16 +227,12 @@ class GroupController
     public function createAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $group = $this->groupFactory->createGroup($data['type']);
-
+        $group = $this->groupFactory->createGroup();
         $this->updater->update($group, $data);
-
         $violations = $this->validator->validate($group);
-        if (0 < $violations->count()) {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['group' => $group])
-            ];
+        $errors = $this->formatValidationErrors($violations);
 
+        if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
 

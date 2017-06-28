@@ -368,9 +368,9 @@ pim_enrich:
                 updated: Updated
                 updated_by: Updated by
             create_popin:
-                title: Create a new group type
+                title: Create a new group
             message:
-                created: Group type successfully created
+                created: Group successfully created
         job_instance:
             title: job profile
             info:

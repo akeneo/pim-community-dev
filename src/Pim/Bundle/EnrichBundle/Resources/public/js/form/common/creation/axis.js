@@ -104,11 +104,18 @@ define([
             if (!this.configured) return this;
 
             const locale = UserContext.get('catalogLocale');
+            const errors = this.getRoot().validationErrors || [];
+            const identifier = this.options.config.identifier || 'axis';
+
+            console.log(errors, identifier)
 
             this.$el.html(this.template({
                 label: 'Axis',
                 required: __('pim_enrich.form.required'),
-                help: __('pim_enrich.form.variant_group.axis.help')
+                help: __('pim_enrich.form.variant_group.axis.help'),
+                errors: errors.filter(error => {
+                    return error.message.includes('axis');
+                })
             }));
 
             this.delegateEvents();

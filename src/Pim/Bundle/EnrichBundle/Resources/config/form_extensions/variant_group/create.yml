@@ -22,6 +22,7 @@ extensions:
         parent: pim-variant-group-create-modal
         position: 20
         config:
+            identifier: type
             include_variant: true
             editable: true
 
@@ -29,3 +30,5 @@ extensions:
         module: pim/form/common/creation/axis
         parent: pim-variant-group-create-modal
         position: 30
+        config:
+            identifier: axis
