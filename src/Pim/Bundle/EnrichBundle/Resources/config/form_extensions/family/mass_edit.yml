@@ -25,6 +25,8 @@ extensions:
             resultsPerPage: 10
             mainFetcher: 'attribute-group'
             className: 'AknButtonList-item add-attribute-group'
+            searchParameters:
+                apply_filters: false
             events:
                 add: 'add-attribute-group:add'
                 disable: 'mass-edit:form:lock'
@@ -45,6 +47,8 @@ extensions:
             events:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'
+            searchParameters:
+                apply_filters: false
 
     pim-family-mass-edit-form-attributes:
         module: pim/mass-family-edit-form/attributes

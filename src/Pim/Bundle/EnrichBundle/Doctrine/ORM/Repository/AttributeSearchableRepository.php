@@ -64,6 +64,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'user_groups_ids'      => null,
                 'types'                => null,
                 'attribute_groups'     => [],
+                'apply_filters'        => true,
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');

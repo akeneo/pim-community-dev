@@ -156,6 +156,8 @@ extensions:
             resultsPerPage: 10
             mainFetcher: 'attribute-group'
             className: 'AknButtonList-item add-attribute-group'
+            searchParameters:
+                apply_filters: false
             events:
                 add: 'add-attribute-group:add'
 
@@ -174,6 +176,7 @@ extensions:
             searchParameters:
                 options:
                     exclude_unique: false
+                apply_filters: false
 
     pim-family-edit-form-attributes-attributes:
         module: pim/family-edit-form/attributes/attributes

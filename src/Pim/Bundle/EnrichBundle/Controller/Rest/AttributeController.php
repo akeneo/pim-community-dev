@@ -71,6 +71,8 @@ class AttributeController
         $options = [];
         $context = ['include_group' => true];
 
+        $options['apply_filters']= $request->request->getBoolean('apply_filters', true);
+
         if ($request->request->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->request->get('identifiers'));
             $context['include_group'] = false;
