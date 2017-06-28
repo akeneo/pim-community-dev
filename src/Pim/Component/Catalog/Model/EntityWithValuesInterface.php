@@ -20,7 +20,7 @@ interface EntityWithValuesInterface
     /**
      * @param array $rawValues
      *
-     * @return ProductInterface
+     * @return EntityWithValuesInterface
      */
     public function setRawValues(array $rawValues);
 
@@ -36,7 +36,7 @@ interface EntityWithValuesInterface
      *
      * @param ValueCollectionInterface $values
      *
-     * @return ProductInterface
+     * @return EntityWithValuesInterface
      */
     public function setValues(ValueCollectionInterface $values);
 
@@ -56,7 +56,7 @@ interface EntityWithValuesInterface
      *
      * @param ValueInterface $value
      *
-     * @return ProductInterface
+     * @return EntityWithValuesInterface
      */
     public function addValue(ValueInterface $value);
 
@@ -65,7 +65,7 @@ interface EntityWithValuesInterface
      *
      * @param ValueInterface $value
      *
-     * @return ProductInterface
+     * @return EntityWithValuesInterface
      */
     public function removeValue(ValueInterface $value);
 

@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Category interface
@@ -32,4 +33,18 @@ interface CategoryInterface extends
      * @return ProductInterface[]
      */
     public function getProducts();
+
+    /**
+     * Predicate to know if this category has product model(s) linked
+     *
+     * @return bool
+     */
+    public function hasProductModels(): bool;
+
+    /**
+     * Get product models for this category node
+     *
+     * @return Collection of ProductModelInterface
+     */
+    public function getProductModels(): Collection;
 }
