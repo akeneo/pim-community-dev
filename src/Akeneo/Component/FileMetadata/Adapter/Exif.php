@@ -42,6 +42,18 @@ class Exif extends AbstractAdapter
      */
     public function all(\SplFileInfo $file)
     {
-        return exif_read_data($file->getPathname(), null, true);
+        /*
+         * On some files, it can happen that EXIF data are corrupted.
+         * When exif_read_data() read corrupted data, it raises a warning (Incorrect APP1 Exif Identifier Code)
+         *
+         * Ignoring errors of 'exif_read_data()' will simply skip corrupted data, and returns valid ones, or nothing if
+         * there is no metadata.
+         *
+         * Unfortunately, it's really hard to detect if given file will have corrupted / bad EXIF metadata,
+         * see https://stackoverflow.com/a/8864064/1230775
+         */
+        $exif = @exif_read_data($file->getPathname(), null, true);
+
+        return $exif ? $exif : [];
     }
 }
