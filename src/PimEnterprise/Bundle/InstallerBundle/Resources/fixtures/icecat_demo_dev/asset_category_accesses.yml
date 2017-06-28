@@ -29,6 +29,12 @@ asset_category_accesses:
     store_documents:
         viewItems: [IT support, Manager, Redactor]
         editItems: [IT support, Manager, Redactor]
+    front:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    otherP:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
     technical_documents:
         viewItems: [IT support]
         editItems: [IT support]

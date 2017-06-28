@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use PimEnterprise\Bundle\ProductAssetBundle\Command\Cursor\Cursor;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +29,9 @@ class AddLocaleChannelToAssetsCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this->setName('pim:asset:add-locale')->setDescription('Add the new channel\'s locales to the assets');
+        $this
+            ->setName('pim:asset:add-locale')
+            ->setDescription('Add the new channel\'s locales to the assets');
     }
 
     /**
@@ -36,40 +39,82 @@ class AddLocaleChannelToAssetsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $qb = $this->getContainer()->get('pimee_product_asset.repository.asset')->createQueryBuilder('asset');
-        $assets = new Cursor(
-            $qb,
-            $qb->getEntityManager(),
-            10
-        );
+        $qb = $this->getContainer()
+            ->get('pimee_product_asset.repository.asset')
+            ->createQueryBuilder('asset');
+
+        $assets = new Cursor($qb, $qb->getEntityManager(), 10);
 
         foreach ($assets as $asset) {
             if ($asset->isLocalizable()) {
-                $references = $asset->getReferences();
-                $assetLocales = [];
-                foreach ($references as $reference) {
-                    if (null !== $reference->getLocale()) {
-                        $assetLocales[] =  $reference->getLocale()->getCode();
-                    }
-                }
-
-                $activatedLocales = $this->getContainer()->get('pim_catalog.repository.locale')->getActivatedLocales();
-                foreach ($activatedLocales as $locale) {
-                    if (!in_array($locale, $assetLocales)) {
-                        $reference = $this->getContainer()->get('pimee_product_asset.factory.reference')
-                            ->create($locale);
-                        $reference->setAsset($asset);
-                        $this->getContainer()->get('pimee_product_asset.saver.reference')->save($reference);
-                        $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher')->detach($reference);
-                    }
-                }
+                $this->createMissingVariations($asset);
+                $this->createMissingReferences($asset);
             }
 
-            $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher')->detach($asset);
+            $this->getContainer()
+                ->get('akeneo_storage_utils.doctrine.object_detacher')
+                ->detach($asset);
         }
 
         $output->writeln('<info>Done!</info>');
 
         return 0;
+    }
+
+    /**
+     * @param AssetInterface $asset
+     */
+    protected function createMissingReferences(AssetInterface $asset)
+    {
+        $existingReferenceLocales = [];
+        foreach ($asset->getReferences() as $reference) {
+            $existingReferenceLocales[] = $reference->getLocale()->getCode();
+        }
+
+        $activatedLocales = $this->getContainer()
+            ->get('pim_catalog.repository.locale')
+            ->getActivatedLocales();
+
+        foreach ($activatedLocales as $locale) {
+            if (!in_array($locale, $existingReferenceLocales)) {
+                $reference = $this->getContainer()
+                    ->get('pimee_product_asset.factory.reference')
+                    ->create($locale);
+                $reference->setAsset($asset);
+
+                $this->getContainer()
+                    ->get('pimee_product_asset.saver.reference')
+                    ->save($reference);
+            }
+        }
+    }
+
+    /**
+     * @param AssetInterface $asset
+     */
+    protected function createMissingVariations(AssetInterface $asset)
+    {
+        $references = $asset->getReferences();
+        foreach ($references as $reference) {
+            $locale = $reference->getlocale();
+            $existingVariationChannels = [];
+
+            foreach ($reference->getVariations() as $variation) {
+                $existingVariationChannels[] = $variation->getChannel()->getCode();
+            }
+
+            foreach ($locale->getChannels() as $channel) {
+                if (!in_array($channel->getCode(), $existingVariationChannels)) {
+                    $variation = $this->getContainer()
+                        ->get('pimee_product_asset.factory.variation')
+                        ->create($channel);
+                    $variation->setReference($reference);
+
+                    $this->getContainer()
+                        ->get('pimee_product_asset.saver.reference')
+                        ->save($reference);
+                }
+            }
+        }
     }
 }
