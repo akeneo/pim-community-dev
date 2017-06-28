@@ -3,7 +3,6 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
