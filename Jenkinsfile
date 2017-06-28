@@ -44,7 +44,7 @@ stage("Checkout") {
     checkouts['community'] = {
         node('docker') {
             deleteDir()
-            docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -60,7 +60,7 @@ stage("Checkout") {
         checkouts['enterprise'] = {
             node('docker') {
                 deleteDir()
-                docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -81,14 +81,9 @@ if (launchUnitTests.equals("yes")) {
     stage("Unit tests and Code style") {
         def tasks = [:]
 
-        tasks["phpunit-5.6"] = {runPhpUnitTest("5.6")}
-        tasks["phpunit-7.0"] = {runPhpUnitTest("7.0")}
-
-        tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
-        tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
-
+        tasks["phpunit"] = {runPhpUnitTest()}
+        tasks["phpspec"] = {runPhpSpecTest()}
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
-
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -124,46 +119,40 @@ def runGruntTest() {
     }
 }
 
-def runPhpUnitTest(phpVersion) {
+def runPhpUnitTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (phpVersion != "5.6") {
-                    sh "composer require --no-update alcaeus/mongo-php-adapter"
-                }
-                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
-            sh "find app/build/logs -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
+            sh "find app/build/logs -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[phpunit] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpSpecTest(phpVersion) {
+def runPhpSpecTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (phpVersion != "5.6") {
-                    sh "composer require --no-update alcaeus/mongo-php-adapter"
-                }
-                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
-            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[phpspec] /\""
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -174,7 +163,7 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.0").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"

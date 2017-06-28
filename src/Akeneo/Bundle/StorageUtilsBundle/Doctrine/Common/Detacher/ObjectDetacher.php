@@ -12,6 +12,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 use Doctrine\ORM\UnitOfWork;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Detacher, detaches an object from its ObjectManager
@@ -164,8 +165,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /**
      * Do detach objects on DocumentManager
      *
-     * @param document $document
-     * @param array    $visited   Prevent infinite recursion
+     * @param mixed $document
+     * @param array $visited  Prevent infinite recursion
      */
     protected function doDetach($document, array &$visited)
     {
@@ -179,5 +180,14 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         $visited[$oid] = $document;
 
         $documentManager->detach($document);
+
+        if ($document instanceof ProductInterface) {
+            foreach ($document->getValues() as $value) {
+                if (null !== $value->getMedia()) {
+                    $mediaManager = $this->getObjectManager($value->getMedia());
+                    $mediaManager->detach($value->getMedia());
+                }
+            }
+        }
     }
 }
