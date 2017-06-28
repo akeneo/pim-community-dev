@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\ScalarValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ScalarValue;
+use Pim\Component\Catalog\Value\ScalarValue;
 use Prophecy\Argument;
 
 class ScalarValueFactorySpec extends ObjectBehavior

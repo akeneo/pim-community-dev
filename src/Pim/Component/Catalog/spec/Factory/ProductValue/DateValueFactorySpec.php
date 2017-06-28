@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\DateValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ScalarValue;
+use Pim\Component\Catalog\Value\ScalarValue;
 
 class DateValueFactorySpec extends ObjectBehavior
 {

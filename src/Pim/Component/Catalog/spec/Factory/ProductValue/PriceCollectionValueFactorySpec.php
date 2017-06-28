@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Factory\ProductValue\PriceCollectionValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\ProductValue\ScalarValue;
+use Pim\Component\Catalog\Value\ScalarValue;
 use Prophecy\Argument;
 
 class PriceCollectionValueFactorySpec extends ObjectBehavior

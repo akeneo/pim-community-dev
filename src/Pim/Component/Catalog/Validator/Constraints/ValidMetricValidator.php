@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductValue\MetricValueInterface;
+use Pim\Component\Catalog\Value\MetricValueInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

@@ -46,11 +46,11 @@
 - PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory` to `Pim\Component\Catalog\Factory\ProductValue\ScalarValueFactory`
 - PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueCollectionFactory` to `Pim\Component\Catalog\Factory\ProductValueCollectionFactory`
 - PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueFactory` to `Pim\Component\Catalog\Factory\ValueFactory`
-- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\DateProductValue` to `Pim\Component\Catalog\ProductValue\DateValue`
-- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MediaProductValue` to `Pim\Component\Catalog\ProductValue\MediaValue`
-- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MetricProductValue` to `Pim\Component\Catalog\ProductValue\MetricValue`
-- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionProductValue` to `Pim\Component\Catalog\ProductValue\OptionValue`
-- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionsProductValue` to `Pim\Component\Catalog\ProductValue\OptionsValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\DateProductValue` to `Pim\Component\Catalog\Value\DateValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MediaProductValue` to `Pim\Component\Catalog\Value\MediaValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MetricProductValue` to `Pim\Component\Catalog\Value\MetricValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionProductValue` to `Pim\Component\Catalog\Value\OptionValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionsProductValue` to `Pim\Component\Catalog\Value\OptionsValue`
 - PIM-6442: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Value`
 - PIM-6442: Rename `Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter` to `Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter`
 - PIM-6442: Rename `Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter` to `Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter`

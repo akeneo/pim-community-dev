@@ -7,7 +7,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\OptionsValueInterface;
+use Pim\Component\Catalog\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductValue\MetricValueInterface;
+use Pim\Component\Catalog\Value\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

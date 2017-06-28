@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\ProductValue;
+namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;

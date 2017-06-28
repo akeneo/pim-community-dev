@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductValue;
+namespace spec\Pim\Component\Catalog\Value;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;

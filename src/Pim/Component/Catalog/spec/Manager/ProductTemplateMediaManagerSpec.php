@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductValue\MediaValueInterface;
+use Pim\Component\Catalog\Value\MediaValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

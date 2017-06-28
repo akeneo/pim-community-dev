@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductValue\PriceCollectionValue;
+use Pim\Component\Catalog\Value\PriceCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

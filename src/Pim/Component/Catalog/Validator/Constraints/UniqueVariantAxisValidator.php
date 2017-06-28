@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\OptionValueInterface;
+use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

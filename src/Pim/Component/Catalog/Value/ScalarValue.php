@@ -1,32 +1,35 @@
 <?php
 
-namespace Pim\Component\Catalog\ProductValue;
+namespace Pim\Component\Catalog\Value;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for attribute types:
- *   - pim_catalog_image
- *   - pim_catalog_file
+ *   - pim_catalog_identifier
+ *   - pim_catalog_text
+ *   - pim_catalog_textarea
+ *   - pim_catalog_boolean
+ *   - pim_catalog_number
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaValue extends AbstractValue implements MediaValueInterface
+class ScalarValue extends AbstractValue implements ValueInterface
 {
-    /** @var FileInfoInterface */
+    /** @var string */
     protected $data;
 
     /**
-     * @param AttributeInterface     $attribute
-     * @param string                 $channel
-     * @param string                 $locale
-     * @param FileInfoInterface|null $data
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
+     * @param mixed              $data
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, FileInfoInterface $data = null)
+    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
         $this->setAttribute($attribute);
         $this->setScope($channel);
@@ -36,7 +39,7 @@ class MediaValue extends AbstractValue implements MediaValueInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getData()
     {
@@ -48,6 +51,6 @@ class MediaValue extends AbstractValue implements MediaValueInterface
      */
     public function __toString()
     {
-        return null !== $this->data ? $this->data->getKey() : '';
+        return (string) $this->data;
     }
 }

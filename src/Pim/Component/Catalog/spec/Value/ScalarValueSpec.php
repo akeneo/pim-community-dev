@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductValue;
+namespace spec\Pim\Component\Catalog\Value;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductValue;
+namespace spec\Pim\Component\Catalog\Value;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -30,7 +30,7 @@ class PriceCollectionValueSpec extends ObjectBehavior
     ) {
         $priceUSD->getCurrency()->willReturn('USD');
         $priceEUR->getCurrency()->willReturn('EUR');
-        
+
         $priceCollection->getIterator()->willReturn($pricesIterator);
         $pricesIterator->rewind()->shouldBeCalled();
         $pricesIterator->valid()->willReturn(true, true, false);
