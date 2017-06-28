@@ -77,16 +77,16 @@ class FamilyVariantValidator extends ConstraintValidator
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
         ];
 
-        $axisCode = [];
+        $axisCodes = [];
         foreach ($axes as $axis) {
-            $axisCode[] = $axis->getCode();
+            $axisCodes[] = $axis->getCode();
             if (!in_array($axis->getType(), $availableTypes)) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_type');
                 $this->context->buildViolation($message)->addViolation();
             }
         }
 
-        if (count($axisCode) !== count(array_unique($axisCode))) {
+        if (count($axisCodes) !== count(array_unique($axisCodes))) {
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_unique');
             $this->context->buildViolation($message)->addViolation();
         }
