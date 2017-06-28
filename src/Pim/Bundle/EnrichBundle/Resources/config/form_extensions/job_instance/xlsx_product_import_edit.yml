@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-import-edit
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-export-xlsx.svg
+            path: bundles/pimui/images/illustration-import-xlsx.svg
 
     pim-job-instance-xlsx-product-import-edit-breadcrumbs:
         module: pim/common/breadcrumbs

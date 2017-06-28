@@ -126,13 +126,18 @@ class Form extends Base
      */
     public function visitGroup($groupName, $type = 'Group')
     {
-        $this->spin(function () {
-            $loadingMask = $this->find('css', '.loading-wrapper');
+        $this->spin(function () use ($groupName, $type) {
+            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
 
-            return null === $loadingMask || !$loadingMask->isVisible();
-        }, 'Loading mask is still visible');
+            $this->getGroup($groupName, $type)->click();
 
-        $this->getGroup($groupName, $type)->click();
+            return true;
+        }, sprintf('Can not visit group "%s"', $groupName));
     }
 
     /**
