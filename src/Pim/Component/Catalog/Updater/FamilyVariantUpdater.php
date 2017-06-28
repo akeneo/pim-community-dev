@@ -30,19 +30,25 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $familyRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
     /**
      * @param SimpleFactoryInterface                $attributeSetFactory
      * @param TranslatableUpdater                   $translationUpdater
      * @param IdentifiableObjectRepositoryInterface $familyRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
     public function __construct(
         SimpleFactoryInterface $attributeSetFactory,
         TranslatableUpdater $translationUpdater,
-        IdentifiableObjectRepositoryInterface $familyRepository
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->attributeSetFactory = $attributeSetFactory;
         $this->translationUpdater = $translationUpdater;
         $this->familyRepository = $familyRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -97,8 +103,8 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 foreach ($value as $key => $attributeSetData) {
                     /** @var AttributeSetInterface $attributeSet */
                     $attributeSet = $this->attributeSetFactory->create();
-                    $attributeSet->setAxes($attributeSetData['axes']);
-                    $attributeSet->setAttributes($attributeSetData['attributes']);
+                    $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
+                    $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
 
                     $familyVariant->addVariantAttributeSet($key + 1, $attributeSet);
                 }
@@ -108,17 +114,41 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
 
     /**
      * @param FamilyVariantInterface $familyVariant
-     * @param array                  $attributes
+     * @param array                  $variantAttributes
      */
-    private function addCommonVariantAttributeSet(FamilyVariantInterface $familyVariant, array $attributes)
+    private function addCommonVariantAttributeSet(FamilyVariantInterface $familyVariant, array $variantAttributes)
     {
-        $attributes = call_user_func_array('array_merge', array_column($attributes, 'attributes'));
-        $commonAttributes = array_diff($familyVariant->getFamily()->getAttributeCodes(), $attributes);
+        $squash = function ($attributes, $column) {
+            return call_user_func_array('array_merge', array_column($attributes, $column));
+        };
+
+        $axes = $squash($variantAttributes, 'axes');
+        $variantAttributes = $squash($variantAttributes, 'attributes');
+
+        $commonAttributes = array_diff(
+            $familyVariant->getFamily()->getAttributeCodes(),
+            array_merge($variantAttributes, $axes)
+        );
 
         /** @var AttributeSetInterface $attributeSet */
         $attributeSet = $this->attributeSetFactory->create();
-        $attributeSet->setAttributes($commonAttributes);
+        $attributeSet->setAttributes($this->getAttributes($commonAttributes));
 
         $familyVariant->addCommonAttributeSet($attributeSet);
+    }
+
+    /**
+     * @param array $attributeCodes
+     *
+     * @return array
+     */
+    private function getAttributes(array $attributeCodes)
+    {
+        $attributes = [];
+        foreach ($attributeCodes as $attributeCode) {
+            $attributes[] = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        }
+
+        return $attributes;
     }
 }

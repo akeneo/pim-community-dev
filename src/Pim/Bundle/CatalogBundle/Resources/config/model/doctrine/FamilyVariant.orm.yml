@@ -17,7 +17,7 @@ Pim\Component\Catalog\Model\FamilyVariant:
 
     oneToMany:
         translations:
-            targetEntity: Pim\Component\Catalog\Model\CategoryTranslationInterface
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
@@ -26,8 +26,8 @@ Pim\Component\Catalog\Model\FamilyVariant:
 
     # oneToMany Unidirectional
     manyToMany:
-        variantAttributeSets:
-            targetEntity: Pim\Component\Catalog\Model\VariantAttributeSetInterface
+        attributeSets:
+            targetEntity: Pim\Component\Catalog\Model\AttributeSetInterface
             joinTable:
                 name: pim_catalog_variant_family_has_variant_attribute_sets
                 joinColumns:
@@ -37,6 +37,9 @@ Pim\Component\Catalog\Model\FamilyVariant:
                     variant_attribute_sets_id:
                         referencedColumnName: id
                         unique: true
+            cascade:
+                - persist
+                - detach
 
     manyToOne:
         family:

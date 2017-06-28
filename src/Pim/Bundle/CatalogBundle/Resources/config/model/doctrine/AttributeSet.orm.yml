@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\VariantAttributeSet:
+Pim\Component\Catalog\Model\AttributeSet:
     type: entity
     table: pim_catalog_family_attribute_set
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -9,8 +9,6 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
             id: true
             generator:
                 strategy: AUTO
-        level:
-            type: integer
 
     manyToMany:
         attributes:

@@ -25,6 +25,6 @@ class FamilyVariantRepository extends EntityRepository implements FamilyVariantR
      */
     public function findOneByIdentifier($identifier)
     {
-        $this->findOneBy(['code' => $identifier]);
+        return $this->findOneBy(['code' => $identifier]);
     }
 }

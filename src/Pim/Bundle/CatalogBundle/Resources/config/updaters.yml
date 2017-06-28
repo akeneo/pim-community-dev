@@ -142,9 +142,10 @@ services:
     pim_catalog.updater.family_variant:
         class: '%pim_catalog.updater.family_variant.class%'
         arguments:
-            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.factory.attribute_set'
             - '@pim_localization.updater.translatable'
             - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.updater.channel:
         class: '%pim_catalog.updater.channel.class%'

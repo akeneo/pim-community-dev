@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeSetInterface;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -42,11 +43,60 @@ class FamilyVariantSpec extends ObjectBehavior
         $this->addVariantAttributeSet(1, $variantAttributeSet1)->shouldReturn(null);
         $this->addVariantAttributeSet(2, $variantAttributeSet2)->shouldReturn(null);
 
-        $variantAttributeSet = $this->getVariantAttributeSets();
-        $variantAttributeSet->shouldHaveType(ArrayCollection::class);
-        $variantAttributeSet->first()->shouldReturn($variantAttributeSet1);
-
+        $this->getVariantAttributeSet(1)->shouldReturn($variantAttributeSet1);
         $this->getVariantAttributeSet(2)->shouldReturn($variantAttributeSet2);
+    }
+
+    function it_has_axes(
+        AttributeSetInterface $commonAttributeSet,
+        AttributeSetInterface $variantAttributeSet1,
+        AttributeSetInterface $variantAttributeSet2,
+        ArrayCollection $axes1,
+        ArrayCollection $axes2,
+        AttributeInterface $color,
+        AttributeInterface $size
+    ) {
+        $this->addCommonAttributeSet($commonAttributeSet);
+        $this->addVariantAttributeSet(1, $variantAttributeSet1);
+        $this->addVariantAttributeSet(2, $variantAttributeSet2);
+
+        $variantAttributeSet1->getAxes()->willReturn($axes1);
+        $variantAttributeSet2->getAxes()->willReturn($axes2);
+
+        $axes1->toArray()->willReturn([$color]);
+        $axes2->toArray()->willReturn([$size]);
+
+        $axes = $this->getAxes();
+        $axes->shouldHaveType(ArrayCollection::class);
+        $axes->toArray([$color, $size]);
+    }
+
+    function it_has_attributes(
+        AttributeSetInterface $commonAttributeSet,
+        AttributeSetInterface $variantAttributeSet1,
+        AttributeSetInterface $variantAttributeSet2,
+        ArrayCollection $commonAttributes,
+        ArrayCollection $attributes1,
+        ArrayCollection $attributes2,
+        AttributeInterface $name,
+        AttributeInterface $color,
+        AttributeInterface $size
+    ) {
+        $this->addCommonAttributeSet($commonAttributeSet);
+        $this->addVariantAttributeSet(1, $variantAttributeSet1);
+        $this->addVariantAttributeSet(2, $variantAttributeSet2);
+
+        $commonAttributeSet->getAttributes()->willReturn($commonAttributes);
+        $variantAttributeSet1->getAttributes()->willReturn($attributes1);
+        $variantAttributeSet2->getAttributes()->willReturn($attributes2);
+
+        $commonAttributes->toArray()->willReturn([$name]);
+        $attributes1->toArray()->willReturn([$color]);
+        $attributes2->toArray()->willReturn([$size]);
+
+        $axes = $this->getAttributes();
+        $axes->shouldHaveType(ArrayCollection::class);
+        $axes->toArray([$color, $size]);
     }
 
     function it_throws_an_exception_if_variant_attribute_set_index_is_invalid(
