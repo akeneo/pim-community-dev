@@ -58,7 +58,6 @@ stage("Checkout") {
     checkouts = [:];
     checkouts['community'] = {
         node('docker') {
-            deleteDir()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
@@ -68,13 +67,11 @@ stage("Checkout") {
 
                 stash "pim_community_dev_full"
             }
-            deleteDir()
         }
     }
     if (editions.contains('ee') && 'yes' == launchBehatTests) {
         checkouts['enterprise'] = {
             node('docker') {
-                deleteDir()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "pim_enterprise_dev"
 
@@ -84,7 +81,6 @@ stage("Checkout") {
 
                     stash "pim_enterprise_dev_full"
                 }
-                deleteDir()
             }
         }
     }
@@ -302,6 +298,8 @@ def runPhpCsFixerTest() {
 def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, mongoVersion, esVersion) {
     node() {
         dir("behat-${edition}-${storage}") {
+            sh "echo '[DEBUGW] after docker deleteDir()'"
+            sh "ls -l"
             deleteDir()
             if ('ce' == edition) {
                unstash "pim_community_dev_full"
@@ -309,8 +307,14 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, mongoVers
             } else {
                 unstash "pim_enterprise_dev_full"
                 dir('vendor/akeneo/pim-community-dev') {
+                    sh "echo '[DEBUGW] before CE install deleteDir()'"
+                    sh "more LICENCE.txt"
+                    sh "ls -l"
                     deleteDir()
                     unstash "pim_community_dev"
+                    sh "echo '[DEBUGW] after CE unstash'"
+                    sh "more LICENCE.txt"
+                    sh "pwd"
                 }
                 tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
