@@ -4,6 +4,9 @@ No products to remove: No products to remove
 
 pim_catalog:
     constraint:
+        family_variant_axes_unique: Variant axes must be unique
+        family_variant_axes_type: Variant axes must be a boolean, a simple select, a simple reference data or a metric
+        family_variant_attributes_unique: Attributes must be unique
         product_identifier: These identifiers "%s" don't exist.
         0: An unexpected error occurred.
         100: Non-expected value

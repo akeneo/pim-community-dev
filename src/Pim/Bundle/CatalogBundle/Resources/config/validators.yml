@@ -46,6 +46,7 @@ parameters:
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
+    pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
 
 services:
     # Helpers
@@ -61,6 +62,13 @@ services:
         public: true
 
     # Validators
+    pim_catalog.validator.constraint.family_variant_axes:
+        class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_variant }
+
     pim_catalog.validator.constraint.valid_metric:
         class: '%pim_catalog.validator.constraint.valid_metric.class%'
         arguments:

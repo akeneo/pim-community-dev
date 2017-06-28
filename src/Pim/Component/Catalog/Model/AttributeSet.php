@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -37,7 +38,7 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes(): ArrayCollection
+    public function getAttributes(): Collection
     {
         return $this->attributes;
     }
@@ -53,7 +54,7 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getAxes(): ArrayCollection
+    public function getAxes(): Collection
     {
         return $this->axes;
     }

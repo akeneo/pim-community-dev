@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeSetInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -21,9 +22,10 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
     function let(
         SimpleFactoryInterface $attributeSetFactory,
         TranslatableUpdater $updater,
-        IdentifiableObjectRepositoryInterface $familyRepository
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($attributeSetFactory, $updater, $familyRepository);
+        $this->beConstructedWith($attributeSetFactory, $updater, $familyRepository, $attributeRepository);
     }
 
     function it_is_initializable()
@@ -40,18 +42,32 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $updater,
         $attributeSetFactory,
         $familyRepository,
+        $attributeRepository,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeSetInterface $attributeSet1,
         AttributeSetInterface $attributeSet2,
-        AttributeSetInterface $commonAttributeSet
+        AttributeSetInterface $commonAttributeSet,
+        AttributeInterface $name,
+        AttributeInterface $size,
+        AttributeInterface $color,
+        AttributeInterface $description,
+        AttributeInterface $sku,
+        AttributeInterface $other
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(
-            ['name', 'picture', 'pictures', 'composition', 'size', 'EAN', 'SKU', 'weight']
+            ['name', 'size', 'description', 'color', 'sku']
         );
+
+        $attributeRepository->findOneByIdentifier('name')->willreturn($name);
+        $attributeRepository->findOneByIdentifier('size')->willreturn($size);
+        $attributeRepository->findOneByIdentifier('color')->willreturn($color);
+        $attributeRepository->findOneByIdentifier('description')->willreturn($description);
+        $attributeRepository->findOneByIdentifier('sku')->willreturn($sku);
+        $attributeRepository->findOneByIdentifier('other')->willreturn($other);
 
         $familyVariant->setCode('my-tshirt')->shouldBeCalled();
         $familyVariant->setFamily($family)->shouldBeCalled();
@@ -60,15 +76,15 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
 
         $familyVariant->addVariantAttributeSet(1, $attributeSet1)->shouldBeCalled();
-        $attributeSet1->setAxes(['color'])->shouldBeCalled();
-        $attributeSet1->setAttributes(['picture', 'pictures', 'composition'])->shouldBeCalled();
+        $attributeSet1->setAxes([$color])->shouldBeCalled();
+        $attributeSet1->setAttributes([$description])->shouldBeCalled();
 
         $familyVariant->addVariantAttributeSet(2, $attributeSet2)->shouldBeCalled();
-        $attributeSet2->setAxes(['size', 'other'])->shouldBeCalled();
-        $attributeSet2->setAttributes(['size', 'EAN', 'SKU', 'weight'])->shouldBeCalled();
+        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
+        $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
 
         $familyVariant->addCommonAttributeSet($commonAttributeSet)->shouldBeCalled();
-        $commonAttributeSet->setAttributes(['name'])->shouldBeCalled();
+        $commonAttributeSet->setAttributes([$name])->shouldBeCalled();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',
@@ -79,11 +95,11 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
             'variant-attribute-sets' => [
                 [
                     'axes' => ['color'],
-                    'attributes' => ['picture', 'pictures', 'composition']
+                    'attributes' => ['description']
                 ],
                 [
                     'axes' => ['size', 'other'],
-                    'attributes' => ['size', 'EAN', 'SKU', 'weight']
+                    'attributes' => ['size', 'sku']
                 ]
             ],
         ], []);
