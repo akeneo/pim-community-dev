@@ -4,7 +4,6 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -12,6 +11,9 @@ use Webmozart\Assert\Assert;
 
 class FamilyVariantIntegration extends TestCase
 {
+    /**
+     * Basic test that checks the family variant creation
+     */
     public function test_the_family_variant_creation()
     {
         $variantFamily = $this->get('pim_catalog.factory.family_variant')->create();
@@ -76,7 +78,7 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Family variant code is unique
+     * Validation: Family variant code is unique
      */
     function test_the_family_variant_code_uniqueness()
     {
@@ -108,7 +110,7 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * An attribute can only be used one time as an axis
+     * Validation: An attribute can only be used one time as an axis
      */
     function test_the_attribute_set_axis_uniqueness()
     {
@@ -140,7 +142,7 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * An attribute can only be used for one attribute set
+     * Validation: An attribute can only be used for one attribute set
      */
     function test_the_attribute_set_attribute_uniqueness()
     {
@@ -172,7 +174,7 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Available attributes for axis are metric, simple select and reference data simple select
+     * Validation: Available attributes for axis are metric, simple select and reference data simple select
      */
     function test_the_attribute_set_axes_type()
     {
@@ -215,9 +217,11 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
+     * Create a family variant with the code family_variant
+     *
      * @return FamilyVariantInterface
      */
-    private function createDefaultFamilyVariant()
+    private function createDefaultFamilyVariant(): FamilyVariantInterface
     {
         $variantFamily = $this->get('pim_catalog.factory.family_variant')->create();
 
@@ -244,6 +248,13 @@ class FamilyVariantIntegration extends TestCase
         return $variantFamily;
     }
 
+    /**
+     * Extract the attribute code from the attribute collection
+     *
+     * @param Collection $collection
+     *
+     * @return array
+     */
     private function extractAttributeCode(Collection $collection): array
     {
         return $collection->map(function(AttributeInterface $attribute) {

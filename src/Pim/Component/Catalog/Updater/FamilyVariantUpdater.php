@@ -142,7 +142,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
      *
      * @return array
      */
-    private function getAttributes(array $attributeCodes)
+    private function getAttributes(array $attributeCodes): array
     {
         $attributes = [];
         foreach ($attributeCodes as $attributeCode) {

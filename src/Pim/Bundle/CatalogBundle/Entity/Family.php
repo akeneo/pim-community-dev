@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
@@ -441,15 +442,15 @@ class Family implements FamilyInterface
     }
 
     /**
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
-    public function getFamilyVariants(): ArrayCollection
+    public function getFamilyVariants(): Collection
     {
         return $this->familyVariants;
     }
 
     /**
-     * @param ArrayCollection $FamilyVariants
+     * {@inheritdoc}
      */
     public function setFamilyVariants(ArrayCollection $FamilyVariants)
     {

@@ -169,9 +169,9 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     public function getAttributeAsLabelChoices();
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getFamilyVariants(): ArrayCollection;
+    public function getFamilyVariants(): Collection;
 
     /**
      * @param ArrayCollection $FamilyVariants
