@@ -190,6 +190,23 @@ class GroupTypeController
         return $groupType;
     }
 
+    function getValidationErrors(GroupTypeInterface $groupType)
+    {
+      $globalViolations = $this->validator->validate($groupType, ['Default']);
+      $errors = [];
+
+      if ($globalViolations->count() > 0) {
+          foreach ($globalViolations as $error) {
+              $errors['values'][] = [
+                  'attribute' => $error->getPropertyPath(),
+                  'message' =>  $error->getMessage()
+              ];
+          }
+      }
+
+      return $errors;
+    }
+
     /**
      * Creates group type
      *
@@ -202,12 +219,9 @@ class GroupTypeController
         $groupType = $this->groupTypeFactory->create();
         $this->updater->update($groupType, json_decode($request->getContent(), true));
 
-        $violations = $this->validator->validate($groupType);
-        if (0 < $violations->count()) {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['groupType' => $groupType])
-            ];
+        $errors = $this->getValidationErrors($groupType);
 
+        if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
 
