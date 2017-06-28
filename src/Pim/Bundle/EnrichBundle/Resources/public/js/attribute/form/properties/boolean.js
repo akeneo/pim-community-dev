@@ -6,12 +6,14 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'pim/attribute-edit-form/properties/field',
     'pim/template/attribute/tab/properties/boolean'
 ],
 function (
+    $,
     _,
     __,
     BaseField,

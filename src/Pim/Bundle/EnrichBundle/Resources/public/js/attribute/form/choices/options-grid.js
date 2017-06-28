@@ -6,6 +6,7 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'pim/form',
     'pim/fetcher-registry',
@@ -13,6 +14,7 @@ define([
     'pim/template/attribute/tab/choices/options-grid'
 ],
 function (
+    $,
     _,
     BaseForm,
     fetcherRegistry,

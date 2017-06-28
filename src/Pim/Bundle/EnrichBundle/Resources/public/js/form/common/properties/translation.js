@@ -8,12 +8,14 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
+        'jquery',
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
         'pim/template/form/properties/translation'
     ],
     function (
+        $,
         _,
         BaseForm,
         FetcherRegistry,

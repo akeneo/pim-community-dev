@@ -6,6 +6,7 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'pim/attribute-edit-form/properties/field',
@@ -13,6 +14,7 @@ define([
     'pim/template/attribute/tab/properties/select'
 ],
 function (
+    $,
     _,
     __,
     BaseField,
@@ -90,7 +92,7 @@ function (
          *
          * Override to reset the default metric unit each time the metric family changes.
          */
-        updateModel: function (value) {
+        updateModel: function () {
             BaseField.prototype.updateModel.apply(this, arguments);
 
             this.setData({default_metric_unit: null}, {silent: true});

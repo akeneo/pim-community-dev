@@ -6,6 +6,7 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'pim/attribute-edit-form/properties/field',
     'datepicker',
@@ -14,6 +15,7 @@ define([
     'pim/template/attribute/tab/properties/date'
 ],
 function (
+    $,
     _,
     BaseField,
     Datepicker,

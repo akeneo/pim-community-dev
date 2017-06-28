@@ -8,6 +8,7 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
     'oro/translator',
     'pim/form',
@@ -15,6 +16,7 @@ define([
     'pim/template/attribute/tab/properties/field'
 ],
 function (
+    $,
     _,
     __,
     BaseForm,
@@ -165,10 +167,7 @@ function (
             this.setData(newData);
         },
 
-        /**
-         * @param {Object} field
-         */
-        getFieldValue: function (field) {
+        getFieldValue: function () {
             throw new Error('Please implement the getFieldValue() method in your concrete field class.');
         }
     });
