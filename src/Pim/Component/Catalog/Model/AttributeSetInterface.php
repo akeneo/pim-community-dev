@@ -24,7 +24,7 @@ interface AttributeSetInterface
     /**
      * @param array $attributes
      */
-    public function setAttributes(array $attributes);
+    public function setAttributes(array $attributes): void;
 
     /**
      * @return Collection
@@ -34,5 +34,5 @@ interface AttributeSetInterface
     /**
      * @param array $axes
      */
-    public function setAxes(array $axes);
+    public function setAxes(array $axes): void;
 }
