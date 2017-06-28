@@ -6,7 +6,7 @@ extensions:
                title: pim_enrich.index.import_profiles.create_popin.title
            successMessage: pim_enrich.index.import_profiles.message.created
            editRoute: pim_importexport_import_profile_edit
-           postUrl: pim_importexport_import_profile_create
+           postUrl: pim_enrich_job_instance_rest_import_create
            routerKey: code
 
     pim-import-profile-create-code:
@@ -29,3 +29,5 @@ extensions:
         module: pim/form/common/creation/job
         parent: pim-import-profile-create-modal
         position: 30
+        config:
+          identifier: jobName

@@ -32,7 +32,7 @@ define([
         options: {},
         template: _.template(template),
         events: {
-            'change input': 'updateModel'
+            'change select': 'updateModel'
         },
 
         /**
@@ -48,7 +48,13 @@ define([
          * Model update callback
          */
         updateModel(event) {
-            this.getFormModel().set('jobName', event.target.value);
+            const option = this.$(event.target);
+            const optionParent = $(':selected', option).closest('optgroup');
+
+            this.getFormModel().set({
+                'alias':  option.val(),
+                'connector': optionParent.attr('label')
+            });
         },
 
         fetchJobs() {
@@ -66,12 +72,21 @@ define([
         },
 
         renderJobs() {
+            const errors = this.getRoot().validationErrors || [];
+            const identifier = this.options.config.identifier || 'alias';
+
             this.$el.html(this.template({
                 label: __('pim_enrich.form.group.tab.properties.type'),
                 jobs: this.jobs,
                 required: __('pim_enrich.form.required'),
+                errors: errors.filter(error => {
+                    return error.attribute === identifier;
+                }),
                 __
             }));
+
+            const selectedJobType = this.getFormData().alias;
+            this.$('select').val(selectedJobType);
         },
 
         /**
@@ -87,6 +102,8 @@ define([
             } else {
                 this.renderJobs();
             }
+
+            this.delegateEvents();
         }
     });
 });

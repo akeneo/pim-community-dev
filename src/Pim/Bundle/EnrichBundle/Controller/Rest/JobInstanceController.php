@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
@@ -42,6 +43,9 @@ class JobInstanceController
     /** @var NormalizerInterface */
     protected $jobInstanceNormalizer;
 
+    /** @var JobInstanceFactory */
+    protected $jobInstanceFactory;
+
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -79,6 +83,7 @@ class JobInstanceController
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
      * @param NormalizerInterface                   $jobInstanceNormalizer
+     * @param JobInstanceFactory                    $jobInstanceFactory
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
      * @param RemoverInterface                      $remover
@@ -95,6 +100,7 @@ class JobInstanceController
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
         NormalizerInterface $jobInstanceNormalizer,
+        JobInstanceFactory $jobInstanceFactory,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RemoverInterface $remover,
@@ -110,6 +116,7 @@ class JobInstanceController
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
+        $this->jobInstanceFactory    = $jobInstanceFactory;
         $this->updater               = $updater;
         $this->saver                 = $saver;
         $this->remover               = $remover;
@@ -482,8 +489,28 @@ class JobInstanceController
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
     }
 
-    protected function createAction(Request $request)
+    public function createAction(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance('import');
+        $this->updater->update($jobInstance, $data);
+        $errors = $this->getValidationErrors($jobInstance);
 
+        if (count($errors) > 0) {
+            $formattedErrors = [];
+
+            foreach ($errors as $key => $error) {
+                $formattedErrors['values'][] = [
+                  'attribute' => $key,
+                  'message' => $error
+                ];
+            }
+
+            return new JsonResponse($formattedErrors, 400);
+        }
+
+        $this->saver->save($jobInstance);
+
+        return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }
 }

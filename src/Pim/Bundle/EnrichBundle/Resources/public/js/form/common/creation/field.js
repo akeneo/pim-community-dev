@@ -55,13 +55,18 @@ define(
                     return this;
                 }
 
+                const errors = this.getRoot().validationErrors || [];
+
                 this.$el.html(this.template({
                     identifier: this.identifier,
                     label: __(this.config.label),
                     requiredLabel: __('pim_enrich.form.required'),
-                    errors: this.getRoot().validationErrors,
+                    errors: errors.filter(error => {
+                      return error.attribute === this.identifier;
+                    }),
                     value: this.getFormData()[this.identifier]
                 }));
+
                 this.delegateEvents();
 
                 return this;
