@@ -33,28 +33,158 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
      */
     protected function addProducts()
     {
-        $products = [
-            // Tshirt: color-size
+        $productModels = [
+            // simple tshirt - level 0
             [
-                'identifier' => 'tshirt-white-size-s',
+                'identifier' => 'model-tshirt-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
                     'description-text' => [
                         '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'white',
+                            '<all_locales>' => 'T-shirt with a round neck Divided',
                         ],
                     ],
-                    'size-option'  => [
+                ],
+            ],
+
+            // Tshirt model level-1 (varying on color)
+            [
+                'identifier' => 'model-tshirt-level-1-grey',
+                'parent_id'  => 'model-tshirt-level-0',
+                'family'     => [
+                    'code'   => 'tshirt',
+                    'labels' => [
+                        'fr_FR' => 'La famille des tshirts',
+                    ],
+                ],
+                'values'     => [
+                    'color-option'       => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'grey',
+                        ],
+                    ],
+                    'main_picture-media' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'tshirt-grey.jpg',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'identifier' => 'model-tshirt-level-1-blue',
+                'parent_id'  => 'model-tshirt-level-0',
+                'family'     => [
+                    'code'   => 'tshirt',
+                    'labels' => [
+                        'fr_FR' => 'La famille des tshirts',
+                    ],
+                ],
+                'values'     => [
+                    'color-option'       => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'blue',
+                        ],
+                    ],
+                    'main_picture-media' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'tshirt-blue.jpg',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'identifier' => 'model-tshirt-level-1-red',
+                'parent_id'  => 'model-tshirt-level-0',
+                'family'     => [
+                    'code'   => 'tshirt',
+                    'labels' => [
+                        'fr_FR' => 'La famille des tshirts',
+                    ],
+                ],
+                'values'     => [
+                    'color-option'       => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'red',
+                        ],
+                    ],
+                    'main_picture-media' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'tshirt-red.jpg',
+                        ],
+                    ],
+                ],
+            ],
+
+            // Tshirt unique model
+            [
+                'identifier' => 'model-tshirt-unique-level-0',
+                'family'     => [
+                    'code'   => 'tshirt',
+                    'labels' => [
+                        'fr_FR' => 'La famille des tshirts',
+                    ],
+                ],
+                'values'     => [
+                    'description-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif',
+                        ],
+                    ],
+                    'image-media'      => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'tshirt-rockstar.jpg',
+                        ],
+                    ],
+                    'color-option'     => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'red',
+                        ],
+                    ],
+                ],
+            ],
+
+            // Hats model
+            [
+                'identifier' => 'model-hat-level-0',
+                'family'     => [
+                    'code'   => 'hats',
+                    'labels' => [
+                        'fr_FR' => 'Famille des chapeaux',
+                    ],
+                ],
+                'values'     => [
+                    'description-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Braided hat',
+                        ],
+                    ],
+                    'color-option'     => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'grey',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productVariants = [
+            // tshirt variants (level 2: varying on color and size)
+            [
+                'identifier' => 'tshirt-level-2-grey-s',
+                'parent_id'  => 'model-tshirt-level-1-grey',
+                'family'     => [
+                    'code'   => 'tshirt',
+                    'labels' => [
+                        'fr_FR' => 'La famille des tshirts',
+                    ],
+                ],
+                'values'     => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -62,25 +192,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-white-size-m',
+                'identifier' => 'tshirt-level-2-grey-m',
+                'parent_id'  => 'model-tshirt-level-1-grey',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'white',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -88,25 +209,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-white-size-l',
+                'identifier' => 'tshirt-level-2-grey-l',
+                'parent_id'  => 'model-tshirt-level-1-grey',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'white',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -114,51 +226,34 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-white-size-xl',
+                'identifier' => 'tshirt-level-2-grey-xl',
+                'parent_id'  => 'model-tshirt-level-1-grey',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'white',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
                     ],
                 ],
             ],
+
             [
-                'identifier' => 'tshirt-red-size-s',
+                'identifier' => 'tshirt-level-2-blue-s',
+                'parent_id'  => 'model-tshirt-level-1-blue',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'red',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -166,25 +261,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-red-size-m',
+                'identifier' => 'tshirt-level-2-blue-m',
+                'parent_id'  => 'model-tshirt-level-1-blue',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'red',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -192,25 +278,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-red-size-l',
+                'identifier' => 'tshirt-level-2-blue-l',
+                'parent_id'  => 'model-tshirt-level-1-blue',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'red',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -218,51 +295,34 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-red-size-xl',
+                'identifier' => 'tshirt-level-2-blue-xl',
+                'parent_id'  => 'model-tshirt-level-1-blue',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'red',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
                     ],
                 ],
             ],
+
             [
-                'identifier' => 'tshirt-blue-size-s',
+                'identifier' => 'tshirt-level-2-red-s',
+                'parent_id'  => 'model-tshirt-level-1-red',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'blue',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -270,25 +330,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-blue-size-m',
+                'identifier' => 'tshirt-level-2-red-m',
+                'parent_id'  => 'model-tshirt-level-1-red',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'blue',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -296,25 +347,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-blue-size-l',
+                'identifier' => 'tshirt-level-2-red-l',
+                'parent_id'  => 'model-tshirt-level-1-red',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'blue',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -322,25 +364,16 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-blue-size-xl',
+                'identifier' => 'tshirt-level-2-red-xl',
+                'parent_id'  => 'model-tshirt-level-1-red',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 't-shirt with a round neck Divided'
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'blue',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
@@ -351,19 +384,15 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // T-shirt: size
             [
                 'identifier' => 'tshirt-uniq-color-size-s',
+                'parent_id'  => 'model-tshirt-unique-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -372,19 +401,15 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
             [
                 'identifier' => 'tshirt-uniq-color-size-m',
+                'parent_id'  => 'model-tshirt-unique-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -393,19 +418,15 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
             [
                 'identifier' => 'tshirt-uniq-color-size-l',
+                'parent_id'  => 'model-tshirt-unique-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -414,19 +435,15 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
             [
                 'identifier' => 'tshirt-uniq-color-size-xl',
+                'parent_id'  => 'model-tshirt-unique-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
-                        'fr_FR' => 'La famille des t-shirts',
+                        'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'     => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif',
-                        ],
-                    ],
-                    'size-option'  => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
@@ -444,70 +461,53 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     ],
 
                 ],
-                'values' => [
+                'values'     => [
                     'description-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'Metal watch blue/white striped',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
 
-            // Hats: size
+            // Hats variants (varying on size)
             [
                 'identifier' => 'hat-m',
+                'parent_id'  => 'model-hat-level-0',
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
-                'values' => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Braided hat',
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'grey'
-                        ]
-                    ],
+                'values'     => [
                     'size-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'm'
-                        ]
-                    ]
-                ]
+                            '<all_locales>' => 'm',
+                        ],
+                    ],
+                ],
             ],
             [
                 'identifier' => 'hat-l',
+                'parent_id'  => 'model-hat-level-0',
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
-                'values' => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Braided hat',
-                        ]
-                    ],
-                    'color-option' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'grey'
-                        ]
-                    ],
+                'values'     => [
                     'size-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'l'
-                        ]
-                    ]
-                ]
+                            '<all_locales>' => 'l',
+                        ],
+                    ],
+                ],
             ],
         ];
 
-        $this->indexProducts($products);
+        $this->indexProducts($productModels);
+        $this->indexProducts($productVariants);
     }
 }
