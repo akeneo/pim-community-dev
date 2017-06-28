@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -21,13 +22,13 @@ class FamilyVariant implements FamilyVariantInterface
     /** @var FamilyInterface */
     private $family;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     private $attributeSets;
 
     /** @var string */
     private $locale;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     private $translations;
 
     public function __construct()
@@ -114,7 +115,7 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function addVariantAttributeSet(int $level, AttributeSetInterface $variantAttributeSets)
+    public function addVariantAttributeSet(int $level, AttributeSetInterface $variantAttributeSets): void
     {
         if ($level <= 0) {
             throw new \InvalidArgumentException('The level must be greater than 0');
@@ -126,7 +127,7 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets)
+    public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets): void
     {
         $this->attributeSets->set(0, $variantAttributeSets);
     }
@@ -142,17 +143,9 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function setFamily(FamilyInterface $family)
+    public function setFamily(FamilyInterface $family): void
     {
         $this->family = $family;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocale(): string
-    {
-        return $this->locale;
     }
 
     /**

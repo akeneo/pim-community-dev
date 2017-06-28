@@ -54,7 +54,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($familyVariant, array $data, array $options = [])
+    public function update($familyVariant, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$familyVariant instanceof FamilyVariantInterface) {
             throw InvalidObjectException::objectExpected(
@@ -77,7 +77,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
      * @param string                 $field
      * @param mixed                  $value
      */
-    private function setData(FamilyVariantInterface $familyVariant, $field, $value)
+    private function setData(FamilyVariantInterface $familyVariant, string $field, $value): void
     {
         switch ($field) {
             case 'code':
