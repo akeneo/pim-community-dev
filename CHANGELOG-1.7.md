@@ -2,6 +2,12 @@
 
 ## Bug Fixes
 
+- PIM-6420: Fix autosorting of attribute options
+
+# 1.7.5 (2017-06-02)
+
+## Bug Fixes
+
 - PIM-6394: Fix email validation when creating a user in order to be less restrictive
 - GITHUB-6161: Fix JobInstance class hardcoded in `Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute`
 - GITHUB-6151: Fix Mongo TimestampableSubscriber to properly update the CreatedAt date of a product
@@ -13,6 +19,13 @@
 - PIM-6413: Fix to ensure that attribute options codes are no longer updated in MongoDB
 - PIM-6285: Fix content type validation in the API
 - PIM-6434: Fix attribute group order in Product Edit Form
+- PIM-6436: Fix attribute group limit in Product Edit Form
+- PIM-6428: Fix usage of unique attributes on Product Edit Form and Family edition
+- PIM-6399: Stores images as PNG instead of JPG
+- PIM-6414: Fix datetime filter display issue
+- PIM-6384: Fix product export builder localisable and scopable fields display issue
+- IM-809: Fix missing shadows behind dialog popins
+- PIM-6423: Fix select2 display on attribute edition
 
 # 1.7.4 (2017-05-10)
 

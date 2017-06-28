@@ -757,14 +757,15 @@ class WebUser extends RawMinkContext
 
     /**
      * @param string $not
+     * @param string $ordered
      * @param string $choices
      * @param string $label
      *
-     * @Then /^I should(?P<not> not)? see the choices? (?P<choices>.+) in (?P<label>.+)$/
+     * @Then /^I should(?P<not> not)? see the(?P<ordered> ordered)? choices? (?P<choices>.+) in (?P<label>.+)$/
      */
-    public function iShouldSeeTheChoicesInField($not, $choices, $label)
+    public function iShouldSeeTheChoicesInField($not, $choices, $label, $ordered = null)
     {
-        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not);
+        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not, $ordered !== null);
     }
 
     /**
@@ -955,18 +956,18 @@ class WebUser extends RawMinkContext
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? ([^"]*)(?: in group "([^"]*)")?$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    public function iShouldSeeAvailableAttributes($not, $attributes, $group = null)
     {
         $expecting = !$not;
 
         foreach ($this->listToArray($attributes) as $attribute) {
             $result = $this->getCurrentPage()
                 ->getAttributeAddSelect()
-                ->hasAvailableOptionGroupPair($attribute, $group);
+                ->hasAvailableOption($attribute, $group);
 
             if ($expecting !== $result) {
                 throw $this->createExpectationException(
@@ -1018,7 +1019,7 @@ class WebUser extends RawMinkContext
     /**
      * @param string $groups
      *
-     * @Then /^I add attributes by group "([^"]*)"$/
+     * @Then /^I add attributes by groups? "([^"]*)"$/
      */
     public function iAddAttributesByGroup($groups)
     {
@@ -1247,22 +1248,19 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^I should see reorder handles$/
+     * @param string|null $not
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should( not)? see reorder handles$/
      */
-    public function iShouldSeeReorderHandles()
+    public function iShouldSeeReorderHandles($not = null)
     {
-        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
-            throw $this->createExpectationException('No reorder handle found');
-        }
-    }
-
-    /**
-     * @Then /^I should not see reorder handles$/
-     */
-    public function iShouldNotSeeReorderHandles()
-    {
-        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
-            throw $this->createExpectationException('Reorder handle was not expected');
+        $count = $this->getCurrentPage()->countOrderableOptions();
+        if ((null === $not && $count <= 0) || (null !== $not && $count > 0)) {
+            throw $this->createExpectationException(
+                sprintf("Expected to%s see reorder handle, %d found", $not, $count)
+            );
         }
     }
 

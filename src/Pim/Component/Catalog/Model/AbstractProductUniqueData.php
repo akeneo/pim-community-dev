@@ -15,7 +15,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /** @var ProductInterface */
     protected $product;
 
-    /** @var ProductValueInterface */
+    /** @var ValueInterface */
     protected $value;
 
     /** @var AttributeInterface */
@@ -25,10 +25,10 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     protected $rawData;
 
     /**
-     * @param ProductInterface      $product
-     * @param ProductValueInterface $value
+     * @param ProductInterface $product
+     * @param ValueInterface   $value
      */
-    public function __construct(ProductInterface $product, ProductValueInterface $value)
+    public function __construct(ProductInterface $product, ValueInterface $value)
     {
         $this->product = $product;
         $this->setProductValue($value);
@@ -69,7 +69,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductValue(ProductValueInterface $value)
+    public function setProductValue(ValueInterface $value)
     {
         $this->value = $value;
         $this->attribute = $value->getAttribute();

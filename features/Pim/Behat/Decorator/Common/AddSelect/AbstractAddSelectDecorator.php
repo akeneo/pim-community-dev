@@ -31,12 +31,18 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
     {
         $this->openDropList();
         foreach ($options as $option) {
-            $el = $this->evaluateSearch($option)
-                ->getResultForSearch($option);
+            $this->spin(function () use ($option) {
+                $el = $this->evaluateSearch($option)
+                    ->getResultForSearch($option);
 
-            if (null !== $el) {
-                $el->getParent()->click();
-            }
+                if (null !== $el) {
+                    $el->getParent()->click();
+
+                    return true;
+                }
+
+                return false;
+            }, sprintf('Cannot find option "%s"', $option));
         }
 
         $this->addSelectedItems();
@@ -78,11 +84,17 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
      */
     protected function openDropList()
     {
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->getElements()['dropListBtn']);
-        }, 'Cannot find drop list button');
+        $this->spin(function () {
+            $button = $this->find('css', $this->getElements()['dropListBtn']);
 
-        $selector->click();
+            if (null !== $button) {
+                $button->click();
+
+                return true;
+            }
+
+            return false;
+        }, 'Cannot open drop list');
 
         return $this;
     }
@@ -121,9 +133,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
             );
         }, 'Cannot find element in the list');
 
-        if (0 === count($searchResults) ||
-            self::NOT_FOUND_MESSAGE === $searchResults[0]->getText()
-        ) {
+        if (0 === count($searchResults) || self::NOT_FOUND_MESSAGE === $searchResults[0]->getText()) {
             return null;
         }
 

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Product template builder, allows to create new product template and update them
@@ -62,7 +62,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      * @param ProductTemplateInterface $template
      * @param AttributeInterface[]     $attributes
      *
-     * @return ProductValueCollectionInterface
+     * @return ValueCollectionInterface
      */
     protected function buildProductValuesFromTemplateValuesData(
         ProductTemplateInterface $template,

@@ -5,7 +5,7 @@ namespace Pim\Component\ReferenceData\Updater\Copier;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -116,11 +116,11 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Gets the list of reference data codes contained in a product value collection.
      *
-     * @param ProductValueInterface $fromValue
+     * @param ValueInterface $fromValue
      *
      * @return string[]
      */
-    protected function getReferenceDataCodes(ProductValueInterface $fromValue)
+    protected function getReferenceDataCodes(ValueInterface $fromValue)
     {
         $referenceDataCodes = [];
         foreach ($fromValue->getData() as $referenceData) {

@@ -2,6 +2,14 @@
 
 ## Bug fixes
 
+- PIM-6429: Improve the loading of the completeness widget on dashboard in ORM
+- PIM-6399: Stores images as PNG instead of JPG
+- PIM-6129: Fix a memory leak when import or exports contains too much warnings
+
+# 1.5.22 (2017-05-22)
+
+## Bug fixes
+
 - PIM-6395: Fix MongoDB query built to fetch products in a LazyCollection
 - PIM:6405: display channel's label instead of channel's code in the completeness panel of the PEF
 

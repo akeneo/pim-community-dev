@@ -22,6 +22,7 @@ define(
             events: {
                 'click li a': 'changeLocale'
             },
+            displayInline: false,
 
             /**
              * {@inheritdoc}
@@ -36,7 +37,8 @@ define(
                             this.template({
                                 locales: locales,
                                 currentLocale: _.findWhere(locales, {code: params.localeCode}),
-                                i18n: i18n
+                                i18n: i18n,
+                                displayInline: this.displayInline
                             })
                         );
                         this.delegateEvents();
@@ -65,6 +67,15 @@ define(
                 });
 
                 this.render();
+            },
+
+            /**
+             * Updates the inline display value
+             *
+             * @param {Boolean} value
+             */
+            setDisplayInline: function (value) {
+                this.displayInline = value;
             }
         });
     }

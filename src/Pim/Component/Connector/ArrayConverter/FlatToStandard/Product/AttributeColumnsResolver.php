@@ -26,7 +26,7 @@ class AttributeColumnsResolver
     protected $valuesResolver;
 
     /** @var array */
-    protected $attributesFields;
+    protected $attributesFields = [];
 
     /** @var string */
     protected $identifierField;
@@ -69,25 +69,43 @@ class AttributeColumnsResolver
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
-                $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
-
-                if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
-                    $this->attributesFields[] = $field;
-                    foreach ($currencyCodes as $currencyCode) {
-                        $currencyField = sprintf('%s-%s', $field, $currencyCode);
-                        $this->attributesFields[] = $currencyField;
-                    }
-                } elseif (AttributeTypes::METRIC === $value['type']) {
-                    $this->attributesFields[] = $field;
-                    $metricField = sprintf('%s-%s', $field, 'unit');
-                    $this->attributesFields[] = $metricField;
-                } else {
+                $fields = $this->resolveAttributeField($value, $currencyCodes);
+                foreach ($fields as $field) {
                     $this->attributesFields[] = $field;
                 }
             }
         }
 
         return $this->attributesFields;
+    }
+
+    /**
+     * Resolves the attribute field name
+     *
+     * @param array $value
+     * @param array $currencyCodes
+     *
+     * @return array
+     */
+    protected function resolveAttributeField(array $value, array $currencyCodes)
+    {
+        $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
+
+        if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
+            $fields[] = $field;
+            foreach ($currencyCodes as $currencyCode) {
+                $currencyField = sprintf('%s-%s', $field, $currencyCode);
+                $fields[] = $currencyField;
+            }
+        } elseif (AttributeTypes::METRIC === $value['type']) {
+            $fields[] = $field;
+            $metricField = sprintf('%s-%s', $field, 'unit');
+            $fields[] = $metricField;
+        } else {
+            $fields[] = $field;
+        }
+
+        return $fields;
     }
 
     /**

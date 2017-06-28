@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -93,7 +93,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && 'mongodb_json' === $format;
+        return $data instanceof ValueInterface && 'mongodb_json' === $format;
     }
 
     /**
@@ -107,7 +107,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Normalize the field name for values
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return string
      */

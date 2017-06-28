@@ -83,7 +83,7 @@ define(
                 this.config = $.extend(true, {}, this.defaultConfig, meta.config);
 
                 if (_.isNull(this.config.mainFetcher)) {
-                    throw new Error('Fetcher code MUST be provided in config');
+                    throw new Error('Fetcher code must be provided in config');
                 }
 
                 this.config.select2.placeholder = __(this.config.select2.placeholder);

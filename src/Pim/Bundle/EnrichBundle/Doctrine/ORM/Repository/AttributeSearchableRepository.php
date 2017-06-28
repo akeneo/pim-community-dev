@@ -87,7 +87,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $options['limit'] = (int) $options['limit'];
         }
         if (null !== $options['exclude_unique']) {
-            $options['exclude_unique'] = (bool) $options['exclude_unique'];
+            $options['exclude_unique'] = in_array($options['exclude_unique'], ['true', true], true);
         }
         if (null === $options['user_groups_ids']) {
             $options['user_groups_ids'] = [];
