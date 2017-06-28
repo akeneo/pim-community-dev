@@ -15,10 +15,10 @@ class AttributeSet implements AttributeSetInterface
     /** @var int */
     private $id;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     private $attributes;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     private $axes;
 
     public function __construct()
@@ -46,7 +46,7 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributes(array $attributes)
+    public function setAttributes(array $attributes): void
     {
         $this->attributes = new ArrayCollection($attributes);
     }
@@ -62,7 +62,7 @@ class AttributeSet implements AttributeSetInterface
     /**
      * {@inheritdoc}
      */
-    public function setAxes(array $axes)
+    public function setAxes(array $axes): void
     {
         $this->axes = new ArrayCollection($axes);
     }

@@ -452,8 +452,8 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setFamilyVariants(ArrayCollection $FamilyVariants)
+    public function setFamilyVariants(ArrayCollection $familyVariants)
     {
-        $this->familyVariants = $FamilyVariants;
+        $this->familyVariants = $familyVariants;
     }
 }

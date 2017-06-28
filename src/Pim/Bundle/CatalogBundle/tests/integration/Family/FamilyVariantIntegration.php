@@ -14,7 +14,7 @@ class FamilyVariantIntegration extends TestCase
     /**
      * Basic test that checks the family variant creation
      */
-    public function test_the_family_variant_creation()
+    public function testTheFamilyVariantCreation()
     {
         $variantFamily = $this->get('pim_catalog.factory.family_variant')->create();
 
@@ -37,7 +37,7 @@ class FamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($variantFamily);
-        Assert::eq(0, $errors->count());
+        $this->assertEquals(0, $errors->count());
 
         $this->get('pim_catalog.saver.family_variant')->save($variantFamily);
 
@@ -45,32 +45,32 @@ class FamilyVariantIntegration extends TestCase
         $variantFamily = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('family_variant');
         Assert::notNull($variantFamily, 'The family variant with the code "family_variant" does not exist');
 
-        Assert::eq('boots', $variantFamily->getFamily()->getCode(), 'The family code does not match boots');
-        Assert::eq(
+        $this->assertEquals('boots', $variantFamily->getFamily()->getCode(), 'The family code does not match boots');
+        $this->assertEquals(
             ['name', 'manufacturer', 'description'],
             $this->extractAttributeCode($variantFamily->getCommonAttributeSet()->getAttributes()),
             'Common attributes are invalid'
         );
 
         $variantAttributeSet = $variantFamily->getVariantAttributeSet(1);
-        Assert::eq(
+        $this->assertEquals(
             ['color'],
             $this->extractAttributeCode($variantAttributeSet->getAxes()),
             'Axis is invalid (level 1)'
         );
-        Assert::eq(
+        $this->assertEquals(
             ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
 
         $variantAttributeSet = $variantFamily->getVariantAttributeSet(2);
-        Assert::eq(
+        $this->assertEquals(
             ['size'],
             $this->extractAttributeCode($variantAttributeSet->getAxes()),
             'The axis is invalid (level 2)'
         );
-        Assert::eq(
+        $this->assertEquals(
             ['sku', 'price'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 2)'
@@ -80,7 +80,7 @@ class FamilyVariantIntegration extends TestCase
     /**
      * Validation: Family variant code is unique
      */
-    function test_the_family_variant_code_uniqueness()
+    function testTheFamilyVariantCodeUniqueness()
     {
         $this->createDefaultFamilyVariant();
 
@@ -105,14 +105,14 @@ class FamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($variantFamily);
-        Assert::eq(1, $errors->count());
-        Assert::eq('This value is already used.', $errors->get(0)->getMessage());
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals('This value is already used.', $errors->get(0)->getMessage());
     }
 
     /**
      * Validation: An attribute can only be used one time as an axis
      */
-    function test_the_attribute_set_axis_uniqueness()
+    function testTheAttributeSetAxisUniqueness()
     {
         $this->createDefaultFamilyVariant();
 
@@ -137,14 +137,14 @@ class FamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($variantFamily);
-        Assert::eq(1, $errors->count());
-        Assert::eq('Variant axes must be unique', $errors->get(0)->getMessage());
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals('Variant axes must be unique', $errors->get(0)->getMessage());
     }
 
     /**
      * Validation: An attribute can only be used for one attribute set
      */
-    function test_the_attribute_set_attribute_uniqueness()
+    function testTheAttributeSetAttributeUniqueness()
     {
         $this->createDefaultFamilyVariant();
 
@@ -169,14 +169,14 @@ class FamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($variantFamily);
-        Assert::eq(1, $errors->count());
-        Assert::eq('Attributes must be unique', $errors->get(0)->getMessage());
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals('Attributes must be unique', $errors->get(0)->getMessage());
     }
 
     /**
      * Validation: Available attributes for axis are metric, simple select and reference data simple select
      */
-    function test_the_attribute_set_axes_type()
+    function testTheAttributeSetAxesType()
     {
         $this->createDefaultFamilyVariant();
 
@@ -201,8 +201,8 @@ class FamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($variantFamily);
-        Assert::eq(1, $errors->count());
-        Assert::eq(
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
             'Variant axes must be a boolean, a simple select, a simple reference data or a metric',
             $errors->get(0)->getMessage()
         );

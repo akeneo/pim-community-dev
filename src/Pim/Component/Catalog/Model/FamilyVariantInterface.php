@@ -33,9 +33,11 @@ interface FamilyVariantInterface extends TranslatableInterface
     public function getCommonAttributeSet(): AttributeSetInterface;
 
     /**
-     * @param $level
+     * @param int $level
      *
      * @return AttributeSetInterface
+     *
+     * @throws \InvalidArgumentException
      */
     public function getVariantAttributeSet(int $level): AttributeSetInterface;
 
@@ -53,21 +55,21 @@ interface FamilyVariantInterface extends TranslatableInterface
      * @param int                   $level
      * @param AttributeSetInterface $variantAttributeSets
      *
-     * @return mixed
+     * @throws \InvalidArgumentException
      */
-    public function addVariantAttributeSet(int $level, AttributeSetInterface $variantAttributeSets);
+    public function addVariantAttributeSet(int $level, AttributeSetInterface $variantAttributeSets): void;
 
     /**
      * @param AttributeSetInterface $variantAttributeSets
      *
      * @return mixed
      */
-    public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets);
+    public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets): void;
 
     /**
      * @param FamilyInterface $family
      */
-    public function setFamily(FamilyInterface $family);
+    public function setFamily(FamilyInterface $family): void;
 
     /**
      * @return FamilyInterface
