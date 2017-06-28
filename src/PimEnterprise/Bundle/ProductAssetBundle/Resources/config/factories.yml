@@ -5,7 +5,7 @@ parameters:
     pimee_product_asset.factory.tag.class:                   PimEnterprise\Component\ProductAsset\Factory\TagFactory
     pimee_product_asset.factory.channel_configuration.class: PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory
     pimee_product_asset.factory.notification.class:          PimEnterprise\Component\ProductAsset\Factory\NotificationFactory
-    pimee_product_asset.factory.product_value.asset_collection.class: Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionValueFactory
+    pimee_product_asset.factory.product_value.asset_collection.class: Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory
 
 services:
     pimee_product_asset.factory.asset:
