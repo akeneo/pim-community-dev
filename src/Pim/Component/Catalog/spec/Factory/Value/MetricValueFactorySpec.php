@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\ProductValue;
+namespace spec\Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\MetricFactory;
-use Pim\Component\Catalog\Factory\ProductValue\MetricValueFactory;
+use Pim\Component\Catalog\Factory\Value\MetricValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Value\ScalarValue;

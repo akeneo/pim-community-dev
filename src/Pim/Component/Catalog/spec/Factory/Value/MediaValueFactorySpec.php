@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\ProductValue;
+namespace spec\Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\MediaValueFactory;
+use Pim\Component\Catalog\Factory\Value\MediaValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use Prophecy\Argument;

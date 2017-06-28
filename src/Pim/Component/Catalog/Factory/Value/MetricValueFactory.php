@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\ProductValue;
+namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\MetricFactory;

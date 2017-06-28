@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\ValueFactoryInterface;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;

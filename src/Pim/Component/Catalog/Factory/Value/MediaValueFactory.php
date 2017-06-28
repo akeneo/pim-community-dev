@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\ProductValue;
+namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;

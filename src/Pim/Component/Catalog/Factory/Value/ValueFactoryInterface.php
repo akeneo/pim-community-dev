@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Component\Catalog\Factory\ProductValue;
+namespace Pim\Component\Catalog\Factory\Value;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;

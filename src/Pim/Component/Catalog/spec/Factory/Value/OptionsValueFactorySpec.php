@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\ProductValue;
+namespace spec\Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\ProductValue\OptionsValueFactory;
+use Pim\Component\Catalog\Factory\Value\OptionsValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Value\ScalarValue;

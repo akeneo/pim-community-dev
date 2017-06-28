@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\ProductValue;
+namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
- * Factory that creates option (simple-select) product values.
+ * Factory that creates options (multi-select) product values.
  *
  * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
  *
@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class OptionValueFactory implements ValueFactoryInterface
+class OptionsValueFactory implements ValueFactoryInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
@@ -30,8 +30,8 @@ class OptionValueFactory implements ValueFactoryInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string                             $productValueClass
-     * @param string                             $supportedAttributeType
+     * @param string $productValueClass
+     * @param $supportedAttributeType
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attrOptionRepository,
@@ -50,11 +50,16 @@ class OptionValueFactory implements ValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        if (null !== $data) {
-            $data = $this->getOption($attribute, $data);
+        if (null === $data) {
+            $data = [];
         }
 
-        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
+        $value = new $this->productValueClass(
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->getOptions($attribute, $data)
+        );
 
         return $value;
     }
@@ -77,34 +82,67 @@ class OptionValueFactory implements ValueFactoryInterface
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (null === $data) {
+        if (null === $data || [] === $data) {
             return;
         }
 
-        if (!is_string($data) && !is_numeric($data)) {
-            throw InvalidPropertyTypeException::stringExpected(
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
                 $data
             );
         }
+
+        foreach ($data as $value) {
+            if (!is_string($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $attribute->getCode(),
+                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
+                    static::class,
+                    $data
+                );
+            }
+        }
+    }
+
+    /**
+     * Returns an array of attribute options.
+     *
+     * @param AttributeInterface $attribute
+     * @param string[]           $data
+     *
+     * @return array
+     */
+    protected function getOptions(AttributeInterface $attribute, array $data)
+    {
+        $options = [];
+
+        foreach ($data as $optionCode) {
+            if (null !== $option = $this->getOption($attribute, $optionCode)) {
+                $options[] = $option;
+            }
+        }
+
+        return $options;
     }
 
     /**
      * Gets an attribute option from its code.
      *
+     * @todo TIP-684: When deleting one element of the collection, we will end up throwing the exception.
+     *       Problem is, when loading a product value from single storage, it will be skipped because of
+     *       one option, when the others in the collection could be valid. So the value will not be loaded
+     *       at all, when what we want is the value to be loaded minus the wrong option.
+     *
      * @param AttributeInterface $attribute
-     * @param string|null        $optionCode
+     * @param string             $optionCode
      *
      * @throws InvalidOptionException
      * @return AttributeOptionInterface|null
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
     {
-        if (null === $optionCode) {
-            return null;
-        }
-
         $identifier = $attribute->getCode() . '.' . $optionCode;
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
