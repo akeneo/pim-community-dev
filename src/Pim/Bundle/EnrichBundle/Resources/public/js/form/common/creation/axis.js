@@ -107,8 +107,6 @@ define([
             const errors = this.getRoot().validationErrors || [];
             const identifier = this.options.config.identifier || 'axis';
 
-            console.log(errors, identifier)
-
             this.$el.html(this.template({
                 label: 'Axis',
                 required: __('pim_enrich.form.required'),

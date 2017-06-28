@@ -73,8 +73,9 @@ define([
                 results: []
             };
 
-            _.reject(types, { is_variant: !this.options.config.include_variant })
-            .forEach(value => {
+            _.reject(types, { 
+              is_variant: !this.options.config.include_variant
+            }).forEach(value => {
                 const {code, labels} = value;
                 data.results.push({
                     id: code,

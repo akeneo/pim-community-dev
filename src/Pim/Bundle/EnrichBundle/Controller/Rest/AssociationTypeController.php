@@ -178,6 +178,22 @@ class AssociationTypeController
         return $associationType;
     }
 
+    function formatValidationErrors($violations)
+    {
+      $errors = [];
+
+      if ($violations->count() > 0) {
+          foreach ($violations as $error) {
+              $errors['values'][] = [
+                  'attribute' => $error->getPropertyPath(),
+                  'message' =>  $error->getMessage()
+              ];
+          }
+      }
+
+      return $errors;
+    }
+
     /**
      * Creates association type
      *
@@ -191,11 +207,9 @@ class AssociationTypeController
         $this->updater->update($associationType, json_decode($request->getContent(), true));
 
         $violations = $this->validator->validate($associationType);
-        if (0 < $violations->count()) {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['associationType' => $associationType])
-            ];
+        $errors = $this->formatValidationErrors($violations);
 
+        if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
 

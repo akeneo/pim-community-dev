@@ -277,11 +277,18 @@ class FamilyController
         $this->updater->update($family, json_decode($request->getContent(), true));
 
         $violations = $this->validator->validate($family);
-        if (0 < $violations->count()) {
-            $errors = [
-                'values' => $this->normalizer->normalize($violations, 'internal_api', ['family' => $family])
-            ];
+        $errors = [];
+        
+        if ($violations->count() > 0) {
+            foreach ($violations as $error) {
+                $errors['values'][] = [
+                    'attribute' => $error->getPropertyPath(),
+                    'message' =>  $error->getMessage()
+                ];
+            }
+        }
 
+        if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
 

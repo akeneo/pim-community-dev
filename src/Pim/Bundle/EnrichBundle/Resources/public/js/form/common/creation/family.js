@@ -42,6 +42,16 @@ define([
         },
 
         /**
+         * {@inheritdoc}
+         */
+        initialize: function (config) {
+            this.config = config.config;
+            this.identifier = this.config.identifier || 'family';
+
+            BaseForm.prototype.initialize.apply(this, arguments);
+        },
+
+        /**
              * Configure the form
              *
              * @return {Promise}
@@ -101,12 +111,16 @@ define([
              * @return {Promise}
              */
         render() {
-            if (!this.configured)
-                return this;
+            if (!this.configured) return this;
+
+            const errors = this.getRoot().validationErrors || [];
 
             this.$el.html(this.template({
                 label: __('pim_enrich.form.product.change_family.modal.empty_selection'),
-                code: this.getFormData().family
+                code: this.getFormData().family,
+                errors: errors.filter(error => {
+                  return error.attribute === this.identifier;
+                })
             }));
 
             this.delegateEvents();
