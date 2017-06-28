@@ -10,21 +10,23 @@ def launchBehatTests = "yes"
 stage("Checkout") {
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
-        userInput = input(message: 'Launch tests?', parameters: [
-            choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
-            choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-            choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
-            string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
-            string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
-        ])
+        //userInput = input(message: 'Launch tests?', parameters: [
+        //    choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
+        //    choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+        //    choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
+        //    string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
+        //    string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
+        //    choice(choices: '7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
+        //])
 
-        editions = userInput['editions'].tokenize(',')
-        features = userInput['features']
-        phpVersion = userInput['phpVersion']
-        launchUnitTests = userInput['launchUnitTests']
-        launchIntegrationTests = userInput['launchIntegrationTests']
-        launchBehatTests = userInput['launchBehatTests']
+        //editions = userInput['editions'].tokenize(',')
+        //features = userInput['features']
+        //phpVersion = userInput['phpVersion']
+        //launchUnitTests = userInput['launchUnitTests']
+        //launchIntegrationTests = userInput['launchIntegrationTests']
+        //launchBehatTests = userInput['launchBehatTests']
+        launchUnitTests = "no"
+        launchIntegrationTests = "no"
     }
     milestone 2
 
@@ -273,6 +275,15 @@ def runPhpCsFixerTest() {
 }
 
 def runBehatTest(edition, features, phpVersion) {
+    node() {
+        sh ("kubectl apply -f .ci-k8s/")
+        sh ("docker exec -e PUBSUB_PROJECT_ID=akeneo-ci php create-topic akeneo-ci-topic")
+        sh ("docker exec -e PUBSUB_PROJECT_ID=akeneo-ci php publish akeneo-ci-topic ")
+
+    }
+}
+
+def runBehatTestOld(edition, features, phpVersion) {
     node() {
         dir("behat-${edition}") {
             deleteDir()
