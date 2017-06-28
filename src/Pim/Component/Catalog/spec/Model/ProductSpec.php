@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -22,6 +23,12 @@ class ProductSpec extends ObjectBehavior
         $this->setFamily($family);
         $this->getFamily()->shouldReturn($family);
         $this->getFamilyId()->shouldReturn(42);
+    }
+
+    function it_has_a_product_model(ProductModelInterface $productModel)
+    {
+        $this->setProductModel($productModel);
+        $this->getProductModel()->shouldReturn($productModel);
     }
 
     function it_belongs_to_categories(CategoryInterface $category1, CategoryInterface $category2)

@@ -55,6 +55,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int */
     protected $familyId;
 
+    /** @var ProductModelInterface $productModel */
+    protected $productModel;
+
     /** @var Collection $categories */
     protected $categories;
 
@@ -284,6 +287,24 @@ abstract class AbstractProduct implements ProductInterface
     public function getFamilyId()
     {
         return $this->familyId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductModel(): ?ProductModelInterface
+    {
+        return $this->productModel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductModel(ProductModelInterface $productModel): ProductInterface
+    {
+        $this->productModel = $productModel;
+
+        return $this;
     }
 
     /**
