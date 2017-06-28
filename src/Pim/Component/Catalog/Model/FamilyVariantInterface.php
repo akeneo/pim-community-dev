@@ -33,16 +33,21 @@ interface FamilyVariantInterface extends TranslatableInterface
     public function getCommonAttributeSet(): AttributeSetInterface;
 
     /**
-     * @return ArrayCollection
-     */
-    public function getVariantAttributeSets(): ArrayCollection;
-
-    /**
      * @param $level
      *
      * @return AttributeSetInterface
      */
     public function getVariantAttributeSet(int $level): AttributeSetInterface;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAttributes(): ArrayCollection;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAxes(): ArrayCollection;
 
     /**
      * @param int                   $level

@@ -1,0 +1,28 @@
+Pim\Component\Catalog\Model\FamilyVariant:
+    constraints:
+        - Pim\Component\Catalog\Validator\Constraints\FamilyVariant: ~
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+            properties:
+                - code
+
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Family code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+Pim\Component\Catalog\Model\FamilyVariantTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                    standardPropertyName: labels

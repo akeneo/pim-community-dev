@@ -22,7 +22,7 @@ class FamilyVariant implements FamilyVariantInterface
     private $family;
 
     /** @var ArrayCollection */
-    private $variantAttributeSets;
+    private $attributeSets;
 
     /** @var string */
     private $locale;
@@ -32,7 +32,7 @@ class FamilyVariant implements FamilyVariantInterface
 
     public function __construct()
     {
-        $this->variantAttributeSets = new ArrayCollection();
+        $this->attributeSets = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
 
@@ -65,7 +65,7 @@ class FamilyVariant implements FamilyVariantInterface
      */
     public function getCommonAttributeSet(): AttributeSetInterface
     {
-        return $this->variantAttributeSets->first();
+        return $this->attributeSets->get(0);
     }
 
     /**
@@ -77,15 +77,38 @@ class FamilyVariant implements FamilyVariantInterface
             throw new \InvalidArgumentException('The level must be greater than 0');
         }
 
-        return $this->variantAttributeSets->get($level);
+        return $this->attributeSets->get($level);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVariantAttributeSets($level = null): ArrayCollection
+    public function getAttributes(): ArrayCollection
     {
-        return new ArrayCollection($this->variantAttributeSets->slice(1));
+        $axes = [];
+        foreach ($this->attributeSets as $attributeSet) {
+            $variantSetAxes = $attributeSet->getAttributes()->toArray();
+            $axes = array_merge($axes, $variantSetAxes);
+        }
+
+        return new ArrayCollection($axes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAxes(): ArrayCollection
+    {
+        $attributeSets = clone $this->attributeSets;
+        $attributeSets->remove(0);
+
+        $axes = [];
+        foreach ($attributeSets as $attributeSet) {
+            $variantSetAxes = $attributeSet->getAxes()->toArray();
+            $axes = array_merge($axes, $variantSetAxes);
+        }
+
+        return new ArrayCollection($axes);
     }
 
     /**
@@ -97,7 +120,7 @@ class FamilyVariant implements FamilyVariantInterface
             throw new \InvalidArgumentException('The level must be greater than 0');
         }
 
-        $this->variantAttributeSets->set($level, $variantAttributeSets);
+        $this->attributeSets->set($level, $variantAttributeSets);
     }
 
     /**
@@ -105,7 +128,7 @@ class FamilyVariant implements FamilyVariantInterface
      */
     public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets)
     {
-        $this->variantAttributeSets->set(0, $variantAttributeSets);
+        $this->attributeSets->set(0, $variantAttributeSets);
     }
 
     /**

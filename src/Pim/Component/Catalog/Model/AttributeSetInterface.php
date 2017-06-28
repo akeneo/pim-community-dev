@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -17,9 +17,9 @@ interface AttributeSetInterface
     public function getId(): int;
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getAttributes(): ArrayCollection;
+    public function getAttributes(): Collection;
 
     /**
      * @param array $attributes
@@ -27,9 +27,9 @@ interface AttributeSetInterface
     public function setAttributes(array $attributes);
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getAxes(): ArrayCollection;
+    public function getAxes(): Collection;
 
     /**
      * @param array $axes
