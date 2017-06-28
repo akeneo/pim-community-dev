@@ -4,7 +4,7 @@ namespace Pim\Component\ReferenceData\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\AbstractProductValueNormalizer;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionValue;
+use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>

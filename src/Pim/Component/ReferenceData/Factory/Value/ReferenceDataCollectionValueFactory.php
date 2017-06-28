@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Factory\ProductValue;
+namespace Pim\Component\ReferenceData\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;

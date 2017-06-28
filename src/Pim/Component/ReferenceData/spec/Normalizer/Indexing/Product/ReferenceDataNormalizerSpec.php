@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\AbstractReferenceData;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataNormalizer;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataValue;
+use Pim\Component\ReferenceData\Value\ReferenceDataValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior

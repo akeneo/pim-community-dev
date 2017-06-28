@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\ProductValue\ReferenceDataValueInterface;
+use Pim\Component\ReferenceData\Value\ReferenceDataValueInterface;
 use Prophecy\Argument;
 
 class ReferenceDataAttributeCopierSpec extends ObjectBehavior
