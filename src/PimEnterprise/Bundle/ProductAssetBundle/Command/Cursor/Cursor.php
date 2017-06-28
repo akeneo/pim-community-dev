@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,48 +11,23 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command\Cursor;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor as BaseCursor;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use LogicException;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
- * Class Cursor to iterate entities from QueryBuilder
+ * Class Cursor to iterate assets from QueryBuilder.
+ * This class has been done to iterate over entities that are not Cursorable.
+ * And avoid BC by not adding the Cursorable Interface in the Repository.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class Cursor extends AbstractCursor
+class Cursor extends BaseCursor
 {
-    /** @var QueryBuilder */
-    protected $queryBuilder;
-
-    /** @var int */
-    protected $position = 0;
-
-    /** @var array */
-    protected $entitiesIds;
-
-    /** @var int */
-    protected $count;
-
-    /** @var \ArrayIterator */
-    protected $entitiesPage;
-
-    /** @var EntityManager */
-    protected $entityManager;
-
-    /** @var CursorableRepositoryInterface */
+    /** @var AssetRepositoryInterface */
     protected $repository;
-
-    /** @var int */
-    protected $pageSize;
-
-    /** @var int */
-    protected $currentPage;
-
-    /** @var Object */
-    protected $entity;
 
     /**
      * @param QueryBuilder  $queryBuilder
@@ -64,90 +39,13 @@ class Cursor extends AbstractCursor
         EntityManager $entityManager,
         $pageSize
     ) {
-        $this->queryBuilder = $queryBuilder;
-        $this->entityManager = $entityManager;
-        $this->pageSize = $pageSize;
-        $this->rewind();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
-    {
-        parent::next();
-        $this->entity = $this->getNextEntity();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
-    {
-        return $this->entity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count()
-    {
-        if (null === $this->count) {
-            $this->count = count($this->getEntitiesIds());
-        }
-
-        return $this->count;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->position = 0;
-        $this->currentPage = 0;
-        $this->entitiesPage = null;
-        $this->entity = $this->getNextEntity();
-    }
-
-    /**
-     * Get ids of entities from the QueryBuilder
-     *
-     * @return array
-     */
-    protected function getEntitiesIds()
-    {
-        if (null === $this->entitiesIds) {
-            $rootAlias = current($this->queryBuilder->getRootAliases());
-            $rootIdExpr = sprintf('%s.id', $rootAlias);
-
-            $from = current($this->queryBuilder->getDQLPart('from'));
-
-            $this->queryBuilder
-                ->select($rootIdExpr)
-                ->resetDQLPart('from')
-                ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
-                ->groupBy($rootIdExpr);
-
-            $results = $this->queryBuilder->getQuery()->getArrayResult();
-            $this->entitiesIds = array_keys($results);
-        }
-
-        return $this->entitiesIds;
-    }
-
-    /**
-     * @return int
-     */
-    protected function getOffSet()
-    {
-        return $this->pageSize * $this->currentPage;
+        parent::__construct($queryBuilder, $entityManager, $pageSize);
     }
 
     /**
      * @throws LogicException
      *
-     * @return CursorableRepositoryInterface
+     * @return AssetRepositoryInterface
      */
     protected function getRepository()
     {
@@ -157,56 +55,5 @@ class Cursor extends AbstractCursor
         }
 
         return $this->repository;
-    }
-
-    /**
-     * Get next entity
-     *
-     * @return bool|mixed
-     */
-    protected function getNextEntity()
-    {
-        $entity = false;
-
-        if (null === $this->entitiesPage || !$this->entitiesPage->valid()) {
-            $this->entitiesPage = $this->getNextEntitiesPage();
-        }
-        if ($this->entitiesPage !== null) {
-            $entity = $this->entitiesPage->current();
-            $this->entitiesPage->next();
-        }
-
-        return $entity;
-    }
-
-    /**
-     * Get next entities batch from DB
-     *
-     * @return \ArrayIterator
-     */
-    protected function getNextEntitiesPage()
-    {
-        $entities = null;
-        $currentIds = array_slice($this->getEntitiesIds(), $this->getOffSet(), $this->pageSize);
-
-        if (!empty($currentIds)) {
-            $items = $this->getRepository()->findByIds($currentIds);
-            $this->currentPage++;
-            $orderedResult = array_fill_keys($currentIds, null);
-            foreach ($items as $entity) {
-                $entityId = null;
-                if (is_object($entity)) {
-                    $entityId = $entity->getId();
-                } elseif (is_array($entity) && array_key_exists('id', $entity)) {
-                    $entityId = $entity['id'];
-                }
-                if ($entityId) {
-                    $orderedResult[$entityId] = $entity;
-                }
-            }
-            $entities = new \ArrayIterator($orderedResult);
-        }
-
-        return $entities;
     }
 }

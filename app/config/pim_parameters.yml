@@ -35,11 +35,11 @@ parameters:
     max_products_category_removal: 100
 
     # Product storage driver can be doctrine/orm or doctrine/mongodb-odm
-    pim_catalog_product_storage_driver: doctrine/orm
+    pim_catalog_product_storage_driver: doctrine/mongodb-odm
 
-    ## Uncomment to configure mongodb
-    # mongodb_server: 'mongodb://localhost:27017'
-    # mongodb_database: akeneo_pim
+    # Uncomment to configure mongodb
+    mongodb_server: 'mongodb://localhost:27017'
+    mongodb_database: akeneo_pim
 
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
 
