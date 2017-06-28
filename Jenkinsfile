@@ -47,7 +47,7 @@ stage("Checkout") {
     checkouts['community'] = {
         node('docker') {
             deleteDir()
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -57,7 +57,7 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            docker.image('node').inside {
+            docker.image('node:8').inside {
                 unstash "pim_community_dev_full"
 
                 sh "npm install"
@@ -73,7 +73,7 @@ stage("Checkout") {
         checkouts['enterprise'] = {
             node('docker') {
                 deleteDir()
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -83,7 +83,7 @@ stage("Checkout") {
                     stash "pim_enterprise_dev_full"
                 }
 
-                docker.image('node').inside {
+                docker.image('node:8').inside {
                     unstash "pim_enterprise_dev_full"
 
                     sh "npm install"
@@ -122,14 +122,14 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-7.1-akeneo"] = {runIntegrationTest("7.1", "Akeneo_Integration_Test")}
-        tasks["phpunit-7.1-api-base"] = {runIntegrationTest("7.1", "PIM_Api_Base_Integration_Test")}
-        tasks["phpunit-7.1-api-controllers"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controllers_Integration_Test")}
-        tasks["phpunit-7.1-api-controllers-catalog"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
-        tasks["phpunit-7.1-api-controller-product"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
-        tasks["phpunit-7.1-catalog"] = {runIntegrationTest("7.1", "PIM_Catalog_Integration_Test")}
-        tasks["phpunit-7.1-completeness"] = {runIntegrationTest("7.1", "PIM_Catalog_Completeness_Integration_Test")}
-        tasks["phpunit-7.1-pqb"] = {runIntegrationTest("7.1", "PIM_Catalog_PQB_Integration_Test")}
+        tasks["integration-7.1-akeneo"] = {runIntegrationTest("7.1", "Akeneo_Integration_Test")}
+        tasks["integration-7.1-api-base"] = {runIntegrationTest("7.1", "PIM_Api_Base_Integration_Test")}
+        tasks["integration-7.1-api-controllers"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controllers_Integration_Test")}
+        tasks["integration-7.1-api-controllers-catalog"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
+        tasks["integration-7.1-api-controller-product"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
+        tasks["integration-7.1-catalog"] = {runIntegrationTest("7.1", "PIM_Catalog_Integration_Test")}
+        tasks["integration-7.1-completeness"] = {runIntegrationTest("7.1", "PIM_Catalog_Completeness_Integration_Test")}
+        tasks["integration-7.1-pqb"] = {runIntegrationTest("7.1", "PIM_Catalog_PQB_Integration_Test")}
 
         parallel tasks
     }
@@ -150,7 +150,7 @@ def runGruntTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image('node').inside("") {
+            docker.image('node:8').inside("") {
                 unstash "pim_community_dev_full"
                 sh "npm install"
                 sh "npm run lint"
@@ -170,7 +170,7 @@ def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -182,8 +182,10 @@ def runPhpUnitTest(phpVersion) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "find app/build/logs -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
+
+            sh "find app/build/logs -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[phpunit-${phpVersion}] /\""
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
@@ -196,9 +198,9 @@ def runIntegrationTest(phpVersion, testSuiteName) {
         sh "docker rm \$(docker ps -a -q) || true"
 
         try {
-            docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
+            docker.image("elasticsearch:5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
                 docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+                    docker.image("akeneo/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                         unstash "pim_community_dev"
 
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -218,8 +220,9 @@ def runIntegrationTest(phpVersion, testSuiteName) {
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
 
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${testSuiteName}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[integration-${phpVersion}-${testSuiteName}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
@@ -229,7 +232,7 @@ def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -241,8 +244,10 @@ def runPhpSpecTest(phpVersion) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\""
+
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[phpspec-${phpVersion}] /\""
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
@@ -252,7 +257,7 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -267,6 +272,7 @@ def runPhpCsFixerTest() {
 
             sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\""
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
@@ -307,6 +313,7 @@ def runBehatTest(edition, features, phpVersion) {
                 sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${edition}] /\""
                 junit 'app/build/logs/behat/*.xml'
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
+
                 deleteDir()
             }
         }
@@ -317,7 +324,7 @@ def runPhpCouplingDetectorTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -327,6 +334,7 @@ def runPhpCouplingDetectorTest() {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
+
             deleteDir()
         }
     }
