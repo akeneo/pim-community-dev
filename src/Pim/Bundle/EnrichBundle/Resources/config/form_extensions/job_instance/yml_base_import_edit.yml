@@ -7,7 +7,7 @@ extensions:
         parent: pim-job-instance-yml-base-import-edit
         targetZone: main-image
         config:
-            path: bundles/pimui/images/illustration-export-yml.svg
+            path: bundles/pimui/images/illustration-import-yml.svg
 
     pim-job-instance-yml-base-import-edit-breadcrumbs:
         module: pim/common/breadcrumbs

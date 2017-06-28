@@ -757,6 +757,10 @@ class Grid extends Index
      */
     protected function clickFiltersList()
     {
+        $this->spin(function () {
+            return !$this->isLoadingMaskVisible();
+        }, 'Loading mask is still visible');
+
         $filterList = $this->spin(function () {
             return $this
                 ->getElement('Filters')

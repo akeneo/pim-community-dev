@@ -10,9 +10,11 @@
  */
 define(
     [
+        'oro/translator',
         'pim/form'
     ],
     function (
+        __,
         BaseForm
     ) {
         return BaseForm.extend({
@@ -34,7 +36,7 @@ define(
                 this.listenTo(this.getRoot(), 'switcher:switch', this.switch);
 
                 this.getRoot().trigger('switcher:register', {
-                    label: this.config.label,
+                    label: __(this.config.label),
                     code: this.code
                 });
 
