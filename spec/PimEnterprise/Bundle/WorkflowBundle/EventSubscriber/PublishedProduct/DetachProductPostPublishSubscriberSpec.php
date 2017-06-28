@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ScalarValue;
+use Pim\Component\Catalog\Value\ScalarValue;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
 
