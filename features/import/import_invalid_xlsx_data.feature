@@ -19,7 +19,7 @@ Feature: Handle import of invalid XLSX data
     And the following job "xlsx_footwear_association_type_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_association_type_import" export job page
+    And I am on the "xlsx_footwear_association_type_import" import job page
     And I launch the "xlsx_footwear_association_type_import" import job
     And I wait for the "xlsx_footwear_association_type_import" job to finish
     Then I should see the secondary action "Download invalid data"

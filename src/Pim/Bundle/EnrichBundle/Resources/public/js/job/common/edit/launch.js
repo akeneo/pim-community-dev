@@ -22,7 +22,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'click': 'launch'
+                'click .AknButton': 'launch'
             },
 
             /**
@@ -47,6 +47,8 @@ define(
                         label: __(this.config.label)
                     }));
                 }.bind(this));
+
+                this.delegateEvents();
 
                 return this;
             },

@@ -114,21 +114,6 @@ Feature: Export products with only selected attributes
     BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;;dry
     """
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5941
-  Scenario: Navigate between export profile tabs
-    Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
-    When I am on the "csv_footwear_product_export" export job edit page
-    And I visit the "Content" tab
-    And I filter by "sku" with operator "IN" and value "BOOT-1"
-    And I press the "Save" button
-    And I should not see the text "There are unsaved changes"
-    Then I should be on the "Content" tab
-    When I visit the "History" tab
-    And I press the "Edit" button
-    Then I should see the "Save" button
-    And I should be on the "History" tab
-
   @jira https://akeneo.atlassian.net/browse/PIM-5994
   Scenario: Export the attributes only once
     Given the following family:

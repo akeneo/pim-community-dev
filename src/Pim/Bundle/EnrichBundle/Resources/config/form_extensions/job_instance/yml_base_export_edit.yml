@@ -2,6 +2,13 @@ extensions:
     pim-job-instance-yml-base-export-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-yml-base-export-edit-mainImage:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-yml-base-export-edit
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-export-yml.svg
+
     pim-job-instance-yml-base-export-edit-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-job-instance-yml-base-export-edit

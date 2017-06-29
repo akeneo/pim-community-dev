@@ -72,6 +72,7 @@ Feature: Add attributes to a variant group
     And I save the variant group
     And I am on the attributes page
     And I search "Name"
+    And I collapse the column
     And I click on the "Delete" action of the row which contains "Name"
     And I confirm the deletion
     When I am on the "caterpillar_boots" variant group page

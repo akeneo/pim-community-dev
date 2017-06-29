@@ -617,7 +617,11 @@ config:
         # Exports
         pim/job-instance-edit-form/save:        pimenrich/js/job/common/edit/save
         pim/job-instance-export-edit-form/save: pimenrich/js/job/export/edit/save
+
+        # Imports
         pim/job-instance-import-edit-form/save: pimenrich/js/job/import/edit/save
+        pim/job-instance/import/switcher:       pimenrich/js/job/import/switcher
+        pim/job-instance/import/switcher-item:  pimenrich/js/job/import/switcher-item
 
         # Group
         pim/group-edit-form/save: pimenrich/js/group/form/save
@@ -678,7 +682,9 @@ config:
         pim/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch
         pim/job/common/edit/upload:                                  pimenrich/js/job/common/edit/upload
         pim/job/common/edit/upload-launch:                           pimenrich/js/job/common/edit/upload-launch
+        pim/job/common/file-path:                                    pimenrich/js/job/common/file-path
         pim/job/common/label:                                        pimenrich/js/job/common/label
+        pim/job/common/grid:                                         pimenrich/js/job/common/grid
         pim/job/execution/summary-table:                             pimenrich/js/job/execution/summary-table
         pim/job/execution/auto-refresh:                              pimenrich/js/job/execution/auto-refresh
         pim/job/execution/show-profile:                              pimenrich/js/job/execution/show-profile
@@ -770,6 +776,8 @@ config:
         pim/form/common/save-buttons:                        pimenrich/js/form/common/save-buttons
         pim/form/common/state:                               pimenrich/js/form/common/state
         pim/form/common/meta:                                pimenrich/js/form/common/meta
+        pim/form/common/subsection:                          pimenrich/js/form/common/subsection
+        pim/form/common/main-image:                          pimenrich/js/form/common/main-image
         pim/form/common/meta/created:                        pimenrich/js/form/common/meta/created
         pim/form/common/meta/updated:                        pimenrich/js/form/common/meta/updated
         pim/form/common/meta/status:                         pimenrich/js/form/common/meta/status
@@ -861,6 +869,8 @@ config:
         pim/template/form/secondary-actions:                      pimenrich/templates/form/secondary-actions.html
         pim/template/form/column-tabs:                            pimenrich/templates/form/column-tabs.html
         pim/template/form/column-tabs-navigation:                 pimenrich/templates/form/column-tabs-navigation.html
+        pim/template/form/subsection:                             pimenrich/templates/form/subsection.html
+        pim/template/form/main-image:                             pimenrich/templates/form/main-image.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html
@@ -958,6 +968,10 @@ config:
         pim/template/export/common/edit/launch:                                 pimenrich/templates/export/common/edit/launch.html
         pim/template/export/common/edit/upload:                                 pimenrich/templates/export/common/edit/upload.html
         pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
+
+        # Imports
+        pim/template/import/switcher:      pimenrich/templates/import/switcher.html
+        pim/template/import/file-path:     pimenrich/templates/import/file-path.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html

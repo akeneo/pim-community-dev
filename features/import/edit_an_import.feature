@@ -35,6 +35,7 @@ Feature: Edit an import
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
+    And I press the "Edit" button
     Then I should see the text "File path"
     And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Delimiter"

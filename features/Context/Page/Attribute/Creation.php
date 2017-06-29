@@ -260,7 +260,7 @@ class Creation extends Form
         $this->spin(function () use ($name) {
             $fields = $this->findAll('css', '.attribute-choice');
             foreach ($fields as $field) {
-                if (trim($field->getText()) === $name) {
+                if (strtolower(trim($field->getText())) === strtolower($name)) {
                     return $field;
                 }
             }

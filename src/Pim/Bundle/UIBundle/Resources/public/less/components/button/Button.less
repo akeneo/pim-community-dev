@@ -8,13 +8,13 @@
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
-  line-height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize - 2px;
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
   padding: 0 @AknDefaultButtonSize/2;
   border-radius: 100px;
-  border: none;
+  border: 1px solid @AknLightGray;
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
@@ -23,6 +23,7 @@
     color 0.1s ease,
     border-color 0.1s ease;
   position: relative;
+  text-transform: uppercase;
 
   &:hover,
   &--active {
@@ -37,41 +38,47 @@
   // Apply color
   &--apply {
     background-color: @AknGreen;
+    border-color: @AknGreen;
     color: white;
   }
 
   &--apply:hover,
   &--apply&--active {
     background: darken(@AknGreen, @darken);
+    border-color: darken(@AknGreen, @darken);
     color: white;
   }
 
   &--apply&--disabled {
     background: lighten(@AknGreen, @lighten);
+    border-color: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
   }
 
   // Grey color
   &--grey {
     background-color: @AknGrey;
+    border-color: @AknGrey;
     color: white;
   }
 
   &--grey:hover,
   &--grey&--active {
     background: darken(@AknGrey, @darken);
+    border-color: darken(@AknGrey, @darken);
     color: white;
   }
 
   &--grey&--disabled {
     background: lighten(@AknGrey, @lighten);
+    border-color: lighten(@AknGrey, @lighten);
     cursor: not-allowed;
   }
 
   // GreyLight
   &--greyLight {
     background-color: white;
-    border: 1px solid @AknGrey;
+    border-color: @AknGrey;
     color: @AknGrey;
   }
 
@@ -92,34 +99,40 @@
   // Important color
   &--important {
     background-color: @AknRed;
+    border-color: @AknRed;
     color: white;
   }
 
   &--important:hover,
   &--important&--active {
     background: darken(@AknRed, @darken);
+    border-color: darken(@AknRed, @darken);
     color: white;
   }
 
   &--important&--disabled {
     background: lighten(@AknRed, @lighten);
+    border-color: lighten(@AknRed, @lighten);
     cursor: not-allowed;
   }
 
   // Action color
   &--action {
-    background-color: @AknBlue;
+    background: @AknBlue;
+    border-color: @AknBlue;
     color: white;
   }
 
   &--action:hover,
   &--action&--active {
     background: darken(@AknBlue, @darken);
+    border-color: darken(@AknBlue, @darken);
     color: white;
   }
 
   &--action&--disabled {
     background: lighten(@AknBlue, @lighten);
+    border-color: lighten(@AknBlue, @lighten);
     cursor: not-allowed;
   }
 
@@ -160,5 +173,23 @@
 
   &--disabled:focus {
     outline: -webkit-focus-ring-color auto 0;
+  }
+
+  &--glued {
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: none;
+    }
+
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &--centered {
+    display: block;
+    margin: auto;
   }
 }

@@ -15,12 +15,14 @@ Feature: Show localized date in export builder
     And I filter by "destocking_date" with operator "Lower than" and value "08/13/2016"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I press the "Edit" button
     When I visit the "Content" tab
     Then I should see the text "Lower than"
     And the field filter-value-start should contain "08/13/2016"
     When I logout
     And I am logged in as "Julien"
     And I am on the "csv_footwear_product_export" export job page
+    And I press the "Modifier" button
     And I visit the "Contenu" tab
     Then I should see the text "Inférieur à"
     And the field filter-value-start should contain "13/08/2016"
