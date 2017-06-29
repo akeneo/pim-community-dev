@@ -68,13 +68,16 @@ abstract class AbstractPimCatalogIntegration extends TestCase
      * Executes the given query and returns the list of skus found.
      *
      * @param array $query
+     * @param array $types
      *
      * @return array
      */
-    protected function getSearchQueryResults(array $query)
+    protected function getSearchQueryResults(array $query, array $types = [])
     {
         $identifiers = [];
-        $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
+        $types = self::DOCUMENT_TYPE . ',' . join(',', $types);
+
+        $response = $this->esClient->search($types, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];

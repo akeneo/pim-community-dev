@@ -22,16 +22,18 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             'query' => [
                 'bool' => [
                     'filter' => [
-                        'query_string' => [
-                            'default_field' => 'values.description-text.<all_channels>.<all_locales>',
-                            'query'         => '*T-shirt*',
+                        [
+                            'query_string' => [
+                                'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                'query'         => '*T-shirt*',
+                            ],
                         ],
                     ],
                 ],
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
         $this->assertProducts($productsFound, ['model-tshirt-level-0', 'model-tshirt-unique-level-0']);
     }
@@ -50,7 +52,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
         $this->assertProducts($productsFound, ['model-tshirt-level-1-red', 'model-tshirt-unique-level-0']);
     }
@@ -69,7 +71,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
         $this->assertProducts($productsFound, ['model-tshirt-level-1-grey', 'model-hat-level-0']);
     }
@@ -88,7 +90,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
         $this->assertProducts($productsFound, ['model-tshirt-level-1-blue', 'watch']);
     }
@@ -107,7 +109,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
         $this->assertProducts(
             $productsFound,
@@ -129,7 +131,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
         $this->assertProducts(
             $productsFound,
@@ -143,7 +145,6 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         );
     }
 
-    /** @group todo */
     public function testSearchColorGreyAndSizeM()
     {
         $query = [
@@ -151,8 +152,13 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         [
-                            'terms' => [
-                                'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                            'has_parent' => [
+                                'type'  => 'pim_catalog_product_model',
+                                'query' => [
+                                    'terms' => [
+                                        'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                    ],
+                                ],
                             ],
                         ],
                         [
@@ -165,9 +171,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query);
+        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
 
-        $this->assertProducts($productsFound, ['tshirt-level-2-grey-m']);
+        $this->assertProducts($productsFound, ['tshirt-level-2-grey-m', 'hat-m']);
     }
 
     /**
