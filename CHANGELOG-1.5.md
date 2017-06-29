@@ -1,5 +1,9 @@
 # 1.5.24 (2017-06-28)
 
+## Bug fixes
+
+- PIM-6466: Fix issue on localizable assets when you add a new locale
+
 # 1.5.23 (2017-06-23)
 
 # 1.5.22 (2017-05-22)

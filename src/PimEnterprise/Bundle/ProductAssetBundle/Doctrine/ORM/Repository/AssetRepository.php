@@ -291,4 +291,19 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
         return $qb->getQuery()->getArrayResult();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $ids)
+    {
+        $qb = $this->createQueryBuilder('Asset');
+        $rootAlias = current($qb->getRootAliases());
+        $qb->andWhere(
+            $qb->expr()->in($rootAlias.'.id', ':asset_ids')
+        );
+        $qb->setParameter('asset_ids', $ids);
+
+        return $qb->getQuery()->execute();
+    }
 }
