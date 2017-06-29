@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -44,19 +47,25 @@ class AttributeController
     protected $attributeSearchRepository;
 
     /** @var ObjectUpdaterInterface */
-    private $updater;
+    protected $updater;
 
     /** @var ValidatorInterface */
-    private $validator;
+    protected $validator;
 
     /** @var SaverInterface */
-    private $saver;
+    protected $saver;
 
     /** @var RemoverInterface */
-    private $remover;
+    protected $remover;
 
     /** @var AttributeFactory */
-    private $factory;
+    protected $factory;
+
+    /** @var UserContext */
+    private $userContext;
+
+    /** @var LocalizerInterface */
+    protected $numberLocalizer;
 
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
@@ -69,6 +78,8 @@ class AttributeController
      * @param SaverInterface                $saver
      * @param RemoverInterface              $remover
      * @param AttributeFactory              $factory
+     * @param UserContext                   $userContext
+     * @param LocalizerInterface            $numberLocalizer
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -80,7 +91,9 @@ class AttributeController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RemoverInterface $remover,
-        AttributeFactory $factory
+        AttributeFactory $factory,
+        UserContext $userContext,
+        LocalizerInterface $numberLocalizer
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
@@ -92,6 +105,8 @@ class AttributeController
         $this->saver = $saver;
         $this->remover = $remover;
         $this->factory = $factory;
+        $this->userContext = $userContext;
+        $this->numberLocalizer = $numberLocalizer;
     }
 
     /**
@@ -176,9 +191,13 @@ class AttributeController
         $attribute = $this->factory->create();
 
         $data = json_decode($request->getContent(), true);
-        $this->updater->update($attribute, $data);
+
+        $localizedDataViolations = $this->validateLocalizedData($data);
+        $this->updateAttribute($attribute, $data);
 
         $violations = $this->validator->validate($attribute);
+        $violations->addAll($localizedDataViolations);
+
         if (0 < $violations->count()) {
             $errors = $this->normalizer->normalize(
                 $violations,
@@ -211,9 +230,12 @@ class AttributeController
         $attribute = $this->getAttributeOr404($identifier);
 
         $data = json_decode($request->getContent(), true);
-        $this->updater->update($attribute, $data);
+
+        $localizedDataViolations = $this->validateLocalizedData($data);
+        $this->updateAttribute($attribute, $data);
 
         $violations = $this->validator->validate($attribute);
+        $violations->addAll($localizedDataViolations);
 
         if (0 < $violations->count()) {
             $errors = $this->normalizer->normalize(
@@ -267,5 +289,58 @@ class AttributeController
         }
 
         return $attribute;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return ConstraintViolationList
+     */
+    protected function validateLocalizedData($data)
+    {
+        $allViolations = new ConstraintViolationList();
+
+        if (isset($data['number_min'])) {
+            $violations = $this->numberLocalizer->validate($data['number_min'], 'number_min', [
+                'locale' => $this->userContext->getUiLocale()->getCode()
+            ]);
+
+            if (null !== $violations && $violations->count() > 0) {
+                $allViolations->addAll($violations);
+            }
+        }
+
+        if (isset($data['number_max'])) {
+            $violations = $this->numberLocalizer->validate($data['number_max'], 'number_max', [
+                'locale' => $this->userContext->getUiLocale()->getCode()
+            ]);
+
+            if (null !== $violations && $violations->count() > 0) {
+                $allViolations->addAll($violations);
+            }
+        }
+
+        return $allViolations;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $data
+     */
+    protected function updateAttribute(AttributeInterface $attribute, array $data)
+    {
+        if (isset($data['number_min'])) {
+            $data['number_min'] = $this->numberLocalizer->delocalize($data['number_min'], [
+                'locale' => $this->userContext->getUiLocale()->getCode()
+            ]);
+        }
+
+        if (isset($data['number_max'])) {
+            $data['number_max'] = $this->numberLocalizer->delocalize($data['number_max'], [
+                'locale' => $this->userContext->getUiLocale()->getCode()
+            ]);
+        }
+
+        $this->updater->update($attribute, $data);
     }
 }

@@ -263,6 +263,8 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@pim_catalog.remover.attribute'
             - '@pim_catalog.factory.attribute'
+            - '@pim_user.context.user'
+            - '@pim_catalog.localization.localizer.number'
 
     pim_enrich.controller.rest.attribute_type:
         class: '%pim_enrich.controller.rest.attribute_type.class%'
