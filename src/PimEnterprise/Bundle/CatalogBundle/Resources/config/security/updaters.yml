@@ -1,5 +1,6 @@
 parameters:
     pimee_catalog.security.updater.setter.granted_category_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedCategoryFieldSetter
+    pimee_catalog.security.updater.setter.granted_association_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter
 
 services:
     pimee_catalog.security.updater.setter.granted_category_field:
@@ -10,5 +11,15 @@ services:
             - '@pim_catalog.updater.category_field_without_permission'
             - '@security.authorization_checker'
             - ['categories']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pimee_catalog.security.updater.setter.granted_association_field:
+        class: '%pimee_catalog.security.updater.setter.granted_association_field.class%'
+        decorates: pim_catalog.updater.setter.association_field
+        decoration_inner_name: pim_catalog.updater.association_field_without_permission
+        arguments:
+            - '@pim_catalog.updater.association_field_without_permission'
+            - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
