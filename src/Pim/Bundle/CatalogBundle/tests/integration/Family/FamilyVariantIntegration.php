@@ -24,7 +24,7 @@ class FamilyVariantIntegration extends TestCase
             'label' => [
                 'en_US' => 'My family variant'
             ],
-            'variant-attribute-sets' => [
+            'variant_attribute_sets' => [
                 [
                     'axes' => ['color'],
                     'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color']
@@ -43,12 +43,12 @@ class FamilyVariantIntegration extends TestCase
 
         /** @var FamilyVariantInterface $variantFamily */
         $variantFamily = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('family_variant');
-        Assert::notNull($variantFamily, 'The family variant with the code "family_variant" does not exist');
+        $this->assertNotNull($variantFamily, 'The family variant with the code "family_variant" does not exist');
 
         $this->assertEquals('boots', $variantFamily->getFamily()->getCode(), 'The family code does not match boots');
         $this->assertEquals(
             ['name', 'manufacturer', 'description'],
-            $this->extractAttributeCode($variantFamily->getCommonAttributeSet()->getAttributes()),
+            $this->extractAttributeCode($variantFamily->getCommonAttributes()),
             'Common attributes are invalid'
         );
 
@@ -92,7 +92,7 @@ class FamilyVariantIntegration extends TestCase
             'label' => [
                 'en_US' => 'My family variant'
             ],
-            'variant-attribute-sets' => [
+            'variant_attribute_sets' => [
                 [
                     'axes' => ['color'],
                     'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color']
@@ -124,7 +124,7 @@ class FamilyVariantIntegration extends TestCase
             'label' => [
                 'en_US' => 'My family variant'
             ],
-            'variant-attribute-sets' => [
+            'variant_attribute_sets' => [
                 [
                     'axes' => ['color'],
                     'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color']
@@ -138,7 +138,7 @@ class FamilyVariantIntegration extends TestCase
 
         $errors = $this->get('validator')->validate($variantFamily);
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals('Variant axes must be unique', $errors->get(0)->getMessage());
+        $this->assertEquals('Variant axes must be unique, "color" are used several times in variant attributes sets', $errors->get(0)->getMessage());
     }
 
     /**
@@ -156,7 +156,7 @@ class FamilyVariantIntegration extends TestCase
             'label' => [
                 'en_US' => 'My family variant'
             ],
-            'variant-attribute-sets' => [
+            'variant_attribute_sets' => [
                 [
                     'axes' => ['color'],
                     'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color']
@@ -170,11 +170,12 @@ class FamilyVariantIntegration extends TestCase
 
         $errors = $this->get('validator')->validate($variantFamily);
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals('Attributes must be unique', $errors->get(0)->getMessage());
+        $this->assertEquals('Attributes must be unique, "rating" are used several times in variant attributes sets', $errors->get(0)->getMessage());
     }
 
     /**
      * Validation: Available attributes for axis are metric, simple select and reference data simple select
+     * Validation: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
      */
     function testTheAttributeSetAxesType()
     {
@@ -188,24 +189,68 @@ class FamilyVariantIntegration extends TestCase
             'label' => [
                 'en_US' => 'My family variant'
             ],
-            'variant-attribute-sets' => [
+            'variant_attribute_sets' => [
                 [
-                    'axes' => ['side_view'],
-                    'attributes' => ['weather_conditions', 'rating', 'color', 'top_view', 'lace_color']
+                    'axes' => ['name'],
+                    'attributes' => ['side_view', 'rating', 'color', 'top_view', 'lace_color']
                 ],
                 [
                     'axes' => ['size'],
-                    'attributes' => ['sku', 'price']
+                    'attributes' => ['sku', 'weather_conditions']
                 ]
             ],
         ]);
 
         $errors = $this->get('validator')->validate($variantFamily);
-        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(2, $errors->count());
         $this->assertEquals(
-            'Variant axes must be a boolean, a simple select, a simple reference data or a metric',
+            'Variant axes "name" must be a boolean, a simple select, a simple reference data or a metric',
+            $errors->get(1)->getMessage()
+        );
+
+        $this->assertEquals(
+            'Variant axes "name" cannot be localizable, not scopable and not locale specific',
             $errors->get(0)->getMessage()
         );
+    }
+
+    /**
+     * Validation: Available attributes for axis are metric, simple select and reference data simple select
+     * Validation: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
+     */
+    function testTheNumberOfAttributeSetType()
+    {
+        $variantFamily = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($variantFamily, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color', 'size', 'rating', 'lace_color', 'side_view', 'top_view'],
+                    'attributes' => ['weather_conditions', 'side_view', 'top_view']
+                ],
+
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($variantFamily);
+        $this->assertEquals(
+            'A variant attribute set cannot have more than 5 attributes',
+            $errors->get(2)->getMessage()
+        );
+    }
+
+    /**
+     * un attribute ne peut pas être un arbre et vise versa
+     * da
+     */
+    public function testTODO()
+    {
+
     }
 
     /**
@@ -231,7 +276,7 @@ class FamilyVariantIntegration extends TestCase
             'label' => [
                 'en_US' => 'My family variant'
             ],
-            'variant-attribute-sets' => [
+            'variant_attribute_sets' => [
                 [
                     'axes' => ['color'],
                     'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color']
@@ -257,8 +302,10 @@ class FamilyVariantIntegration extends TestCase
      */
     private function extractAttributeCode(Collection $collection): array
     {
-        return $collection->map(function(AttributeInterface $attribute) {
+        $codes = $collection->map(function(AttributeInterface $attribute) {
             return $attribute->getCode();
         })->toArray();
+
+        return array_values($codes);
     }
 }

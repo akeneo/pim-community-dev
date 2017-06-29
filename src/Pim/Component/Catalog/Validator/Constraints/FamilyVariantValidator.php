@@ -2,8 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\AttributeTypes;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -23,9 +22,17 @@ class FamilyVariantValidator extends ConstraintValidator
     /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(TranslatorInterface $translator)
+    /** @var array */
+    private $availableTypes;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param array               $availableTypes
+     */
+    public function __construct(TranslatorInterface $translator, array $availableTypes)
     {
         $this->translator = $translator;
+        $this->availableTypes = $availableTypes;
     }
 
     /**
@@ -33,7 +40,7 @@ class FamilyVariantValidator extends ConstraintValidator
      *
      * @param FamilyVariantInterface $familyVariant
      */
-    public function validate($familyVariant, Constraint $constraint)
+    public function validate($familyVariant, Constraint $constraint): void
     {
         if (!$familyVariant instanceof FamilyVariantInterface) {
             throw new UnexpectedTypeException($constraint, FamilyVariantInterface::class);
@@ -43,16 +50,17 @@ class FamilyVariantValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FamilyVariant::class);
         }
 
-        $this->validateAxes($familyVariant->getAxes());
+        $this->validateAxesAttributes($familyVariant->getAxes());
         $this->validateAttributes($familyVariant->getAttributes());
+        $this->validateNumberOfAxis($familyVariant);
     }
 
     /**
      * Validate the attribute set attributes
      *
-     * @param ArrayCollection $attributes
+     * @param Collection $attributes
      */
-    private function validateAttributes(ArrayCollection $attributes)
+    private function validateAttributes(Collection $attributes): void
     {
         $attributeCodes = $attributes->map(function (AttributeInterface $attribute) {
             return $attribute->getCode();
@@ -60,36 +68,60 @@ class FamilyVariantValidator extends ConstraintValidator
 
         if (count($attributeCodes) !== count(array_unique($attributeCodes))) {
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_attributes_unique');
-            $this->context->buildViolation($message)->addViolation();
+            $this->context->buildViolation($message, [
+                '%attributes%' => implode(array_diff_assoc($attributeCodes, array_unique($attributeCodes)))
+            ])->addViolation();
         }
     }
 
     /**
      * Validate the attribute set axis
      *
-     * @param ArrayCollection $axes
+     * @param Collection $axes
      */
-    private function validateAxes(ArrayCollection $axes)
+    private function validateAxesAttributes(Collection $axes): void
     {
-        $availableTypes = [
-            AttributeTypes::METRIC,
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            AttributeTypes::BOOLEAN,
-            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
-        ];
-
         $axisCodes = [];
         foreach ($axes as $axis) {
+            /** @var $axis AttributeInterface */
             $axisCodes[] = $axis->getCode();
-            if (!in_array($axis->getType(), $availableTypes)) {
-                $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_type');
-                $this->context->buildViolation($message)->addViolation();
+            if ($axis->isLocalizable() || $axis->isScopable() || $axis->isLocaleSpecific()) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_wrong_type');
+                $this->context->buildViolation($message, [
+                    '%axis%' => $axis->getCode(),
+                ])->addViolation();
+            }
+
+            if (!in_array($axis->getType(), $this->availableTypes)) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_attribute_type');
+                $this->context->buildViolation($message, [
+                    '%axis%' => $axis->getCode(),
+                ])->addViolation();
             }
         }
 
         if (count($axisCodes) !== count(array_unique($axisCodes))) {
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_unique');
-            $this->context->buildViolation($message)->addViolation();
+            $this->context->buildViolation($message, [
+                '%attributes%' => implode(array_diff_assoc($axisCodes, array_unique($axisCodes))),
+            ])->addViolation();
+        }
+    }
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    private function validateNumberOfAxis(FamilyVariantInterface $familyVariant): void
+    {
+        $numberOfLevel = $familyVariant->getLevel();
+        $i = 0;
+        while ($i !== $numberOfLevel) {
+            if (5 < $familyVariant->getVariantAttributeSet($i + 1)->getAxes()->count()) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_number_of_axes');
+                $this->context->buildViolation($message)->addViolation();
+            }
+
+            $i++;
         }
     }
 }

@@ -11,9 +11,6 @@ Pim\Component\Catalog\Model\FamilyVariant:
                 strategy: AUTO
         code:
             type: string
-        locale:
-            type: string
-            length: 20
 
     oneToMany:
         translations:
@@ -26,8 +23,8 @@ Pim\Component\Catalog\Model\FamilyVariant:
 
     # oneToMany Unidirectional
     manyToMany:
-        attributeSets:
-            targetEntity: Pim\Component\Catalog\Model\AttributeSetInterface
+        variantAttributeSets:
+            targetEntity: Pim\Component\Catalog\Model\VariantAttributeSetInterface
             joinTable:
                 name: pim_catalog_variant_family_has_variant_attribute_sets
                 joinColumns:

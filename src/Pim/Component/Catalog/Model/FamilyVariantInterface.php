@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -25,46 +26,39 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @param string $code
      */
-    public function setCode(string $code);
+    public function setCode(string $code): void;
 
     /**
-     * @return AttributeSetInterface
+     * @return CommonAttributeCollection
      */
-    public function getCommonAttributeSet(): AttributeSetInterface;
+    public function getCommonAttributes(): CommonAttributeCollection;
 
     /**
      * @param int $level
      *
-     * @return AttributeSetInterface
+     * @return VariantAttributeSetInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function getVariantAttributeSet(int $level): AttributeSetInterface;
+    public function getVariantAttributeSet(int $level): VariantAttributeSetInterface;
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getAttributes(): ArrayCollection;
+    public function getAttributes(): Collection;
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getAxes(): ArrayCollection;
+    public function getAxes(): Collection;
 
     /**
-     * @param int                   $level
-     * @param AttributeSetInterface $variantAttributeSets
+     * @param int                          $level
+     * @param VariantAttributeSetInterface $variantAttributeSet
      *
      * @throws \InvalidArgumentException
      */
-    public function addVariantAttributeSet(int $level, AttributeSetInterface $variantAttributeSets): void;
-
-    /**
-     * @param AttributeSetInterface $variantAttributeSets
-     *
-     * @return mixed
-     */
-    public function addCommonAttributeSet(AttributeSetInterface $variantAttributeSets): void;
+    public function addVariantAttributeSet(int $level, VariantAttributeSetInterface $variantAttributeSet): void;
 
     /**
      * @param FamilyInterface $family
@@ -75,4 +69,9 @@ interface FamilyVariantInterface extends TranslatableInterface
      * @return FamilyInterface
      */
     public function getFamily(): FamilyInterface;
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int;
 }

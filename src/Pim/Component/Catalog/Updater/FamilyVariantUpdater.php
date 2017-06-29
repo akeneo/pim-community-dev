@@ -5,15 +5,16 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AttributeSetInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**
- * Update the family variant properties's
+ * Update the family variant properties
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -67,8 +68,6 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
             $this->setData($familyVariant, $field, $value);
         }
 
-        $this->addCommonVariantAttributeSet($familyVariant, $data['variant-attribute-sets']);
-
         return $this;
     }
 
@@ -81,9 +80,17 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'code':
+                if (!is_string($value)) {
+                    throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
+                }
+
                 $familyVariant->setCode($value);
                 break;
-            case 'label':
+            case 'labels':
+                if (!is_array($value)) {
+                    throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                }
+
                 $this->translationUpdater->update($familyVariant, $value);
                 break;
             case 'family':
@@ -99,9 +106,25 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
 
                 $familyVariant->setFamily($family);
                 break;
-            case 'variant-attribute-sets':
+            case 'variant_attribute_sets':
+                if (!is_array($value)) {
+                    throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                }
+
                 foreach ($value as $key => $attributeSetData) {
-                    /** @var AttributeSetInterface $attributeSet */
+                    /** @var VariantAttributeSetInterface $attributeSet */
+                    if (!isset($attributeSetData['axes']) || !isset($attributeSetData['attributes'])) {
+                        continue;
+                    }
+
+                    if (!is_array($attributeSetData['axes'])) {
+                        throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                    }
+
+                    if (!is_array($attributeSetData['attributes'])) {
+                        throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                    }
+
                     $attributeSet = $this->attributeSetFactory->create();
                     $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
                     $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
@@ -110,31 +133,6 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 }
                 break;
         }
-    }
-
-    /**
-     * @param FamilyVariantInterface $familyVariant
-     * @param array                  $variantAttributes
-     */
-    private function addCommonVariantAttributeSet(FamilyVariantInterface $familyVariant, array $variantAttributes)
-    {
-        $squash = function ($attributes, $column) {
-            return call_user_func_array('array_merge', array_column($attributes, $column));
-        };
-
-        $axes = $squash($variantAttributes, 'axes');
-        $variantAttributes = $squash($variantAttributes, 'attributes');
-
-        $commonAttributes = array_diff(
-            $familyVariant->getFamily()->getAttributeCodes(),
-            array_merge($variantAttributes, $axes)
-        );
-
-        /** @var AttributeSetInterface $attributeSet */
-        $attributeSet = $this->attributeSetFactory->create();
-        $attributeSet->setAttributes($this->getAttributes($commonAttributes));
-
-        $familyVariant->addCommonAttributeSet($attributeSet);
     }
 
     /**

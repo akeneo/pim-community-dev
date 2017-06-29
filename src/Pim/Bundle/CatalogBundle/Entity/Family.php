@@ -67,7 +67,7 @@ class Family implements FamilyInterface
      */
     protected $updated;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $familyVariants;
 
     /**
@@ -452,7 +452,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setFamilyVariants(ArrayCollection $familyVariants)
+    public function setFamilyVariants(Collection $familyVariants): void
     {
         $this->familyVariants = $familyVariants;
     }

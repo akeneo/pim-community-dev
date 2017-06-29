@@ -21,7 +21,7 @@ class FamilyVariantRepositorySpec extends ObjectBehavior
         $this->shouldHaveType(FamilyVariantRepository::class);
     }
 
-    function it_is_a_family_variant_reposiutory()
+    function it_is_a_family_variant_repository()
     {
         $this->shouldImplement(FamilyVariantRepositoryInterface::class);
     }
