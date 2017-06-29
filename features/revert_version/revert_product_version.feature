@@ -88,7 +88,7 @@ Feature: Revert a product to a previous version
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change the family of products" operation
     And I change the Family to "Jackets"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "update_product_value" job to finish
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page

@@ -27,7 +27,7 @@ Feature: Unpublish many products at once
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
     Then I should see the text "The 2 selected products will be unpublished"
-    When I move on to the next step
+    When I confirm mass edit
     And I wait for the "unpublish_product" job to finish
     And I am on the published products page
     Then the grid should contain 1 element
@@ -38,5 +38,5 @@ Feature: Unpublish many products at once
     And I select rows red-heels and blue-sneakers
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
-    Then I move on to the next step
+    Then I confirm mass edit
     Then I should be redirected on the published products page

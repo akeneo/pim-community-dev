@@ -41,7 +41,7 @@ Feature: Publish many products at once
     And I select rows unionjack
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "publish_product" job to finish
     And I am on the published products page
     And I should see product unionjack

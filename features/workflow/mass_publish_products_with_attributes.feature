@@ -52,7 +52,7 @@ Feature: Publish many products at once
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see the text "The 2 selected products will be published"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "publish_product" job to finish
     And I am on the published products page
     Then the grid should contain 2 elements
