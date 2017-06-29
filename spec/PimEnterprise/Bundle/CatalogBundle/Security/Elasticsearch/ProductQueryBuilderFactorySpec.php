@@ -50,6 +50,14 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
 
         $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $categoryCodes)->shouldBeCalled();
-        $this->create([])->shouldReturn($pqb);
+        $pqb = $this->create([])->shouldReturn($pqb);
+    }
+
+    function it_throws_an_exception_if_token_is_not_found($tokenStorage)
+    {
+        $tokenStorage->getToken()->willReturn(null);
+
+        $this->shouldThrow(new \LogicException('Token cannot be null on the instantiation of the Product Query Builder.'))
+            ->during('create');
     }
 }
