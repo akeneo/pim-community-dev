@@ -5,7 +5,12 @@ pim_enrich_job_instance_rest_import_get:
 
 pim_enrich_job_instance_rest_import_create:
     path: /rest/import
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:createAction }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:createImportAction }
+    methods: [POST]
+
+pim_enrich_job_instance_rest_export_create:
+    path: /rest/export
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:createExportAction }
     methods: [POST]
 
 pim_enrich_job_instance_rest_import_put:

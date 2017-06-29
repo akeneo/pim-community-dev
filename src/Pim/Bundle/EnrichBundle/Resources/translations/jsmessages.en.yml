@@ -843,6 +843,10 @@ pim_enrich:
         export_profiles:
             title:      Export profile overview
             create_btn: Create export profile
+            create_popin:
+                title: Create a new export profile
+            message:
+                created: Export profile successfully created
         export_history:
             title:      Export reports
         family:

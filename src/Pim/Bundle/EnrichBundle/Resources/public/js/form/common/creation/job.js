@@ -59,11 +59,12 @@ define([
 
         fetchJobs() {
             const url = Routing.generate('pim_enrich_job_instance_rest_jobs_get');
+            const jobType = this.options.config.type;
 
             return $.ajax({
                 url,
                 type: 'GET',
-                data: { jobType: 'import' },
+                data: { jobType },
                 cache: true
             }).done(jobs => {
                 this.jobs = jobs;

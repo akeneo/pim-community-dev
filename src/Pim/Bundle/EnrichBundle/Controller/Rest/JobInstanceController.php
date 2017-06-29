@@ -495,10 +495,20 @@ class JobInstanceController
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
     }
 
-    public function createAction(Request $request)
+    public function createImportAction(Request $request)
+    {
+        return $this->createAction($request, 'import');
+    }
+
+    public function createExportAction(Request $request)
+    {
+        return $this->createAction($request, 'export');
+    }
+
+    protected function createAction(Request $request, $type)
     {
         $data = json_decode($request->getContent(), true);
-        $jobInstance = $this->jobInstanceFactory->createJobInstance('import');
+        $jobInstance = $this->jobInstanceFactory->createJobInstance($type);
         $this->updater->update($jobInstance, $data);
         $violations = $this->validator->validate($jobInstance);
 
