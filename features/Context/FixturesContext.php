@@ -27,13 +27,14 @@ use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -320,7 +321,7 @@ class FixturesContext extends BaseFixturesContext
         $product = $this->getProduct($sku);
 
         foreach ($this->listToArray($attributeCodes) as $code) {
-            $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
+            $this->getProductBuilder()->addAttribute($product, $this->getAttribute($code));
         }
         $this->validate($product);
         $this->getProductSaver()->save($product);
@@ -969,7 +970,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
-            $actualCode = $value instanceof OptionProductValueInterface && $value->getData()
+            $actualCode = $value instanceof OptionValueInterface && $value->getData()
                 ? $value->getData()->getCode() : null;
             assertEquals($optionCode, $actualCode);
         }
@@ -1697,7 +1698,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return ValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1979,7 +1980,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     protected function getProductBuilder()
     {

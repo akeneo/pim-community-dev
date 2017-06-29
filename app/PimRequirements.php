@@ -159,8 +159,7 @@ class PimRequirements extends OroRequirements
     {
         return new PDO(
             sprintf(
-                'mysql:dbname=%s;host=%s',
-                $parameters['parameters']['database_name'],
+                'mysql:host=%s',
                 $parameters['parameters']['database_host']
             ),
             $parameters['parameters']['database_user'],

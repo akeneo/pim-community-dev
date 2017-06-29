@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Contains the state of the unique value for a product, due to EAV model we cannot ensure it via constraints on
@@ -37,12 +37,12 @@ class UniqueValuesSet
     /**
      * Return true if value has been added, else if value already exists inside the set
      *
-     * @param ProductValueInterface $productValue
+     * @param ValueInterface   $productValue
      * @param ProductInterface $product
      *
      * @return bool
      */
-    public function addValue(ProductValueInterface $productValue, ProductInterface $product)
+    public function addValue(ValueInterface $productValue, ProductInterface $product)
     {
         $identifier = $this->getProductId($product);
         $data = $productValue->__toString();

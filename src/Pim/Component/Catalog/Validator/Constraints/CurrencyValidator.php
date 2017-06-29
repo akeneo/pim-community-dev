@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,8 +37,8 @@ class CurrencyValidator extends ConstraintValidator
     /**
      * Validate currency of a price
      *
-     * @param AttributeInterface|MetricInterface|ProductValueInterface $object
-     * @param Constraint                                               $constraint
+     * @param AttributeInterface|MetricInterface|ValueInterface $object
+     * @param Constraint                                        $constraint
      */
     public function validate($object, Constraint $constraint)
     {

@@ -13,7 +13,9 @@ Feature: Create a category
     When I fill in the following information:
       | Code | shoe |
     And I save the category
-    Then I should be on the category "shoe" edit page
+    Then I should not see the text "There are unsaved changes."
+    And I should be on the category "shoe" edit page
+    And The tree "[shoe]" should be open
 
   Scenario: Create a category node
     Given the following category:

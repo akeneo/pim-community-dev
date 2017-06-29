@@ -9,8 +9,8 @@ use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 
 class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
@@ -29,8 +29,8 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $factory,
         ProductInterface $product,
         Collection $uniqueDataCollection,
-        ProductValueCollectionInterface $values,
-        ProductValueInterface $skuValue,
+        ValueCollectionInterface $values,
+        ValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
         ProductUniqueDataInterface $uniqueData
@@ -55,8 +55,8 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $factory,
         ProductInterface $product,
         Collection $uniqueDataCollection,
-        ProductValueCollectionInterface $values,
-        ProductValueInterface $skuValue,
+        ValueCollectionInterface $values,
+        ValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
         ProductUniqueDataInterface $uniqueData

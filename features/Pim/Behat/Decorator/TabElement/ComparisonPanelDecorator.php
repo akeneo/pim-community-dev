@@ -87,7 +87,6 @@ class ComparisonPanelDecorator extends ElementDecorator
 
             return true;
         }, 'Can not switch source ');
-
     }
 
     /**

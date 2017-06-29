@@ -74,7 +74,7 @@ pim_importexport:
       launch: Ein Importprofil ausführen
       history: Import-Profil Historie ansehen
     export_execution:
-      index: Auflistung der Exportprofile
+      index: Auflistung der Export-Reports
       show: Export-Reportdetails anzeigen
       dl_log: Export-Report Logdatei herunterladen
       dl_files: Exportierte Dateien herunterladen

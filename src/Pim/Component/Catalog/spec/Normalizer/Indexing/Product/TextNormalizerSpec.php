@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\TextNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,8 +21,8 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_supports_text_product_value(
-        ProductValueInterface $numberValue,
-        ProductValueInterface $textValue,
+        ValueInterface $numberValue,
+        ValueInterface $textValue,
         AttributeInterface $numberAttribute,
         AttributeInterface $textAttribute
     ) {
@@ -41,7 +41,7 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_text_product_value_with_no_locale_and_no_channel(
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {
         $textValue->getAttribute()->willReturn($textAttribute);
@@ -62,7 +62,7 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_keeps_the_string_as_is_during_normalization(
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {
         $textValue->getAttribute()->willReturn($textAttribute);
@@ -83,7 +83,7 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_text_with_no_locale_and_channel(
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {
         $textValue->getAttribute()->willReturn($textAttribute);
@@ -104,7 +104,7 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_text_product_value_with_locale_and_no_scope(
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {
         $textValue->getAttribute()->willReturn($textAttribute);
@@ -125,7 +125,7 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_text_product_value_with_scope_and_no_locale(
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {
         $textValue->getAttribute()->willReturn($textAttribute);
@@ -146,7 +146,7 @@ class TextNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_text_product_value_with_locale_and_scope(
-        ProductValueInterface $textValue,
+        ValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {
         $textValue->getAttribute()->willReturn($textAttribute);

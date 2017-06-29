@@ -12,14 +12,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -31,7 +31,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductValueFactory $productValueFactory,
+        ValueFactory $productValueFactory,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -86,8 +86,8 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductInterface $addedProduct,
         ProductTemplateInterface $productTemplate,
         ProductQueryBuilderInterface $pqb,
-        ProductValueCollectionInterface $originalValueCollection,
-        ProductValueInterface $whiteValue
+        ValueCollectionInterface $originalValueCollection,
+        ValueInterface $whiteValue
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -159,9 +159,9 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductInterface $addedProduct,
         ProductTemplateInterface $productTemplate,
         ProductQueryBuilderInterface $pqb,
-        ProductValueCollectionInterface $originalValueCollection,
+        ValueCollectionInterface $originalValueCollection,
         FileInfoInterface $fileInfo,
-        ProductValueInterface $pictureValue
+        ValueInterface $pictureValue
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -227,7 +227,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         GroupTypeInterface $type,
         ProductTemplateInterface $productTemplate,
-        ProductValueCollectionInterface $originalValueCollection
+        ValueCollectionInterface $originalValueCollection
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');

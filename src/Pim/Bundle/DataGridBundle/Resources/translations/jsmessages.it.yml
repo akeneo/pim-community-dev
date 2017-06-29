@@ -38,7 +38,7 @@ oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
 oro_datagrid.select.all: "Tutto"
 oro_datagrid.select.visible: "Tutti visibili"
-oro_datagrid.select.none: "Nessun"
+oro_datagrid.select.none: "Nessuno"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
 pim.grid.choice_filter:
@@ -86,4 +86,4 @@ grid.view_selector:
   confirmation:
     remove: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
     delete: Conferma cancellazione
-grid.view_selector.flash.updated: La griglia di dati è stata caricata con successo
+grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo

@@ -9,13 +9,13 @@ use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -29,7 +29,7 @@ use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
  */
 class VariantGroupUpdater extends GroupUpdater
 {
-    /** @var ProductValueFactory */
+    /** @var ValueFactory */
     protected $productValueFactory;
 
     /** @var FileInfoRepositoryInterface */
@@ -44,7 +44,7 @@ class VariantGroupUpdater extends GroupUpdater
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param ProductValueFactory                 $productValueFactory
+     * @param ValueFactory                        $productValueFactory
      * @param FileInfoRepositoryInterface         $fileInfoRepository
      * @param FileStorerInterface                 $fileStorer
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
@@ -53,7 +53,7 @@ class VariantGroupUpdater extends GroupUpdater
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductValueFactory $productValueFactory,
+        ValueFactory $productValueFactory,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
@@ -147,7 +147,7 @@ class VariantGroupUpdater extends GroupUpdater
         $templateProductValues = $template->getValues();
 
         if (null === $templateProductValues) {
-            $templateProductValues = new ProductValueCollection();
+            $templateProductValues = new ValueCollection();
         }
         $mergedValues = $this->updateTemplateValues($templateProductValues, $newValues);
 
@@ -162,12 +162,12 @@ class VariantGroupUpdater extends GroupUpdater
      * New values respect the standard format, so we can use the product updater
      * on a temporary product.
      *
-     * @param ProductValueCollectionInterface $templateProductValues
-     * @param array                           $newValues
+     * @param ValueCollectionInterface $templateProductValues
+     * @param array                    $newValues
      *
-     * @return ProductValueCollectionInterface
+     * @return ValueCollectionInterface
      */
-    protected function updateTemplateValues(ProductValueCollectionInterface $templateProductValues, array $newValues)
+    protected function updateTemplateValues(ValueCollectionInterface $templateProductValues, array $newValues)
     {
         foreach ($newValues as $attributeCode => $newValue) {
             $attribute = $this->getAttributeOrThrowException($attributeCode);

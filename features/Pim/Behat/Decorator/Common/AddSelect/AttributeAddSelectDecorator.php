@@ -15,24 +15,31 @@ class AttributeAddSelectDecorator extends AbstractAddSelectDecorator
     protected $baseClass = '.add-attribute';
 
     /**
-     * @param $item
-     * @param $group
+     * Checks if the add attribute selector has an option.
+     * If the optional parameter $groupLabel is set, it will check if the option belongs to this group.
+     *
+     * @param string      $optionLabel
+     * @param string|null $groupLabel
      *
      * @return bool
      */
-    public function hasAvailableOptionGroupPair($item, $group)
+    public function hasAvailableOption($optionLabel, $groupLabel = null)
     {
         $result = false;
 
         $attribute = $this->openDropList()
-            ->evaluateSearch($item)
-            ->getResultForSearch($item);
+            ->evaluateSearch($optionLabel)
+            ->getResultForSearch($optionLabel);
 
         if (null !== $attribute) {
-            $groupElement = $attribute->getParent()
-                ->find('css', '.group-label');
+            $result = true;
 
-            $result = trim($groupElement->getText()) === $group;
+            if (null !== $groupLabel) {
+                $groupElement = $attribute->getParent()
+                    ->find('css', '.group-label');
+
+                $result = trim($groupElement->getText()) === $groupLabel;
+            }
         }
 
         $this->closeDropList();

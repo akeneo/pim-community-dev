@@ -32,6 +32,33 @@
 ### Classes
 
 - Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
+- PIM-6442: Rename `Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractProductValueDataNormalizer` to `Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractValueDataNormalizer`
+- PIM-6442: Rename `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer` to `Pim\Bundle\VersioningBundle\Normalizer\Flat\ValueNormalizer`
+- PIM-6442: Rename `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker` to `Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker`
+- PIM-6442: Rename `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface` to `Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory` to `Pim\Component\Catalog\Factory\Value\DateValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory` to `Pim\Component\Catalog\Factory\Value\MediaValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory` to `Pim\Component\Catalog\Factory\Value\MetricValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory` to `Pim\Component\Catalog\Factory\Value\OptionValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory` to `Pim\Component\Catalog\Factory\Value\OptionsValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory` to `Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface` to `Pim\Component\Catalog\Factory\Value\ValueFactoryInterface`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory` to `Pim\Component\Catalog\Factory\Value\ScalarValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueCollectionFactory` to `Pim\Component\Catalog\Factory\ProductValueCollectionFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueFactory` to `Pim\Component\Catalog\Factory\ValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\DateProductValue` to `Pim\Component\Catalog\Value\DateValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MediaProductValue` to `Pim\Component\Catalog\Value\MediaValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MetricProductValue` to `Pim\Component\Catalog\Value\MetricValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionProductValue` to `Pim\Component\Catalog\Value\OptionValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionsProductValue` to `Pim\Component\Catalog\Value\OptionsValue`
+- PIM-6442: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Value`
+- PIM-6442: Rename `Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter` to `Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter`
+- PIM-6442: Rename `Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter` to `Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter`
+- PIM-6442: Rename `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory` to `Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory`
+- PIM-6442: Rename `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory` to `Pim\Component\ReferenceData\Factory\Value\ReferenceDataValueFactory`
+- PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue`
+- PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
+- PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 
 ### Constructors
 
@@ -83,8 +110,23 @@
 - Change the constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor` to remove `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\ProductDatasource` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
-- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
-- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\ProductUpdater` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface` as the 3rd argument.
+- Change the constructor of `Pim\Component\Catalog\Converter\MetricConverter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\AbstractAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\AttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
 
 ### Others
 
@@ -167,10 +209,58 @@
 - Remove all standard denormalizers classes `Pim\Component\Catalog\Denormalizer\Standard\*` and services `pim_catalog.denormalizer.standard.*`
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
-
-### Methods
-
 - Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
+- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
+- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
+- Remove methods `addAttributeToProduct` and `addOrReplaceProductValue` from `Pim\Component\Catalog\Builder\ProductBuilderInterface`. 
+    These methods are now in `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` and have been renamed to `addAttribute` and `addOrReplaceValue`. 
+    For both methods, the `Pim\Component\Catalog\Model\ProductInterface` has been replaced by `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
+- Remove methods `getRawValues`, `setRawValues`, `getValues`, `setValues`, `getValue`, `addValue`, `removeValue`, `getAttributes`, `hasAttribute` and `getUsedAttributeCodes` from `Pim\Component\Catalog\Model\ProductInterface`.
+    These methods are now in the `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
+- Change method `convert` of `Pim\Component\Catalog\Converter\MetricConverter` to use `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` instead of a `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+- Change method `addAttributeData` of `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `copyAttributeData` of `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface` to use 2 `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of 2 `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `removeAttributeData` of `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `setAttributeData` of `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`. 
+- Rename class `pim_catalog.factory.product_value_collection.class` to `pim_catalog.factory.value_collection.class`
+- Rename class `pim_catalog.factory.product_value.class` to `pim_catalog.factory.value.class`
+- Rename class `pim_catalog.factory.product_value.scalar.class` to `pim_catalog.factory.value.scalar.class`
+- Rename class `pim_catalog.factory.product_value.metric.class` to `pim_catalog.factory.value.metric.class`
+- Rename class `pim_catalog.factory.product_value.price_collection.class` to `pim_catalog.factory.value.price_collection.class`
+- Rename class `pim_catalog.factory.product_value.option.class` to `pim_catalog.factory.value.option.class`
+- Rename class `pim_catalog.factory.product_value.options.class` to `pim_catalog.factory.value.options.class`
+- Rename class `pim_catalog.factory.product_value.media.class` to `pim_catalog.factory.value.media.class`
+- Rename class `pim_catalog.factory.product_value.date.class` to `pim_catalog.factory.value.date.class`
+- Rename class `pim_serializer.normalizer.flat.product_value.class` to `pim_serializer.normalizer.flat.value.class`
+- Rename class `pim_catalog.entity.product_value.scalar.class` to `pim_catalog.entity.value.scalar.class`
+- Rename class `pim_catalog.entity.product_value.media.class` to `pim_catalog.entity.value.media.class`
+- Rename class `pim_catalog.entity.product_value.metric.class` to `pim_catalog.entity.value.metric.class`
+- Rename class `pim_catalog.entity.product_value.option.class` to `pim_catalog.entity.value.option.class`
+- Rename class `pim_catalog.entity.product_value.options.class` to `pim_catalog.entity.value.options.class`
+- Rename class `pim_catalog.entity.product_value.date.class` to `pim_catalog.entity.value.date.class`
+- Rename class `pim_catalog.entity.product_value.price_collection.class` to `pim_catalog.entity.value.price_collection.class`
+- Rename class `pim_enrich.converter.standard_to_enrich.product_value.class` to `pim_enrich.converter.standard_to_enrich.value.class`
+- Rename class `pim_enrich.converter.enrich_to_standard.product_value.class` to `pim_enrich.converter.enrich_to_standard.value.class`
+- Rename class `pim_reference_data.factory.product_value.reference_data.class` to `pim_reference_data.factory.value.reference_data.class`
+- Rename class `pim_reference_data.factory.product_value.reference_data_collection.class` to `pim_reference_data.factory.value.reference_data_collection.class`
+- Rename class `pim_reference_data.product_value.reference_data.class` to `pim_reference_data.value.reference_data.class`
+- Rename class `pim_reference_data.product_value.reference_data_collection.class` to `pim_reference_data.value.reference_data_collection.class`
+- Rename service `pim_catalog.factory.product_value` to `pim_catalog.factory.value`
+- Rename service `pim_catalog.factory.product_value_collection` to `pim_catalog.factory.value_collection`
+- Rename service `pim_catalog.factory.product_value.text` to `pim_catalog.factory.value.text`
+- Rename service `pim_catalog.factory.product_value.textarea` to `pim_catalog.factory.value.textarea`
+- Rename service `pim_catalog.factory.product_value.number` to `pim_catalog.factory.value.number`
+- Rename service `pim_catalog.factory.product_value.boolean` to `pim_catalog.factory.value.boolean`
+- Rename service `pim_catalog.factory.product_value.identifier` to `pim_catalog.factory.value.identifier`
+- Rename service `pim_catalog.factory.product_value.metric` to `pim_catalog.factory.value.metric`
+- Rename service `pim_catalog.factory.product_value.price_collection` to `pim_catalog.factory.value.price_collection`
+- Rename service `pim_catalog.factory.product_value.option` to `pim_catalog.factory.value.option`
+- Rename service `pim_catalog.factory.product_value.options` to `pim_catalog.factory.value.options`
+- Rename service `pim_catalog.factory.product_value.file` to `pim_catalog.factory.value.file`
+- Rename service `pim_catalog.factory.product_value.image` to `pim_catalog.factory.value.image`
+- Rename service `pim_catalog.factory.product_value.date` to `pim_catalog.factory.value.date`
+- Rename service `pim_catalog.model.product_value.interface` to `pim_catalog.model.value.interface`
+- Rename service `pim_versioning.serializer.normalizer.flat.product_value` to `pim_versioning.serializer.normalizer.flat.value`
 
 ## Requirements
 

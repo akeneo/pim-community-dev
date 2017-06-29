@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 
@@ -34,7 +34,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $form,
         FormInterface $field,
         FormInterface $rootForm,
-        ProductValueInterface $taxValue,
+        ValueInterface $taxValue,
         AttributeInterface $taxAttribute
     ) {
         $event->getForm()->willReturn($form);
@@ -54,7 +54,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $form,
         FormInterface $field,
         FormInterface $rootForm,
-        ProductValueInterface $taxValue,
+        ValueInterface $taxValue,
         AttributeInterface $taxAttribute
     ) {
         $event->getForm()->willReturn($form);
@@ -77,7 +77,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $form,
         FormInterface $field,
         FormInterface $rootForm,
-        ProductValueInterface $nameValue,
+        ValueInterface $nameValue,
         AttributeInterface $nameAttribute
     ) {
         $event->getForm()->willReturn($form);

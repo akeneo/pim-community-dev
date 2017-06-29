@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Provides util methods to ease the query building in MongoDB
@@ -56,11 +56,11 @@ class ProductQueryUtility
     /**
      * Normalize the field name for value
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return string
      */
-    public static function getNormalizedValueFieldFromValue(ProductValueInterface $value)
+    public static function getNormalizedValueFieldFromValue(ValueInterface $value)
     {
         return self::getNormalizedValueField($value->getAttribute(), $value->getLocale(), $value->getScope());
     }
