@@ -275,7 +275,7 @@ class FixturesLoader
             '-h '.$this->container->getParameter('database_host'),
             '-u '.$this->container->getParameter('database_user'),
             '-p'.$this->container->getParameter('database_password'),
-            sprintf('-e "DROP DATABASE %s;"', $this->container->getParameter('database_name')),
+            sprintf('-e "DROP DATABASE IF EXISTS %s;"', $this->container->getParameter('database_name')),
         ]);
     }
 
