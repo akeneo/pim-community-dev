@@ -1103,9 +1103,11 @@ class Grid extends Index
 
     /**
      * Returns true if the loading mask is visible
+     *
      * @return bool
      */
-    protected function isLoadingMaskVisible() {
+    protected function isLoadingMaskVisible()
+    {
         $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
 
         return (null !== $loadingWrapper && $loadingWrapper->isVisible());

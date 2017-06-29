@@ -37,6 +37,3 @@ datagrid:
                 icon:      list-alt
                 link:      show_link
                 rowAction: true
-        sorters:
-            default:
-                date: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'

@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension;
 
 /**
  * A listener to add JobCode for "job instance show" pages
@@ -41,5 +43,6 @@ class AddJobCodeToGridListener
 
         $qb = $dataSource->getQueryBuilder();
         $qb->andWhere($qb->expr()->eq('j.code', ':jobCode'));
+        $qb->orderBy('e.startTime', OrmSorterExtension::DIRECTION_DESC);
     }
 }
