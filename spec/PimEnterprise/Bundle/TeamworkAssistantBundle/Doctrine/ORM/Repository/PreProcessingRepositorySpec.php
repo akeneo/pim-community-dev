@@ -71,43 +71,4 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $this->prepareProjectCalculation($project)->shouldReturn(null);
     }
-
-    function it_links_between_product_and_category(
-        $connection,
-        $tableNameMapper,
-        ProductInterface $product,
-        CategoryInterface $category,
-        CategoryInterface $otherCategory,
-        ArrayCollection $categories,
-        \Iterator $iterator
-    ) {
-        $categories->getIterator()->willReturn($iterator);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->valid()->willReturn(true, true, false);
-        $iterator->current()->willReturn($category, $otherCategory);
-        $iterator->next()->shouldBeCalled();
-
-        $category->getId()->willReturn(40);
-        $otherCategory->getId()->willReturn(33);
-        $product->getId()->willReturn('fdsqf121s3s'); // mongo
-
-        $tableNameMapper->getTableName('pimee_teamwork_assistant.product_category')
-            ->willReturn('pimee_teamwork_assistant_product_category');
-
-        $connection->delete('pimee_teamwork_assistant_product_category', [
-            'product_id' => 'fdsqf121s3s'
-        ])->shouldBeCalled();
-
-        $connection->insert('pimee_teamwork_assistant_product_category', [
-            'product_id' => 'fdsqf121s3s',
-            'category_id' => 40,
-        ])->shouldBeCalled();
-
-        $connection->insert('pimee_teamwork_assistant_product_category', [
-            'product_id' => 'fdsqf121s3s',
-            'category_id' => 33,
-        ])->shouldBeCalled();
-
-        $this->link($product, $categories)->shouldReturn(null);
-    }
 }

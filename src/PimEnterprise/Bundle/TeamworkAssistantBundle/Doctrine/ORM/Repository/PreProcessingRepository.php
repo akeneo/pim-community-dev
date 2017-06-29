@@ -149,27 +149,6 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function link(ProductInterface $product, Collection $categories)
-    {
-        $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.product_category');
-        $productId = $product->getId();
-
-        $connection->delete($sqlTable, [
-            'product_id' => $productId
-        ]);
-
-        foreach ($categories as $category) {
-            $connection->insert($sqlTable, [
-                'product_id'  => $productId,
-                'category_id' => $category->getId(),
-            ]);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function prepareProjectCalculation(ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();

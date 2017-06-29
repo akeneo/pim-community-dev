@@ -1,7 +1,7 @@
 parameters:
     pimee_teamwork_assistant.project_calculation.connector_name: 'teamwork assistant'
 
-    ### Project calulcation job
+    ### Project calculation job
     pimee_teamwork_assistant.project_calculation.job_name: 'project_calculation'
     pimee_teamwork_assistant.project_calculation.job_type: 'project_calculation'
     pimee_teamwork_assistant.prepare_project_calculation.tasklet_name: 'prepare_project_calculation'
@@ -14,7 +14,6 @@ parameters:
     pimee_teamwork_assistant.calculation_step.chained.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep'
     pimee_teamwork_assistant.calculation_step.add_user_group.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddUserGroupStep'
     pimee_teamwork_assistant.calculation_step.add_product.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddProductStep'
-    pimee_teamwork_assistant.calculation_step.link_product_category.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\LinkProductAndCategoryStep'
     pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep'
     pimee_teamwork_assistant.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher'
     pimee_teamwork_assistant.job.project_calculation_parameter.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationJobParameters'
@@ -116,14 +115,6 @@ services:
         public: false
         tags:
             - { name: pimee_teamwork_assistant.calculation_step, priority: 200 }
-
-    pimee_teamwork_assistant.calculation_step.link_product_category:
-        class: '%pimee_teamwork_assistant.calculation_step.link_product_category.class%'
-        arguments:
-            - '@pimee_teamwork_assistant.repository.pre_processing'
-        public: false
-        tags:
-            - { name: pimee_teamwork_assistant.calculation_step, priority: 300 }
 
     pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness:
         class: '%pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness.class%'

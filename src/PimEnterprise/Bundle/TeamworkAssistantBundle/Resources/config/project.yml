@@ -18,7 +18,6 @@ parameters:
     pimee_teamwork_assistant.doctrine.cursor_factory.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory'
     pimee_teamwork_assistant.doctrine.cursor.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor'
     pimee_teamwork_assistant.validator.project_identifier.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator'
-    pimee_teamwork_assistant.validator.project_identifier.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator'
     pimee_teamwork_assistant.validator.locale.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator'
     pimee_teamwork_assistant.validator.due_date.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator'
     pimee_teamwork_assistant.factory.project_status.class: 'PimEnterprise\Component\TeamworkAssistant\Factory\ProjectStatusFactory'
