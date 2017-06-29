@@ -174,7 +174,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     public function getFamilyVariants(): Collection;
 
     /**
-     * @param ArrayCollection $familyVariants
+     * @param Collection $familyVariants
      */
-    public function setFamilyVariants(ArrayCollection $familyVariants);
+    public function setFamilyVariants(Collection $familyVariants): void;
 }

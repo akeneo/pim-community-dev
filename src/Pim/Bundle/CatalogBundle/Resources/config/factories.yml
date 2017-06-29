@@ -34,10 +34,10 @@ services:
         arguments:
             - '%pim_catalog.entity.family_variant.class%'
 
-    pim_catalog.factory.attribute_set:
+    pim_catalog.factory.variant_attribute_set:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - '%pim_catalog.entity.attribute_set.class%'
+            - '%pim_catalog.entity.variant_attribute_set.class%'
 
     pim_catalog.factory.channel:
         class: '%akeneo_storage_utils.factory.simple.class%'

@@ -4,8 +4,11 @@ namespace spec\Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeSetInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
+use Pim\Component\Catalog\Model\CommonAttributeCollection;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
@@ -28,18 +31,45 @@ class FamilyVariantSpec extends ObjectBehavior
         $this->shouldImplement(TranslatableInterface::class);
     }
 
-    function it_adds_common_attribute_set(AttributeSetInterface $variantAttributeSets)
-    {
-        $this->addCommonAttributeSet($variantAttributeSets)->shouldReturn(null);
-        $this->getCommonAttributeSet()->shouldReturn($variantAttributeSets);
+    function it_gets_common_attribute_set(
+        VariantAttributeSetInterface $variantAttributeSet1,
+        VariantAttributeSetInterface $variantAttributeSet2,
+        FamilyInterface $family,
+        Collection $familyAttributes,
+        AttributeInterface $name,
+        AttributeInterface $color,
+        AttributeInterface $size,
+        Collection $axes1,
+        Collection $axes2,
+        Collection $attribute1,
+        Collection $attribute2,
+        \Iterator $iterator
+    ) {
+        $this->addVariantAttributeSet(1, $variantAttributeSet1);
+        $this->addVariantAttributeSet(2, $variantAttributeSet2);
+        $this->setFamily($family);
+
+        $family->getAttributes()->willReturn($familyAttributes);
+        $familyAttributes->toArray()->willReturn([$name, $color, $size]);
+
+        $axes1->getIterator()->willReturn($iterator);
+        $variantAttributeSet1->getAxes()->willReturn($axes1);
+        $attribute1->getIterator()->willReturn($iterator);
+        $variantAttributeSet1->getAttributes()->willReturn($attribute1);
+
+        $axes2->getIterator()->willReturn($iterator);
+        $variantAttributeSet2->getAxes()->willReturn($axes2);
+
+        $attribute2->getIterator()->willReturn($iterator);
+        $variantAttributeSet2->getAttributes()->willReturn($attribute2);
+
+        $this->getCommonAttributes()->shouldHaveType(CommonAttributeCollection::class);
     }
 
     function it_adds_variant_attribute_set(
-        AttributeSetInterface $commonAttributeSet,
-        AttributeSetInterface $variantAttributeSet1,
-        AttributeSetInterface $variantAttributeSet2
+        VariantAttributeSetInterface $variantAttributeSet1,
+        VariantAttributeSetInterface $variantAttributeSet2
     ) {
-        $this->addCommonAttributeSet($commonAttributeSet)->shouldReturn(null);
         $this->addVariantAttributeSet(1, $variantAttributeSet1)->shouldReturn(null);
         $this->addVariantAttributeSet(2, $variantAttributeSet2)->shouldReturn(null);
 
@@ -48,15 +78,13 @@ class FamilyVariantSpec extends ObjectBehavior
     }
 
     function it_has_axes(
-        AttributeSetInterface $commonAttributeSet,
-        AttributeSetInterface $variantAttributeSet1,
-        AttributeSetInterface $variantAttributeSet2,
+        VariantAttributeSetInterface $variantAttributeSet1,
+        VariantAttributeSetInterface $variantAttributeSet2,
         ArrayCollection $axes1,
         ArrayCollection $axes2,
         AttributeInterface $color,
         AttributeInterface $size
     ) {
-        $this->addCommonAttributeSet($commonAttributeSet);
         $this->addVariantAttributeSet(1, $variantAttributeSet1);
         $this->addVariantAttributeSet(2, $variantAttributeSet2);
 
@@ -72,9 +100,9 @@ class FamilyVariantSpec extends ObjectBehavior
     }
 
     function it_has_attributes(
-        AttributeSetInterface $commonAttributeSet,
-        AttributeSetInterface $variantAttributeSet1,
-        AttributeSetInterface $variantAttributeSet2,
+        VariantAttributeSetInterface $commonAttributeSet,
+        VariantAttributeSetInterface $variantAttributeSet1,
+        VariantAttributeSetInterface $variantAttributeSet2,
         ArrayCollection $commonAttributes,
         ArrayCollection $attributes1,
         ArrayCollection $attributes2,
@@ -82,7 +110,6 @@ class FamilyVariantSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $size
     ) {
-        $this->addCommonAttributeSet($commonAttributeSet);
         $this->addVariantAttributeSet(1, $variantAttributeSet1);
         $this->addVariantAttributeSet(2, $variantAttributeSet2);
 
@@ -100,7 +127,7 @@ class FamilyVariantSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_variant_attribute_set_index_is_invalid(
-        AttributeSetInterface $variantAttributeSets
+        VariantAttributeSetInterface $variantAttributeSets
     ) {
         $this->shouldThrow(\InvalidArgumentException::class)->during('addVariantAttributeSet', [
             0,
