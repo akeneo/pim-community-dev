@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -54,7 +52,13 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     protected function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $parentId = null;
+            if (isset($product['parent'])) {
+                $parentId = $product['parent'];
+                unset($product['parent']);
+            }
+
+            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $parentId, $product);
         }
 
         $this->esClient->refreshIndex();

@@ -49,12 +49,13 @@ class Client
     /**
      * @param string       $indexType
      * @param string       $id
+     * @param string       $parent
      * @param array        $body
      * @param Refresh|null $refresh
      *
-     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
+     * @return array see <a href='psi_element://https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}'>https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}</a>
      */
-    public function index($indexType, $id, array $body, Refresh $refresh = null)
+    public function index($indexType, $id, $parent, array $body, Refresh $refresh = null)
     {
         $params = [
             'index' => $this->indexName,
@@ -65,6 +66,10 @@ class Client
 
         if (null !== $refresh) {
             $params['refresh'] = $refresh->getType();
+        }
+
+        if (null !== $parent) {
+            $params['parent'] = $parent;
         }
 
         return $this->client->index($params);
