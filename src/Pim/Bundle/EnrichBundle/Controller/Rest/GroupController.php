@@ -58,6 +58,9 @@ class GroupController
     /** @var GroupFactory */
     protected $groupFactory;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param GroupRepositoryInterface   $groupRepository
      * @param ProductRepositoryInterface $productRepository
@@ -69,6 +72,7 @@ class GroupController
      * @param SaverInterface             $saver
      * @param RemoverInterface           $remover
      * @param GroupFactory               $groupFactory
+     * @param NormalizerInterface        $constraintViolationNormalizer
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -80,7 +84,8 @@ class GroupController
         NormalizerInterface $violationNormalizer,
         SaverInterface $saver,
         RemoverInterface $remover,
-        GroupFactory $groupFactory
+        GroupFactory $groupFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
@@ -92,6 +97,7 @@ class GroupController
         $this->validator = $validator;
         $this->remover = $remover;
         $this->groupFactory = $groupFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -230,10 +236,18 @@ class GroupController
         $group = $this->groupFactory->createGroup();
         $this->updater->update($group, $data);
         $violations = $this->validator->validate($group);
-        $errors = $this->formatValidationErrors($violations);
 
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['group' => $group]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($group);

@@ -68,6 +68,9 @@ class FamilyController
         'labels',
     ];
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param FamilyRepositoryInterface  $familyRepository
      * @param NormalizerInterface        $normalizer
@@ -78,6 +81,7 @@ class FamilyController
      * @param ValidatorInterface         $validator
      * @param SecurityFacade             $securityFacade
      * @param FamilyFactory              $familyFactory
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -88,7 +92,8 @@ class FamilyController
         RemoverInterface $remover,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade,
-        FamilyFactory $familyFactory
+        FamilyFactory $familyFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->familyRepository = $familyRepository;
         $this->normalizer = $normalizer;
@@ -99,6 +104,7 @@ class FamilyController
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
         $this->familyFactory = $familyFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -275,21 +281,19 @@ class FamilyController
     {
         $family = $this->familyFactory->create();
         $this->updater->update($family, json_decode($request->getContent(), true));
-
         $violations = $this->validator->validate($family);
-        $errors = [];
-        
-        if ($violations->count() > 0) {
-            foreach ($violations as $error) {
-                $errors['values'][] = [
-                    'attribute' => $error->getPropertyPath(),
-                    'message' =>  $error->getMessage()
-                ];
-            }
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['family' => $family]
+            );
         }
 
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($family);

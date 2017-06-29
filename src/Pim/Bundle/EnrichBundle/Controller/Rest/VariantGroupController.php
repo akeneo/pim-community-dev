@@ -64,6 +64,9 @@ class VariantGroupController
     /** @var GroupFactory */
     protected $groupFactory;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param GroupRepositoryInterface $repository
      * @param NormalizerInterface                       $normalizer
@@ -77,6 +80,7 @@ class VariantGroupController
      * @param CollectionFilterInterface                 $variantGroupDataFilter
      * @param ConverterInterface                        $productValueConverter
      * @param GroupFactory                              $groupFactory
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         GroupRepositoryInterface $repository,
@@ -90,7 +94,8 @@ class VariantGroupController
         NormalizerInterface $violationNormalizer,
         CollectionFilterInterface $variantGroupDataFilter,
         ConverterInterface $productValueConverter,
-        GroupFactory $groupFactory
+        GroupFactory $groupFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -104,6 +109,7 @@ class VariantGroupController
         $this->variantGroupDataFilter = $variantGroupDataFilter;
         $this->productValueConverter = $productValueConverter;
         $this->groupFactory = $groupFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -268,10 +274,18 @@ class VariantGroupController
         $group = $this->groupFactory->createGroup('VARIANT');
         $this->updater->update($group, $data);
         $violations = $this->validator->validate($group);
-        $errors = $this->formatValidationErrors($violations);
 
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['variantGroup' => $group]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($group);

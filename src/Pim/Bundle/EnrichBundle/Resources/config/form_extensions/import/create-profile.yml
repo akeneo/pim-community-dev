@@ -30,4 +30,5 @@ extensions:
         parent: pim-import-profile-create-modal
         position: 30
         config:
-          identifier: jobName
+          identifier: job_name
+          label: Job

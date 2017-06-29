@@ -61,9 +61,7 @@ define(
                     identifier: this.identifier,
                     label: __(this.config.label),
                     requiredLabel: __('pim_enrich.form.required'),
-                    errors: errors.filter(error => {
-                      return error.attribute === this.identifier;
-                    }),
+                    errors: errors.filter(error => error.path === this.identifier),
                     value: this.getFormData()[this.identifier]
                 }));
 

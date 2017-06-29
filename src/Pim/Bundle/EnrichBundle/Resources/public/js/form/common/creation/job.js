@@ -76,12 +76,10 @@ define([
             const identifier = this.options.config.identifier || 'alias';
 
             this.$el.html(this.template({
-                label: __('pim_enrich.form.group.tab.properties.type'),
+                label: __(this.options.config.label),
                 jobs: this.jobs,
                 required: __('pim_enrich.form.required'),
-                errors: errors.filter(error => {
-                    return error.attribute === identifier;
-                }),
+                errors: errors.filter(error => error.path === identifier),
                 __
             }));
 

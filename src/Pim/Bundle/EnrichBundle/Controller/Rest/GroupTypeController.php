@@ -50,6 +50,9 @@ class GroupTypeController
     /** @var GroupTypeFactory */
     protected $groupTypeFactory;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepo
      * @param NormalizerInterface          $normalizer
@@ -59,6 +62,7 @@ class GroupTypeController
      * @param ValidatorInterface           $validator
      * @param UserContext                  $userContext
      * @param groupTypeFactory             $groupTypeFactory
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepo,
@@ -68,7 +72,8 @@ class GroupTypeController
         SaverInterface $saver,
         ValidatorInterface $validator,
         UserContext $userContext,
-        groupTypeFactory $groupTypeFactory
+        groupTypeFactory $groupTypeFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->groupTypeRepo = $groupTypeRepo;
         $this->normalizer = $normalizer;
@@ -78,6 +83,7 @@ class GroupTypeController
         $this->validator = $validator;
         $this->userContext = $userContext;
         $this->groupTypeFactory = $groupTypeFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -218,11 +224,19 @@ class GroupTypeController
     {
         $groupType = $this->groupTypeFactory->create();
         $this->updater->update($groupType, json_decode($request->getContent(), true));
+        $violations = $this->validator->validate($groupType);
 
-        $errors = $this->getValidationErrors($groupType);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['groupType' => $groupType]
+            );
+        }
 
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($groupType);

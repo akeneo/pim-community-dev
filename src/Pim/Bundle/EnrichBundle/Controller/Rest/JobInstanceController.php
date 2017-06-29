@@ -79,6 +79,9 @@ class JobInstanceController
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -95,6 +98,7 @@ class JobInstanceController
      * @param RouterInterface                       $router
      * @param FormProviderInterface                 $formProvider
      * @param ObjectFilterInterface                 $objectFilter
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -111,7 +115,8 @@ class JobInstanceController
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
         FormProviderInterface $formProvider,
-        ObjectFilterInterface $objectFilter
+        ObjectFilterInterface $objectFilter,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -128,6 +133,7 @@ class JobInstanceController
         $this->router                = $router;
         $this->formProvider          = $formProvider;
         $this->objectFilter          = $objectFilter;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -494,19 +500,19 @@ class JobInstanceController
         $data = json_decode($request->getContent(), true);
         $jobInstance = $this->jobInstanceFactory->createJobInstance('import');
         $this->updater->update($jobInstance, $data);
-        $errors = $this->getValidationErrors($jobInstance);
+        $violations = $this->validator->validate($jobInstance);
 
-        if (count($errors) > 0) {
-            $formattedErrors = [];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['jobInstance' => $jobInstance]
+            );
+        }
 
-            foreach ($errors as $key => $error) {
-                $formattedErrors['values'][] = [
-                  'attribute' => $key,
-                  'message' => $error
-                ];
-            }
-
-            return new JsonResponse($formattedErrors, 400);
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($jobInstance);

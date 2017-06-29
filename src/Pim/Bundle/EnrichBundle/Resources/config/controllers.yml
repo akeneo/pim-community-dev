@@ -193,6 +193,7 @@ services:
             - '@pim_catalog.saver.association_type'
             - '@validator'
             - '@pim_user.context.user'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.group_type:
         class: '%pim_enrich.controller.rest.group_type.class%'
@@ -205,6 +206,7 @@ services:
             - '@validator'
             - '@pim_user.context.user'
             - '@pim_catalog.factory.group_type'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'
@@ -267,6 +269,7 @@ services:
             - '@validator'
             - '@oro_security.security_facade'
             - '@pim_catalog.factory.family'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.form_extension:
         class: '%pim_enrich.controller.rest.form_extension.class%'
@@ -286,6 +289,7 @@ services:
             - '@pim_catalog.saver.group'
             - '@pim_catalog.remover.group'
             - '@pim_catalog.factory.group'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.locale:
         class: '%pim_enrich.controller.rest.locale.class%'
@@ -359,6 +363,7 @@ services:
             - '@pim_enrich.filter.variant_group_edit_data'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_catalog.factory.group'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.variant_group_attribute:
         class: '%pim_enrich.controller.rest.variant_group_attribute.class%'
@@ -399,6 +404,7 @@ services:
             - '@router'
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.job_execution:
         class: '%pim_enrich.controller.rest.job_execution.class%'

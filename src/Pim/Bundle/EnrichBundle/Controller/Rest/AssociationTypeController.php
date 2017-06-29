@@ -48,6 +48,9 @@ class AssociationTypeController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param AssociationTypeRepositoryInterface $associationTypeRepo
      * @param NormalizerInterface                $normalizer
@@ -56,6 +59,7 @@ class AssociationTypeController
      * @param SaverInterface                     $saver
      * @param ValidatorInterface                 $validator
      * @param UserContext                        $userContext
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         AssociationTypeRepositoryInterface $associationTypeRepo,
@@ -64,7 +68,8 @@ class AssociationTypeController
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         ValidatorInterface $validator,
-        UserContext $userContext
+        UserContext $userContext,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->associationTypeRepo = $associationTypeRepo;
         $this->normalizer = $normalizer;
@@ -73,6 +78,7 @@ class AssociationTypeController
         $this->saver = $saver;
         $this->validator = $validator;
         $this->userContext = $userContext;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -205,12 +211,19 @@ class AssociationTypeController
     {
         $associationType = new AssociationType();
         $this->updater->update($associationType, json_decode($request->getContent(), true));
-
         $violations = $this->validator->validate($associationType);
-        $errors = $this->formatValidationErrors($violations);
 
-        if (count($errors) > 0) {
-            return new JsonResponse($errors, 400);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['associationType' => $associationType]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($associationType);
