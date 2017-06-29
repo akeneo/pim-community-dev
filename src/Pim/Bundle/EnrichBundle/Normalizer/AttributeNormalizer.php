@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
@@ -43,6 +44,9 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var StructureVersionProviderInterface */
     protected $structureVersionProvider;
 
+    /** @var LocalizerInterface */
+    protected $numberLocalizer;
+
     /**
      * @param NormalizerInterface               $normalizer
      * @param FieldProviderInterface            $fieldProvider
@@ -51,6 +55,7 @@ class AttributeNormalizer implements NormalizerInterface
      * @param VersionManager                    $versionManager
      * @param NormalizerInterface               $versionNormalizer
      * @param StructureVersionProviderInterface $structureVersionProvider
+     * @param LocalizerInterface                $numberLocalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -59,7 +64,8 @@ class AttributeNormalizer implements NormalizerInterface
         FilterProviderInterface $filterProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        StructureVersionProviderInterface $structureVersionProvider
+        StructureVersionProviderInterface $structureVersionProvider,
+        LocalizerInterface $numberLocalizer
     ) {
         $this->normalizer = $normalizer;
         $this->fieldProvider = $fieldProvider;
@@ -68,6 +74,7 @@ class AttributeNormalizer implements NormalizerInterface
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
+        $this->numberLocalizer = $numberLocalizer;
     }
 
     /**
@@ -89,6 +96,18 @@ class AttributeNormalizer implements NormalizerInterface
                 'date_max'           => $dateMax,
             ]
         );
+
+        if (isset($context['locale'])) {
+            $normalizedAttribute['number_min'] = $this->numberLocalizer->localize(
+                $normalizedAttribute['number_min'],
+                ['locale' => $context['locale']]
+            );
+
+            $normalizedAttribute['number_max'] = $this->numberLocalizer->localize(
+                $normalizedAttribute['number_max'],
+                ['locale' => $context['locale']]
+            );
+        }
 
         $firstVersion = $this->versionManager->getOldestLogEntry($attribute);
         $lastVersion = $this->versionManager->getNewestLogEntry($attribute);

@@ -153,7 +153,11 @@ class AttributeController
             $options
         );
 
-        $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api');
+        $normalizedAttributes = $this->normalizer->normalize(
+            $attributes,
+            'internal_api',
+            ['locale' => $this->userContext->getUiLocale()->getCode()]
+        );
 
         return new JsonResponse($normalizedAttributes);
     }
@@ -176,7 +180,11 @@ class AttributeController
             throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
         }
 
-        return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize(
+            $attribute,
+            'internal_api',
+            ['locale' => $this->userContext->getUiLocale()->getCode()]
+        ));
     }
 
     /**
@@ -212,7 +220,8 @@ class AttributeController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $attribute,
-                'internal_api'
+                'internal_api',
+                ['locale' => $this->userContext->getUiLocale()->getCode()]
             )
         );
     }
@@ -251,7 +260,8 @@ class AttributeController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $attribute,
-                'internal_api'
+                'internal_api',
+                ['locale' => $this->userContext->getUiLocale()->getCode()]
             )
         );
     }

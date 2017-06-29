@@ -29,7 +29,7 @@ Feature: Edit attributes with localized ui
     And I am on the "price" attribute page
     And I fill in "Max number" with "12456.789"
     When I press the "Save" button
-    Then I should not see a validation error "This type of value expects the use of a dot (.) to separate decimals."
+    Then I should not see the text "This type of value expects the use of a dot (.) to separate decimals."
     And the field Max number should contain "12456.7890"
 
   Scenario: Successfully save localized french number
@@ -37,7 +37,7 @@ Feature: Edit attributes with localized ui
     And I am on the "price" attribute page
     And I fill in "Nombre max" with "12456,789"
     When I press the "Enregistrer" button
-    Then I should not see a validation error "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
+    Then I should not see the text "Ce type de valeur attend une virgule (,) comme séparateur de décimales."
     And the field Nombre max should contain "12456,789"
 
   Scenario: Successfully save localized english date
