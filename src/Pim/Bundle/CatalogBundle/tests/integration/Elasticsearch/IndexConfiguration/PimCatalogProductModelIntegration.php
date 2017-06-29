@@ -187,13 +187,6 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
     protected function addProducts()
     {
         $productModels = [
-            // root model that does not exist in DB
-            // used to referenced simple products (watch) that do not have
-            // any product model associated.
-            // TODO: Find another way
-            [
-                'identifier' => 'root-pm',
-            ],
             // simple tshirt - level 0
             [
                 'identifier' => 'model-tshirt-level-0',
@@ -619,7 +612,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Watch
             [
                 'identifier' => 'watch',
-                'parent'     => 'root-pm',
+                'parent'     => 'no-parent',
                 'family'     => [
                     'code'   => 'watch',
                     'labels' => [
