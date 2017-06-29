@@ -1,6 +1,6 @@
-Pim\Component\Catalog\Model\AttributeSet:
+Pim\Component\Catalog\Model\VariantAttributeSet:
     type: entity
-    table: pim_catalog_family_attribute_set
+    table: pim_catalog_family_variant_attribute_set
     changeTrackingPolicy: DEFERRED_EXPLICIT
 
     fields:
