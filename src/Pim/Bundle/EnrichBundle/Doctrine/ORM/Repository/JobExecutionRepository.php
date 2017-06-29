@@ -83,7 +83,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
             ->leftJoin('e.stepExecutions', 's')
             ->leftJoin('s.warnings', 'w')
             ->groupBy('e.id')
-            ->orderBy('e.startTime', 'DESC')
+            ->orderBy('e.id', 'DESC')
             ->setMaxResults(10);
 
         if (!empty($types)) {
