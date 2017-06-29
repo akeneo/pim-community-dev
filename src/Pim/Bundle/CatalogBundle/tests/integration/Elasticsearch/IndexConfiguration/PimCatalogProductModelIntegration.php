@@ -177,6 +177,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // simple tshirt - level 0
             [
                 'identifier' => 'model-tshirt-level-0',
+                'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -195,6 +196,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Tshirt model level-1 (varying on color)
             [
                 'identifier' => 'model-tshirt-level-1-grey',
+                'level'      => 1,
                 'parent_id'  => 'model-tshirt-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
@@ -217,7 +219,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
             [
                 'identifier' => 'model-tshirt-level-1-blue',
-                'parent_id'  => 'model-tshirt-level-0',
+                'level'      => 1,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -239,6 +241,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
             [
                 'identifier' => 'model-tshirt-level-1-red',
+                'level' => 1,
                 'parent_id'  => 'model-tshirt-level-0',
                 'family'     => [
                     'code'   => 'tshirt',
@@ -263,6 +266,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Tshirt unique model
             [
                 'identifier' => 'model-tshirt-unique-level-0',
+                'level' => 0,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -291,6 +295,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Hats model
             [
                 'identifier' => 'model-hat-level-0',
+                'level' => 0,
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
