@@ -31,7 +31,6 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
             ->shouldReturn(
                 [
                     'code' => 'variant',
-                    'id' => 12,
                     'meta' => [
                         'id' => 12,
                         'form' => "pim-association-type-edit-form",

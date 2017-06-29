@@ -314,7 +314,7 @@ class AttributeGroupController
 
     /**
      * Throw an exception if the code provided in the url and the code provided in the request body
-     * are not equals when creating a category with a PATCH method.
+     * are not equals when creating an attribute group with a PATCH method.
      *
      * The code in the request body is optional when we create a resource with PATCH.
      *
