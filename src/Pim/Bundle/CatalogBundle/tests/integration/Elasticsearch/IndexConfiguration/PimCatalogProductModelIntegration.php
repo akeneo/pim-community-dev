@@ -176,6 +176,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         $this->assertProducts($productsFound, ['tshirt-level-2-grey-m', 'hat-m']);
     }
 
+    // Do more complex use cases
+    // - Having a configuration where variation goes inverse: size - color (for instance)
+    // - Having a configuration where variation is diffenent: material - size (for instance)
+    // - Where color == grey and name == tshirt (Search on a model and one property of his parent)
+
     /**
      * {@inheritdoc}
      */
