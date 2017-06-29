@@ -53,7 +53,7 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the metric "Weight" of products boots and sneakers should be "600"
     And the metric "Weight" of products sandals, pump and highheels should be "500"

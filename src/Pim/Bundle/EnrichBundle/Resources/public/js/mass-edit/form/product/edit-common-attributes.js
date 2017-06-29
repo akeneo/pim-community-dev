@@ -14,6 +14,8 @@ define(
         'pim/mass-edit-form/product/operation',
         'pim/user-context',
         'pim/form-builder',
+        'pim/fetcher-registry',
+        'pim/i18n',
         'pim/template/mass-edit/product/edit-common-attributes',
     ],
     function (
@@ -23,12 +25,21 @@ define(
         BaseOperation,
         UserContext,
         FormBuilder,
+        FetcherRegistry,
+        i18n,
         template
     ) {
         return BaseOperation.extend({
             template: _.template(template),
             errors: null,
             formPromise: null,
+            channel: null,
+
+            configure: function () {
+                return FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')).then((channel) => {
+                    this.channel = channel;
+                });
+            },
 
             reset: function () {
                 this.setValue({});
@@ -39,6 +50,7 @@ define(
                     meta: {},
                     values: this.getValue()
                 };
+
                 if (!this.formPromise) {
                     this.formPromise = FormBuilder.build('pim-mass-product-edit-form').then(function (form) {
                         form.setData(product);
@@ -47,11 +59,10 @@ define(
 
                         return form;
                     }.bind(this));
-                } else {
                 }
 
                 this.formPromise.then(function (form) {
-                    this.$el.html(this.template({}));
+                    this.$el.html(this.template());
                     form.setElement(this.$('.edit-common-attributes')).render();
                     form.trigger('pim_enrich:form:update_read_only', this.readOnly);
 
@@ -76,8 +87,10 @@ define(
                 return __(
                     this.config.description,
                     {
-                        locale: UserContext.get('catalogLocale'),
-                        scope: UserContext.get('catalogScope')
+                        locale: this.channel.locales.find((locale) => {
+                            return locale.code === UserContext.get('catalogLocale');
+                        }).label,
+                        scope: i18n.getLabel(this.channel.labels, UserContext.get('catalogLocale'), this.channel.code)
                     }
                 );
             },

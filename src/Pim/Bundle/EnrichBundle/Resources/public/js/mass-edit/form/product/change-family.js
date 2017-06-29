@@ -36,7 +36,8 @@ define(
             render: function () {
                 this.$el.html(this.template({
                     readOnly: this.readOnly,
-                    value: this.getValue()
+                    value: this.getValue(),
+                    label: __('pim_enrich.mass_edit.product.operation.change_family.field')
                 }));
 
                 var options = Select2Configurator.getConfig(this.getValue());

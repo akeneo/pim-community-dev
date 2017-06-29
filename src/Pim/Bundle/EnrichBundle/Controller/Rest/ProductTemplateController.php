@@ -45,7 +45,7 @@ class ProductTemplateController
     protected $attributeRepository;
 
     /** @var NormalizerInterface */
-    protected $internalNormalizer;
+    protected $constraintViolationNormalizer;
 
     /**
      * @param ProductBuilderInterface      $productBuilder
@@ -55,7 +55,7 @@ class ProductTemplateController
      * @param ObjectUpdaterInterface       $productUpdater
      * @param ValidatorInterface           $productValidator
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $internalNormalizer
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -65,7 +65,7 @@ class ProductTemplateController
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         AttributeRepositoryInterface $attributeRepository,
-        NormalizerInterface $internalNormalizer
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->productBuilder        = $productBuilder;
         $this->userContext            = $userContext;
@@ -74,7 +74,7 @@ class ProductTemplateController
         $this->productUpdater        = $productUpdater;
         $this->productValidator      = $productValidator;
         $this->attributeRepository   = $attributeRepository;
-        $this->internalNormalizer    = $internalNormalizer;
+        $this->constraintViolationNormalizer    = $constraintViolationNormalizer;
     }
 
     /**
@@ -95,18 +95,21 @@ class ProductTemplateController
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
         $this->productUpdater->update($product, ['values' => $data]);
         $violations = $this->productValidator->validate($product);
+        $violations->addAll($this->localizedConverter->getViolations());
 
         $violations = $this->removeIdentifierViolations($violations);
 
-        $violations->addAll($this->localizedConverter->getViolations());
 
-        $errors = ['values' => $this->internalNormalizer->normalize(
-            $violations,
-            'internal_api',
-            ['product' => $product]
-        )];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors);
+        return new JsonResponse(['values' => $normalizedViolations]);
     }
 
     /**
@@ -118,7 +121,7 @@ class ProductTemplateController
      */
     protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
     {
-        $identifierPath = sprintf('values[%s]', $this->attributeRepository->getIdentifierCode());
+        $identifierPath = sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
         foreach ($violations as $offset => $violation) {
             if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
                 $violations->remove($offset);

@@ -38,7 +38,7 @@ Feature: Update product history when mass editing products
   Scenario: Display history when changing product family
     Given I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "update_product_value" job to finish
     When I edit the "boots" product
     And I visit the "History" column tab

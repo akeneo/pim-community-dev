@@ -34,7 +34,7 @@ Feature: Display jobs execution in job tracker
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     When I am on the dashboard page
     When I am on the job tracker page

@@ -20,6 +20,6 @@ Feature: Edit common attributes with permissions
     Then I should see the text "Select attributes"
     And I display the Name attribute
     And I change the "Name" to "boots"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     And the english localizable value name of "boots" should be "boots"

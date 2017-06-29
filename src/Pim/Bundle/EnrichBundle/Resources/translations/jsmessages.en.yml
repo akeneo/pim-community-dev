@@ -970,12 +970,14 @@ pim_enrich:
                 change_status:
                     label: Change status (enable / disable)
                     description: The selected products will be enabled or disabled.
+                    field: To enable
                 edit_common:
                     label: Edit common attributes
                     description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
                 change_family:
                     label: Change the family of products
                     description: The family of the selected products will be changed to the chosen family
+                    field: Family
                 add_to_group:
                     label: Add to groups
                     description: Select the groups in which to add the selected products

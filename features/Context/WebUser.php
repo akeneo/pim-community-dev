@@ -1890,38 +1890,10 @@ class WebUser extends PimContext
         $this->wait();
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
 
-    /**
-     * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
-     *
-     * @param string $operationAlias
-     *
-     * @throws ExpectationException
-     */
-    public function iWaitForTheMassEditJobToFinish($operationAlias)
-    {
-        $operationRegistry = $this->getMainContext()
-            ->getContainer()
-            ->get('pim_enrich.mass_edit_action.operation.registry');
-
-        $operation = $operationRegistry->get($operationAlias);
-
-        if (null === $operation) {
-            throw $this->createExpectationException(
-                sprintf('Operation with alias "%s" doesn\'t exist', $operationAlias)
-            );
-        }
-
-        if (!$operation instanceof BatchableOperationInterface) {
-            throw $this->createExpectationException(
-                sprintf('Can\'t get the job code from the "%s" operation', $operationAlias)
-            );
-        }
-
-        $code = $operation->getJobInstanceCode();
-
-        $this->waitForMassEditJobToFinish($code);
+        return [
+            new Step\Then(sprintf('I go on the last executed job resume of "%s"', $code))
+        ];
     }
 
     /**
@@ -2139,11 +2111,20 @@ class WebUser extends PimContext
     }
 
     /**
-     * TODO This step should be renamed to "I confirm the mass edit"
+     * TODO This step should be renamed to "I confirm mass edit"
      *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
+    {
+        $this->iMoveToTheConfirmPage();
+        sleep(2);
+    }
+
+    /**
+     * @Given /^I confirm mass edit$/
+     */
+    public function iConfirmTheMassEdit()
     {
         $this->iMoveToTheConfirmPage();
         $this->scrollContainerTo(900);

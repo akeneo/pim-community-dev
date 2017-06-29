@@ -46,14 +46,15 @@ Feature: Validate editing common file attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the File attribute
     And I attach file "bic-core-148.txt" to "File"
-    And I move on to the next step
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the file "file" of products boots and sneakers should be "bic-core-148.txt"
     When I am on the products page
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the File attribute
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the file "file" of products boots, sandals and sneakers should be ""
     When I am on the products page

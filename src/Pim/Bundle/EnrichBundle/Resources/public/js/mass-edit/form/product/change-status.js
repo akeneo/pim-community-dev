@@ -36,7 +36,8 @@ define(
                     readOnly: this.readOnly,
                     labels: {
                         on: __('switch_on'),
-                        off: __('switch_off')
+                        off: __('switch_off'),
+                        field: __('pim_enrich.mass_edit.product.operation.change_status.field')
                     }
                 }));
 

@@ -32,7 +32,6 @@ parameters:
     pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
-    pim_enrich.controller.rest.completeness.class:            Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
     pim_enrich.controller.rest.product_template.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
@@ -248,18 +247,6 @@ services:
             - '@pim_catalog.factory.channel'
             - '@validator'
 
-    pim_enrich.controller.rest.completeness:
-        class: '%pim_enrich.controller.rest.completeness.class%'
-        arguments:
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.channel'
-            - '@pim_user.context.user'
-            - '@pim_enrich.normalizer.completeness_collection'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog_product_storage_driver%'
-
     pim_enrich.controller.rest.mass_edit:
         class: '%pim_enrich.controller.rest.mass_edit.class%'
         arguments:
@@ -277,7 +264,7 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.attribute'
-            - '@pim_internal_api_serializer'
+            - '@pim_enrich.normalizer.product_violation'
 
     pim_enrich.controller.rest.family:
         class: '%pim_enrich.controller.rest.family.class%'

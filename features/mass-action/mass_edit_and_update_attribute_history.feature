@@ -39,7 +39,7 @@ Feature: Update product history when mass editing products
     Given I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "cool boots"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     When I edit the "boots" product
     And I visit the "History" column tab

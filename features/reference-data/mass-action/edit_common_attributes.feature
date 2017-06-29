@@ -27,7 +27,7 @@ Feature: Mass edit common attributes for reference data
     And I choose the "Edit common attributes" operation
     And I display the Heel color attribute
     And I change the "Heel color" to "Light green"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the product "heels" should have the following values:
       | heel_color | Light green |
@@ -40,7 +40,7 @@ Feature: Mass edit common attributes for reference data
     And I choose the "Edit common attributes" operation
     And I display the Sole fabric attribute
     And I change the "Sole fabric" to "Wool, Kevlar, Jute"
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the product "heels" should have the following values:
       | sole_fabric | Jute, Kevlar, Wool|

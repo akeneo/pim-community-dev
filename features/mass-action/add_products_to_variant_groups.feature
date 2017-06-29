@@ -17,6 +17,6 @@ Feature: Add products to variant group via a form
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     And I select the "Caterpillar boots" variant group
-    And I move on to the next step
+    And I confirm mass edit
     And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "kickers, hiking_shoes"
