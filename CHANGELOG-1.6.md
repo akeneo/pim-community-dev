@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-6473: Fix not visible attributes in the attribute popin on export builder (firefox only)
 - PIM-6433: Fix product import reference data multi with duplicate code options
 
 # 1.6.16 (2017-05-24)
