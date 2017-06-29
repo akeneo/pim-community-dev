@@ -206,23 +206,6 @@ class GroupController
         return new JsonResponse();
     }
 
-
-    function formatValidationErrors($violations)
-    {
-      $errors = [];
-
-      if ($violations->count() > 0) {
-          foreach ($violations as $error) {
-              $errors['values'][] = [
-                  'attribute' => $error->getPropertyPath(),
-                  'message' =>  $error->getMessage()
-              ];
-          }
-      }
-
-      return $errors;
-    }
-
     /**
      * Creates group
      *

@@ -18,7 +18,19 @@ define([
     'pim/fetcher-registry',
     'pim/initselect2',
     'pim/template/form/creation/type'
-], function($, _, Backbone, Routing, BaseForm, UserContext, i18n, __, FetcherRegistry, initSelect2, template) {
+], function(
+    $,
+    _,
+    Backbone,
+    Routing,
+    BaseForm,
+    UserContext,
+    i18n,
+    __,
+    FetcherRegistry,
+    initSelect2,
+    template
+    ) {
 
     return BaseForm.extend({
         options: {},
@@ -40,22 +52,22 @@ define([
          * Model update callback
          */
         updateModel() {
-          const model = this.getFormModel();
-          const type = this.$('input').select2('val')
-          model.set('type', type);
+            const model = this.getFormModel();
+            const type = this.$('input').select2('val');
+            model.set('type', type);
         },
 
         fetchGroupTypes(element, callback) {
-          const fetcher = FetcherRegistry.getFetcher('group-type');
-          const modelType = this.getFormData().type;
+            const fetcher = FetcherRegistry.getFetcher('group-type');
+            const modelType = this.getFormData().type;
 
-          fetcher.fetchAll().then((types) => {
-              const results = this.parseResults(types).results
-              const selectedType = modelType || results[0].id;
+            fetcher.fetchAll().then((types) => {
+                const results = this.parseResults(types).results;
+                const selectedType = modelType || results[0].id;
 
-              this.getFormModel().set('type', selectedType);
-              callback(results[0]);
-          });
+                this.getFormModel().set('type', selectedType);
+                callback(results[0]);
+            });
         },
 
         /**
@@ -73,8 +85,8 @@ define([
                 results: []
             };
 
-            _.reject(types, { 
-              is_variant: !this.options.config.include_variant
+            _.reject(types, {
+                is_variant: !this.options.config.include_variant
             }).forEach(value => {
                 const {code, labels} = value;
                 data.results.push({

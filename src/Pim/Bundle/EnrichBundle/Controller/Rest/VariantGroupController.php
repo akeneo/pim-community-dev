@@ -245,22 +245,6 @@ class VariantGroupController
         return $data;
     }
 
-    function formatValidationErrors($violations)
-    {
-      $errors = [];
-
-      if ($violations->count() > 0) {
-          foreach ($violations as $error) {
-              $errors['values'][] = [
-                  'attribute' => $error->getPropertyPath(),
-                  'message' =>  $error->getMessage()
-              ];
-          }
-      }
-
-      return $errors;
-    }
-
     /**
      * Create a variant group
      *

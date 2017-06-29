@@ -184,22 +184,6 @@ class AssociationTypeController
         return $associationType;
     }
 
-    function formatValidationErrors($violations)
-    {
-      $errors = [];
-
-      if ($violations->count() > 0) {
-          foreach ($violations as $error) {
-              $errors['values'][] = [
-                  'attribute' => $error->getPropertyPath(),
-                  'message' =>  $error->getMessage()
-              ];
-          }
-      }
-
-      return $errors;
-    }
-
     /**
      * Creates association type
      *

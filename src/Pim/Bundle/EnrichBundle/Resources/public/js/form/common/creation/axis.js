@@ -49,9 +49,6 @@ define([
             );
         },
 
-        /**
-             * Model update callback
-             */
         updateModel(event) {
             const axes = event.target.value.split(',');
             this.getFormModel().set('axes', axes);
@@ -105,7 +102,6 @@ define([
 
             const locale = UserContext.get('catalogLocale');
             const errors = this.getRoot().validationErrors || [];
-            const identifier = this.options.config.identifier || 'axis';
 
             this.$el.html(this.template({
                 label: 'Axis',

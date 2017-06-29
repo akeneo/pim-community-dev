@@ -196,23 +196,6 @@ class GroupTypeController
         return $groupType;
     }
 
-    function getValidationErrors(GroupTypeInterface $groupType)
-    {
-      $globalViolations = $this->validator->validate($groupType);
-      $errors = [];
-
-      if ($globalViolations->count() > 0) {
-          foreach ($globalViolations as $error) {
-              $errors['values'][] = [
-                  'attribute' => $error->getPropertyPath(),
-                  'message' =>  $error->getMessage()
-              ];
-          }
-      }
-
-      return $errors;
-    }
-
     /**
      * Creates group type
      *
