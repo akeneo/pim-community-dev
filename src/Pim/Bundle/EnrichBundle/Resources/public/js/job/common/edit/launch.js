@@ -48,6 +48,8 @@ define(
                     }));
                 }.bind(this));
 
+                this.delegateEvents();
+
                 return this;
             },
 

@@ -52,6 +52,8 @@ define(
                 if (this.visible) {
                     return BaseForm.prototype.render.apply(this, arguments);
                 }
+
+                this.delegateEvents();
             },
 
             /**

@@ -29,6 +29,8 @@ define([
                 file: this.getFormData().file
             }));
 
+            this.delegateEvents();
+
             return this;
         },
 

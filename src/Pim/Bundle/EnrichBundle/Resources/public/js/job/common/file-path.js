@@ -41,6 +41,8 @@ define(
                     label: __(this.config.label)
                 }));
 
+                this.delegateEvents();
+
                 return BaseForm.prototype.render.apply(this, arguments);
             }
         });
