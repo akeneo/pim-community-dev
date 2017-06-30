@@ -38,10 +38,10 @@ define([
         },
 
         /**
-             * Configure the form
-             *
-             * @return {Promise}
-             */
+         * Configure the form
+         *
+         * @return {Promise}
+         */
         configure() {
             return $.when(
                 FetcherRegistry.initialize(),
@@ -74,11 +74,11 @@ define([
 
 
         /**
-             * Parses each group type for the select display
-             *
-             * @param  {Array} types The search results
-             * @return {Object}
-             */
+         * Parses each group type for the select display
+         *
+         * @param  {Array} types The search results
+         * @return {Object}
+         */
         parseResults(axes) {
             return { results: this.formatAxes(axes) };
         },

@@ -45,9 +45,9 @@ define(
              * @return {Promise}
              */
             open() {
-                var deferred = $.Deferred();
+                const deferred = $.Deferred();
 
-                var modal = new Backbone.BootstrapModal({
+                const modal = new Backbone.BootstrapModal({
                     title: __(this.config.labels.title),
                     content: '',
                     cancelText: __('pim_enrich.entity.create_popin.labels.cancel'),
@@ -57,7 +57,7 @@ define(
 
                 modal.open();
 
-                var modalBody = modal.$('.modal-body');
+                const modalBody = modal.$('.modal-body');
                 modalBody.addClass('creation');
 
                 this.render()
@@ -69,30 +69,32 @@ define(
                     modal.remove();
                 });
 
-                modal.on('ok', function () {
-                    this.save()
-                        .done(function (entity) {
-                            modal.close();
-                            modal.remove();
-                            deferred.resolve();
-
-                            var routerParams = {};
-                            if (this.config.routerKey) {
-                                routerParams[this.config.routerKey] = entity[this.config.routerKey];
-                            } else {
-                                routerParams = {id: entity.meta.id};
-                            }
-
-                            messenger.notify('success', __(this.config.successMessage));
-
-                            router.redirectToRoute(
-                                this.config.editRoute,
-                                routerParams
-                            );
-                        }.bind(this));
-                }.bind(this));
+                modal.on('ok', this.confirmModal.bind(this, modal, deferred));
 
                 return deferred.promise();
+            },
+
+            confirmModal(modal, deferred) {
+                this.save().done(entity => {
+                    modal.close();
+                    modal.remove();
+                    deferred.resolve();
+
+                    let routerParams = {};
+
+                    if (this.config.routerKey) {
+                        routerParams[this.config.routerKey] = entity[this.config.routerKey];
+                    } else {
+                        routerParams = {id: entity.meta.id};
+                    }
+
+                    messenger.notify('success', __(this.config.successMessage));
+
+                    router.redirectToRoute(
+                      this.config.editRoute,
+                      routerParams
+                  );
+                });
             },
 
             /**
@@ -103,18 +105,21 @@ define(
             save() {
                 this.validationErrors = {};
 
-                var loadingMask = new LoadingMask();
+                const loadingMask = new LoadingMask();
                 this.$el.empty().append(loadingMask.render().$el.show());
 
-                return $.post(Routing.generate(this.config.postUrl), JSON.stringify(this.getFormData()))
-                    .fail(function (response) {
-                        this.validationErrors = response.responseJSON ?
-                            response.responseJSON.values : [{message: __('error.common')}];
-                        this.render();
-                    }.bind(this))
-                    .always(function () {
-                        loadingMask.remove();
-                    });
+                let data = this.getFormData();
+
+                return $.ajax({
+                  url: Routing.generate(this.config.postUrl),
+                  type: 'POST',
+                  data: JSON.stringify(data),
+                }).fail(function (response) {
+                    this.validationErrors = response.responseJSON ?
+                        response.responseJSON.values : [{message: __('error.common')}];
+                    this.render();
+                }.bind(this))
+                .always(() => loadingMask.remove());
             }
         });
     }
