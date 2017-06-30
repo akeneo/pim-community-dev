@@ -53,9 +53,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     public function findBySearch($search = null, array $options = [])
     {
         $qb = $this->entityManager->createQueryBuilder();
-
         $qb->select('o')
-            ->addSelect('v.value AS HIDDEN value')
             ->distinct()
             ->from($this->entityName, 'o')
             ->leftJoin('o.optionValues', 'v')
@@ -64,7 +62,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             ->setParameter('attributeCode', $options['identifier']);
 
         if ($this->isAttributeAutoSorted($options['identifier'])) {
-            $qb->orderBy('value, o.code');
+            $qb->orderBy('o.code');
         } else {
             $qb->orderBy('o.sortOrder');
         }
@@ -118,7 +116,12 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             return false;
         }
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
+        $properties = $attribute->getProperties();
 
-        return $attribute->getProperties()['autoOptionSorting'];
+        if (!isset($properties['autoOptionSorting'])) {
+            return false;
+        }
+
+        return $properties['autoOptionSorting'];
     }
 }
