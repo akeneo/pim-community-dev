@@ -250,7 +250,7 @@ define([
 
                     return false;
                 } else if (attributeAsImage === attributeToRemove) {
-                    Messenger.notificationFlashMessage(
+                    Messenger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_image')
                     );
