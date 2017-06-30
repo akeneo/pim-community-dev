@@ -120,7 +120,7 @@ class Cursor extends AbstractCursor
                 ->select($rootIdExpr)
                 ->resetDQLPart('from')
                 ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
-                ->groupBy($rootIdExpr);
+                ->distinct(true);
 
             $results = $this->queryBuilder->getQuery()->getArrayResult();
             $this->entitiesIds = array_keys($results);

@@ -46,12 +46,11 @@ class FamilyRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('f')->willReturn($queryBuilder);
-        $queryBuilder->select('COUNT(f.id)')->willReturn($queryBuilder);
+        $queryBuilder->select(1)->willReturn($queryBuilder);
         $queryBuilder->from('family', 'f', null)->willReturn($queryBuilder);
-        $queryBuilder->leftJoin('f.attributes', 'a')->willReturn($queryBuilder);
+        $queryBuilder->innerJoin('f.attributes', 'a')->willReturn($queryBuilder);
         $queryBuilder->where('f.id = :id')->willReturn($queryBuilder);
         $queryBuilder->andWhere('a.code = :code')->willReturn($queryBuilder);
-        $queryBuilder->addGroupBy('a.id')->willReturn($queryBuilder);
         $queryBuilder->setMaxResults(1)->willReturn($queryBuilder);
         $queryBuilder->setParameters([
             'id' => 10,

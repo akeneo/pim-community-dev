@@ -63,7 +63,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         }
 
         return $qb->setMaxResults($limit)
-            ->groupBy('r.id')
             ->getQuery()
             ->execute();
     }
