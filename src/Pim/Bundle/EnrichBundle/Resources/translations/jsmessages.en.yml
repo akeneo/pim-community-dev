@@ -224,6 +224,7 @@ pim_enrich:
                     family: Choose a family
                     save: Save
                     cancel: Cancel
+            completeness: Complete
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.

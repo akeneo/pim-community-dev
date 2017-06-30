@@ -63,6 +63,11 @@ extensions:
         targetZone: title
         position: 100
 
+    pim-product-edit-form-completeness:
+        module: pim/product-edit-form/product-completeness
+        parent: pim-product-edit-form
+        targetZone: meta
+
     pim-product-edit-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-product-edit-form
