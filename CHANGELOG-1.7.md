@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-6465: Fix loading mask issue on asset creation from UI.
 - PIM-6393: Context kept when creating category tree
 - PIM-6470: Fix issue on Permission filter when added to the user default filters
 
