@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\AddLocaleChannelToAssetsCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromReferenceCommand;
@@ -64,6 +65,7 @@ class PimEnterpriseProductAssetBundle extends Bundle
         $application->add(new GenerateVariationFileCommand());
         $application->add(new GenerateVariationFilesFromReferenceCommand());
         $application->add(new SendAlertNotificationsCommand());
+        $application->add(new AddLocaleChannelToAssetsCommand());
         $application->add(new ProcessMassUploadCommand());
     }
 }
