@@ -157,9 +157,7 @@ pim_enrich:
             infos: Product infos
             title: product
             btn:
-                enable: Enable
                 enabled: Enabled
-                disable: Disable
                 disabled: Disabled
                 download_pdf: PDF
                 compare_translate: Compare / Translate
@@ -200,6 +198,7 @@ pim_enrich:
                         group_label: Label
                         more_products: '{{ count }} more products...'
                         close: Close
+                status: Status
             copy:
                 select: Select
                 all: All

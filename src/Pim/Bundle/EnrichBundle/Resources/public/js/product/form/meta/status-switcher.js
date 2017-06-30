@@ -10,18 +10,20 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'oro/mediator',
         'pim/form',
-        'pim/template/product/status-switcher'
+        'pim/template/product/meta/status-switcher'
     ],
     function (
         _,
+        __,
         mediator,
         BaseForm,
         template
     ) {
         return BaseForm.extend({
-            className: 'AknDropdownButton AknDropdown status-switcher',
+            className: 'AknColumn-block AknDropdown',
             template: _.template(template),
             events: {
                 'click .AknDropdown-menuLink': 'updateStatus'
@@ -43,14 +45,12 @@ define(
                 var status = this.getRoot().getFormData().enabled;
 
                 this.$el.html(this.template({
-                    status: status
+                    status: status,
+                    label: __('pim_enrich.entity.product.meta.status'),
+                    enabledLabel: __('pim_enrich.entity.product.btn.enabled'),
+                    disabledLabel: __('pim_enrich.entity.product.btn.disabled')
                 }));
-                this.$el
-                    .addClass(status ? 'AknDropdownButton--apply' : 'AknDropdownButton--important')
-                    .removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply')
-                    .find('.AknCaret')
-                    .addClass(status ? 'AknCaret--apply' : 'AknCaret--important')
-                    .removeClass(status ? 'AknCaret--important' : 'AknCaret--apply');
+
                 this.delegateEvents();
 
                 return this;
