@@ -172,6 +172,7 @@ class ProductController
         );
 
         $violations = $this->validator->validate($product);
+
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 

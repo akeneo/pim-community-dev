@@ -13,7 +13,7 @@ extensions:
         parent: pim-product-create-modal
         position: 10
         config:
-            identifier: sku
+            identifier: identifier
             label: SKU
 
     pim-product-create-family:
