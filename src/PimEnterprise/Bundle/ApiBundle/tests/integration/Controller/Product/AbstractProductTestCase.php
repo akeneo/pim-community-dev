@@ -31,6 +31,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
                     ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
                     ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null]
                 ],
+                'a_metric_without_decimal_negative' => [
+                    ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
+                ]
             ]
         ]);
 
@@ -125,28 +128,12 @@ abstract class AbstractProductTestCase extends ApiTestCase
     "enabled": true,
     "values": {
         "a_localized_and_scopable_text_area": [
-            {
-                "data": "DE ecommerce",
-                "locale": "de_DE",
-                "scope": "ecommerce"
-            },
-            {
-                "data": "EN ecommerce",
-                "locale": "en_US",
-                "scope": "ecommerce"
-            },
-            {
-                "data": "FR ecommerce",
-                "locale": "fr_FR",
-                "scope": "ecommerce"
-            }
+            { "data": "DE ecommerce", "locale": "de_DE", "scope": "ecommerce" },
+            { "data": "EN ecommerce", "locale": "en_US", "scope": "ecommerce" },
+            { "data": "FR ecommerce", "locale": "fr_FR", "scope": "ecommerce" }
         ],
         "a_number_float": [
-            {
-                "data": "12.05",
-                "locale": null,
-                "scope": null
-            }
+            { "data": "12.05", "locale": null, "scope": null }
         ],
         "a_localizable_image": [
             {
@@ -179,6 +166,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
                     }
                 }
             }
+        ],
+        "a_metric_without_decimal_negative": [
+            { "data": {"amount": -10, "unit": "CELSIUS"}, "locale": null, "scope": null }
         ]
     },
     "created": "2017-03-11T10:39:38+01:00",

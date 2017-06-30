@@ -1,4 +1,5 @@
 attribute_group;view_attributes;edit_attributes
 other;IT support,Manager,Redactor;IT support,Manager,Redactor
-attributeGroupA;IT support,Manager;IT support,Manager
+attributeGroupA;IT support,Manager,Redactor;IT support,Manager,Redactor
 attributeGroupB;IT support,Manager,Redactor;IT support,Manager
+attributeGroupC;IT support,Manager;IT support,Manager

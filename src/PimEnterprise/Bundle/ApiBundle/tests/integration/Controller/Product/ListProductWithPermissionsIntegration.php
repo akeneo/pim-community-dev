@@ -5,14 +5,14 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * +----------+-------------------------------+-----------------------------------+-----------------------------------+
- * |          |          Categories           |             Locales               |         Attribute groups          |
- * +  Roles   +-------------------------------+-----------------------------------+-----------------------------------+
- * |          |   categoryA2  |   categoryB   |   en_US   |   fr_FR   |   de_DE   | attributeGroupA | attributeGroupB |
- * +==========+===============================+===================================+===================================+
- * | Redactor |      View     |     -         | View,Edit |    View   |     -     |        -        |      View       |
- * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit | View,Edit | View,Edit |    View,Edit    |    View,Edit    |
- * +================+===============================+===================================+=============================+
+ * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
+ * |          |          Categories           |             Locales               |                  Attribute groups                   |
+ * +  Roles   +-------------------------------+-----------------------------------+-----------------------------------+-----------------+
+ * |          |   categoryA2  |   categoryB   |   en_US   |   fr_FR   |   de_DE   | attributeGroupA | attributeGroupB | attributeGroupC |
+ * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
+ * | Redactor |      View     |     -         | View,Edit |    View   |     -     |    View,Edit    |      View       |        -        |
+ * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit | View,Edit | View,Edit |    View,Edit    |    View,Edit    |    View,Edit    |
+ * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
  */
 class ListProductWithPermissionsIntegration extends AbstractProductTestCase
 {
@@ -98,6 +98,10 @@ JSON;
                                 }
                             }
                         }
+                    ],
+                    "a_localized_and_scopable_text_area": [
+                        { "data": "EN ecommerce", "locale": "en_US", "scope": "ecommerce" },
+                        { "data": "FR ecommerce", "locale": "fr_FR", "scope": "ecommerce" }
                     ]
                 },
                 "created": "2017-03-11T10:39:38+01:00",
