@@ -61,7 +61,7 @@ class IsSmartSelectorExtensionSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($qb);
 
-        $qb->groupBy('a.id')->shouldBeCalled();
+        $qb->distinct(true)->shouldBeCalled();
 
         $this->visitDatasource($config, $ds);
     }

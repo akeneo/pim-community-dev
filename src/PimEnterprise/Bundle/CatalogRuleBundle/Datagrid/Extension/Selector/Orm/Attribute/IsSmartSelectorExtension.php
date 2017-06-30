@@ -67,6 +67,6 @@ class IsSmartSelectorExtension extends AbstractExtension
             )
             ->setParameter('attributeClass', $this->attributeClass)
             ->addSelect('CASE WHEN r.resourceId IS NULL THEN false ELSE true END AS is_smart')
-            ->groupBy('a.id');
+            ->distinct(true);
     }
 }

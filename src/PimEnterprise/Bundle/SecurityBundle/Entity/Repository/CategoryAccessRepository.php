@@ -118,7 +118,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
             ->resetDQLParts(['select'])
             ->innerJoin('ca.category', 'c', 'c.id')
             ->select('c.id')
-            ->groupBy('c.id');
+            ->distinct(true);
 
         return $qb;
     }
@@ -191,8 +191,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
                     ),
                     $qb->expr()->isNull('ca.'.$this->getAccessField($accessLevel))
                 )
-            )
-            ->groupBy('c.id');
+            );
 
         return $qb;
     }
@@ -268,7 +267,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     public function getRevokedCategoryIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getRevokedCategoryQB($user, $accessLevel);
-        $qb->select('c.id');
+        $qb->select('DISTINCT c.id');
 
         return array_map(
             function ($row) {
@@ -292,9 +291,8 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
 
         $qb = $this->getRevokedCategoryQB($user, $accessLevel);
         $qb
-            ->select('a.id')
-            ->innerJoin('c', $attTable, 'a', 'a.category_id = c.id')
-            ->groupBy('a.id');
+            ->select('DISTINCT a.id')
+            ->innerJoin('c', $attTable, 'a', 'a.category_id = c.id');
 
         return array_map(
             function ($row) {

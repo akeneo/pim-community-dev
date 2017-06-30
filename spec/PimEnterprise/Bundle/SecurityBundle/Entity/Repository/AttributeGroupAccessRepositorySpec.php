@@ -80,7 +80,7 @@ class AttributeGroupAccessRepositorySpec extends ObjectBehavior
         $qb->andWhere($expr->in('a.id', $filterableIds));
         $qb->setParameter('groups', null)->willReturn($qb);
         $qb->resetDQLParts(['select'])->willReturn($qb);
-        $qb->groupBy('a.id')->willReturn($qb);
+        $qb->distinct(true)->willReturn($qb);
 
         $qb->expr()->willReturn($expr);
 

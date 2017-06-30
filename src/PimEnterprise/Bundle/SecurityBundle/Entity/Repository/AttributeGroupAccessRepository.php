@@ -162,8 +162,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
                     ),
                     $qb->expr()->isNull($accessField)
                 )
-            )
-            ->groupBy('g.id');
+            );
 
         return $qb;
     }
@@ -194,7 +193,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
     public function getRevokedAttributeGroupIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
-        $qb->select('g.id');
+        $qb->select('DISTINCT g.id');
 
         return array_map(
             function ($row) {
@@ -218,9 +217,8 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
 
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
         $qb
-            ->select('a.id')
-            ->innerJoin('g', $attTable, 'a', 'a.group_id = g.id')
-            ->groupBy('a.id');
+            ->select('DISTINCT a.id')
+            ->innerJoin('g', $attTable, 'a', 'a.group_id = g.id');
 
         return array_map(
             function ($row) {
@@ -247,7 +245,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
         $qb
             ->select('a.id')
             ->innerJoin('ag.attributes', 'a')
-            ->groupBy('a.id');
+            ->distinct(true);
 
         if (!empty($filterableIds)) {
             $qb->andWhere(

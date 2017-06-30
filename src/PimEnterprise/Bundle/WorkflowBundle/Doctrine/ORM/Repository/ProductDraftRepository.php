@@ -94,7 +94,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
             ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author')
             ->from($this->_entityName, 'p', 'p.id')
             ->join('p.product', 'product')
-            ->groupBy('p.id');
+            ->distinct(true);
 
         if (isset($parameters['currentUser'])) {
             $user = $parameters['currentUser'];
@@ -301,7 +301,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
             ->andWhere($qb->expr()->eq('product_draft.status', ProductDraftInterface::READY))
             ->orderBy('product_draft.createdAt', 'desc')
             ->setParameter('userGroups', $user->getGroups()->toArray())
-            ->groupBy('product_draft.id');
+            ->distinct(true);
     }
 
     /**

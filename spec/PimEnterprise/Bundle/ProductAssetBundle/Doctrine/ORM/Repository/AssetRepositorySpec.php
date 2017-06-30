@@ -38,11 +38,10 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('asset.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('asset.code')->willReturn($qb);
-        $qb->groupBy('asset.id')->willReturn($qb);
+        $qb->distinct(true)->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
-        $qb->groupBy("asset.id")->shouldBeCalled();
         $query->getArrayResult()->shouldBeCalled();
 
         $this->findBySearch();
@@ -60,11 +59,10 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->addOrderBy('asset.code')->willReturn($qb);
         $qb->andWhere('asset.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', '%my-search%')->willReturn($qb);
-        $qb->groupBy('asset.id')->willReturn($qb);
+        $qb->distinct(true)->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
-        $qb->groupBy("asset.id")->shouldBeCalled();
         $query->getArrayResult()->shouldBeCalled();
 
         $this->findBySearch('my-search');
@@ -82,11 +80,10 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->addOrderBy('asset.code')->willReturn($qb);
         $qb->andWhere('asset.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', '%my-search%')->willReturn($qb);
-        $qb->groupBy('asset.id')->willReturn($qb);
+        $qb->distinct(true)->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
-        $qb->groupBy("asset.id")->shouldBeCalled();
         $query->getArrayResult()->shouldBeCalled();
         $qb->setMaxResults(15)->willReturn($qb);
         $qb->setFirstResult(30)->willReturn($qb);
@@ -100,7 +97,7 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $qb->select('asset', null)->willReturn($qb);
         $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset', null)->willReturn($qb);
-        $qb->addGroupBy('asset.id')->willReturn($qb);
+        $qb->distinct(true)->willReturn($qb);
 
         $this->createAssetDatagridQueryBuilder([]);
     }
