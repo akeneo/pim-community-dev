@@ -15,10 +15,9 @@ use Context\DataGridContext as BaseDataGridContext;
  */
 class EnterpriseDataGridContext extends BaseDataGridContext
 {
-    public function __construct()
+    public function __construct(string $mainContextClass)
     {
-        parent::__construct();
-
+        $this->mainContextClass = $mainContextClass;
         $this->gridNames = array_merge(
             $this->gridNames,
             [
@@ -69,7 +68,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      */
     public function theCellShouldContainThumbnailForContext($column, $code, $channelCode, $localeCode = null)
     {
-        $image = $this->datagrid->getCellImage($column, $code);
+        $image = $this->getDatagrid()->getCellImage($column, $code);
         $this->checkCellThumbnail($image, $code, $channelCode, $localeCode);
     }
 
@@ -82,7 +81,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      */
     public function theRowShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
     {
-        $image = $this->datagrid->getCellImage('thumbnail', $code);
+        $image = $this->getDatagrid()->getCellImage('thumbnail', $code);
         $this->checkCellThumbnail($image, $code, $channelCode, $localeCode);
     }
 
@@ -102,7 +101,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      */
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
-        $datagrid = $this->datagrid->getGrid();
+        $datagrid = $this->getDatagrid()->getGrid();
 
         foreach ($table->getHash() as $hash) {
             $this->spin(function () use ($datagrid, $hash) {

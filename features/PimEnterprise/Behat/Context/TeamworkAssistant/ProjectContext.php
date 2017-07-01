@@ -11,16 +11,11 @@
 
 namespace PimEnterprise\Behat\Context\TeamworkAssistant;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 

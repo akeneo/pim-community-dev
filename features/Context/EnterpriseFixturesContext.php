@@ -8,7 +8,7 @@ use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
@@ -1071,18 +1071,20 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         parent::theFollowingJobs($table);
 
-        $accesses = new TableNode();
-        $accesses->addRow(['job profile', 'user group', 'access']);
+        $accesses = [];
+        $accesses[] = ['job profile', 'user group', 'access'];
 
         $rows = $table->getRows();
         array_shift($rows);
 
         foreach ($rows as $row) {
             foreach (['IT support', 'Manager', 'Redactor'] as $role) {
-                $accesses->addRow([$row[3], $role, 'execute']);
-                $accesses->addRow([$row[3], $role, 'edit']);
+                $accesses[] = [$row[3], $role, 'execute'];
+                $accesses[] = [$row[3], $role, 'edit'];
             }
         }
+
+        $accesses = new TableNode($accesses);
 
         $this->createAccesses($accesses, 'job profile');
     }
@@ -1094,16 +1096,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         parent::theFollowingCategories($table);
 
-        $accesses = new TableNode();
-        $accesses->addRow(['product category', 'user group', 'access']);
+        $accesses = [];
+        $accesses[] = ['product category', 'user group', 'access'];
 
         $rows = $table->getRows();
         array_shift($rows);
 
         $defaultUserGroup = $this->getContainer()->get('pim_user.repository.group')->getDefaultUserGroup();
         foreach ($rows as $row) {
-            $accesses->addRow([$row[0], $defaultUserGroup->getName(), 'own']);
+            $accesses[] = [$row[0], $defaultUserGroup->getName(), 'own'];
         }
+
+        $accesses = new TableNode($accesses);
 
         $this->createAccesses($accesses, 'product category');
     }

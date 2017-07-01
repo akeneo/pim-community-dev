@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Context\NavigationContext as BaseNavigationContext;
 use PimEnterprise\Component\ProductAsset\Model\Category;
 
@@ -88,7 +88,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('Asset Category edit', $page), ['id' => $entity->getId()]);
 
-        return new Step\Then('I should see the text "edit "');
+        return new Then('I should see the text "edit "');
     }
 
     /**

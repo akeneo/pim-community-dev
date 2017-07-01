@@ -2,12 +2,11 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Asset\Edit;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\PimContext;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -18,7 +17,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class EnterpriseAssetContext extends RawMinkContext
+class EnterpriseAssetContext extends PimContext
 {
     use SpinCapableTrait;
 
