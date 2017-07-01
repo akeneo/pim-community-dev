@@ -1071,8 +1071,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         parent::theFollowingJobs($table);
 
-        $accesses = [];
-        $accesses[] = ['job profile', 'user group', 'access'];
+        $accesses = [['job profile', 'user group', 'access']];
 
         $rows = $table->getRows();
         array_shift($rows);
@@ -1096,8 +1095,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         parent::theFollowingCategories($table);
 
-        $accesses = [];
-        $accesses[] = ['product category', 'user group', 'access'];
+        $accesses = [['product category', 'user group', 'access']];
 
         $rows = $table->getRows();
         array_shift($rows);
