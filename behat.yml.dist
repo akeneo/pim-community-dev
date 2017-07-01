@@ -1,22 +1,103 @@
 default:
-    paths:
-        features: features
-    context:
-        class:  Context\EnterpriseFeatureContext
-        parameters:
-            base_url: http://akeneo-pim-enterprise-behat.local/
-            timeout: 30000
-            window_width: 1280
-            window_height: 1024
+    suites:
+        TEST-enterprise-pim:
+            paths:
+                - %paths.base%/features
+                - %paths.base%/vendor/akeneo/pim-community-dev/features
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - Context\EnterpriseFeatureContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    -
+                        base_url: 'http://akeneo-pim-enterprise-behat.local/'
+                        timeout: 50000
+                        window_width: 1280
+                        window_height: 1024
+                - Context\EnterpriseFixturesContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseCatalogConfigurationContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseWebUser:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseDataGridContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseCommandContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseTransformationContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseAssertionContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseAssetContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseFileTransformerContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\AttributeValidationContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\AttributeTabContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\CompletenessContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\GridPaginationContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\VariantGroupContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Spread\ExportProfilesContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Spread\XlsxFileContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\System\PermissionsContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\SecondaryActionsContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\TreeContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Storage\FileInfoStorage:
+                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Storage\ProductStorage:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\ViewSelectorContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\DashboardContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\TeamworkAssistant\WidgetContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\HookContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    - 1280
+                    - 1024
+                - PimEnterprise\Behat\Context\JobContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\NavigationContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    - 'http://akeneo-pim-enterprise-behat.local/'
     extensions:
-        Behat\MinkExtension\Extension:
+        Behat\ChainedStepsExtension: ~
+        Behat\MinkExtension:
             default_session: symfony2
+            javascript_session: selenium2
             show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://akeneo-pim-enterprise-behat.local/
+            sessions:
+                symfony2:
+                    symfony2: ~
+                selenium2:
+                    selenium2: ~
+            base_url: 'http://akeneo-pim-enterprise-behat.local/'
             files_path: 'features/Context/fixtures/'
-        Behat\Symfony2Extension\Extension:
+        Behat\Symfony2Extension:
             kernel:
                 env: behat
                 debug: false
-        SensioLabs\Behat\PageObjectExtension\Extension: ~
+        SensioLabs\Behat\PageObjectExtension:
+            namespaces:
+                page: [Context\Page]
+            factory:
+                page_parameters:
+                    base_url: 'http://akeneo-pim-enterprise-behat.local/'
