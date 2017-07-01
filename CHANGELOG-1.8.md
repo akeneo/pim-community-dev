@@ -1,5 +1,24 @@
 # 1.8
 
+## Drop MongoDB product storage
+
+- Remove container parameter `pim_catalog_product_storage_driver`
+- Remove repository `PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository`
+- Remove repository `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\MongoDBODM\Repository\ProductCascadeRemovalRepository`
+- Remove repository `PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\ProductDraftRepository`
+- Remove repository `PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\PublishedProductRepository`
+- Remove class `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\ProductDraftHydrator`
+- Remove class `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\ProductHistoryHydrator`
+- Remove event subscriber `PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM\AssetEventSubscriber`
+- Remove event subscriber `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber`
+- Remove event subscriber `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MongoDBODM\ExcludeDeletedAttributeSubscriber`
+- Remove event subscriber `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MongoDBODM\RemoveOutdatedProductDraftSubscriber`
+- Remove event subscriber `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SynchronizeProductDraftCategoriesSubscriber`
+- Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/ProductDraft.mongodb.yml`
+- Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/PublishedProductAssociation.mongodb.yml`
+- Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/PublishedProductCompleteness.mongodb.yml`
+- Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/PublishedProduct.mongodb.yml`
+
 ## BC breaks
 
 - Remove method `link` from `PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface`.
