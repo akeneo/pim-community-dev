@@ -14,9 +14,8 @@ Feature: Edit a user groups and roles
     And I check "Redactor"
     And I save the user
     Then I should not see the text "There are unsaved changes."
-    And the "Redactor" checkbox should be checked
-    And the "IT support" checkbox should be checked
-    When I edit the "admin" user
+    When I refresh current page
+    And I edit the "admin" user
     And I visit the "Groups and Roles" tab
     Then the "Redactor" checkbox should be checked
     And the "IT support" checkbox should be checked
@@ -24,6 +23,9 @@ Feature: Edit a user groups and roles
     And I uncheck "Redactor"
     And I save the user
     Then I should not see the text "There are unsaved changes."
+    When I refresh current page
+    And I edit the "admin" user
+    And I visit the "Groups and Roles" tab
     And the "Redactor" checkbox should not be checked
     And the "IT support" checkbox should not be checked
     But the "Administrator" checkbox should be checked
