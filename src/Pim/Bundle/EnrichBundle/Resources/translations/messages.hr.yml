@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Nije moguće grupirati sljedeće proizvode jer su već u varijanti grupe ili nemaju osi grupe.
       no_variant_group: Nema varijante grupe za sada. Molimo da najprije kreirate varijantu grupe.
       no_valid_variant_group: Niti jedna varijanta grupe ne dijeli atribute s odabranim proizvodima.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Pokrenuta je masovna radnja "dodati u varijantu grupe". Biti ćete obaviješteni kad bude gotovo.
     set-attribute-requirements:
       label: Postavi zahtjeve za atribute
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Povucite i ispustite za upload ili kliknite ovdje
   edit: uredi
   save: spremi
-  save and back: spremi i nazad na tablični prikaz
   save and create: spremi i kreiraj novi
   save and next: spremi i kreni dalje
   save and finish: spremi i završi

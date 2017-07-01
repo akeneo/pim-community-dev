@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Et voi ryhmitellä tuotetta koska se on jo jossain tuotevariaatioryhmässä tai sillä ei ole ryhmäakselia
       no_variant_group: Ei tuotevariaatioryhmää toistaiseksi, aloita luomalla varianttiryhmä.
       no_valid_variant_group: Mikään tuotevariaatioryhmä ei jaa attribuutteja valittujen tuotteiden kanssa.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Massatoiminto "Lisää tuotevariaatioryhmään" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     set-attribute-requirements:
       label: Aseta attribuuttivaatimukset
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
   edit: muokkaa
   save: tallenna
-  save and back: tallenna ja palaa ruudukkoon
   save and create: tallenna ja luo uusi
   save and next: tallenna ja siirry seuraavaan
   save and finish: tallenna ja lopeta
