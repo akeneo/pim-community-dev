@@ -40,7 +40,7 @@ Feature: Variant group creation
     Given I fill in the following information in the popin:
       | Code | MUG |
     And I press the "Save" button
-    Then I should see "Variant group \"MUG\" must be defined with at least one axis"
+    Then I should see the text "Variant group \"MUG\" must be defined with at least one axis"
 
   Scenario: Successfully create a variant group and check history
     Then I should see the Code, Axis and Type fields

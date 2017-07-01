@@ -2,20 +2,19 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
-use Behat\Behat\Exception\BehaviorException;
+use Behat\ChainedStepsExtension\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Context\PimContext;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -27,7 +26,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebUser extends RawMinkContext
+class WebUser extends PimContext
 {
     use SpinCapableTrait;
     use ClosestTrait;
@@ -316,12 +315,14 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleShouldBeSelected($locale)
     {
-        $this->spin(function () use ($locale) {
-            return $this->getCurrentPage()->getElement('Main context selector')->getSelectedLocale() === $locale;
+        $mainContextSelector = $this->getElementOnCurrentPage('Main context selector');
+
+        $this->spin(function () use ($locale, $mainContextSelector) {
+            return $mainContextSelector->getSelectedLocale() === $locale;
         }, sprintf(
             'Expected to have locale "%s", found "%s"',
             $locale,
-            $this->getCurrentPage()->getElement('Main context selector')->getSelectedLocale()
+            $mainContextSelector->getSelectedLocale()
         ));
     }
 
@@ -332,7 +333,9 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
+        $mainSelector = $this->getElementOnCurrentPage('Main context selector');
+
+        $mainSelector->switchLocale($locale);
         $this->wait();
     }
 
@@ -343,7 +346,9 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheScopeTo($scope)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->switchScope($scope);
+        $element = $this->getElementOnCurrentPage('Main context selector');
+
+        $element->switchScope($scope);
         $this->wait();
     }
 
@@ -426,8 +431,10 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeConfirmDialog()
     {
-        return $this->spin(function () {
-            return null === $this->getCurrentPage()->getElement('Dialog')->find('css', '.ok');
+        $dialog = $this->getElementOnCurrentPage('Dialog');
+
+        return $this->spin(function () use ($dialog) {
+            return null === $dialog->find('css', '.ok');
         }, 'Confirm dialog button is still visible');
     }
 
@@ -912,7 +919,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
     {
-        $searched = array_values(explode(',', implode(',', $items->getLines())));
+        $searched = array_values(explode(',', implode(',', $items->getStrings())));
 
         $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
 
@@ -1325,7 +1332,9 @@ class WebUser extends RawMinkContext
 
         foreach ($table->getRowsHash() as $field => $value) {
             $this->spin(function () use ($field, $value, $element) {
-                $this->getCurrentPage()->fillField($field, $value, $element);
+                $currentPage = $this->getCurrentPage();
+
+                $currentPage->fillField($field, $value, $element);
 
                 return true;
             }, sprintf('Cannot fill the field %s', $field));
@@ -1890,6 +1899,8 @@ class WebUser extends RawMinkContext
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $code));
+
+        $this->wait();
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
@@ -2541,7 +2552,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    protected function replacePlaceholders($value)
+    public function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }

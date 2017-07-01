@@ -15,7 +15,7 @@ Feature: Edit an attribute group
     When I fill in the following information:
       | English (United States) | My sizes |
     And I press the "Save" button
-    Then I should see "My sizes"
+    Then I should see the text "My sizes"
 
   @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -30,7 +30,7 @@ Feature: Edit an attribute group
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   @skip-pef @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
   Scenario: Successfully display attribute groups in the right order

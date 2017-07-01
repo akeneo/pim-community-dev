@@ -2,11 +2,12 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Event\BaseScenarioEvent;
-use Behat\Behat\Event\StepEvent;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Behat\Tester\Result\StepResult;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -27,11 +28,13 @@ class HookContext extends PimContext
     protected $windowHeight;
 
     /**
+     * @param string $mainContextClass
      * @param int $windowWidth
      * @param int $windowHeight
      */
-    public function __construct($windowWidth, $windowHeight)
+    public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
     {
+        parent::__construct($mainContextClass);
         $this->windowWidth  = $windowWidth;
         $this->windowHeight = $windowHeight;
     }
@@ -88,13 +91,13 @@ class HookContext extends PimContext
     /**
      * Take a screenshot when a step fails
      *
-     * @param StepEvent $event
+     * @param AfterStepScope $event
      *
      * @AfterStep
      */
-    public function takeScreenshotAfterFailedStep(StepEvent $event)
+    public function takeScreenshotAfterFailedStep(AfterStepScope $event)
     {
-        if ($event->getResult() === StepEvent::FAILED) {
+        if ($event->getTestResult() === TestResult::FAILED) {
             $driver = $this->getSession()->getDriver();
 
             $rootDir   = dirname($this->getParameter('kernel.root_dir'));
@@ -217,7 +220,8 @@ class HookContext extends PimContext
      */
     public function clearRecordedMails()
     {
-        $this->getMainContext()->getMailRecorder()->clear();
+        //TODO
+//        $this->getMainContext()->getMailRecorder()->clear();
     }
 
     /**
@@ -272,13 +276,13 @@ class HookContext extends PimContext
     }
 
     /**
-     * @param BaseScenarioEvent $event
+     * @param AfterScenarioScope $event
      *
      * @AfterScenario
      */
-    public function resetCurrentPage(BaseScenarioEvent $event)
+    public function resetCurrentPage(AfterScenarioScope $event)
     {
-        if ($event->getResult() !== StepEvent::UNDEFINED) {
+        if ($event->getTestResult() !== StepResult::UNDEFINED) {
             if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
                 try {
                     $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';

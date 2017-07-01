@@ -86,7 +86,7 @@ class ImportProfilesContext extends ImportExportContext
 
         array_unshift($rows, $columns);
 
-        $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
+        $this->theFollowingFileToImport('csv', new PyStringNode($rows, 0));
     }
 
     /**

@@ -71,7 +71,7 @@ Feature: Mass Edit Families
     When I change the page size to 25
     And I select rows first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
     And I press the "Change product information" button
-    Then I should see "Mass Edit (11 families)"
+    Then I should see the text "Mass Edit (11 families)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203
   Scenario: Successfully mass edit families after sorting by label
@@ -81,7 +81,7 @@ Feature: Mass Edit Families
     When I sort by "label" value ascending
     And I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    Then I should see "Mass Edit (3 families)"
+    Then I should see the text "Mass Edit (3 families)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6026
   Scenario: Successfully mass edit more families than the batch size limit

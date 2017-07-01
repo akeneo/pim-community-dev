@@ -84,7 +84,7 @@ Feature: Display the completeness of a product
     Given I am on the "tablet" channel page
     When I change the "Locales" to "French (France)"
     And I press the "Save" button
-    Then I should see "Channel successfully updated."
+    Then I should see the text "Channel successfully updated."
     When I am on the products page
     And I switch the locale to "en_US"
     And I filter by "scope" with operator "equals" and value "Mobile"

@@ -16,9 +16,7 @@ class SecondaryActionsContext extends PimContext
      */
     public function iPressTheSecondaryAction($actionName)
     {
-        $module = $this->spin(function () {
-            return $this->getCurrentPage()->getElement('Secondary actions');
-        }, 'Can not find the Secondary actions module');
+        $module = $this->getElementOnCurrentPage('Secondary actions');
         $module->open();
 
         $this->spin(function () use ($module, $actionName) {
@@ -34,9 +32,7 @@ class SecondaryActionsContext extends PimContext
      */
     public function iShouldSeeTheSecondaryAction($not, $actionName)
     {
-        $module = $this->spin(function () {
-            return $this->getCurrentPage()->getElement('Secondary actions');
-        }, 'Can not find the Secondary actions module');
+        $module = $this->getElementOnCurrentPage('Secondary actions');
         $module->open();
 
         $this->spin(function () use ($module, $not, $actionName) {
