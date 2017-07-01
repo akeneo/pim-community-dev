@@ -12,8 +12,8 @@ Feature: Export asset variations
     And I am on the "csv_clothing_asset_variation_export" export job page
     When I launch the export job
     And I wait for the "csv_clothing_asset_variation_export" job to finish
-    And I should see "read 34"
-    And I should see "written 34"
+    And I should see the text "read 34"
+    And I should see the text "written 34"
     Then file "%tmp%/asset_export/asset_variation_export.csv" should contain 35 rows
     Then exported file of "csv_clothing_asset_variation_export" should contain:
     """
@@ -62,8 +62,8 @@ Feature: Export asset variations
     And I am on the "xlsx_clothing_asset_variation_export" export job page
     When I launch the export job
     And I wait for the "xlsx_clothing_asset_variation_export" job to finish
-    And I should see "read 34"
-    And I should see "written 34"
+    And I should see the text "read 34"
+    And I should see the text "written 34"
     Then xlsx file "%tmp%/asset_export/asset_variation_export.xlsx" should contain 35 rows
     Then exported xlsx file of "xlsx_clothing_asset_variation_export" should contain:
       | asset          | locale | channel | reference_file | variation_file |

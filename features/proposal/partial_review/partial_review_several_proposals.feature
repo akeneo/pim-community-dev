@@ -48,7 +48,7 @@ Feature: Partial review several proposals
     And I press "Approve all selected" on the "Bulk Action" dropdown button
     And I press the "Send" button in the popin
     And I wait for the "approve_product_draft" job to finish
-    Then I should see "approved 2"
+    Then I should see the text "approved 2"
     When I am on the proposals page
     Then the grid should contain 0 element
     When I edit the "jacket" product

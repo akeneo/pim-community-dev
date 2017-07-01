@@ -2,8 +2,24 @@
 
 namespace Context;
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Context\AttributeValidationContext;
+use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
+use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
+use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
+use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
+use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
+use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
+use Pim\Behat\Context\Domain\SecondaryActionsContext;
+use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
+use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
+use Pim\Behat\Context\Domain\Spread\XlsxFileContext;
+use Pim\Behat\Context\Domain\System\PermissionsContext;
+use Pim\Behat\Context\Domain\TreeContext;
+use Pim\Behat\Context\Storage\FileInfoStorage;
+use Pim\Behat\Context\Storage\ProductStorage;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
@@ -20,31 +36,42 @@ use PimEnterprise\Behat\Context\ViewSelectorContext;
  */
 class EnterpriseFeatureContext extends FeatureContext
 {
-    /**
-     * @param array $parameters
-     */
-    public function __construct(array $parameters = [])
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
     {
-        parent::__construct($parameters);
+        $environment = $scope->getEnvironment();
 
-        $this->useContext('fixtures', new EnterpriseFixturesContext());
-        $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
-        $this->useContext('webUser', new EnterpriseWebUser());
-        $this->useContext('datagrid', new EnterpriseDataGridContext());
-        $this->useContext('navigation', new EnterpriseNavigationContext($parameters['base_url']));
-        $this->useContext('transformations', new EnterpriseTransformationContext());
-        $this->useContext('assertions', new EnterpriseAssertionContext());
-        $this->useContext('command', new EnterpriseCommandContext());
-        $this->useContext('asset', new EnterpriseAssetContext());
-        $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
-        $this->useContext('hook', new HookContext($parameters['window_width'], $parameters['window_height']));
-        $this->useContext('job', new JobContext());
-        $this->useContext('navigation', new NavigationContext($parameters['base_url']));
-        $this->useContext('viewSelector', new ViewSelectorContext());
-        $this->useContext('amWidget', new WidgetContext());
-        $this->useContext('amProject', new ProjectContext());
-
-        $this->useContext('dashboard', new DashboardContext());
+        $this->contexts['fixtures'] = $environment->getContext(EnterpriseFixturesContext::class);
+        $this->contexts['catalogConfiguration'] = $environment->getContext(EnterpriseCatalogConfigurationContext::class);
+        $this->contexts['webUser'] = $environment->getContext(EnterpriseWebUser::class);
+        $this->contexts['datagrid'] = $environment->getContext(EnterpriseDataGridContext::class);
+        $this->contexts['command'] = $environment->getContext(EnterpriseCommandContext::class);
+        $this->contexts['navigation'] = $environment->getContext(NavigationContext::class);
+        $this->contexts['transformations'] = $environment->getContext(EnterpriseTransformationContext::class);
+        $this->contexts['assertions'] = $environment->getContext(EnterpriseAssertionContext::class);
+        $this->contexts['domain-attribute-tab'] = $environment->getContext(AttributeTabContext::class);
+        $this->contexts['domain-completeness'] = $environment->getContext(CompletenessContext::class);
+        $this->contexts['domain-export-profiles'] = $environment->getContext(ExportProfilesContext::class);
+        $this->contexts['domain-xlsx-files'] = $environment->getContext(XlsxFileContext::class);
+        $this->contexts['domain-import-profiles'] = $environment->getContext(ImportProfilesContext::class);
+        $this->contexts['domain-pagination-grid'] = $environment->getContext(GridPaginationContext::class);
+        $this->contexts['domain-tree'] = $environment->getContext(TreeContext::class);
+        $this->contexts['domain-secondary-actions'] = $environment->getContext(SecondaryActionsContext::class);
+        $this->contexts['domain-group'] = $environment->getContext(ProductGroupContext::class);
+        $this->contexts['domain-variant-group'] = $environment->getContext(VariantGroupContext::class);
+        $this->contexts['asset'] = $environment->getContext(EnterpriseAssetContext::class);
+        $this->contexts['file_transformer'] = $environment->getContext(EnterpriseFileTransformerContext::class);
+        $this->contexts['hook'] = $environment->getContext(HookContext::class);
+        $this->contexts['job'] = $environment->getContext(JobContext::class);
+        $this->contexts['viewSelector'] = $environment->getContext(ViewSelectorContext::class);
+        $this->contexts['amWidget'] = $environment->getContext(WidgetContext::class);
+        $this->contexts['amProject'] = $environment->getContext(ProjectContext::class);
+        $this->contexts['dashboard'] = $environment->getContext(DashboardContext::class);
+        $this->contexts['storage-product'] = $environment->getContext(ProductStorage::class);
+        $this->contexts['storage-file-info'] = $environment->getContext(FileInfoStorage::class);
+        $this->contexts['attribute-validation'] = $environment->getContext(AttributeValidationContext::class);
+        $this->contexts['role'] = $environment->getContext(PermissionsContext::class);
+        $this->contexts['export-builder'] = $environment->getContext(ExportBuilderContext::class);
     }
 
     /**

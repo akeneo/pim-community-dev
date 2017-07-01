@@ -51,29 +51,29 @@ Feature: Publish many products at once
     And I select rows my-jacket and my-shoes
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
+    Then I should see the text "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     And I am on the published products page
     Then the grid should contain 2 elements
     And I should see product my-jacket and my-shoes
     And I am on the "my-jacket" published product show page
-    And I should see "Release"
-    And I should see "February 02, 2013"
-    And I should see "Available"
-    And I should see "Length"
-    And I should see "60.0000 CENTIMETER"
-    And I should see "Popularity"
-    And I should see "9"
-    And I should see "Customs"
-    Then I should see "100.00 EUR"
+    And I should see the text "Release"
+    And I should see the text "February 02, 2013"
+    And I should see the text "Available"
+    And I should see the text "Length"
+    And I should see the text "60.0000 CENTIMETER"
+    And I should see the text "Popularity"
+    And I should see the text "9"
+    And I should see the text "Customs"
+    Then I should see the text "100.00 EUR"
     And I am on the "my-shoes" published product show page
-    And I should see "Release"
-    And I should see "February 03, 2013"
-    And I should see "Available"
-    And I should see "Length"
-    And I should see "25.0000 CENTIMETER"
-    And I should see "Popularity"
-    And I should see "10"
-    And I should see "Customs"
-    Then I should see "50.00 EUR"
+    And I should see the text "Release"
+    And I should see the text "February 03, 2013"
+    And I should see the text "Available"
+    And I should see the text "Length"
+    And I should see the text "25.0000 CENTIMETER"
+    And I should see the text "Popularity"
+    And I should see the text "10"
+    And I should see the text "Customs"
+    Then I should see the text "50.00 EUR"

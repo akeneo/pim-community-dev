@@ -37,7 +37,7 @@ Feature: Review a product draft
     Then the grid should contain 0 element
     When I visit the "Attributes" column tab
     And I visit the "Media" group
-    Then I should see "akeneo.txt"
+    Then I should see the text "akeneo.txt"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully accept an image attribute from a product draft
@@ -52,5 +52,5 @@ Feature: Review a product draft
     Then the grid should contain 0 element
     When I visit the "Attributes" column tab
     And I visit the "Media" group
-    Then I should see "akeneo.jpg"
+    Then I should see the text "akeneo.jpg"
 

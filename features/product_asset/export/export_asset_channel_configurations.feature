@@ -12,8 +12,8 @@ Feature: Export asset channel configurations
     And I am on the "clothing_asset_channel_configuration_export" export job page
     When I launch the export job
     And I wait for the "clothing_asset_channel_configuration_export" job to finish
-    And I should see "read 2"
-    And I should see "written 2"
+    And I should see the text "read 2"
+    And I should see the text "written 2"
     Then exported yaml file of "clothing_asset_channel_configuration_export" should contain:
     """
     asset_channel_configurations:

@@ -23,7 +23,7 @@ Feature: Remove product assets
     And I save the product
     When I am on the "chicagoskyline" asset page
     And I press the "Delete" button and wait for modal
-    Then I should see "Delete confirmation"
+    Then I should see the text "Delete confirmation"
     And I confirm the removal
     Then I should be on the assets page
     And I should not see asset chicagoskyline
@@ -44,7 +44,7 @@ Feature: Remove product assets
     And I confirm the publishing
     When I am on the "chicagoskyline" asset page
     And I press the "Delete" button and wait for modal
-    Then I should see "Delete confirmation"
+    Then I should see the text "Delete confirmation"
     And I confirm the removal
     Then I should be on the "chicagoskyline" asset edit page
     When I am on the assets page

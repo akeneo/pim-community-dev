@@ -20,9 +20,9 @@ Feature: Import categories
     When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_category_import" job to finish
-    And I should see "read lines 4"
-    And I should see "processed 2"
-    And I should see "created 2"
+    And I should see the text "read lines 4"
+    And I should see the text "processed 2"
+    And I should see the text "created 2"
     Then there should be the following assets categories:
       | code               | label-de_DE | label-en_US        | label-fr_FR                  | parent             |
       | asset_main_catalog |             | Asset main catalog | Catalogue principal d'Assets |                    |
@@ -43,7 +43,7 @@ Feature: Import categories
     When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_category_import" job to finish
-    Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
+    Then I should see the text "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
 
   Scenario: Skip assets categories with empty code
     Given the "clothing" catalog configuration
@@ -58,7 +58,7 @@ Feature: Import categories
     When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_category_import" job to finish
-    And I should see "Field \"code\" must be filled"
+    And I should see the text "Field \"code\" must be filled"
 
   Scenario: Set parent's permissions to new asset categories
     Given the "clothing" catalog configuration
@@ -142,9 +142,9 @@ Feature: Import categories
     When I am on the "xlsx_clothing_asset_category_import" import job page
     And I launch the import job
     And I wait for the "xlsx_clothing_asset_category_import" job to finish
-    And I should see "read lines 4"
-    And I should see "processed 2"
-    And I should see "created 2"
+    And I should see the text "read lines 4"
+    And I should see the text "processed 2"
+    And I should see the text "created 2"
     Then there should be the following assets categories:
       | code               | label-de_DE | label-en_US        | label-fr_FR                  | parent             |
       | asset_main_catalog |             | Asset main catalog | Catalogue principal d'Assets |                    |

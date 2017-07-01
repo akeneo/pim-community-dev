@@ -19,7 +19,7 @@ Feature: Enforce no permissions for a locale
     And I am logged in as "Julia"
     When I am on the products page
     Then I should be on the homepage
-    And I should see "You don't have access to product data in any activated locale, please contact your administrator"
+    And I should see the text "You don't have access to product data in any activated locale, please contact your administrator"
 
   Scenario: Display only available locales in the locale switcher
     Given the following locale accesses:

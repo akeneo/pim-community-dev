@@ -34,4 +34,4 @@ Feature: Review a product draft
     When I visit the "Proposals" column tab
     Then I should not be able to view the "Approve" action of the row which contains "Old attribute not used anymore"
     And I should not be able to view the "Reject" action of the row which contains "Old attribute not used anymore"
-    And I should see "Can't be reviewed"
+    And I should see the text "Can't be reviewed"

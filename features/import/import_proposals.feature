@@ -70,8 +70,8 @@ Feature: Import proposals
     And I am on the "csv_clothing_product_proposal_import" import job page
     When I upload and import the file "proposal_import.zip"
     And I wait for the "csv_clothing_product_proposal_import" job to finish
-    Then I should see "read lines 3"
-    And I should see "created proposal 3"
+    Then I should see the text "read lines 3"
+    And I should see the text "created proposal 3"
     When I logout
     And I am logged in as "Julia"
     And I am on the proposals page
@@ -240,7 +240,7 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 0 proposal
-    And I should see "deleted proposal 1"
+    And I should see the text "deleted proposal 1"
 
   Scenario: Update a proposal with same file format than product import
     Given I am logged in as "Mary"

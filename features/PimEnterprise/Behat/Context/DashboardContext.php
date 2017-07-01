@@ -2,10 +2,13 @@
 
 namespace PimEnterprise\Behat\Context;
 
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
 class DashboardContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string $user
      * @param string $product
@@ -15,7 +18,9 @@ class DashboardContext extends PimContext
     public function iClickOnTheProposalToReview($user, $product)
     {
         try {
-            $this->getCurrentPage()->getElement('Proposal widget')->followProposalLink($user, $product);
+            $proposalWidget = $this->getElementOnCurrentPage('Proposal widget');
+
+            $proposalWidget->followProposalLink($user, $product);
         } catch (\Exception $e) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('No proposal(s) found for %s user and product %s', $user, $product)
@@ -32,7 +37,9 @@ class DashboardContext extends PimContext
      */
     public function getChannelCompleteness($channel)
     {
-        return $this->$this->getCurrentPage()->getElement('Completeness Widget')->getChannelCompleteness($channel);
+        $completenessWidget = $this->getElementOnCurrentPage('Completeness Widget');
+
+        return $completenessWidget->getChannelCompleteness($channel);
     }
 
     /**
@@ -45,7 +52,8 @@ class DashboardContext extends PimContext
      */
     public function getLocalizedChannelCompleteness($channel, $locale)
     {
-        return $this->getCurrentPage()
-            ->getElement('Completeness Widget')->getLocalizedChannelCompleteness($channel, $locale);
+        $completenessWidget = $this->getElementOnCurrentPage('Completeness Widget');
+
+        return $completenessWidget->getLocalizedChannelCompleteness($channel, $locale);
     }
 }

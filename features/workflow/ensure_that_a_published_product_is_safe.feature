@@ -60,7 +60,7 @@ Feature: Ensure that a published product is safe
     Given I edit the "similar_jackets" product group
     When I press the "Delete" button and wait for modal
     And I confirm the deletion
-    Then I should see "Similar jackets"
+    Then I should see the text "Similar jackets"
 
   Scenario: Successfully remove a group that is not linked to a published product
     Given I am on the "hm_jackets" variant group page
