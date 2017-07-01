@@ -16,7 +16,7 @@ Feature: Edit an export
       | Label | My export |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
-    Then I should see "My export"
+    Then I should see the text "My export"
 
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
@@ -74,7 +74,7 @@ Feature: Edit an export
     Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   @jira https://akeneo.atlassian.net/browse/PIM-5965
   Scenario: Successfully display export filter in expected order

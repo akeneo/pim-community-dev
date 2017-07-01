@@ -14,7 +14,7 @@ Feature: Sort attribute options
       | Attribute group | Other |
     And I visit the "Values" tab
     And I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
+    And I should see the text "To manage options, please save the attribute first"
     And I save the attribute
     And I should see the flash message "Attribute successfully created"
 
@@ -26,10 +26,10 @@ Feature: Sort attribute options
       | medium_size |
       | large_size  |
     Then I should not see reorder handles
-    And I should see "large_size medium_size small_size"
+    And I should see the text "large_size medium_size small_size"
     When I uncheck the "Automatic option sorting" switch
     Then I should see reorder handles
-    And I should see "small_size medium_size large_size"
+    And I should see the text "small_size medium_size large_size"
 
   Scenario: Display attribute options ordered in PEF
     Given I check the "Automatic option sorting" switch

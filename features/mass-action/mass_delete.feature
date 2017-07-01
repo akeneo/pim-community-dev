@@ -37,7 +37,7 @@ Feature: Delete many product at once
   Scenario: Successfully remove many products
     Given I select rows boots_S36, boots_S37 and boots_S38
     And I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see products boots_S36, product boots_S37 and boots_S38
@@ -46,7 +46,7 @@ Feature: Delete many product at once
   Scenario: Successfully "mass" delete one product
     Given I select row boots_S38
     And I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see product boots_S38
@@ -57,7 +57,7 @@ Feature: Delete many product at once
     And I change the page size to 10
     And I select all visible entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
-    And I should see "Are you sure you want to delete selected products?"
+    And I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then the grid should contain 1 element
@@ -66,7 +66,7 @@ Feature: Delete many product at once
   Scenario: Successfully mass delete all products
     Given I select all entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
-    And I should see "Are you sure you want to delete selected products?"
+    And I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then the grid should contain 0 elements
@@ -82,6 +82,6 @@ Feature: Delete many product at once
     And I filter by "completeness" with operator "equals" and value "yes"
     And I select all visible entities
     When I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 0 element

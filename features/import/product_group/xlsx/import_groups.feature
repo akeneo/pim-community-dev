@@ -30,9 +30,9 @@ Feature: Import Xlsx groups
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I should see "read lines 4"
-    And I should see "created 2"
-    And I should see "processed 2"
+    Then I should see the text "read lines 4"
+    And I should see the text "created 2"
+    And I should see the text "processed 2"
     Then there should be the following groups:
       | code          | label-en_US    | label-fr_FR | type    | axis       |
       | ORO_TSHIRT    | Oro T-shirt    |             | VARIANT | color,size |
@@ -53,9 +53,9 @@ Feature: Import Xlsx groups
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I should see "This property cannot be changed"
-    And I should see "read lines 1"
-    And I should see "skipped 1"
+    Then I should see the text "This property cannot be changed"
+    And I should see the text "read lines 1"
+    And I should see the text "skipped 1"
     Then there should be the following groups:
       | code          | label-en_US    | label-fr_FR | type    | axis       |
       | ORO_TSHIRT    | Oro T-shirt    |             | VARIANT | color,size |
@@ -75,8 +75,8 @@ Feature: Import Xlsx groups
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "Field \"code\" must be filled"
+    Then I should see the text "read lines 1"
+    And I should see the text "Field \"code\" must be filled"
 
   Scenario: Skip the line if we encounter a new variant group
     Given the following XLSX file to import:
@@ -89,9 +89,9 @@ Feature: Import Xlsx groups
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "skipped 1"
-    And I should see "Property \"type\" expects a valid group type. Cannot process variant group, only groups are supported, \"New_VG\" given"
+    Then I should see the text "read lines 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Property \"type\" expects a valid group type. Cannot process variant group, only groups are supported, \"New_VG\" given"
 
   Scenario: Skip the line if we encounter an existing variant group
     Given the following XLSX file to import:
@@ -104,9 +104,9 @@ Feature: Import Xlsx groups
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "skipped 1"
-    And I should see "Property \"type\" expects a valid group type. Cannot process variant group, only groups are supported, \"AKENEO_TSHIRT\" given."
+    Then I should see the text "read lines 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Property \"type\" expects a valid group type. Cannot process variant group, only groups are supported, \"AKENEO_TSHIRT\" given."
 
   Scenario: Skip the line if we try to set axis on a standard group
     Given the following XLSX file to import:
@@ -119,5 +119,5 @@ Feature: Import Xlsx groups
     When I am on the "xlsx_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "Field \"axis\" is provided, authorized fields are: \"type, code, label-en_US\""
+    Then I should see the text "read lines 1"
+    And I should see the text "Field \"axis\" is provided, authorized fields are: \"type, code, label-en_US\""

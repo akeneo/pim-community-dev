@@ -15,7 +15,7 @@ Feature: Edit attribute options
       | Attribute group | Other |
     And I visit the "Values" tab
     Then I should see the "Options" section
-    Then I should see "To manage options, please save the attribute first"
+    Then I should see the text "To manage options, please save the attribute first"
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
 
@@ -31,7 +31,7 @@ Feature: Edit attribute options
       | title   | Cancel modification                                                                                    |
       | content | Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ? |
     And I confirm the cancellation
-    Then I should see "green"
+    Then I should see the text "green"
     But I should not see "yellow"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6002
@@ -68,4 +68,4 @@ Feature: Edit attribute options
       | Code  | en_US    |
       | red   | Reeed !  |
     And I am on the "shoe_42" product page
-    Then I should see "Reeed !"
+    Then I should see the text "Reeed !"
