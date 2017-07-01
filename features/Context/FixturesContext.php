@@ -11,9 +11,10 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\DBAL\Schema\Table;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
@@ -152,6 +153,7 @@ class FixturesContext extends BaseFixturesContext
         );
     }
 
+
     /**
      * @param string $status
      * @param string $sku
@@ -195,13 +197,16 @@ class FixturesContext extends BaseFixturesContext
      */
     public function generatedFamilies($familyNumber)
     {
-        $table = new TableNode();
-        $table->addRow(['code']);
+        $table = [];
+        $table[] = ['code'];
         for ($i = 1; $i <= $familyNumber; $i++) {
             $familyCode = sprintf('family_%d', $i);
-            $table->addRow([$familyCode]);
+            $table[] = [$familyCode];
         }
-        return $this->theFollowingFamilies($table);
+
+        $tableNode = new TableNode($table);
+
+        return $this->theFollowingFamilies($tableNode);
     }
 
     /**

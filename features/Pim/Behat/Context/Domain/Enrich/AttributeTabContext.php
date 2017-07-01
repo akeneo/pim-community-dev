@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
-use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
@@ -19,8 +18,7 @@ class AttributeTabContext extends PimContext
      */
     public function iStartTheCopy()
     {
-        $this->getCurrentPage()
-            ->getElement('Attribute tab')
+        $this->getElementOnCurrentPage('Attribute tab')
             ->startComparison();
     }
 
@@ -31,8 +29,7 @@ class AttributeTabContext extends PimContext
      */
     public function iSelectTranslationsFor($field)
     {
-        $this->getCurrentPage()
-            ->getElement('Attribute tab')
+        $this->getElementOnCurrentPage('Attribute tab')
             ->manualSelectComparedElement($field);
     }
 
@@ -43,8 +40,7 @@ class AttributeTabContext extends PimContext
      */
     public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()
-            ->getElement('Comparison panel')
+        $this->getElementOnCurrentPage('Comparison panel')
             ->selectElements($mode);
     }
 
@@ -53,8 +49,7 @@ class AttributeTabContext extends PimContext
      */
     public function iCopySelectedTranslations()
     {
-        $this->getCurrentPage()
-            ->getElement('Comparison panel')
+        $this->getElementOnCurrentPage('Comparison panel')
             ->copySelectedElements();
     }
 
@@ -68,8 +63,7 @@ class AttributeTabContext extends PimContext
     {
         $method = 'switch' . ucfirst($type);
 
-        $this->getCurrentPage()
-            ->getElement('Comparison panel')
+        $this->getElementOnCurrentPage('Comparison panel')
             ->$method($selection);
     }
 
@@ -154,8 +148,7 @@ class AttributeTabContext extends PimContext
      */
     public function iShouldSeeTheComparisonField($fieldLabel)
     {
-        $field = $this->getCurrentPage()
-            ->getElement('Attribute tab')
+        $field = $this->getElementOnCurrentPage('Attribute tab')
             ->getComparisonFieldContainer($fieldLabel);
 
         assertNotNull($field);
@@ -168,9 +161,7 @@ class AttributeTabContext extends PimContext
     {
         $this->spin(function () use ($fieldLabel) {
             try {
-                $this->getCurrentPage()
-                    ->getElement('Attribute tab')
-                    ->getComparisonFieldContainer($fieldLabel);
+                $this->getElementOnCurrentPage('Attribute tab')->getComparisonFieldContainer($fieldLabel);
             } catch (TimeoutException $e) {
                 return true;
             }

@@ -61,9 +61,11 @@ class XlsxFileContext extends PimContext
             $reader->close();
         }
 
+        $lines = false === current($expectedLines) ? [] : current($expectedLines);
+
         assertEmpty(
             $expectedLines,
-            sprintf('Could not find an expected line: %s', implode(' | ', current($expectedLines)))
+            sprintf('Could not find an expected line: %s', implode(' | ', $lines))
         );
     }
 

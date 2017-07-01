@@ -3,7 +3,7 @@
 namespace Pim\Behat\Context\Domain\Spread;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step\Then;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
