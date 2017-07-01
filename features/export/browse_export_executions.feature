@@ -10,12 +10,16 @@ Feature: Browse export executions
     When I am on the exports page
     And I am on the "csv_footwear_product_export" export job page
     And I launch the "csv_footwear_product_export" export job
+    And I wait for the "csv_footwear_product_export" job to finish
     And I am on the "csv_footwear_category_export" export job page
     And I launch the "csv_footwear_category_export" export job
+    And I wait for the "csv_footwear_category_export" job to finish
     And I am on the "csv_footwear_attribute_export" export job page
     And I launch the "csv_footwear_attribute_export" export job
+    And I wait for the "csv_footwear_attribute_export" job to finish
     And I am on the "csv_footwear_product_export" export job page
     And I launch the "csv_footwear_product_export" export job
+    And I wait for the "csv_footwear_product_export" job to finish
     Then I am on the export executions page
     And the grid should contain 4 elements
     And I should see the columns Code, Label, Job, Date, Status and Warnings
