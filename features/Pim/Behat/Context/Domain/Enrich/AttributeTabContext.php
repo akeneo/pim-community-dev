@@ -29,8 +29,9 @@ class AttributeTabContext extends PimContext
      */
     public function iSelectTranslationsFor($field)
     {
-        $this->getElementOnCurrentPage('Attribute tab')
-            ->manualSelectComparedElement($field);
+        $attributeTabElement = $this->getElementOnCurrentPage('Attribute tab');
+
+        $attributeTabElement->manualSelectComparedElement($field);
     }
 
     /**
@@ -148,8 +149,11 @@ class AttributeTabContext extends PimContext
      */
     public function iShouldSeeTheComparisonField($fieldLabel)
     {
-        $field = $this->getElementOnCurrentPage('Attribute tab')
-            ->getComparisonFieldContainer($fieldLabel);
+        $attributeTab = $this->getElementOnCurrentPage('Attribute tab');
+
+        $field = $this->spin(function () use ($attributeTab, $fieldLabel) {
+            return $attributeTab->getLabelField($fieldLabel);
+        }, sprintf('Cannot find the %s on comparison field', $fieldLabel));
 
         assertNotNull($field);
     }
@@ -161,7 +165,7 @@ class AttributeTabContext extends PimContext
     {
         $this->spin(function () use ($fieldLabel) {
             try {
-                $this->getElementOnCurrentPage('Attribute tab')->getComparisonFieldContainer($fieldLabel);
+                $this->getElementOnCurrentPage('Attribute tab')->getLabelField($fieldLabel);
             } catch (TimeoutException $e) {
                 return true;
             }

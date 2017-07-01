@@ -197,8 +197,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function generatedFamilies($familyNumber)
     {
-        $table = [];
-        $table[] = ['code'];
+        $table = [['code']];
         for ($i = 1; $i <= $familyNumber; $i++) {
             $familyCode = sprintf('family_%d', $i);
             $table[] = [$familyCode];

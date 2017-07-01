@@ -73,7 +73,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $mainContextClass
      * @param string $baseUrl
      */
-    public function __construct(string $mainContextClass, $baseUrl)
+    public function __construct(string $mainContextClass, string $baseUrl)
     {
         parent::__construct($mainContextClass);
         $this->baseUrl = $baseUrl;
@@ -455,7 +455,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @param string $expectedFullUrl
      */
-    public function assertAddress($expectedFullUrl)
+    public function assertAddress(string $expectedFullUrl)
     {
         $this->spin(function () use ($expectedFullUrl) {
             $actualFullUrl = $this->getSession()->getCurrentUrl();

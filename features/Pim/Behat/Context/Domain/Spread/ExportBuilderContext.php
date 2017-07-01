@@ -8,6 +8,7 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class ExportBuilderContext extends PimContext implements PageObjectAware
 {
@@ -89,7 +90,7 @@ class ExportBuilderContext extends PimContext implements PageObjectAware
     /**
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    protected function getDatagrid()
+    protected function getDatagrid(): Page
     {
         return $this->pageFactory->createPage('Base\Grid');
     }

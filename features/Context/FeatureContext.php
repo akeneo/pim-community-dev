@@ -66,7 +66,13 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $this->setTimeout($parameters);
     }
 
-    public function getSubcontext($context)
+    /**
+     * @param string $context
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getSubcontext(string $context)
     {
         if (!isset($this->contexts[$context])) {
             throw new \Exception(sprintf('The context %s does not exist', $context));
@@ -301,7 +307,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
      *
      * @When /^(?:|I )follow the link "(?P<link>(?:[^"]|\\")*)"$/
      */
-    public function followLink($link)
+    public function followLink(string $link)
     {
         $link = str_replace('\\"', '"', $link);
 
