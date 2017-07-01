@@ -24,7 +24,7 @@ Feature: Enforce no permissions for a category
     And I save the category
     And I am on the products page
     Then I should be on the homepage
-    Then I should see "You don't have access to products in any tree, please contact your administrator"
+    Then I should see the text "You don't have access to products in any tree, please contact your administrator"
 
   Scenario: Display only granted products in products grid, I see all products
     Given I am logged in as "Mary"

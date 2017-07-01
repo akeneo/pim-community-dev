@@ -25,7 +25,7 @@ Feature: Quick export many published products from datagrid
       | type    | message                                     |
       | success | CSV published product quick export finished |
     Then I go on the last executed job resume of "csv_published_product_quick_export"
-    And I should see "COMPLETED"
+    And I should see the text "COMPLETED"
     And the name of the exported file of "csv_published_product_quick_export" should be "published_products_export_en_US_tablet.csv"
     And exported file of "csv_published_product_quick_export" should contain:
     """
@@ -47,7 +47,7 @@ Feature: Quick export many published products from datagrid
       | type    | message                                      |
       | success | XLSX published product quick export finished |
     Then I go on the last executed job resume of "xlsx_published_product_quick_export"
-    And I should see "COMPLETED"
+    And I should see the text "COMPLETED"
     And the name of the exported file of "xlsx_published_product_quick_export" should be "published_products_export_en_US_tablet.xlsx"
     And exported xlsx file of "xlsx_published_product_quick_export" should contain:
       | sku      | categories        | color | description-en_US-tablet | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rating | side_view | size | top_view | weather_conditions |

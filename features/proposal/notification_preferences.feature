@@ -20,21 +20,21 @@ Feature: Manage notifications preferences
     And I am on the User profile show page
     And I press the "Edit" button
     And I visit the "Notifications" tab
-    Then I should see "When new proposal to review"
-    And I should see "When proposal is accepted or rejected"
+    Then I should see the text "When new proposal to review"
+    And I should see the text "When proposal is accepted or rejected"
     And I logout
     Given I am logged in as "Mary"
     And I am on the User profile show page
     And I press the "Edit" button
     And I visit the "Notifications" tab
     Then I should not see "When new proposal to review"
-    And I should see "When proposal is accepted or rejected"
+    And I should see the text "When proposal is accepted or rejected"
     And I logout
     Given I am logged in as "Peter"
     And I am on the User profile show page
     And I press the "Edit" button
     And I visit the "Notifications" tab
-    Then I should see "When new proposal to review"
+    Then I should see the text "When new proposal to review"
     And I should not see "When proposal is accepted or rejected"
 
   Scenario: I can disable notification I receive when there is a new proposal on product I own
@@ -61,7 +61,7 @@ Feature: Manage notifications preferences
     Then I should see the text "Edit user - Mary Smith"
     When I visit the "Notifications" tab
     Then I should not see "When new proposal to review"
-    But I should see "When proposal is accepted or rejected"
+    But I should see the text "When proposal is accepted or rejected"
     When I uncheck the "When proposal is accepted or rejected" switch
     And I save the user
     Then I should not see the text "There are unsaved changes."

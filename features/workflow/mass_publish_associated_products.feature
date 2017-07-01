@@ -42,7 +42,7 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
+    Then I should see the text "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     And I am on the published products page
@@ -52,7 +52,7 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
+    Then I should see the text "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     And I am on the published products page
@@ -85,7 +85,7 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
+    Then I should see the text "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     And I am on the published products page
@@ -95,7 +95,7 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
+    Then I should see the text "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     And I am on the published products page
@@ -114,7 +114,7 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
+    Then I should see the text "The 2 selected products will be published"
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
     And I am on the published products page

@@ -69,7 +69,7 @@ Feature: Mass uploads assets
       | akeneo.jpg |
     And I start assets mass upload
     Then I should see "Success" status for asset "akeneo.jpg"
-    And I should see "Import"
+    And I should see the text "Import"
     When I delete asset upload
     Then I should not see "akeneo.jpg"
     And The button "Import" should be disabled
@@ -80,7 +80,7 @@ Feature: Mass uploads assets
     And I start assets mass upload
     Then I should see "Success" status for asset "akeneo.jpg"
     And I should see "Success" status for asset "akeneo2.jpg"
-    And I should see "Import"
+    And I should see the text "Import"
     When I cancel assets mass upload
     Then I should not see "akeneo.jpg"
     And I should not see "akeneo2.jpg"
@@ -98,17 +98,17 @@ Feature: Mass uploads assets
     And I import assets mass upload
     And I wait 5 seconds
     Then I should be on the last "apply_assets_mass_upload" import job page
-    And I should see "Asset created from file 3"
-    And I should see "Asset updated 1"
+    And I should see the text "Asset created from file 3"
+    And I should see the text "Asset updated 1"
     When I am on the job tracker page
-    Then I should see "Mass Upload Assets"
-    And I should see "COMPLETED"
+    Then I should see the text "Mass Upload Assets"
+    And I should see the text "COMPLETED"
     When I am on the assets page
     And I change the page size to 25
-    Then I should see "akeneo"
-    And I should see "akeneo2"
-    And I should see "logo_akeneo"
-    And I should see "man_wall"
+    Then I should see the text "akeneo"
+    And I should see the text "akeneo2"
+    And I should see the text "logo_akeneo"
+    And I should see the text "man_wall"
     And I should have 1 new notification
     And I should see notification:
       | type    | message              |

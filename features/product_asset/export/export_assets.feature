@@ -12,8 +12,8 @@ Feature: Export assets
     And I am on the "csv_clothing_asset_export" export job page
     When I launch the export job
     And I wait for the "csv_clothing_asset_export" job to finish
-    And I should see "read 15"
-    And I should see "written 15"
+    And I should see the text "read 15"
+    And I should see the text "written 15"
     Then file "%tmp%/asset_export/asset_export.csv" should contain 16 rows
     Then exported file of "csv_clothing_asset_export" should contain:
     """
@@ -43,8 +43,8 @@ Feature: Export assets
     And I am on the "xlsx_clothing_asset_export" export job page
     When I launch the export job
     And I wait for the "xlsx_clothing_asset_export" job to finish
-    And I should see "read 15"
-    And I should see "written 15"
+    And I should see the text "read 15"
+    And I should see the text "written 15"
     Then xlsx file "%tmp%/asset_export/asset_export.xlsx" should contain 16 rows
     Then exported xlsx file of "xlsx_clothing_asset_export" should contain:
       | code           | categories   | description                                 | end_of_use | localized | tags                                                                                               |

@@ -17,7 +17,7 @@ Feature: Edit an asset category
     And I save the category
     And I should see the flash message "Category successfully updated"
     Then I should be on the asset category "images" edit page
-    And I should see "My images"
+    And I should see the text "My images"
 
   Scenario: Go to category edit page from the asset category tree
     Given I am on the assets categories page
@@ -31,14 +31,14 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | 2015 Clients documents |
     And I click on the Akeneo logo
-    Then I should see "You will lose changes to the category if you leave the page." in popup
+    Then I should see the text "You will lose changes to the category if you leave the page." in popup
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I edit the "images" asset category
     When I fill in the following information:
       | English (United States) | My images |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   Scenario: Stay on the asset category when I save it and keep category tree open (without oro nav)
     Given I edit the "situ" asset category

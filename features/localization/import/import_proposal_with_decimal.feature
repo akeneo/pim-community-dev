@@ -161,5 +161,5 @@ Feature: Import proposals with decimals
     When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
-    Then I should see "skipped 3"
-    And I should see "This type of value expects the use of a dot (.) to separate decimals."
+    Then I should see the text "skipped 3"
+    And I should see the text "This type of value expects the use of a dot (.) to separate decimals."

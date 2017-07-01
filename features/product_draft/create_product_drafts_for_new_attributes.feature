@@ -19,7 +19,7 @@ Feature: Create product drafts for new attributes added to the product
     And I visit the "Other" group
     And I change the Comment to "tshirt"
     And I save the product
-    Then I should see "Send for approval"
+    Then I should see the text "Send for approval"
 
   Scenario: Do not save a product draft with empty attribute values
     Given a "clothing" catalog configuration

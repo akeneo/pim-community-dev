@@ -31,8 +31,8 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    Then I should see "The 2 selected products will be published"
-    And I should see "Confirm"
+    Then I should see the text "The 2 selected products will be published"
+    And I should see the text "Confirm"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3784
   Scenario: Successfully publish all products

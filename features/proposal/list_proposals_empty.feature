@@ -21,7 +21,7 @@ Feature: List proposals
     Given I am logged in as "Sandra"
     And I am on the proposals page
     Then the grid should contain 0 elements
-    And I should see "There is no proposal to review."
+    And I should see the text "There is no proposal to review."
     And I should not see "There is no proposal to review. Try to change your search criteria."
 
   Scenario: Filter the proposal grid and display a custom message if there is no results
@@ -30,4 +30,4 @@ Feature: List proposals
     Then the grid should contain 1 elements
     And I filter by "createdAt" with operator "between" and value "02/01/2012 and 02/02/2012"
     Then the grid should contain 0 elements
-    And I should see "There is no proposal to review. Try to change your search criteria."
+    And I should see the text "There is no proposal to review. Try to change your search criteria."

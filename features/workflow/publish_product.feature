@@ -75,20 +75,20 @@ Feature: Publish a product
     Then the grid should contain 1 elements
     And I should see product my-jacket
     And I am on the "my-jacket" published product show page
-    And I should see "Release"
-    And I should see "February 02, 2013"
-    And I should see "Available"
-    And I should see "October 03, 2013"
-    And I should see "Length"
-    And I should see "25.0000 CENTIMETER"
-    And I should see "Popularity"
-    And I should see "9"
-    And I should see "Customs"
-    And I should see "100.00 EUR"
-    And I should see "Picture"
-    And I should see "akeneo.jpg"
-    And I should see "Manual"
-    And I should see "akeneo.txt"
+    And I should see the text "Release"
+    And I should see the text "February 02, 2013"
+    And I should see the text "Available"
+    And I should see the text "October 03, 2013"
+    And I should see the text "Length"
+    And I should see the text "25.0000 CENTIMETER"
+    And I should see the text "Popularity"
+    And I should see the text "9"
+    And I should see the text "Customs"
+    And I should see the text "100.00 EUR"
+    And I should see the text "Picture"
+    And I should see the text "akeneo.jpg"
+    And I should see the text "Manual"
+    And I should see the text "akeneo.txt"
     Given I edit the "my-jacket" product
     And I change the Release to "2014-03-25"
     And I visit the "Other" group
@@ -101,8 +101,8 @@ Feature: Publish a product
     Then the grid should contain 1 elements
     And I should see product my-jacket
     And I am on the "my-jacket" published product show page
-    And I should see "March 25, 2014"
-    And I should see "akeneo2.jpg"
+    And I should see the text "March 25, 2014"
+    And I should see the text "akeneo2.jpg"
     And I should not see "February 02, 2013"
     And I should not see "akeneo.jpg"
 
@@ -146,4 +146,4 @@ Feature: Publish a product
     And I visit the "Values" tab
     When I remove the "Hot" option
     And I confirm the deletion
-    Then I should see "Impossible to remove attribute option linked to a published product"
+    Then I should see the text "Impossible to remove attribute option linked to a published product"

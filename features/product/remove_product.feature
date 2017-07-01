@@ -35,7 +35,7 @@ Feature: Remove a product
   Scenario: Successfully delete a product and associated drafts
     Given I am on the "jean" product page
     And I press the secondary action "Delete"
-    Then I should see "Confirm deletion"
+    Then I should see the text "Confirm deletion"
     And I confirm the removal
     Then I should not see product jean
     Then I should get the following proposals:

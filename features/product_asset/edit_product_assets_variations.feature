@@ -27,7 +27,7 @@ Feature: Edit product assets variations
     And I upload the reference file akeneo.jpg
     When I save the asset
     And I should see the flash message "Variation files have been generated successfully."
-    Then I should see "akeneo.jpg"
+    Then I should see the text "akeneo.jpg"
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
 

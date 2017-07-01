@@ -47,4 +47,4 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" column tab
     Then I should not be able to view the "Delete" action of the row which contains "Mary"
-    And I should see "Can't be deleted"
+    And I should see the text "Can't be deleted"

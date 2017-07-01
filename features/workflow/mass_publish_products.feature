@@ -33,8 +33,8 @@ Feature: Publish many products at once
     And I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    Then I should see "You're not the owner of the product, you can't publish it"
-    And I should see "skipped products 1"
+    Then I should see the text "You're not the owner of the product, you can't publish it"
+    And I should see the text "skipped products 1"
     When I am on the published products page
     Then the grid should contain 2 elements
 
@@ -46,7 +46,7 @@ Feature: Publish many products at once
     When I choose the "Publish products" operation
     And I move on to the next step
     And I wait for the "publish" mass-edit job to finish
-    Then I should see "You're not the owner of the product, you can't publish it"
-    And I should see "skipped products 3"
+    Then I should see the text "You're not the owner of the product, you can't publish it"
+    And I should see the text "skipped products 3"
     When I am on the published products page
     Then the grid should contain 0 elements

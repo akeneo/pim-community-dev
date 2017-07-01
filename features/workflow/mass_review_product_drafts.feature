@@ -23,7 +23,7 @@ Feature: Approve or refuse several product drafts at once
     And I confirm the action
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
-    Then I should see "approved 2"
+    Then I should see the text "approved 2"
     When I edit the "leather-jacket" product
     Then the product Name should be "Awesome leather jacket"
     When I edit the "wool-jacket" product
@@ -40,9 +40,9 @@ Feature: Approve or refuse several product drafts at once
     And I confirm the action
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
-    Then I should see "approved 1"
-    And I should see "Skipped 1"
-    And I should see "You can't edit the attributes modified by this proposal"
+    Then I should see the text "approved 1"
+    And I should see the text "Skipped 1"
+    And I should see the text "You can't edit the attributes modified by this proposal"
 
   Scenario: Successfully reject several proposals
     Given the following product drafts:
@@ -55,7 +55,7 @@ Feature: Approve or refuse several product drafts at once
     And I confirm the action
     And I wait for the "refuse_product_draft" job to finish
     And I go on the last executed job resume of "refuse_product_draft"
-    Then I should see "rejected 2"
+    Then I should see the text "rejected 2"
     When I edit the "leather-jacket" product
     Then the product Name should be "Leather jacket"
     When I edit the "wool-jacket" product
@@ -72,9 +72,9 @@ Feature: Approve or refuse several product drafts at once
     And I confirm the action
     And I wait for the "refuse_product_draft" job to finish
     And I go on the last executed job resume of "refuse_product_draft"
-    Then I should see "rejected 1"
-    And I should see "Skipped 1"
-    And I should see "You can't edit the attributes modified by this proposal"
+    Then I should see the text "rejected 1"
+    And I should see the text "Skipped 1"
+    And I should see the text "You can't edit the attributes modified by this proposal"
 
   Scenario: Successfully approve all proposals
     Given the following product drafts:
@@ -88,7 +88,7 @@ Feature: Approve or refuse several product drafts at once
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
-    Then I should see "approved 2"
+    Then I should see the text "approved 2"
     When I edit the "leather-jacket" product
     Then the product Name should be "Awesome leather jacket"
     When I edit the "wool-jacket" product
@@ -107,7 +107,7 @@ Feature: Approve or refuse several product drafts at once
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
-    Then I should see "approved 1"
+    Then I should see the text "approved 1"
     When I edit the "leather-jacket" product
     Then the product Name should be "Awesome leather jacket"
 
@@ -125,7 +125,7 @@ Feature: Approve or refuse several product drafts at once
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
-    Then I should see "approved 1"
+    Then I should see the text "approved 1"
     When I edit the "leather-jacket" product
     Then the product Name should be "Awesome leather jacket"
 
@@ -142,6 +142,6 @@ Feature: Approve or refuse several product drafts at once
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
-    Then I should see "approved 1"
+    Then I should see the text "approved 1"
     When I edit the "leather-jacket" product
     Then the product Name should be "Awesome leather jacket"

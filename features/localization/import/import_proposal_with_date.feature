@@ -50,10 +50,10 @@ Feature: Import proposals with a date
     When I am on the "csv_clothing_product_proposal_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
-    Then I should see "skipped 3"
-    And I should see "values[release_date-mobile]: This type of value expects the use of the format yyyy-MM-dd for dates.: 19/08/1977"
-    And I should see "values[release_date-mobile]: This type of value expects the use of the format yyyy-MM-dd for dates.: 19-08-1977"
-    And I should see "values[release_date-mobile]: This type of value expects the use of the format yyyy-MM-dd for dates.: 1977/08/19"
+    Then I should see the text "skipped 3"
+    And I should see the text "values[release_date-mobile]: This type of value expects the use of the format yyyy-MM-dd for dates.: 19/08/1977"
+    And I should see the text "values[release_date-mobile]: This type of value expects the use of the format yyyy-MM-dd for dates.: 19-08-1977"
+    And I should see the text "values[release_date-mobile]: This type of value expects the use of the format yyyy-MM-dd for dates.: 1977/08/19"
     When I am on the proposals page
     Then the grid should contain 2 element
     And I should see the following proposals:

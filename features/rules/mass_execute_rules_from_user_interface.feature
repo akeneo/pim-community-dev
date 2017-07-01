@@ -72,5 +72,5 @@ Feature: Execute rules from the user interface
       | type    | message                                                     |
       | success | Calculation of the affected products for the rules finished |
     When I click on the notification "Calculation of the affected products for the rules finished"
-    Then I should see "Execution details - Calculation the affected products for the rules [rule_impacted_product_count]"
-    And I should see "COMPLETED"
+    Then I should see the text "Execution details - Calculation the affected products for the rules [rule_impacted_product_count]"
+    And I should see the text "COMPLETED"

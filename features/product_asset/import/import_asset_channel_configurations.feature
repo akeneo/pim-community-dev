@@ -22,8 +22,8 @@ Feature: Import asset channel configurations
     When I am on the "apparel_asset_channel_configuration_import" import job page
     And I launch the import job
     And I wait for the "apparel_asset_channel_configuration_import" job to finish
-    Then I should see "read lines 1"
-    And I should see "created 1"
+    Then I should see the text "read lines 1"
+    And I should see the text "created 1"
 
   Scenario: Import and update channel configurations
     Given the "clothing" catalog configuration
@@ -47,8 +47,8 @@ Feature: Import asset channel configurations
     When I am on the "clothing_asset_channel_configuration_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
-    Then I should see "read lines 2"
-    And I should see "processed 2"
+    Then I should see the text "read lines 2"
+    And I should see the text "processed 2"
 
   Scenario: Import asset file with wrong channel header
     Given the "clothing" catalog configuration
@@ -68,7 +68,7 @@ Feature: Import asset channel configurations
     When I am on the "clothing_asset_channel_configuration_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
-    And I should see "Channel \"wrong\" does not exist"
+    And I should see the text "Channel \"wrong\" does not exist"
 
   Scenario: Import and update channel configurations with unknown configured transformation
     Given the "clothing" catalog configuration
@@ -92,10 +92,10 @@ Feature: Import asset channel configurations
     When I am on the "clothing_asset_channel_configuration_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
-    Then I should see "read lines 2"
-    And I should see "processed 1"
-    And I should see "skipped 1"
-    And I should see "Transformation \"wrongTransformation\" is unknown"
+    Then I should see the text "read lines 2"
+    And I should see the text "processed 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Transformation \"wrongTransformation\" is unknown"
 
   Scenario: Import and update channel configurations with invalid transformation configuration
     Given the "clothing" catalog configuration
@@ -119,8 +119,8 @@ Feature: Import asset channel configurations
     When I am on the "clothing_asset_channel_configuration_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
-    Then I should see "read lines 2"
-    And I should see "processed 1"
-    And I should see "skipped 1"
-    And I should see "Transformation \"scale\" is not well configured"
-    And I should see "Your options does not fulfil the requirements of the \"scale\" transformation."
+    Then I should see the text "read lines 2"
+    And I should see the text "processed 1"
+    And I should see the text "skipped 1"
+    And I should see the text "Transformation \"scale\" is not well configured"
+    And I should see the text "Your options does not fulfil the requirements of the \"scale\" transformation."

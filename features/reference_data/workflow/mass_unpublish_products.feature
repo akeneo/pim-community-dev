@@ -26,7 +26,7 @@ Feature: Unpublish many products at once
     And I select rows red-heels and blue-sneakers
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
-    Then I should see "The 2 selected products will be unpublished"
+    Then I should see the text "The 2 selected products will be unpublished"
     When I move on to the next step
     And I wait for the "unpublish" mass-edit job to finish
     And I am on the published products page
