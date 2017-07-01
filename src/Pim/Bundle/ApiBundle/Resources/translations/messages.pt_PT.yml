@@ -8,9 +8,12 @@ pim_api:
       list: Listar categorias
     family:
       list: Listar famílias
-    channel.list: Listar canais
+    channel:
+      list: Listar canais
     locale.list: Listar linguagens
     currency.list: Listar moedas
+    association_type:
+      list: Listar tipos de associação
   acl_group:
     attribute: Atributos
     attribute_group: Grupos de atributos
@@ -19,3 +22,4 @@ pim_api:
     channel: Canais
     locale: Linguagens
     currency: Moedas
+    association_type: Tipos de associação

@@ -143,13 +143,10 @@ pim_enrich:
         compare_translate: Vergleichen / Übersetzen
         delete: Löschen
         save: Speichern
-        save_and_back: Speichern und zurück zur Übersicht
       history:
         version: Version
         author: Autor
         logged_at: Angemeldet am
-        more: Mehr
-        less: Weniger
         from: Von
         modified: Bearbeitet
         property: Eigenschaft
@@ -215,9 +212,6 @@ pim_enrich:
         deletion_failed: Verbindungstyp konnte nicht entfernt werden.
         update_successful: Verbindungstyp erfolgreich aktualisiert.
         update_failed: Verbindungstyp konnte nicht aktualisiert werden.
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - Felder
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -232,9 +226,6 @@ pim_enrich:
         deletion_failed: Gruppentyp konnte nicht gelöscht werden.
         update_successful: Gruppentyp erfolgreich aktualisiert.
         update_failed: Der Gruppentyp konnte nicht aktualisiert werden.
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - Felder
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -252,9 +243,6 @@ pim_enrich:
         update_failed: Ausgabekanal konnte nicht aktualisiert werden.
         create_successful: Ausgabekanal erfolgreich angelegt.
         create_failed: Ausgabekanal konnte nicht angelegt werden.
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - Felder
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -303,9 +291,6 @@ pim_enrich:
         deletion_failed: Die Variantengruppe konnte nicht gelöscht werden.
         update_successful: Variantengruppe erfolgreich aktualisiert.
         update_failed: Die Variantengruppe konnte nicht aktualisiert werden.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - Felder
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
         no_attributes: Diese Variantengruppe hat noch keine Attribute
       btn:
@@ -323,9 +308,6 @@ pim_enrich:
         deletion_failed: Gruppe konnte nicht gelöscht werden.
         update_successful: Gruppe erfolgreich aktualisiert.
         update_failed: Die Gruppe konnte nicht aktualisiert werden.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - Felder
       btn:
         save: Speichern
       meta:
@@ -379,6 +361,7 @@ pim_enrich:
             attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
+          attribute_group_selector: Attributgruppe
         categories:
           title: Kategorien
       panel:
@@ -623,6 +606,7 @@ pim_enrich:
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
         history:
           title: Historie
+      file_path: Dateipfad
     mass_edit:
       family:
         attributes:
@@ -909,11 +893,10 @@ job_tracker:
     invalid_csv: Ungültige Daten herunterladen
 pim_menu:
   tab:
-    collect: Sammeln
-    enrich: Anreichern
+    dashboard: Dashboard
+    products: Produkte
     settings: Einstellungen
     system: System
-    spread: Ausleiten
   item:
     association_type: Verbindungstypen
     attribute: Attribute
@@ -938,9 +921,9 @@ pim_menu:
     user_role: Rollen
     info: Systeminformationen
     job_tracker: Prozess-Tracker
-pim_header:
   user:
     logout: Abmelden
     user_account: Mein Konto
 pim_notification:
   mark_all_as_read: Alle als gelesen markieren
+  loading: Lädt...

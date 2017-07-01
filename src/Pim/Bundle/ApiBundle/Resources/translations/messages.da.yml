@@ -16,9 +16,12 @@ pim_api:
     family:
       edit: Opret og Opdater familier
       list: Liste over familier
-    channel.list: Liste over kanaler
+    channel:
+      list: Liste over kanaler
     locale.list: Liste over landestandarder
     currency.list: Liste over valutaer
+    association_type:
+      list: List sammenhængstyper
   acl_group:
     overall_access: Samlede Web API-adgang
     attribute: Egenskaber
@@ -29,4 +32,5 @@ pim_api:
     channel: Kanaler
     locale: Landestandarder
     currency: Valutaer
+    association_type: Sammenhængstyper
 rights.api: Web API tilladelser

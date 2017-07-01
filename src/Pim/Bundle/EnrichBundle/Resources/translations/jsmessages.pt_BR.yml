@@ -139,13 +139,10 @@ pim_enrich:
         compare_translate: Comparar / Traduzir
         delete: Excluir
         save: Salvar
-        save_and_back: Salvar e voltar para grid
       history:
         version: Versão
         author: Autor
         logged_at: Registrado em
-        more: Mais
-        less: Menos
         from: De
         modified: Modificado
         property: Propriedade
@@ -210,9 +207,6 @@ pim_enrich:
         deletion_failed: Tipo de associação não pode ser excluído.
         update_successful: Tipo de associação atualizado com sucesso.
         update_failed: O tipo de associação não pôde ser atualizado.
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Criado
         updated: Atualizado
@@ -220,10 +214,6 @@ pim_enrich:
         save: Salvar
       title: tipo de associação
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Criado
         updated: Atualizado
@@ -239,9 +229,6 @@ pim_enrich:
         update_failed: O canal não pôde ser atualizado.
         create_successful: Canal criado com êxito.
         create_failed: O canal não pôde ser criado.
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Criado
         updated: Atualizado
@@ -279,9 +266,6 @@ pim_enrich:
     variant_group:
       title: Grupo de variantes
       info:
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - campos
         already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
         no_attributes: Este grupo variante ainda não tem atributos
       btn:
@@ -297,9 +281,6 @@ pim_enrich:
         deletion_failed: Grupo não pode ser excluído.
         update_successful: Grupo atualizado com sucesso.
         update_failed: O grupo não pôde ser atualizado.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - campos
       btn:
         save: Salvar
       meta:
@@ -349,6 +330,7 @@ pim_enrich:
             no_available_attributes: Não há mais atributos para serem adicionados
             no_match: Nenhum resultado encontrado
             load_more: A carregar mais resultados...
+          attribute_group_selector: Grupo de atributos
         categories:
           title: Categorias
       panel:
@@ -585,6 +567,7 @@ pim_enrich:
             help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
         history:
           title: Histórico
+      file_path: Caminho do arquivo
     mass_edit:
       family:
         attributes:
@@ -621,6 +604,7 @@ pim_enrich:
           title: Condição temporal
           operators:
             ALL: Sem restrição de data
+            "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Status
           value:
@@ -630,6 +614,8 @@ pim_enrich:
         completeness:
           title: Completude
           operators:
+            ">=": Completo em pelo menos uma das linguagens selecionadas
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         category:
           title: Categoria
@@ -764,11 +750,10 @@ batch_jobs:
       label: Adicionar a grupo variante
 pim_menu:
   tab:
-    collect: Importar
-    enrich: Atualizar
+    dashboard: Painel de controle
+    products: Produtos
     settings: Configurações
     system: Sistema
-    spread: Exportar
   item:
     association_type: Tipos de associação
     attribute: Atributos
@@ -793,9 +778,9 @@ pim_menu:
     user_role: Funções
     info: Informações do Sistema
     job_tracker: Visualizador de processos
-pim_header:
   user:
     logout: Sair
     user_account: Minha Conta
 pim_notification:
   mark_all_as_read: Marca todas como lida
+  loading: Carregando...

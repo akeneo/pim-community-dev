@@ -15,9 +15,12 @@ pim_api:
     family:
       edit: Erstellen und Aktualisieren von Produktfamilien
       list: Produktfamilien auflisten
-    channel.list: Ausgabekanäle auflisten
+    channel:
+      list: Ausgabekanäle auflisten
     locale.list: Gebietsschemata auflisten
     currency.list: Währungen auflisten
+    association_type:
+      list: Verbindungstypen auflisten
   acl_group:
     overall_access: Gesamtzugriff Web-API
     attribute: Attribute
@@ -28,4 +31,5 @@ pim_api:
     channel: Ausgabekanäle
     locale: Gebietsschemata
     currency: Währungen
+    association_type: Verbindungstypen
 rights.api: Web-API Berechtigungen

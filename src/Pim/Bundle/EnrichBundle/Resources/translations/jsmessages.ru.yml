@@ -141,13 +141,10 @@ pim_enrich:
         compare_translate: Сравнить / Перевести
         delete: Удалить
         save: Сохранить
-        save_and_back: Сохранить и вернуться к списку
       history:
         version: Версия
         author: Автор
         logged_at: Дата входа
-        more: Дополнительно
-        less: Менее
         from: С
         modified: Изменен
         property: Свойство
@@ -207,10 +204,6 @@ pim_enrich:
       scopable: Область назначаема
       global: Глобальный
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - поля
       meta:
         created: Создано
         created_by: Создана
@@ -220,10 +213,6 @@ pim_enrich:
         save: Сохранить
       title: тип ассоциации
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - поля
       meta:
         created: Создано
         created_by: Создана
@@ -234,10 +223,6 @@ pim_enrich:
       title: тип группы
     channel:
       title: канал
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - поля
       meta:
         created: Создано
         created_by: Создана
@@ -280,9 +265,6 @@ pim_enrich:
         deletion_failed: Не удалось удалить группу вариантов.
         update_successful: Группа вариантов успешно обновлена.
         update_failed: Не удалось обновить группу вариантов.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - поля
         already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
         no_attributes: Это группа вариантов пока не имеет атрибутов
       btn:
@@ -295,10 +277,6 @@ pim_enrich:
         updated_by: Обновлена
     group:
       title: Группа
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - поля
       btn:
         save: Сохранить
       meta:
@@ -345,6 +323,7 @@ pim_enrich:
             no_available_attributes: Нет больше атрибутов для добавления
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
+          attribute_group_selector: Группа атрибутов
         categories:
           title: Категории
       panel:
@@ -577,6 +556,7 @@ pim_enrich:
             help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
         history:
           title: Журнал
+      file_path: Путь к файлу
     mass_edit:
       family:
         attributes:
@@ -790,11 +770,10 @@ batch_jobs:
       label: Добавить в группу вариантов
 pim_menu:
   tab:
-    collect: Собрать данные
-    enrich: Дополнить данные
+    dashboard: Панель управления
+    products: Продукты
     settings: Настройки
     system: Система
-    spread: Распространить данные
   item:
     association_type: Типы ассоциаций
     attribute: Атрибуты
@@ -819,9 +798,9 @@ pim_menu:
     user_role: Роли
     info: Информация о системе
     job_tracker: Трекер процессов
-pim_header:
   user:
     logout: Выйти
     user_account: Мой аккаунт
 pim_notification:
   mark_all_as_read: Пометить все как прочитанное
+  loading: Загрузка...
