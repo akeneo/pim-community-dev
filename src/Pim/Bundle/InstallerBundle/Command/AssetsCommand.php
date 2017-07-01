@@ -18,6 +18,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class AssetsCommand extends ContainerAwareCommand
 {
+    /** @var CommandExecutor */
+    protected $commandExecutor;
+
     /**
      * {@inheritdoc}
      */

@@ -27,6 +27,10 @@ vendor
 composer.phar
 /cov
 /bin/*
+!/bin/docker
+/bin/docker/*
+!/bin/docker/pim-initialize.sh
+!/bin/docker/pim-front.sh
 !/bin/merge-coverage
 behat.yml
 /phpspec.yml
@@ -35,7 +39,6 @@ uploads_test/
 composer.lock
 .php_cs.cache
 node_modules/
-.grunt/
 npm-debug.log
 /docker/*
 !/docker/akeneo.conf
