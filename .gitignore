@@ -34,5 +34,4 @@ npm-debug.log
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
-!/docker/mysql.cnf
 docker-compose.yml
