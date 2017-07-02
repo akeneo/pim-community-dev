@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -66,7 +67,7 @@ class GridPaginationContext extends PimContext
      */
     public function iChangeThePageSize($size)
     {
-        assertContains($size, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
+        Assert::assertContains($size, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
         $this->getCurrentPage()->getCurrentGrid()->setPageSize($size);
         $this->wait();
     }

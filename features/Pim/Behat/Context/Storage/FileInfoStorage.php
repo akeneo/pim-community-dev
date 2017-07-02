@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context\Storage;
 
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class FileInfoStorage extends PimContext
@@ -21,7 +22,7 @@ class FileInfoStorage extends PimContext
 
         $fileInfo = $fileInfoRepository->findOneBy(['originalFilename' => $originalFilename]);
 
-        assertNotNull($fileInfo, sprintf(
+        Assert::assertNotNull($fileInfo, sprintf(
             'Unable to find file with original filename "%s" in database',
             $originalFilename
         ));

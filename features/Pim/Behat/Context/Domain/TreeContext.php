@@ -4,6 +4,7 @@ namespace Pim\Behat\Context\Domain;
 
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class TreeContext extends PimContext
@@ -139,8 +140,8 @@ class TreeContext extends PimContext
 
         $node = $categoryTree->findNodeInTree($code);
 
-        assertNotNull($node);
-        assertTrue($node->isSelected());
+        Assert::assertNotNull($node);
+        Assert::assertTrue($node->isSelected());
     }
 
     /**
@@ -152,7 +153,7 @@ class TreeContext extends PimContext
 
         $node = $categoryTree->findNodeInTree($code);
 
-        assertNotNull($node);
-        assertFalse($node->isSelected());
+        Assert::assertNotNull($node);
+        Assert::assertFalse($node->isSelected());
     }
 }

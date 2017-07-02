@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
@@ -76,7 +77,7 @@ class DataGridContext extends PimContext implements PageObjectAware
 
         if (0 === $count) {
             $this->spin(function () {
-                assertTrue($this->getDatagrid()->isGridEmpty());
+                Assert::assertTrue($this->getDatagrid()->isGridEmpty());
 
                 return true;
             }, 'Expecting grid to be empty');
@@ -85,7 +86,7 @@ class DataGridContext extends PimContext implements PageObjectAware
         }
 
         $this->spin(function () use ($count) {
-            assertEquals(
+            Assert::assertEquals(
                 $count,
                 $actualCount = $this->getDatagrid()->countRows()
             );
