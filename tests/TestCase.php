@@ -84,6 +84,9 @@ abstract class TestCase extends KernelTestCase
         $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
+        $this->esClient = null;
+        $this->esConfigurationLoader = null;
+
         parent::tearDown();
     }
 
