@@ -5,21 +5,14 @@ namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as ODMClassMetadata;
-use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
+use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\TimestampableInterface;
 
-/**
- * @require Doctrine\ODM\MongoDB\DocumentManager
- * @require Doctrine\ODM\MongoDB\Mapping\ClassMetadata
- * @require Doctrine\ODM\MongoDB\UnitOfWork
- */
 class TimestampableSubscriberSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry)
@@ -48,7 +41,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
     function it_does_not_apply_on_non_timestampable_versioned_object(
         $registry,
         LifecycleEventArgs $args,
-        ObjectManager $om,
+        EntityManager $om,
         Version $version,
         ORMClassMetadata $metadata
     ) {
@@ -98,11 +91,11 @@ class TimestampableSubscriberSpec extends ObjectBehavior
     function it_applies_on_timestampable_versioned_object_with_a_document_manager(
         $registry,
         LifecycleEventArgs $args,
-        DocumentManager $om,
-        ODMUnitOfWork $uow,
+        EntityManager $om,
+        UnitOfWork $uow,
         Version $version,
         TimestampableInterface $object,
-        ODMClassMetadata $metadata
+        ClassMetadata $metadata
     ) {
         $registry->getManagerForClass('bar')->willReturn($om);
         $om->getClassMetadata('bar')->willReturn($metadata);

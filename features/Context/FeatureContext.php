@@ -169,14 +169,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
-     * @return string
-     */
-    public function getStorageDriver()
-    {
-        return $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
-    }
-
-    /**
      * Transform a list to array
      *
      * @param string $list

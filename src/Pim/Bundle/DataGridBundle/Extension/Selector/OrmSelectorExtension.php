@@ -25,11 +25,6 @@ class OrmSelectorExtension extends AbstractExtension
     const COLUMN_SELECTOR_PATH = 'selector';
 
     /**
-     * @var string
-     */
-    protected $storageDriver;
-
-    /**
      * @var SelectorInterface[]
      */
     protected $selectors;
@@ -42,12 +37,10 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * Constructor
      *
-     * @param string            $storageDriver
      * @param RequestParameters $requestParams
      */
-    public function __construct($storageDriver, RequestParameters $requestParams = null)
+    public function __construct(RequestParameters $requestParams = null)
     {
-        $this->storageDriver = $storageDriver;
         $this->requestParams = $requestParams;
     }
 
@@ -58,12 +51,7 @@ class OrmSelectorExtension extends AbstractExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        if (in_array($datasourceType, $this->eligibleDatasource) &&
-            AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->storageDriver) {
-            return true;
-        }
-
-        return false;
+        return in_array($datasourceType, $this->eligibleDatasource);
     }
 
     /**

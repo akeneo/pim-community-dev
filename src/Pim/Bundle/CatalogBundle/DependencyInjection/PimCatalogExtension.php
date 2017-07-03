@@ -34,6 +34,7 @@ class PimCatalogExtension extends Extension
         $loader->load('completeness_checkers.yml');
         $loader->load('console.yml');
         $loader->load('context.yml');
+        $loader->load('converters.yml');
         $loader->load('cursors.yml');
         $loader->load('elasticsearch.yml');
         $loader->load('entities.yml');
@@ -61,24 +62,6 @@ class PimCatalogExtension extends Extension
         $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_storage.yml');
-        $loader->load('converters.yml');
-
-        $this->loadStorageDriver($container);
-    }
-
-    /**
-     * Load the mapping for product and product storage
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function loadStorageDriver(ContainerBuilder $container)
-    {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 
     /**

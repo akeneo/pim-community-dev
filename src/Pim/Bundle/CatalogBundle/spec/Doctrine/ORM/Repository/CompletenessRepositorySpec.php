@@ -9,9 +9,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-/**
- * @require Doctrine\ODM\MongoDB\DocumentManager
- */
 class CompletenessRepositorySpec extends ObjectBehavior
 {
     function let(

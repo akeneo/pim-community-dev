@@ -4,17 +4,17 @@
 
 - TIP-718: Update group types form
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
-- GITHUB-5949: Fix the deletion of a job instance (import/export) from the job edit page, cheers @BatsaxIV !
+- GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
 
 ## Technical improvements
 
 - TIP-711: Rework job execution reporting page with the new PEF architecture
-- TIP-724: Refactoring of the 'Settings/Association types' index screen using 'pim/common/grid'
+- TIP-724: Refactoring of the 'Settings\Association types' index screen using 'pim\common\grid'
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 
-## UI/UX Refactoring
+## UI\UX Refactoring
 
 - PIM-6288: Update flash messages design
 - PIM-6289: Update JSTree design
@@ -27,6 +27,137 @@
 - PIM-6290: Update the main navigation design
 - PIM-6397: Enable Search filter on all grids
 - PIM-6406: Update job profile show page to include last executions
+
+## Remove MongoDB product storage
+
+- Remove container parameter `pim_catalog_product_storage_driver`
+
+- Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Association.mongodb.yml`
+- Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Completeness.mongodb.yml`
+- Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Product.mongodb.yml`
+- Remove model `src/Pim/Bundle/VersioningBundle/Resources/config/model/doctrine/Version.mongodb.yml`
+
+- Remove constants `DOCTRINE_ORM` and `` from `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
+
+- Remove repository `Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCategoryRepository`
+- Remove repository `Pim\Bundle\ApiBundle\Doctrine\MongoDBODM\Repository\ProductRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductCategoryRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductValueCounterRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\spec\Doctrine\MongoDBODM\Repository\CompletenessRepositorySpec`
+- Remove repository `Pim\Bundle\CatalogBundle\spec\Doctrine\MongoDBODM\Repository\ProductRepositorySpec`
+- Remove repository `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository`
+
+- Remove event listener `Akeneo\Bundle\StorageUtilsBundle\EventListener\MongoDBODM\ResolveTargetEntityListener`
+- Remove event listener `Pim\Bundle\DataGridBundle\EventListener\MongoDB\ConfigureHistoryGridListener`
+- Remove event subscriber `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
+- Remove event subscriber `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EnsureIndexesSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\ProductRelatedEntityRemovalSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\RemoveOutdatedProductsFromAssociationsSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetNormalizedProductDataSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\TimestampableSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\UpdateNormalizedProductDataSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber`
+- Remove event subscriber `Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber`
+
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollectionFactory`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\CursorFactory`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\Cursor`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\MappingsOverrideConfigurator`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types\Entities`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types\Entity`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory`
+- Remove class `Pim\Bundle\CatalogBundle\Command\CleanMongoDBCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Command\MongoDBIndexCreatorCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractAttributeFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractFieldFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateTimeFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeAsLabelUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\ChannelDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionCodeUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionValueUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQueryGeneratorInterface`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionCodeUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionValueUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\AssociationNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\DateTimeNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\GenericNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\MetricNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductPriceNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductValueNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\AttributeOptionNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\CompletenessNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\DateTimeNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FamilyNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FileNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\GroupNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\MetricNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductPriceNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductValueNormalizer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\AssociatedProductHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectIdHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\AssociationTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\DateTimeTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\GroupsTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ProductHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\OptionsTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\ResolverPass`
+- Remove class `Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager`
+- Remove class `Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter`
+- Remove class `Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter`
+- Remove class `Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterProductDatasourceAdapter`
+- Remove class `Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer`
+- Remove class `Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter\ReferenceDataFilter`
+- Remove class `Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Sorter\ReferenceDataSorter`
+- Remove class `Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\Document\ReferenceDataNormalizer`
+- Remove class `Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\NormalizedData\ReferenceDataNormalizer`
+- Remove class `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionBuilder`
+- Remove class `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver`
+- Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser`
+- Remove class `upgrades/UpgradeHelper.php`
 
 ## BC breaks
 

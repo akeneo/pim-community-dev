@@ -42,22 +42,5 @@ class PimReferenceDataExtension extends Extension
         $loader->load('serializers_indexing.yml');
         $loader->load('services.yml');
         $loader->load('updaters.yml');
-
-        $this->loadStorageDriverFiles($container);
-    }
-
-    /**
-     * Load the services dedicated to the storage driver
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function loadStorageDriverFiles(ContainerBuilder $container)
-    {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

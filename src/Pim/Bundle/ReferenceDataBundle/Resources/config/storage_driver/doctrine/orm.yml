@@ -1,3 +1,0 @@
-parameters:
-    pim_reference_data.doctrine.query.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter\ReferenceDataFilter
-    pim_reference_data.doctrine.query.sorter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Sorter\ReferenceDataSorter

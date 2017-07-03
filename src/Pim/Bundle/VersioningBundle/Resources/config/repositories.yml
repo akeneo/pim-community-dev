@@ -15,13 +15,6 @@ services:
     pim_versioning.object_manager.version:
         alias: doctrine.orm.entity_manager
 
-    pim_versioning.event_subscriber.timestampable:
-        class: '%pim_versioning.event_subscriber.timestampable.class%'
-        arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
-        tags:
-            - { name: doctrine.event_subscriber }
-
     pim_versioning.factory.version_cursor:
         class: '%pim_versioning.doctrine.cursor_factory.version.class%'
         arguments:
