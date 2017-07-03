@@ -30,6 +30,7 @@ class PimEnterpriseCatalogExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('comparators.yml');
+        $loader->load('completeness.yml');
         $loader->load('completeness_checkers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('filters.yml');
@@ -40,11 +41,5 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
         $loader->load('versions.yml');
-
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

@@ -7,6 +7,7 @@ parameters:
     pimee_catalog_rule.selector.product.class:            PimEnterprise\Component\CatalogRule\Engine\ProductRuleSelector
     pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
     pimee_catalog_rule.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
+    pimee_catalog_rule.paginator.page_size: 1000
 
 services:
     pimee_catalog_rule.product.paginator:

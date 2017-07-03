@@ -23,9 +23,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseWorkflowBundle extends Bundle
 {
-    /** @staticvar string */
-    const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
-
     /**
      * {@inheritdoc}
      */
@@ -41,20 +38,9 @@ class PimEnterpriseWorkflowBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
                 ['doctrine.orm.entity_manager'],
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
+                false
             )
         );
-
-        if (class_exists(self::DOCTRINE_MONGODB)) {
-            $mongoDBClass = self::DOCTRINE_MONGODB;
-            $container->addCompilerPass(
-                $mongoDBClass::createYamlMappingDriver(
-                    $mappings,
-                    ['doctrine.odm.mongodb.document_manager'],
-                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
-                )
-            );
-        }
 
         $container
             ->addCompilerPass(new Compiler\RegisterProductDraftPresentersPass())

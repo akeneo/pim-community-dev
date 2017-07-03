@@ -1,2 +1,0 @@
-parameters:
-    pim_versioning.event_subscriber.mongodb.product_addversion.class: PimEnterprise\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber
