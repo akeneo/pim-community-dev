@@ -4,6 +4,7 @@
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Peter van der Zwaag <vanderzwaag@basecom.de>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -11,22 +12,14 @@ define(
     [
         'underscore',
         'pim/form',
-        'pim/template/product/locale-switcher',
+        'text!pim/template/product/locale-switcher',
         'pim/fetcher-registry',
         'pim/i18n'
     ],
     function (_, BaseForm, template, FetcherRegistry, i18n) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknDropdown AknButtonList-item locale-switcher',
-            events: {
-                'click li a': 'changeLocale'
-            },
-            displayInline: false,
-
-            /**
-             * {@inheritdoc}
-             */
+            className: 'locale-switcher',
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
@@ -37,11 +30,13 @@ define(
                             this.template({
                                 locales: locales,
                                 currentLocale: _.findWhere(locales, {code: params.localeCode}),
-                                i18n: i18n,
-                                displayInline: this.displayInline
+                                i18n: i18n
                             })
                         );
-                        this.delegateEvents();
+                        this.$('.select2').select2({
+                            formatResult: this.addFlags,
+                            formatSelection: this.addFlags})
+                            .on('change', this.changeLocale.bind(this));
                     }.bind(this));
 
                 return this;
@@ -57,25 +52,27 @@ define(
             },
 
             /**
+             * Retrieve locale-flags
+             *
+             * @param {Object} locale
+             * @returns string
+             */
+            addFlags: function(locale) {
+                var originalOption = locale.element;
+                return i18n.getFlag($(originalOption).val(), false) + locale.text;
+            },
+
+            /**
              * Method triggered on the 'change locale' event
              *
              * @param {Object} event
              */
             changeLocale: function (event) {
                 this.trigger('pim_enrich:form:locale_switcher:change', {
-                    localeCode: event.currentTarget.dataset.locale
+                    localeCode: event.currentTarget.value
                 });
 
                 this.render();
-            },
-
-            /**
-             * Updates the inline display value
-             *
-             * @param {Boolean} value
-             */
-            setDisplayInline: function (value) {
-                this.displayInline = value;
             }
         });
     }

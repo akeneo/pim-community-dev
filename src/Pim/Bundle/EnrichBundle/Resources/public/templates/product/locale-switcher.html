@@ -1,9 +1,9 @@
-<a class="AknActionButton<% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } %>" data-toggle="dropdown" href="#">
-    <%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %>
-    <span class="AknActionButton-caret AknCaret"></span>
-</a>
-<ul class="AknDropdown-menu">
-    <% _.each(locales, function (locale) { %>
-        <li><a class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a></li>
-    <% }); %>
-</ul>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2 locale-switcher" id="locale-switcher">
+        <% _.each(locales, function (locale) { %>
+        <option value="<%- locale.code %>" <%- (currentLocale.code === locale.code) ? 'selected' : '' %> >
+            <%- locale.label %>
+        </option>
+        <% }); %>
+    </select>
+</div>
