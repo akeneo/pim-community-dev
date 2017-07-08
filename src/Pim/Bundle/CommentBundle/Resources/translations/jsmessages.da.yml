@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: Ingen kommentarer for nu
+    header_comment: '{{ user }} kommenterede produktet'
+    header_reply: '{{ user }} svar på kommentar'
   placeholder:
     new: Skriv en ny kommentar...
     reply: Besvar denne kommentar...
