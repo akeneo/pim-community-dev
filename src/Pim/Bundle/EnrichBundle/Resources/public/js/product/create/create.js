@@ -1,19 +1,15 @@
-'use strict';
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'routing',
-        'pim/form-builder',
-        'pim/user-context',
-        'oro/translator',
-        'oro/loading-mask',
-        'pim/router'
-    ],
-    function ($, _, Backbone, Routing, FormBuilder, UserContext, __, LoadingMask, router) {
-        return {
+
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import Routing from 'routing';
+import FormBuilder from 'pim/form-builder';
+import UserContext from 'pim/user-context';
+import __ from 'oro/translator';
+import LoadingMask from 'oro/loading-mask';
+import router from 'pim/router';
+export default {
             /**
              * Opens the modal then instantiates the creation form inside it.
              * This function returns a rejected promise when the popin
@@ -21,27 +17,27 @@ define(
              *
              * @return {Promise}
              */
-            openProductModal: function () {
-                var deferred = $.Deferred();
+    openProductModal: function () {
+        var deferred = $.Deferred();
 
-                var modal = new Backbone.BootstrapModal({
-                    title: __('pim_enrich.entity.product.create_popin.title'),
-                    content: '',
-                    cancelText: __('pim_enrich.entity.product.create_popin.labels.cancel'),
-                    okText: __('pim_enrich.entity.product.create_popin.labels.save'),
-                    okCloses: false
-                });
+        var modal = new Backbone.BootstrapModal({
+            title: __('pim_enrich.entity.product.create_popin.title'),
+            content: '',
+            cancelText: __('pim_enrich.entity.product.create_popin.labels.cancel'),
+            okText: __('pim_enrich.entity.product.create_popin.labels.save'),
+            okCloses: false
+        });
 
-                modal.open();
+        modal.open();
 
-                var modalBody = modal.$('.modal-body');
-                modalBody.css('min-height', 150);
-                modalBody.css('overflow-y', 'hidden');
+        var modalBody = modal.$('.modal-body');
+        modalBody.css('min-height', 150);
+        modalBody.css('overflow-y', 'hidden');
 
-                var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo(modalBody).show();
+        var loadingMask = new LoadingMask();
+        loadingMask.render().$el.appendTo(modalBody).show();
 
-                FormBuilder.build('pim-product-create-form')
+        FormBuilder.build('pim-product-create-form')
                     .then(function (form) {
                         form.setElement(modalBody)
                             .render();
@@ -66,8 +62,7 @@ define(
                         });
                     }.bind(this));
 
-                return deferred.promise();
-            }
-        };
+        return deferred.promise();
     }
-);
+};
+

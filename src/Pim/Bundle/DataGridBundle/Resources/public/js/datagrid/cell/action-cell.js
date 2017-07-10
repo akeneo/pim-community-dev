@@ -1,7 +1,7 @@
-define(
-    ['jquery', 'underscore', 'backgrid'],
-    function($, _, Backgrid) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+        
 
         /**
          * Cell for grid actions
@@ -10,7 +10,7 @@ define(
          * @class   oro.datagrid.ActionCell
          * @extends Backgrid.Cell
          */
-        return Backgrid.Cell.extend({
+        export default Backgrid.Cell.extend({
 
             /** @property */
             className: 'AknGrid-bodyCell AknGrid-bodyCell--actions action-cell',
@@ -101,5 +101,4 @@ define(
                 return this;
             }
         });
-    }
-);
+    

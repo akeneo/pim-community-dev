@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Extension for menu columns
@@ -8,41 +8,32 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'pim/form/common/column',
-        'pim/router',
-        'oro/mediator'
-    ],
-    function (
-        _,
-        Column,
-        router,
-        mediator
-    ) {
-        return Column.extend({
-            active: false,
+import _ from 'underscore';
+import Column from 'pim/form/common/column';
+import router from 'pim/router';
+import mediator from 'oro/mediator';
+export default Column.extend({
+    active: false,
 
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
-                mediator.on('pim_menu:highlight:tab', this.highlight, this);
+    initialize: function () {
+        mediator.on('pim_menu:highlight:tab', this.highlight, this);
 
-                Column.prototype.initialize.apply(this, arguments);
-            },
+        Column.prototype.initialize.apply(this, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                if (this.active) {
-                    return Column.prototype.render.apply(this, arguments);
-                } else {
-                    return this.$el.empty();
-                }
-            },
+    render: function () {
+        if (this.active) {
+            return Column.prototype.render.apply(this, arguments);
+        } else {
+            return this.$el.empty();
+        }
+    },
 
             /**
              * Highlight or un-highlight tab
@@ -50,29 +41,29 @@ define(
              * @param {Event} event
              * @param {string} event.extension The extension code to highlight
              */
-            highlight: function (event) {
-                this.active = (event.extension === this.getTab());
+    highlight: function (event) {
+        this.active = (event.extension === this.getTab());
 
-                this.render();
-            },
+        this.render();
+    },
 
             /**
              * Returns the code of the attached tab
              *
              * @returns {string}
              */
-            getTab: function () {
-                return this.config.tab;
-            },
+    getTab: function () {
+        return this.config.tab;
+    },
 
             /**
              * The DOM element contains a `data-tab` attribute for compatibility with tab Bootstram tabs.
              *
              * {@inheritdoc}
              */
-            redirect: function (event) {
-                router.redirectToRoute(event.currentTarget.dataset.tab);
-            },
+    redirect: function (event) {
+        router.redirectToRoute(event.currentTarget.dataset.tab);
+    },
 
             /**
              * Registers a new item to display on navigation template
@@ -83,14 +74,14 @@ define(
              * @param {string}   navigationItem.route
              * @param {number}   navigationItem.position
              */
-            registerNavigationItem: function (navigationItem) {
-                Column.prototype.registerNavigationItem.apply(this, arguments);
+    registerNavigationItem: function (navigationItem) {
+        Column.prototype.registerNavigationItem.apply(this, arguments);
 
-                this.getRoot().trigger('pim_menu:register_item', {
-                    target: this.getTab(),
-                    route: navigationItem.code,
-                    position: navigationItem.position
-                });
-            }
+        this.getRoot().trigger('pim_menu:register_item', {
+            target: this.getTab(),
+            route: navigationItem.code,
+            position: navigationItem.position
         });
-    });
+    }
+});
+

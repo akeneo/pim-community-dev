@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'oro/datafilter/filters-manager'],
-function(_, FiltersManager) {
-    'use strict';
+import _ from 'underscore';
+import FiltersManager from 'oro/datafilter/filters-manager';
+    
 
     /**
      * View that represents all grid filters
@@ -10,7 +10,7 @@ function(_, FiltersManager) {
      * @class   oro.datafilter.CollectionFiltersManager
      * @extends oro.datafilter.FiltersManager
      */
-    return FiltersManager.extend({
+    export default FiltersManager.extend({
         /**
          * Initialize filter list options
          *
@@ -149,4 +149,4 @@ function(_, FiltersManager) {
             return this;
         }
     });
-});
+

@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/string-cell'],
-function(StringCell) {
-    'use strict';
+import StringCell from 'oro/datagrid/string-cell';
+    
 
     /**
      * Html column cell. Added missing behaviour.
@@ -10,7 +9,7 @@ function(StringCell) {
      * @class   oro.datagrid.HtmlCell
      * @extends oro.datagrid.StringCell
      */
-    return StringCell.extend({
+    export default StringCell.extend({
         /**
          * Render a text string in a table cell. The text is converted from the
          * model's raw value for this cell's column.
@@ -20,4 +19,4 @@ function(StringCell) {
             return this;
         }
     });
-});
+

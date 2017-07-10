@@ -1,7 +1,9 @@
-define(
-    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view', 'oro/mediator'],
-    function ($, _, NumberFilter, TreeView, mediator) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import NumberFilter from 'oro/datafilter/number-filter';
+import TreeView from 'pim/tree/view';
+import mediator from 'oro/mediator';
+        
 
         /**
          * Category filter
@@ -14,7 +16,7 @@ define(
          * @class   oro.datafilter.CategoryFilter
          * @extends oro.datafilter.NumberFilter
          */
-        return NumberFilter.extend({
+        export default NumberFilter.extend({
             /**
              * @inheritDoc
              */
@@ -142,5 +144,4 @@ define(
                 NumberFilter.prototype.reset.apply(this, arguments);
             }
         });
-    }
-);
+    

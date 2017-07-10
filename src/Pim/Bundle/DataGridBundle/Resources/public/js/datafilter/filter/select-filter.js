@@ -1,7 +1,9 @@
 /* global define */
-define(['underscore', 'oro/translator', 'oro/datafilter/abstract-filter', 'oro/multiselect-decorator'],
-function(_, __, AbstractFilter, MultiselectDecorator) {
-    'use strict';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import AbstractFilter from 'oro/datafilter/abstract-filter';
+import MultiselectDecorator from 'oro/multiselect-decorator';
+    
 
     /**
      * Select filter: filter value as select option
@@ -10,7 +12,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
      * @class   oro.datafilter.SelectFilter
      * @extends oro.datafilter.AbstractFilter
      */
-    return AbstractFilter.extend({
+    export default AbstractFilter.extend({
         /**
          * Filter template
          *
@@ -338,4 +340,4 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             };
         }
     });
-});
+

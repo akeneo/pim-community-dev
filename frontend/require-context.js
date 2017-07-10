@@ -1,5 +1,5 @@
-define([], function() {
-    return function(moduleName) {
+
+    export default function(moduleName) {
         var modulePath = __contextPaths[moduleName];
         if (undefined === modulePath) {
             console.error('Module "' + moduleName + '" not found. Please check youre requirejs.yml files.');
@@ -15,4 +15,4 @@ define([], function() {
 
         return grab(modulePath)
     }
-})
+

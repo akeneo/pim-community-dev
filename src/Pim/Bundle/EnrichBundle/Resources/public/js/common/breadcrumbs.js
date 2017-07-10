@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Extension to display breadcrumbItems on every page
@@ -7,31 +7,20 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/common/breadcrumbs',
-        'oro/mediator',
-        'pim/form-registry'
-    ],
-    function (
-        $,
-        _,
-        __,
-        BaseForm,
-        template,
-        mediator,
-        FormRegistry
-    ) {
-        return BaseForm.extend({
-            className: 'AknBreadcrumb',
-            template: _.template(template),
-            events: {
-                'click .breadcrumb-tab': 'redirectTab',
-                'click .breadcrumb-item': 'redirectItem'
-            },
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import BaseForm from 'pim/form';
+import template from 'pim/template/common/breadcrumbs';
+import mediator from 'oro/mediator';
+import FormRegistry from 'pim/form-registry';
+export default BaseForm.extend({
+    className: 'AknBreadcrumb',
+    template: _.template(template),
+    events: {
+        'click .breadcrumb-tab': 'redirectTab',
+        'click .breadcrumb-item': 'redirectItem'
+    },
 
             /**
              * {@inheritdoc}
@@ -39,11 +28,11 @@ define([
              * @param {string} config.tab The main tab to highlight
              * @param {string} [config.item] The sub item to highlight (optional)
              */
-            initialize: function (config) {
-                this.config = config.config;
+    initialize: function (config) {
+        this.config = config.config;
 
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
+        return BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
             /**
              * This method will configure the breadcrumb. The configuration of this module contains backbone extension
@@ -52,18 +41,18 @@ define([
              *
              * {@inheritdoc}
              */
-            configure: function () {
-                mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab });
-                mediator.trigger('pim_menu:highlight:item', { extension: this.config.item });
+    configure: function () {
+        mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab });
+        mediator.trigger('pim_menu:highlight:item', { extension: this.config.item });
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+        return BaseForm.prototype.configure.apply(this, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                return $.when(
+    render: function () {
+        return $.when(
                     FormRegistry.getFormMeta(this.config.tab),
                     FormRegistry.getFormMeta(this.config.item)
                 ).then(function (metaTab, metaItem) {
@@ -78,20 +67,20 @@ define([
                         breadcrumbItem: breadcrumbItem
                     }));
                 }.bind(this));
-            },
+    },
 
             /**
              * Redirects to the linked tab
              */
-            redirectTab: function () {
-                mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab });
-            },
+    redirectTab: function () {
+        mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab });
+    },
 
             /**
              * Redirects to the linked item
              */
-            redirectItem: function () {
-                mediator.trigger('pim_menu:redirect:item', { extension: this.config.item });
-            }
-        });
-    });
+    redirectItem: function () {
+        mediator.trigger('pim_menu:redirect:item', { extension: this.config.item });
+    }
+});
+

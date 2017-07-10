@@ -1,12 +1,9 @@
-define(
-    [],
-    function () {
-        'use strict';
+
 
         /**
          * Widget container maintain a widget registry to use them on dashboard.
          */
-        return {
+        export default {
             widgetsRegistry: {},
             /**
              * Get or create a widget
@@ -28,5 +25,4 @@ define(
                 return widget;
             }
         };
-    }
-);
+

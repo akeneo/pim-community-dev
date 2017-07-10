@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/datagrid/string-cell', 'pim/media-url-generator'],
-    function(StringCell, MediaUrlGenerator) {
-        'use strict';
+import StringCell from 'oro/datagrid/string-cell';
+import MediaUrlGenerator from 'pim/media-url-generator';
+        
 
         /**
          * Image column cell
          *
          * @extends oro.datagrid.StringCell
          */
-        return StringCell.extend({
+        export default StringCell.extend({
             /**
              * Render an image.
              */
@@ -21,5 +21,4 @@ define(['oro/datagrid/string-cell', 'pim/media-url-generator'],
                 return this;
             }
         });
-    }
-);
+    

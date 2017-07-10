@@ -1,22 +1,14 @@
-'use strict';
+
 
 /**
  * Datagrid View Fetcher.
  * We override the default fetcher to add additional methods
  * to fetch default columns & default user datagrid view.
  */
-define(
-    [
-        'jquery',
-        'routing',
-        'pim/base-fetcher'
-    ],
-    function (
-        $,
-        Routing,
-        BaseFetcher
-    ) {
-        return BaseFetcher.extend({
+import $ from 'jquery';
+import Routing from 'routing';
+import BaseFetcher from 'pim/base-fetcher';
+        export default BaseFetcher.extend({
             /**
              * {@inheritdoc}
              */
@@ -46,5 +38,4 @@ define(
                 return $.getJSON(Routing.generate(this.options.urls.userDefaultView, { alias: alias }));
             }
         });
-    }
-);
+    

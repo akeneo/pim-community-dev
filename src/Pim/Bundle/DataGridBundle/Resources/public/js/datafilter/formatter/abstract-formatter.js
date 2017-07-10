@@ -1,6 +1,6 @@
 /* global define */
-define(function() {
-    'use strict';
+
+    
 
     /**
      * Just a convenient class for interested parties to subclass.
@@ -43,5 +43,5 @@ define(function() {
         }
     };
 
-    return AbstractFormatter;
-});
+    export default AbstractFormatter;
+

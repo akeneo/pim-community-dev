@@ -1,7 +1,8 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+    
 
     /**
      * Datagrid pagination widget
@@ -10,7 +11,7 @@ function($, _, Backbone) {
      * @class   oro.datagrid.Pagination
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /** @property */
         tagName: 'div',
 
@@ -220,4 +221,4 @@ function($, _, Backbone) {
             return this;
         }
     });
-});
+

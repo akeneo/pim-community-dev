@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/datagrid/string-cell', 'oro/translator'],
-    function(StringCell, __) {
-        'use strict';
+import StringCell from 'oro/datagrid/string-cell';
+import __ from 'oro/translator';
+        
 
         /**
          * Boolean column cell
          *
          * @extends oro.datagrid.StringCell
          */
-        return StringCell.extend({
+        export default StringCell.extend({
             /**
              * Render the boolean.
              */
@@ -26,5 +26,4 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
                 return this;
             }
         });
-    }
-);
+    

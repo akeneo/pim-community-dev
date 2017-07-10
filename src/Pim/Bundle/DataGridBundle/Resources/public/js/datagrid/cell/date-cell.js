@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/datetime-cell'],
-function(DatagridDateTimeCell) {
-    'use strict';
+import DatagridDateTimeCell from 'oro/datagrid/datetime-cell';
+    
 
     /**
      * Date column cell
@@ -10,5 +9,5 @@ function(DatagridDateTimeCell) {
      * @class   oro.datagrid.DateCell
      * @extends oro.datagrid.DateTimeCell
      */
-    return DatagridDateTimeCell.extend({type: 'date'});
-});
+    export default DatagridDateTimeCell.extend({type: 'date'});
+

@@ -1,15 +1,12 @@
-'use strict';
 
-define([
-        'jquery',
-        'underscore',
-        'oro/tools',
-        'oro/mediator',
-        'oro/pageable-collection',
-        'oro/datagrid/grid',
-        'oro/datagrid/grid-views/view'
-    ],
-    function ($, _, tools, mediator, PageableCollection, Grid, GridViewsView) {
+
+import $ from 'jquery';
+import _ from 'underscore';
+import tools from 'oro/tools';
+import mediator from 'oro/mediator';
+import PageableCollection from 'oro/pageable-collection';
+import Grid from 'oro/datagrid/grid';
+import GridViewsView from 'oro/datagrid/grid-views/view';
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .AknTitleContainer .span10:last',
@@ -205,7 +202,7 @@ define([
      * @export oro/datagrid-builder
      * @name   oro.datagridBuilder
      */
-    return function (builders) {
+    export default function (builders) {
         $(gridSelector).each(function (i, el) {
             var $el = $(el);
             var gridName = (($el.data('metadata') || {}).options || {}).gridName;
@@ -228,4 +225,4 @@ define([
             });
         }).end();
     };
-});
+

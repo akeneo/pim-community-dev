@@ -1,7 +1,9 @@
 /* global define */
-define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'],
-function(_, Backbone, BackbonePageableCollection, app) {
-    'use strict';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import BackbonePageableCollection from 'backbone/pageable-collection';
+import app from 'oro/app';
+    
 
     /**
      * Pageable collection
@@ -566,5 +568,5 @@ function(_, Backbone, BackbonePageableCollection, app) {
         }
     });
 
-    return PageableCollection;
-});
+    export default PageableCollection;
+

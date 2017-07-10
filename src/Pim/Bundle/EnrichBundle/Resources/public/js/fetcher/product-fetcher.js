@@ -1,29 +1,18 @@
-'use strict';
 
-define(
-    [
-        'jquery',
-        'backbone',
-        'routing',
-        'oro/mediator',
-        'pim/cache-invalidator',
-        'pim/product-manager'
-    ],
-    function (
-        $,
-        Backbone,
-        Routing,
-        mediator,
-        CacheInvalidator,
-        ProductManager
-    ) {
-        return Backbone.Model.extend({
+
+import $ from 'jquery';
+import Backbone from 'backbone';
+import Routing from 'routing';
+import mediator from 'oro/mediator';
+import CacheInvalidator from 'pim/cache-invalidator';
+import ProductManager from 'pim/product-manager';
+export default Backbone.Model.extend({
             /**
              * @param {Object} options
              */
-            initialize: function (options) {
-                this.options = options || {};
-            },
+    initialize: function (options) {
+        this.options = options || {};
+    },
 
             /**
              * Fetch an element based on its identifier
@@ -32,8 +21,8 @@ define(
              *
              * @return {Promise}
              */
-            fetch: function (identifier) {
-                return $.getJSON(Routing.generate(this.options.urls.get, { id: identifier }))
+    fetch: function (identifier) {
+        return $.getJSON(Routing.generate(this.options.urls.get, { id: identifier }))
                     .then(function (product) {
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(product);
@@ -46,7 +35,6 @@ define(
                         return product;
                     })
                     .promise();
-            }
-        });
     }
-);
+});
+

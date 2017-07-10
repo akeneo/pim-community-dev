@@ -1,12 +1,10 @@
 /* global define */
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'pim/template/datagrid/action-launcher-button',
-    'pim/template/datagrid/action-launcher-list-item'
-], function($, _, Backbone, buttonTemplate, listItemTemplate) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import buttonTemplate from 'pim/template/datagrid/action-launcher-button';
+import listItemTemplate from 'pim/template/datagrid/action-launcher-list-item';
+    
 
     /**
      * Action launcher implemented as simple link. Click on link triggers action run
@@ -18,7 +16,7 @@ define([
      * @class   oro.datagrid.ActionLauncher
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /** @property */
         enabled: true,
 
@@ -226,4 +224,4 @@ define([
             return this.group;
         }
     });
-});
+

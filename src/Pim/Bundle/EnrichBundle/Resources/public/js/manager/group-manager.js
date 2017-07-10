@@ -1,19 +1,21 @@
-'use strict';
 
-define(['jquery', 'underscore', 'pim/fetcher-registry'], function ($, _, FetcherRegistry) {
-    return {
-        getProductGroups: function (product) {
-            var promises = _.map(product.groups, function (groupCode) {
-                return FetcherRegistry.getFetcher('group').fetch(groupCode);
-            });
 
-            if (product.variant_group) {
-                promises.push(FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group));
-            }
+import $ from 'jquery';
+import _ from 'underscore';
+import FetcherRegistry from 'pim/fetcher-registry';
+export default {
+    getProductGroups: function (product) {
+        var promises = _.map(product.groups, function (groupCode) {
+            return FetcherRegistry.getFetcher('group').fetch(groupCode);
+        });
 
-            return $.when.apply($, promises).then(function () {
-                return _.toArray(arguments);
-            });
+        if (product.variant_group) {
+            promises.push(FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group));
         }
-    };
-});
+
+        return $.when.apply($, promises).then(function () {
+            return _.toArray(arguments);
+        });
+    }
+};
+

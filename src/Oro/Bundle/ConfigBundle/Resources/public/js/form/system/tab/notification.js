@@ -1,19 +1,11 @@
-"use strict";
 
-define([
-    'underscore',
-        'oro/translator',
-        'pim/form',
-        'oro/template/system/tab/notification',
-        'bootstrap.bootstrapswitch'
-    ],
-    function(
-        _,
-        __,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
+
+import _ from 'underscore';
+import __ from 'oro/translator';
+import BaseForm from 'pim/form';
+import template from 'oro/template/system/tab/notification';
+import 'bootstrap.bootstrapswitch';
+        export default BaseForm.extend({
             events: {
                 'change input[type="checkbox"]': 'updateModel'
             },
@@ -63,5 +55,4 @@ define([
                 this.setData(data);
             }
         });
-    }
-);
+    

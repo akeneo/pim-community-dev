@@ -1,7 +1,6 @@
-define(
-    ['underscore', 'oro/mediator'],
-    function(_, mediator) {
-        'use strict';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+        
 
         var storageEnabled = typeof Storage !== 'undefined' && sessionStorage;
 
@@ -70,7 +69,7 @@ define(
         /**
          * A wrapper for storing datagrid state
          */
-        return {
+        export default {
             get: function(alias, keys) {
                 if (_.isArray(keys)) {
                     var values = {};
@@ -141,5 +140,4 @@ define(
                 }
             }
         };
-    }
-);
+    

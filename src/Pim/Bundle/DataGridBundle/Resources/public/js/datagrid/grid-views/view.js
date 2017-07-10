@@ -1,7 +1,9 @@
 /* global define */
-define(['backbone', 'underscore', 'oro/translator', 'oro/datagrid/grid-views/collection'],
-function (Backbone, _, __, GridViewsCollection) {
-    'use strict';
+import Backbone from 'backbone';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import GridViewsCollection from 'oro/datagrid/grid-views/collection';
+    
 
     /**
      * Datagrid views widget
@@ -10,7 +12,7 @@ function (Backbone, _, __, GridViewsCollection) {
      * @class   oro.datagrid.GridViews
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /** @property */
         events: {
             "click a": "onChange"
@@ -153,4 +155,4 @@ function (Backbone, _, __, GridViewsCollection) {
             return this;
         }
     });
-});
+

@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Save extension for job instance
@@ -7,22 +7,14 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'pim/job-instance-edit-form/save',
-        'pim/saver/job-instance-import'
-    ],
-    function (
-        BaseSave,
-        JobInstanceSaver
-    ) {
-        return BaseSave.extend({
+import BaseSave from 'pim/job-instance-edit-form/save';
+import JobInstanceSaver from 'pim/saver/job-instance-import';
+export default BaseSave.extend({
             /**
              * {@inheritdoc}
              */
-            getJobInstanceSaver: function () {
-                return JobInstanceSaver;
-            }
-        });
+    getJobInstanceSaver: function () {
+        return JobInstanceSaver;
     }
-);
+});
+

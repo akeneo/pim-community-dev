@@ -1,7 +1,10 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'backgrid', 'oro/pageable-collection'],
-function ($, _, Backbone, Backgrid, PageableCollection) {
-    "use strict";
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import Backgrid from 'backgrid';
+import PageableCollection from 'oro/pageable-collection';
+    
 
     /**
      * Datagrid header cell
@@ -10,7 +13,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
      * @class   oro.datagrid.HeaderCell
      * @extends Backgrid.HeaderCell
      */
-    return Backgrid.HeaderCell.extend({
+    export default Backgrid.HeaderCell.extend({
 
         /** @property */
         template:_.template(
@@ -166,4 +169,4 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
             Backbone.trigger("backgrid:sort", columnName, direction, comparator, this.collection);
         }
     });
-});
+

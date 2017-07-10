@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Properties form
  *
@@ -6,73 +6,63 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/template/export/common/edit/properties',
-        'pim/form',
-        'pim/common/property'
-    ],
-    function (
-        _,
-        __,
-        template,
-        BaseForm,
-        propertyAccessor
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
-            errors: {},
+import _ from 'underscore';
+import __ from 'oro/translator';
+import template from 'pim/template/export/common/edit/properties';
+import BaseForm from 'pim/form';
+import propertyAccessor from 'pim/common/property';
+export default BaseForm.extend({
+    template: _.template(template),
+    errors: {},
 
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
+    initialize: function (config) {
+        this.config = config.config;
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+        BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
             /**
              * {@inherit}
              */
-            configure: function () {
-                this.trigger('tab:register', {
-                    code: this.config.tabCode ? this.config.tabCode : this.code,
-                    label: __(this.config.tabTitle)
-                });
-                this.listenTo(
+    configure: function () {
+        this.trigger('tab:register', {
+            code: this.config.tabCode ? this.config.tabCode : this.code,
+            label: __(this.config.tabTitle)
+        });
+        this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:post_fetch',
                     this.resetValidationErrors.bind(this)
                 );
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
-                this.listenTo(
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
+        this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:validation_error',
                     this.setValidationErrors.bind(this)
                 );
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+        return BaseForm.prototype.configure.apply(this, arguments);
+    },
 
             /**
              * Set validation errors after save request failure
              *
              * @param {event} event
              */
-            setValidationErrors: function (event) {
-                this.errors = event.response;
-            },
+    setValidationErrors: function (event) {
+        this.errors = event.response;
+    },
 
             /**
              * Remove validation error
              */
-            resetValidationErrors: function () {
-                this.errors = {};
-            },
+    resetValidationErrors: function () {
+        this.errors = {};
+    },
 
             /**
              * Get the validtion errors for the given field
@@ -81,24 +71,23 @@ define(
              *
              * @return {mixed}
              */
-            getValidationErrorsForField: function (field) {
-                return propertyAccessor.accessProperty(this.errors, field, null);
-            },
+    getValidationErrorsForField: function (field) {
+        return propertyAccessor.accessProperty(this.errors, field, null);
+    },
 
             /**
              * {@inherit}
              */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
+    render: function () {
+        if (!this.configured) {
+            return this;
+        }
 
-                this.$el.html(
+        this.$el.html(
                     this.template({__: __})
                 );
 
-                this.renderExtensions();
-            }
-        });
+        this.renderExtensions();
     }
-);
+});
+

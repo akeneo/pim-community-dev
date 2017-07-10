@@ -1,13 +1,9 @@
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/datafilter/number-filter',
-        'oro/app',
-        'pim/template/datagrid/filter/metric-filter'
-    ],
-    function ($, _, NumberFilter, app, template) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import NumberFilter from 'oro/datafilter/number-filter';
+import app from 'oro/app';
+import template from 'pim/template/datagrid/filter/metric-filter';
+        
 
         /**
          * Metric filter
@@ -20,7 +16,7 @@ define(
          * @class   oro.datafilter.MetricFilter
          * @extends oro.datafilter.NumberFilter
          */
-        return NumberFilter.extend({
+        export default NumberFilter.extend({
             /**
              * @inheritDoc
              */
@@ -195,5 +191,4 @@ define(
                 return this;
             }
         });
-    }
-);
+    

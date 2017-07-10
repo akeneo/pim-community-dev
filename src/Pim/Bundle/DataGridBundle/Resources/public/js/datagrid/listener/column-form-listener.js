@@ -1,7 +1,8 @@
-define(
-    ['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener'],
-    function ($, _, mediator, OroColumnFormListener) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import OroColumnFormListener from 'oro/datagrid/column-form-listener';
+        
 
         /**
          * Column form listener based on oro implementation that allows
@@ -74,7 +75,7 @@ define(
             }
         });
 
-        return {
+        export default {
             init: function ($gridContainer, gridName) {
                 var metadata = $gridContainer.data('metadata');
                 var options = metadata.options || {};
@@ -84,5 +85,4 @@ define(
                 }
             }
         };
-    }
-);
+    

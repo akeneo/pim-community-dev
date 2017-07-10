@@ -1,9 +1,10 @@
-'use strict';
 
-define(
-    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/attribute-manager'],
-    function ($, _, FetcherRegistry, AttributeManager) {
-    return {
+
+import $ from 'jquery';
+import _ from 'underscore';
+import FetcherRegistry from 'pim/fetcher-registry';
+import AttributeManager from 'pim/attribute-manager';
+export default {
         /**
          * Get all the attribute group for the given object
          *
@@ -11,8 +12,8 @@ define(
          *
          * @return {Promise}
          */
-        getAttributeGroupsForObject: function (object) {
-            return $.when(
+    getAttributeGroupsForObject: function (object) {
+        return $.when(
                 FetcherRegistry.getFetcher('attribute-group').fetchAll(),
                 AttributeManager.getAttributes(object)
             ).then(function (attributeGroups, ObjectAttributes) {
@@ -24,7 +25,7 @@ define(
                     return result;
                 }, {});
             });
-        },
+    },
 
         /**
          * Get attribute group values filtered from the whole list
@@ -34,20 +35,20 @@ define(
          *
          * @return {Object}
          */
-        getAttributeGroupValues: function (values, attributeGroup) {
-            var matchingValues = {};
-            if (!attributeGroup) {
-                return matchingValues;
-            }
-
-            _.each(attributeGroup.attributes, function (attributeCode) {
-                if (values[attributeCode]) {
-                    matchingValues[attributeCode] = values[attributeCode];
-                }
-            });
-
+    getAttributeGroupValues: function (values, attributeGroup) {
+        var matchingValues = {};
+        if (!attributeGroup) {
             return matchingValues;
-        },
+        }
+
+        _.each(attributeGroup.attributes, function (attributeCode) {
+            if (values[attributeCode]) {
+                matchingValues[attributeCode] = values[attributeCode];
+            }
+        });
+
+        return matchingValues;
+    },
 
         /**
          * Get the attribute group for the given attribute
@@ -57,16 +58,16 @@ define(
          *
          * @return {String}
          */
-        getAttributeGroupForAttribute: function (attributeGroups, attributeCode) {
-            var result = null;
+    getAttributeGroupForAttribute: function (attributeGroups, attributeCode) {
+        var result = null;
 
-            _.each(attributeGroups, function (attributeGroup) {
-                if (-1 !== attributeGroup.attributes.indexOf(attributeCode)) {
-                    result = attributeGroup.code;
-                }
-            });
+        _.each(attributeGroups, function (attributeGroup) {
+            if (-1 !== attributeGroup.attributes.indexOf(attributeCode)) {
+                result = attributeGroup.code;
+            }
+        });
 
-            return result;
-        }
-    };
-});
+        return result;
+    }
+};
+

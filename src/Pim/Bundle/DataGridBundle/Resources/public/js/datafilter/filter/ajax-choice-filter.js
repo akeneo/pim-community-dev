@@ -1,9 +1,10 @@
-define(
-    ['jquery', 'underscore', 'oro/datafilter/multiselect-filter', 'routing'],
-    function($, _, MultiSelectFilter, Routing) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import MultiSelectFilter from 'oro/datafilter/multiselect-filter';
+import Routing from 'routing';
+        
 
-        return MultiSelectFilter.extend({
+        export default MultiSelectFilter.extend({
             choicesFetched: false,
             choiceUrl: null,
             choiceUrlParams: {},
@@ -79,5 +80,4 @@ define(
                 this.choicesFetched = true;
             }
         });
-    }
-);
+    

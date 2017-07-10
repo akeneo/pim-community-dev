@@ -1,9 +1,10 @@
-define(
-    ['jquery', 'underscore', 'backbone', 'oro/messenger'],
-    function ($, _, Backbone, messenger) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import messenger from 'oro/messenger';
+        
 
-        return Backbone.View.extend({
+        export default Backbone.View.extend({
 
             action: null,
 
@@ -27,5 +28,4 @@ define(
                     });
             }
         });
-    }
-);
+    

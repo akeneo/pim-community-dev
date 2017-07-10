@@ -1,10 +1,10 @@
-'use strict';
 
-define(
-    ['jquery', 'underscore', 'pim/form-registry'],
-    function ($, _, FormRegistry) {
-        var buildForm = function (formName) {
-            return $.when(
+
+import $ from 'jquery';
+import _ from 'underscore';
+import FormRegistry from 'pim/form-registry';
+var buildForm = function (formName) {
+    return $.when(
                 FormRegistry.getForm(formName),
                 FormRegistry.getFormMeta(formName),
                 FormRegistry.getFormExtensions(formName)
@@ -35,18 +35,17 @@ define(
                     return form;
                 });
             });
-        };
+};
 
-        return {
-            build: function (formName) {
-                return buildForm(formName).then(function (form) {
-                    return form.configure().then(function () {
-                        return form;
-                    });
-                });
-            },
+export default {
+    build: function (formName) {
+        return buildForm(formName).then(function (form) {
+            return form.configure().then(function () {
+                return form;
+            });
+        });
+    },
 
-            buildForm: buildForm
-        };
-    }
-);
+    buildForm: buildForm
+};
+

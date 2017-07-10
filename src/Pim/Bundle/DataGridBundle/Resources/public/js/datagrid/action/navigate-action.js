@@ -1,7 +1,9 @@
 /* global define */
-define(['underscore', 'oro/mediator', 'oro/datagrid/model-action', 'pim/router'],
-function(_, mediator, ModelAction, router) {
-    'use strict';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import ModelAction from 'oro/datagrid/model-action';
+import router from 'pim/router';
+    
 
     /**
      * Navigate action. Changes window location to url, from getLink method
@@ -10,7 +12,7 @@ function(_, mediator, ModelAction, router) {
      * @class   oro.datagrid.NavigateAction
      * @extends oro.datagrid.ModelAction
      */
-    return ModelAction.extend({
+    export default ModelAction.extend({
 
         /**
          * If `true` then created launcher will be complete clickable link,
@@ -59,4 +61,4 @@ function(_, mediator, ModelAction, router) {
             mediator.trigger('grid_action:navigateAction:preExecute', action, options);
         }
     });
-});
+

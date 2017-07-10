@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
-function($, _, __, AbstractFilter) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import AbstractFilter from 'oro/datafilter/abstract-filter';
+    
 
     /**
      * Text grid filter.
@@ -14,7 +16,7 @@ function($, _, __, AbstractFilter) {
      * @class   oro.datafilter.TextFilter
      * @extends oro.datafilter.AbstractFilter
      */
-    return AbstractFilter.extend({
+    export default AbstractFilter.extend({
         /** @property */
         template: _.template(
             '<div class="AknFilterBox-filter filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
@@ -326,4 +328,4 @@ function($, _, __, AbstractFilter) {
             return value.value ? '"' + value.value + '"': this.placeholder;
         }
     });
-});
+

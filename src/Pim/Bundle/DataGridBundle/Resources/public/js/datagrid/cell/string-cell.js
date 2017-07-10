@@ -1,7 +1,7 @@
 /* global define */
-define(['backgrid', 'oro/datagrid/cell-formatter'],
-function(Backgrid, CellFormatter) {
-    'use strict';
+import Backgrid from 'backgrid';
+import CellFormatter from 'oro/datagrid/cell-formatter';
+    
     
     /**
      * String column cell. Added missing behaviour.
@@ -10,7 +10,7 @@ function(Backgrid, CellFormatter) {
      * @class   oro.datagrid.StringCell
      * @extends Backgrid.StringCell
      */
-    return Backgrid.StringCell.extend({
+    export default Backgrid.StringCell.extend({
         /**
          @property {(Backgrid.CellFormatter|Object|string)}
          */
@@ -26,4 +26,4 @@ function(Backgrid, CellFormatter) {
             return Backgrid.StringCell.prototype.enterEditMode.apply(this, arguments);
         }
     });
-});
+

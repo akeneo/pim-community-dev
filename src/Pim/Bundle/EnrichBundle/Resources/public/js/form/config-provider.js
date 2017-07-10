@@ -1,47 +1,45 @@
-'use strict';
 
-define(
-    ['jquery', 'routing'],
-    function ($, Routing) {
-        var promise = null;
 
-        var loadConfig = function () {
-            if (null === promise) {
-                promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).promise();
-            }
+import $ from 'jquery';
+import Routing from 'routing';
+var promise = null;
 
-            return promise;
-        };
+var loadConfig = function () {
+    if (null === promise) {
+        promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).promise();
+    }
 
-        return {
+    return promise;
+};
+
+export default {
             /**
              * Returns configuration for extensions.
              *
              * @return {Promise}
              */
-            getExtensionMap: function () {
-                return loadConfig().then(function (config) {
-                    return config.extensions;
-                });
-            },
+    getExtensionMap: function () {
+        return loadConfig().then(function (config) {
+            return config.extensions;
+        });
+    },
 
             /**
              * Returns configuration for attribute fields.
              *
              * @return {Promise}
              */
-            getAttributeFields: function () {
-                return loadConfig().then(function (config) {
-                    return config.attribute_fields;
-                });
-            },
+    getAttributeFields: function () {
+        return loadConfig().then(function (config) {
+            return config.attribute_fields;
+        });
+    },
 
             /**
              * Clear cache of form registry
              */
-            clear: function () {
-                promise = null;
-            }
-        };
+    clear: function () {
+        promise = null;
     }
-);
+};
+

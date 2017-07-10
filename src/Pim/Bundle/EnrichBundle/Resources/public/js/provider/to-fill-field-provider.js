@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Attribute group selector extension
  *
@@ -6,16 +6,12 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/mediator',
-        'pim/attribute-manager',
-        'pim/fetcher-registry'
-    ],
-    function ($, _, mediator, attributeManager, fetcherRegistry) {
-        return {
+import $ from 'jquery';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import attributeManager from 'pim/attribute-manager';
+import fetcherRegistry from 'pim/fetcher-registry';
+export default {
             /**
              * Get list of fields that need to be filled to complete the product
              *
@@ -24,17 +20,17 @@ define(
              *
              * @return {promise}
              */
-            getFields: function (root, product) {
-                var filterPromises = [];
-                root.trigger(
+    getFields: function (root, product) {
+        var filterPromises = [];
+        root.trigger(
                     'pim_enrich:form:field:to-fill-filter',
                     {'filters': filterPromises}
                 );
 
-                return $.when.apply($, filterPromises).then(function () {
-                    return arguments;
-                }).then(function (filters) {
-                    return attributeManager.getAttributes(product)
+        return $.when.apply($, filterPromises).then(function () {
+            return arguments;
+        }).then(function (filters) {
+            return attributeManager.getAttributes(product)
                         .then(function (attributeCodes) {
                             return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes);
                         })
@@ -47,8 +43,7 @@ define(
                                 return attribute.code;
                             });
                         });
-                });
-            }
-        };
+        });
     }
-);
+};
+

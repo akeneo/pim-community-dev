@@ -1,26 +1,13 @@
 /* global define */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'oro/datafilter/choice-filter',
-        'datepicker',
-        'pim/date-context',
-        'pim/formatter/date',
-        'pim/template/datagrid/filter/date-filter'
-    ],
-function(
-    $,
-    _,
-    __,
-    ChoiceFilter,
-    Datepicker,
-    DateContext,
-    DateFormatter,
-    template
-) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import ChoiceFilter from 'oro/datafilter/choice-filter';
+import Datepicker from 'datepicker';
+import DateContext from 'pim/date-context';
+import DateFormatter from 'pim/formatter/date';
+import template from 'pim/template/datagrid/filter/date-filter';
+    
 
     /**
      * Date filter: filter type as option + interval begin and end dates
@@ -29,7 +16,7 @@ function(
      * @class   oro.datafilter.DateFilter
      * @extends oro.datafilter.ChoiceFilter
      */
-    return ChoiceFilter.extend({
+    export default ChoiceFilter.extend({
         /**
          * Template for filter criteria
          *
@@ -344,4 +331,4 @@ function(
             return this;
         }
     });
-});
+

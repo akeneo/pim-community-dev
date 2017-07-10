@@ -1,13 +1,8 @@
-'use strict';
 
-define([
-        'jquery',
-        'routing'
-    ], function (
-        $,
-        Routing
-    ) {
-        return {
+
+import $ from 'jquery';
+import Routing from 'routing';
+        export default {
             /**
              * Remove the given datagridView.
              * Return the DELETE request promise.
@@ -22,5 +17,4 @@ define([
                 return $.ajax({url: removeRoute, type: 'DELETE'});
             }
         };
-    }
-);
+    

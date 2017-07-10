@@ -1,7 +1,6 @@
-define(
-    ['underscore', 'oro/datafilter/select-filter'],
-    function (_, SelectFilter) {
-        'use strict';
+import _ from 'underscore';
+import SelectFilter from 'oro/datafilter/select-filter';
+        
 
         /**
          * Scope filter
@@ -14,6 +13,5 @@ define(
          * @class   oro.datafilter.ProductCompletenessFilter
          * @extends oro.datafilter.SelectFilter
          */
-        return SelectFilter.extend({});
-    }
-);
+        export default SelectFilter.extend({});
+    

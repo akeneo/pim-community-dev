@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'backgrid', 'oro/datagrid/select-row-cell'],
-function ($, _, Backgrid, SelectRowCell) {
-    "use strict";
+import $ from 'jquery';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+import SelectRowCell from 'oro/datagrid/select-row-cell';
+    
 
     /**
      * Contains mass-selection logic
@@ -15,7 +17,7 @@ function ($, _, Backgrid, SelectRowCell) {
      * @class   oro.datagrid.SelectAllHeaderCell
      * @extends oro.datagrid.SelectRowCell
      */
-    return SelectRowCell.extend({
+    export default SelectRowCell.extend({
         /** @property */
         className: "AknGrid-headerCell select-all-header-cell",
 
@@ -214,4 +216,4 @@ function ($, _, Backgrid, SelectRowCell) {
             return this;
         }
     });
-});
+

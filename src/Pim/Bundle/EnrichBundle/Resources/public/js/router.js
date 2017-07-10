@@ -1,140 +1,124 @@
-'use strict';
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'routing',
-        'pim/route-matcher',
-        'oro/loading-mask',
-        'pim/controller-registry',
-        'oro/mediator',
-        'pim/error',
-        'pim/security-context',
-        'pim/controller/template'
-    ],
-    function (
-        $,
-        _,
-        __,
-        Backbone,
-        Routing,
-        RouteMatcher,
-        LoadingMask,
-        ControllerRegistry,
-        mediator,
-        Error,
-        securityContext
-    ) {
-        var Router = Backbone.Router.extend({
-            DEFAULT_ROUTE: 'oro_default',
-            routes: {
-                '': 'dashboard',
-                '*path': 'defaultRoute'
-            },
-            loadingMask: null,
-            currentController: null,
+
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import Backbone from 'backbone';
+import Routing from 'routing';
+import RouteMatcher from 'pim/route-matcher';
+import LoadingMask from 'oro/loading-mask';
+import ControllerRegistry from 'pim/controller-registry';
+import mediator from 'oro/mediator';
+import Error from 'pim/error';
+import securityContext from 'pim/security-context';
+import 'pim/controller/template';
+var Router = Backbone.Router.extend({
+    DEFAULT_ROUTE: 'oro_default',
+    routes: {
+        '': 'dashboard',
+        '*path': 'defaultRoute'
+    },
+    loadingMask: null,
+    currentController: null,
 
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
-                this.loadingMask = new LoadingMask();
-                this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
-                _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
+    initialize: function () {
+        this.loadingMask = new LoadingMask();
+        this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
+        _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
 
-                this.listenTo(mediator, 'route_complete', this._processLinks);
-            },
+        this.listenTo(mediator, 'route_complete', this._processLinks);
+    },
 
             /**
              * Go to the homepage of the app
              *
              * @return {String}
              */
-            dashboard: function () {
-                return this.defaultRoute(this.generate('pim_dashboard_index'));
-            },
+    dashboard: function () {
+        return this.defaultRoute(this.generate('pim_dashboard_index'));
+    },
 
             /**
              * Render the given route
              *
              * @param {String} path
              */
-            defaultRoute: function (path) {
-                if (path.indexOf('/') !== 0) {
-                    path = '/' + path;
-                }
+    defaultRoute: function (path) {
+        if (path.indexOf('/') !== 0) {
+            path = '/' + path;
+        }
 
-                if (path.indexOf('|') !== -1) {
-                    path = path.substring(0, path.indexOf('|'));
-                }
+        if (path.indexOf('|') !== -1) {
+            path = path.substring(0, path.indexOf('|'));
+        }
 
-                var route = this.match(path);
-                if (false === route) {
-                    return this.notFound();
-                }
-                if (this.DEFAULT_ROUTE === route.name) {
-                    return this.dashboard();
-                }
+        var route = this.match(path);
+        if (false === route) {
+            return this.notFound();
+        }
+        if (this.DEFAULT_ROUTE === route.name) {
+            return this.dashboard();
+        }
 
-                this.showLoadingMask();
-                this.triggerStart(route);
+        this.showLoadingMask();
+        this.triggerStart(route);
 
-                ControllerRegistry.get(route.name).done(function (controller) {
-                    if (this.currentController) {
-                        this.currentController.remove();
-                    }
+        ControllerRegistry.get(route.name).done(function (controller) {
+            if (this.currentController) {
+                this.currentController.remove();
+            }
 
-                    $('#container').empty();
-                    var $view = $('<div class="view"/>').appendTo($('#container'));
+            $('#container').empty();
+            var $view = $('<div class="view"/>').appendTo($('#container'));
 
-                    if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
-                        this.hideLoadingMask();
+            if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
+                this.hideLoadingMask();
 
-                        return this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
-                    }
+                return this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
+            }
 
-                    controller.el = $view;
-                    this.currentController = new controller.class(controller);
-                    this.currentController.setActive(true);
-                    this.currentController.renderRoute(route, path)
+            controller.el = $view;
+            this.currentController = new controller.class(controller);
+            this.currentController.setActive(true);
+            this.currentController.renderRoute(route, path)
                         .done(function () {
                             this.triggerComplete(route);
                         }.bind(this))
                         .fail(this.handleError.bind(this))
                         .always(this.hideLoadingMask)
                     ;
-                }.bind(this));
-            },
+        }.bind(this));
+    },
 
             /**
              * Manage not found error
              */
-            notFound: function () {
-                this.displayErrorPage('Page not found', 404);
-            },
+    notFound: function () {
+        this.displayErrorPage('Page not found', 404);
+    },
 
-            handleError: function (xhr) {
-                switch (xhr.status) {
-                    case 401:
-                        window.location = this.generate('oro_user_security_login');
-                        break;
-                    default:
-                        this.errorPage(xhr);
-                        break;
-                }
-            },
+    handleError: function (xhr) {
+        switch (xhr.status) {
+        case 401:
+            window.location = this.generate('oro_user_security_login');
+            break;
+        default:
+            this.errorPage(xhr);
+            break;
+        }
+    },
 
             /**
              * Manage error from xhr calls
              *
              * @param {Object} xhr
              */
-            errorPage: function (xhr) {
-                this.displayErrorPage(xhr.statusText, xhr.status);
-            },
+    errorPage: function (xhr) {
+        this.displayErrorPage(xhr.statusText, xhr.status);
+    },
 
             /**
              * Display the error page
@@ -142,110 +126,109 @@ define(
              * @param {String} message
              * @param {Integer} code
              */
-            displayErrorPage: function (message, code) {
-                var errorView = new Error(message, code);
-                errorView.setElement($('#container')).render();
-            },
+    displayErrorPage: function (message, code) {
+        var errorView = new Error(message, code);
+        errorView.setElement($('#container')).render();
+    },
 
             /**
              * Trigger route start events
              *
              * @param {String} route
              */
-            triggerStart: function (route) {
-                this.trigger('route:' + route.name, route.params);
-                this.trigger('route_start', route.name, route.params);
-                this.trigger('route_start:' + route.name, route.params);
-                mediator.trigger('route_start', route.name, route.params);
-                mediator.trigger('route_start:' + route.name, route.params);
-            },
+    triggerStart: function (route) {
+        this.trigger('route:' + route.name, route.params);
+        this.trigger('route_start', route.name, route.params);
+        this.trigger('route_start:' + route.name, route.params);
+        mediator.trigger('route_start', route.name, route.params);
+        mediator.trigger('route_start:' + route.name, route.params);
+    },
 
             /**
              * Trigger completed route events
              *
              * @param {String} route
              */
-            triggerComplete: function (route) {
-                this.trigger('route_complete', route.name, route.params);
-                this.trigger('route_complete:' + route.name, route.params);
-                mediator.trigger('route_complete', route.name, route.params);
-                mediator.trigger('route_complete:' + route.name, route.params);
-            },
+    triggerComplete: function (route) {
+        this.trigger('route_complete', route.name, route.params);
+        this.trigger('route_complete:' + route.name, route.params);
+        mediator.trigger('route_complete', route.name, route.params);
+        mediator.trigger('route_complete:' + route.name, route.params);
+    },
 
             /**
              * Display the loading mask
              */
-            showLoadingMask: function () {
-                this.loadingMask.show();
-            },
+    showLoadingMask: function () {
+        this.loadingMask.show();
+    },
 
             /**
              * Hide the loading mask
              */
-            hideLoadingMask: function () {
-                this.loadingMask.hide();
-            },
+    hideLoadingMask: function () {
+        this.loadingMask.hide();
+    },
 
             /**
              * {@inheritdoc}
              */
-            generate: function () {
-                return Routing.generate.apply(Routing, arguments);
-            },
+    generate: function () {
+        return Routing.generate.apply(Routing, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            match: function () {
-                return RouteMatcher.match.apply(RouteMatcher, arguments);
-            },
+    match: function () {
+        return RouteMatcher.match.apply(RouteMatcher, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            redirect: function (fragment, options) {
-                if (this.currentController && !this.currentController.canLeave()) {
-                    return false;
-                }
+    redirect: function (fragment, options) {
+        if (this.currentController && !this.currentController.canLeave()) {
+            return false;
+        }
 
-                fragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
-                Backbone.history.navigate(fragment, options);
-            },
+        fragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
+        Backbone.history.navigate(fragment, options);
+    },
 
             /**
              * Redirect to the given route
              */
-            redirectToRoute: function (route, routeParams, options) {
-                this.redirect(Routing.generate(route, routeParams), options);
-            },
+    redirectToRoute: function (route, routeParams, options) {
+        this.redirect(Routing.generate(route, routeParams), options);
+    },
 
             /**
              * Reload the current page
              */
-            reloadPage: function () {
-                var fragment = window.location.hash;
-                this.redirect(fragment, {trigger: true});
-            },
+    reloadPage: function () {
+        var fragment = window.location.hash;
+        this.redirect(fragment, {trigger: true});
+    },
 
             /**
              * Process route links in the current page
              */
-            _processLinks: function () {
-                _.each($('a[route]'), function (link) {
-                    var route = link.getAttribute('route');
-                    var routeParams = link.getAttribute('route-params');
-                    if (routeParams) {
-                        try {
-                            routeParams = JSON.parse(routeParams.replace(/'/g, '"'));
-                        } catch (error) {
-                            routeParams = null;
-                        }
-                    }
-                    link.setAttribute('href', '#' + Routing.generate(route, routeParams));
-                });
+    _processLinks: function () {
+        _.each($('a[route]'), function (link) {
+            var route = link.getAttribute('route');
+            var routeParams = link.getAttribute('route-params');
+            if (routeParams) {
+                try {
+                    routeParams = JSON.parse(routeParams.replace(/'/g, '"'));
+                } catch (error) {
+                    routeParams = null;
+                }
             }
+            link.setAttribute('href', '#' + Routing.generate(route, routeParams));
         });
-
-        return new Router();
     }
-);
+});
+
+export default new Router();
+

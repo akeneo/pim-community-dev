@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
-function($, _, __, AbstractFilter) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import AbstractFilter from 'oro/datafilter/abstract-filter';
+    
 
     /**
      * None filter: an empty filter implements 'null object' pattern
@@ -13,7 +15,7 @@ function($, _, __, AbstractFilter) {
      * @class   oro.datafilter.NoneFilter
      * @extends oro.datafilter.AbstractFilter
      */
-    return AbstractFilter.extend({
+    export default AbstractFilter.extend({
         /**
          * Filter template
          *
@@ -266,4 +268,4 @@ function($, _, __, AbstractFilter) {
             return this.criteriaHint ? this.criteriaHint: this.placeholder;
         }
     });
-});
+

@@ -1,41 +1,21 @@
 /*jslint nomen: true, vars: true*/
 /*global define*/
-define(
-    [
-        'jquery',
-        'underscore',
-        'backgrid',
-        'translator-lib',
-        'oro/translator',
-        'oro/mediator',
-        'oro/loading-mask',
-        'oro/datagrid/header',
-        'oro/datagrid/body',
-        'oro/datagrid/toolbar',
-        'oro/datagrid/action-column',
-        'oro/datagrid/select-row-cell',
-        'oro/datagrid/select-all-header-cell',
-        'oro/datagrid/refresh-collection-action',
-        'oro/datagrid/reset-collection-action'
-    ],
-    function (
-        $,
-        _,
-        Backgrid,
-        Translator,
-        __,
-        mediator,
-        LoadingMask,
-        GridHeader,
-        GridBody,
-        Toolbar,
-        ActionColumn,
-        SelectRowCell,
-        SelectAllHeaderCell,
-        RefreshCollectionAction,
-        ResetCollectionAction
-    ) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+import Translator from 'translator-lib';
+import __ from 'oro/translator';
+import mediator from 'oro/mediator';
+import LoadingMask from 'oro/loading-mask';
+import GridHeader from 'oro/datagrid/header';
+import GridBody from 'oro/datagrid/body';
+import Toolbar from 'oro/datagrid/toolbar';
+import ActionColumn from 'oro/datagrid/action-column';
+import SelectRowCell from 'oro/datagrid/select-row-cell';
+import SelectAllHeaderCell from 'oro/datagrid/select-all-header-cell';
+import RefreshCollectionAction from 'oro/datagrid/refresh-collection-action';
+import ResetCollectionAction from 'oro/datagrid/reset-collection-action';
+        
 
         /**
          * Basic grid class.
@@ -47,7 +27,7 @@ define(
          * @class   oro.datagrid.Grid
          * @extends Backgrid.Grid
          */
-        return Backgrid.Grid.extend({
+        export default Backgrid.Grid.extend({
             /** @property {String} */
             name: 'datagrid',
 
@@ -612,4 +592,4 @@ define(
                 }
             }
         });
-    });
+    

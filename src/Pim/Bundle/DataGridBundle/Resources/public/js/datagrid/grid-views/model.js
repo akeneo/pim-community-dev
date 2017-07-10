@@ -1,8 +1,8 @@
-define(['backbone', 'underscore'],
-    function (Backbone, _) {
-        'use strict';
+import Backbone from 'backbone';
+import _ from 'underscore';
+        
 
-        return Backbone.Model.extend({
+        export default Backbone.Model.extend({
             /** @property */
             idAttribute: 'name',
 
@@ -49,5 +49,4 @@ define(['backbone', 'underscore'],
                 };
             }
         });
-    }
-);
+    

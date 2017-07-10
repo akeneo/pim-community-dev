@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backgrid'],
-    function(_, Backgrid) {
-        'use strict';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+        
 
         /**
          * Integer column cell.
@@ -10,7 +10,7 @@ define(['underscore', 'backgrid'],
          * @class   oro.datagrid.NumberCell
          * @extends Backgrid.NumberCell
          */
-        return Backgrid.NumberCell.extend({
+        export default Backgrid.NumberCell.extend({
             /** @property {String} */
             style: 'decimal',
 
@@ -33,4 +33,4 @@ define(['underscore', 'backgrid'],
                 return Backgrid.NumberCell.prototype.enterEditMode.apply(this, arguments);
             }
         });
-    });
+    

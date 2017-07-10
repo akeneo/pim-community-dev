@@ -271,9 +271,9 @@
 
   //AMD / RequireJS
   if (typeof define === 'function' && define.amd) {
-    return define(function() {
+    
       Backbone.BootstrapModal = Modal;
-    })
+    
   }
 
   //Regular; add to Backbone.Bootstrap.Modal

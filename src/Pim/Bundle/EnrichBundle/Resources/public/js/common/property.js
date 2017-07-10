@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Property accessor extension
@@ -7,8 +7,8 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([], function () {
-    return {
+
+    export default {
         /**
          * Access a property in an object
          *
@@ -50,4 +50,4 @@ define([], function () {
             return data;
         }
     };
-});
+

@@ -1,20 +1,11 @@
-'use strict';
 
-define([
-        'underscore',
-        'jquery',
-        'routing',
-        'pim/form/common/save',
-        'pim/template/form/save'
-    ],
-    function(
-        _,
-        $,
-        Routing,
-        SaveForm,
-        template
-    ) {
-        return SaveForm.extend({
+
+import _ from 'underscore';
+import $ from 'jquery';
+import Routing from 'routing';
+import SaveForm from 'pim/form/common/save';
+import template from 'pim/template/form/save';
+        export default SaveForm.extend({
             template: _.template(template),
             events: {
                 'click .save': 'save'
@@ -64,5 +55,4 @@ define([
                 SaveForm.prototype.postSave.apply(this, arguments);
             }
         });
-    }
-);
+    

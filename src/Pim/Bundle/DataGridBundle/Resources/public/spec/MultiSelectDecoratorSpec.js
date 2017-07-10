@@ -1,9 +1,10 @@
 /* global describe, it, expect, spyOn */
-'use strict';
 
-define(
-    ['oro/multiselect-decorator', 'jquery', 'underscore', 'routing'],
-    function (MultiSelectDecorator, $, _, Routing) {
+
+import MultiSelectDecorator from 'oro/multiselect-decorator';
+import $ from 'jquery';
+import _ from 'underscore';
+import Routing from 'routing';
         describe('Decorate the MultiSelect element', function () {
 
             it('computes the minimum dropdown width', function () {
@@ -50,5 +51,4 @@ define(
                 expect(miniWidth).toEqual(201)
             });
         });
-    }
-);
+    

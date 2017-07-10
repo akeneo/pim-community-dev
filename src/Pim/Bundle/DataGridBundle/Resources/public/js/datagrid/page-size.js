@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator'],
-function($, _, Backbone, __) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import __ from 'oro/translator';
+    
 
     /**
      * Datagrid page size widget
@@ -10,7 +12,7 @@ function($, _, Backbone, __) {
      * @class   oro.datagrid.PageSize
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         className: 'AknGridToolbar-pageSize page-size',
 
         /** @property */
@@ -142,4 +144,4 @@ function($, _, Backbone, __) {
             return this;
         }
     });
-});
+

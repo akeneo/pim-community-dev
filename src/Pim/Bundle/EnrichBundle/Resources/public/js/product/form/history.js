@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * History extension
  *
@@ -7,69 +7,53 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'pim/form',
-        'pim/template/product/history',
-        'routing',
-        'oro/mediator',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/i18n',
-        'bootstrap-modal'
-    ],
-    function (
-        $,
-        _,
-        __,
-        Backbone,
-        BaseForm,
-        template,
-        Routing,
-        mediator,
-        FetcherRegistry,
-        UserContext,
-        i18n
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
-            className: 'panel-pane history-panel',
-            loading: false,
-            versions: [],
-            actions: {},
-            events: {
-                'click .expanded .AknGrid-bodyCell': 'toggleVersion'
-            },
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import Backbone from 'backbone';
+import BaseForm from 'pim/form';
+import template from 'pim/template/product/history';
+import Routing from 'routing';
+import mediator from 'oro/mediator';
+import FetcherRegistry from 'pim/fetcher-registry';
+import UserContext from 'pim/user-context';
+import i18n from 'pim/i18n';
+import 'bootstrap-modal';
+export default BaseForm.extend({
+    template: _.template(template),
+    className: 'panel-pane history-panel',
+    loading: false,
+    versions: [],
+    actions: {},
+    events: {
+        'click .expanded .AknGrid-bodyCell': 'toggleVersion'
+    },
 
             /**
              * {@inheritdoc}
              */
-            configure: function () {
-                this.trigger('tab:register', {
-                    code: this.code,
-                    label: __('pim_enrich.form.product.panel.history.title')
-                });
+    configure: function () {
+        this.trigger('tab:register', {
+            code: this.code,
+            label: __('pim_enrich.form.product.panel.history.title')
+        });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
-                this.onExtensions('action:register',  this.addAction.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+        this.onExtensions('action:register',  this.addAction.bind(this));
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+        return BaseForm.prototype.configure.apply(this, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
-                    return this;
-                }
+    render: function () {
+        if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
+            return this;
+        }
 
-                if (this.getFormData().meta) {
-                    this.getVersions()
+        if (this.getFormData().meta) {
+            this.getVersions()
                         .then(function (versions) {
                             this.$el.html(
                                 this.template({
@@ -91,43 +75,43 @@ define(
 
                             this.delegateEvents();
                         }.bind(this));
-                }
+        }
 
-                return this;
-            },
+        return this;
+    },
 
             /**
              * Update the history by fetching it from the backend
              */
-            update: function () {
-                if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
-                }
+    update: function () {
+        if (this.getFormData().meta) {
+            FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
+        }
 
-                this.render();
-            },
+        this.render();
+    },
 
             /**
              * Get history versions from the backend
              *
              * @return {Promise}
              */
-            getVersions: function () {
-                return FetcherRegistry.getFetcher('product-history').fetch(
+    getVersions: function () {
+        return FetcherRegistry.getFetcher('product-history').fetch(
                     this.getFormData().meta.id,
                     { entityId: this.getFormData().meta.id }
                 ).then(this.addAttributesLabelToVersions.bind(this));
-            },
+    },
 
             /**
              * Add attributes label to all versions
              *
              * @param {Array} versions
              */
-            addAttributesLabelToVersions: function (versions) {
-                var codes = this.getAttributeCodesInVersions(versions);
+    addAttributesLabelToVersions: function (versions) {
+        var codes = this.getAttributeCodesInVersions(versions);
 
-                return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(codes)
+        return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(codes)
                     .then(function (attributes) {
                         _.each(versions, function (version) {
                             _.each(version.changeset, function (data, index) {
@@ -139,7 +123,7 @@ define(
 
                         return versions;
                     }.bind(this));
-            },
+    },
 
             /**
              * Return the list of unique attribute codes found in all versions
@@ -148,16 +132,16 @@ define(
              *
              * @returns {Array}
              */
-            getAttributeCodesInVersions: function (versions) {
-                var codes = [];
-                _.each(versions, function (version) {
-                    _.each(version.changeset, function (data, index) {
-                        codes.push(index.split('-')[0]);
-                    });
-                });
+    getAttributeCodesInVersions: function (versions) {
+        var codes = [];
+        _.each(versions, function (version) {
+            _.each(version.changeset, function (data, index) {
+                codes.push(index.split('-')[0]);
+            });
+        });
 
-                return _.uniq(codes);
-            },
+        return _.uniq(codes);
+    },
 
             /**
              * Get attribute label
@@ -167,58 +151,57 @@ define(
              *
              * @return {string}
              */
-            getAttributeLabel: function (attribute, key) {
-                var uiLocale = UserContext.get('catalogLocale');
-                var label    = i18n.getLabel(attribute.labels, uiLocale, attribute.code);
+    getAttributeLabel: function (attribute, key) {
+        var uiLocale = UserContext.get('catalogLocale');
+        var label    = i18n.getLabel(attribute.labels, uiLocale, attribute.code);
 
-                key = key.split('-');
-                key.shift();
+        key = key.split('-');
+        key.shift();
 
-                var info = '';
-                if (attribute.localizable) {
-                    info += i18n.getFlag(key.shift());
-                }
-                if (attribute.scopable) {
-                    info = '<span>' + key.shift() + '</span>' + info;
-                }
-                if (0 < key.length) {
-                    info = key.join(' ') + info;
-                }
-                if (info) {
-                    info = ' <span class="attribute-info">' + info + '</span>';
-                }
+        var info = '';
+        if (attribute.localizable) {
+            info += i18n.getFlag(key.shift());
+        }
+        if (attribute.scopable) {
+            info = '<span>' + key.shift() + '</span>' + info;
+        }
+        if (0 < key.length) {
+            info = key.join(' ') + info;
+        }
+        if (info) {
+            info = ' <span class="attribute-info">' + info + '</span>';
+        }
 
-                return label + info;
-            },
+        return label + info;
+    },
 
             /**
              * Add action to the history
              *
              * @param {Event} event
              */
-            addAction: function (event) {
-                this.actions[event.code] = event.element;
-            },
+    addAction: function (event) {
+        this.actions[event.code] = event.element;
+    },
 
             /**
              * Toggle history version line
              *
              * @param {Event} event
              */
-            toggleVersion: function (event) {
-                var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
-                var $body = $row.closest('.AknGrid');
+    toggleVersion: function (event) {
+        var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
+        var $body = $row.closest('.AknGrid');
 
-                $body.find('tr.changeset').addClass('hide');
-                $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
+        $body.find('tr.changeset').addClass('hide');
+        $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
 
-                if (!$row.hasClass('expanded')) {
-                    $row.next('tr.changeset').removeClass('hide');
-                    $row.find('i').toggleClass('icon-chevron-right icon-chevron-down');
-                }
-                $row.siblings().removeClass('expanded');
-                $row.toggleClass('expanded');
-            }
-        });
+        if (!$row.hasClass('expanded')) {
+            $row.next('tr.changeset').removeClass('hide');
+            $row.find('i').toggleClass('icon-chevron-right icon-chevron-down');
+        }
+        $row.siblings().removeClass('expanded');
+        $row.toggleClass('expanded');
     }
-);
+});
+

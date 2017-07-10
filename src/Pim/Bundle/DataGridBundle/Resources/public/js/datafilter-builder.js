@@ -1,6 +1,9 @@
-define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager'],
-function($, _, tools,  mediator, FiltersManager) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import tools from 'oro/tools';
+import mediator from 'oro/mediator';
+import FiltersManager from 'oro/datafilter/collection-filters-manager';
+    
 
     var initialized = false,
         filterModuleName = 'oro/datafilter/{{type}}-filter',
@@ -70,7 +73,7 @@ function($, _, tools,  mediator, FiltersManager) {
             initialized = true;
         };
 
-    return {
+    export default {
         init: function () {
             initialized = false;
             mediator.once('datagrid_collection_set_after', initHandler);
@@ -81,4 +84,4 @@ function($, _, tools,  mediator, FiltersManager) {
             });
         }
     };
-});
+

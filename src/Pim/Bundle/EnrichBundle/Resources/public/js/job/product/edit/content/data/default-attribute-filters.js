@@ -5,41 +5,38 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-'use strict';
 
-define([
-    'underscore',
-    'oro/translator',
-    'pim/form',
-    'pim/fetcher-registry'
 
-], function (_, __, BaseForm, fetcherRegistry) {
-    return BaseForm.extend({
+import _ from 'underscore';
+import __ from 'oro/translator';
+import BaseForm from 'pim/form';
+import fetcherRegistry from 'pim/fetcher-registry';
+export default BaseForm.extend({
         /**
          * {@inherit}
          */
-        initialize: function (config) {
-            this.config = config.config;
+    initialize: function (config) {
+        this.config = config.config;
 
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
+        BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
         /**
          * {@inherit}
          */
-        configure: function () {
-            this.listenTo(this.getRoot(), 'pim_enrich:form:filter:set-default', this.addFilter.bind(this));
+    configure: function () {
+        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:set-default', this.addFilter.bind(this));
 
-            return BaseForm.prototype.configure.apply(this, arguments);
-        },
+        return BaseForm.prototype.configure.apply(this, arguments);
+    },
 
         /**
          * Adds filters to the collection.
          *
          * @param {Object} event
          */
-        addFilter: function (event) {
-            event.push(
+    addFilter: function (event) {
+        event.push(
                 fetcherRegistry
                     .getFetcher('attribute')
                     .fetchByTypes(this.config.types)
@@ -47,6 +44,6 @@ define([
                         return _.pluck(attributes, 'code');
                     })
             );
-        }
-    });
+    }
 });
+

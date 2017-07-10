@@ -1,141 +1,137 @@
-define(
-    [
-        'backbone',
-        'jquery',
-        'underscore',
-        'routing',
-        'pim/notification-list',
-        'pim/indicator',
-        'pim/template/notification/notification',
-        'pim/template/notification/notification-footer'
-    ],
-    function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
-        'use strict';
+import Backbone from 'backbone';
+import $ from 'jquery';
+import _ from 'underscore';
+import Routing from 'routing';
+import NotificationList from 'pim/notification-list';
+import Indicator from 'pim/indicator';
+import notificationTpl from 'pim/template/notification/notification';
+import notificationFooterTpl from 'pim/template/notification/notification-footer';
 
-        return Backbone.View.extend({
-            options: {
-                imgUrl:                 '',
-                loadingText:            null,
-                noNotificationsMessage: null,
-                markAsReadMessage:      null,
-                indicatorBaseClass:     'AknNotificationMenu-count',
-                indicatorEmptyClass:    'AknNotificationMenu-count--hidden',
-                refreshInterval:        30000
-            },
 
-            freezeCount: false,
+export default Backbone.View.extend({
+    options: {
+        imgUrl:                 '',
+        loadingText:            null,
+        noNotificationsMessage: null,
+        markAsReadMessage:      null,
+        indicatorBaseClass:     'AknNotificationMenu-count',
+        indicatorEmptyClass:    'AknNotificationMenu-count--hidden',
+        refreshInterval:        30000
+    },
 
-            refreshTimeout: null,
+    freezeCount: false,
 
-            refreshLocked: false,
+    refreshTimeout: null,
 
-            template: _.template(notificationTpl),
+    refreshLocked: false,
 
-            footerTemplate: _.template(notificationFooterTpl),
+    template: _.template(notificationTpl),
 
-            events: {
-                'click .notification-link': 'onOpen',
-                'click .mark-as-read': 'markAllAsRead'
-            },
+    footerTemplate: _.template(notificationFooterTpl),
 
-            markAllAsRead: function (e) {
-                e.stopPropagation();
-                e.preventDefault();
+    events: {
+        'click .notification-link': 'onOpen',
+        'click .mark-as-read': 'markAllAsRead'
+    },
 
-                $.ajax({
-                    type: 'POST',
-                    url: Routing.generate('pim_notification_notification_mark_viewed'),
-                    async: true
-                });
+    markAllAsRead: function (e) {
+        e.stopPropagation();
+        e.preventDefault();
 
-                this.collection.trigger('mark_as_read', null);
-                _.each(this.collection.models, function (model) {
-                    model.set('viewed', true);
-                });
-            },
+        $.ajax({
+            type: 'POST',
+            url: Routing.generate('pim_notification_notification_mark_viewed'),
+            async: true
+        });
 
-            initialize: function (opts) {
-                this.options = _.extend({}, this.options, opts);
-                this.collection = new NotificationList();
-                this.indicator  = new Indicator({
-                    el: this.$('.AknNotificationMenu-countContainer'),
-                    value: 0,
-                    className: this.options.indicatorBaseClass,
-                    emptyClass: this.options.indicatorEmptyClass
-                });
+        this.collection.trigger('mark_as_read', null);
+        _.each(this.collection.models, function (model) {
+            model.set('viewed', true);
+        });
+    },
 
-                this.collection.on('load:unreadCount', function (count, reset) {
-                    this.scheduleRefresh();
-                    if (this.freezeCount) {
-                        this.freezeCount = false;
+    initialize: function (opts) {
+        this.options = _.extend({}, this.options, opts);
+        this.collection = new NotificationList();
+        this.indicator  = new Indicator({
+            el: this.$('.AknNotificationMenu-countContainer'),
+            value: 0,
+            className: this.options.indicatorBaseClass,
+            emptyClass: this.options.indicatorEmptyClass
+        });
 
-                        return;
-                    }
-                    if (this.indicator.get('value') !== count) {
-                        this.indicator.set('value', count);
-                        if (reset) {
-                            this.collection.hasMore = true;
-                            this.collection.reset();
-                            this.renderFooter();
-                        }
-                    }
-                }, this);
+        this.collection.on('load:unreadCount', function (count, reset) {
+            this.scheduleRefresh();
+            if (this.freezeCount) {
+                this.freezeCount = false;
 
-                this.collection.on('mark_as_read', function (id) {
-                    var value = null === id ? 0 : this.indicator.get('value') - 1;
-                    this.indicator.set('value', value);
-                    if (0 === value) {
-                        this.renderFooter();
-                    }
-                    if (null !== id) {
-                        this.freezeCount = true;
-                    }
-                }, this);
-
-                this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
-
-                this.render();
-
-                this.scheduleRefresh();
-            },
-
-            scheduleRefresh: function () {
-                if (this.refreshLocked) {
-                    return;
+                return;
+            }
+            if (this.indicator.get('value') !== count) {
+                this.indicator.set('value', count);
+                if (reset) {
+                    this.collection.hasMore = true;
+                    this.collection.reset();
+                    this.renderFooter();
                 }
-                if (null !== this.refreshTimeout) {
-                    clearTimeout(this.refreshTimeout);
-                }
+            }
+        }, this);
 
-                this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
-            },
+        this.collection.on('mark_as_read', function (id) {
+            var value = null === id ? 0 : this.indicator.get('value') - 1;
+            this.indicator.set('value', value);
+            if (0 === value) {
+                this.renderFooter();
+            }
+            if (null !== id) {
+                this.freezeCount = true;
+            }
+        }, this);
 
-            refresh: function () {
-                this.refreshLocked = true;
-                $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
+        this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
+
+        this.render();
+
+        this.scheduleRefresh();
+    },
+
+    scheduleRefresh: function () {
+        if (this.refreshLocked) {
+            return;
+        }
+        if (null !== this.refreshTimeout) {
+            clearTimeout(this.refreshTimeout);
+        }
+
+        this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
+    },
+
+    refresh: function () {
+        this.refreshLocked = true;
+        $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
                     .then(_.bind(function (count) {
                         this.refreshLocked = false;
                         this.collection.trigger('load:unreadCount', count, true);
                     }, this));
-            },
+    },
 
-            onOpen: function () {
-                if (!this.collection.length) {
-                    this.collection.loadNotifications();
-                }
-            },
+    onOpen: function () {
+        if (!this.collection.length) {
+            this.collection.loadNotifications();
+        }
+    },
 
-            render: function () {
-                this.$el.html(this.template());
-                this.collection.setElement(this.$('ul'));
-                this.indicator.setElement(this.$('.AknNotificationMenu-countContainer'));
-                this.renderFooter();
-            },
+    render: function () {
+        this.$el.html(this.template());
+        this.collection.setElement(this.$('ul'));
+        this.indicator.setElement(this.$('.AknNotificationMenu-countContainer'));
+        this.renderFooter();
+    },
 
-            renderFooter: function () {
-                this.$('p').remove();
+    renderFooter: function () {
+        this.$('p').remove();
 
-                this.$('ul').append(
+        this.$('ul').append(
                     this.footerTemplate({
                         options:          this.options,
                         loading:          this.collection.loading,
@@ -144,7 +140,6 @@ define(
                         hasUnread:        this.indicator.get('value') > 0
                     })
                 );
-            }
-        });
     }
-);
+});
+

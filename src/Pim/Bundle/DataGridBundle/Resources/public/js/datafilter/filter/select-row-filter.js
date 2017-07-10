@@ -1,7 +1,8 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/datafilter/select-filter'],
-function(_, Backbone, SelectFilter) {
-    'use strict';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import SelectFilter from 'oro/datafilter/select-filter';
+    
 
     /**
      * Fetches information of rows selection
@@ -11,7 +12,7 @@ function(_, Backbone, SelectFilter) {
      * @class   oro.datafilter.SelectRowFilter
      * @extends oro.datafilter.SelectFilter
      */
-    return SelectFilter.extend({
+    export default SelectFilter.extend({
 
         /**
          * Fetches raw format value on getting current value
@@ -101,4 +102,4 @@ function(_, Backbone, SelectFilter) {
             );
         }
     });
-});
+

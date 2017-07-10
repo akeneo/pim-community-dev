@@ -1,7 +1,12 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter', 'pim/initselect2', 'jquery.select2'],
-function($, _, __, app, TextFilter, initSelect2) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import app from 'oro/app';
+import TextFilter from 'oro/datafilter/text-filter';
+import initSelect2 from 'pim/initselect2';
+import 'jquery.select2';
+    
 
     /**
      * Choice filter: filter type as option + filter value as string
@@ -10,7 +15,7 @@ function($, _, __, app, TextFilter, initSelect2) {
      * @class   oro.datafilter.ChoiceFilter
      * @extends oro.datafilter.TextFilter
      */
-    return TextFilter.extend({
+    export default TextFilter.extend({
         /**
          * Template for filter criteria
          *
@@ -237,4 +242,4 @@ function($, _, __, app, TextFilter, initSelect2) {
             this.$(this.criteriaValueSelectors.value).select2('destroy');
         }
     });
-});
+

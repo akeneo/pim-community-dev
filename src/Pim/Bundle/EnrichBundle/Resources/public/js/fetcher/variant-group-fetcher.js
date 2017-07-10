@@ -1,29 +1,18 @@
-'use strict';
 
-define(
-    [
-        'jquery',
-        'pim/base-fetcher',
-        'routing',
-        'oro/mediator',
-        'pim/cache-invalidator',
-        'pim/product-manager'
-    ],
-    function (
-        $,
-        BaseFetcher,
-        Routing,
-        mediator,
-        CacheInvalidator,
-        ProductManager
-    ) {
-        return BaseFetcher.extend({
+
+import $ from 'jquery';
+import BaseFetcher from 'pim/base-fetcher';
+import Routing from 'routing';
+import mediator from 'oro/mediator';
+import CacheInvalidator from 'pim/cache-invalidator';
+import ProductManager from 'pim/product-manager';
+export default BaseFetcher.extend({
             /**
              * @param {Object} options
              */
-            initialize: function (options) {
-                this.options = options || {};
-            },
+    initialize: function (options) {
+        this.options = options || {};
+    },
 
             /**
              * Fetch an element based on its identifier
@@ -33,13 +22,13 @@ define(
              *
              * @return {Promise}
              */
-            fetch: function (identifier, options) {
-                options = options || {};
+    fetch: function (identifier, options) {
+        options = options || {};
 
-                options.code = identifier;
-                var promise = BaseFetcher.prototype.fetch.apply(this, [identifier, options]);
+        options.code = identifier;
+        var promise = BaseFetcher.prototype.fetch.apply(this, [identifier, options]);
 
-                return promise
+        return promise
                     .then(function (variantGroup) {
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(variantGroup);
@@ -52,7 +41,6 @@ define(
 
                         return variantGroup;
                     });
-            }
-        });
     }
-);
+});
+

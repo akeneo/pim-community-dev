@@ -1,7 +1,8 @@
 /* global define */
-define(['backbone', 'backgrid', 'oro/datagrid/header-cell'],
-function (Backbone, Backgrid, HeaderCell) {
-    "use strict";
+import Backbone from 'backbone';
+import Backgrid from 'backgrid';
+import HeaderCell from 'oro/datagrid/header-cell';
+    
 
     /**
      * Datagrid header widget
@@ -10,7 +11,7 @@ function (Backbone, Backgrid, HeaderCell) {
      * @class   oro.datagrid.Header
      * @extends Backgrid.Header
      */
-    return Backgrid.Header.extend({
+    export default Backgrid.Header.extend({
         /** @property */
         tagName: "thead",
 
@@ -43,4 +44,4 @@ function (Backbone, Backgrid, HeaderCell) {
             });
         }
     });
-});
+

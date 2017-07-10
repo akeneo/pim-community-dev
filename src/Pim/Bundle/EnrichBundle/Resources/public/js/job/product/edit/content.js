@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Content form
  *
@@ -6,60 +6,49 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'pim/template/export/product/edit/content',
-        'pim/form'
-    ],
-    function (
-        _,
-        __,
-        Backbone,
-        template,
-        BaseForm
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
+import _ from 'underscore';
+import __ from 'oro/translator';
+import Backbone from 'backbone';
+import template from 'pim/template/export/product/edit/content';
+import BaseForm from 'pim/form';
+export default BaseForm.extend({
+    template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
+    initialize: function (config) {
+        this.config = config.config;
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.trigger('tab:register', {
-                    code: this.config.tabCode ? this.config.tabCode : this.code,
-                    label: __(this.config.tabTitle)
-                });
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+        BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
+    configure: function () {
+        this.trigger('tab:register', {
+            code: this.config.tabCode ? this.config.tabCode : this.code,
+            label: __(this.config.tabTitle)
+        });
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
 
-                this.$el.html(
+        return BaseForm.prototype.configure.apply(this, arguments);
+    },
+
+            /**
+             * {@inheritdoc}
+             */
+    render: function () {
+        if (!this.configured) {
+            return this;
+        }
+
+        this.$el.html(
                     this.template({})
                 );
 
-                this.renderExtensions();
-            }
-        });
+        this.renderExtensions();
     }
-);
+});
+

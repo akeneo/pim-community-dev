@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Categories selector tree
  *
@@ -6,142 +6,138 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'routing',
-        'oro/translator',
-        'oro/loading-mask',
-        'pim/i18n',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/template/filter/product/category/selector',
-        'jquery.jstree'
-    ],
-    function ($, _, Backbone, Routing, __, LoadingMask, i18n, FetcherRegistry, UserContext, template) {
-        return Backbone.View.extend({
-            template: _.template(template),
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import Routing from 'routing';
+import __ from 'oro/translator';
+import LoadingMask from 'oro/loading-mask';
+import i18n from 'pim/i18n';
+import FetcherRegistry from 'pim/fetcher-registry';
+import UserContext from 'pim/user-context';
+import template from 'pim/template/filter/product/category/selector';
+import 'jquery.jstree';
+export default Backbone.View.extend({
+    template: _.template(template),
 
-            config: {
-                core: {
-                    animation: 200,
-                    html_titles: true,
-                    strings: { loading:  __('jstree.loading') }
-                },
-                plugins: [
+    config: {
+        core: {
+            animation: 200,
+            html_titles: true,
+            strings: { loading:  __('jstree.loading') }
+        },
+        plugins: [
                     'themes',
                     'json_data',
                     'ui',
                     'types',
                     'checkbox'
-                ],
-                checkbox: {
-                    two_state: true,
-                    real_checkboxes: true
-                },
-                themes: {
-                    dots: true,
-                    icons: true
-                },
-                types: {
-                    max_depth: -2,
-                    max_children: -2,
-                    valid_children: ['folder'],
-                    types: {
-                        'default': {
-                            valid_children: 'folder'
-                        }
-                    }
-                },
-                ui: {
-                    select_limit: 1,
-                    select_multiple_modifier: false
+        ],
+        checkbox: {
+            two_state: true,
+            real_checkboxes: true
+        },
+        themes: {
+            dots: true,
+            icons: true
+        },
+        types: {
+            max_depth: -2,
+            max_children: -2,
+            valid_children: ['folder'],
+            types: {
+                'default': {
+                    valid_children: 'folder'
                 }
-            },
+            }
+        },
+        ui: {
+            select_limit: 1,
+            select_multiple_modifier: false
+        }
+    },
 
-            currentTree: null,
+    currentTree: null,
 
-            attributes: {
-                categories: []
-            },
+    attributes: {
+        categories: []
+    },
 
             /**
              * Callback called when a node is checked in jstree
              *
              * @param {Object} data
              */
-            checkNode: function (data) {
-                var code = String(data.rslt.obj.data('code'));
+    checkNode: function (data) {
+        var code = String(data.rslt.obj.data('code'));
                 // All products case
-                if ('' === code) {
+        if ('' === code) {
                     // Uncheck other nodes
-                    data.inst.get_container_ul().find('li.jstree-checked:not(.jstree-all)').each(function () {
-                        data.inst.uncheck_node(this);
-                    });
+            data.inst.get_container_ul().find('li.jstree-checked:not(.jstree-all)').each(function () {
+                data.inst.uncheck_node(this);
+            });
 
-                    this.attributes.categories = [];
-                } else {
-                    if (!_.contains(this.attributes.categories, code)) {
-                        this.attributes.categories.push(code);
-                    }
+            this.attributes.categories = [];
+        } else {
+            if (!_.contains(this.attributes.categories, code)) {
+                this.attributes.categories.push(code);
+            }
 
                     // Uncheck "All products" if checked
-                    data.inst.uncheck_node(data.inst.get_container_ul().find('li.jstree-all'));
-                }
-            },
+            data.inst.uncheck_node(data.inst.get_container_ul().find('li.jstree-all'));
+        }
+    },
 
             /**
              * Callback called when a node is unchecked in jstree
              *
              * @param {Object} data
              */
-            uncheckNode: function (data) {
-                var code = data.rslt.obj.data('code');
+    uncheckNode: function (data) {
+        var code = data.rslt.obj.data('code');
 
-                if ('' !== code) {
-                    this.attributes.categories = _.without(this.attributes.categories, code);
-                }
-            },
+        if ('' !== code) {
+            this.attributes.categories = _.without(this.attributes.categories, code);
+        }
+    },
 
             /**
              * Callback called when a node is loaded in jstree
              *
              * @param {Object} data
              */
-            loadNode: function (data) {
-                var node = data.rslt.obj;
+    loadNode: function (data) {
+        var node = data.rslt.obj;
 
-                if (-1 === node) {
+        if (-1 === node) {
                     // Add the All products checkbox
-                    data.inst.create_node(data.inst.get_container(), 'last', {
-                        attr: {
-                            'id': 'node_',
-                            'class': 'jstree-unclassified jstree-all separated',
-                            'data-code': ''
-                        },
-                        data: { title: __('jstree.all') }
-                    }, function ($node) {
-                        if (0 === this.attributes.categories.length) {
-                            data.inst.check_node($node);
-                        }
-                    }.bind(this), true);
-                } else if (_.contains(this.attributes.categories, node.data('code'))) {
-                    data.inst.check_node(node);
+            data.inst.create_node(data.inst.get_container(), 'last', {
+                attr: {
+                    'id': 'node_',
+                    'class': 'jstree-unclassified jstree-all separated',
+                    'data-code': ''
+                },
+                data: { title: __('jstree.all') }
+            }, function ($node) {
+                if (0 === this.attributes.categories.length) {
+                    data.inst.check_node($node);
                 }
-            },
+            }.bind(this), true);
+        } else if (_.contains(this.attributes.categories, node.data('code'))) {
+            data.inst.check_node(node);
+        }
+    },
 
             /**
              * Render the tree in the element's HTML when the channel category is fetched and bind events from jstree
              */
-            render: function () {
-                var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo(this.$el.parent());
-                loadingMask.show();
+    render: function () {
+        var loadingMask = new LoadingMask();
+        loadingMask.render().$el.appendTo(this.$el.parent());
+        loadingMask.show();
 
-                FetcherRegistry.initialize().then(function () {
-                    FetcherRegistry.getFetcher('channel')
+        FetcherRegistry.initialize().then(function () {
+            FetcherRegistry.getFetcher('channel')
                         .fetch(this.attributes.channel)
                         .then(function (channel) {
                             return $.when(
@@ -199,8 +195,7 @@ define(
                         .done(function () {
                             this.$el.parent().find('.loading-mask').remove();
                         }.bind(this));
-                }.bind(this));
-            }
-        });
+        }.bind(this));
     }
-);
+});
+

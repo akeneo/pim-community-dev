@@ -1,7 +1,8 @@
 /* global define */
-define(['jquery', 'backbone', 'backgrid'],
-function ($, Backbone, Backgrid) {
-    "use strict";
+import $ from 'jquery';
+import Backbone from 'backbone';
+import Backgrid from 'backgrid';
+    
 
     /**
      * Renders a checkbox for row selection.
@@ -10,7 +11,7 @@ function ($, Backbone, Backgrid) {
      * @class   oro.datagrid.SelectRowCell
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
 
         /** @property */
         className: "AknGrid-bodyCell AknGrid-bodyCell--tight select-row-cell",
@@ -87,4 +88,4 @@ function ($, Backbone, Backgrid) {
             return this;
         }
     });
-});
+

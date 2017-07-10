@@ -1,24 +1,15 @@
-'use strict';
 
-define([
-        'jquery',
-        'underscore',
-        'oro/mediator',
-        'routing',
-        'pim/attribute-manager',
-        'pim/fetcher-registry'
-    ], function (
-        $,
-        _,
-        mediator,
-        Routing,
-        AttributeManager,
-        FetcherRegistry
-    ) {
-        return {
-            productValues: null,
-            doGenerateMissing: function (product) {
-                return AttributeManager.getAttributes(product)
+
+import $ from 'jquery';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import Routing from 'routing';
+import AttributeManager from 'pim/attribute-manager';
+import FetcherRegistry from 'pim/fetcher-registry';
+export default {
+    productValues: null,
+    doGenerateMissing: function (product) {
+        return AttributeManager.getAttributes(product)
                     .then(function (productAttributeCodes) {
                         return $.when(
                             FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(productAttributeCodes),
@@ -54,10 +45,9 @@ define([
 
                         return product;
                     });
-            },
-            generateMissing: function (product) {
-                return this.doGenerateMissing(product);
-            }
-        };
+    },
+    generateMissing: function (product) {
+        return this.doGenerateMissing(product);
     }
-);
+};
+

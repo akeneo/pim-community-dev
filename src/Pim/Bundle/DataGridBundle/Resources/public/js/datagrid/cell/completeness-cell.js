@@ -1,14 +1,13 @@
 /* global define */
-define(['oro/datagrid/string-cell'],
-    function(StringCell) {
-        'use strict';
+import StringCell from 'oro/datagrid/string-cell';
+        
 
         /**
          * Completeness column cell
          *
          * @extends oro.datagrid.StringCell
          */
-        return StringCell.extend({
+        export default StringCell.extend({
             /**
              * Render the completeness.
              */
@@ -34,5 +33,4 @@ define(['oro/datagrid/string-cell'],
                 return this;
             }
         });
-    }
-);
+    

@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Displays a list of secondary actions
  *
@@ -6,23 +6,14 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/form/secondary-actions'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'AknSecondaryActions AknDropdown AknButtonList-item secondary-actions',
+import _ from 'underscore';
+import __ from 'oro/translator';
+import BaseForm from 'pim/form';
+import template from 'pim/template/form/secondary-actions';
+export default BaseForm.extend({
+    className: 'AknSecondaryActions AknDropdown AknButtonList-item secondary-actions',
 
-            template: _.template(template),
+    template: _.template(template),
 
             /**
              * When there is no extensions attached to this module, nothing is rendered.
@@ -30,17 +21,16 @@ define(
              *
              * {@inheritdoc}
              */
-            render: function () {
-                this.$el.empty();
+    render: function () {
+        this.$el.empty();
 
-                if (!_.isEmpty(this.extensions)) {
-                    this.$el.html(this.template({
-                        titleLabel: __('pim_enrich.navigation.other_actions')
-                    }));
+        if (!_.isEmpty(this.extensions)) {
+            this.$el.html(this.template({
+                titleLabel: __('pim_enrich.navigation.other_actions')
+            }));
 
-                    this.renderExtensions();
-                }
-            }
-        });
+            this.renderExtensions();
+        }
     }
-);
+});
+

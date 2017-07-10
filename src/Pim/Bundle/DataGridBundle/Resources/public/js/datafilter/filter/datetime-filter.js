@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'],
-    function($, _, DateFilter, DateContext) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import DateFilter from 'oro/datafilter/date-filter';
+import DateContext from 'pim/date-context';
+    
     /**
      * Datetime filter: filter type as option + interval begin and end dates
      *
@@ -9,7 +11,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
      * @class   oro.datafilter.DatetimeFilter
      * @extends oro.datafilter.DateFilter
      */
-    return DateFilter.extend({
+    export default DateFilter.extend({
         /**
          * CSS class for visual datetime input elements
          *
@@ -31,4 +33,4 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
             pick12HourFormat: DateContext.get('12_hour_format'),
         }
     });
-});
+

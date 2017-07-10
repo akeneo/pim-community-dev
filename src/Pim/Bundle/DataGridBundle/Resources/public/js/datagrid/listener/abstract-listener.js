@@ -1,7 +1,9 @@
 /*jslint browser: true, nomen: true*/
 /*global define*/
-define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
-    'use strict';
+import _ from 'underscore';
+import $ from 'jquery';
+import Backbone from 'backbone';
+    
 
     /**
      * Abstarct listener for datagrid
@@ -10,7 +12,7 @@ define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
      * @class   oro.datagrid.AbstractListener
      * @extends Backbone.Model
      */
-    return Backbone.Model.extend({
+    export default Backbone.Model.extend({
         /** @param {String} Column name of cells that will be listened for changing their values */
         columnName: 'id',
 
@@ -80,4 +82,4 @@ define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
             throw new Error('_processValue method is abstract and must be implemented');
         }
     });
-});
+

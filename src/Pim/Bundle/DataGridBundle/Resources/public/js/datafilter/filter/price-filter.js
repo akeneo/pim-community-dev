@@ -1,7 +1,8 @@
-define(
-    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'oro/app'],
-    function ($, _, NumberFilter, app) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import NumberFilter from 'oro/datafilter/number-filter';
+import app from 'oro/app';
+        
 
         /**
          * Price filter
@@ -14,7 +15,7 @@ define(
          * @class   pim.datafilter.PriceFilter
          * @extends oro.datafilter.NumberFilter
          */
-        return NumberFilter.extend({
+        export default NumberFilter.extend({
             /**
              * @inheritDoc
              */
@@ -228,5 +229,4 @@ define(
                 return this;
             }
         });
-    }
-);
+    

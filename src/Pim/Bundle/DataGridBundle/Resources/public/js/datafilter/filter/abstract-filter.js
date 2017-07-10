@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/app'],
-function($, _, Backbone, app) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import app from 'oro/app';
+    
 
     /**
      * Basic grid filter
@@ -10,7 +12,7 @@ function($, _, Backbone, app) {
      * @class   oro.datafilter.AbstractFilter
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /**
          * Filter container tag
          *
@@ -440,4 +442,4 @@ function($, _, Backbone, app) {
             }
         }
     });
-});
+

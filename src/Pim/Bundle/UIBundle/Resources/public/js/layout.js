@@ -1,23 +1,25 @@
-define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
-    'use strict';
+import $ from 'jquery';
+import 'bootstrap';
+import 'jquery-ui';
+
 
     // todo: remove this or move somewhere else
     /**
      * Fix for IE8 compatibility
      */
-    if (!Date.prototype.toISOString) {
-        (function () {
-            function pad(number) {
-                var r = String(number);
-                if (r.length === 1) {
-                    r = '0' + r;
-                }
-
-                return r;
+if (!Date.prototype.toISOString) {
+    (function () {
+        function pad(number) {
+            var r = String(number);
+            if (r.length === 1) {
+                r = '0' + r;
             }
 
-            Date.prototype.toISOString = function () {
-                return this.getUTCFullYear() +
+            return r;
+        }
+
+        Date.prototype.toISOString = function () {
+            return this.getUTCFullYear() +
                     '-' + pad(this.getUTCMonth() + 1) +
                     '-' + pad(this.getUTCDate()) +
                     'T' + pad(this.getUTCHours()) +
@@ -25,40 +27,40 @@ define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
                     ':' + pad(this.getUTCSeconds()) +
                     '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) +
                     'Z';
-            };
-        }());
-    }
+        };
+    }());
+}
 
-    var layout = {};
+var layout = {};
 
-    layout.init = function (container) {
-        container = $(container || document.body);
+layout.init = function (container) {
+    container = $(container || document.body);
 
-        container.find('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            $spy.scrollspy($spy.data());
-            $spy = $(this).scrollspy('refresh');
-            $('.scrollspy-nav ul.nav li').removeClass('active');
-            $('.scrollspy-nav ul.nav li:first').addClass('active');
-        });
+    container.find('[data-spy="scroll"]').each(function () {
+        var $spy = $(this);
+        $spy.scrollspy($spy.data());
+        $spy = $(this).scrollspy('refresh');
+        $('.scrollspy-nav ul.nav li').removeClass('active');
+        $('.scrollspy-nav ul.nav li:first').addClass('active');
+    });
 
-        container.find('[data-toggle="tooltip"]').tooltip();
+    container.find('[data-toggle="tooltip"]').tooltip();
 
-        var handlePopoverMouseout = function (e, popover) {
-            var popoverHandler = $(e.relatedTarget).closest('.popover');
-            if (!popoverHandler.length) {
-                popover.data('popover-timer',
+    var handlePopoverMouseout = function (e, popover) {
+        var popoverHandler = $(e.relatedTarget).closest('.popover');
+        if (!popoverHandler.length) {
+            popover.data('popover-timer',
                     setTimeout(function () {
                         popover.popover('hide');
                         popover.data('popover-active', false);
                     }, 500));
-            } else {
-                popoverHandler.one('mouseout', function (evt) {
-                    handlePopoverMouseout(evt, popover);
-                });
-            }
-        };
-        $('form label [data-toggle="popover"]')
+        } else {
+            popoverHandler.one('mouseout', function (evt) {
+                handlePopoverMouseout(evt, popover);
+            });
+        }
+    };
+    $('form label [data-toggle="popover"]')
             .popover({
                 animation: true,
                 delay: { show: 0, hide: 0 },
@@ -80,60 +82,60 @@ define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
                 }, 500);
             });
 
-        setTimeout(function () {
-            layout.scrollspyTop();
-        }, 500);
-    };
+    setTimeout(function () {
+        layout.scrollspyTop();
+    }, 500);
+};
 
-    layout.adjustScrollspy = function () {
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            var spyHeight = $spy.innerHeight();
+layout.adjustScrollspy = function () {
+    $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this);
+        var spyHeight = $spy.innerHeight();
 
-            var isMultipleRows = $spy.find('.responsive-section').length > 1;
+        var isMultipleRows = $spy.find('.responsive-section').length > 1;
 
-            $spy.find('.responsive-section:last').each(function () {
-                var $row = $(this);
-                var titleHeight = $row.find('.scrollspy-title').outerHeight();
-                var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight;
+        $spy.find('.responsive-section:last').each(function () {
+            var $row = $(this);
+            var titleHeight = $row.find('.scrollspy-title').outerHeight();
+            var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight;
 
-                var rowOrigHeight = $row.data('originalHeight');
-                if (!rowOrigHeight) {
-                    rowOrigHeight = $row.height();
-                    $row.data('originalHeight', rowOrigHeight);
-                }
+            var rowOrigHeight = $row.data('originalHeight');
+            if (!rowOrigHeight) {
+                rowOrigHeight = $row.height();
+                $row.data('originalHeight', rowOrigHeight);
+            }
 
-                if ($row.height() === rowAdjHeight) {
-                    return;
-                }
+            if ($row.height() === rowAdjHeight) {
+                return;
+            }
 
-                if (rowAdjHeight < rowOrigHeight) {
-                    rowAdjHeight = rowOrigHeight;
-                }
+            if (rowAdjHeight < rowOrigHeight) {
+                rowAdjHeight = rowOrigHeight;
+            }
 
-                $row.outerHeight(rowAdjHeight);
-            });
-
-            $spy.scrollspy('refresh');
+            $row.outerHeight(rowAdjHeight);
         });
-    };
 
-    layout.scrollspyTop = function () {
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            var targetSelector = $spy.data('target');
-            var target = $(targetSelector);
+        $spy.scrollspy('refresh');
+    });
+};
 
-            target.each(function () {
-                var $target = $(this);
-                var firstItemHref = $target.find('li.active:first a').attr('href');
-                var $firstItem = $(firstItemHref);
-                var top = $firstItem.position().top;
+layout.scrollspyTop = function () {
+    $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this);
+        var targetSelector = $spy.data('target');
+        var target = $(targetSelector);
 
-                $spy.scrollTop(top);
-            });
+        target.each(function () {
+            var $target = $(this);
+            var firstItemHref = $target.find('li.active:first a').attr('href');
+            var $firstItem = $(firstItemHref);
+            var top = $firstItem.position().top;
+
+            $spy.scrollTop(top);
         });
-    };
+    });
+};
 
-    return layout;
-});
+export default layout;
+

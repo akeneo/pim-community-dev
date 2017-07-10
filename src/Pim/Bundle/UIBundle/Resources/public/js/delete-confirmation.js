@@ -1,6 +1,7 @@
-define(['underscore', 'oro/translator', 'oro/modal'],
-function (_, __, Modal) {
-    'use strict';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import Modal from 'oro/modal';
+
 
     /**
      * Delete confirmation dialog
@@ -9,19 +10,19 @@ function (_, __, Modal) {
      * @class   oro.DeleteConfirmation
      * @extends oro.Modal
      */
-    return Modal.extend({
+export default Modal.extend({
         /**
          * @param {Object} options
          */
-        initialize: function (options) {
-            options = _.extend({
-                title: __('Delete Confirmation'),
-                okText: __('Yes, Delete'),
-                cancelText: __('Cancel')
-            }, options);
+    initialize: function (options) {
+        options = _.extend({
+            title: __('Delete Confirmation'),
+            okText: __('Yes, Delete'),
+            cancelText: __('Cancel')
+        }, options);
 
-            arguments[0] = options;
-            Modal.prototype.initialize.apply(this, arguments);
-        }
-    });
+        arguments[0] = options;
+        Modal.prototype.initialize.apply(this, arguments);
+    }
 });
+

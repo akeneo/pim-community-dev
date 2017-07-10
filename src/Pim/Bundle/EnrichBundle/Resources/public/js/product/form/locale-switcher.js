@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Locale switcher extension
  *
@@ -7,28 +7,24 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'pim/form',
-        'pim/template/product/locale-switcher',
-        'pim/fetcher-registry',
-        'pim/i18n'
-    ],
-    function (_, BaseForm, template, FetcherRegistry, i18n) {
-        return BaseForm.extend({
-            template: _.template(template),
-            className: 'AknDropdown AknButtonList-item locale-switcher',
-            events: {
-                'click li a': 'changeLocale'
-            },
-            displayInline: false,
+import _ from 'underscore';
+import BaseForm from 'pim/form';
+import template from 'pim/template/product/locale-switcher';
+import FetcherRegistry from 'pim/fetcher-registry';
+import i18n from 'pim/i18n';
+export default BaseForm.extend({
+    template: _.template(template),
+    className: 'AknDropdown AknButtonList-item locale-switcher',
+    events: {
+        'click li a': 'changeLocale'
+    },
+    displayInline: false,
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                this.getDisplayedLocales()
+    render: function () {
+        this.getDisplayedLocales()
                     .done(function (locales) {
                         var params = { localeCode: _.first(locales).code };
                         this.trigger('pim_enrich:form:locale_switcher:pre_render', params);
@@ -44,39 +40,38 @@ define(
                         this.delegateEvents();
                     }.bind(this));
 
-                return this;
-            },
+        return this;
+    },
 
             /**
              * Retrieve locales to display in the locale switcher
              *
              * @returns {Promise}
              */
-            getDisplayedLocales: function () {
-                return FetcherRegistry.getFetcher('locale').fetchActivated();
-            },
+    getDisplayedLocales: function () {
+        return FetcherRegistry.getFetcher('locale').fetchActivated();
+    },
 
             /**
              * Method triggered on the 'change locale' event
              *
              * @param {Object} event
              */
-            changeLocale: function (event) {
-                this.trigger('pim_enrich:form:locale_switcher:change', {
-                    localeCode: event.currentTarget.dataset.locale
-                });
+    changeLocale: function (event) {
+        this.trigger('pim_enrich:form:locale_switcher:change', {
+            localeCode: event.currentTarget.dataset.locale
+        });
 
-                this.render();
-            },
+        this.render();
+    },
 
             /**
              * Updates the inline display value
              *
              * @param {Boolean} value
              */
-            setDisplayInline: function (value) {
-                this.displayInline = value;
-            }
-        });
+    setDisplayInline: function (value) {
+        this.displayInline = value;
     }
-);
+});
+

@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backgrid'],
-function(_, Backgrid) {
-    'use strict';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+    
 
     /**
      * Select column cell. Added missing behaviour.
@@ -10,7 +10,7 @@ function(_, Backgrid) {
      * @class   oro.datagrid.SelectCell
      * @extends Backgrid.SelectCell
      */
-    return Backgrid.SelectCell.extend({
+    export default Backgrid.SelectCell.extend({
         /**
          * @inheritDoc
          */
@@ -34,4 +34,4 @@ function(_, Backgrid) {
             return Backgrid.StringCell.prototype.enterEditMode.apply(this, arguments);
         }
     });
-});
+

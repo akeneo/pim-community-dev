@@ -1,7 +1,8 @@
-define(['jquery', 'pim/form-builder'], function ($, formBuilder) {
-    formBuilder.build('pim-app')
+import $ from 'jquery';
+import formBuilder from 'pim/form-builder';
+formBuilder.build('pim-app')
         .then(function (form) {
             form.setElement($('.app'));
             form.render();
         });
-});
+

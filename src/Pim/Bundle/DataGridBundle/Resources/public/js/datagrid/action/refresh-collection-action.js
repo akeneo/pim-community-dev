@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/abstract-action'],
-function(AbstractAction) {
-    'use strict';
+import AbstractAction from 'oro/datagrid/abstract-action';
+    
 
     /**
      * Refreshes collection
@@ -10,7 +9,7 @@ function(AbstractAction) {
      * @class   oro.datagrid.RefreshCollectionAction
      * @extends oro.datagrid.AbstractAction
      */
-    return AbstractAction.extend({
+    export default AbstractAction.extend({
 
         /** @property oro.PageableCollection */
         collection: undefined,
@@ -42,4 +41,4 @@ function(AbstractAction) {
             this.datagrid.removeAdditionalParameter('refresh');
         }
     });
-});
+

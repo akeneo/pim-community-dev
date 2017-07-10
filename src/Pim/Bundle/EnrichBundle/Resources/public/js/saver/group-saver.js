@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Module to save product group
@@ -7,22 +7,15 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'underscore',
-        'pim/saver/base',
-        'routing'
-    ], function (
-        _,
-        BaseSaver,
-        Routing
-    ) {
-        return _.extend({}, BaseSaver, {
+import _ from 'underscore';
+import BaseSaver from 'pim/saver/base';
+import Routing from 'routing';
+export default _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-            getUrl: function (code) {
-                return Routing.generate(__moduleConfig.url, {code: code});
-            }
-        });
+    getUrl: function (code) {
+        return Routing.generate(__moduleConfig.url, {code: code});
     }
-);
+});
+

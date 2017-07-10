@@ -1,20 +1,11 @@
-'use strict';
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'oro/datafilter/abstract-filter',
-        'pim/template/datagrid/filter/search-filter'
-    ], function (
-        $,
-        _,
-        __,
-        AbstractFilter,
-        template
-    ) {
-        return AbstractFilter.extend({
+
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import AbstractFilter from 'oro/datafilter/abstract-filter';
+import template from 'pim/template/datagrid/filter/search-filter';
+        export default AbstractFilter.extend({
             inputValueSelector: 'input[name="value"]',
 
             events: {
@@ -91,5 +82,4 @@ define(
                 this.setValue(this._readDOMValue());
             }
         });
-    }
-);
+    

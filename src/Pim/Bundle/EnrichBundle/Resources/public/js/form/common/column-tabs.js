@@ -1,4 +1,4 @@
-'use strict';
+
 /**
  * Form tabs extension
  * This is an extension of the form-tabs, to be able to display select buttons in a higher element.
@@ -7,37 +7,32 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'pim/form/common/form-tabs',
-        'pim/template/form/column-tabs'
-    ],
-    function ($, _, FormTabs, template) {
-        return FormTabs.extend({
-            className: '',
+import $ from 'jquery';
+import _ from 'underscore';
+import FormTabs from 'pim/form/common/form-tabs';
+import template from 'pim/template/form/column-tabs';
+export default FormTabs.extend({
+    className: '',
 
-            template: _.template(template),
+    template: _.template(template),
 
-            currentKey: 'current_column_tab',
+    currentKey: 'current_column_tab',
 
             /**
              * {@inheritdoc}
              */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'column-tab:select-tab', this.selectTab);
+    configure: function () {
+        this.listenTo(this.getRoot(), 'column-tab:select-tab', this.selectTab);
 
-                return FormTabs.prototype.configure.apply(this, arguments);
-            },
+        return FormTabs.prototype.configure.apply(this, arguments);
+    },
 
             /**
              * {@inheritdoc}
              */
-            registerTab: function (event) {
-                FormTabs.prototype.registerTab.apply(this, arguments);
-                this.getRoot().trigger('column-tab:register', event);
-            }
-        });
+    registerTab: function (event) {
+        FormTabs.prototype.registerTab.apply(this, arguments);
+        this.getRoot().trigger('column-tab:register', event);
     }
-);
+});
+

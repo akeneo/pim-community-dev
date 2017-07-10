@@ -1,9 +1,9 @@
 /* global describe, it, expect */
-'use strict';
 
-define(
-    ['pim/form/common/save', 'oro/form/system/config/save', 'routing'],
-    function (CommonSave, SaveForm, Routing) {
+
+import CommonSave from 'pim/form/common/save';
+import SaveForm from 'oro/form/system/config/save';
+import Routing from 'routing';
         describe('Save form', function () {
             var saveForm = new SaveForm({config: {config: {}}});
             it('extends save form', function () {
@@ -24,5 +24,4 @@ define(
                 expect(saveForm.setData).toHaveBeenCalledWith(data);
             });
         });
-    }
-);
+    

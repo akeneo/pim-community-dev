@@ -1,16 +1,14 @@
-'use strict';
 
-define(
-    ['backbone', 'routing'],
-    function (Backbone, Routing) {
-        var DateContext = Backbone.Model.extend({
-            url: Routing.generate('pim_localization_format_date')
-        });
 
-        var instance = new DateContext();
+import Backbone from 'backbone';
+import Routing from 'routing';
+var DateContext = Backbone.Model.extend({
+    url: Routing.generate('pim_localization_format_date')
+});
 
-        instance.fetch({async: false});
+var instance = new DateContext();
 
-        return instance;
-    }
-);
+instance.fetch({async: false});
+
+export default instance;
+

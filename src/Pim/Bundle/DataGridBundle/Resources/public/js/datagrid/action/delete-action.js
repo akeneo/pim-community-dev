@@ -1,16 +1,13 @@
 /* global define */
-define([
-        'underscore',
-        'oro/messenger',
-        'oro/translator',
-        'oro/delete-confirmation',
-        'oro/modal',
-        'oro/datagrid/model-action',
-        'oro/mediator',
-        'pim/user-context'
-    ],
-    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction, mediator, userContext) {
-        'use strict';
+import _ from 'underscore';
+import messenger from 'oro/messenger';
+import __ from 'oro/translator';
+import DeleteConfirmation from 'oro/delete-confirmation';
+import Modal from 'oro/modal';
+import ModelAction from 'oro/datagrid/model-action';
+import mediator from 'oro/mediator';
+import userContext from 'pim/user-context';
+        
 
         /**
          * Delete action with confirm dialog, triggers REST DELETE request
@@ -19,7 +16,7 @@ define([
          * @class   oro.datagrid.DeleteAction
          * @extends oro.datagrid.ModelAction
          */
-        return ModelAction.extend({
+        export default ModelAction.extend({
 
             /** @type oro.Modal */
             errorModal: undefined,
@@ -105,5 +102,4 @@ define([
                 return this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
             }
         });
-    }
-);
+    

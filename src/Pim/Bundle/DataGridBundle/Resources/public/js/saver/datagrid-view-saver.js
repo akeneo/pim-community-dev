@@ -1,13 +1,8 @@
-'use strict';
 
-define([
-        'jquery',
-        'routing'
-    ], function (
-        $,
-        Routing
-    ) {
-        return {
+
+import $ from 'jquery';
+import Routing from 'routing';
+        export default {
             /**
              * Save the given datagridView for the given gridAlias.
              * Return the POST request promise.
@@ -23,5 +18,4 @@ define([
                 return $.post(saveRoute, {view: datagridView});
             }
         };
-    }
-);
+    

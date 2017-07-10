@@ -1,20 +1,16 @@
-'use strict';
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'routing',
-        'oro/datafilter/text-filter',
-        'pim/formatter/choices/base',
-        'pim/user-context',
-        'pim/template/datagrid/filter/select2-choice-filter',
-        'pim/initselect2',
-        'jquery.select2'
-    ],
-    function($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
-        return TextFilter.extend({
+
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import Routing from 'routing';
+import TextFilter from 'oro/datafilter/text-filter';
+import ChoicesFormatter from 'pim/formatter/choices/base';
+import UserContext from 'pim/user-context';
+import template from 'pim/template/datagrid/filter/select2-choice-filter';
+import initSelect2 from 'pim/initselect2';
+import 'jquery.select2';
+        export default TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
             choiceUrlParams: {},
@@ -234,5 +230,4 @@ define(
                 return !_.isEmpty(value.value) ? '"' + value.value + '"': this.placeholder;
             }
         });
-    }
-);
+    

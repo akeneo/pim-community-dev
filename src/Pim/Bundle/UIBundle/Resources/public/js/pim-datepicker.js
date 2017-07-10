@@ -1,34 +1,34 @@
-define(
-    ['jquery', 'underscore', 'oro/translator', 'bootstrap.datetimepicker'],
-    function ($, _, __) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import 'bootstrap.datetimepicker';
 
-        return {
-            options: {
-                language: 'en',
-                pickTime: false
-            },
-            init: function ($target, options) {
-                options = $.extend(true, {}, this.options, options);
 
-                if (('en' !== options.language) && (undefined === $.fn.datetimepicker.dates[options.language])) {
-                    var languageOptions = {};
-                    var defaultOptions = $.fn.datetimepicker.dates.en;
+export default {
+    options: {
+        language: 'en',
+        pickTime: false
+    },
+    init: function ($target, options) {
+        options = $.extend(true, {}, this.options, options);
 
-                    _.each(_.keys(defaultOptions), function (key) {
-                        languageOptions[key] = [];
-                        _.each(defaultOptions[key], function (value) {
-                            languageOptions[key].push(__('datetimepicker.' + key + '.' + value));
-                        });
-                    });
+        if (('en' !== options.language) && (undefined === $.fn.datetimepicker.dates[options.language])) {
+            var languageOptions = {};
+            var defaultOptions = $.fn.datetimepicker.dates.en;
 
-                    $.fn.datetimepicker.dates[options.language] = languageOptions;
-                }
+            _.each(_.keys(defaultOptions), function (key) {
+                languageOptions[key] = [];
+                _.each(defaultOptions[key], function (value) {
+                    languageOptions[key].push(__('datetimepicker.' + key + '.' + value));
+                });
+            });
 
-                $target.datetimepicker(options);
+            $.fn.datetimepicker.dates[options.language] = languageOptions;
+        }
 
-                return $target;
-            }
-        };
+        $target.datetimepicker(options);
+
+        return $target;
     }
-);
+};
+

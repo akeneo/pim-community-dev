@@ -1,22 +1,12 @@
-"use strict";
 
-define([
-        'oro/translator',
-        'backbone',
-        'oro/mediator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/template/form/index/index'
-    ],
-    function(
-        __,
-        Backbone,
-        mediator,
-        BaseForm,
-        FetcherRegistry,
-        template
-    ) {
-        return BaseForm.extend({
+
+import __ from 'oro/translator';
+import Backbone from 'backbone';
+import mediator from 'oro/mediator';
+import BaseForm from 'pim/form';
+import FetcherRegistry from 'pim/fetcher-registry';
+import template from 'pim/template/form/index/index';
+        export default BaseForm.extend({
             template: _.template(template),
 
             /**
@@ -69,4 +59,4 @@ define([
                 mediator.clear('oro_config:form');
             }
         });
-});
+

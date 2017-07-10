@@ -1,25 +1,13 @@
-"use strict";
 
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'oro/loading-mask',
-        'oro/template/system/tab/localization',
-        'pim/initselect2'
-    ],
-    function(
-        _,
-        __,
-        BaseForm,
-        FetcherRegistry,
-        LoadingMask,
-        template,
-        initSelect2
-    ) {
-        return BaseForm.extend({
+
+import _ from 'underscore';
+import __ from 'oro/translator';
+import BaseForm from 'pim/form';
+import FetcherRegistry from 'pim/fetcher-registry';
+import LoadingMask from 'oro/loading-mask';
+import template from 'oro/template/system/tab/localization';
+import initSelect2 from 'pim/initselect2';
+        export default BaseForm.extend({
             events: {
                 'change select': 'updateModel'
             },
@@ -73,5 +61,4 @@ define(
                 this.setData(data);
             }
         });
-    }
-);
+    

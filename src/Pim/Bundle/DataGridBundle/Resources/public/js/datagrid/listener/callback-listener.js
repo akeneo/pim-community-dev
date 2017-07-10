@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/abstract-listener'],
-function(AbstractListener) {
-    'use strict';
+import AbstractListener from 'oro/datagrid/abstract-listener';
+    
 
     /**
      * Listener with custom callback to execute
@@ -10,7 +9,7 @@ function(AbstractListener) {
      * @class   oro.datagrid.CallbackListener
      * @extends oro.datagrid.AbstractListener
      */
-    return AbstractListener.extend({
+    export default AbstractListener.extend({
         /** @param {Call} */
         processCallback: null,
 
@@ -40,4 +39,4 @@ function(AbstractListener) {
             this.processCallback(value, model, this);
         }
     });
-});
+

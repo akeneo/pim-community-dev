@@ -1,7 +1,8 @@
 /* global define */
-define(['underscore', 'oro/translator', 'oro/datafilter/select-filter'],
-function(_, __, SelectFilter) {
-    'use strict';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import SelectFilter from 'oro/datafilter/select-filter';
+    
 
     /**
      * Multiple select filter: filter values as multiple select options
@@ -10,7 +11,7 @@ function(_, __, SelectFilter) {
      * @class   oro.datafilter.MultiSelectFilter
      * @extends oro.datafilter.SelectFilter
      */
-    return SelectFilter.extend({
+    export default SelectFilter.extend({
         /**
          * Multiselect filter template
          *
@@ -70,4 +71,4 @@ function(_, __, SelectFilter) {
             this._setDropdownWidth();
         }
     });
-});
+

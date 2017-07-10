@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Family label translation fields view
@@ -7,28 +7,19 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'underscore',
-        'pim/common/properties/translation',
-        'pim/security-context',
-        'pim/fetcher-registry',
-        'pim/template/form/properties/translation'
-    ],
-    function (
-        _,
-        BaseTranslation,
-        SecurityContext,
-        FetcherRegistry,
-        template
-    ) {
-        return BaseTranslation.extend({
-            template: _.template(template),
+import _ from 'underscore';
+import BaseTranslation from 'pim/common/properties/translation';
+import SecurityContext from 'pim/security-context';
+import FetcherRegistry from 'pim/fetcher-registry';
+import template from 'pim/template/form/properties/translation';
+export default BaseTranslation.extend({
+    template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                FetcherRegistry.getFetcher('locale')
+    render: function () {
+        FetcherRegistry.getFetcher('locale')
                     .search({'activated': true, 'cached': true})
                     .then(function (locales) {
                         this.locales = locales;
@@ -45,8 +36,7 @@ define([
                         this.renderExtensions();
                     }.bind(this));
 
-                this.delegateEvents();
-            }
-        });
+        this.delegateEvents();
     }
-);
+});
+

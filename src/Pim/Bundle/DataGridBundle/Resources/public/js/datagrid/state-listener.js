@@ -1,7 +1,8 @@
-define(
-    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'pim/datagrid/state'],
-    function(_, mediator, AbstractListener, DatagridState) {
-        'use strict';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import AbstractListener from 'oro/datagrid/abstract-listener';
+import DatagridState from 'pim/datagrid/state';
+        
 
         /**
          * Datagrid state listener
@@ -72,6 +73,5 @@ define(
             new StateListener({ $gridContainer: $gridContainer, gridName: gridName });
         };
 
-        return StateListener;
-    }
-);
+        export default StateListener;
+    

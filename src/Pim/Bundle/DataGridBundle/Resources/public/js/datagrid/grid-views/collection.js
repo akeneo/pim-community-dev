@@ -1,10 +1,9 @@
-define(['backbone', 'oro/datagrid/grid-views/model'],
-    function (Backbone, GridViewsModel) {
-        'use strict';
+import Backbone from 'backbone';
+import GridViewsModel from 'oro/datagrid/grid-views/model';
+        
 
-        return Backbone.Collection.extend({
+        export default Backbone.Collection.extend({
             /** @property */
             model: GridViewsModel
         });
-    }
-);
+    

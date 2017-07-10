@@ -1,8 +1,11 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/pagination-input',
-    'oro/datagrid/page-size', 'oro/datagrid/actions-panel'],
-function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
-    'use strict';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import __ from 'oro/translator';
+import PaginationInput from 'oro/datagrid/pagination-input';
+import PageSize from 'oro/datagrid/page-size';
+import ActionsPanel from 'oro/datagrid/actions-panel';
+    
 
     /**
      * Datagrid toolbar widget
@@ -11,7 +14,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
      * @class   oro.datagrid.Toolbar
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /** @property */
         template:_.template(
             '<div class="AknGridToolbar">' +
@@ -130,4 +133,4 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             return this;
         }
     });
-});
+

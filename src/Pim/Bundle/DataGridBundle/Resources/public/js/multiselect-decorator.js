@@ -1,7 +1,10 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/mediator', 'jquery.multiselect', 'jquery.multiselect.filter'],
-function($, _, mediator) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import 'jquery.multiselect';
+import 'jquery.multiselect.filter';
+    
 
     /**
      * Multiselect decorator class.
@@ -187,5 +190,5 @@ function($, _, mediator) {
         }
     };
 
-    return MultiselectDecorator;
-});
+    export default MultiselectDecorator;
+

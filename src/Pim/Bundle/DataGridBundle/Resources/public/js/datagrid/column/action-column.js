@@ -1,7 +1,8 @@
 /* global define */
-define(['underscore', 'backgrid', 'oro/datagrid/action-cell'],
-function(_, Backgrid, ActionCell) {
-    'use strict';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+import ActionCell from 'oro/datagrid/action-cell';
+    
 
     /**
      * Column of grid that contains row actions
@@ -10,7 +11,7 @@ function(_, Backgrid, ActionCell) {
      * @class   oro.datagrid.ActionColumn
      * @extends Backgrid.Column
      */
-    return Backgrid.Column.extend({
+    export default Backgrid.Column.extend({
 
         /** @property {Object} */
         defaults: _.extend({}, Backgrid.Column.prototype.defaults, {
@@ -42,4 +43,4 @@ function(_, Backgrid, ActionCell) {
             Backgrid.Column.prototype.initialize.apply(this, arguments);
         }
     });
-});
+

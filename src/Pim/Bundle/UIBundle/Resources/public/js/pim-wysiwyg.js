@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * This class is used to manage wysiwyg
@@ -7,35 +7,36 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    ['jquery', 'underscore', 'backbone', 'summernote'],
-    function ($, _, Backbone) {
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import 'summernote';
         /**
          * Wysiwyg editor default configuration
          */
-        var config = {
-            disableResizeEditor: true,
-            height: 200,
-            iconPrefix: 'icon-',
-            toolbar: [
+var config = {
+    disableResizeEditor: true,
+    height: 200,
+    iconPrefix: 'icon-',
+    toolbar: [
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul', 'ol']],
                 ['insert', ['link']],
                 ['view', ['codeview']]
-            ]
-        };
+    ]
+};
 
-        Backbone.Router.prototype.on('route', function () {
-            $('textarea.wysiwyg').each(function () {
-                $(this).destroy();
-            });
-        });
+Backbone.Router.prototype.on('route', function () {
+    $('textarea.wysiwyg').each(function () {
+        $(this).destroy();
+    });
+});
 
-        return {
+export default {
             /**
              * Wysiwyg editor settings
              */
-            settings: [],
+    settings: [],
 
             /**
              * Initialise the wysiwyg
@@ -45,16 +46,16 @@ define(
              *
              * @returns {Object}
              */
-            init: function ($el, options) {
-                this.settings = _.extend(
+    init: function ($el, options) {
+        this.settings = _.extend(
                     _.clone(config),
                     options
                 );
 
-                $el.summernote(this.settings);
+        $el.summernote(this.settings);
 
-                return this;
-            },
+        return this;
+    },
 
             /**
              * Put the wysiwyg in readonly mode for the given element
@@ -63,13 +64,12 @@ define(
              *
              * @returns {Object}
              */
-            readonly: function ($el) {
-                var editable = $el.parent().find('.note-editable');
+    readonly: function ($el) {
+        var editable = $el.parent().find('.note-editable');
 
-                editable.attr('contenteditable', false);
+        editable.attr('contenteditable', false);
 
-                return this;
-            }
-        };
+        return this;
     }
-);
+};
+

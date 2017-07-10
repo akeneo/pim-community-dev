@@ -1,7 +1,8 @@
 /* global define */
-define(['jquery', 'underscore', 'backgrid'],
-function($, _, Backgrid) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+    
 
     /**
      * Grid row.
@@ -13,7 +14,7 @@ function($, _, Backgrid) {
      * @class   oro.datagrid.Row
      * @extends Backgrid.Row
      */
-    return Backgrid.Row.extend({
+    export default Backgrid.Row.extend({
 
         /** @property */
         events: {
@@ -93,4 +94,4 @@ function($, _, Backgrid) {
             }
         }
     });
-});
+

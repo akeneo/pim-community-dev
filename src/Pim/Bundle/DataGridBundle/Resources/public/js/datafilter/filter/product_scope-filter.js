@@ -1,7 +1,10 @@
-define(
-    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter', 'pim/user-context', 'pim/datagrid/state'],
-    function ($, _, mediator, SelectFilter, UserContext, DatagridState) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import mediator from 'oro/mediator';
+import SelectFilter from 'oro/datafilter/select-filter';
+import UserContext from 'pim/user-context';
+import DatagridState from 'pim/datagrid/state';
+        
 
         /**
          * Scope filter
@@ -14,7 +17,7 @@ define(
          * @class   oro.datafilter.ScopeFilter
          * @extends oro.datafilter.SelectFilter
          */
-        return SelectFilter.extend({
+        export default SelectFilter.extend({
             /**
              * @override
              * @property {Boolean}
@@ -129,5 +132,4 @@ define(
                 '</div>'
             )
         });
-    }
-);
+    

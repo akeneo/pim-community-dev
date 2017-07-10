@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backgrid'],
-function(_, Backgrid) {
-    'use strict';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+    
 
     /**
      * Cell formatter with fixed fromRaw method
@@ -26,5 +26,5 @@ function(_, Backgrid) {
         }
     });
 
-    return CellFormatter;
-});
+    export default CellFormatter;
+

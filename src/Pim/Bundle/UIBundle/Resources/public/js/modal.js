@@ -1,6 +1,7 @@
-define(['underscore', 'backbone', 'bootstrap-modal'],
-function (_, Backbone) {
-    'use strict';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import 'bootstrap-modal';
+
 
     /**
      * Implementation of Bootstrap Modal
@@ -10,16 +11,16 @@ function (_, Backbone) {
      * @class   oro.Modal
      * @extends Backbone.BootstrapModal
      */
-    return Backbone.BootstrapModal.extend({
+export default Backbone.BootstrapModal.extend({
         /** @property {String} */
-        className: 'modal oro-modal-danger',
+    className: 'modal oro-modal-danger',
 
-        open: function () {
-            Backbone.BootstrapModal.prototype.open.apply(this, arguments);
+    open: function () {
+        Backbone.BootstrapModal.prototype.open.apply(this, arguments);
 
-            this.once('cancel', _.bind(function () {
-                this.$el.trigger('hidden');
-            }, this));
-        }
-    });
+        this.once('cancel', _.bind(function () {
+            this.$el.trigger('hidden');
+        }, this));
+    }
 });
+

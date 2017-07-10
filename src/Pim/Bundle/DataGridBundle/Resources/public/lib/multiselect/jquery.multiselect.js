@@ -17,7 +17,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-define(['jquery'], function ($) {
+import $ from 'jquery';
 
   var multiselectID = 0;
   var $doc = $(document);
@@ -730,4 +730,4 @@ define(['jquery'], function ($) {
     }
   });
 
-});
+

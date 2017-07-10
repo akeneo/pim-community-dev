@@ -1,26 +1,13 @@
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'routing',
-        'oro/loading-mask',
-        'pim/datagrid/state',
-        'pim/common/column-list-view',
-        'bootstrap-modal',
-        'jquery-ui'
-    ],
-    function(
-        $,
-        _,
-        __,
-        Backbone,
-        Routing,
-        LoadingMask,
-        DatagridState,
-        ColumnListView
-    ) {
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import Backbone from 'backbone';
+import Routing from 'routing';
+import LoadingMask from 'oro/loading-mask';
+import DatagridState from 'pim/datagrid/state';
+import ColumnListView from 'pim/common/column-list-view';
+import 'bootstrap-modal';
+import 'jquery-ui';
         var Column = Backbone.Model.extend({
             defaults: {
                 removable: true,
@@ -185,6 +172,5 @@ define(
             );
         };
 
-        return ConfigureColumnsAction;
-    }
-);
+        export default ConfigureColumnsAction;
+    

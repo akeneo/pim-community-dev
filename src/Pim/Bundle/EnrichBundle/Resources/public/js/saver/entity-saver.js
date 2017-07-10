@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * Module to save group type
@@ -7,33 +7,26 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'underscore',
-        'pim/saver/base',
-        'routing'
-    ], function (
-        _,
-        BaseSaver,
-        Routing
-    ) {
-        return _.extend({}, BaseSaver, {
+import _ from 'underscore';
+import BaseSaver from 'pim/saver/base';
+import Routing from 'routing';
+export default _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-            getUrl: function (identifier) {
-                return Routing.generate(this.url, { identifier: identifier });
-            },
+    getUrl: function (identifier) {
+        return Routing.generate(this.url, { identifier: identifier });
+    },
 
             /**
              * Sets the url
              *
              * @param {Sringt} url Route url
              */
-            setUrl: function (url) {
-                this.url = url;
+    setUrl: function (url) {
+        this.url = url;
 
-                return this;
-            }
-        });
+        return this;
     }
-);
+});
+

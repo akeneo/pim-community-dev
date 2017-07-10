@@ -1,11 +1,13 @@
-define(['jquery', 'underscore', 'require-context'], function ($, _, requireContext) {
+import $ from 'jquery';
+import _ from 'underscore';
+import requireContext from 'require-context';
     /**
      * Provides a polyfill to hijack require() calls in twig templates and any other dynamic require calls in the app
      *
      * @param  {String|Array}   modules An array of module names to request, or a string for a single module
      * @param  {Function} cb      The callback to run after fetching the module
      */
-    return function(modules, cb) {
+    export default function(modules, cb) {
         var resolvedModules = []
 
         if (typeof modules === 'string') {
@@ -21,4 +23,4 @@ define(['jquery', 'underscore', 'require-context'], function ($, _, requireConte
             cb.apply(this, resolvedModules)
         }
     }
-})
+

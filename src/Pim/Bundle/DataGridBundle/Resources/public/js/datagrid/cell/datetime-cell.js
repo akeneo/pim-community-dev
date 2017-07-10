@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/string-cell'],
-function(StringCell) {
-    'use strict';
+import StringCell from 'oro/datagrid/string-cell';
+    
 
     /**
      * Datetime column cell
@@ -10,5 +9,5 @@ function(StringCell) {
      * @class   oro.datagrid.DateTimeCell
      * @extends oro.datagrid.StringCell
      */
-    return StringCell.extend({type: 'dateTime'});
-});
+    export default StringCell.extend({type: 'dateTime'});
+

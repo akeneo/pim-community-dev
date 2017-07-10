@@ -1,14 +1,15 @@
 /* global define */
-define(['underscore', 'routing', 'backbone'],
-function(_, routing, Backbone) {
-    'use strict';
+import _ from 'underscore';
+import routing from 'routing';
+import Backbone from 'backbone';
+    
 
     /**
      * @export  oro/navigation/model
      * @class   oro.navigation.Model
      * @extends Backbone.Model
      */
-    return Backbone.Model.extend({
+    export default Backbone.Model.extend({
         defaults: {
             title: '',
             url: null,
@@ -29,4 +30,4 @@ function(_, routing, Backbone) {
             return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + 'ids/' + encodeURIComponent(this.id);
         }
     });
-});
+

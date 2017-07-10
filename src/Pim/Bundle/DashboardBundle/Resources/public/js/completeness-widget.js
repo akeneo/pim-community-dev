@@ -1,73 +1,73 @@
-define(
-    ['jquery', 'underscore', 'pim/dashboard/abstract-widget', 'pim/dashboard/template/completeness-widget'],
-    function ($, _, AbstractWidget, template) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import AbstractWidget from 'pim/dashboard/abstract-widget';
+import template from 'pim/dashboard/template/completeness-widget';
 
-        return AbstractWidget.extend({
-            tagName: 'table',
 
-            id: 'completeness-widget',
+export default AbstractWidget.extend({
+    tagName: 'table',
 
-            options: {
-                completeBar: 'AknProgress--apply',
-                inCompleteBar: 'AknProgress--warning',
-                channelsPerRow: 3
-            },
+    id: 'completeness-widget',
 
-            template: _.template(template),
+    options: {
+        completeBar: 'AknProgress--apply',
+        inCompleteBar: 'AknProgress--warning',
+        channelsPerRow: 3
+    },
 
-            _afterLoad: function () {
-                AbstractWidget.prototype._afterLoad.apply(this, arguments);
-                this.loadMore();
-            },
+    template: _.template(template),
 
-            events: {
-                'click .load-more': 'loadMore'
-            },
+    _afterLoad: function () {
+        AbstractWidget.prototype._afterLoad.apply(this, arguments);
+        this.loadMore();
+    },
 
-            loadMore: function (e) {
-                if (undefined !== e) {
-                    e.preventDefault();
-                }
+    events: {
+        'click .load-more': 'loadMore'
+    },
 
-                var $nextChannels = $('.completeness-widget .channels:not(:visible)');
-                if ($nextChannels.length) {
-                    $nextChannels.first().show();
-                }
+    loadMore: function (e) {
+        if (undefined !== e) {
+            e.preventDefault();
+        }
 
-                if ($nextChannels.length <= 1) {
-                    $('.completeness-widget .load-more').hide();
-                }
-            },
+        var $nextChannels = $('.completeness-widget .channels:not(:visible)');
+        if ($nextChannels.length) {
+            $nextChannels.first().show();
+        }
 
-            _processResponse: function (data) {
-                var channelArray = [];
-                _.each(data, function (channelResult, channel) {
-                    channelResult.name = channel;
-                    channelResult.locales = channelResult.locales || {};
-                    var divider = channelResult.total * _.keys(channelResult.locales).length;
+        if ($nextChannels.length <= 1) {
+            $('.completeness-widget .load-more').hide();
+        }
+    },
 
-                    channelResult.percentage = divider === 0 ?
+    _processResponse: function (data) {
+        var channelArray = [];
+        _.each(data, function (channelResult, channel) {
+            channelResult.name = channel;
+            channelResult.locales = channelResult.locales || {};
+            var divider = channelResult.total * _.keys(channelResult.locales).length;
+
+            channelResult.percentage = divider === 0 ?
                         0 :
                         Math.round(channelResult.complete / divider * 100);
 
-                    _.each(channelResult.locales, function (localeResult, locale) {
-                        var divider = channelResult.total;
-                        var ratio = divider === 0 ?
+            _.each(channelResult.locales, function (localeResult, locale) {
+                var divider = channelResult.total;
+                var ratio = divider === 0 ?
                             0 :
                             Math.round(localeResult / divider * 100);
 
-                        channelResult.locales[locale] = {
-                            complete: localeResult,
-                            ratio: ratio
-                        };
-                    });
+                channelResult.locales[locale] = {
+                    complete: localeResult,
+                    ratio: ratio
+                };
+            });
 
-                    channelArray.push(channelResult);
-                });
-
-                return channelArray;
-            }
+            channelArray.push(channelResult);
         });
+
+        return channelArray;
     }
-);
+});
+

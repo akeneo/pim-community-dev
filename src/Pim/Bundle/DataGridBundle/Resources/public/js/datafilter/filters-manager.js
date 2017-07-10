@@ -1,7 +1,10 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/multiselect-decorator'],
-function($, _, Backbone, mediator, MultiselectDecorator) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import mediator from 'oro/mediator';
+import MultiselectDecorator from 'oro/multiselect-decorator';
+    
 
     /**
      * View that represents all grid filters
@@ -14,7 +17,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
      * @event updateFilter  on update data of specific filter
      * @event disableFilter on disable specific filter
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /**
          * List of filter objects
          *
@@ -411,4 +414,4 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             });
         }
     });
-});
+

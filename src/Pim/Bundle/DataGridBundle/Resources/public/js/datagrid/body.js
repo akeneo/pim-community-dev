@@ -1,7 +1,8 @@
 /* global define */
-define(['underscore', 'backgrid', 'oro/datagrid/row'],
-function(_, Backgrid, Row) {
-    'use strict';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+import Row from 'oro/datagrid/row';
+    
 
     /**
      * Grid body widget
@@ -13,7 +14,7 @@ function(_, Backgrid, Row) {
      * @class   oro.datagrid.Body
      * @extends Backgrid.Body
      */
-    return Backgrid.Body.extend({
+    export default Backgrid.Body.extend({
         /** @property */
         row: Row,
 
@@ -94,4 +95,4 @@ function(_, Backgrid, Row) {
             return this;
         }
     });
-});
+

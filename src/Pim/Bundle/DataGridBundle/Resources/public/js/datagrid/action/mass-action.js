@@ -1,7 +1,10 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
-function(_, messenger, __, Modal, AbstractAction) {
-    'use strict';
+import _ from 'underscore';
+import messenger from 'oro/messenger';
+import __ from 'oro/translator';
+import Modal from 'oro/modal';
+import AbstractAction from 'oro/datagrid/abstract-action';
+    
 
     /**
      * Basic mass action class.
@@ -10,7 +13,7 @@ function(_, messenger, __, Modal, AbstractAction) {
      * @class   oro.datagrid.MassAction
      * @extends oro.datagrid.AbstractAction
      */
-    return AbstractAction.extend({
+    export default AbstractAction.extend({
         /** @property {Object} */
         defaultMessages: {
             confirm_title: __('Mass Action Confirmation'),
@@ -153,4 +156,4 @@ function(_, messenger, __, Modal, AbstractAction) {
             }).on('ok', callback);
         }
     });
-});
+

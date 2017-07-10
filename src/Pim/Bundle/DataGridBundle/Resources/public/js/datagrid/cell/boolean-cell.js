@@ -1,7 +1,8 @@
 /* global define */
-define(['jquery', 'underscore', 'backgrid'],
-function($, _, Backgrid) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backgrid from 'backgrid';
+    
 
     /**
      * Boolean column cell. Added missing behaviour.
@@ -10,7 +11,7 @@ function($, _, Backgrid) {
      * @class   oro.datagrid.BooleanCell
      * @extends Backgrid.BooleanCell
      */
-    return Backgrid.BooleanCell.extend({
+    export default Backgrid.BooleanCell.extend({
         /** @property {Boolean} */
         listenRowClick: true,
 
@@ -47,4 +48,4 @@ function($, _, Backgrid) {
             }
         }
     });
-});
+

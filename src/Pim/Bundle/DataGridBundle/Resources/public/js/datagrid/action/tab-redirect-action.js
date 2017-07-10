@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/navigate-action'],
-function(NavigateAction) {
-    'use strict';
+import NavigateAction from 'oro/datagrid/navigate-action';
+    
 
     /**
      * Redirects to a specific tab
@@ -19,5 +18,5 @@ function(NavigateAction) {
                 parent.run.call(this);
             }
         });
-    return TabRedirectAction;
-});
+    export default TabRedirectAction;
+

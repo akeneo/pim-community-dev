@@ -1,8 +1,17 @@
  /* global define */
-define(['jquery', 'underscore', 'backbone', 'routing', 'pim/router', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher', 'require-context'],
-function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal, ActionLauncher, requireContext) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import routing from 'routing';
+import router from 'pim/router';
+import __ from 'oro/translator';
+import mediator from 'oro/mediator';
+import messenger from 'oro/messenger';
+import error from 'oro/error';
+import Modal from 'oro/modal';
+import ActionLauncher from 'oro/datagrid/action-launcher';
+import requireContext from 'require-context';
+    
 
     /**
      * Abstract action class. Subclasses should override execute method which is invoked when action is running.
@@ -15,7 +24,7 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
      * @class   oro.datagrid.AbstractAction
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /** @property {Function} */
         launcherPrototype: ActionLauncher,
 
@@ -284,4 +293,4 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
             }).on('ok', callback);
         }
     });
-});
+

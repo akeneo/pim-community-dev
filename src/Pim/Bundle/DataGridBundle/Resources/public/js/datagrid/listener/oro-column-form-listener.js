@@ -1,7 +1,11 @@
 /*global define*/
-define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/datagrid/abstract-listener'],
-function($, _, __, mediator, Modal, AbstractListener) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import __ from 'oro/translator';
+import mediator from 'oro/mediator';
+import Modal from 'oro/modal';
+import AbstractListener from 'oro/datagrid/abstract-listener';
+    
 
     /**
      * Listener for entity edit form and datagrid
@@ -239,5 +243,5 @@ function($, _, __, mediator, Modal, AbstractListener) {
         }
     };
 
-    return ColumnFormListener;
-});
+    export default ColumnFormListener;
+

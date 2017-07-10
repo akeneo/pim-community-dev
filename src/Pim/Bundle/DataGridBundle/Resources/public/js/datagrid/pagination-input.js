@@ -1,7 +1,9 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
-function($, _, Pagination) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Pagination from 'oro/datagrid/pagination';
+import 'jquery.numeric';
+    
 
     /**
      * Datagrid pagination with input field
@@ -10,7 +12,7 @@ function($, _, Pagination) {
      * @class   oro.datagrid.PaginationInput
      * @extends oro.datagrid.Pagination
      */
-    return Pagination.extend({
+    export default Pagination.extend({
         /** @property */
         template: _.template(
             '<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.label") %>:</label>' +
@@ -114,4 +116,4 @@ function($, _, Pagination) {
             return this;
         }
     });
-});
+

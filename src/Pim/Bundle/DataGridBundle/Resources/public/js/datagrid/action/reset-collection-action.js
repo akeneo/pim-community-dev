@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'oro/datagrid/abstract-action'],
-function(_, AbstractAction) {
-    'use strict';
+import _ from 'underscore';
+import AbstractAction from 'oro/datagrid/abstract-action';
+    
 
     /**
      * Resets collection to initial state
@@ -10,7 +10,7 @@ function(_, AbstractAction) {
      * @class   oro.datagrid.ResetCollectionAction
      * @extends oro.datagrid.AbstractAction
      */
-    return AbstractAction.extend({
+    export default AbstractAction.extend({
 
         /** @property oro.PageableCollection */
         collection: undefined,
@@ -47,4 +47,4 @@ function(_, AbstractAction) {
             this.collection.fetch();
         }
     });
-});
+

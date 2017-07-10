@@ -1,7 +1,8 @@
 /* global define */
-define(['underscore', 'backbone', 'pim/template/datagrid/actions-group'],
-function(_, Backbone, groupTemplate) {
-    'use strict';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import groupTemplate from 'pim/template/datagrid/actions-group';
+    
 
     /**
      * Panel with action buttons
@@ -10,7 +11,7 @@ function(_, Backbone, groupTemplate) {
      * @class   oro.datagrid.ActionsPanel
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    export default Backbone.View.extend({
         /** @property {Array} */
         actionsGroups: [],
 
@@ -164,4 +165,4 @@ function(_, Backbone, groupTemplate) {
             return this;
         }
     });
-});
+
