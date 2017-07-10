@@ -4,8 +4,6 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
-use Prophecy\Argument;
 
 class PagerResolverSpec extends ObjectBehavior
 {

@@ -5,7 +5,6 @@ parameters:
     pim_datagrid.datasource.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource
     pim_datagrid.datasource.family.class: Pim\Bundle\DataGridBundle\Datasource\FamilyDatasource
     pim_datagrid.datasource.repository.class: Pim\Bundle\DataGridBundle\Datasource\RepositoryDatasource
-    pim_datagrid.datasource.support_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver
     pim_datagrid.datasource.adapter_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver
 
 services:
@@ -153,17 +152,9 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_variant_group_product }
 
-    pim_datagrid.datasource.support_resolver:
-        class: '%pim_datagrid.datasource.support_resolver.class%'
-        calls:
-            - [addSmartDatasource, ['pim_datasource_product']]
-            - [addSmartDatasource, ['pim_datasource_associated_product']]
-            - [addSmartDatasource, ['pim_datasource_smart']]
-
     pim_datagrid.datasource.adapter_resolver:
         class: '%pim_datagrid.datasource.adapter_resolver.class%'
         arguments:
-            - '@pim_datagrid.datasource.support_resolver'
             - '%pim_filter.datasource.orm_adapter.class%'
             - '%pim_filter.datasource.product_orm_adapter.class%'
         calls:

@@ -161,6 +161,7 @@
 - Remove class `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver`
 - Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser`
 - Remove class `upgrades/UpgradeHelper.php`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
 
 - Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
 - Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
@@ -169,6 +170,8 @@
 - Change the constructor of `Pim\Bundle\VersioningBundle\UpdateGuesser\VariantGroupUpdateGuesser` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Pim\Component\Catalog\Repository\GroupRepositoryInterface` and to remove the `$groupClass` argument
 - Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
 - Change the constructor of `Oro\Bundle\SecurityBundle\Acl\Extension\EntityClassResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Symfony\Bridge\Doctrine\RegistryInterface\RegistryInterface`
+- Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\ConfigureSortersListener` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
+- Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
 
 ## BC breaks
 
