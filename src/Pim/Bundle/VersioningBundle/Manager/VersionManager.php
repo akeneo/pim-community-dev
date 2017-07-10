@@ -42,8 +42,8 @@ class VersionManager
      */
     protected $context;
 
-    /** @var SmartManagerRegistry */
-    protected $registry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var VersionBuilder */
     protected $versionBuilder;
@@ -52,18 +52,18 @@ class VersionManager
     protected $versionContext;
 
     /**
-     * @param SmartManagerRegistry     $registry
+     * @param ObjectManager            $objectManager
      * @param VersionBuilder           $versionBuilder
      * @param VersionContext           $versionContext
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        SmartManagerRegistry $registry,
+        ObjectManager $objectManager,
         VersionBuilder $versionBuilder,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->registry = $registry;
+        $this->objectManager = $objectManager;
         $this->versionBuilder = $versionBuilder;
         $this->versionContext = $versionContext;
         $this->eventDispatcher = $eventDispatcher;
@@ -119,8 +119,7 @@ class VersionManager
         }
 
         if ($this->realTimeVersioning) {
-            $manager = $this->registry->getManagerForClass(ClassUtils::getClass($versionable));
-            $manager->refresh($versionable);
+            $this->objectManager->refresh($versionable);
 
             $createdVersions = $this->buildPendingVersions($versionable);
 
@@ -146,7 +145,7 @@ class VersionManager
                 );
 
             if (null !== $previousVersion) {
-                $manager->detach($previousVersion);
+                $this->objectManager->detach($previousVersion);
             }
         } else {
             $createdVersions[] = $this->versionBuilder
@@ -168,7 +167,7 @@ class VersionManager
      */
     public function getObjectManager()
     {
-        return $this->registry->getManagerForClass('Akeneo\\Component\\Versioning\\Model\\Version');
+        return $this->objectManager;
     }
 
     /**
@@ -176,7 +175,7 @@ class VersionManager
      */
     public function getVersionRepository()
     {
-        return $this->registry->getRepository('Akeneo\Component\Versioning\Model\Version');
+        return $this->objectManager->getRepository('Akeneo\Component\Versioning\Model\Version');
     }
 
     /**

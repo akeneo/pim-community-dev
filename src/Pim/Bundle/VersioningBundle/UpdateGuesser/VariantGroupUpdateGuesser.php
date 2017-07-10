@@ -5,6 +5,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
  * Variant group update guesser
@@ -16,19 +17,14 @@ use Pim\Component\Catalog\Model\ProductTemplateInterface;
 class VariantGroupUpdateGuesser implements UpdateGuesserInterface
 {
     /** @var SmartManagerRegistry */
-    protected $registry;
-
-    /** @var string */
-    protected $groupClass;
+    protected $repository;
 
     /**
-     * @param SmartManagerRegistry $registry
-     * @param string               $groupClass
+     * @param GroupRepositoryInterface $repository
      */
-    public function __construct(SmartManagerRegistry $registry, $groupClass)
+    public function __construct(GroupRepositoryInterface $repository)
     {
-        $this->registry = $registry;
-        $this->groupClass = $groupClass;
+        $this->repository = $repository;
     }
 
     /**
@@ -50,8 +46,7 @@ class VariantGroupUpdateGuesser implements UpdateGuesserInterface
         $pendings = [];
 
         if ($entity instanceof ProductTemplateInterface) {
-            $repository = $this->registry->getRepository($this->groupClass);
-            $variantGroup = $repository->getVariantGroupByProductTemplate($entity);
+            $variantGroup = $this->repository->getVariantGroupByProductTemplate($entity);
 
             if (null !== $variantGroup) {
                 $pendings[] = $variantGroup;

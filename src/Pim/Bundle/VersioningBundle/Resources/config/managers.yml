@@ -6,7 +6,7 @@ services:
     pim_versioning.manager.version:
         class: '%pim_versioning.manager.version.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine.orm.default_entity_manager'
             - '@pim_versioning.builder.version'
             - '@pim_versioning.context.version'
             - '@event_dispatcher'

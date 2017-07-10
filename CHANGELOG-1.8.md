@@ -39,6 +39,9 @@
 
 - Remove constants `DOCTRINE_ORM` and `` from `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
 
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry`
+- Remove service `akeneo_storage_utils.doctrine.smart_manager_registry`
+
 - Remove repository `Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCategoryRepository`
 - Remove repository `Pim\Bundle\ApiBundle\Doctrine\MongoDBODM\Repository\ProductRepository`
 - Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface`
@@ -158,6 +161,14 @@
 - Remove class `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver`
 - Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser`
 - Remove class `upgrades/UpgradeHelper.php`
+
+- Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Pim\Bundle\CommentBundle\Controller\CommentController` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Pim\Bundle\VersioningBundle\UpdateGuesser\VariantGroupUpdateGuesser` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Pim\Component\Catalog\Repository\GroupRepositoryInterface` and to remove the `$groupClass` argument
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Oro\Bundle\SecurityBundle\Acl\Extension\EntityClassResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Symfony\Bridge\Doctrine\RegistryInterface\RegistryInterface`
 
 ## BC breaks
 

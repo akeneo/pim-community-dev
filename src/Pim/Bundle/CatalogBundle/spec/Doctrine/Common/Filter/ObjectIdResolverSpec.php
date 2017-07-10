@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -12,22 +11,20 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 
 class ObjectIdResolverSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $managerRegistry)
+    function let(ObjectManager $manager)
     {
-        $this->beConstructedWith($managerRegistry);
+        $this->beConstructedWith($manager);
         $this->addFieldMapping('family', 'familyClass');
         $this->addFieldMapping('option', 'optionClass');
     }
 
     function it_gets_ids_from_codes(
-        $managerRegistry,
-        ObjectManager $manager,
+        $manager,
         ObjectRepository $repository,
         FamilyInterface $camcorders,
         FamilyInterface $shirt,
         FamilyInterface $men
     ) {
-        $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
         $manager->getRepository('familyClass')->willReturn($repository);
 
         $repository->findOneBy(['code' => 'camcorders'])->willReturn($camcorders);
@@ -42,13 +39,11 @@ class ObjectIdResolverSpec extends ObjectBehavior
     }
 
     function it_gets_ids_from_codes_with_attribute(
-        $managerRegistry,
-        ObjectManager $manager,
+        $manager,
         ObjectRepository $repository,
         AttributeOptionInterface $purple,
         AttributeInterface $attribute
     ) {
-        $managerRegistry->getManagerForClass('optionClass')->willReturn($manager);
         $manager->getRepository('optionClass')->willReturn($repository);
         $attribute->getId()->willReturn(12);
 
@@ -64,12 +59,10 @@ class ObjectIdResolverSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_one_of_the_elements_is_not_found(
-        $managerRegistry,
-        ObjectManager $manager,
+        $manager,
         ObjectRepository $repository,
         FamilyInterface $camcorders
     ) {
-        $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
         $manager->getRepository('familyClass')->willReturn($repository);
 
         $repository->findOneBy(['code' => 'camcorders'])->willReturn($camcorders);

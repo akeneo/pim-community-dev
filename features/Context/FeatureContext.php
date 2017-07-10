@@ -161,14 +161,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    public function getSmartRegistry()
-    {
-        return $this->getContainer()->get('akeneo_storage_utils.doctrine.smart_manager_registry');
-    }
-
-    /**
      * Transform a list to array
      *
      * @param string $list
