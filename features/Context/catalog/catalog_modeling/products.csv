@@ -1,0 +1,378 @@
+sku;categories;enabled;family;groups;brand;care_instructions;collection;color;composition;description-de_DE-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;EAN;erp_name-de_DE;erp_name-en_US;erp_name-fr_FR;eu_shoes_size;image_1;keywords-de_DE;keywords-en_US;keywords-fr_FR;meta_description-de_DE;meta_description-en_US;meta_description-fr_FR;meta_title-de_DE;meta_title-en_US;meta_title-fr_FR;name-de_DE;name-en_US;name-fr_FR;notice;price-EUR;price-USD;size;sole_composition;supplier;top_composition;variation_image;variation_name-de_DE;variation_name-en_US;variation_name-fr_FR;wash_temperature;weight;weight-unit
+amor_3;master_men_blazers,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Amor - Blue;;;800;GRAM
+aphrodite_6;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Aphrodite - Blue;;;800;GRAM
+caelus_2;master_men_blazers_deals,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Caelus - Red;;;800;GRAM
+climbingshoe_0;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Climbing shoe - Black;;;900;GRAM
+climbingshoe_1;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Climbing shoe - Black;;;900;GRAM
+climbingshoe_2;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Climbing shoe - Black;;;800;GRAM
+climbingshoe_3;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;380;;;;;;;;;;;;;;;;;;;;;;;Climbing shoe - Black;;;800;GRAM
+climbingshoe_4;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;370;;;;;;;;;;;;;;;;;;;;;;;Climbing shoe - Black;;;800;GRAM
+climbingshoe_5;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;360;;;;;;;;;;;;;;;;;;;;;;;Climbing shoe - Black;;;800;GRAM
+derby_0;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Derby shoe - Brown;;;900;GRAM
+derby_1;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Derby shoe - Brown;;;900;GRAM
+derby_2;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Derby shoe - Brown;;;800;GRAM
+aphrodite_7;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Aphrodite - Blue;;;600;GRAM
+derby_3;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;380;;;;;;;;;;;;;;;;;;;;;;;Derby shoe - Brown;;;800;GRAM
+derby_4;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;370;;;;;;;;;;;;;;;;;;;;;;;Derby shoe - Brown;;;800;GRAM
+derby_5;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;360;;;;;;;;;;;;;;;;;;;;;;;Derby shoe - Brown;;;800;GRAM
+diana_3;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Diana - Blue;;;800;GRAM
+diana_4;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Diana - Blue;;;800;GRAM
+diana_5;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Diana - Blue;;;;
+diana_6;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Diana - Blue;;;800;GRAM
+diana_7;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Diana - Blue;;;600;GRAM
+diana_8;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Diana - Pink;;;800;GRAM
+diana_9;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Diana - Pink;;;800;GRAM
+aphrodite_8;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Aphrodite - Pink;;;800;GRAM
+diana_10;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Diana - Pink;;;800;GRAM
+diana_11;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Diana - Pink;;;;
+diana_12;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Diana - Pink;;;;
+diana_0;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Diana - Red;;;900;GRAM
+diana_1;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Diana - Red;;;900;GRAM
+diana_2;master_women_dresses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Diana - Red;;;800;GRAM
+dionysos_2;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Dionysos - Blue;;;800;GRAM
+dionysos_3;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Dionysos - Blue;;;800;GRAM
+dionysos_4;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Dionysos - Blue;;;;
+dionysos_5;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Dionysos - Pink;;;800;GRAM
+aphrodite_9;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aphrodite - Pink;;;800;GRAM
+dionysos_6;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Dionysos - Pink;;;800;GRAM
+dionysos_7;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Dionysos - Pink;;;800;GRAM
+dionysos_8;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Dionysos - Pink;;;600;GRAM
+dionysos_0;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Dionysos - Red;;;900;GRAM
+dionysos_1;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Dionysos - Red;;;800;GRAM
+dionysos_9;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Dionysos - Yellow;;;800;GRAM
+dionysos_10;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Dionysos - Yellow;;;800;GRAM
+dionysos_11;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Dionysos - Yellow;;;800;GRAM
+dionysos_12;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Dionysos - Yellow;;;600;GRAM
+dressshoe_9;master_men_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Dress shoe - Grey;;;900;GRAM
+aphrodite_10;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Aphrodite - Pink;;;800;GRAM
+dressshoe_10;master_men_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Dress shoe - Grey;;;900;GRAM
+dressshoe_11;master_men_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Dress shoe - Grey;;;800;GRAM
+dressshoe_12;master_men_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;370;;;;;;;;;;;;;;;;;;;;;;;Dress shoe - Grey;;;800;GRAM
+dressshoe_13;master_men_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;360;;;;;;;;;;;;;;;;;;;;;;;Dress shoe - Grey;;;800;GRAM
+eris_2;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Eris - Blue;;;800;GRAM
+eris_3;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Eris - Blue;;;800;GRAM
+eris_4;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Eris - Blue;;;800;GRAM
+eris_0;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Eris - Orange;;;900;GRAM
+eris_1;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Eris - Orange;;;800;GRAM
+eris_5;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Eris - Pink;;;800;GRAM
+aphrodite_11;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Aphrodite - Pink;;;;
+eris_6;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Eris - Pink;;;800;GRAM
+eris_7;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Eris - Pink;;;800;GRAM
+eris_8;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Eris - Pink;;;;
+eris_9;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Eris - Yellow;;;800;GRAM
+eris_10;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Eris - Yellow;;;800;GRAM
+eris_11;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Eris - Yellow;;;800;GRAM
+eris_12;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Eris - Yellow;;;600;GRAM
+galesh_4;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Galesh shoe - Black;;;900;GRAM
+galesh_5;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Galesh shoe - Black;;;900;GRAM
+galesh_6;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Galesh shoe - Black;;;800;GRAM
+aphrodite_12;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Aphrodite - Pink;;;;
+galesh_7;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;380;;;;;;;;;;;;;;;;;;;;;;;Galesh shoe - Black;;;800;GRAM
+galesh_8;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;360;;;;;;;;;;;;;;;;;;;;;;;Galesh shoe - Black;;;800;GRAM
+hades_3;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hades - Blue;;;800;GRAM
+hades_4;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hades - Blue;;;;
+hades_5;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hades - Blue;;;800;GRAM
+hades_0;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hades - Red;;;900;GRAM
+hades_1;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hades - Red;;;900;GRAM
+hades_2;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hades - Red;;;800;GRAM
+hefaistos_3;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hefaistos - Blue;;;800;GRAM
+hefaistos_4;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hefaistos - Blue;;;800;GRAM
+aphrodite_0;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Aphrodite - Red;;;900;GRAM
+hefaistos_5;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hefaistos - Blue;;;;
+hefaistos_6;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hefaistos - Blue;;;800;GRAM
+hefaistos_7;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Hefaistos - Blue;;;600;GRAM
+hefaistos_8;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hefaistos - Pink;;;800;GRAM
+hefaistos_9;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hefaistos - Pink;;;800;GRAM
+hefaistos_10;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hefaistos - Pink;;;800;GRAM
+hefaistos_11;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hefaistos - Pink;;;;
+hefaistos_12;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Hefaistos - Pink;;;;
+hefaistos_0;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hefaistos - Red;;;900;GRAM
+hefaistos_1;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hefaistos - Red;;;900;GRAM
+aphrodite_1;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Aphrodite - Red;;;900;GRAM
+hefaistos_2;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hefaistos - Red;;;800;GRAM
+hera_2;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hera - Blue;;;800;GRAM
+hera_3;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hera - Blue;;;800;GRAM
+hera_4;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hera - Blue;;;;
+hera_5;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hera - Pink;;;800;GRAM
+hera_6;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hera - Pink;;;800;GRAM
+hera_7;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hera - Pink;;;800;GRAM
+hera_8;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Hera - Pink;;;600;GRAM
+hera_0;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hera - Red;;;900;GRAM
+hera_1;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hera - Red;;;800;GRAM
+aphrodite_2;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aphrodite - Red;;;800;GRAM
+hera_9;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hera - Yellow;;;800;GRAM
+hera_10;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hera - Yellow;;;800;GRAM
+hera_11;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hera - Yellow;;;800;GRAM
+hera_12;master_women_shirts,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Hera - Yellow;;;600;GRAM
+hermes_2;master_men_blazers,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hermes - Blue;;;800;GRAM
+hermes_3;master_men_blazers,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hermes - Blue;;;800;GRAM
+hermes_4;master_men_blazers,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hermes - Blue;;;800;GRAM
+hermes_0;master_men_blazers,supplier_mongo;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hermes - Orange;;;900;GRAM
+hermes_1;master_men_blazers,supplier_mongo;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hermes - Orange;;;800;GRAM
+hermes_5;master_men_blazers,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hermes - Pink;;;800;GRAM
+amor_4;master_men_blazers,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Amor - Blue;;;;
+apollon_2;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Apollon - Blue;;;800;GRAM
+hermes_6;master_men_blazers,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hermes - Pink;;;800;GRAM
+hermes_7;master_men_blazers,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hermes - Pink;;;800;GRAM
+hermes_8;master_men_blazers,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Hermes - Pink;;;;
+hermes_9;master_men_blazers,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hermes - Yellow;;;800;GRAM
+hermes_10;master_men_blazers,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hermes - Yellow;;;800;GRAM
+hermes_11;master_men_blazers,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Hermes - Yellow;;;800;GRAM
+hermes_12;master_men_blazers,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Hermes - Yellow;;;600;GRAM
+hestia_3;master_women_blouses_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hestia - Blue;;;800;GRAM
+hestia_4;master_women_blouses_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hestia - Blue;;;;
+hestia_5;master_women_blouses_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hestia - Blue;;;800;GRAM
+apollon_3;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Apollon - Blue;;;800;GRAM
+hestia_0;master_women_blouses_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Hestia - Red;;;900;GRAM
+hestia_1;master_women_blouses_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Hestia - Red;;;900;GRAM
+hestia_2;master_women_blouses_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Hestia - Red;;;800;GRAM
+jellyshoes_7;master_women_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Jelly shoe - Grey;;;;
+jellyshoes_6;master_women_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Jelly shoe - Grey;;;;
+jellyshoes_8;master_women_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Jelly shoe - Grey;;;800;GRAM
+jellyshoes_9;master_women_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;380;;;;;;;;;;;;;;;;;;;;;;;Jelly shoe - Grey;;;800;GRAM
+jellyshoes_10;master_women_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;370;;;;;;;;;;;;;;;;;;;;;;;Jelly shoe - Grey;;;800;GRAM
+jellyshoes_11;master_women_shoes,supplier_abibas;1;shoes;;;;;grey;;;;;;;;;360;;;;;;;;;;;;;;;;;;;;;;;Jelly shoe - Grey;;;800;GRAM
+juno_3;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Juno - Blue;;;800;GRAM
+apollon_4;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Apollon - Blue;;;;
+juno_4;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Juno - Blue;;;800;GRAM
+juno_5;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Juno - Blue;;;;
+juno_6;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Juno - Blue;;;800;GRAM
+juno_7;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Juno - Blue;;;600;GRAM
+juno_8;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Juno - Pink;;;800;GRAM
+juno_9;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Juno - Pink;;;800;GRAM
+juno_10;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Juno - Pink;;;800;GRAM
+juno_11;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Juno - Pink;;;;
+juno_12;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Juno - Pink;;;;
+juno_0;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Juno - Red;;;900;GRAM
+apollon_5;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Apollon - Pink;;;800;GRAM
+juno_1;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Juno - Red;;;900;GRAM
+juno_2;master_women_blouses_deals,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Juno - Red;;;800;GRAM
+minerva_2;master_women_shirts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Minerva - Blue;;;800;GRAM
+minerva_3;master_women_shirts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Minerva - Blue;;;800;GRAM
+minerva_4;master_women_shirts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Minerva - Blue;;;;
+minerva_5;master_women_shirts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Minerva - Pink;;;800;GRAM
+minerva_6;master_women_shirts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Minerva - Pink;;;800;GRAM
+minerva_7;master_women_shirts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Minerva - Pink;;;800;GRAM
+minerva_8;master_women_shirts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Minerva - Pink;;;600;GRAM
+minerva_0;master_women_shirts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Minerva - Red;;;900;GRAM
+apollon_6;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Apollon - Pink;;;800;GRAM
+minerva_1;master_women_shirts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Minerva - Red;;;800;GRAM
+minerva_9;master_women_shirts,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Minerva - Yellow;;;800;GRAM
+minerva_10;master_women_shirts,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Minerva - Yellow;;;800;GRAM
+minerva_11;master_women_shirts,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Minerva - Yellow;;;800;GRAM
+minerva_12;master_women_shirts,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Minerva - Yellow;;;600;GRAM
+moccasin_0;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Moccasin - Brown;;;900;GRAM
+moccasin_1;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Moccasin - Brown;;;900;GRAM
+moccasin_2;master_men_shoes,print_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Moccasin - Brown;;;800;GRAM
+portunus_3;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Portunus - Blue;;;800;GRAM
+portunus_4;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Portunus - Blue;;;800;GRAM
+apollon_7;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Apollon - Pink;;;800;GRAM
+portunus_2;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Portunus - Blue;;;800;GRAM
+portunus_0;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Portunus - Orange;;;900;GRAM
+portunus_1;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Portunus - Orange;;;800;GRAM
+portunus_5;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Portunus - Pink;;;800;GRAM
+portunus_6;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Portunus - Pink;;;800;GRAM
+portunus_7;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Portunus - Pink;;;800;GRAM
+portunus_8;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Portunus - Pink;;;;
+portunus_9;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Portunus - Yellow;;;800;GRAM
+portunus_10;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Portunus - Yellow;;;800;GRAM
+portunus_11;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Portunus - Yellow;;;800;GRAM
+apollon_8;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Apollon - Pink;;;600;GRAM
+portunus_12;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Portunus - Yellow;;;600;GRAM
+poseidon_5;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Poseidon - Blue;;;800;GRAM
+poseidon_3;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Poseidon - Blue;;;800;GRAM
+poseidon_4;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Poseidon - Blue;;;;
+poseidon_0;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Poseidon - Red;;;900;GRAM
+poseidon_1;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Poseidon - Red;;;900;GRAM
+poseidon_2;master_men_pants_jeans,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Poseidon - Red;;;800;GRAM
+quirinus_3;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Quirinus - Blue;;;800;GRAM
+quirinus_4;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Quirinus - Blue;;;800;GRAM
+quirinus_6;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Quirinus - Blue;;;800;GRAM
+apollon_0;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Apollon - Red;;;900;GRAM
+quirinus_7;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Quirinus - Blue;;;600;GRAM
+quirinus_5;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Quirinus - Blue;;;;
+quirinus_8;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Quirinus - Pink;;;800;GRAM
+quirinus_9;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Quirinus - Pink;;;800;GRAM
+quirinus_10;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Quirinus - Pink;;;800;GRAM
+quirinus_11;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Quirinus - Pink;;;;
+quirinus_12;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Quirinus - Pink;;;;
+quirinus_0;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Quirinus - Red;;;900;GRAM
+quirinus_1;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Quirinus - Red;;;900;GRAM
+quirinus_2;master_men_pants_shorts,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Quirinus - Red;;;800;GRAM
+apollon_1;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Apollon - Red;;;800;GRAM
+securitas_2;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Securitas - Blue;;;800;GRAM
+securitas_3;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Securitas - Blue;;;800;GRAM
+securitas_4;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Securitas - Blue;;;;
+securitas_5;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Securitas - Pink;;;800;GRAM
+securitas_6;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Securitas - Pink;;;800;GRAM
+securitas_7;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Securitas - Pink;;;800;GRAM
+securitas_8;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Securitas - Pink;;;600;GRAM
+securitas_1;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Securitas - Red;;;800;GRAM
+securitas_0;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Securitas - Red;;;900;GRAM
+securitas_9;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Securitas - Yellow;;;800;GRAM
+apollon_9;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Apollon - Yellow;;;800;GRAM
+securitas_10;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Securitas - Yellow;;;800;GRAM
+securitas_11;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Securitas - Yellow;;;800;GRAM
+securitas_12;master_women_shirts,print_clothing,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Securitas - Yellow;;;600;GRAM
+stilleto_9;master_women_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;380;;;;;;;;;;;;;;;;;;;;;;;Stiletto - Black;;;;
+stilleto_6;master_women_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Stiletto - Black;;;900;GRAM
+stilleto_7;master_women_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Stiletto - Black;;;900;GRAM
+stilleto_8;master_women_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Stiletto - Black;;;800;GRAM
+stilleto_10;master_women_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;370;;;;;;;;;;;;;;;;;;;;;;;Stiletto - Black;;;800;GRAM
+stilleto_11;master_women_shoes,supplier_abibas;1;shoes;;;;;black;;;;;;;;;360;;;;;;;;;;;;;;;;;;;;;;;Stiletto - Black;;;800;GRAM
+terminus_2;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Terminus - Blue;;;800;GRAM
+amor_5;master_men_blazers,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Amor - Blue;;;800;GRAM
+apollon_10;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Apollon - Yellow;;;800;GRAM
+terminus_3;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Terminus - Blue;;;800;GRAM
+terminus_4;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Terminus - Blue;;;800;GRAM
+terminus_1;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Terminus - Orange;;;800;GRAM
+terminus_0;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Terminus - Orange;;;900;GRAM
+terminus_5;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Terminus - Pink;;;800;GRAM
+terminus_6;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Terminus - Pink;;;800;GRAM
+terminus_7;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Terminus - Pink;;;800;GRAM
+terminus_8;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Terminus - Pink;;;;
+terminus_9;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Terminus - Yellow;;;800;GRAM
+terminus_10;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Terminus - Yellow;;;800;GRAM
+apollon_11;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Apollon - Yellow;;;800;GRAM
+terminus_11;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Terminus - Yellow;;;800;GRAM
+terminus_12;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Terminus - Yellow;;;600;GRAM
+venus_3;master_women_dresses,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Venus - Blue;;;800;GRAM
+venus_5;master_women_dresses,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Venus - Blue;;;800;GRAM
+venus_4;master_women_dresses,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Venus - Blue;;;;
+venus_0;master_women_dresses,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Venus - Red;;;900;GRAM
+venus_1;master_women_dresses,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Venus - Red;;;900;GRAM
+venus_2;master_women_dresses,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Venus - Red;;;800;GRAM
+vulcanus_4;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Vulcanus - Blue;;;800;GRAM
+vulcanus_6;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Vulcanus - Blue;;;800;GRAM
+apollon_12;master_men_blazers_deals,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Apollon - Yellow;;;600;GRAM
+vulcanus_7;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Vulcanus - Blue;;;600;GRAM
+vulcanus_3;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Vulcanus - Blue;;;800;GRAM
+vulcanus_5;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Vulcanus - Blue;;;;
+vulcanus_8;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Vulcanus - Pink;;;800;GRAM
+vulcanus_9;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Vulcanus - Pink;;;800;GRAM
+vulcanus_10;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Vulcanus - Pink;;;800;GRAM
+vulcanus_11;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Vulcanus - Pink;;;;
+vulcanus_12;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Vulcanus - Pink;;;;
+vulcanus_0;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Vulcanus - Red;;;900;GRAM
+vulcanus_1;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Vulcanus - Red;;;900;GRAM
+ares_2;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Ares - Blue;;;800;GRAM
+vulcanus_2;master_men_pants_shorts,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Vulcanus - Red;;;800;GRAM
+zeus_2;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Zeus - Blue;;;800;GRAM
+zeus_3;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Zeus - Blue;;;800;GRAM
+zeus_4;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Zeus - Blue;;;;
+zeus_5;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Zeus - Pink;;;800;GRAM
+zeus_6;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Zeus - Pink;;;800;GRAM
+zeus_7;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Zeus - Pink;;;800;GRAM
+zeus_8;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Zeus - Pink;;;600;GRAM
+zeus_0;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Zeus - Red;;;900;GRAM
+zeus_1;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Zeus - Red;;;800;GRAM
+ares_3;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Ares - Blue;;;800;GRAM
+zeus_12;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Zeus - Yellow;;;600;GRAM
+zeus_11;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Zeus - Yellow;;;800;GRAM
+zeus_9;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Zeus - Yellow;;;800;GRAM
+zeus_10;master_men_pants_jeans,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Zeus - Yellow;;;800;GRAM
+belt;master_accessories_belts,print_accessories,supplier_mongo;1;accessories;;;;summer_2016;;;;"Closure: buckle
+width: 3 cm
+Pattern / Color: Solid colors
+Composition: 100% leather";;;;Belt;;;;;;;;;;;;;;Belt;;;149;;;;mongo;;files/belt.jpg;;Belt;;;0.5;GRAM
+bag;master_accessories_bags,print_accessories,supplier_zaro;1;accessories;;;;summer_2016;;;;Indeed grained leather bag with decorative zippers. Removable shoulder strap and zip.;;;;Bag;;;;;;;;;;;;;;Bag;;;549;;;;zaro;;files/bag.jpg;;Bag;;;0.5;GRAM
+hat;master_accessories_hats,print_accessories,supplier_abibas;1;accessories;;;;spring_2015;;;;Bonnet ribbed gray and multicolored.;;;;Hat;;;;;;;;;;;;;;Hat;;;199;;;;abibas;;files/hat.jpg;;Hat;;;0.5;GRAM
+scarf;master_accessories_scarves,supplier_abibas;1;accessories;;;;spring_2016;;;;Black wool scarf frayed grunge style with fringe. 100% wool. Machine washable.;;;;Scarf;;;;;;;;;;;;;;Scarf;;;139;;;;abibas;;files/scarf.jpg;;Scarf;;;0.5;GRAM
+sunglasses;master_accessories_sunglasses,supplier_zaro;1;accessories;;;;winter_2016;;;;Black round sunglasses with plastic frames. 100% rigid plastic.;;;;Sunglasses;;;;;;;;;;;;;;Sunglasses;;;100;;;;zaro;;files/sunglasses.jpg;;Sunglasses;;;0.5;GRAM
+1852115;Tshirts;1;clothing;;;;Spring2017;brown;;;Cotton t-shirt;;;;;;;;;;;;;;;;;;Cotton t-shirt;;;;;s00;;;;files/marron-t-shirt.png;;Cotton t-shirt brown S;;;;
+ares_4;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Ares - Blue;;;800;GRAM
+1852116;Tshirts;1;clothing;;;;Spring2017;brown;;;;;;;;;;;;;;;;;;;;;Cotton t-shirt;;;;;m00;;;;files/marron-t-shirt.png;;Cotton t-shirt brown M;;;;
+1852117;Tshirts;1;clothing;;;;Spring2017;brown;;;;;;;;;;;;;;;;;;;;;Cotton t-shirt;;;;;L;;;;files/marron-t-shirt.png;;Cotton t-shirt brown L;;;;
+1852114;Tshirts;1;clothing;;;;;green;;;;;;;;;;;;;;;;;;;;;Cotton t-shirt;;;;;s00;;;;files/green-t-shirt.png;;Cotton t-shirt green S;;;;
+1852113;Tshirts;1;clothing;;;;;green;;;;;;;;;;;;;;;;;;;;;Cotton t-shirt;;;;;m00;;;;files/green-t-shirt.png;;Cotton t-shirt green M;;;;
+1852112;Tshirts;1;clothing;;;;;green;;;;;;;;;;;;;;;;;;;;;Cotton t-shirt;;;;;L;;;;files/green-t-shirt.png;;Cotton t-shirt green L;;;;
+1710578;Tshirts;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;Plain t-shirt;;;;;s00;;;;files/red-t-shirt.jpg;;Plaine t-shirt red S;;;;
+1710579;Tshirts;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;Plain t-shirt;;;;;m00;;;;files/red-t-shirt.jpg;;Plain t-shirt red M;;;;
+1278402;Tshirts;1;clothing;;;;;white;;;;;;;;;;;;;;;;;;;;;Plain t-shirt;;;;;s00;;;;files/white-t-shirt.png;;Plain t-shirt white S;;;;
+1278405;Tshirts;1;clothing;;;;;white;;;;;;;;;;;;;;;;;;;;;Plain t-shirt;;;;;m00;;;;files/white-t-shirt.png;;Plain t-shirt white M;;;;
+1278406;Tshirts;1;clothing;;;;;white;;;;;;;;;;;;;;;;;;;;;Plain t-shirt;;;;;L;;;;files/white-t-shirt.png;;Plain t-shirt white L;;;;
+ares_0;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Ares - Orange;;;900;GRAM
+371624;master_women_shoes;1;shoes;;;;;pink;;;;;;;;;380;;;;;;;;;;;;Running shoes Brooks;;;;;;;;;files/running-shoe-pink.jpg;;Running shoes Brooks pink 38;;;;
+371625;master_women_shoes;1;shoes;;;;;pink;;;;;;;;;390;;;;;;;;;;;;Running shoes Brooks;;;;;;;;;files/running-shoe-pink.jpg;;Running shoes Brooks pink 39;;;;
+371626;master_women_shoes;1;shoes;;;;;pink;;;;;;;;;370;;;;;;;;;;;;Running shoes Brooks;;;;;;;;;files/running-shoe-pink.jpg;;Running shoes Brooks pink 37;;;;
+371623;master_men_shoes;1;shoes;;;;;blue;;;;;;;;;410;;;;;;;;;;;;Running shoes Brooks;;;;;;;;;files/running-shoe.jpg;;Running shoes Brooks blue 41;;;;
+371622;master_men_shoes;1;shoes;;;;;blue;;;;;;;;;42;;;;;;;;;;;;Running shoes Brooks;;;;;;;;;files/running-shoe.jpg;;Running shoes Brooks blue 42;;;;
+371621;master_men_shoes;1;shoes;;;;;blue;;;;;;;;;43;;;;;;;;;;;;Running shoes Brooks;;;;;;;;;files/running-shoe.jpg;;Running shoes Brooks blue 43;;;;
+1842328;master_men_shoes,master_women_shoes;1;shoes;;;;;black;;;;;;;;;400;;;;;;;;;;;;Converse;;;;;;;;;files/feet.jpg;;Converse black 40;;;;
+1842327;master_men_shoes,master_women_shoes;1;shoes;;;;;black;;;;;;;;;390;;;;;;;;;;;;Converse;;;;;;;;;files/feet.jpg;;Converse black 39;;;;
+932667;master_men_shoes,master_women_shoes;1;shoes;;;;;red;;;;;;;;;400;;;;;;;;;;;;Converse ;;;;;;;;;files/converse.jpg;;Converse red 40;;;;
+932666;master_men_shoes,master_women_shoes;1;shoes;;;;;red;;;;;;;;;390;;;;;;;;;;;;Converse ;;;;;;;;;files/converse.jpg;;Converse red 39;;;;
+ares_1;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Ares - Orange;;;800;GRAM
+1058419;master_men_shoes;1;shoes;;;;;black;;;;;;;;;42;;;;;;;;;;;;Elegance;;;;;;;;;files/black-shoes.jpg;;Elegance 42;;;;
+1058420;master_men_shoes;1;shoes;;;;;black;;;;;;;;;43;;;;;;;;;;;;Elegance;;;;;;;;;files/black-shoes.jpg;;Elegance 43;;;;
+1058421;master_men_shoes;1;shoes;;;;;black;;;;;;;;;44;;;;;;;;;;;;Elegance;;;;;;;;;files/black-shoes.jpg;;Elegance 44;;;;
+361406;master_women_shoes;1;shoes;;;;summer_2017;red;;;;;;;;;360;;;;;;;;;;;;Stock;;;;;;;;;files/red-shoes.jpg;;Stock 36;;;;
+361407;master_women_shoes;1;shoes;;;;;red;;;;;;;;;370;;;;;;;;;;;;Stock;;;;;;;;;files/red-shoes.jpg;;Stock 37;;;;
+ares_5;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Ares - Pink;;;800;GRAM
+ares_6;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Ares - Pink;;;800;GRAM
+amor_0;master_men_blazers,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Amor - Red;;;900;GRAM
+ares_7;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Ares - Pink;;;800;GRAM
+ares_8;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Ares - Pink;;;;
+ares_9;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Ares - Yellow;;;800;GRAM
+ares_10;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Ares - Yellow;;;800;GRAM
+ares_11;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Ares - Yellow;;;800;GRAM
+ares_12;master_men_blazers_deals,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Ares - Yellow;;;600;GRAM
+artemis_3;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Artemis - Blue;;;800;GRAM
+artemis_4;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Artemis - Blue;;;;
+artemis_5;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Artemis - Blue;;;800;GRAM
+artemis_0;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Artemis - Red;;;900;GRAM
+amor_1;master_men_blazers,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Amor - Red;;;900;GRAM
+artemis_1;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Artemis - Red;;;900;GRAM
+artemis_2;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Artemis - Red;;;800;GRAM
+athena_3;master_women_dresses,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Athena - Blue;;;800;GRAM
+athena_4;master_women_dresses,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Athena - Blue;;;800;GRAM
+athena_5;master_women_dresses,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Athena - Blue;;;;
+athena_6;master_women_dresses,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Athena - Blue;;;800;GRAM
+athena_7;master_women_dresses,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Athena - Blue;;;600;GRAM
+athena_8;master_women_dresses,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Athena - Pink;;;800;GRAM
+athena_9;master_women_dresses,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Athena - Pink;;;800;GRAM
+athena_10;master_women_dresses,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Athena - Pink;;;800;GRAM
+amor_2;master_men_blazers,supplier_zaro;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Amor - Red;;;800;GRAM
+athena_11;master_women_dresses,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Athena - Pink;;;;
+athena_12;master_women_dresses,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Athena - Pink;;;;
+athena_0;master_women_dresses,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Athena - Red;;;900;GRAM
+athena_1;master_women_dresses,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Athena - Red;;;900;GRAM
+athena_2;master_women_dresses,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Athena - Red;;;800;GRAM
+aurora_2;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Aurora - Blue;;;800;GRAM
+aurora_3;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aurora - Blue;;;800;GRAM
+aurora_4;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Aurora - Blue;;;;
+aurora_5;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Aurora - Pink;;;800;GRAM
+aurora_6;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aurora - Pink;;;800;GRAM
+aphrodite_3;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Aphrodite - Blue;;;800;GRAM
+aurora_7;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Aurora - Pink;;;800;GRAM
+aurora_8;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Aurora - Pink;;;600;GRAM
+aurora_0;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Aurora - Red;;;900;GRAM
+aurora_1;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aurora - Red;;;800;GRAM
+aurora_9;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Aurora - Yellow;;;800;GRAM
+aurora_10;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aurora - Yellow;;;800;GRAM
+aurora_11;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Aurora - Yellow;;;800;GRAM
+aurora_12;master_women_blouses,print_clothing,supplier_mongo;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Aurora - Yellow;;;600;GRAM
+bacchus_2;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Bacchus - Blue;;;800;GRAM
+bacchus_3;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Bacchus - Blue;;;800;GRAM
+aphrodite_4;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Aphrodite - Blue;;;800;GRAM
+bacchus_4;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Bacchus - Blue;;;800;GRAM
+bacchus_0;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Bacchus - Orange;;;900;GRAM
+bacchus_1;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;orange;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Bacchus - Orange;;;800;GRAM
+bacchus_5;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Bacchus - Pink;;;800;GRAM
+bacchus_6;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Bacchus - Pink;;;800;GRAM
+bacchus_7;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Bacchus - Pink;;;800;GRAM
+bacchus_8;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;pink;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Bacchus - Pink;;;;
+bacchus_9;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Bacchus - Yellow;;;800;GRAM
+bacchus_10;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Bacchus - Yellow;;;800;GRAM
+bacchus_11;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;s00;;;;;;Bacchus - Yellow;;;800;GRAM
+aphrodite_5;master_women_blouses,print_clothing,supplier_zaro;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Aphrodite - Blue;;;;
+bacchus_12;master_men_pants_shorts,supplier_zaro;1;clothing;;;;;yellow;;;;;;;;;;;;;;;;;;;;;;;;;;xs0;;;;;;Bacchus - Yellow;;;600;GRAM
+brogueshoe_0;master_men_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;410;;;;;;;;;;;;;;;;;;;;;;;Brogue shoe - Brown;;;900;GRAM
+brogueshoe_1;master_men_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;400;;;;;;;;;;;;;;;;;;;;;;;Brogue shoe - Brown;;;900;GRAM
+brogueshoe_2;master_men_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;390;;;;;;;;;;;;;;;;;;;;;;;Brogue shoe - Brown;;;800;GRAM
+brogueshoe_3;master_men_shoes,supplier_abibas;1;shoes;;;;;brown;;;;;;;;;380;;;;;;;;;;;;;;;;;;;;;;;Brogue shoe - Brown;;;800;GRAM
+caelus_3;master_men_blazers_deals,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Caelus - Blue;;;800;GRAM
+caelus_4;master_men_blazers_deals,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Caelus - Blue;;;;
+caelus_5;master_men_blazers_deals,supplier_mongo;1;clothing;;;;;blue;;;;;;;;;;;;;;;;;;;;;;;;;;m00;;;;;;Caelus - Blue;;;800;GRAM
+caelus_0;master_men_blazers_deals,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xxl;;;;;;Caelus - Red;;;900;GRAM
+caelus_1;master_men_blazers_deals,supplier_mongo;1;clothing;;;;;red;;;;;;;;;;;;;;;;;;;;;;;;;;xl0;;;;;;Caelus - Red;;;900;GRAM
