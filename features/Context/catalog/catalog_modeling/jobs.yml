@@ -72,3 +72,21 @@ jobs:
         alias:     csv_product_import
         label:     CSV default product import
         type:      import
+
+    csv_catalog_modeling_family_variant_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_variant_import
+        label:     CSV catalog modeling family variant import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    xlsx_catalog_modeling_family_variant_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_variant_import
+        label:     XLSX catalog modeling family variant import
+        type:      import
+        configuration:
+            uploadAllowed: true
