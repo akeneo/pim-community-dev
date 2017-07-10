@@ -222,6 +222,13 @@ interface ProductInterface extends
     public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
+     * Get product image
+     *
+     * @return string
+     */
+    public function getImage();
+
+    /**
      * Get product label
      *
      * @param string $locale

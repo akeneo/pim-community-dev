@@ -49,6 +49,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
         $data['label'] = $product->getLabel($locale);
+        $data['image'] = $product->getImage();
         $data['completeness'] = $this->getCompleteness($product, $context);
 
         return $data;
