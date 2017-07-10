@@ -212,10 +212,6 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         $productModels = [
             // simple tshirt
             [
-                'identifier' => 'dummy_level_1',
-                'level'      => 1,
-            ],
-            [
                 'identifier' => 'model-tshirt',
                 'level'      => 1,
                 'family'     => [
@@ -233,16 +229,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
 
-            [
-                'identifier' => 'dummy_level_0',
-                'parent'     => 'dummy_level_1',
-                'routing' => 'dummy_level_1',
-                'level'      => 0,
-            ],
             // Tshirt model level-1 (varying on color)
             [
                 'identifier' => 'model-tshirt-grey',
                 'parent'     => 'model-tshirt',
+                'routing'    => 'model-tshirt',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
@@ -266,6 +257,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'model-tshirt-blue',
                 'parent'     => 'model-tshirt',
+                'routing'    => 'model-tshirt',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
@@ -289,6 +281,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'model-tshirt-red',
                 'parent'     => 'model-tshirt',
+                'routing'    => 'model-tshirt',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
@@ -313,8 +306,8 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Tshirt unique model
             [
                 'identifier' => 'model-tshirt-unique',
-                'parent'     => 'dummy_level_1',
-                'routing' => 'dummy_level_1',
+                'parent'     => null,
+                'routing'    => 'model-tshirt-unique',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
@@ -344,8 +337,8 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Hats model
             [
                 'identifier' => 'model-hat',
-                'parent'     => 'dummy_level_1',
-                'routing' => 'dummy_level_1',
+                'parent'     => 'model-hat',
+                'routing'    => 'model-hat',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'hats',
@@ -593,7 +586,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'tshirt-unique-s',
                 'parent'     => 'model-tshirt-unique',
-                'routing'    => 'dummy_level_1',
+                'routing'    => 'model-tshirt-unique',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -611,7 +604,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'tshirt-unique-m',
                 'parent'     => 'model-tshirt-unique',
-                'routing'    => 'dummy_level_1',
+                'routing'    => 'model-tshirt-unique',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -629,7 +622,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'tshirt-unique-l',
                 'parent'     => 'model-tshirt-unique',
-                'routing'    => 'dummy_level_1',
+                'routing'    => 'model-tshirt-unique',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -647,7 +640,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'tshirt-unique-xl',
                 'parent'     => 'model-tshirt-unique',
-                'routing'    => 'dummy_level_1',
+                'routing'    => 'model-tshirt-unique',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -666,8 +659,8 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Watch
             [
                 'identifier' => 'watch',
-                'parent'     => 'dummy_level_0',
-                'routing'    => 'dummy_level_1',
+                'parent'     => 'watch',
+                'routing'    => 'watch',
                 'family'     => [
                     'code'   => 'watch',
                     'labels' => [
@@ -692,7 +685,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'hat-m',
                 'parent'     => 'model-hat',
-                'routing'    => 'dummy_level_1',
+                'routing'    => 'model-hat',
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
@@ -710,7 +703,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'hat-l',
                 'parent'     => 'model-hat',
-                'routing'    => 'dummy_level_1',
+                'routing'    => 'model-hat',
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
