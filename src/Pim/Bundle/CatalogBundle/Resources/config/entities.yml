@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.entity.product.class:                      Pim\Component\Catalog\Model\Product
+    pim_catalog.entity.product_model.class:                Pim\Component\Catalog\Model\ProductModel
     pim_catalog.entity.product_unique_data.class:          Pim\Component\Catalog\Model\ProductUniqueData
     pim_catalog.entity.association.class:                  Pim\Component\Catalog\Model\Association
     pim_catalog.entity.completeness.class:                 Pim\Component\Catalog\Model\Completeness

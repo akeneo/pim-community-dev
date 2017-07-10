@@ -31,6 +31,12 @@ Pim\Component\Catalog\Model\Product:
                 family_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
+        productModel:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            joinColumns:
+                product_model_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
     manyToMany:
         groups:
             targetEntity: Pim\Component\Catalog\Model\GroupInterface
