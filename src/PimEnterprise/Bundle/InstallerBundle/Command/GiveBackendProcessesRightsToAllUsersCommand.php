@@ -122,9 +122,6 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
      */
     protected function getObjectManager()
     {
-        $class = $this->getContainer()->getParameter('pimee_security.entity.job_profile_access.class');
-        $registry = $this->getContainer()->get('akeneo_storage_utils.doctrine.smart_manager_registry');
-
-        return $registry->getManagerForClass($class);
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 }
