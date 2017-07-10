@@ -8,6 +8,7 @@ parameters:
     pim_catalog.repository.channel.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_catalog.repository.currency.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
     pim_catalog.repository.family.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
+    pim_catalog.repository.family_variant.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository
     pim_catalog.repository.group.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository
     pim_catalog.repository.group_type.class:            Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository
@@ -81,6 +82,13 @@ services:
         class: '%pim_catalog.repository.family.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.family.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_catalog.repository.family_variant:
+        class: '%pim_catalog.repository.family_variant.class%'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.family_variant.class%']
         tags:
             - { name: 'pim_repository' }
 

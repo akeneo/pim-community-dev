@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
@@ -65,6 +66,9 @@ class Family implements FamilyInterface
      * @var \DateTime
      */
     protected $updated;
+
+    /** @var Collection */
+    protected $familyVariants;
 
     /**
      * Constructor
@@ -435,5 +439,21 @@ class Family implements FamilyInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyVariants(): Collection
+    {
+        return $this->familyVariants;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFamilyVariants(Collection $familyVariants): void
+    {
+        $this->familyVariants = $familyVariants;
     }
 }
