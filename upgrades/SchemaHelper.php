@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

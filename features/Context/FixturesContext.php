@@ -1773,10 +1773,6 @@ class FixturesContext extends BaseFixturesContext
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
-        /*
-         * When using ODM, one must persist and flush category without product
-         * before adding and persisting products inside it
-         */
         $products = $category->getProducts();
         $this->validate($category);
         $this->getContainer()->get('pim_catalog.saver.category')->save($category);
@@ -2066,14 +2062,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 
     /**

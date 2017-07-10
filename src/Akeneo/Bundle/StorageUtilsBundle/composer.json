@@ -2,7 +2,7 @@
     "name": "akeneo/storage-utils-bundle",
     "type": "symfony-bundle",
     "description": "Akeneo Symfony Storage Utils Bundle",
-    "keywords": ["Akeneo", "Storage", "Utils", "Doctrine", "ORM", "MongoDB"],
+    "keywords": ["Akeneo", "Storage", "Utils", "Doctrine", "ORM"],
     "homepage": "https://github.com/akeneo/StorageUtilsBundle",
     "license": "OSL-3.0",
     "authors": [

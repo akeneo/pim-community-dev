@@ -153,14 +153,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
      * Transform a list to array
      *
      * @param string $list

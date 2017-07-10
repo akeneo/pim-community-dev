@@ -42,7 +42,6 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new RegisterAttributeTypePass())
             ->addCompilerPass(new RegisterValueFactoryPass())
-            ->addCompilerPass(new RegisterQueryGeneratorsPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass())
             ->addCompilerPass(new RegisterProductQuerySorterPass())
             ->addCompilerPass(new RegisterProductUpdaterPass())
