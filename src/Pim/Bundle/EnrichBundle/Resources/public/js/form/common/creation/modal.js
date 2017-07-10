@@ -97,6 +97,21 @@ define(
                 });
             },
 
+            // Remove this when create attribute PR is merged
+            normalize(errors) {
+                return errors.values.map(error => {
+                    if (error.attribute === 'sku') {
+                        error.attribute = 'identifier'
+                    }
+
+                    if (!error.path) {
+                        error.path = error.attribute;
+                    }
+
+                    return error
+                })
+            },
+
             /**
              * Save the form content by posting it to backend
              *
@@ -111,12 +126,13 @@ define(
                 let data = this.getFormData();
 
                 return $.ajax({
-                  url: Routing.generate(this.config.postUrl),
-                  type: 'POST',
-                  data: JSON.stringify(data),
+                    url: Routing.generate(this.config.postUrl),
+                    type: 'POST',
+                    data: JSON.stringify(data)
                 }).fail(function (response) {
-                    this.validationErrors = response.responseJSON ?
-                        response.responseJSON.values : [{message: __('error.common')}];
+                    const errors = response.responseJSON ?
+                        this.normalize(response.responseJSON) : [{message: __('error.common')}];
+                    this.validationErrors = errors;
                     this.render();
                 }.bind(this))
                 .always(() => loadingMask.remove());
