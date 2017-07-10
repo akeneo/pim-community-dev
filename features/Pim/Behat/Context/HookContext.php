@@ -93,16 +93,18 @@ class HookContext extends PimContext
      */
     public function takeScreenshotAfterFailedStep(AfterStepScope $event)
     {
-        if ($event->getTestResult() === TestResult::FAILED) {
+        if ($event->getTestResult()->getResultCode() === TestResult::FAILED) {
             $driver = $this->getSession()->getDriver();
 
             $rootDir   = dirname($this->getParameter('kernel.root_dir'));
-            $filePath  = $event->getLogicalParent()->getFile();
+            $filePath  = $event->getFeature()->getFile();
+            $scenarios = $event->getFeature()->getScenarios();
+            $scenario = $scenarios[count($scenarios) - 1];
             $stepStats = [
                 'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
-                'scenario_line'  => $event->getLogicalParent()->getLine(),
-                'scenario_label' => $event->getLogicalParent()->getTitle(),
-                'exception'      => $event->getException()->getMessage(),
+                'scenario_line'  => $event->getStep()->getLine(),
+                'scenario_label' => $scenario->getTitle(),
+                //'exception'      => $event->getException()->getMessage(), TODO: Fix this if we want to make glados work again
                 'step_line'      => $event->getStep()->getLine(),
                 'step_label'     => $event->getStep()->getText(),
                 'status'         => 'failed'
@@ -118,7 +120,7 @@ class HookContext extends PimContext
                 }
 
                 $lineNum  = $event->getStep()->getLine();
-                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
+                $filename = strstr($event->getFeature()->getFile(), 'features/');
                 $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
                 $path     = sprintf('%s/%s', $dir, $filename);
 

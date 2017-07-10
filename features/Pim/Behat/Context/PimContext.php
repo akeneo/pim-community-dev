@@ -129,7 +129,7 @@ class PimContext extends RawMinkContext implements KernelAwareContext
     /**
      * @return FeatureContext
      */
-    protected function getMainContext(): FeatureContext
+    public function getMainContext(): FeatureContext
     {
         if (null === $this->mainContext) {
             return $this;
