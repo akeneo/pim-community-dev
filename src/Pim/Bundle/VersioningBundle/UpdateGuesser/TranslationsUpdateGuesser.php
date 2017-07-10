@@ -6,9 +6,15 @@ use Akeneo\Component\Localization\Model\TranslationInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 
 /**
  * Translation update guesser
+ *
+ * Add UpdateGuesserInterface::ACTION_DELETE in support action, since we introduce TranslatableUpdater in
+ * Updaters, doctrine doesn't consider a label transaltion remove as an `update_entity` action on the parent entity,
+ * we have to add `delete` action, but doctrine try to delete an already deleted entity, so we have to check the status
+ * of entity in guessUpdates method.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -38,7 +44,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
      */
     public function supportAction($action)
     {
-        return $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY;
+        return in_array($action, [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]);
     }
 
     /**
@@ -49,6 +55,12 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
         $pendings = [];
         if ($entity instanceof TranslationInterface) {
             $translatedEntity = $entity->getForeignKey();
+            $state = $em->getUnitOfWork()->getEntityState($translatedEntity);
+
+            if (UnitOfWork::STATE_REMOVED === $state) {
+                return [];
+            }
+
             if ($translatedEntity instanceof VersionableInterface ||
                 in_array(ClassUtils::getClass($translatedEntity), $this->versionableEntities)) {
                 $pendings[] = $translatedEntity;

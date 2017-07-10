@@ -85,8 +85,8 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "processed 1"
-    And I should see "skipped product (no differences) 1"
+    Then I should see the text "processed 1"
+    And I should see the text "skipped product (no differences) 1"
     And there should be 1 product
     And the product "SKU-001" should have the following values:
       | sole_fabric              | PVC          |

@@ -17,8 +17,8 @@ Feature: Export families in XLSX
     And I am on the "xlsx_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "xlsx_footwear_family_export" job to finish
-    Then I should see "Read 6"
-    And I should see "Written 6"
+    Then I should see the text "Read 6"
+    And I should see the text "Written 6"
     And exported xlsx file of "xlsx_footwear_family_export" should contain:
       | code     | label-en_US | attributes                                                                                                 | attribute_as_label | requirements-mobile                             | requirements-tablet                                                       |
       | boots    | Boots       | color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions | name               | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku,weather_conditions |

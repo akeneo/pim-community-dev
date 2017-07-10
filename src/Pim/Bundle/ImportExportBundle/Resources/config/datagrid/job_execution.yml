@@ -18,7 +18,7 @@ datagrid:
             date:
                 label:         Date
                 data_name:     date
-                type: product_value_datetime
+                type:          datetime
                 frontend_type: datetime
             status:
                 label:         Status
@@ -77,12 +77,10 @@ datagrid:
                             multiple: true
                 date:
                     type:             datetime
-                    data_name:        date
-                    filter_by_having: true
+                    data_name:        e.startTime
                 status:
                     type:             choice
-                    data_name:        status
-                    filter_by_having: true
+                    data_name:        e.status
                     options:
                         field_options:
                             multiple: true

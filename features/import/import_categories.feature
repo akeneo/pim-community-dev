@@ -47,8 +47,8 @@ Feature: Import categories
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
-    Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
-    And I should see "Property \"parent\" expects a valid category code. The category does not exist, \"tshirts\" given."
+    Then I should see the text "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
+    And I should see the text "Property \"parent\" expects a valid category code. The category does not exist, \"tshirts\" given."
     And there should be the following categories:
       | code        | label       | parent    |
       | computers   | Computers   |           |
@@ -72,7 +72,7 @@ Feature: Import categories
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
-    And I should see "Field \"code\" must be filled"
+    And I should see the text "Field \"code\" must be filled"
 
   Scenario: Successfully import categories in XLSX
     Given the "footwear" catalog configuration

@@ -128,8 +128,6 @@ pim_enrich:
       description: Wybierz grupę wariantów, do której chcesz dodać wybrane produkty
       success_flash: Produkty zostały pomyślnie dodane do wybranej grupy wariantów
       no_variant_group: Żadna grupa wariantów nie istnieje. Proszę zacznij od utworzenia jednej.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     set-attribute-requirements:
       label: Określ wymagania atrybutów
@@ -330,7 +328,6 @@ btn:
     drag_or_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
   edit: edytuj
   save: zapisz
-  save and back: zapisz i wróć do tabeli
   save and create: zapisz i utwórz nowy
   save and next: zapisz i przejdź dalej
   save and finish: zapisz i zakończ
@@ -741,6 +738,7 @@ Entity name: Nazwa encji
 Entity id: Id Encji
 Data: Dane
 Author: Autor
+Logged at: Zalogowano jako
 Deleted: Usunięty
 Old values: Poprzednie wartości
 New values: Nowe wartości

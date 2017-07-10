@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Du kan ikke gruppere følgende produkt, fordi det er allerede i en variant gruppe eller ikke har den gruppe akse.
       no_variant_group: Ingen variant gruppe for nu. Start med at oprette en variant gruppe.
       no_valid_variant_group: Ingen variant gruppe deler attributter med udvalgte produkter.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     set-attribute-requirements:
       label: Indstil attribut krav
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Træk og slip for at indlæse eller klik her
   edit: rediger
   save: gem
-  save and back: gem og tilbage til liste
   save and create: gem og opret ny
   save and next: gem og næste
   save and finish: gem og afslut

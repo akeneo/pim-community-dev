@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Sie können die folgenden Produkte nicht gruppieren, da sie bereits in einer Variantengruppe verwendet werden oder die Gruppenachse nicht besitzen.
       no_variant_group: Bis jetzt keine Variantengruppen vorhanden. Beginnen Sie mit dem Anlegen einer Variantengruppe.
       no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     set-attribute-requirements:
       label: Benötigte Attribute auswählen
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Upload per Drag & Drop oder hier klicken
   edit: Bearbeiten
   save: Speichern
-  save and back: speichern und zurück zur Tabellenansicht
   save and create: Speichern und neuen anlegen
   save and next: Speichern und weiter
   save and finish: Speichern und fertigstellen
@@ -354,7 +351,7 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Tabellenansicht
+  to grid: Zurück zur Übersicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
@@ -506,7 +503,7 @@ Required: Erforderlich
 Unique: Eindeutig
 Not required: Nicht erforderlich
 Translatable: Übersetzbar
-Scopable: Wert je Ausgabekanal
+Scopable: Je Ausgabekanal individualisierbar
 Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
@@ -529,10 +526,10 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar in der Tabellenansicht
+Useable as grid filter: Verwendbar im Raster
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
-Locale specific: Gebietsschemaspezifisch
+Locale specific: Gebietsschema-spezifisch
 default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
@@ -581,7 +578,7 @@ Negative allowed: Negative Werte zulassen
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
-Default metric unit: Standardmaßeinheit
+Default metric unit: Standard-Maßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
 None: Keine
@@ -879,6 +876,6 @@ pim_enrich_attribute_form:
   localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
-  locale_specific: Gebietsschemaspezifisch
+  locale_specific: Gebietsschema-spezifisch
   group: Attributgruppe
-  useableAsGridFilter: Verwendbar in der Tabellenansicht
+  useableAsGridFilter: Verwendbar im Raster

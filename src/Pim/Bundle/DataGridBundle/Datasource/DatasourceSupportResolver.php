@@ -20,19 +20,8 @@ class DatasourceSupportResolver
     /** @staticvar string */
     const DATASOURCE_SUPPORT_MONGODB = 'mongodb';
 
-    /** @var string */
-    protected $storageDriver;
-
     /** @var array */
     protected $smartDatasources = [];
-
-    /**
-     * @param string $storageDriver
-     */
-    public function __construct($storageDriver)
-    {
-        $this->storageDriver = $storageDriver;
-    }
 
     /**
      * @param string $datasourceType
@@ -43,14 +32,6 @@ class DatasourceSupportResolver
      */
     public function getSupport($datasourceType)
     {
-        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->storageDriver) {
-            return self::DATASOURCE_SUPPORT_ORM;
-        }
-
-        if (in_array($datasourceType, $this->smartDatasources)) {
-            return self::DATASOURCE_SUPPORT_MONGODB;
-        }
-
         return self::DATASOURCE_SUPPORT_ORM;
     }
 

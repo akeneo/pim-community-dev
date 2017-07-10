@@ -59,7 +59,6 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.completeness_collection'
-            - '%pim_catalog_product_storage_driver%'
             - '@pim_user.context.user'
             - '@pim_catalog.completeness.calculator'
         tags:

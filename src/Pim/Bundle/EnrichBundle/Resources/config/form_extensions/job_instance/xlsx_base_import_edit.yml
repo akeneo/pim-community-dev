@@ -2,6 +2,13 @@ extensions:
     pim-job-instance-xlsx-base-import-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-xlsx-base-import-edit-mainImage:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-xlsx-base-import-edit
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-import-xlsx.svg
+
     pim-job-instance-xlsx-base-import-edit-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-job-instance-xlsx-base-import-edit

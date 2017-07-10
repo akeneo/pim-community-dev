@@ -26,8 +26,10 @@ Feature: Export product by attribute date
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I press the "Edit" button
     When I visit the "Content" tab
     Then I should see the text "Is empty"
+    And I move backward one page
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -47,9 +49,11 @@ Feature: Export product by attribute date
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I press the "Edit" button
     When I visit the "Content" tab
     Then I should see the text "Greater than"
     And the field filter-value-start should contain "08/13/2015"
+    And I press the "Save" button
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
@@ -69,10 +73,12 @@ Feature: Export product by attribute date
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I press the "Edit" button
     When I visit the "Content" tab
     Then I should see the text "Between"
     And the field filter-value-start should contain "08/13/2014"
     And the field filter-value-end should contain "09/01/2017"
+    And I move backward one page
     When I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:

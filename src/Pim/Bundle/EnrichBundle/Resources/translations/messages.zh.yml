@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: 你不能将以下产品加入组，因为它已经在一个款式组或没有组轴。
       no_variant_group: 现在没有款式组。请从创款式组开始。
       no_valid_variant_group: 没有款式组与所选产品共享属性。
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: 批量操作"加入到款式组"已经启动。完成后会通知您。
     set-attribute-requirements:
       label: 设置属性要求
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: 拖放式操作可上传或点击这里
   edit: 编辑
   save: 保存
-  save and back: 保存并返回到列表
   save and create: 保存并创建新的
   save and next: 保存和下一步
   save and finish: 保存并完成

@@ -143,13 +143,10 @@ pim_enrich:
         compare_translate: Comparar / Traducir
         delete: Eliminar
         save: Guardar
-        save_and_back: Guardar y regresar a la grilla
       history:
         version: Versión
         author: Autor
         logged_at: Registrado el
-        more: Más
-        less: Menos
         from: De
         modified: Modificado
         property: Propiedad
@@ -214,9 +211,6 @@ pim_enrich:
         deletion_failed: No se ha podido eliminar correctamente el tipo de asociación.
         update_successful: Tipo de asociación actualizado correctamente.
         update_failed: No se ha podido actualizar el tipo de asociación.
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Creado
         created_by: Creado por
@@ -226,10 +220,6 @@ pim_enrich:
         save: Guardar
       title: tipo de asociación
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Creado
         created_by: Creado por
@@ -247,9 +237,6 @@ pim_enrich:
         update_failed: No se ha podido actualizar el canal.
         create_successful: Canal creado correctamente.
         create_failed: No se ha podido crear el canal.
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Creado
         created_by: Creado por
@@ -295,9 +282,6 @@ pim_enrich:
         deletion_failed: No se ha podido eliminar el grupo de variantes.
         update_successful: Grupo variantes actualizado correctamente.
         update_failed: No se ha podido actualizar el grupo de variantes.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - campos
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
         no_attributes: Este grupo de variantes no tiene aun atributos
       btn:
@@ -315,9 +299,6 @@ pim_enrich:
         deletion_failed: No se pudo eliminar el grupo.
         update_successful: El grupo se ha actualizado correctamente.
         update_failed: El grupo no puede ser actualizado.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - campos
       btn:
         save: Guardar
       meta:
@@ -369,6 +350,7 @@ pim_enrich:
             no_available_attributes: No hay más atributos para agregar
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
+          attribute_group_selector: Grupo de atributos
         categories:
           title: Categorías
       panel:
@@ -609,6 +591,7 @@ pim_enrich:
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
         history:
           title: Histórico
+      file_path: Camino del fichero
     mass_edit:
       family:
         attributes:
@@ -825,11 +808,10 @@ batch_jobs:
       label: Agregar a un grupo de variantes
 pim_menu:
   tab:
-    collect: Colectar
-    enrich: Enriquecer
+    dashboard: Cartelera
+    products: Productos
     settings: Configuración
     system: Sistema
-    spread: Distribuir
   item:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -854,9 +836,9 @@ pim_menu:
     user_role: Roles
     info: Información del sistema
     job_tracker: Seguimiento de procesos
-pim_header:
   user:
     logout: Salir
     user_account: Mi cuenta
 pim_notification:
   mark_all_as_read: Marcar todo como leído
+  loading: Cargando...

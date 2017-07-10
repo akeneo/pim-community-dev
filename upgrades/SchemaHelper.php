@@ -24,16 +24,12 @@ class SchemaHelper
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var UpgradeHelper */
-    protected $upgradeHelper;
-
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
         $this->container        = $container;
-        $this->upgradeHelper    = new UpgradeHelper($container);
         $this->classMapping     = [
             'attribute'        => 'pim_catalog.entity.attribute.class',
             'attribute_option' => 'pim_catalog.entity.attribute_option.class',
@@ -67,23 +63,7 @@ class SchemaHelper
                 $resource, implode(', ', array_keys($this->classMapping))));
         }
 
-        if ($this->upgradeHelper->areProductsStoredInMongo() && in_array($resource, $this->productResources)) {
-            return $this->getTableOrCollectionForMongo($resource);
-        }
-
         return $this->getTableOrCollectionForOrm($resource);
-    }
-
-    /**
-     * @param string $resource
-     *
-     * @return string
-     */
-    private function getTableOrCollectionForMongo($resource)
-    {
-        $class = $this->container->getParameter($this->classMapping[$resource]);
-
-        return $this->getDocumentManager()->getClassMetadata($class)->getCollection();
     }
 
     /**
@@ -104,13 +84,5 @@ class SchemaHelper
     private function getEntityManager()
     {
         return $this->container->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return DocumentManager
-     */
-    private function getDocumentManager()
-    {
-        return $this->container->get('doctrine.odm.mongodb.document_manager');
     }
 }

@@ -16,7 +16,7 @@ Feature: Edit a variant group
     When I fill in the variant group property "English (United States)" with "My boots"
     And I save the variant group
     And I reload the page
-    Then I should see "My boots"
+    Then I should see the text "My boots"
 
   @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes

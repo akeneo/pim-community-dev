@@ -34,6 +34,7 @@ Feature: Ensures acl are respected on the export profile tabs
     When I filter by "family" with operator "" and value "Boots"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I press the "Edit" button
     Then I should see the text "Boots"
 
   Scenario: Disable edit general property and show content tab read rights

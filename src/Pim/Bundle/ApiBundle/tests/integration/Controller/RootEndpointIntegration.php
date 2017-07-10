@@ -183,6 +183,46 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_currency_list": {
                 "route": "/api/rest/v1/currencies",
                 "methods": ["GET"]
+            },
+            "pim_api_measure_family_list": {
+                "route": "/api/rest/v1/measure-families",
+                "methods": ["GET"]
+            },
+            "pim_api_measure_family_get": {
+                "route": "/api/rest/v1/measure-families/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_channel_create": {
+                "route": "/api/rest/v1/channels",
+                "methods": ["POST"]
+            },
+            "pim_api_channel_partial_update": {
+                "route": "/api/rest/v1/channels/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_channel_partial_update_list": {
+                "route": "/api/rest/v1/channels",
+                "methods": ["PATCH"]
+            },
+            "pim_api_association_type_get": {
+                "route": "/api/rest/v1/association-types/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_association_type_list": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["GET"]
+            },
+            "pim_api_association_type_create": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["POST"]
+            },
+            "pim_api_association_type_partial_update": {
+                "route": "/api/rest/v1/association-types/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_association_type_partial_update_list": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["PATCH"]
             }
         }
     }

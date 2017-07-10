@@ -131,13 +131,10 @@ pim_enrich:
         compare_translate: Comparar / traduzir
         delete: Eliminar
         save: Guardar
-        save_and_back: Gravar e voltar à grelha
       history:
         version: Versão
         author: Autor
         logged_at: Iniciado sessão em
-        more: Mais
-        less: Menos
         from: De
         modified: Modificado
         property: Propriedade
@@ -196,10 +193,6 @@ pim_enrich:
       scopable: Com âmbito definível
       global: Global
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Criado
         updated: Atualizado
@@ -207,10 +200,6 @@ pim_enrich:
         save: Guardar
       title: tipo de associação
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Criado
         updated: Atualizado
@@ -219,10 +208,6 @@ pim_enrich:
       title: tipo de grupo
     channel:
       title: canal
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Criado
         updated: Atualizado
@@ -255,9 +240,6 @@ pim_enrich:
       label: Rótulo
     variant_group:
       info:
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - campos
         already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
         no_attributes: Este grupo variante ainda não tem atributos
       btn:
@@ -268,10 +250,6 @@ pim_enrich:
         updated: Atualizado
     group:
       title: Grupo
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - campos
       btn:
         save: Guardar
       meta:
@@ -315,6 +293,7 @@ pim_enrich:
             no_available_attributes: Não há mais atributos para adicionar
             no_match: Nenhuma correspondência encontrada
             load_more: A carregar mais resultados...
+          attribute_group_selector: Grupo de atributos
         categories:
           title: Categorias
       panel:
@@ -545,6 +524,7 @@ pim_enrich:
             help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
         history:
           title: Histórico
+      file_path: Caminho do ficheiro
     mass_edit:
       family:
         attributes:
@@ -688,11 +668,10 @@ batch_jobs:
       label: Adicionar a grupo variante
 pim_menu:
   tab:
-    collect: Recolher
-    enrich: Enriquecer
+    dashboard: Painel
+    products: Produtos
     settings: Preferências
     system: Sistema
-    spread: Propagação
   item:
     association_type: Tipos de associação
     attribute: Atributos
@@ -717,9 +696,9 @@ pim_menu:
     user_role: Funções
     info: Informações do Sistema
     job_tracker: Visualizador de processos
-pim_header:
   user:
     logout: Terminar sessão
     user_account: A minha conta
 pim_notification:
   mark_all_as_read: Marcar tudo como lido
+  loading: A carregar...

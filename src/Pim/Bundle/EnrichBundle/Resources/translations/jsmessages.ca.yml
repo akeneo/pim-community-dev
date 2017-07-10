@@ -141,13 +141,10 @@ pim_enrich:
         compare_translate: Comparar / traduir
         delete: Suprimir
         save: Desar
-        save_and_back: Desar i tornar a la quadrícula
       history:
         version: Versió
         author: Autor/a
         logged_at: Connectat a
-        more: Més
-        less: Menys
         from: Des de
         modified: Modificat
         property: Propietat
@@ -207,10 +204,6 @@ pim_enrich:
       scopable: Abastable
       global: Global
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - camps
       meta:
         created: Creat
         created_by: Creat per
@@ -220,10 +213,6 @@ pim_enrich:
         save: Desar
       title: tipus d'associació
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - camps
       meta:
         created: Creat
         created_by: Creat per
@@ -234,10 +223,6 @@ pim_enrich:
       title: tipus de grup
     channel:
       title: canal
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - camps
       meta:
         created: Creat
         created_by: Creat per
@@ -280,9 +265,6 @@ pim_enrich:
         deletion_failed: El grup variants no s'ha pogut suprimir.
         update_successful: El grup de variants s'ha actualitzat correctament.
         update_failed: El grup variants no s'ha pogut actualitzar.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - camps
         already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
         no_attributes: Aquest grup de variants encara no té cap atribut
       btn:
@@ -300,9 +282,6 @@ pim_enrich:
         deletion_failed: No s'ha pogut suprimir el grup.
         update_successful: Grup actualitzat correctament.
         update_failed: El grup no s'ha pogut actualitzar.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - camps
       btn:
         save: Desar
       meta:
@@ -349,6 +328,7 @@ pim_enrich:
             no_available_attributes: No hi ha més atributs a afegir
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
+          attribute_group_selector: Grup d'atributs
         categories:
           title: Categories
       panel:
@@ -582,6 +562,7 @@ pim_enrich:
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
         history:
           title: Històric
+      file_path: Ruta de l'arxiu
     mass_edit:
       family:
         attributes:
@@ -796,11 +777,10 @@ batch_jobs:
       label: Afegir a un grup de variants
 pim_menu:
   tab:
-    collect: Recollir
-    enrich: Enriquir
+    dashboard: Panell de contol
+    products: Productes
     settings: Preferències
     system: Sistema
-    spread: Dispersió
   item:
     association_type: Tipus d'associació
     attribute: Atributs
@@ -825,9 +805,9 @@ pim_menu:
     user_role: Rols
     info: Informació del sistema
     job_tracker: Seguiment del procés
-pim_header:
   user:
     logout: Tanca sessió
     user_account: El meu compte
 pim_notification:
   mark_all_as_read: Marcar tots com a llegits
+  loading: Carregant...

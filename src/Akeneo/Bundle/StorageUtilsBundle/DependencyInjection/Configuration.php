@@ -24,12 +24,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->enumNode('storage_driver')
-                    ->values(AkeneoStorageUtilsExtension::getSupportedStorageDrivers())
-                    ->defaultValue(AkeneoStorageUtilsExtension::DOCTRINE_ORM)
-                ->end()
-            ->end()
-            ->children()
                 ->arrayNode('mapping_overrides')
                     ->prototype('array')
                         ->children()

@@ -30,7 +30,7 @@ class CursorSpec extends ObjectBehavior
         $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
         $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
         $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->distinct(true)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
 
         $query->getArrayResult()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);

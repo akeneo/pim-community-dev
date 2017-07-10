@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Não pode agrupar o seguinte produto, porque já pertence a um grupo variante ou não possui o eixo do grupo.
       no_variant_group: Não existem grupos variantes por enquanto. Por favor, comece criando um grupo variante.
       no_valid_variant_group: Nenhum grupo variante está a partilhar atributos com produtos selecionados.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: A ação em massa "adicionar a grupo variante" foi despoletada. Irá receber notificação quando estiver concluída.
     set-attribute-requirements:
       label: Estabelecer requisitos do atributo
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Arraste e solte para fazer o envio ou clique aqui
   edit: editar
   save: salvar
-  save and back: salvar e voltar para o grid
   save and create: salvar e criar um novo
   save and next: salvar e próximo
   save and finish: salvar e concluir

@@ -27,6 +27,8 @@ Action performed.: Действие выполнено.
 Action is not performed.: Действие не выполнено.
 Please, select item to perform action.: Пожалуйста, выберите элемент для выполнения действия.
 View per page: Записей на странице
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Объект
 oro.datagrid.noentities: Записи не найдены
 oro.datagrid.noresults: "Ничего не найдено. Попробуйте изменить критерии поиска."

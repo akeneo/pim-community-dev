@@ -69,7 +69,7 @@ class FamilyRepository extends EntityRepository implements
         );
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect(sprintf('%s AS familyLabel', $labelExpr))
             ->addSelect('translation.label');
 

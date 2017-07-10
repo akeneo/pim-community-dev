@@ -29,8 +29,7 @@ class TreeContext extends PimContext
      */
     public function iExpandTheNode($node)
     {
-        $this->getCurrentPage()
-            ->getElement('Category tree')
+        $this->getElementOnCurrentPage('Category tree')
             ->expandNode($node);
     }
 
@@ -57,9 +56,9 @@ class TreeContext extends PimContext
      */
     public function iShouldSeeTheNodeUnderTheNode($not, $child, $parent)
     {
-        $parentNode = $this->spin(function () use ($parent) {
-            $categoryTree = $this->getCurrentPage()->getElement('Category tree');
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
 
+        $parentNode = $this->spin(function () use ($parent, $categoryTree) {
             $parentNode = $categoryTree->findNodeInTree($parent);
 
             if (!$parentNode->isOpen()) {
@@ -91,8 +90,7 @@ class TreeContext extends PimContext
      */
     public function theTreeShouldBeOpen($tree)
     {
-        $categoryTree = $this->getCurrentPage()
-            ->getElement('Category tree');
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
         $openTree = $categoryTree->findOpenTree();
 
         if ($openTree !== $tree) {
@@ -121,8 +119,7 @@ class TreeContext extends PimContext
      */
     public function iClickOnTheNode($right, $node)
     {
-        $node = $this->getCurrentPage()
-            ->getElement('Category tree')
+        $node = $this->getElementOnCurrentPage('Category tree')
             ->findNodeInTree($node);
 
         if ($right) {
@@ -138,7 +135,9 @@ class TreeContext extends PimContext
      */
     public function theNodeShouldBeChecked($code)
     {
-        $node = $this->getCurrentPage()->getElement('Category tree')->findNodeInTree($code);
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
+
+        $node = $categoryTree->findNodeInTree($code);
 
         assertNotNull($node);
         assertTrue($node->isSelected());
@@ -149,7 +148,9 @@ class TreeContext extends PimContext
      */
     public function theNodeShouldNotBeChecked($code)
     {
-        $node = $this->getCurrentPage()->getElement('Category tree')->findNodeInTree($code);
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
+
+        $node = $categoryTree->findNodeInTree($code);
 
         assertNotNull($node);
         assertFalse($node->isSelected());

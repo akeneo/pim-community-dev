@@ -3,7 +3,7 @@
 namespace Pim\Behat\Context\Domain\Spread;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step\Then;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
@@ -119,17 +119,29 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
-     * @param JobInstance $job
+     * @When /^I launch the ("([^"]*)" import job)$/
      *
-     * @When /^I launch the ("([^"]*)" (import|export) job)$/
+     * @return Then
      */
-    public function iLaunchTheExportJob(JobInstance $job)
+    public function iLaunchTheImportJob()
     {
-        $exportButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknButton.AknButton--apply');
-        }, 'Cannot find the export button');
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknCenteredBox .AknButton--apply');
+        }, 'Cannot find the import button')->click();
 
-        $exportButton->click();
+        return new Then('I should see the text "Execution details"');
+    }
+
+    /**
+     * @When /^I launch the ("([^"]*)" export job)$/
+     *
+     * @return Then
+     */
+    public function iLaunchTheExportJob()
+    {
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknTitleContainer-meta .AknButton--apply');
+        }, 'Cannot find the export button')->click();
 
         return new Then('I should see the text "Execution details"');
     }

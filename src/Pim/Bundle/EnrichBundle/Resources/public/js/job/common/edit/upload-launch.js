@@ -15,7 +15,14 @@ define(
         'pim/router',
         'oro/messenger'
     ],
-    function ($, _, __, BaseLaunch, router, messenger) {
+    function (
+        $,
+        _,
+        __,
+        BaseLaunch,
+        router,
+        messenger
+    ) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -27,18 +34,7 @@ define(
             },
 
             /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    label: __(this.getFormData().file ? this.config.upload : this.config.launch)
-                }));
-
-                return this;
-            },
-
-            /**
-             * Launch the job
+             * {@inherit}
              */
             launch: function () {
                 if (this.getFormData().file) {
@@ -62,16 +58,14 @@ define(
                         messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
                     })
                     .always(router.hideLoadingMask());
-                } else {
-                    $.post(this.getUrl(), {method: 'POST'}).
-                        then(function (response) {
-                            router.redirect(response.redirectUrl);
-                        })
-                        .fail(function () {
-                            messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
-                        });
                 }
+            },
 
+            /**
+             * {@inherit}
+             */
+            isVisible: function () {
+                return $.Deferred().resolve(this.getFormData().file).promise();
             }
         });
     }

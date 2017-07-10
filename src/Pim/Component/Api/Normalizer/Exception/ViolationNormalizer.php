@@ -5,6 +5,7 @@ namespace Pim\Component\Api\Normalizer\Exception;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -99,6 +100,10 @@ class ViolationNormalizer implements NormalizerInterface
                         $violationMessage = 'The same identifier is already set on another product';
                     }
                 }
+            }
+
+            if ($violation->getRoot() instanceof ChannelInterface && 'category' === $violation->getPropertyPath()) {
+                $error['property'] = 'category_tree';
             }
 
             $key = $propertyPath.$violationMessage;

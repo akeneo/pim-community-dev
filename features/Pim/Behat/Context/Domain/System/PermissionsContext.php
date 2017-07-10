@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context\Domain\System;
 
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -9,6 +10,8 @@ use Pim\Behat\Context\PimContext;
  */
 class PermissionsContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string $action
      * @param string $api
@@ -28,7 +31,8 @@ class PermissionsContext extends PimContext
         }
 
         $element = $api ? 'API permission' : 'Permission';
-        $permissionElement = $this->getCurrentPage()->getElement($element);
+        $permissionElement = $this->getElementOnCurrentPage($element);
+
         switch ($action) {
             case 'grant':
                 $method = 'grant' . $type;
@@ -70,7 +74,9 @@ class PermissionsContext extends PimContext
     public function iShouldSeeRightsOnACL($api, $acls, $action)
     {
         $element = $api ? 'API permission' : 'Permission';
-        $permissionElement = $this->getCurrentPage()->getElement($element);
+
+        $permissionElement = $this->getElementOnCurrentPage($element);
+
         switch ($action) {
             case 'granted':
                 $method = 'isGrantedResource';

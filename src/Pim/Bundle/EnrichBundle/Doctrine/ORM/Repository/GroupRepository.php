@@ -77,7 +77,7 @@ class GroupRepository extends EntityRepository implements
             ->leftJoin('g.axisAttributes', 'attribute')
         ;
 
-        $qb->groupBy('g');
+        $qb->distinct(true);
 
         return $qb;
     }

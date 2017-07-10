@@ -94,7 +94,6 @@ class FixturesLoader
         $filesByType = $this->getFilesToLoadByType($files);
 
         $this->loadSqlFiles($filesByType['sql']);
-        $this->loadMongoDbFiles($filesByType['mongodb']);
         $this->loadImportFiles($filesByType['import']);
         $this->loadReferenceData();
     }
@@ -124,24 +123,6 @@ class FixturesLoader
 
         foreach ($files as $file) {
             $db->executeQuery(file_get_contents($file));
-        }
-    }
-
-    /**
-     * Load Mongo files directly by a regular MongoDB query
-     *
-     * @param array $files
-     */
-    protected function loadMongoDbFiles(array $files)
-    {
-        $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM !== $storage) {
-            return;
-        }
-
-        $db = $this->container->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
-        foreach ($files as $file) {
-            $db->execute(file_get_contents($file));
         }
     }
 
@@ -212,7 +193,6 @@ class FixturesLoader
      * Separate files to load by their type. They can be:
      *  - regular files to load from an import.
      *  - SQL files
-     *  - mongo files
      *
      * @param array $files
      *
@@ -222,7 +202,6 @@ class FixturesLoader
     {
         $filesByType = [
             'sql' => [],
-            'mongodb' => [],
             'import' => [],
         ];
 
@@ -234,25 +213,7 @@ class FixturesLoader
                 continue;
             }
 
-            // do not try to load product file that do not match the storage
-            if ('200_products' === $realPathParts['filename']) {
-                $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
-                if ($storage === AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM &&
-                    'sql' === $realPathParts['extension']
-                ) {
-                    continue;
-                }
-                elseif ($storage === AkeneoStorageUtilsExtension::DOCTRINE_ORM &&
-                    'json' === $realPathParts['extension']
-                ) {
-                    continue;
-                }
-            }
-
             switch ($realPathParts['extension']) {
-                case 'json':
-                    $filesByType['mongodb'][] = $filePath;
-                    break;
                 case 'sql':
                     $filesByType['sql'][] = $filePath;
                     break;

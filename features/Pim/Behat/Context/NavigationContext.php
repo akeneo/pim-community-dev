@@ -2,15 +2,13 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
-use Behat\Mink\Exception\DriverException;
-use Context\Page\Base\Base;
+use Behat\ChainedStepsExtension\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
-class NavigationContext extends PimContext implements PageObjectAwareInterface
+class NavigationContext extends PimContext implements PageObjectAware
 {
     use SpinCapableTrait;
 
@@ -23,7 +21,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     /** @var string */
     protected $password;
 
-    /** @var PageFactory */
+    /** @var PageObjectFactory */
     protected $pageFactory;
 
     /** @var string */
@@ -72,17 +70,19 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     ];
 
     /**
+     * @param string $mainContextClass
      * @param string $baseUrl
      */
-    public function __construct($baseUrl)
+    public function __construct(string $mainContextClass, string $baseUrl)
     {
+        parent::__construct($mainContextClass);
         $this->baseUrl = $baseUrl;
     }
 
     /**
-     * @param PageFactory $pageFactory
+     * {@inheritdoc}
      */
-    public function setPageFactory(PageFactory $pageFactory)
+    public function setPageObjectFactory(PageObjectFactory $pageFactory)
     {
         $this->pageFactory = $pageFactory;
     }
@@ -137,7 +137,19 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     public function iAmOnThePage($page)
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-        $this->openPage($page);
+
+        $this->spin(function () use ($page) {
+            $this->openPage($page);
+            $expectedFullUrl = $this->getCurrentPage()->getUrl();
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
+            $actualUrl = $this->sanitizeUrl($actualFullUrl);
+
+            $result = $expectedUrl === $actualUrl;
+            assertTrue($result, sprintf('Expecting to be on the page %s, not %s', $expectedUrl, $actualUrl));
+
+            return true;
+        }, sprintf('You are not on the %s page', $page));
     }
 
     /**
@@ -158,7 +170,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
 
-        return new Step\Then('I should see the text "Forbidden"');
+        return new Then('I should see the text "Forbidden"');
     }
 
     /**
@@ -217,13 +229,14 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             $entity = $this->getFixturesContext()->$getter($identifier);
             $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
-            $expected = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+            $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
 
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-            $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+            $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+            $result        = $expectedUrl === $actualUrl;
 
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
+            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expectedUrl, $actualUrl));
 
             return true;
         }, sprintf('Cannot got to the %s edit page', $page));
@@ -319,7 +332,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iRefreshCurrentPage()
     {
-        $this->getMainContext()->reload();
+        $this->getMainContext()->getSession()->reload();
         $this->wait();
     }
 
@@ -440,16 +453,17 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $expected
+     * @param string $expectedFullUrl
      */
-    public function assertAddress($expected)
+    public function assertAddress(string $expectedFullUrl)
     {
-        $this->spin(function () use ($expected) {
+        $this->spin(function () use ($expectedFullUrl) {
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-            $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+            $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+            $result        = $expectedUrl === $actualUrl;
 
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
+            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expectedUrl, $actualUrl));
 
             return true;
         }, 'Spinning to assert address');

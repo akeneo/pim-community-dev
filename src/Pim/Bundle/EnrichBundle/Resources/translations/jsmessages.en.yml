@@ -605,9 +605,12 @@ pim_enrich:
                 export.title: Export now
                 import.launch: Import now
                 import.upload: Upload and import now
+                import.upload_file: Upload a file
             meta:
                 job: Job
                 connector: Connector
+            subsection:
+                last_executions: Last executions
             tab:
                 content:
                     title: Content
@@ -667,6 +670,7 @@ pim_enrich:
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                 history:
                     title: History
+            file_path: File path
         mass_edit:
             family:
                 attributes:

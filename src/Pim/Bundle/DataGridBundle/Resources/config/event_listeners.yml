@@ -8,6 +8,8 @@ parameters:
     pim_datagrid.event_listener.configure_product_filters.class:       Pim\Bundle\DataGridBundle\EventListener\ConfigureProductFiltersListener
     pim_datagrid.event_listener.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\ConfigureHistoryGridListener
 
+    pim_datagrid.event_listener.add_job_code_to_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\AddJobCodeToGridListener
+
 services:
     pim_datagrid.event_listener.configure_sorters_listener:
         class: '%pim_datagrid.event_listener.configure_sorters_listener.class%'

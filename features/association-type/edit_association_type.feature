@@ -15,7 +15,7 @@ Feature: Edit an association type
     When I fill in the following information:
       | English (United States) | My substitution |
     And I press the "Save" button
-    Then I should see "My substitution"
+    Then I should see the text "My substitution"
 
   @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -30,4 +30,4 @@ Feature: Edit an association type
     Given I am on the "PACK" association type page
     When I fill in the following information:
       | English (United States) | My new substitution |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

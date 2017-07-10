@@ -1,0 +1,9 @@
+pim_api_measure_family_list:
+    path: /measure-families
+    defaults: { _controller: pim_api.controller.measure_family:listAction, _format: json }
+    methods: [GET]
+
+pim_api_measure_family_get:
+    path: /measure-families/{code}
+    defaults: { _controller: pim_api.controller.measure_family:getAction, _format: json }
+    methods: [GET]

@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Context for commands

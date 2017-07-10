@@ -93,7 +93,7 @@ class ImportExportContext extends PimContext
         $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '';
 
         $expectedLines = [];
-        foreach ($behatData->getLines() as $line) {
+        foreach ($behatData->getStrings() as $line) {
             if (!empty($line)) {
                 $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
             }

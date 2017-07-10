@@ -9,7 +9,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "X_SELL" association type page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View association type history
@@ -23,7 +23,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "Sizes" attribute group page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View attribute group history
@@ -37,7 +37,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "color" attribute page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View attribute history
@@ -51,7 +51,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "sandals" category page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View category history
@@ -65,7 +65,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "mobile" channel page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View channel history
@@ -79,7 +79,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "boots" family page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View family history
@@ -93,7 +93,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "similar_boots" product group page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View group history
@@ -107,7 +107,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "caterpillar_boots" variant group page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View group variant history
@@ -121,7 +121,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "boot" product page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View product history
@@ -135,7 +135,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "csv_footwear_option_export" export job edit page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View export profile history
@@ -149,7 +149,7 @@ Feature: Enforce ACL on history
     And a "boot" product
     And I am logged in as "admin"
     And I am on the "csv_footwear_group_import" import job edit page
-    And I should see "history"
+    And I should see the text "history"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource View import profile history

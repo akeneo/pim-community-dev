@@ -12,8 +12,8 @@ Feature: Export attribute groups
     And I am on the "csv_footwear_attribute_group_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_attribute_group_export" job to finish
-    Then I should see "Read 6"
-    And I should see "Written 6"
+    Then I should see the text "Read 6"
+    And I should see the text "Written 6"
     And exported file of "csv_footwear_attribute_group_export" should contain:
     """
     code;label-en_US;attributes;sort_order

@@ -44,9 +44,9 @@ Feature: Import product information with date
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
-    Then I should see "skipped 3"
+    Then I should see the text "skipped 3"
     Then the product "SKU-004" should have the following values:
       | destocking_date | 2014-10-28 |
     Then the product "SKU-005" should have the following values:
       | destocking_date |  |
-    And I should see "This type of value expects the use of the format yyyy-MM-dd for dates."
+    And I should see the text "This type of value expects the use of the format yyyy-MM-dd for dates."
