@@ -7,6 +7,7 @@ use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
+use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -27,6 +28,7 @@ class FixturesContext extends PimContext
         'Channel'          => 'PimCatalogBundle:Channel',
         'Currency'         => 'PimCatalogBundle:Currency',
         'Family'           => 'PimCatalogBundle:Family',
+        'FamilyVariant'    => FamilyVariant::class,
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',

@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * A variant in a family defines the structure for the products with variants: Common attributes, Specific or variant attributes
- * Variant axes
+ * A variant in a family defines the structure for the products with variants:
+ * Common attributes, Specific or variant attributes, Variant axes.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

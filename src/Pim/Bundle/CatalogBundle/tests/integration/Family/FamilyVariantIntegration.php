@@ -245,15 +245,6 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * un attribute ne peut pas être un arbre et vise versa
-     * da
-     */
-    public function testTODO()
-    {
-
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()

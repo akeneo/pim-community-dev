@@ -14,7 +14,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\DBAL\Schema\Table;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
@@ -30,6 +29,7 @@ use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -468,6 +468,51 @@ class FixturesContext extends BaseFixturesContext
                         }
                     }
                     $this->assertArrayEquals(explode(',', $value), $requirements);
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
+                }
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following family variants:$/
+     */
+    public function thereShouldBeTheFollowingFamilyVariants(TableNode $table)
+    {
+        $this->getEntityManager()->clear();
+        foreach ($table->getHash() as $data) {
+            $familyVariant = $this->getFamilyVariant($data['code']);
+            unset($data['code']);
+
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if ('family' === $key) {
+                    assertEquals($value, $familyVariant->getFamily()->getCode());
+                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    assertEquals($value, $familyVariant->getTranslation($matches['locale'])->getLabel());
+                } elseif (preg_match('/^variant-attributes_(?P<level>.*)$/', $key, $matches)) {
+                    $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
+                    $variantAttributes = array_map(
+                        function (AttributeInterface $attribute) {
+                            return $attribute->getCode();
+                        },
+                        $variantAttributeSet->getAttributes()->toArray()
+                    );
+
+                    $this->assertArrayEquals(explode(',', $value), $variantAttributes);
+                } elseif (preg_match('/^variant-axes_(?P<level>.*)$/', $key, $matches)) {
+                    $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
+                    $variantAxes= array_map(
+                        function (AttributeInterface $attribute) {
+                            return $attribute->getCode();
+                        },
+                        $variantAttributeSet->getAxes()->toArray()
+                    );
+
+                    $this->assertArrayEquals(explode(',', $value), $variantAxes);
                 } else {
                     throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
                 }
@@ -2022,7 +2067,9 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
+        return $this
+            ->getContainer()
+            ->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 
     /**
@@ -2059,14 +2106,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 
     /**
