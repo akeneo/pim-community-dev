@@ -479,7 +479,7 @@ pim_enrich:
                     code: Code
                     attribute_as_label: Attribute used as label
                     attribute_as_image: Attribute used as the main picture
-                    empty_attribute_as_image: Default image
+                    empty_attribute_as_image: Not selected
                     label_translations: Label translations
                 attributes:
                     title: Attributes

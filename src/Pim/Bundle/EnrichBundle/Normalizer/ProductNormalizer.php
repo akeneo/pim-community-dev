@@ -152,7 +152,8 @@ class ProductNormalizer implements NormalizerInterface
             'updated'           => $updated,
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $this->getNormalizedCompletenesses($product)
+            'completenesses'    => $this->getNormalizedCompletenesses($product),
+            'image'             => $product->getImage(),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;

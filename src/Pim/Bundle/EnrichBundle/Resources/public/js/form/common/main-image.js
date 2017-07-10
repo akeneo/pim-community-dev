@@ -10,14 +10,17 @@ define(
     [
         'underscore',
         'pim/form',
-        'pim/template/form/main-image'
+        'pim/template/form/main-image',
+        'pim/media-url-generator'
     ],
     function (
         _,
         BaseForm,
-        template
+        template,
+        MediaUrlGenerator
     ) {
         return BaseForm.extend({
+            className: 'AknTitleContainer-image',
             template: _.template(template),
 
             /**
@@ -34,10 +37,20 @@ define(
              */
             render: function () {
                 this.$el.empty().append(this.template({
-                    path: this.config.path
+                    path: this.getPath()
                 }));
 
                 return BaseForm.prototype.render.apply(this, arguments);
+            },
+
+            getPath: function () {
+                if (undefined !== this.config.path) {
+                    return this.config.path;
+                }
+
+                var image = this.getFormData().meta.image;
+
+                return MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail_small');
             }
         });
     }

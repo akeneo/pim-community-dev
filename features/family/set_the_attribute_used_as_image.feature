@@ -17,7 +17,7 @@ Feature: Set the attribute used as the main picture
 
   Scenario: Successfully show default attribute_as_image
     Given I am on the "Bags" family page
-    Then I should see the text "Default image"
+    Then I should see the text "Not selected"
 
   Scenario: Successfully change attribute_as_image
     Given I am on the "Bags" family page
