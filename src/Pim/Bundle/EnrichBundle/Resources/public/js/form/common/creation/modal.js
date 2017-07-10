@@ -99,7 +99,9 @@ define(
 
             // Remove this when create attribute PR is merged
             normalize(errors) {
-                return errors.values.map(error => {
+                const values = errors.values || [];
+
+                return values.map(error => {
                     if (error.attribute === 'sku') {
                         error.attribute = 'identifier'
                     }
