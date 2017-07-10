@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ApiBundle\Checker;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -12,34 +11,34 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductQueryParametersChecker
+class ProductQueryParametersChecker implements ProductQueryParametersCheckerInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $categoryRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface          $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface           $categoryRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $localeRepository,
-        AttributeRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $categoryRepository
     ) {
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
-     * Checks $localeCodes if they exist.
-     * Throws an exception if one of them does not exist or, if there is a $channel, one of them does not belong to it.
-     *
-     * @param string                $localeCodes
-     * @param ChannelInterface|null $channel
-     *
-     * @throws UnprocessableEntityHttpException
+     * {@inheritdoc}
      */
     public function checkLocalesParameters($localeCodes, ChannelInterface $channel = null)
     {
@@ -69,11 +68,7 @@ class ProductQueryParametersChecker
     }
 
     /**
-     * Checks $attributes if they exist. Thrown an exception if one of them does not exist.
-     *
-     * @param string $attributes
-     *
-     * @throws UnprocessableEntityHttpException
+     * {@inheritdoc}
      */
     public function checkAttributesParameters($attributes)
     {
@@ -88,6 +83,26 @@ class ProductQueryParametersChecker
 
         if (!empty($errors)) {
             $plural = count($errors) > 1 ? 'Attributes "%s" do not exist.' : 'Attribute "%s" does not exist.';
+            throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkCategoriesParameters($categories)
+    {
+        $categoryCodes = explode(',', $categories);
+
+        $errors = [];
+        foreach ($categoryCodes as $categoryCode) {
+            if (null === $this->categoryRepository->findOneByIdentifier($categoryCode)) {
+                $errors[] = $categoryCode;
+            }
+        }
+
+        if (!empty($errors)) {
+            $plural = count($errors) > 1 ? 'Categories "%s" do not exist.' : 'Category "%s" does not exist.';
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
         }
     }

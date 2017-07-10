@@ -6,4 +6,5 @@ services:
         class: '%pim_api.checker.product_query_parameters.class%'
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@pim_api.repository.attribute'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.category'

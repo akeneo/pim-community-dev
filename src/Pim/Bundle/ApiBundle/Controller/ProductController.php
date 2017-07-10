@@ -492,6 +492,10 @@ class ProductController
                     sprintf('Search query parameter has to be an array, "%s" given.', gettype($search))
                 );
             }
+
+            if (isset($search['categories'])) {
+                $this->productQueryParametersChecker->checkCategoriesParameters($search['categories']);
+            }
         }
 
         if (null !== $channel && !isset($search['categories'])) {
@@ -528,6 +532,7 @@ class ProductController
                 }
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
+                $this->productQueryParametersChecker->checkLocalesParameters($context['locale']);
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
                 if (isset($filter['locales'])) {
