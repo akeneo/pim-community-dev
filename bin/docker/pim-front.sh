@@ -4,12 +4,12 @@ currentDir=$(dirname "$0")
 
 echo "Clean previous assets"
 
-rm -rf "${currentDir}/app/cache/*"
-rm -rf "${currentDir}/web/bundles/*"
-rm -rf "${currentDir}/web/cache/*"
-rm -rf "${currentDir}/web/css/*"
-rm -rf "${currentDir}/web/dist/*"
-rm -rf "${currentDir}/web/js/*"
+rm -rf ${currentDir}/../../app/cache/*
+rm -rf ${currentDir}/../../web/bundles/*
+rm -rf ${currentDir}/../../web/cache/*
+rm -rf ${currentDir}/../../web/css/*
+rm -rf ${currentDir}/../../web/dist/*
+rm -rf ${currentDir}/../../web/js/*
 
 echo "Install the assets"
 
