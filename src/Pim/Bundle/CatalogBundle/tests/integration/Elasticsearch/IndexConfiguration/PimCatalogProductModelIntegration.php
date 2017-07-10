@@ -16,6 +16,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
+    /** @group todo */
     public function testSearchTshirtInDescription()
     {
         $query = [
@@ -33,9 +34,12 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
-        $this->assertProducts($productsFound, ['model-tshirt-level-0', 'model-tshirt-unique-level-0']);
+        $this->assertProducts($productsFound, ['model-tshirt', 'model-tshirt-unique']);
     }
 
     public function testSearchColorRed()
@@ -52,9 +56,12 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
-        $this->assertProducts($productsFound, ['model-tshirt-level-1-red', 'model-tshirt-unique-level-0']);
+        $this->assertProducts($productsFound, ['model-tshirt-red', 'model-tshirt-unique']);
     }
 
     public function testSearchColorGrey()
@@ -71,9 +78,12 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
-        $this->assertProducts($productsFound, ['model-tshirt-level-1-grey', 'model-hat-level-0']);
+        $this->assertProducts($productsFound, ['model-tshirt-grey', 'model-hat']);
     }
 
     public function testSearchColorBlue()
@@ -90,9 +100,12 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
-        $this->assertProducts($productsFound, ['model-tshirt-level-1-blue', 'watch']);
+        $this->assertProducts($productsFound, ['model-tshirt-blue', 'watch']);
     }
 
     public function testSearchSizeS()
@@ -109,11 +122,14 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
         $this->assertProducts(
             $productsFound,
-            ['tshirt-level-2-grey-s', 'tshirt-level-2-blue-s', 'tshirt-level-2-red-s', 'tshirt-uniq-color-size-s']
+            ['tshirt-grey-s', 'tshirt-blue-s', 'tshirt-red-s', 'tshirt-unique-s']
         );
     }
 
@@ -131,20 +147,24 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
         $this->assertProducts(
             $productsFound,
             [
-                'tshirt-level-2-grey-m',
-                'tshirt-level-2-blue-m',
-                'tshirt-level-2-red-m',
-                'tshirt-uniq-color-size-m',
+                'tshirt-grey-m',
+                'tshirt-blue-m',
+                'tshirt-red-m',
+                'tshirt-unique-m',
                 'hat-m',
             ]
         );
     }
 
+    /** @group todo */
     public function testSearchColorGreyAndSizeM()
     {
         $query = [
@@ -153,7 +173,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     'filter' => [
                         [
                             'has_parent' => [
-                                'type'  => 'pim_catalog_product_model',
+                                'type'  => 'pim_catalog_product_model_0',
                                 'query' => [
                                     'terms' => [
                                         'values.color-option.<all_channels>.<all_locales>' => ['grey'],
@@ -171,9 +191,12 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults($query, [self::PRODUCT_MODEL_DOCUMENT_TYPE]);
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
 
-        $this->assertProducts($productsFound, ['tshirt-level-2-grey-m', 'hat-m']);
+        $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
     }
 
     // Do more complex use cases
@@ -187,10 +210,14 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
     protected function addProducts()
     {
         $productModels = [
-            // simple tshirt - level 0
+            // simple tshirt
             [
-                'identifier' => 'model-tshirt-level-0',
-                'level'      => 0,
+                'identifier' => 'dummy_level_1',
+                'level'      => 1,
+            ],
+            [
+                'identifier' => 'model-tshirt',
+                'level'      => 1,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -206,11 +233,17 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
 
+            [
+                'identifier' => 'dummy_level_0',
+                'parent'     => 'dummy_level_1',
+                'routing' => 'dummy_level_1',
+                'level'      => 0,
+            ],
             // Tshirt model level-1 (varying on color)
             [
-                'identifier' => 'model-tshirt-level-1-grey',
-                'level'      => 1,
-                //                'parent'    => 'model-tshirt-level-0',
+                'identifier' => 'model-tshirt-grey',
+                'parent'     => 'model-tshirt',
+                'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -231,8 +264,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'model-tshirt-level-1-blue',
-                'level'      => 1,
+                'identifier' => 'model-tshirt-blue',
+                'parent'     => 'model-tshirt',
+                'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -253,9 +287,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'model-tshirt-level-1-red',
-                'level'      => 1,
-                //                'parent'    => 'model-tshirt-level-0',
+                'identifier' => 'model-tshirt-red',
+                'parent'     => 'model-tshirt',
+                'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -278,7 +312,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
             // Tshirt unique model
             [
-                'identifier' => 'model-tshirt-unique-level-0',
+                'identifier' => 'model-tshirt-unique',
+                'parent'     => 'dummy_level_1',
+                'routing' => 'dummy_level_1',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'tshirt',
@@ -307,7 +343,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
             // Hats model
             [
-                'identifier' => 'model-hat-level-0',
+                'identifier' => 'model-hat',
+                'parent'     => 'dummy_level_1',
+                'routing' => 'dummy_level_1',
                 'level'      => 0,
                 'family'     => [
                     'code'   => 'hats',
@@ -333,8 +371,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         $productVariants = [
             // tshirt variants (level 2: varying on color and size)
             [
-                'identifier' => 'tshirt-level-2-grey-s',
-                'parent'     => 'model-tshirt-level-1-grey',
+                'identifier' => 'tshirt-grey-s',
+                'parent'     => 'model-tshirt-grey',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -350,8 +389,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-grey-m',
-                'parent'     => 'model-tshirt-level-1-grey',
+                'identifier' => 'tshirt-grey-m',
+                'parent'     => 'model-tshirt-grey',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -367,8 +407,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-grey-l',
-                'parent'     => 'model-tshirt-level-1-grey',
+                'identifier' => 'tshirt-grey-l',
+                'parent'     => 'model-tshirt-grey',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -384,8 +425,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-grey-xl',
-                'parent'     => 'model-tshirt-level-1-grey',
+                'identifier' => 'tshirt-grey-xl',
+                'parent'     => 'model-tshirt-grey',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -402,8 +444,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier' => 'tshirt-level-2-blue-s',
-                'parent'     => 'model-tshirt-level-1-blue',
+                'identifier' => 'tshirt-blue-s',
+                'parent'     => 'model-tshirt-blue',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -419,8 +462,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-blue-m',
-                'parent'     => 'model-tshirt-level-1-blue',
+                'identifier' => 'tshirt-blue-m',
+                'parent'     => 'model-tshirt-blue',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -436,8 +480,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-blue-l',
-                'parent'     => 'model-tshirt-level-1-blue',
+                'identifier' => 'tshirt-blue-l',
+                'parent'     => 'model-tshirt-blue',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -453,8 +498,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-blue-xl',
-                'parent'     => 'model-tshirt-level-1-blue',
+                'identifier' => 'tshirt-blue-xl',
+                'parent'     => 'model-tshirt-blue',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -471,8 +517,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier' => 'tshirt-level-2-red-s',
-                'parent'     => 'model-tshirt-level-1-red',
+                'identifier' => 'tshirt-red-s',
+                'parent'     => 'model-tshirt-red',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -488,8 +535,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-red-m',
-                'parent'     => 'model-tshirt-level-1-red',
+                'identifier' => 'tshirt-red-m',
+                'parent'     => 'model-tshirt-red',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -505,8 +553,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-red-l',
-                'parent'     => 'model-tshirt-level-1-red',
+                'identifier' => 'tshirt-red-l',
+                'parent'     => 'model-tshirt-red',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -522,8 +571,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-level-2-red-xl',
-                'parent'     => 'model-tshirt-level-1-red',
+                'identifier' => 'tshirt-red-xl',
+                'parent'     => 'model-tshirt-red',
+                'routing'    => 'model-tshirt',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -541,8 +591,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
             // T-shirt: size
             [
-                'identifier' => 'tshirt-uniq-color-size-s',
-                'parent'     => 'model-tshirt-unique-level-0',
+                'identifier' => 'tshirt-unique-s',
+                'parent'     => 'model-tshirt-unique',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -558,8 +609,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-uniq-color-size-m',
-                'parent'     => 'model-tshirt-unique-level-0',
+                'identifier' => 'tshirt-unique-m',
+                'parent'     => 'model-tshirt-unique',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -575,8 +627,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-uniq-color-size-l',
-                'parent'     => 'model-tshirt-unique-level-0',
+                'identifier' => 'tshirt-unique-l',
+                'parent'     => 'model-tshirt-unique',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -592,8 +645,9 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier' => 'tshirt-uniq-color-size-xl',
-                'parent'     => 'model-tshirt-unique-level-0',
+                'identifier' => 'tshirt-unique-xl',
+                'parent'     => 'model-tshirt-unique',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -612,13 +666,13 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Watch
             [
                 'identifier' => 'watch',
-                'parent'     => 'no-parent',
+                'parent'     => 'dummy_level_0',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'watch',
                     'labels' => [
                         'fr_FR' => 'La montre unique',
                     ],
-
                 ],
                 'values'     => [
                     'description-text' => [
@@ -637,7 +691,8 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             // Hats variants (varying on size)
             [
                 'identifier' => 'hat-m',
-                'parent'     => 'model-hat-level-0',
+                'parent'     => 'model-hat',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
@@ -654,7 +709,8 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
             [
                 'identifier' => 'hat-l',
-                'parent'     => 'model-hat-level-0',
+                'parent'     => 'model-hat',
+                'routing'    => 'dummy_level_1',
                 'family'     => [
                     'code'   => 'hats',
                     'labels' => [
@@ -675,10 +731,23 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         $this->indexProducts($productVariants);
     }
 
-    private function indexProductModels($productVariants)
+    private function indexProductModels($productModels)
     {
-        foreach ($productVariants as $product) {
-            $this->esClient->index(self::PRODUCT_MODEL_DOCUMENT_TYPE, $product['identifier'], null, $product);
+        foreach ($productModels as $product) {
+            $parentId = null;
+            if (isset($product['parent'])) {
+                $parentId = $product['parent'];
+                unset($product['parent']);
+            }
+
+//            echo self::PRODUCT_MODEL_DOCUMENT_TYPE . '_' . $product['level'] . ' <- ' . $product['identifier'] . "\n";
+
+            $this->esClient->index(
+                self::PRODUCT_MODEL_DOCUMENT_TYPE . '_' . $product['level'],
+                $product['identifier'],
+                $parentId,
+                $product
+            );
         }
 
         $this->esClient->refreshIndex();
