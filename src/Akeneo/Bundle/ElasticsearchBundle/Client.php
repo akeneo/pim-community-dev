@@ -72,6 +72,11 @@ class Client
             $params['parent'] = $parent;
         }
 
+        if (isset($body['routing'])) {
+            $params['routing'] = $body['routing'];
+            unset($body['routing']);
+        }
+
         return $this->client->index($params);
     }
 
