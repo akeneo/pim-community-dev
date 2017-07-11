@@ -7,7 +7,7 @@ Feature: Association type creation
   Background:
     Given the "default" catalog configuration
     And I am logged in as "Julia"
-    And I am on the association types page
+    And I am on the association types pagezzz
     And I create a new association type
 
   Scenario: Successfully create an association type

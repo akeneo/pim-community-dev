@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OroAsseticDumpCommand extends ContainerAwareCommand
+class OroAsseticDumpCommand extendsaaa ContainerAwareCommand
 {
     /**
      * @var OroAssetManager

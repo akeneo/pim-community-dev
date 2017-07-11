@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class PimApiBundle extends Bundle
+class PimApiBundle extends BundleAgain
 {
     /**
      * {@inheritdoc}
