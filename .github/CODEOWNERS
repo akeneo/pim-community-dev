@@ -23,12 +23,12 @@ src/Pim/Bundle/VersionningBundle/** @akeneo/core-catalog
 
 # connector & api context
 src/Pim/Bundle/ApiBundle/** @akeneo/core-web-api
-src/Pim/Component/Api/**    @akeneo/core-web-api
+src/Pim/Component/Api/** @akeneo/core-web-api
 src/Pim/Bundle/ConnectorBundle/** @akeneo/core-import-export
-src/Pim/Component/Connector/**    @akeneo/core-import-export
+src/Pim/Component/Connector/** @akeneo/core-import-export
 
 # our ui adapter
-src/Pim/Component/Enrich/**    @akeneo/core-ui
+src/Pim/Component/Enrich/** @akeneo/core-ui
 src/Pim/Bundle/CommentBundle/** @akeneo/core-ui
 src/Pim/Bundle/DashboardBundle/** @akeneo/core-ui
 src/Pim/Bundle/DataGridBundle/** @akeneo/core-ui
@@ -43,5 +43,5 @@ frontend/** @akeneo/core-ui
 web/** @akeneo/core-ui
 
 # docker packaging
-docker/**               @akeneo/core-docker
+docker/** @akeneo/core-docker
 docker-compose.yml.dist @akeneo/core-docker
