@@ -16,7 +16,7 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @return int
      */
-    public function getId(): int;
+    public function getId(): ?int;
 
     /**
      * @return string

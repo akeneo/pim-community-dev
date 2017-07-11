@@ -112,7 +112,6 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 }
 
                 foreach ($value as $key => $attributeSetData) {
-                    /** @var VariantAttributeSetInterface $attributeSet */
                     if (!isset($attributeSetData['axes']) || !isset($attributeSetData['attributes'])) {
                         continue;
                     }

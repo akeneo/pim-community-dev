@@ -10,6 +10,7 @@ parameters:
     pim_connector.array_converter.flat_to_standard.category.class:                                Pim\Component\Connector\ArrayConverter\FlatToStandard\Category
     pim_connector.array_converter.flat_to_standard.association_type.class:                        Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType
     pim_connector.array_converter.flat_to_standard.family.class:                                  Pim\Component\Connector\ArrayConverter\FlatToStandard\Family
+    pim_connector.array_converter.flat_to_standard.family_variant.class:                          Pim\Component\Connector\ArrayConverter\FlatToStandard\FamilyVariant
     pim_connector.array_converter.flat_to_standard.channel.class:                                 Pim\Component\Connector\ArrayConverter\FlatToStandard\Channel
     pim_connector.array_converter.flat_to_standard.attribute_group.class:                         Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeGroup
     pim_connector.array_converter.flat_to_standard.group_type.class:                              Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType
@@ -105,6 +106,11 @@ services:
 
     pim_connector.array_converter.flat_to_standard.family:
         class: '%pim_connector.array_converter.flat_to_standard.family.class%'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat_to_standard.family_variant:
+        class: '%pim_connector.array_converter.flat_to_standard.family_variant.class%'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 

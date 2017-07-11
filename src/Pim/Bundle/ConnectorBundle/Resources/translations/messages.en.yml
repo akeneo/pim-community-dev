@@ -43,7 +43,7 @@ job_execution.summary:
     skip_products: skipped products
     displayed: first warnings displayed
     charset_validator:
-        title: File encoding:
+        title: 'File encoding:'
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
     product_skipped_no_associations: skipped product (no associations detected)
@@ -100,6 +100,10 @@ batch_jobs:
         label: Family import in CSV
         validation.label: File validation
         import.label: Family import
+    csv_family_variant_import:
+        label: Family variant import in CSV
+        validation.label: File validation
+        import.label: Family variant import
     csv_group_import:
         label: Group import in CSV
         validation.label: File validation
@@ -163,6 +167,10 @@ batch_jobs:
         label: Family import in XLSX
         validation.label: File validation
         import.label: Family import
+    xlsx_family_variant_import:
+        label: Family variant import in XLSX
+        validation.label: File validation
+        import.label: Family variant import
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export

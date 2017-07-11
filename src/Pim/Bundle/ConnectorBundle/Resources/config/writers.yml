@@ -42,6 +42,12 @@ services:
             - '@pim_catalog.saver.family'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.writer.database.family_variant:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.family_variant'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     pim_connector.writer.database.product:
         class: '%pim_connector.writer.database.product.class%'
         arguments:

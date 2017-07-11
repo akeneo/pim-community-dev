@@ -54,6 +54,16 @@ services:
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
 
+    pim_connector.step.csv_family_variant.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_family_variant'
+            - '@pim_connector.processor.denormalization.family_variant'
+            - '@pim_connector.writer.database.family_variant'
+
     pim_connector.step.csv_group.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -330,6 +340,16 @@ services:
             - '@pim_connector.reader.file.xlsx_family'
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
+
+    pim_connector.step.xlsx_family_variant.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_family_variant'
+            - '@pim_connector.processor.denormalization.family_variant'
+            - '@pim_connector.writer.database.family_variant'
 
     pim_connector.step.xlsx_group.import:
         class: '%pim_connector.step.item_step.class%'

@@ -101,6 +101,15 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.processor.denormalization.family_variant:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     pim_connector.processor.denormalization.channel:
         class: '%pim_connector.processor.denormalization.class%'
         arguments:
