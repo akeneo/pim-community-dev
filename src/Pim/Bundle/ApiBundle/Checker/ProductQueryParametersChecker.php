@@ -14,18 +14,18 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class ProductQueryParametersChecker implements ProductQueryParametersCheckerInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
+    private $localeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    private $attributeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
     private $categoryRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param IdentifiableObjectRepositoryInterface          $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface           $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $categoryRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $localeRepository,
@@ -40,10 +40,8 @@ class ProductQueryParametersChecker implements ProductQueryParametersCheckerInte
     /**
      * {@inheritdoc}
      */
-    public function checkLocalesParameters($localeCodes, ChannelInterface $channel = null)
+    public function checkLocalesParameters(array $locales, ChannelInterface $channel = null)
     {
-        $locales = explode(',', $localeCodes);
-
         $errors = [];
         foreach ($locales as $locale) {
             if (null === $this->localeRepository->findOneByIdentifier($locale)) {
@@ -70,12 +68,10 @@ class ProductQueryParametersChecker implements ProductQueryParametersCheckerInte
     /**
      * {@inheritdoc}
      */
-    public function checkAttributesParameters($attributes)
+    public function checkAttributesParameters(array $attributes)
     {
-        $attributeCodes = explode(',', $attributes);
-
         $errors = [];
-        foreach ($attributeCodes as $attributeCode) {
+        foreach ($attributes as $attributeCode) {
             if (null === $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $errors[] = $attributeCode;
             }

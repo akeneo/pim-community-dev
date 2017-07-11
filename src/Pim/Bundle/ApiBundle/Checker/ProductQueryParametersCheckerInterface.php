@@ -17,21 +17,21 @@ interface ProductQueryParametersCheckerInterface
      * Checks $localeCodes if they exist.
      * Throws an exception if one of them does not exist or, if there is a $channel, one of them does not belong to it.
      *
-     * @param string                $localeCodes
+     * @param array                 $locales
      * @param ChannelInterface|null $channel
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkLocalesParameters($localeCodes, ChannelInterface $channel = null);
+    public function checkLocalesParameters(array $locales, ChannelInterface $channel = null);
 
     /**
      * Checks $attributes if they exist. Thrown an exception if one of them does not exist.
      *
-     * @param string $attributes
+     * @param array $attributes
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkAttributesParameters($attributes);
+    public function checkAttributesParameters(array $attributes);
 
     /**
      * Checks $attributes if they exist. Thrown an exception if one of them does not exist.

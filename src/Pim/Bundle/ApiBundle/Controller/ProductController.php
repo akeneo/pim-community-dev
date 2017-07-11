@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\ApiBundle\Checker\ProductQueryParametersChecker;
+use Pim\Bundle\ApiBundle\Checker\ProductQueryParametersCheckerInterface;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
@@ -58,9 +58,6 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -103,34 +100,34 @@ class ProductController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var ProductQueryParametersChecker */
+    /** @var ProductQueryParametersCheckerInterface */
     protected $productQueryParametersChecker;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface   $pqbFactory
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param ProductQueryParametersChecker         $productQueryParametersChecker
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param ProductRepositoryInterface            $productRepository
-     * @param PaginatorInterface                    $searchAfterPaginator
-     * @param ParameterValidatorInterface           $parameterValidator
-     * @param ValidatorInterface                    $productValidator
-     * @param ProductBuilderInterface               $productBuilder
-     * @param RemoverInterface                      $remover
-     * @param ObjectUpdaterInterface                $updater
-     * @param SaverInterface                        $saver
-     * @param RouterInterface                       $router
-     * @param ProductFilterInterface                $emptyValuesFilter
-     * @param StreamResourceResponse                $partialUpdateStreamResource
-     * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
-     * @param array                                 $apiConfiguration
+     * @param ProductQueryBuilderFactoryInterface    $pqbFactory
+     * @param NormalizerInterface                    $normalizer
+     * @param IdentifiableObjectRepositoryInterface  $channelRepository
+     * @param ProductQueryParametersCheckerInterface $productQueryParametersChecker
+     * @param AttributeRepositoryInterface           $attributeRepository
+     * @param ProductRepositoryInterface             $productRepository
+     * @param PaginatorInterface                     $searchAfterPaginator
+     * @param ParameterValidatorInterface            $parameterValidator
+     * @param ValidatorInterface                     $productValidator
+     * @param ProductBuilderInterface                $productBuilder
+     * @param RemoverInterface                       $remover
+     * @param ObjectUpdaterInterface                 $updater
+     * @param SaverInterface                         $saver
+     * @param RouterInterface                        $router
+     * @param ProductFilterInterface                 $emptyValuesFilter
+     * @param StreamResourceResponse                 $partialUpdateStreamResource
+     * @param PrimaryKeyEncrypter                    $primaryKeyEncrypter
+     * @param array                                  $apiConfiguration
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        ProductQueryParametersChecker $productQueryParametersChecker,
+        ProductQueryParametersCheckerInterface $productQueryParametersChecker,
         AttributeRepositoryInterface $attributeRepository,
         ProductRepositoryInterface $productRepository,
         PaginatorInterface $searchAfterPaginator,
@@ -532,7 +529,7 @@ class ProductController
                 }
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
-                $this->productQueryParametersChecker->checkLocalesParameters($context['locale']);
+                $this->productQueryParametersChecker->checkLocalesParameters([$context['locale']]);
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
                 if (isset($filter['locales'])) {
@@ -562,13 +559,15 @@ class ProductController
         }
 
         if ($request->query->has('locales')) {
-            $this->productQueryParametersChecker->checkLocalesParameters($request->query->get('locales'), $channel);
+            $locales = explode(',', $request->query->get('locales'));
+            $this->productQueryParametersChecker->checkLocalesParameters($locales, $channel);
 
             $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
         }
 
         if ($request->query->has('attributes')) {
-            $this->productQueryParametersChecker->checkAttributesParameters($request->query->get('attributes'));
+            $attributes = explode(',', $request->query->get('attributes'));
+            $this->productQueryParametersChecker->checkAttributesParameters($attributes);
 
             $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
         }
