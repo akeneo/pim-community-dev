@@ -9,3 +9,5 @@
 src/Pim/Bundle/ApiBundle/* @solivier
 
 /src/Pim/Bundle/ApiBundle/* @solivier
+
+src/Pim/Bundle/ApiBundle/Command/CreateClientCommand.php @solivier
