@@ -113,9 +113,6 @@ class Client
                 $enveloppe['index']['_routing'] = $document['root_ancestor'];
             }
 
-//            var_dump($enveloppe);
-//            var_dump($document);
-
             $params['body'][] = $enveloppe;
             $params['body'][] = $document;
 
