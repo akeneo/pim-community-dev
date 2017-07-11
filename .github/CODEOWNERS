@@ -1,6 +1,6 @@
 # cf https://github.com/blog/2392-introducing-code-owners
 
-#*       @nidup @jjanvier
+*       @nidup
 
 *.js    @juliensnz
 
