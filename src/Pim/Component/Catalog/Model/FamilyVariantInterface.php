@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -36,11 +35,11 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @param int $level
      *
-     * @return VariantAttributeSetInterface
+     * @return null|VariantAttributeSetInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function getVariantAttributeSet(int $level): VariantAttributeSetInterface;
+    public function getVariantAttributeSet(int $level): ?VariantAttributeSetInterface;
 
     /**
      * @return Collection
@@ -53,12 +52,9 @@ interface FamilyVariantInterface extends TranslatableInterface
     public function getAxes(): Collection;
 
     /**
-     * @param int                          $level
      * @param VariantAttributeSetInterface $variantAttributeSet
-     *
-     * @throws \InvalidArgumentException
      */
-    public function addVariantAttributeSet(int $level, VariantAttributeSetInterface $variantAttributeSet): void;
+    public function addVariantAttributeSet(VariantAttributeSetInterface $variantAttributeSet): void;
 
     /**
      * @param FamilyInterface $family

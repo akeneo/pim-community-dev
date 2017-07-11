@@ -11,7 +11,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**
  * Update the family variant properties
@@ -111,8 +110,11 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
-                foreach ($value as $key => $attributeSetData) {
-                    if (!isset($attributeSetData['axes']) || !isset($attributeSetData['attributes'])) {
+                foreach ($value as $attributeSetData) {
+                    if (!isset($attributeSetData['axes']) ||
+                        !isset($attributeSetData['attributes']) ||
+                        !isset($attributeSetData['level'])
+                    ) {
                         continue;
                     }
 
@@ -124,11 +126,16 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                     }
 
+                    if (!is_numeric($attributeSetData['level'])) {
+                        throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
+                    }
+
                     $attributeSet = $this->attributeSetFactory->create();
                     $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
                     $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
+                    $attributeSet->setLevel($attributeSetData['level']);
 
-                    $familyVariant->addVariantAttributeSet($key + 1, $attributeSet);
+                    $familyVariant->addVariantAttributeSet($attributeSet);
                 }
                 break;
         }

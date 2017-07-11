@@ -35,4 +35,14 @@ interface VariantAttributeSetInterface
      * @param array $axes
      */
     public function setAxes(array $axes): void;
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int;
+
+    /**
+     * @param int $level
+     */
+    public function setLevel(int $level): void;
 }
