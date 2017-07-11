@@ -9,6 +9,6 @@
  */
 define(['pim/form/common/delete', 'pim/remover/attribute-group'], function (DeleteForm, AttributeGroupRemover) {
     return DeleteForm.extend({
-        remover: AttributeGroupRemover
+        remover: AttributeGroupRemoveraaa
     });
 });

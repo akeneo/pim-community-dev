@@ -11,7 +11,7 @@ use Pim\Component\Enrich\Model\ChosableInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ChoicesBuilderInterface
+interface ChoicesBuilderInterfaceAAAA
 {
     /**
      * @param ChosableInterface[] $items
