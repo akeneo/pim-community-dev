@@ -6,8 +6,8 @@
 
 #*.less  @pierallard
 
-src/Pim/Bundle/ApiBundle/*  @skeleton
-src/Pim/Component/Api/*     @skeleton
+#src/Pim/Bundle/ApiBundle/*  @skeleton
+#src/Pim/Component/Api/*     @skeleton
 
-src/Pim/Bundle/EnrichBundle/* @juliensnz @pierallard
-src/Pim/Bundle/UIBundle/*     @juliensnz @pierallard
+#src/Pim/Bundle/EnrichBundle/* @juliensnz @pierallard
+#src/Pim/Bundle/UIBundle/*     @juliensnz @pierallard
