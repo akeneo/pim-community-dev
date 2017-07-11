@@ -20,20 +20,43 @@ function generateCotonTshirtRounddNeckDivided($folie)
     foreach ($colors as $color) {
         $label = 'Cotton t-shirt with a round neck Divided ' . $color . ' #' . $folie;
         $toIndex[] = [
-            'family'   => 'tshirt',
-            'parent'   => $rootParentLabel,
-            'label'    => $label,
-            'color'    => $color,
-            'material' => $materials[$color],
-            'level'    => 0,
+            'family'     => 'tshirt',
+            'parent'     => $rootParentLabel,
+            'identifier' => $label,
+            'level'      => 0,
+            'values'     => [
+                [
+                    'color' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $color,
+                        ],
+                    ],
+                ],
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $materials[$color],
+                        ],
+
+                    ],
+                ],
+            ],
         ];
 
         foreach ($sizes as $size) {
             $toIndex[] = [
-                'family' => 'tshirt',
-                'parent' => $label,
-                'label'  => 'Cotton t-shirt with a round neck Divided ' . $color . ' ' . $size . ' #' . $folie,
-                'size'   => $size,
+                'identifier' => 'Cotton t-shirt with a round neck Divided ' . $color . ' ' . $size . ' #' . $folie,
+                'family'     => 'tshirt',
+                'parent'     => $label,
+                'values'     => [
+                    [
+                        'size' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => $size,
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
     }
@@ -41,9 +64,9 @@ function generateCotonTshirtRounddNeckDivided($folie)
     return array_merge(
         [
             [
-                'family' => 'tshirt',
-                'label'  => $rootParentLabel,
-                'level'  => 1,
+                'family'     => 'tshirt',
+                'identifier' => $rootParentLabel,
+                'level'      => 1,
             ],
         ],
         $toIndex
@@ -61,19 +84,42 @@ function generateTshirtKurtCobainPrint($folie)
     foreach ($colors as $color) {
         $label = 'T-shirt with a Kurt Cobain print motif #' . $folie;
         $toIndex[] = [
-            'family'   => 'tshirt',
-            'label'    => $label,
-            'color'    => $color,
-            'material' => $materials[$color],
-            'level'    => 0,
+            'family'     => 'tshirt',
+            'identifier' => $label,
+            'values'     => [
+                [
+                    'color' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $color,
+                        ],
+                    ],
+                ],
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $materials[$color],
+                        ],
+
+                    ],
+                ],
+            ],
+            'level'      => 0,
         ];
 
         foreach ($sizes as $size) {
             $toIndex[] = [
-                'family' => 'tshirt',
-                'parent' => $label,
-                'label'  => 'T-shirt with a Kurt Cobain print motif ' . $size . ' #' . $folie,
-                'size'   => $size,
+                'family'     => 'tshirt',
+                'parent'     => $label,
+                'identifier' => 'T-shirt with a Kurt Cobain print motif ' . $size . ' #' . $folie,
+                'values'     => [
+                    [
+                        'size' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => $size,
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
     }
@@ -85,10 +131,24 @@ function generateMetalWatch($folie)
 {
     return [
         [
-            'family'   => 'watch',
-            'label'    => 'Metal watch blue/white striped #' . $folie,
-            'color'    => 'blue',
-            'material' => 'metal',
+            'family'     => 'watch',
+            'identifier' => 'Metal watch blue/white striped #' . $folie,
+            'values'     => [
+                [
+                    'color' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'blue',
+                        ],
+                    ],
+                ],
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'metal',
+                        ],
+                    ],
+                ],
+            ],
         ],
     ];
 }
@@ -104,19 +164,42 @@ function generateBraidedHat($folie)
     foreach ($colors as $color) {
         $label = 'Braided hat #' . $folie;
         $toIndex[] = [
-            'family'   => 'watch',
-            'label'    => $label,
-            'color'    => $color,
-            'material' => $materials[$color],
-            'level'    => 0,
+            'family'     => 'watch',
+            'identifier' => $label,
+            'values'     => [
+                [
+                    'color' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $color,
+                        ],
+                    ],
+                ],
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $materials[$color],
+                        ],
+
+                    ],
+                ],
+            ],
+            'level'      => 0,
         ];
 
         foreach ($sizes as $size) {
             $toIndex[] = [
-                'family' => 'watch',
-                'parent' => $label,
-                'label'  => 'Braided hat ' . $size . ' #' . $folie,
-                'size'   => $size,
+                'family'     => 'watch',
+                'parent'     => $label,
+                'identifier' => 'Braided hat ' . $size . ' #' . $folie,
+                'values'     => [
+                    [
+                        'size' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => $size,
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
     }
@@ -133,19 +216,42 @@ function generateTshirtUniqueSize($folie)
     foreach ($sizes as $size) {
         $label = 'T-shirt unique size #' . $folie;
         $toIndex[] = [
-            'family'   => 'tshirt',
-            'label'    => $label,
-            'material' => 'cotton',
-            'size'     => $size,
-            'level'    => 0,
+            'family'     => 'tshirt',
+            'identifier' => $label,
+            'values'     => [
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'cotton',
+                        ],
+                    ],
+                ],
+                [
+                    'size' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $size,
+                        ],
+                    ],
+
+                ],
+            ],
+            'level'      => 0,
         ];
 
         foreach ($colors as $color) {
             $toIndex[] = [
-                'family' => 'tshirt',
-                'parent' => $label,
-                'label'  => 'T-shirt unique size #' . $color . ' #' . $folie,
-                'color'  => $color,
+                'family'     => 'tshirt',
+                'parent'     => $label,
+                'identifier' => 'T-shirt unique size #' . $color . ' #' . $folie,
+                'values'     => [
+                    [
+                        'color' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => $color,
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
     }
@@ -164,20 +270,42 @@ function generateRunningShoes($folie)
     foreach ($sizes as $size) {
         $label = 'Running shoes ' . $size . ' #' . $folie;
         $toIndex[] = [
-            'family'   => 'shoes',
-            'parent'   => $rootParentLabel,
-            'label'    => $label,
-            'material' => 'leather',
-            'size'     => $size,
-            'level'    => 0,
+            'family'     => 'shoes',
+            'parent'     => $rootParentLabel,
+            'identifier' => $label,
+            'values'     => [
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'leather',
+                        ],
+                    ],
+                ],
+                [
+                    'size' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $size,
+                        ],
+                    ],
+                ],
+            ],
+            'level'      => 0,
         ];
 
         foreach ($colors as $color) {
             $toIndex[] = [
-                'family' => 'shoes',
-                'parent' => $label,
-                'label'  => 'Running shoes ' . $size . ' ' . $color . ' #' . $folie,
-                'color'  => $color,
+                'family'     => 'shoes',
+                'parent'     => $label,
+                'identifier' => 'Running shoes ' . $size . ' ' . $color . ' #' . $folie,
+                'values'     => [
+                    [
+                        'color' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => $color,
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
     }
@@ -185,9 +313,9 @@ function generateRunningShoes($folie)
     return array_merge(
         [
             [
-                'family' => 'shoes',
-                'label'  => $rootParentLabel,
-                'level'  => 1,
+                'family'     => 'shoes',
+                'identifier' => $rootParentLabel,
+                'level'      => 1,
             ],
         ],
         $toIndex
@@ -205,19 +333,36 @@ function generateBikerJacket($folie)
     foreach ($materials as $material) {
         $label = 'Biker jacket ' . $material . ' #' . $folie;
         $toIndex[] = [
-            'family'   => 'jacket',
-            'parent'   => $rootParentLabel,
-            'label'    => $label,
-            'material' => $material,
-            'level'    => 0,
+            'family'     => 'jacket',
+            'parent'     => $rootParentLabel,
+            'identifier' => $label,
+            'values'     => [
+                [
+                    'material' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $material,
+                        ],
+                    ],
+                ],
+
+            ],
+            'level'      => 0,
         ];
 
         foreach ($sizes as $size) {
             $toIndex[] = [
-                'family' => 'jacket',
-                'parent' => $label,
-                'label'  => 'Biker jacket ' . $material . ' ' . $size . ' #' . $folie,
-                'size'   => $size,
+                'family'     => 'jacket',
+                'parent'     => $label,
+                'identifier' => 'Biker jacket ' . $material . ' ' . $size . ' #' . $folie,
+                'values'     => [
+                    [
+                        'size' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => $size,
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
     }
@@ -225,10 +370,18 @@ function generateBikerJacket($folie)
     return array_merge(
         [
             [
-                'family' => 'jacket',
-                'label'  => $rootParentLabel,
-                'level'  => 1,
-                'color'  => 'white',
+                'identifier' => $rootParentLabel,
+                'family'     => 'jacket',
+                'level'      => 1,
+                'values'     => [
+                    [
+                        'color' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'white',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ],
         $toIndex
@@ -237,32 +390,31 @@ function generateBikerJacket($folie)
 
 $esClient = $kernel->getContainer()->get('akeneo_elasticsearch.client');
 
-//for ($i = 0; $i < 1; $i++) {
-//    $toIndex = array_merge(
-//        generateCotonTshirtRounddNeckDivided($i)
+for ($i = 0; $i < 1; $i++) {
+    $toIndex = array_merge(
 //        generateCotonTshirtRounddNeckDivided($i),
 //        generateTshirtKurtCobainPrint($i),
-//        generateMetalWatch($i)
+        generateMetalWatch($i)
 //        generateBraidedHat($i),
 //        generateTshirtUniqueSize($i),
 //        generateRunningShoes($i),
 //        generateBikerJacket($i)
-//    );
-//
-//    if ($i % 100 === 0) {
-//        echo "Indexing batch $i";
-//    }
-//
-//    var_dump($toIndex);
-//
-//    $esClient->bulkIndexes('foobar', $toIndex, 'label');
-//}
+    );
 
-$indexeMoi = [
-    [
-        'label'    => 'ffffffffffffo',
-        'yoloo' => 'gzhgoiaheoiahr'
-    ],
-];
+    if ($i % 100 === 0) {
+        echo "Indexing batch $i";
+    }
 
-$esClient->bulkIndexes('foobar', $indexeMoi, 'label');
+    var_dump($toIndex);
+
+    $esClient->bulkIndexes('foobar', $toIndex, 'identifier');
+}
+
+//$indexeMoi = [
+//    [
+//        'identifier' => 'ffffffffffffo',
+//        'yoloo'      => 'gzhgoiaheoiahr',
+//    ],
+//];
+//
+//$esClient->bulkIndexes('foobar', $indexeMoi, 'identifier');
