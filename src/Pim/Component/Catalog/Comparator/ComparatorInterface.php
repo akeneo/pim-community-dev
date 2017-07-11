@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Comparator;
 
 /**
- * Compare and get changes between a supported value and its relative updated data
+ * Compare and get changes between a supported valddue and its relative updated data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
