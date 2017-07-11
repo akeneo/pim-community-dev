@@ -98,14 +98,14 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        // Create temporary table
-        $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT)';
-        $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE);
+        $tempTableName = self::COMPLETE_ASSETS_TABLE;
+        $createSql = <<<SQL
+CREATE TEMPORARY TABLE {$tempTableName} (value_id INT, locale_id INT, channel_id INT)
+SQL;
         $createSql = $this->applyTableNames($createSql);
         $tempTableStmt = $this->connection->prepare($createSql);
         $tempTableStmt->execute();
 
-        // Execute the SELECT
         $sql = $this->getCompleteAssetsSQL();
         $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyTableNames($sql);
@@ -116,23 +116,20 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         }
         $fetchStmt->execute();
 
-        // Fill in temporary table
         $this->connection->beginTransaction();
-        $insertPattern = 'INSERT INTO %s (value_id, locale_id, channel_id) VALUES (%s, %s, %s)';
+        $insertSql = <<<SQL
+    INSERT INTO {$tempTableName} (value_id, locale_id, channel_id) VALUES (?, ?, ?)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
-                $insertSQL = sprintf(
-                    $insertPattern,
-                    self::COMPLETE_ASSETS_TABLE,
-                    $completeness['value_id'],
-                    $completeness['locale_id'],
-                    $completeness['channel_id']
-                );
-
-                $insertStmt = $this->connection->prepare($insertSQL);
+                $insertStmt->bindValue(1, $completeness['value_id']);
+                $insertStmt->bindValue(2, $completeness['locale_id']);
+                $insertStmt->bindValue(3, $completeness['channel_id']);
                 $insertStmt->execute();
             }
+
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
