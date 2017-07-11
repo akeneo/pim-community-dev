@@ -1,5 +1,9 @@
 # 1.6.x
 
+## Bug fixes
+
+- PIM-6529: allow more than 100 elements to be exported with YAML export
+
 # 1.6.17 (2017-06-30)
 
 ## Bug fixes
