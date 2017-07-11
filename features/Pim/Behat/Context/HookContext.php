@@ -190,14 +190,12 @@ class HookContext extends PimContext
     public function collectErrors()
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            try {
-                $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-                $result = $this->getSession()->evaluateScript($script);
-                if ($result) {
-                    $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
-                }
-            } catch (\Exception $e) {
-                echo "Unable to retrieve js error\n";
+            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+            $result = $this->getSession()->evaluateScript($script);
+            if ($result) {
+                $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+
+                throw new JSErrorEncounteredException("Encountered a JS error: '{$result}'");
             }
         }
     }
