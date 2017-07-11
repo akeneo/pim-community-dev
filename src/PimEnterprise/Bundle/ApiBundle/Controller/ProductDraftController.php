@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ApiBundle\Controller;
 
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedHttpException;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -72,10 +72,10 @@ class ProductDraftController
     /**
      * @param string $code
      *
-     * @throws NotFoundHttpException             If the product does not exist
-     *                                           Or if there is no draft created for the product and the current user
-     * @throws ResourceAccessDeniedHttpException If the user has ownership on the product
-     *                                           Or if user has only view permission on the product
+     * @throws NotFoundHttpException         If the product does not exist
+     *                                       Or if there is no draft created for the product and the current user
+     * @throws ResourceAccessDeniedException If the user has ownership on the product
+     *                                       Or if user has only view permission on the product
      *
      * @return JsonResponse
      */
@@ -90,7 +90,7 @@ class ProductDraftController
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
         if ($isOwner) {
-            throw new ResourceAccessDeniedHttpException($product, sprintf(
+            throw new ResourceAccessDeniedException($product, sprintf(
                 'You have ownership on the product "%s", you cannot create or retrieve a draft from this product.',
                 $code
             ));
@@ -100,7 +100,7 @@ class ProductDraftController
         $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
 
         if ($canView && !$canEdit) {
-            throw new ResourceAccessDeniedHttpException($product, sprintf(
+            throw new ResourceAccessDeniedException($product, sprintf(
                 'You only have view permission on the product "%s", you cannot create or retrieve a draft from this product.',
                 $code
             ));

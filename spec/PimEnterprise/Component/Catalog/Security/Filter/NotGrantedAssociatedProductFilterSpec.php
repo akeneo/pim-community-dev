@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedHttpException;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;
 
@@ -40,7 +40,7 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         AssociationInterface $associationUPSELL,
         ArrayCollection $associations,
         \ArrayIterator $iterator,
-        ResourceAccessDeniedHttpException $resourceAccessDeniedHttpException
+        ResourceAccessDeniedException $resourceAccessDeniedException
     ) {
         $productRepository->getAssociatedProductIds($product)->willReturn([
             ['association_id' => 1, 'product_id' => 1],
@@ -67,9 +67,9 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $iterator->current()->willReturn($associationUPSELL);
 
         $product->getAssociations()->willReturn($associations);
-        $resourceAccessDeniedHttpException->getResource()->willReturn($associatedProduct1);
+        $resourceAccessDeniedException->getResource()->willReturn($associatedProduct1);
 
-        $productRepository->find(1)->willThrow($resourceAccessDeniedHttpException->getWrappedObject());
+        $productRepository->find(1)->willThrow($resourceAccessDeniedException->getWrappedObject());
         $associationXSELL->removeProduct($associatedProduct1)->willReturn($associationXSELL);
         $productRepository->find(2)->willReturn($associatedProduct2);
         $associationXSELL->removeProduct($associatedProduct2)->shouldNotBeCalled();

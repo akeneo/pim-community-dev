@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedHttpException;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -46,12 +46,9 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
     {
         try {
             $this->associationFieldSetter->setFieldData($product, $field, $data, $options);
-        } catch (ResourceAccessDeniedHttpException $e) {
-            throw new ResourceAccessDeniedHttpException(
-                $e->getResource(),
-                'You cannot associate a product on which you have not a view permission.',
-                Response::HTTP_FORBIDDEN,
-                $e
+        } catch (ResourceAccessDeniedException $e) {
+            throw new ResourceAccessDeniedException(
+                $e->getResource(), 'You cannot associate a product on which you have not a view permission.', $e
             );
         }
     }
