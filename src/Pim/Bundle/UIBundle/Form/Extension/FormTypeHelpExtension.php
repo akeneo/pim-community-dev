@@ -20,7 +20,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildViezzw(FormView $view, FormInterface $form, array $options)
     {
         if (array_key_exists('help', $options)) {
             $view->vars['help'] = $options['help'];
