@@ -6,11 +6,11 @@
 
 *.less  @pierallard
 
-src/Pim/Bundle/ApiBundle/** @skeleton
-src/Pim/Component/Api/** @skeleton
+src/Pim/Bundle/ApiBundle/** @akeneo/core-web-api
+src/Pim/Component/Api/**    @akeneo/core-web-api
 
 src/Pim/Bundle/CatalogBundle/** @jjanvier
-src/Pim/Component/Catalog/** @jjanvier
+src/Pim/Component/Catalog/**    @jjanvier
 
-docker/** @damien-carcel
+docker/**               @damien-carcel
 docker-compose.yml.dist @damien-carcel
