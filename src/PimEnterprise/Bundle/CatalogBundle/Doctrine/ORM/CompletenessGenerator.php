@@ -80,14 +80,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
             $this->prepareCompleteAssets($criteria);
         }
 
-        $sql = $this->getInsertCompletenessSQL($criteria);
-
-        $stmt = $this->connection->prepare($sql);
-
-        foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
-        }
-        $stmt->execute();
+        $this->insertCompleteness($criteria);
     }
 
     /**
@@ -105,21 +98,46 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        $selectSql = $this->getCompleteAssetsSQL();
-        $selectSql = $this->applyTableNames($selectSql);
-        $selectSql = $this->applyCriteria($selectSql, $criteria);
+        // Create temporary table
+        $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT)';
+        $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE);
+        $createSql = $this->applyTableNames($createSql);
+        $tempTableStmt = $this->connection->prepare($createSql);
+        $tempTableStmt->execute();
 
-        $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
+        // Execute the SELECT
+        $sql = $this->getCompleteAssetsSQL();
+        $sql = $this->applyCriteria($sql, $criteria);
+        $sql = $this->applyTableNames($sql);
 
-        $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE, $selectSql);
-
-        $stmt = $this->connection->prepare($createSql);
-
+        $fetchStmt = $this->connection->prepare($sql);
         foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
+            $fetchStmt->bindValue($placeholder, $value);
         }
+        $fetchStmt->execute();
 
-        $stmt->execute();
+        // Fill in temporary table
+        $this->connection->beginTransaction();
+        $insertPattern = 'INSERT INTO %s (value_id, locale_id, channel_id) VALUES (%s, %s, %s)';
+
+        try {
+            while ($completeness = $fetchStmt->fetch()) {
+                $insertSQL = sprintf(
+                    $insertPattern,
+                    self::COMPLETE_ASSETS_TABLE,
+                    $completeness['value_id'],
+                    $completeness['locale_id'],
+                    $completeness['channel_id']
+                );
+
+                $insertStmt = $this->connection->prepare($insertSQL);
+                $insertStmt->execute();
+            }
+            $this->connection->commit();
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -139,7 +157,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
         return $sql;
     }
-    
+
     /**
      * Overrided method to exclude assets from automatic mapping
      *
