@@ -6,8 +6,8 @@
 
 *.less  @pierallard
 
-src/Pim/Bundle/ApiBundle/** @akeneo/core-web-api
-src/Pim/Component/Api/**    @akeneo/core-web-api
+src/Pim/Bundle/ApiBundle/** @core-web-api
+src/Pim/Component/Api/**    @core-web-api
 
 src/Pim/Bundle/CatalogBundle/** @jjanvier
 src/Pim/Component/Catalog/**    @jjanvier
