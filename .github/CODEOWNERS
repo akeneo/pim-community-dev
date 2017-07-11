@@ -6,6 +6,8 @@
 
 *.less  @pierallard
 
+src/Pim/* @jjanvier
+
 src/Pim/Bundle/ApiBundle/* @solivier
 
 /src/Pim/Bundle/ApiBundle/* @solivier
