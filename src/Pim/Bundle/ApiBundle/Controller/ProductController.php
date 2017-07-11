@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\ApiBundle\Checker\ProductQueryParametersCheckerInterface;
+use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
@@ -100,34 +100,34 @@ class ProductController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var ProductQueryParametersCheckerInterface */
-    protected $productQueryParametersChecker;
+    /** @var QueryParametersCheckerInterface */
+    protected $queryParametersChecker;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface    $pqbFactory
-     * @param NormalizerInterface                    $normalizer
-     * @param IdentifiableObjectRepositoryInterface  $channelRepository
-     * @param ProductQueryParametersCheckerInterface $productQueryParametersChecker
-     * @param AttributeRepositoryInterface           $attributeRepository
-     * @param ProductRepositoryInterface             $productRepository
-     * @param PaginatorInterface                     $searchAfterPaginator
-     * @param ParameterValidatorInterface            $parameterValidator
-     * @param ValidatorInterface                     $productValidator
-     * @param ProductBuilderInterface                $productBuilder
-     * @param RemoverInterface                       $remover
-     * @param ObjectUpdaterInterface                 $updater
-     * @param SaverInterface                         $saver
-     * @param RouterInterface                        $router
-     * @param ProductFilterInterface                 $emptyValuesFilter
-     * @param StreamResourceResponse                 $partialUpdateStreamResource
-     * @param PrimaryKeyEncrypter                    $primaryKeyEncrypter
-     * @param array                                  $apiConfiguration
+     * @param ProductQueryBuilderFactoryInterface   $pqbFactory
+     * @param NormalizerInterface                   $normalizer
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
+     * @param QueryParametersCheckerInterface       $queryParametersChecker
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ProductRepositoryInterface            $productRepository
+     * @param PaginatorInterface                    $searchAfterPaginator
+     * @param ParameterValidatorInterface           $parameterValidator
+     * @param ValidatorInterface                    $productValidator
+     * @param ProductBuilderInterface               $productBuilder
+     * @param RemoverInterface                      $remover
+     * @param ObjectUpdaterInterface                $updater
+     * @param SaverInterface                        $saver
+     * @param RouterInterface                       $router
+     * @param ProductFilterInterface                $emptyValuesFilter
+     * @param StreamResourceResponse                $partialUpdateStreamResource
+     * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
+     * @param array                                 $apiConfiguration
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        ProductQueryParametersCheckerInterface $productQueryParametersChecker,
+        QueryParametersCheckerInterface $queryParametersChecker,
         AttributeRepositoryInterface $attributeRepository,
         ProductRepositoryInterface $productRepository,
         PaginatorInterface $searchAfterPaginator,
@@ -146,7 +146,7 @@ class ProductController
         $this->pqbFactory = $pqbFactory;
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
-        $this->productQueryParametersChecker = $productQueryParametersChecker;
+        $this->queryParametersChecker = $queryParametersChecker;
         $this->attributeRepository = $attributeRepository;
         $this->productRepository = $productRepository;
         $this->searchAfterPaginator = $searchAfterPaginator;
@@ -491,7 +491,7 @@ class ProductController
             }
 
             if (isset($search['categories'])) {
-                $this->productQueryParametersChecker->checkCategoriesParameters($search['categories']);
+                $this->queryParametersChecker->checkCategoriesParameters($search['categories']);
             }
         }
 
@@ -529,7 +529,7 @@ class ProductController
                 }
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
-                $this->productQueryParametersChecker->checkLocalesParameters([$context['locale']]);
+                $this->queryParametersChecker->checkLocalesParameters([$context['locale']]);
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
                 if (isset($filter['locales'])) {
@@ -560,14 +560,14 @@ class ProductController
 
         if ($request->query->has('locales')) {
             $locales = explode(',', $request->query->get('locales'));
-            $this->productQueryParametersChecker->checkLocalesParameters($locales, $channel);
+            $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
 
             $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
         }
 
         if ($request->query->has('attributes')) {
             $attributes = explode(',', $request->query->get('attributes'));
-            $this->productQueryParametersChecker->checkAttributesParameters($attributes);
+            $this->queryParametersChecker->checkAttributesParameters($attributes);
 
             $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
         }
