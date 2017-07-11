@@ -11,7 +11,7 @@ Feature: Browse channels
     Then the grid should contain 3 elements
     And I should see the columns Label and Category tree
 
-  Scenario: Successfully view, sort channels
+  Scenario: Successfully viewzzzz, sort channels
     And I should see channels Ecommerce, Tablet and Print
     And the rows should be sorted ascending by Label
     And I should be able to sort the rows by Label and Category tree
