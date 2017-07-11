@@ -3,13 +3,13 @@
 *       @momoss
 
 # all common, reviewable by every core mate
-src/Acme/** @akeneo/core-common
-src/Behat/** @akeneo/core-common
-src/Oro/** @akeneo/core-common
-features/** @akeneo/core-common
-tests/** @akeneo/core-common
-upgrades/** @akeneo/core-common
-./* @akeneo/core-common
+!src/Acme/**
+!src/Behat/**
+!src/Oro/**
+!features/**
+!tests/**
+!upgrades/**
+!./*
 
 # our infra libraries
 src/Akeneo/** @akeneo/core-libraries
