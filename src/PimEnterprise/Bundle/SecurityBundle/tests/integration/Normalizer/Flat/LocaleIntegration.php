@@ -11,8 +11,8 @@ class LocaleIntegration extends AbstractFlatNormalizerTestCase
 
         $this->assertSame($flatLocale, [
             'code'            => 'de_DE',
-            'view_permission' => 'All',
-            'edit_permission' => 'All'
+            'view_permission' => 'IT support,Manager',
+            'edit_permission' => 'IT support,Manager'
         ]);
     }
 }
