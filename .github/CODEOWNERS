@@ -1,0 +1,13 @@
+# cf https://github.com/blog/2392-introducing-code-owners
+
+*       @nidup @jjanvier
+
+*.js    @juliensnz
+
+*.less  @pierallard
+
+#src/Pim/Bundle/ApiBundle/*  @skeleton
+#src/Pim/Component/Api/*     @skeleton
+
+#src/Pim/Bundle/EnrichBundle/* @juliensnz @pierallard
+#src/Pim/Bundle/UIBundle/*     @juliensnz @pierallard
