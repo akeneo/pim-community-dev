@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -65,7 +64,7 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
 }
 JSON;
 
-        $this->assertResponse($client->getResponse(), $expected);
+        $this->assertListResponse($client->getResponse(), $expected);
     }
 
     /**
@@ -90,7 +89,7 @@ JSON;
         "self": {
             "href": "http://localhost/api/rest/v1/products/{$identifier}"
         }
-    },    
+    },
     "identifier": "{$identifier}",
     "family": null,
     "groups": [],
@@ -105,31 +104,6 @@ JSON;
 JSON;
 
         return $standardized;
-    }
-
-    /**
-     * @param Response $response
-     * @param array    $expected
-     */
-    private function assertResponse(Response $response, $expected)
-    {
-        $result = json_decode($response->getContent(), true);
-        $expected = json_decode($expected, true);
-
-        foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeMediaAttributeData($product);
-            NormalizedProductCleaner::clean($product);
-            $result['_embedded']['items'][$index] = $product;
-
-            if (isset($expected['_embedded']['items'][$index])) {
-                $expectedProduct = $expected['_embedded']['items'][$index];
-                $expectedProduct = $this->sanitizeMediaAttributeData($expectedProduct);
-                NormalizedProductCleaner::clean($expectedProduct);
-                $expected['_embedded']['items'][$index] = $expectedProduct;
-            }
-        }
-
-        $this->assertEquals($expected, $result);
     }
 
     /**

@@ -16,7 +16,7 @@ class AssociationTypeAuthorizationIntegration extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client = $this->createAuthenticatedClient([], [], null, null, 'kevin', 'kevin');
 
         $client->request('GET', '/api/rest/v1/association-types');
 
