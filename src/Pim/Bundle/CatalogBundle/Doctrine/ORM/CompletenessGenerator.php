@@ -121,16 +121,16 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        // Create temporary table
-        $createSQL = 'CREATE TEMPORARY TABLE ' .
-            self::COMPLETE_PRICES_TABLE .
-            ' (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ';
-        $createSQL = $this->applyTableNames($createSQL);
+        $tempTableName = self::COMPLETE_PRICES_TABLE;
+        $createSQL = <<<SQL
+    CREATE TEMPORARY TABLE {$tempTableName}
+    (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id))
+SQL;
 
+        $createSQL = $this->applyTableNames($createSQL);
         $tempTableStmt = $this->connection->prepare($createSQL);
         $tempTableStmt->execute();
 
-        // Execute the SELECT
         $sql = $this->getCompletePricesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyTableNames($sql);
@@ -141,23 +141,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         }
         $fetchStmt->execute();
 
-        // Fill in temporary table
         $this->connection->beginTransaction();
-        $insertPattern = 'INSERT INTO %s (locale_id, channel_id, value_id) VALUES (%s, %s, %s)';
+        $insertSql = <<<SQL
+    INSERT INTO {$tempTableName} (locale_id, channel_id, value_id) 
+    VALUES (?, ?, ?)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
-                $insertSQL = sprintf(
-                    $insertPattern,
-                    self::COMPLETE_PRICES_TABLE,
-                    $completeness['locale_id'],
-                    $completeness['channel_id'],
-                    $completeness['value_id']
-                );
-
-                $insertStmt = $this->connection->prepare($insertSQL);
+                $insertStmt->bindValue(1, $completeness['locale_id']);
+                $insertStmt->bindValue(2, $completeness['channel_id']);
+                $insertStmt->bindValue(3, $completeness['value_id']);
                 $insertStmt->execute();
             }
+
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
@@ -177,16 +175,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        // Create temporary table
         $tempTableName = self::MISSING_TABLE;
-        $createPattern = 'CREATE TEMPORARY TABLE %s (locale_id int, channel_id int, product_id int)';
-        $createSql = sprintf($createPattern, $tempTableName);
-        $createSql = $this->applyTableNames($createSql);
+        $createSql = <<<SQL
+    CREATE TEMPORARY TABLE {$tempTableName} (locale_id int, channel_id int, product_id int)
+SQL;
 
+        $createSql = $this->applyTableNames($createSql);
         $tempTableStmt = $this->connection->prepare($createSql);
         $tempTableStmt->execute();
 
-        // Execute the SELECT
         $sql = $this->getMissingCompletenessesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyTableNames($sql);
@@ -197,23 +194,20 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         }
         $fetchStmt->execute();
 
-        // Fill in temporary table
         $this->connection->beginTransaction();
-        $insertPattern = 'INSERT INTO %s (locale_id, channel_id, product_id) VALUES (%s, %s, %s)';
+        $insertSql = <<<SQL
+    INSERT INTO {$tempTableName} (locale_id, channel_id, product_id) VALUES (?, ?, ?)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
-                $insertSQL = sprintf(
-                    $insertPattern,
-                    $tempTableName,
-                    $completeness['locale_id'],
-                    $completeness['channel_id'],
-                    $completeness['product_id']
-                );
-
-                $insertStmt = $this->connection->prepare($insertSQL);
+                $insertStmt->bindValue(1, $completeness['locale_id']);
+                $insertStmt->bindValue(2, $completeness['channel_id']);
+                $insertStmt->bindValue(3, $completeness['product_id']);
                 $insertStmt->execute();
             }
+
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
@@ -334,24 +328,23 @@ MISSING_SQL;
         $fetchStmt->execute();
 
         $this->connection->beginTransaction();
-        $insertPattern = 'REPLACE pim_catalog_completeness ' .
-            '(locale_id, channel_id, product_id, ratio, missing_count, required_count) VALUES (%s, %s, %s, %s, %s, %s)';
+        $insertSql = <<<SQL
+    REPLACE pim_catalog_completeness
+    (locale_id, channel_id, product_id, ratio, missing_count, required_count) VALUES (?, ?, ?, ?, ?, ?)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
-                $insertSQL = sprintf(
-                    $insertPattern,
-                    $completeness['locale_id'],
-                    $completeness['channel_id'],
-                    $completeness['product_id'],
-                    $completeness['ratio'],
-                    $completeness['missing_count'],
-                    $completeness['required_count']
-                );
-
-                $insertStmt = $this->connection->prepare($insertSQL);
+                $insertStmt->bindValue(1, $completeness['locale_id']);
+                $insertStmt->bindValue(2, $completeness['channel_id']);
+                $insertStmt->bindValue(3, $completeness['product_id']);
+                $insertStmt->bindValue(4, $completeness['ratio']);
+                $insertStmt->bindValue(5, $completeness['missing_count']);
+                $insertStmt->bindValue(6, $completeness['required_count']);
                 $insertStmt->execute();
             }
+
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
