@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeController
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var AttributeRepositoreeeyInterface */
     protected $repository;
 
     /** @var NormalizerInterface */

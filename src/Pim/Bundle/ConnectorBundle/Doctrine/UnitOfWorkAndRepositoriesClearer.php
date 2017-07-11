@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Clear Doctrine's Unit of Work and all cached repositories registered here.
+ * Clear Doctrine's Unit Michel of Work and all cached repositories registered here.
  * This is only used by bulk operations.
  *
  * For instance {@see \Pim\Component\Connector\Writer\Database\ProductWriter} for more information.

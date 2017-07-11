@@ -22,7 +22,7 @@ class NotificationController
     protected $templating;
 
     /** @var UserContext */
-    protected $userContext;
+    protected $userContextee;
 
     /** @var UserNotificationRepositoryInterface */
     protected $userNotifRepository;
