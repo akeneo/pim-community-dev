@@ -28,17 +28,17 @@
 # src/Pim/Component/Connector/** @akeneo/core-import-export
 
 # our ui adapter
-src/Pim/Component/Enrich/**           @akeneo/core-ui
-src/Pim/Bundle/CommentBundle/**       @akeneo/core-ui
-src/Pim/Bundle/DashboardBundle/**     @akeneo/core-ui
-src/Pim/Bundle/DataGridBundle/**      @akeneo/core-ui
-src/Pim/Bundle/EnrichBundle/**        @akeneo/core-ui
-src/Pim/Bundle/FilterBundle/**        @akeneo/core-ui
-src/Pim/Bundle/ImportExportBundle/**  @akeneo/core-ui
-src/Pim/Bundle/NavigationBundle/**    @akeneo/core-ui
-src/Pim/Bundle/NotificationBundle/**  @akeneo/core-ui
-src/Pim/Bundle/PdfGeneratorBundle/**  @akeneo/core-ui
-src/Pim/Bundle/UIBundle/**            @akeneo/core-ui
+# src/Pim/Component/Enrich/**           @akeneo/core-ui
+# src/Pim/Bundle/CommentBundle/**       @akeneo/core-ui
+# src/Pim/Bundle/DashboardBundle/**     @akeneo/core-ui
+# src/Pim/Bundle/DataGridBundle/**      @akeneo/core-ui
+# src/Pim/Bundle/EnrichBundle/**        @akeneo/core-ui
+# src/Pim/Bundle/FilterBundle/**        @akeneo/core-ui
+# src/Pim/Bundle/ImportExportBundle/**  @akeneo/core-ui
+# src/Pim/Bundle/NavigationBundle/**    @akeneo/core-ui
+# src/Pim/Bundle/NotificationBundle/**  @akeneo/core-ui
+# src/Pim/Bundle/PdfGeneratorBundle/**  @akeneo/core-ui
+# src/Pim/Bundle/UIBundle/**            @akeneo/core-ui
 # frontend/**                           @akeneo/core-ui
 # web/**                                @akeneo/core-ui
 
