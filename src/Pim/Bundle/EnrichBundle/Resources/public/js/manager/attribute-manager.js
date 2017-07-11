@@ -1,8 +1,8 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import FetcherRegistry from 'pim/fetcher-registry';
+import $ from 'jquery'
+import _ from 'underscore'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default {
             /**
              * Get the attributes of the given entity
@@ -13,7 +13,7 @@ export default {
              */
     getAttributes: function (entity) {
         if (!entity.family) {
-            return $.Deferred().resolve(_.keys(entity.values));
+            return $.Deferred().resolve(_.keys(entity.values))
         } else {
             return FetcherRegistry.getFetcher('family')
                         .fetch(entity.family)
@@ -21,8 +21,8 @@ export default {
                             return _.union(
                                 _.keys(entity.values),
                                 _.pluck(family.attributes, 'code')
-                            );
-                        });
+                            )
+                        })
         }
     },
 
@@ -41,12 +41,12 @@ export default {
                     var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),
                         function (attributeCode) {
-                            return _.findWhere(attributes, { code: attributeCode });
+                            return _.findWhere(attributes, { code: attributeCode })
                         }
-                    );
+                    )
 
-                    return optionalAttributes;
-                });
+                    return optionalAttributes
+                })
     },
 
             /**
@@ -58,19 +58,19 @@ export default {
              * @return {Promise}
              */
     isOptional: function (attribute, product) {
-        var promise = new $.Deferred();
+        var promise = new $.Deferred()
 
         if ('pim_catalog_identifier' === attribute.type) {
-            promise.resolve(false);
+            promise.resolve(false)
         } else if (undefined !== product.family && null !== product.family) {
             promise = FetcherRegistry.getFetcher('family').fetch(product.family).then(function (family) {
-                return !_.contains(_.pluck(family.attributes, 'code'), attribute.code);
-            });
+                return !_.contains(_.pluck(family.attributes, 'code'), attribute.code)
+            })
         } else {
-            promise.resolve(true);
+            promise.resolve(true)
         }
 
-        return promise;
+        return promise
     },
 
             /**
@@ -84,10 +84,10 @@ export default {
              * @return {Object}
              */
     getValue: function (values, attribute, locale, scope) {
-        locale = attribute.localizable ? locale : null;
-        scope  = attribute.scopable ? scope : null;
+        locale = attribute.localizable ? locale : null
+        scope  = attribute.scopable ? scope : null
 
-        return _.findWhere(values, { scope: scope, locale: locale });
+        return _.findWhere(values, { scope: scope, locale: locale })
     },
 
             /**
@@ -101,12 +101,12 @@ export default {
         return this.getAttributes(object).then(function (attributes) {
             _.each(attributes, function (attributeCode) {
                 if (!_.has(object.values, attributeCode)) {
-                    object.values[attributeCode] = [];
+                    object.values[attributeCode] = []
                 }
-            });
+            })
 
-            return object.values;
-        });
+            return object.values
+        })
     },
 
             /**
@@ -119,14 +119,14 @@ export default {
              * @return {Object}
              */
     generateValue: function (attribute, locale, scope) {
-        locale = attribute.localizable ? locale : null;
-        scope  = attribute.scopable ? scope : null;
+        locale = attribute.localizable ? locale : null
+        scope  = attribute.scopable ? scope : null
 
         return {
             'locale': locale,
             'scope':  scope,
             'data':   attribute.empty_value
-        };
+        }
     },
 
             /**
@@ -148,20 +148,20 @@ export default {
                             attribute,
                             locale.code,
                             channel.code
-                        );
+                        )
 
                 if (!newValue) {
-                    newValue = this.generateValue(attribute, locale.code, channel.code);
-                    values.push(newValue);
+                    newValue = this.generateValue(attribute, locale.code, channel.code)
+                    values.push(newValue)
                 }
 
                 if ('pim_catalog_price_collection' === attribute.type) {
-                    newValue.data = this.generateMissingPrices(newValue.data, currencies);
+                    newValue.data = this.generateMissingPrices(newValue.data, currencies)
                 }
-            }.bind(this));
-        }.bind(this));
+            }.bind(this))
+        }.bind(this))
 
-        return values;
+        return values
     },
 
             /**
@@ -173,18 +173,18 @@ export default {
              * @return {Array}
              */
     generateMissingPrices: function (prices, currencies) {
-        var generatedPrices = [];
+        var generatedPrices = []
         _.each(currencies, function (currency) {
-            var price = _.findWhere(prices, { currency: currency.code });
+            var price = _.findWhere(prices, { currency: currency.code })
 
             if (!price) {
-                price = { amount: null, currency: currency.code };
+                price = { amount: null, currency: currency.code }
             }
 
-            generatedPrices.push(price);
-        });
+            generatedPrices.push(price)
+        })
 
-        return _.sortBy(generatedPrices, 'currency');
+        return _.sortBy(generatedPrices, 'currency')
     },
 
             /**
@@ -195,10 +195,10 @@ export default {
              * @return {Array}
              */
     generateMissingAssociations: function (values) {
-        values.products = _.result(values, 'products', []).sort();
-        values.groups = _.result(values, 'groups', []).sort();
+        values.products = _.result(values, 'products', []).sort()
+        values.groups = _.result(values, 'groups', []).sort()
 
-        return values;
+        return values
     }
-};
+}
 

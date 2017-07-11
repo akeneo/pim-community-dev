@@ -1,26 +1,26 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import Routing from 'routing';
-import LoadingMask from 'oro/loading-mask';
-import OroError from 'oro/error';
-import UI from 'pim/ui';
-import 'jquery.jstree';
-import 'jstree/jquery.jstree.tree_selector';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import Routing from 'routing'
+import LoadingMask from 'oro/loading-mask'
+import OroError from 'oro/error'
+import UI from 'pim/ui'
+import 'jquery.jstree'
+import 'jstree/jquery.jstree.tree_selector'
 
 
 export default function (elementId, prefixRoute) {
-    var $el = $(elementId);
+    var $el = $(elementId)
     if (!$el || !$el.length || !_.isObject($el)) {
-        throw new Error('Unable to instantiate tree on this element');
+        throw new Error('Unable to instantiate tree on this element')
     }
-    var selectedNode       = $el.attr('data-node-id') || -1;
-    var selectedTree       = $el.attr('data-tree-id') || -1;
-    var selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
-    var preventFirst       = selectedNode > 0;
-    var loadingMask        = new LoadingMask();
+    var selectedNode       = $el.attr('data-node-id') || -1
+    var selectedTree       = $el.attr('data-tree-id') || -1
+    var selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode
+    var preventFirst       = selectedNode > 0
+    var loadingMask        = new LoadingMask()
 
-    loadingMask.render().$el.appendTo($('#category-tree-container'));
+    loadingMask.render().$el.appendTo($('#category-tree-container'))
 
     this.config = {
         core: {
@@ -76,19 +76,19 @@ export default function (elementId, prefixRoute) {
                         ),
                 data: function (node) {
                             // the result is fed to the AJAX request `data` option
-                    var id = null;
+                    var id = null
 
                     if (node && node !== -1 && node.attr) {
-                        id = node.attr('id').replace('node_', '');
+                        id = node.attr('id').replace('node_', '')
                     } else {
-                        id = -1;
+                        id = -1
                     }
 
                     return {
                         id: id,
                         select_node_id: selectedNode,
                         with_items_count: 0
-                    };
+                    }
                 }
             }
         },
@@ -106,16 +106,16 @@ export default function (elementId, prefixRoute) {
             select_limit: 1,
             select_multiple_modifier: false
         }
-    };
+    }
     if ($el.attr('data-editable')) {
-        this.config.plugins.push('dnd');
+        this.config.plugins.push('dnd')
     }
     if ($el.attr('data-creatable')) {
-        this.config.plugins.push('contextmenu');
+        this.config.plugins.push('contextmenu')
     }
     this.init = function () {
         $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
-            var this_jstree = $.jstree._focused();
+            var this_jstree = $.jstree._focused()
             data.rslt.o.each(function (i) {
                 $.ajax({
                     async: false,
@@ -132,77 +132,77 @@ export default function (elementId, prefixRoute) {
                     },
                     success: function (r) {
                         if (!r.status) {
-                            this_jstree.rollback(data.rlbk);
+                            this_jstree.rollback(data.rlbk)
                         } else {
-                            $(data.rslt.oc).attr('id', r.id);
+                            $(data.rslt.oc).attr('id', r.id)
                             if (data.rslt.cy && $(data.rslt.oc).children('UL').length) {
-                                data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                                data.inst.refresh(data.inst._get_parent(data.rslt.oc))
                             }
                         }
                     }
-                });
-            });
+                })
+            })
         }).bind('select_node.jstree', function (e, data) {
             if (!$el.attr('data-editable')) {
-                return;
+                return
             }
-            var id  = data.rslt.obj.attr('id').replace('node_', '');
-            var url = Routing.generate(prefixRoute + '_categorytree_edit', { id: id });
+            var id  = data.rslt.obj.attr('id').replace('node_', '')
+            var url = Routing.generate(prefixRoute + '_categorytree_edit', { id: id })
             if ('#' + url === Backbone.history.location.hash || preventFirst) {
-                preventFirst = false;
+                preventFirst = false
 
-                return;
+                return
             }
-            loadingMask.show();
+            loadingMask.show()
             $.ajax({
                 async: true,
                 type: 'GET',
                 url: url + '?content=form',
                 success: function (data) {
                     if (data) {
-                        $('#category-form').html(data);
-                        Backbone.history.navigate('#' + url, {trigger: false});
-                        UI($('#category-form'));
-                        loadingMask.hide();
+                        $('#category-form').html(data)
+                        Backbone.history.navigate('#' + url, {trigger: false})
+                        UI($('#category-form'))
+                        loadingMask.hide()
                     }
                 },
                 error: function (jqXHR) {
-                    OroError.dispatch(null, jqXHR);
-                    loadingMask.hide();
+                    OroError.dispatch(null, jqXHR)
+                    loadingMask.hide()
                 }
-            });
+            })
         }).bind('loaded.jstree', function (event, data) {
             if (event.namespace === 'jstree') {
-                data.inst.get_tree_select().select2({ width: '100%' });
+                data.inst.get_tree_select().select2({ width: '100%' })
             }
         }).bind('create.jstree', function (e, data) {
-            $.jstree._focused().lock();
-            var id       = data.rslt.parent.attr('id').replace('node_', '');
-            var url      = Routing.generate(prefixRoute + '_categorytree_create', { parent: id });
-            var position = data.rslt.position;
-            var label    = data.rslt.name;
+            $.jstree._focused().lock()
+            var id       = data.rslt.parent.attr('id').replace('node_', '')
+            var url      = Routing.generate(prefixRoute + '_categorytree_create', { parent: id })
+            var position = data.rslt.position
+            var label    = data.rslt.name
 
-            url = url + '?label=' + label + '&position=' + position;
-            loadingMask.show();
+            url = url + '?label=' + label + '&position=' + position
+            loadingMask.show()
             $.ajax({
                 async: true,
                 type: 'GET',
                 url: url + '&content=form',
                 success: function (data) {
                     if (data) {
-                        $('#category-form').html(data);
-                        Backbone.history.navigate('#' + url, {trigger: false});
-                        loadingMask.hide();
+                        $('#category-form').html(data)
+                        Backbone.history.navigate('#' + url, {trigger: false})
+                        loadingMask.hide()
                     }
                 },
                 error: function (jqXHR) {
-                    OroError.dispatch(null, jqXHR);
-                    loadingMask.hide();
+                    OroError.dispatch(null, jqXHR)
+                    loadingMask.hide()
                 }
-            });
-        });
-    };
+            })
+        })
+    }
 
-    this.init();
+    this.init()
 };
 

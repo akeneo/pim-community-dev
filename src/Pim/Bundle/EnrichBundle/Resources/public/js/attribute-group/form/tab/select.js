@@ -7,33 +7,34 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import AddAttributeSelect from 'pim/product/add-select/attribute';
-import FetcherRegistry from 'pim/fetcher-registry';
-import ChoicesFormatter from 'pim/formatter/choices/base';
-import LineView from 'pim/common/add-select/line';
+
+import _ from 'underscore'
+import AddAttributeSelect from 'pim/product/add-select/attribute'
+import FetcherRegistry from 'pim/fetcher-registry'
+import ChoicesFormatter from 'pim/formatter/choices/base'
+import LineView from 'pim/common/add-select/line'
+
 export default AddAttributeSelect.extend({
     lineView: LineView,
 
-            /**
-             * Render this extension
-             *
-             * @return {Object}
-             */
+    /**
+     * Render this extension
+     *
+     * @return {Object}
+     */
     render: function () {
         if (!this.hasRightToAdd()) {
-            return this;
+            return this
         }
 
-        return AddAttributeSelect.prototype.render.apply(this, arguments);
+        return AddAttributeSelect.prototype.render.apply(this, arguments)
     },
 
-            /**
-             * Creates request according to recieved options
-             *
-             * @param {Object} options
-             */
+    /**
+     * Creates request according to recieved options
+     *
+     * @param {Object} options
+     */
     onGetQuery: function (options) {
         return FetcherRegistry.getFetcher('attribute').search({
             identifiers: this.getParent().getOtherAttributes().join(','),
@@ -43,29 +44,27 @@ export default AddAttributeSelect.extend({
                         options.callback({
                             results: choices,
                             more: false
-                        });
-                    });
+                        })
+                    })
     },
 
-            /**
-             * {@inheritdoc}
-             */
+    /**
+     * {@inheritdoc}
+     */
     prepareChoices: function (items) {
         return _.chain(items).map(function (item) {
-            var choice = ChoicesFormatter.formatOne(item);
+            var choice = ChoicesFormatter.formatOne(item)
 
-            return choice;
-        }).value();
+            return choice
+        }).value()
     },
 
-            /**
-             * Does the user has right to add an attribute
-             *
-             * @return {Boolean}
-             */
+    /**
+     * Does the user has right to add an attribute
+     *
+     * @return {Boolean}
+     */
     hasRightToAdd: function () {
-        return this.getParent().hasRightToAdd();
+        return this.getParent().hasRightToAdd()
     }
-});
-
-
+})

@@ -1,15 +1,15 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import datagridBuilder from 'oro/datagrid-builder';
-import Routing from 'routing';
-import mediator from 'oro/mediator';
-import template from 'pim/template/form/grid';
-import PageableCollection from 'oro/pageable-collection';
-import DatagridState from 'pim/datagrid/state';
-import requireContext from 'require-context';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import datagridBuilder from 'oro/datagrid-builder'
+import Routing from 'routing'
+import mediator from 'oro/mediator'
+import template from 'pim/template/form/grid'
+import PageableCollection from 'oro/pageable-collection'
+import DatagridState from 'pim/datagrid/state'
+import requireContext from 'require-context'
 export default Backbone.View.extend({
     template: _.template(template),
     className: 'AknTabContainer-content--fullWidth',
@@ -19,40 +19,40 @@ export default Backbone.View.extend({
              * {@inheritdoc}
              */
     initialize: function (alias, options) {
-        this.alias = alias;
-        this.selection = options.selection || [];
+        this.alias = alias
+        this.selection = options.selection || []
         this.selection = _.map(this.selection, function (item) {
-            return String(item);
-        });
-        this.options = options;
+            return String(item)
+        })
+        this.options = options
 
-        var selectionIdentifier = options.selectionIdentifier || 'id';
+        var selectionIdentifier = options.selectionIdentifier || 'id'
 
                 /*
                  * Removing to be sure that this property will not be used in URLs generated to load the data
                  * The selection is never used back side to load the data and it can generate an URL too long.
                  * The rightful usages of the selection are done with the property "this.selection"
                  */
-        delete this.options.selection;
+        delete this.options.selection
 
         mediator.on('datagrid:selectModel:' + this.alias, function (model) {
-            this.addElement(model.get(selectionIdentifier));
-        }.bind(this));
+            this.addElement(model.get(selectionIdentifier))
+        }.bind(this))
 
         mediator.on('datagrid:unselectModel:' + this.alias, function (model) {
-            this.removeElement(model.get(selectionIdentifier));
-        }.bind(this));
+            this.removeElement(model.get(selectionIdentifier))
+        }.bind(this))
     },
 
             /**
              * {@inheritdoc}
              */
     render: function () {
-        this.$el.html(this.template({}));
+        this.$el.html(this.template({}))
 
-        this.renderGrid(this.alias, this.options);
+        this.renderGrid(this.alias, this.options)
 
-        return this;
+        return this
     },
 
             /**
@@ -62,20 +62,20 @@ export default Backbone.View.extend({
              * @param {Object} params
              */
     renderGrid: function (alias, params) {
-        this.urlParams = $.extend(true, {}, params);
-        this.urlParams.alias = alias;
-        this.urlParams.params = $.extend(true, {}, params);
-        this.urlParams[alias] = $.extend(true, {}, params);
+        this.urlParams = $.extend(true, {}, params)
+        this.urlParams.alias = alias
+        this.urlParams.params = $.extend(true, {}, params)
+        this.urlParams[alias] = $.extend(true, {}, params)
 
-        var viewStored = DatagridState.get(alias, ['view']);
+        var viewStored = DatagridState.get(alias, ['view'])
         if (!viewStored.view) {
-            DatagridState.refreshFiltersFromUrl(alias);
+            DatagridState.refreshFiltersFromUrl(alias)
         }
 
-        var state = DatagridState.get(alias, ['view', 'filters', 'columns']) || {};
-        this.applyView(state.view, alias);
-        this.applyFilters(state.filters, alias);
-        this.applyColumns(state.columns, alias);
+        var state = DatagridState.get(alias, ['view', 'filters', 'columns']) || {}
+        this.applyView(state.view, alias)
+        this.applyFilters(state.filters, alias)
+        this.applyColumns(state.columns, alias)
 
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
@@ -85,16 +85,16 @@ export default Backbone.View.extend({
             this.$el.find('.grid-drop').data({
                 metadata: response.metadata,
                 data: JSON.parse(response.data)
-            });
+            })
 
-            var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
+            var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener')
 
             var resolvedModules = []
             _.each(modules, function(module) {
                 resolvedModules.push(requireContext(module))
             })
             datagridBuilder(resolvedModules)
-        }.bind(this));
+        }.bind(this))
     },
 
             /**
@@ -103,7 +103,7 @@ export default Backbone.View.extend({
              * @return {Array}
              */
     getSelection: function () {
-        return this.selection;
+        return this.selection
     },
 
             /**
@@ -112,8 +112,8 @@ export default Backbone.View.extend({
              * @param {Object} element
              */
     addElement: function (element) {
-        this.selection = _.union(this.selection, [element]);
-        this.trigger('grid:selection:updated', this.selection);
+        this.selection = _.union(this.selection, [element])
+        this.trigger('grid:selection:updated', this.selection)
     },
 
             /**
@@ -122,8 +122,8 @@ export default Backbone.View.extend({
              * @param {Object} element
              */
     removeElement: function (element) {
-        this.selection = _.without(this.selection, element);
-        this.trigger('grid:selection:updated', this.selection);
+        this.selection = _.without(this.selection, element)
+        this.trigger('grid:selection:updated', this.selection)
     },
 
             /**
@@ -131,7 +131,7 @@ export default Backbone.View.extend({
              * the choice for now)
              */
     refresh: function () {
-        mediator.trigger('datagrid:doRefresh:' + this.alias);
+        mediator.trigger('datagrid:doRefresh:' + this.alias)
     },
 
             /**
@@ -141,14 +141,14 @@ export default Backbone.View.extend({
              */
     applyView: function (viewId, alias) {
         if (!viewId) {
-            return;
+            return
         }
 
-        this.urlParams[alias + '[_parameters][view][id]'] = viewId;
+        this.urlParams[alias + '[_parameters][view][id]'] = viewId
 
         DatagridState.set(alias, {
             view: viewId
-        });
+        })
     },
 
             /**
@@ -158,41 +158,41 @@ export default Backbone.View.extend({
              */
     applyFilters: function (rawFilters, alias) {
         if (!rawFilters) {
-            return;
+            return
         }
 
-        var filters = PageableCollection.prototype.decodeStateData(rawFilters);
-        var options = {};
+        var filters = PageableCollection.prototype.decodeStateData(rawFilters)
+        var options = {}
 
         if (!_.isEmpty(filters.filters)) {
             options = {
                 state: {
                     filters: _.omit(filters.filters, 'scope')
                 }
-            };
+            }
         }
 
-        var collection = new PageableCollection(null, options);
-        collection.processFiltersParams(this.urlParams, filters, alias + '[_filter]');
+        var collection = new PageableCollection(null, options)
+        collection.processFiltersParams(this.urlParams, filters, alias + '[_filter]')
 
         for (var column in filters.sorters) {
             this.urlParams[alias + '[_sort_by][' + column + ']'] =
                         1 === parseInt(filters.sorters[column]) ?
                             'DESC' :
-                            'ASC';
+                            'ASC'
         }
 
         if (undefined !== filters.pageSize) {
-            this.urlParams[alias + '[_pager][_per_page]'] = filters.pageSize;
+            this.urlParams[alias + '[_pager][_per_page]'] = filters.pageSize
         }
 
         if (undefined !== filters.currentPage) {
-            this.urlParams[alias + '[_pager][_page]'] = filters.currentPage;
+            this.urlParams[alias + '[_pager][_page]'] = filters.currentPage
         }
 
         DatagridState.set(alias, {
             filters: rawFilters
-        });
+        })
     },
 
             /**
@@ -202,17 +202,17 @@ export default Backbone.View.extend({
              */
     applyColumns: function (columns, alias) {
         if (!columns) {
-            return;
+            return
         }
 
         if (_.isArray(columns)) {
-            columns = columns.join();
+            columns = columns.join()
         }
-        this.urlParams[alias + '[_parameters][view][columns]'] = columns;
+        this.urlParams[alias + '[_parameters][view][columns]'] = columns
 
         DatagridState.set(alias, {
             columns: columns
-        });
+        })
     }
-});
+})
 

@@ -7,13 +7,13 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import Dialog from 'pim/dialog';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/state';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import Dialog from 'pim/dialog'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/state'
 export default BaseForm.extend({
     className: 'updated-status',
     template: _.template(template),
@@ -28,36 +28,36 @@ export default BaseForm.extend({
             confirmationMessage: 'pim_enrich.confirmation.discard_changes',
             confirmationTitle: 'pim_enrich.confirmation.leave',
             message: 'pim_enrich.info.entity.updated'
-        }, meta.config);
+        }, meta.config)
 
-        this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)});
-        this.confirmationTitle   = __(this.config.confirmationTitle);
-        this.message             = __(this.config.message);
+        this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)})
+        this.confirmationTitle   = __(this.config.confirmationTitle)
+        this.message             = __(this.config.message)
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * @inheritdoc
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:can-leave', this.linkClicked);
-        $(window).on('beforeunload', this.beforeUnload.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:can-leave', this.linkClicked)
+        $(window).on('beforeunload', this.beforeUnload.bind(this))
 
-        Backbone.Router.prototype.on('route', this.unbindEvents);
+        Backbone.Router.prototype.on('route', this.unbindEvents)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
              * Detach event listeners
              */
     unbindEvents: function () {
-        $(window).off('beforeunload', this.beforeUnload);
+        $(window).off('beforeunload', this.beforeUnload)
     },
 
             /**
@@ -65,31 +65,31 @@ export default BaseForm.extend({
              */
     render: function () {
         if (null === this.state || undefined === this.state) {
-            this.collectState();
+            this.collectState()
         }
 
         this.$el.html(
                     this.template({
                         message: this.message
                     })
-                ).css('opacity', this.hasModelChanged() ? 1 : 0);
+                ).css('opacity', this.hasModelChanged() ? 1 : 0)
 
-        return this;
+        return this
     },
 
             /**
              * Store a stringified representation of the form model for further comparisons
              */
     collectState: function () {
-        this.state = JSON.stringify(this.getFormData());
+        this.state = JSON.stringify(this.getFormData())
     },
 
             /**
              * Force collect state and re-render
              */
     collectAndRender: function () {
-        this.collectState();
-        this.render();
+        this.collectState()
+        this.render()
     },
 
             /**
@@ -97,7 +97,7 @@ export default BaseForm.extend({
              */
     beforeUnload: function () {
         if (this.hasModelChanged()) {
-            return this.confirmationMessage;
+            return this.confirmationMessage
         }
     },
 
@@ -110,7 +110,7 @@ export default BaseForm.extend({
              */
     linkClicked: function (event) {
         if (this.hasModelChanged()) {
-            event.canLeave = confirm(this.confirmationMessage);
+            event.canLeave = confirm(this.confirmationMessage)
         }
     },
 
@@ -120,7 +120,7 @@ export default BaseForm.extend({
              * @return {boolean}
              */
     hasModelChanged: function () {
-        return this.state !== JSON.stringify(this.getFormData());
+        return this.state !== JSON.stringify(this.getFormData())
     },
 
             /**
@@ -132,9 +132,9 @@ export default BaseForm.extend({
              */
     confirmAction: function (message, title, action) {
         if (this.hasModelChanged()) {
-            Dialog.confirm(message, title, action);
+            Dialog.confirm(message, title, action)
         } else {
-            action();
+            action()
         }
     },
 
@@ -148,7 +148,7 @@ export default BaseForm.extend({
                     event.message || this.confirmationMessage,
                     event.title || this.confirmationTitle,
                     event.action
-                );
+                )
     }
-});
+})
 

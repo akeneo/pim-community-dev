@@ -7,10 +7,10 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import mediator from 'oro/mediator';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import mediator from 'oro/mediator'
 export default Backbone.View.extend({
     code: 'form',
     parent: null,
@@ -21,10 +21,10 @@ export default Backbone.View.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        this.extensions = {};
-        this.zones      = {};
-        this.targetZone = '';
-        this.configured = false;
+        this.extensions = {}
+        this.zones      = {}
+        this.targetZone = ''
+        this.configured = false
     },
 
             /**
@@ -34,16 +34,16 @@ export default Backbone.View.extend({
              */
     configure: function () {
         if (null === this.parent) {
-            this.model = new Backbone.Model();
+            this.model = new Backbone.Model()
         }
 
         var extensionPromises = _.map(this.extensions, function (extension) {
-            return extension.configure();
-        });
+            return extension.configure()
+        })
 
         return $.when.apply($, extensionPromises).then(function () {
-            this.configured = true;
-        }.bind(this));
+            this.configured = true
+        }.bind(this))
     },
 
             /**
@@ -55,17 +55,17 @@ export default Backbone.View.extend({
              * @param {int} position     The position of the extension
              */
     addExtension: function (code, extension, zone, position) {
-        extension.setParent(this);
+        extension.setParent(this)
 
-        extension.code       = code;
-        extension.targetZone = zone;
-        extension.position   = position;
+        extension.code       = code
+        extension.targetZone = zone
+        extension.position   = position
 
         if ((undefined === this.extensions) || (null === this.extensions)) {
-            throw 'this.extensions have to be defined. Please ensure you called initialize() method.';
+            throw 'this.extensions have to be defined. Please ensure you called initialize() method.'
         }
 
-        this.extensions[code] = extension;
+        this.extensions[code] = extension
     },
 
             /**
@@ -77,10 +77,10 @@ export default Backbone.View.extend({
              */
     getExtension: function (code) {
         return this.extensions[_.findKey(this.extensions, function (extension) {
-            var expectedPosition = extension.code.length - code.length;
+            var expectedPosition = extension.code.length - code.length
 
-            return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition);
-        })];
+            return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition)
+        })]
     },
 
             /**
@@ -89,9 +89,9 @@ export default Backbone.View.extend({
              * @param {Object} parent
              */
     setParent: function (parent) {
-        this.parent = parent;
+        this.parent = parent
 
-        return this;
+        return this
     },
 
             /**
@@ -100,7 +100,7 @@ export default Backbone.View.extend({
              * @return {Object}
              */
     getParent: function () {
-        return this.parent;
+        return this.parent
     },
 
             /**
@@ -109,14 +109,14 @@ export default Backbone.View.extend({
              * @return {Object}
              */
     getRoot: function () {
-        var rootView = this;
-        var parent = this.getParent();
+        var rootView = this
+        var parent = this.getParent()
         while (parent) {
-            rootView = parent;
-            parent = parent.getParent();
+            rootView = parent
+            parent = parent.getParent()
         }
 
-        return rootView;
+        return rootView
     },
 
             /**
@@ -127,19 +127,19 @@ export default Backbone.View.extend({
              *                         pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
              */
     setData: function (data, options) {
-        options = options || {};
+        options = options || {}
 
         if (!options.silent) {
-            this.getRoot().trigger(this.preUpdateEventName, data);
+            this.getRoot().trigger(this.preUpdateEventName, data)
         }
 
-        this.getRoot().model.set(data, options);
+        this.getRoot().model.set(data, options)
 
         if (!options.silent) {
-            this.getRoot().trigger(this.postUpdateEventName, data);
+            this.getRoot().trigger(this.postUpdateEventName, data)
         }
 
-        return this;
+        return this
     },
 
             /**
@@ -148,7 +148,7 @@ export default Backbone.View.extend({
              * @return {Object}
              */
     getFormData: function () {
-        return this.getRoot().model.toJSON();
+        return this.getRoot().model.toJSON()
     },
 
             /**
@@ -157,7 +157,7 @@ export default Backbone.View.extend({
              * @return {Object}
              */
     getFormModel: function () {
-        return this.getRoot().model;
+        return this.getRoot().model
     },
 
             /**
@@ -165,10 +165,10 @@ export default Backbone.View.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
-        return this.renderExtensions();
+        return this.renderExtensions()
     },
 
             /**
@@ -179,16 +179,16 @@ export default Backbone.View.extend({
     renderExtensions: function () {
                 // If the view is no longer attached to the DOM, don't render the extensions
         if (undefined === this.el) {
-            return this;
+            return this
         }
 
-        this.initializeDropZones();
+        this.initializeDropZones()
 
         _.each(this.extensions, function (extension) {
-            this.renderExtension(extension);
-        }.bind(this));
+            this.renderExtension(extension)
+        }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -197,9 +197,9 @@ export default Backbone.View.extend({
              * @param {Object} extension
              */
     renderExtension: function (extension) {
-        this.getZone(extension.targetZone).appendChild(extension.el);
+        this.getZone(extension.targetZone).appendChild(extension.el)
 
-        extension.render();
+        extension.render()
     },
 
             /**
@@ -207,10 +207,10 @@ export default Backbone.View.extend({
              */
     initializeDropZones: function () {
         this.zones = _.indexBy(this.$('[data-drop-zone]'), function (zone) {
-            return zone.dataset.dropZone;
-        });
+            return zone.dataset.dropZone
+        })
 
-        this.zones.self = this.el;
+        this.zones.self = this.el
     },
 
             /**
@@ -222,26 +222,26 @@ export default Backbone.View.extend({
              */
     getZone: function (code) {
         if (!(code in this.zones)) {
-            this.zones[code] = this.$('[data-drop-zone="' + code + '"]')[0];
+            this.zones[code] = this.$('[data-drop-zone="' + code + '"]')[0]
         }
 
         if (!this.zones[code]) {
-            throw new Error('Zone "' + code + '" does not exist');
+            throw new Error('Zone "' + code + '" does not exist')
         }
 
-        return this.zones[code];
+        return this.zones[code]
     },
 
             /**
              * Trigger event on each child extensions and their childs
              */
     triggerExtensions: function () {
-        var options = _.toArray(arguments);
+        var options = _.toArray(arguments)
 
         _.each(this.extensions, function (extension) {
-            extension.trigger.apply(extension, options);
-            extension.triggerExtensions.apply(extension, options);
-        });
+            extension.trigger.apply(extension, options)
+            extension.triggerExtensions.apply(extension, options)
+        })
     },
 
             /**
@@ -252,8 +252,8 @@ export default Backbone.View.extend({
              */
     onExtensions: function (code, callback) {
         _.each(this.extensions, function (extension) {
-            this.listenTo(extension, code, callback);
-        }.bind(this));
+            this.listenTo(extension, code, callback)
+        }.bind(this))
     },
 
             /**
@@ -262,7 +262,7 @@ export default Backbone.View.extend({
              * @return {string}
              */
     getFormCode: function () {
-        return this.getRoot().code;
+        return this.getRoot().code
     },
 
             /**
@@ -275,9 +275,9 @@ export default Backbone.View.extend({
     forwardMediatorEvents: function (events) {
         _.map(events, function (localEvent, mediatorEvent) {
             this.listenTo(mediator, mediatorEvent, function (data) {
-                this.trigger(localEvent, data);
-            });
-        }.bind(this));
+                this.trigger(localEvent, data)
+            })
+        }.bind(this))
     }
-});
+})
 

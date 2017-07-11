@@ -1,17 +1,17 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/attribute/attribute';
-import template from 'pim/template/filter/attribute/date';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import Datepicker from 'datepicker';
-import DateFormatter from 'pim/formatter/date';
-import DateContext from 'pim/date-context';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/attribute/attribute'
+import template from 'pim/template/filter/attribute/date'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import Datepicker from 'datepicker'
+import DateFormatter from 'pim/formatter/date'
+import DateContext from 'pim/date-context'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'date',
     template: _.template(template),
@@ -38,51 +38,51 @@ export default BaseFilter.extend({
          */
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), operator: _.first(_.values(this.config.operators))})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
          * {@inherit}
          */
     isEmpty: function () {
-        var value = this.getValue();
+        var value = this.getValue()
 
         if (_.contains(['BETWEEN', 'NOT BETWEEN'], this.getOperator()) &&
                 (undefined === value || !_.isArray(value) || _.isEmpty(value[0]) || _.isEmpty(value[1]))
             ) {
-            return true;
+            return true
         }
 
         if (!_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === value || '' === value)
             ) {
-            return true;
+            return true
         }
 
-        return false;
+        return false
     },
 
         /**
          * Initializes select2 and datepicker after rendering.
          */
     postRender: function () {
-        var startDate = this.$('.start-date-wrapper:first');
-        var endDate = this.$('.end-date-wrapper:first');
+        var startDate = this.$('.start-date-wrapper:first')
+        var endDate = this.$('.end-date-wrapper:first')
 
-        this.$('[name="filter-operator"]').select2();
+        this.$('[name="filter-operator"]').select2()
 
         if (0 !== startDate.length) {
             Datepicker
                     .init(startDate, this.datetimepickerOptions)
-                    .on('changeDate', this.updateState.bind(this));
+                    .on('changeDate', this.updateState.bind(this))
         }
         if (0 !== endDate.length) {
             Datepicker
                     .init(endDate, this.datetimepickerOptions)
-                    .on('changeDate', this.updateState.bind(this));
+                    .on('changeDate', this.updateState.bind(this))
         }
     },
 
@@ -90,14 +90,14 @@ export default BaseFilter.extend({
          * {@inherit}
          */
     renderInput: function () {
-        var dateFormat = DateContext.get('date').format;
-        var value = this.getValue();
-        var startValue = DateFormatter.format(value, this.modelDateFormat, dateFormat);
-        var endValue = null;
+        var dateFormat = DateContext.get('date').format
+        var value = this.getValue()
+        var startValue = DateFormatter.format(value, this.modelDateFormat, dateFormat)
+        var endValue = null
 
         if (_.isArray(value)) {
-            startValue = DateFormatter.format(value[0], this.modelDateFormat, dateFormat);
-            endValue = DateFormatter.format(value[1], this.modelDateFormat, dateFormat);
+            startValue = DateFormatter.format(value[0], this.modelDateFormat, dateFormat)
+            endValue = DateFormatter.format(value[1], this.modelDateFormat, dateFormat)
         }
 
         return this.template({
@@ -109,32 +109,32 @@ export default BaseFilter.extend({
             startValue: startValue,
             endValue: endValue,
             operatorChoices: this.config.operators
-        });
+        })
     },
 
         /**
          * {@inherit}
          */
     updateState: function () {
-        this.$('.start-date-wrapper').datetimepicker('hide');
-        this.$('.end-date-wrapper').datetimepicker('hide');
+        this.$('.start-date-wrapper').datetimepicker('hide')
+        this.$('.end-date-wrapper').datetimepicker('hide')
 
-        var value    = null;
-        var operator = this.$('[name="filter-operator"]').val();
+        var value    = null
+        var operator = this.$('[name="filter-operator"]').val()
 
         if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
-            var dateFormat = DateContext.get('date').format;
-            var startValue = this.$('[name="filter-value-start"]').val();
-            var formattedStartVal = DateFormatter.format(startValue, dateFormat, this.modelDateFormat);
-            var valueEndField = this.$('[name="filter-value-end"]');
+            var dateFormat = DateContext.get('date').format
+            var startValue = this.$('[name="filter-value-start"]').val()
+            var formattedStartVal = DateFormatter.format(startValue, dateFormat, this.modelDateFormat)
+            var valueEndField = this.$('[name="filter-value-end"]')
 
-            value = formattedStartVal;
+            value = formattedStartVal
 
             if (0 !== valueEndField.length) {
-                var endValue = valueEndField.val();
-                var formattedEndVal = DateFormatter.format(endValue, dateFormat, this.modelDateFormat);
+                var endValue = valueEndField.val()
+                var formattedEndVal = DateFormatter.format(endValue, dateFormat, this.modelDateFormat)
 
-                value = [formattedStartVal, formattedEndVal];
+                value = [formattedStartVal, formattedEndVal]
             }
         }
 
@@ -142,9 +142,9 @@ export default BaseFilter.extend({
             field: this.getField(),
             operator: operator,
             value: value
-        });
+        })
 
-        this.render();
+        this.render()
     }
-});
+})
 

@@ -7,10 +7,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseFetcher from 'pim/base-fetcher';
-import Routing from 'routing';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseFetcher from 'pim/base-fetcher'
+import Routing from 'routing'
 export default BaseFetcher.extend({
         /**
          * Overrides base method, to send query using POST instead GET,
@@ -21,7 +21,7 @@ export default BaseFetcher.extend({
          * {@inheritdoc}
          */
     getJSON: function (url, parameters) {
-        return $.post(Routing.generate(url), parameters, null, 'json');
+        return $.post(Routing.generate(url), parameters, null, 'json')
     },
 
         /**
@@ -32,7 +32,7 @@ export default BaseFetcher.extend({
     fetchAll: function () {
         if (!this.entityListPromise) {
             if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
+                return $.Deferred().reject().promise()
             }
 
             this.entityListPromise = $.getJSON(
@@ -41,10 +41,10 @@ export default BaseFetcher.extend({
                             limit: -1
                         }
                     })
-                ).then(_.identity).promise();
+                ).then(_.identity).promise()
         }
 
-        return this.entityListPromise;
+        return this.entityListPromise
     }
-});
+})
 

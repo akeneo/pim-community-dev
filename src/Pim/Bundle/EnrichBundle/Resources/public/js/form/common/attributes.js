@@ -7,22 +7,22 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import mediator from 'oro/mediator';
-import Routing from 'routing';
-import BaseForm from 'pim/form';
-import FieldManager from 'pim/field-manager';
-import FetcherRegistry from 'pim/fetcher-registry';
-import AttributeManager from 'pim/attribute-manager';
-import AttributeGroupManager from 'pim/attribute-group-manager';
-import UserContext from 'pim/user-context';
-import SecurityContext from 'pim/security-context';
-import formTemplate from 'pim/template/form/tab/attributes';
-import Dialog from 'pim/dialog';
-import messenger from 'oro/messenger';
-import i18n from 'pim/i18n';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import mediator from 'oro/mediator'
+import Routing from 'routing'
+import BaseForm from 'pim/form'
+import FieldManager from 'pim/field-manager'
+import FetcherRegistry from 'pim/fetcher-registry'
+import AttributeManager from 'pim/attribute-manager'
+import AttributeGroupManager from 'pim/attribute-group-manager'
+import UserContext from 'pim/user-context'
+import SecurityContext from 'pim/security-context'
+import formTemplate from 'pim/template/form/tab/attributes'
+import Dialog from 'pim/dialog'
+import messenger from 'oro/messenger'
+import i18n from 'pim/i18n'
 export default BaseForm.extend({
     template: _.template(formTemplate),
     className: 'tabbable object-attributes',
@@ -35,9 +35,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (meta) {
-        this.config = meta.config;
+        this.config = meta.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -47,34 +47,34 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: _.__(this.config.tabTitle)
-        });
+        })
 
-        UserContext.off('change:catalogLocale change:catalogScope', this.render);
-        this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
+        UserContext.off('change:catalogLocale change:catalogScope', this.render)
+        this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute)
 
-        FieldManager.clearFields();
+        FieldManager.clearFields()
 
-        this.onExtensions('comparison:change', this.comparisonChange.bind(this));
-        this.onExtensions('group:change', this.render.bind(this));
-        this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
-        this.onExtensions('copy:copy-fields:after', this.render.bind(this));
-        this.onExtensions('copy:select:after', this.render.bind(this));
-        this.onExtensions('copy:context:change', this.render.bind(this));
-        this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-        this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+        this.onExtensions('comparison:change', this.comparisonChange.bind(this))
+        this.onExtensions('group:change', this.render.bind(this))
+        this.onExtensions('add-attribute:add', this.addAttributes.bind(this))
+        this.onExtensions('copy:copy-fields:after', this.render.bind(this))
+        this.onExtensions('copy:select:after', this.render.bind(this))
+        this.onExtensions('copy:context:change', this.render.bind(this))
+        this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this))
+        this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this))
         this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-            this.setScope(event.scopeCode);
-        }.bind(this));
+            this.setScope(event.scopeCode)
+        }.bind(this))
         this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-            this.setLocale(event.localeCode);
-        }.bind(this));
+            this.setLocale(event.localeCode)
+        }.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -82,45 +82,45 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured || this.rendering) {
-            return this;
+            return this
         }
 
-        this.rendering = true;
-        this.$el.html(this.template({}));
+        this.rendering = true
+        this.$el.html(this.template({}))
         this.getConfig().then(function () {
-            var object = this.getFormData();
+            var object = this.getFormData()
             AttributeManager.getValues(object)
                         .then(function (values) {
                             var attributeGroupValues = AttributeGroupManager.getAttributeGroupValues(
                                 values,
                                 this.getExtension('attribute-group-selector').getCurrentElement()
-                            );
+                            )
 
-                            var fieldPromises = [];
+                            var fieldPromises = []
                             _.each(attributeGroupValues, function (value, attributeCode) {
-                                fieldPromises.push(this.renderField(object, attributeCode, value));
-                            }.bind(this));
+                                fieldPromises.push(this.renderField(object, attributeCode, value))
+                            }.bind(this))
 
-                            this.rendering = false;
+                            this.rendering = false
 
-                            return $.when.apply($, fieldPromises);
+                            return $.when.apply($, fieldPromises)
                         }.bind(this)).then(function () {
                             return _.sortBy(arguments, function (field) {
-                                return field.attribute.sort_order;
-                            });
+                                return field.attribute.sort_order
+                            })
                         }).then(function (fields) {
-                            var $valuesPanel = this.$('.object-values');
-                            $valuesPanel.empty();
+                            var $valuesPanel = this.$('.object-values')
+                            $valuesPanel.empty()
 
-                            FieldManager.clearVisibleFields();
-                            _.each(fields, this.appendField.bind(this, $valuesPanel));
-                        }.bind(this));
-            this.delegateEvents();
+                            FieldManager.clearVisibleFields()
+                            _.each(fields, this.appendField.bind(this, $valuesPanel))
+                        }.bind(this))
+            this.delegateEvents()
 
-            this.renderExtensions();
-        }.bind(this));
+            this.renderExtensions()
+        }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -132,9 +132,9 @@ export default BaseForm.extend({
              */
     appendField: function (panel, field) {
         if (field.canBeSeen()) {
-            field.render();
-            FieldManager.addVisibleField(field.attribute.code);
-            panel.append(field.$el);
+            field.render()
+            FieldManager.addVisibleField(field.attribute.code)
+            panel.append(field.$el)
         }
     },
 
@@ -153,10 +153,10 @@ export default BaseForm.extend({
                         (new $.Deferred().resolve(field)),
                         FetcherRegistry.getFetcher('channel').fetchAll(),
                         AttributeManager.isOptional(field.attribute, object)
-                    );
+                    )
         }).then(function (field, channels, isOptional) {
-            var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
-            var catalogLocale = UserContext.get('catalogLocale');
+            var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') })
+            var catalogLocale = UserContext.get('catalogLocale')
 
             field.setContext({
                 locale: catalogLocale,
@@ -165,12 +165,12 @@ export default BaseForm.extend({
                 uiLocale: catalogLocale,
                 optional: isOptional,
                 removable: SecurityContext.isGranted(this.config.removeAttributeACL)
-            });
+            })
 
-            field.setValues(values);
+            field.setValues(values)
 
-            return field;
-        }.bind(this));
+            return field
+        }.bind(this))
     },
 
             /**
@@ -179,18 +179,18 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     getConfig: function () {
-        var promises = [];
-        var object = this.getFormData();
+        var promises = []
+        var object = this.getFormData()
 
         promises.push(AttributeGroupManager.getAttributeGroupsForObject(object)
                     .then(function (attributeGroups) {
                         this.getExtension('attribute-group-selector').setElements(
                             _.indexBy(_.sortBy(attributeGroups, 'sort_order'), 'code')
-                        );
+                        )
                     }.bind(this))
-                );
+                )
 
-        return $.when.apply($, promises).promise();
+        return $.when.apply($, promises).promise()
     },
 
             /**
@@ -199,7 +199,7 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     addAttributes: function (event) {
-        var attributeCodes = event.codes;
+        var attributeCodes = event.codes
 
         $.when(
                     FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
@@ -207,7 +207,7 @@ export default BaseForm.extend({
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(function (attributes, locales, channels, currencies) {
-                    var formData = this.getFormData();
+                    var formData = this.getFormData()
 
                     _.each(attributes, function (attribute) {
                         if (!formData.values[attribute.code]) {
@@ -217,18 +217,18 @@ export default BaseForm.extend({
                                 locales,
                                 channels,
                                 currencies
-                            );
+                            )
                         }
-                    });
+                    })
 
                     this.getExtension('attribute-group-selector').setCurrent(
                         _.first(attributes).group_code
-                    );
+                    )
 
-                    this.setData(formData);
+                    this.setData(formData)
 
-                    this.getRoot().trigger('pim_enrich:form:add-attribute:after');
-                }.bind(this));
+                    this.getRoot().trigger('pim_enrich:form:add-attribute:after')
+                }.bind(this))
     },
 
             /**
@@ -238,11 +238,11 @@ export default BaseForm.extend({
              */
     removeAttribute: function (event) {
         if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {
-            return;
+            return
         }
-        var attributeCode = event.currentTarget.dataset.attribute;
-        var formData = this.getFormData();
-        var fields = FieldManager.getFields();
+        var attributeCode = event.currentTarget.dataset.attribute
+        var formData = this.getFormData()
+        var fields = FieldManager.getFields()
 
         Dialog.confirm(
                     _.__('pim_enrich.confirmation.delete.attribute'),
@@ -254,25 +254,25 @@ export default BaseForm.extend({
                                 url: this.generateRemoveAttributeUrl(attribute),
                                 contentType: 'application/json'
                             }).then(function () {
-                                this.triggerExtensions('add-attribute:update:available-attributes');
+                                this.triggerExtensions('add-attribute:update:available-attributes')
 
-                                delete formData.values[attributeCode];
-                                delete fields[attributeCode];
+                                delete formData.values[attributeCode]
+                                delete fields[attributeCode]
 
-                                this.setData(formData);
+                                this.setData(formData)
 
-                                this.getRoot().trigger('pim_enrich:form:remove-attribute:after');
+                                this.getRoot().trigger('pim_enrich:form:remove-attribute:after')
 
-                                this.render();
+                                this.render()
                             }.bind(this)).fail(function () {
                                 messenger.notify(
                                     'error',
                                     _.__(this.config.deletionFailed)
-                                );
-                            });
-                        }.bind(this));
+                                )
+                            })
+                        }.bind(this))
                     }.bind(this)
-                );
+                )
     },
 
             /**
@@ -287,7 +287,7 @@ export default BaseForm.extend({
                 code: this.getFormData().code,
                 attributeId: attribute.id
             }
-                );
+                )
     },
 
             /**
@@ -297,9 +297,9 @@ export default BaseForm.extend({
              */
     initScope: function (event) {
         if (undefined === this.getScope()) {
-            this.setScope(event.scopeCode, {silent: true});
+            this.setScope(event.scopeCode, {silent: true})
         } else {
-            event.scopeCode = this.getScope();
+            event.scopeCode = this.getScope()
         }
     },
 
@@ -310,14 +310,14 @@ export default BaseForm.extend({
              * @param {Object} options
              */
     setScope: function (scope, options) {
-        UserContext.set('catalogScope', scope, options);
+        UserContext.set('catalogScope', scope, options)
     },
 
             /**
              * Get the current scope
              */
     getScope: function () {
-        return UserContext.get('catalogScope');
+        return UserContext.get('catalogScope')
     },
 
             /**
@@ -327,9 +327,9 @@ export default BaseForm.extend({
              */
     initLocale: function (event) {
         if (undefined === this.getLocale()) {
-            this.setLocale(event.localeCode, {silent: true});
+            this.setLocale(event.localeCode, {silent: true})
         } else {
-            event.localeCode = this.getLocale();
+            event.localeCode = this.getLocale()
         }
     },
 
@@ -340,22 +340,22 @@ export default BaseForm.extend({
              * @param {Object} options
              */
     setLocale: function (locale, options) {
-        UserContext.set('catalogLocale', locale, options);
+        UserContext.set('catalogLocale', locale, options)
     },
 
             /**
              * Get the current locale
              */
     getLocale: function () {
-        return UserContext.get('catalogLocale');
+        return UserContext.get('catalogLocale')
     },
 
             /**
              * Post save actions
              */
     postSave: function () {
-        FieldManager.fields = {};
-        this.render();
+        FieldManager.fields = {}
+        this.render()
     },
 
             /**
@@ -366,43 +366,43 @@ export default BaseForm.extend({
     showAttribute: function (event) {
         AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
                     .then(function (attributeGroups) {
-                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
+                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code)
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
                             event.attribute
-                        );
-                        var needRendering = false;
+                        )
+                        var needRendering = false
 
                         if (!attributeGroup) {
-                            return;
+                            return
                         }
 
                         if (event.scope) {
-                            this.setScope(event.scope, {silent: true});
-                            needRendering = true;
+                            this.setScope(event.scope, {silent: true})
+                            needRendering = true
                         }
                         if (event.locale) {
-                            this.setLocale(event.locale, {silent: true});
-                            needRendering = true;
+                            this.setLocale(event.locale, {silent: true})
+                            needRendering = true
                         }
 
-                        var attributeGroupSelector = this.getExtension('attribute-group-selector');
+                        var attributeGroupSelector = this.getExtension('attribute-group-selector')
                         if (attributeGroup !== attributeGroupSelector.getCurrent()) {
-                            attributeGroupSelector.setCurrent(attributeGroup);
-                            needRendering = true;
+                            attributeGroupSelector.setCurrent(attributeGroup)
+                            needRendering = true
                         }
 
                         if (needRendering) {
-                            this.render();
+                            this.render()
                         }
 
-                        var displayedAttributes = FieldManager.getFields();
+                        var displayedAttributes = FieldManager.getFields()
 
                         if (_.has(displayedAttributes, event.attribute)) {
-                            displayedAttributes[event.attribute].setFocus();
+                            displayedAttributes[event.attribute].setFocus()
                         }
-                    }.bind(this));
+                    }.bind(this))
     },
 
             /**
@@ -411,10 +411,10 @@ export default BaseForm.extend({
              * @param {Boolean} open
              */
     comparisonChange: function (open) {
-        this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
+        this.$el[open ? 'addClass' : 'removeClass']('comparison-mode')
         this.$el.find('.AknAttributeActions')[open ? 'addClass' : 'removeClass'](
                     'AknAttributeActions--comparisonMode'
-                );
+                )
     }
-});
+})
 

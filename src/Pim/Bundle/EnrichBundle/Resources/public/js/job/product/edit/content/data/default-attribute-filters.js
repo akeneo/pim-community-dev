@@ -7,27 +7,27 @@
  */
 
 
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import fetcherRegistry from 'pim/fetcher-registry';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import fetcherRegistry from 'pim/fetcher-registry'
 export default BaseForm.extend({
         /**
          * {@inherit}
          */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
         /**
          * {@inherit}
          */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:set-default', this.addFilter.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:set-default', this.addFilter.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -41,9 +41,9 @@ export default BaseForm.extend({
                     .getFetcher('attribute')
                     .fetchByTypes(this.config.types)
                     .then(function (attributes) {
-                        return _.pluck(attributes, 'code');
+                        return _.pluck(attributes, 'code')
                     })
-            );
+            )
     }
-});
+})
 

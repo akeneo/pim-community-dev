@@ -2,15 +2,15 @@
 
 //Should be reworked to be a boolean filter
 
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/filter';
-import Routing from 'routing';
-import template from 'pim/template/filter/product/enabled';
-import 'pim/fetcher-registry';
-import 'pim/user-context';
-import 'pim/i18n';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/filter'
+import Routing from 'routing'
+import template from 'pim/template/filter/product/enabled'
+import 'pim/fetcher-registry'
+import 'pim/user-context'
+import 'pim/i18n'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'enabled',
     template: _.template(template),
@@ -24,10 +24,10 @@ export default BaseFilter.extend({
          */
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: '=', value: true});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), operator: '=', value: true})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -47,34 +47,34 @@ export default BaseFilter.extend({
                 }
             },
             value: this.getValue()
-        });
+        })
     },
 
         /**
          * Initializes select2 after rendering.
          */
     postRender: function () {
-        this.$('[name="filter-value"]').select2({minimumResultsForSearch: -1});
+        this.$('[name="filter-value"]').select2({minimumResultsForSearch: -1})
     },
 
         /**
          * {@inheritdoc}
          */
     isEmpty: function () {
-        return false;
+        return false
     },
 
         /**
          * Updates operator and value on fields change.
          */
     updateState: function () {
-        var value = this.$('[name="filter-value"]').val();
+        var value = this.$('[name="filter-value"]').val()
 
         if ('all' === value) {
-            this.setData({field: this.getField(), operator: 'ALL', value: null});
+            this.setData({field: this.getField(), operator: 'ALL', value: null})
         } else {
-            this.setData({field: this.getField(), operator: '=', value: 'enabled' === value});
+            this.setData({field: this.getField(), operator: '=', value: 'enabled' === value})
         }
     }
-});
+})
 

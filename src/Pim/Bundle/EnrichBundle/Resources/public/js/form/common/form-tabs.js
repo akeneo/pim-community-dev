@@ -7,11 +7,11 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/form-tabs';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/form-tabs'
 export default BaseForm.extend({
     template: _.template(template),
 
@@ -31,19 +31,19 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        this.tabs = [];
+        this.tabs = []
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.onExtensions('tab:register',  this.registerTab.bind(this));
-        this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
+        this.onExtensions('tab:register',  this.registerTab.bind(this))
+        this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -56,9 +56,9 @@ export default BaseForm.extend({
             code: event.code,
             isVisible: event.isVisible,
             label: event.label
-        });
+        })
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -66,35 +66,35 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured || _.isEmpty(this.tabs)) {
-            return this;
+            return this
         }
 
-        var tabs = this.getTabs();
-        this.ensureDefault();
+        var tabs = this.getTabs()
+        this.ensureDefault()
 
         this.$el.html(
                     this.template({
                         tabs: tabs,
                         currentTab: this.getCurrentTab()
                     })
-                );
-        this.delegateEvents();
-        this.initializeDropZones();
+                )
+        this.delegateEvents()
+        this.initializeDropZones()
 
-        var currentTab = this.getTabExtension(this.getCurrentTab());
+        var currentTab = this.getTabExtension(this.getCurrentTab())
         if (currentTab) {
-            var zone = this.getZone('container');
-            zone.appendChild(currentTab.el);
-            this.renderExtension(currentTab);
+            var zone = this.getZone('container')
+            zone.appendChild(currentTab.el)
+            this.renderExtension(currentTab)
         }
 
-        var panelsExtension = this.getExtension('panels');
+        var panelsExtension = this.getExtension('panels')
         if (panelsExtension) {
-            this.getZone('panels').appendChild(panelsExtension.el);
-            this.renderExtension(panelsExtension);
+            this.getZone('panels').appendChild(panelsExtension.el)
+            this.renderExtension(panelsExtension)
         }
 
-        return this;
+        return this
     },
 
             /**
@@ -103,12 +103,12 @@ export default BaseForm.extend({
              * @return {Array}
              */
     getTabs: function () {
-        var tabs = _.clone(this.tabs);
+        var tabs = _.clone(this.tabs)
         tabs = _.filter(tabs, function (tab) {
-            return !_.isFunction(tab.isVisible) || tab.isVisible();
-        });
+            return !_.isFunction(tab.isVisible) || tab.isVisible()
+        })
 
-        return tabs;
+        return tabs
     },
 
             /**
@@ -117,7 +117,7 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     selectTab: function (event) {
-        this.setCurrentTab(event.currentTarget.dataset.tab);
+        this.setCurrentTab(event.currentTarget.dataset.tab)
     },
 
             /**
@@ -126,18 +126,18 @@ export default BaseForm.extend({
              * @param {string} tab
              */
     setCurrentTab: function (tab) {
-        var needRender = false;
+        var needRender = false
 
         if (this.getCurrentTab() !== tab) {
-            sessionStorage.setItem(this.currentKey, tab);
-            needRender = true;
+            sessionStorage.setItem(this.currentKey, tab)
+            needRender = true
         }
 
         if (needRender) {
-            this.render();
+            this.render()
         }
 
-        return this;
+        return this
     },
 
             /**
@@ -146,27 +146,27 @@ export default BaseForm.extend({
              * @return {string}
              */
     getCurrentTab: function () {
-        return sessionStorage.getItem(this.currentKey);
+        return sessionStorage.getItem(this.currentKey)
     },
 
             /**
              * Ensure default value for the current tab
              */
     ensureDefault: function () {
-        var tabs = this.getTabs();
+        var tabs = this.getTabs()
 
         if (!_.isNull(sessionStorage.getItem('redirectTab')) &&
                     _.findWhere(tabs, {code: sessionStorage.getItem('redirectTab').substring(1)})
                 ) {
-            this.setCurrentTab(sessionStorage.redirectTab.substring(1));
+            this.setCurrentTab(sessionStorage.redirectTab.substring(1))
 
-            sessionStorage.removeItem('redirectTab');
+            sessionStorage.removeItem('redirectTab')
         }
 
-        var currentTabIsNotDefined = _.isNull(this.getCurrentTab());
-        var currentTabDoesNotExist = !_.findWhere(tabs, {code: this.getCurrentTab()});
+        var currentTabIsNotDefined = _.isNull(this.getCurrentTab())
+        var currentTabDoesNotExist = !_.findWhere(tabs, {code: this.getCurrentTab()})
         if ((currentTabIsNotDefined || currentTabDoesNotExist) && _.first(tabs)) {
-            this.setCurrentTab(_.first(tabs).code);
+            this.setCurrentTab(_.first(tabs).code)
         }
     },
 
@@ -181,11 +181,11 @@ export default BaseForm.extend({
         return this.extensions[_.find(this.extensions, function (extension) {
             var extensionCode = extension.config && extension.config.tabCode ?
                         extension.config.tabCode :
-                        extension.code;
-            var expectedPosition = extensionCode.length - code.length;
+                        extension.code
+            var expectedPosition = extensionCode.length - code.length
 
-            return expectedPosition >= 0 && expectedPosition === extensionCode.indexOf(code, expectedPosition);
-        }).code];
+            return expectedPosition >= 0 && expectedPosition === extensionCode.indexOf(code, expectedPosition)
+        }).code]
     }
-});
+})
 

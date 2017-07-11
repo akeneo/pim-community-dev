@@ -1,5 +1,5 @@
-import _ from 'underscore';
-import requireContext from 'require-context';
+import _ from 'underscore'
+import requireContext from 'require-context'
 
 
     /**
@@ -15,15 +15,15 @@ export default {
          */
     loadModules: function (modules, callback) {
         var arrayArguments = _.object(requirements,  arguments)
-        var requirements = _.values(modules);
+        var requirements = _.values(modules)
 
         require.ensure([], function() {
             _.each(modules, _.bind(function (value, key) {
                 var module = requireContext(value)
                 modules[key] = module
-            }, arrayArguments));
-            callback(modules);
+            }, arrayArguments))
+            callback(modules)
         })
     }
-};
+}
 

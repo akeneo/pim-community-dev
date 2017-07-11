@@ -6,17 +6,17 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import Routing from 'routing';
-import __ from 'oro/translator';
-import LoadingMask from 'oro/loading-mask';
-import i18n from 'pim/i18n';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import template from 'pim/template/filter/product/category/selector';
-import 'jquery.jstree';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import Routing from 'routing'
+import __ from 'oro/translator'
+import LoadingMask from 'oro/loading-mask'
+import i18n from 'pim/i18n'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import template from 'pim/template/filter/product/category/selector'
+import 'jquery.jstree'
 export default Backbone.View.extend({
     template: _.template(template),
 
@@ -69,22 +69,22 @@ export default Backbone.View.extend({
              * @param {Object} data
              */
     checkNode: function (data) {
-        var code = String(data.rslt.obj.data('code'));
+        var code = String(data.rslt.obj.data('code'))
                 // All products case
         if ('' === code) {
                     // Uncheck other nodes
             data.inst.get_container_ul().find('li.jstree-checked:not(.jstree-all)').each(function () {
-                data.inst.uncheck_node(this);
-            });
+                data.inst.uncheck_node(this)
+            })
 
-            this.attributes.categories = [];
+            this.attributes.categories = []
         } else {
             if (!_.contains(this.attributes.categories, code)) {
-                this.attributes.categories.push(code);
+                this.attributes.categories.push(code)
             }
 
                     // Uncheck "All products" if checked
-            data.inst.uncheck_node(data.inst.get_container_ul().find('li.jstree-all'));
+            data.inst.uncheck_node(data.inst.get_container_ul().find('li.jstree-all'))
         }
     },
 
@@ -94,10 +94,10 @@ export default Backbone.View.extend({
              * @param {Object} data
              */
     uncheckNode: function (data) {
-        var code = data.rslt.obj.data('code');
+        var code = data.rslt.obj.data('code')
 
         if ('' !== code) {
-            this.attributes.categories = _.without(this.attributes.categories, code);
+            this.attributes.categories = _.without(this.attributes.categories, code)
         }
     },
 
@@ -107,7 +107,7 @@ export default Backbone.View.extend({
              * @param {Object} data
              */
     loadNode: function (data) {
-        var node = data.rslt.obj;
+        var node = data.rslt.obj
 
         if (-1 === node) {
                     // Add the All products checkbox
@@ -120,11 +120,11 @@ export default Backbone.View.extend({
                 data: { title: __('jstree.all') }
             }, function ($node) {
                 if (0 === this.attributes.categories.length) {
-                    data.inst.check_node($node);
+                    data.inst.check_node($node)
                 }
-            }.bind(this), true);
+            }.bind(this), true)
         } else if (_.contains(this.attributes.categories, node.data('code'))) {
-            data.inst.check_node(node);
+            data.inst.check_node(node)
         }
     },
 
@@ -132,9 +132,9 @@ export default Backbone.View.extend({
              * Render the tree in the element's HTML when the channel category is fetched and bind events from jstree
              */
     render: function () {
-        var loadingMask = new LoadingMask();
-        loadingMask.render().$el.appendTo(this.$el.parent());
-        loadingMask.show();
+        var loadingMask = new LoadingMask()
+        loadingMask.render().$el.appendTo(this.$el.parent())
+        loadingMask.show()
 
         FetcherRegistry.initialize().then(function () {
             FetcherRegistry.getFetcher('channel')
@@ -150,7 +150,7 @@ export default Backbone.View.extend({
                                         UserContext.get('uiLocale'),
                                         category.code
                                     )
-                                }));
+                                }))
 
                                 this.$('.root').jstree(_.extend(this.config, {
                                     json_data: {
@@ -164,38 +164,38 @@ export default Backbone.View.extend({
                                                             identifier: category.code,
                                                             selected: this.attributes.categories
                                                         }
-                                                    );
+                                                    )
                                                 }
 
                                                 return Routing.generate('pim_enrich_categorytree_children', {
                                                     _format: 'json'
-                                                });
+                                                })
                                             }.bind(this),
                                             data: function (node) {
                                                 if (-1 === node) {
-                                                    return {id: this.get_container().data('tree-id')};
+                                                    return {id: this.get_container().data('tree-id')}
                                                 }
 
-                                                return {id: node.attr('id').replace('node_', '')};
+                                                return {id: node.attr('id').replace('node_', '')}
                                             }
                                         }
                                     }
                                 }))
                                 .on('check_node.jstree', function (event, data) {
-                                    this.checkNode(data);
+                                    this.checkNode(data)
                                 }.bind(this))
                                 .on('uncheck_node.jstree', function (event, data) {
-                                    this.uncheckNode(data);
+                                    this.uncheckNode(data)
                                 }.bind(this))
                                 .on('load_node.jstree', function (event, data) {
-                                    this.loadNode(data);
-                                }.bind(this));
-                            }.bind(this));
+                                    this.loadNode(data)
+                                }.bind(this))
+                            }.bind(this))
                         }.bind(this))
                         .done(function () {
-                            this.$el.parent().find('.loading-mask').remove();
-                        }.bind(this));
-        }.bind(this));
+                            this.$el.parent().find('.loading-mask').remove()
+                        }.bind(this))
+        }.bind(this))
     }
-});
+})
 

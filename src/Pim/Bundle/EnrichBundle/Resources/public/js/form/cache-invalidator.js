@@ -1,21 +1,21 @@
 
 
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import mediator from 'oro/mediator';
-import FetcherRegistry from 'pim/fetcher-registry';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import mediator from 'oro/mediator'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default BaseForm.extend({
             /**
              * {@inheritdoc}
              */
     configure: function () {
         _.each(__moduleConfig.events, function (event) {
-            this.listenTo(mediator, event, this.checkStructureVersion);
-        }.bind(this));
+            this.listenTo(mediator, event, this.checkStructureVersion)
+        }.bind(this))
 
-        this.listenTo(this.getRoot(), 'pim_enrich:form:cache:clear', this.clearCache);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:cache:clear', this.clearCache)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -25,10 +25,10 @@ export default BaseForm.extend({
              */
     checkStructureVersion: function (entity) {
         if (entity.meta.structure_version !== this.getLocaleStructureVersion(entity.meta.model_type)) {
-            this.clearCache();
+            this.clearCache()
         }
 
-        this.setLocaleStructureVersion(entity.meta.model_type, entity.meta.structure_version);
+        this.setLocaleStructureVersion(entity.meta.model_type, entity.meta.structure_version)
     },
 
             /**
@@ -39,7 +39,7 @@ export default BaseForm.extend({
              * @return {int}
              */
     getLocaleStructureVersion: function (modelType) {
-        return parseInt(sessionStorage.getItem('structure_version_' + modelType));
+        return parseInt(sessionStorage.getItem('structure_version_' + modelType))
     },
 
             /**
@@ -49,14 +49,14 @@ export default BaseForm.extend({
              * @param {int}    structureVersion
              */
     setLocaleStructureVersion: function (modelType, structureVersion) {
-        sessionStorage.setItem('structure_version_' + modelType, structureVersion);
+        sessionStorage.setItem('structure_version_' + modelType, structureVersion)
     },
 
             /**
              * Clear the cache for all fetchers
              */
     clearCache: function () {
-        FetcherRegistry.clearAll();
+        FetcherRegistry.clearAll()
     }
-});
+})
 

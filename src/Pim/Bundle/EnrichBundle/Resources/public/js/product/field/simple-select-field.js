@@ -7,16 +7,16 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import Field from 'pim/field';
-import _ from 'underscore';
-import fieldTemplate from 'pim/template/product/field/simple-select';
-import Routing from 'routing';
-import createOption from 'pim/attribute-option/create';
-import SecurityContext from 'pim/security-context';
-import initSelect2 from 'pim/initselect2';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
+import $ from 'jquery'
+import Field from 'pim/field'
+import _ from 'underscore'
+import fieldTemplate from 'pim/template/product/field/simple-select'
+import Routing from 'routing'
+import createOption from 'pim/attribute-option/create'
+import SecurityContext from 'pim/security-context'
+import initSelect2 from 'pim/initselect2'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
 export default Field.extend({
     fieldTemplate: _.template(fieldTemplate),
     choicePromise: null,
@@ -31,11 +31,11 @@ export default Field.extend({
              */
     getTemplateContext: function () {
         return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
-            var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit');
-            templateContext.userCanAddOption = this.editable && isAllowed;
+            var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit')
+            templateContext.userCanAddOption = this.editable && isAllowed
 
-            return templateContext;
-        }.bind(this));
+            return templateContext
+        }.bind(this))
     },
 
             /**
@@ -43,31 +43,31 @@ export default Field.extend({
              */
     createOption: function () {
         if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
-            return;
+            return
         }
 
         createOption(this.attribute).then(function (option) {
             if (this.isEditable()) {
-                this.setCurrentValue(option.code);
+                this.setCurrentValue(option.code)
             }
 
-            this.choicePromise = null;
-            this.render();
-        }.bind(this));
+            this.choicePromise = null
+            this.render()
+        }.bind(this))
     },
 
             /**
              * {@inheritdoc}
              */
     renderInput: function (context) {
-        return this.fieldTemplate(context);
+        return this.fieldTemplate(context)
     },
 
             /**
              * {@inheritdoc}
              */
     postRender: function () {
-        this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('[data-toggle="tooltip"]').tooltip()
         this.getChoiceUrl().then(function (choiceUrl) {
             var options = {
                 ajax: {
@@ -80,52 +80,52 @@ export default Field.extend({
                                 limit: 20,
                                 page: page
                             }
-                        };
+                        }
                     },
                     results: function (response) {
                         if (response.results) {
-                            response.more = 20 === _.keys(response.results).length;
+                            response.more = 20 === _.keys(response.results).length
 
-                            return response;
+                            return response
                         }
 
                         var data = {
                             more: 20 === _.keys(response).length,
                             results: []
-                        };
+                        }
                         _.each(response, function (value) {
-                            data.results.push(this.convertBackendItem(value));
-                        }.bind(this));
+                            data.results.push(this.convertBackendItem(value))
+                        }.bind(this))
 
-                        return data;
+                        return data
                     }.bind(this)
                 },
                 initSelection: function (element, callback) {
-                    var id = $(element).val();
+                    var id = $(element).val()
                     if ('' !== id) {
                         if (null === this.choicePromise || this.promiseIdentifier !== id) {
-                            this.choicePromise = $.get(choiceUrl, {options: {identifiers: [id]}});
-                            this.promiseIdentifier = id;
+                            this.choicePromise = $.get(choiceUrl, {options: {identifiers: [id]}})
+                            this.promiseIdentifier = id
                         }
 
                         this.choicePromise.then(function (response) {
-                            var selected = _.findWhere(response, {code: id});
+                            var selected = _.findWhere(response, {code: id})
 
                             if (!selected) {
-                                selected = _.findWhere(response.results, {id: id});
+                                selected = _.findWhere(response.results, {id: id})
                             } else {
-                                selected = this.convertBackendItem(selected);
+                                selected = this.convertBackendItem(selected)
                             }
-                            callback(selected);
-                        }.bind(this));
+                            callback(selected)
+                        }.bind(this))
                     }
                 }.bind(this),
                 placeholder: ' ',
                 allowClear: true
-            };
+            }
 
-            initSelect2.init(this.$('input.select-field'), options);
-        }.bind(this));
+            initSelect2.init(this.$('input.select-field'), options)
+        }.bind(this))
     },
 
             /**
@@ -141,19 +141,19 @@ export default Field.extend({
                             identifier: this.attribute.code
                         }
                     )
-                ).promise();
+                ).promise()
     },
 
             /**
              * {@inheritdoc}
              */
     updateModel: function () {
-        var data = this.$('.field-input:first input[type="hidden"].select-field').val();
-        data = '' === data ? this.attribute.empty_value : data;
+        var data = this.$('.field-input:first input[type="hidden"].select-field').val()
+        data = '' === data ? this.attribute.empty_value : data
 
-        this.choicePromise = null;
+        this.choicePromise = null
 
-        this.setCurrentValue(data);
+        this.setCurrentValue(data)
     },
 
             /**
@@ -167,7 +167,7 @@ export default Field.extend({
         return {
             id: item.code,
             text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
-        };
+        }
     }
-});
+})
 

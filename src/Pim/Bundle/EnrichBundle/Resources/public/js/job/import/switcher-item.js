@@ -8,8 +8,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
 export default BaseForm.extend({
     visible: false,
 
@@ -17,36 +17,36 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'switcher:switch', this.switch);
+        this.listenTo(this.getRoot(), 'switcher:switch', this.switch)
 
         this.getRoot().trigger('switcher:register', {
             label: __(this.config.label),
             code: this.code
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     render: function () {
-        this.$el.empty();
+        this.$el.empty()
 
         if (this.visible) {
-            return BaseForm.prototype.render.apply(this, arguments);
+            return BaseForm.prototype.render.apply(this, arguments)
         }
 
-        this.delegateEvents();
+        this.delegateEvents()
     },
 
             /**
@@ -56,9 +56,9 @@ export default BaseForm.extend({
              * @param {String} event.code The code of the current switcher item
              */
     switch: function (event) {
-        this.visible = event.code === this.code;
+        this.visible = event.code === this.code
 
-        this.render();
+        this.render()
     }
-});
+})
 

@@ -7,13 +7,13 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import template from 'pim/template/channel/tab/properties/general/currencies';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import template from 'pim/template/channel/tab/properties/general/currencies'
+import 'jquery.select2'
 export default BaseForm.extend({
     className: 'AknFieldContainer',
     template: _.template(template),
@@ -24,9 +24,9 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -34,7 +34,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         FetcherRegistry.getFetcher('currency').fetchAll().then(function (currencies) {
@@ -44,14 +44,14 @@ export default BaseForm.extend({
                 errors: this.getParent().getValidationErrorsForField('currencies'),
                 label: __('pim_enrich.form.channel.tab.properties.currencies'),
                 requiredLabel: __('pim_enrich.form.required')
-            }));
+            }))
 
-            this.$('.select2').select2().on('change', this.updateState.bind(this));
+            this.$('.select2').select2().on('change', this.updateState.bind(this))
 
-            this.renderExtensions();
-        }.bind(this));
+            this.renderExtensions()
+        }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -60,7 +60,7 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     updateState: function (event) {
-        this.setCurrencies(event.val);
+        this.setCurrencies(event.val)
     },
 
             /**
@@ -70,12 +70,12 @@ export default BaseForm.extend({
              */
     setCurrencies: function (codes) {
         if (null === codes) {
-            codes = [];
+            codes = []
         }
-        var data = this.getFormData();
+        var data = this.getFormData()
 
-        data.currencies = codes;
-        this.setData(data);
+        data.currencies = codes
+        this.setData(data)
     }
-});
+})
 

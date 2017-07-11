@@ -1,12 +1,12 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/filter';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import template from 'pim/template/filter/product/identifier';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/filter'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import template from 'pim/template/filter/product/identifier'
 export default BaseFilter.extend({
     shortname: 'identifier',
     template: _.template(template),
@@ -18,7 +18,7 @@ export default BaseFilter.extend({
          * {@inheritdoc}
          */
     isEmpty: function () {
-        return _.isEmpty(this.getValue());
+        return _.isEmpty(this.getValue())
     },
 
         /**
@@ -30,7 +30,7 @@ export default BaseFilter.extend({
             value: _.isArray(this.getValue()) ? this.getValue().join(', ') : '',
             field: this.getField(),
             isEditable: this.isEditable()
-        });
+        })
     },
 
         /**
@@ -41,24 +41,24 @@ export default BaseFilter.extend({
                 .then(function (templateContext) {
                     return _.extend({}, templateContext, {
                         removable: false
-                    });
-                }.bind(this));
+                    })
+                }.bind(this))
     },
 
         /**
          * {@inheritdoc}
          */
     updateState: function () {
-        var value = this.$('[name="filter-value"]').val().split(/[\s,]+/);
+        var value = this.$('[name="filter-value"]').val().split(/[\s,]+/)
         var cleanedValues = _.reject(value, function (val) {
-            return '' === val;
-        });
+            return '' === val
+        })
 
         this.setData({
             field: this.getField(),
             operator: 'IN',
             value: cleanedValues
-        });
+        })
     }
-});
+})
 

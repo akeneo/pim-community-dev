@@ -1,33 +1,33 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Routing from 'routing';
-import 'jquery.jstree';
-import 'jstree/jquery.jstree.tree_selector';
-import 'jstree/nested_switch';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Routing from 'routing'
+import 'jquery.jstree'
+import 'jstree/jquery.jstree.tree_selector'
+import 'jstree/nested_switch'
 
 
-var unclassified      = -1;
-var all               = -2;
-var selectedNode      = 0;
-var selectedTree      = 0;
-var includeSub        = true;
-var dataLocale        = null;
-var relatedEntity     = null;
-var $el               = null;
-var categoryBaseRoute = '';
+var unclassified      = -1
+var all               = -2
+var selectedNode      = 0
+var selectedTree      = 0
+var includeSub        = true
+var dataLocale        = null
+var relatedEntity     = null
+var $el               = null
+var categoryBaseRoute = ''
 
 var getActiveNode = function (skipVirtual) {
     if (skipVirtual) {
-        return selectedNode > 0 ? selectedNode : selectedTree;
+        return selectedNode > 0 ? selectedNode : selectedTree
     }
 
-    return selectedNode !== 0 ? selectedNode : selectedTree;
-};
+    return selectedNode !== 0 ? selectedNode : selectedTree
+}
 
 var triggerUpdate = function () {
-    $el.trigger('tree.updated');
-};
+    $el.trigger('tree.updated')
+}
 
 var getTreeUrl = function () {
     return Routing.generate(
@@ -39,8 +39,8 @@ var getTreeUrl = function () {
             include_sub:    +includeSub,
             context:        'view'
         }
-            );
-};
+            )
+}
 
 var getChildrenUrl = function () {
     return Routing.generate(
@@ -50,34 +50,34 @@ var getChildrenUrl = function () {
             dataLocale: dataLocale,
             context:    'view'
         }
-            );
-};
+            )
+}
 
 var selectNode = function (nodeId) {
-    $el.jstree('select_node', '#node_' + nodeId);
-};
+    $el.jstree('select_node', '#node_' + nodeId)
+}
 
 var clearSelection = function () {
-    $el.jstree('deselect_all');
-};
+    $el.jstree('deselect_all')
+}
 
 var createNode = function (id, target, title) {
-    var targetId = target !== null ? '#' + target : -1;
+    var targetId = target !== null ? '#' + target : -1
     $el.jstree('create', targetId, 'last', {
         attr: { 'class': 'jstree-unclassified', id: 'node_' + id },
         data: { title: __(title) }
-    }, null, true);
+    }, null, true)
 
     if (id === getActiveNode()) {
-        selectNode(id);
+        selectNode(id)
     }
-};
+}
 
 var getNodeId = function (node) {
-    var nodeId = (node && node.attr && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+    var nodeId = (node && node.attr && node.attr('id')) ? node.attr('id').replace('node_', '') : ''
 
-    return +nodeId;
-};
+    return +nodeId
+}
 
 var getTreeConfig = function () {
     return {
@@ -98,12 +98,12 @@ var getTreeConfig = function () {
             state:    includeSub,
             label:    __('jstree.include_sub'),
             callback: function (state) {
-                includeSub = state;
+                includeSub = state
 
-                $el.jstree('instance').data.tree_selector.ajax.url = getTreeUrl();
-                $el.jstree('refresh');
-                $el.trigger('after_tree_loaded.jstree');
-                triggerUpdate();
+                $el.jstree('instance').data.tree_selector.ajax.url = getTreeUrl()
+                $el.jstree('refresh')
+                $el.trigger('after_tree_loaded.jstree')
+                triggerUpdate()
             }
 
         },
@@ -129,7 +129,7 @@ var getTreeConfig = function () {
                         select_node_id: getActiveNode(),
                         with_items_count: 1,
                         include_sub: +includeSub
-                    };
+                    }
                 }
             }
         },
@@ -147,84 +147,84 @@ var getTreeConfig = function () {
             select_limit: 1,
             select_multiple_modifier: false
         }
-    };
-};
+    }
+}
 
 var initTree = function () {
     $el.jstree(getTreeConfig())
                 .on('trees_loaded.jstree', onTreesLoaded)
                 .on('after_tree_loaded.jstree', afterTreeLoaded)
                 .on('after_open.jstree correct_state.jstree', afterOpenNode)
-                .on('select_node.jstree', onSelectNode);
-};
+                .on('select_node.jstree', onSelectNode)
+}
 
 var getRoute = function (routeName) {
-    return categoryBaseRoute + '_' + routeName;
-};
+    return categoryBaseRoute + '_' + routeName
+}
 
 var onTreesLoaded = function (event, tree_select_id) {
-    $('#' + tree_select_id).select2({ width: '100%' });
-};
+    $('#' + tree_select_id).select2({ width: '100%' })
+}
 
 var afterTreeLoaded = function (e, root_node_id) {
-    var previousTree = selectedTree;
-    selectedTree = +root_node_id;
+    var previousTree = selectedTree
+    selectedTree = +root_node_id
 
     if (previousTree && previousTree !== selectedTree) {
                 // Tree was switched by user, select the root node
-        selectedNode = 0;
-        selectNode(selectedTree);
-        triggerUpdate();
+        selectedNode = 0
+        selectNode(selectedTree)
+        triggerUpdate()
     } else {
-        selectNode(getActiveNode());
+        selectNode(getActiveNode())
     }
 
     if (!$('#node_' + all).length) {
-        createNode(all, null, 'jstree.' + relatedEntity + '.all');
+        createNode(all, null, 'jstree.' + relatedEntity + '.all')
     }
-};
+}
 
 var afterOpenNode = function (e, data) {
-    var $node = $(data.args[0]);
+    var $node = $(data.args[0])
 
     if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
-        createNode(unclassified, $node.attr('id'), 'jstree.' + relatedEntity + '.unclassified');
+        createNode(unclassified, $node.attr('id'), 'jstree.' + relatedEntity + '.unclassified')
     }
-};
+}
 
 var onSelectNode = function (e, data) {
     if (data.args.length === 1) {
                 // Return if the select was not user triggered
-        return;
+        return
     }
-    var $node = $(data.args).parent();
-    var nodeId = getNodeId($node);
+    var $node = $(data.args).parent()
+    var nodeId = getNodeId($node)
 
     if ($node.attr('rel') === 'folder' && !$node.hasClass('jstree-unclassified')) {
-        selectedNode = 0;
-        selectedTree = nodeId;
+        selectedNode = 0
+        selectedTree = nodeId
     } else {
-        selectedNode = nodeId;
-        selectedTree = getNodeId($el.find('li').first());
+        selectedNode = nodeId
+        selectedTree = getNodeId($el.find('li').first())
     }
-    triggerUpdate();
-};
+    triggerUpdate()
+}
 
 export default {
     init: function ($element, state, baseRoute) {
         if (!$element || !$element.length || !_.isObject($element)) {
-            return;
+            return
         }
 
-        $el               = $element;
-        dataLocale        = $el.attr('data-datalocale');
-        relatedEntity     = $el.attr('data-relatedentity');
-        selectedNode      = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
-        selectedTree      = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
-        includeSub        = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
-        categoryBaseRoute = baseRoute;
+        $el               = $element
+        dataLocale        = $el.attr('data-datalocale')
+        relatedEntity     = $el.attr('data-relatedentity')
+        selectedNode      = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode
+        selectedTree      = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree
+        includeSub        = _.has(state, 'includeSub')   ? state.includeSub   : includeSub
+        categoryBaseRoute = baseRoute
 
-        initTree();
+        initTree()
     },
 
     getState: function () {
@@ -232,19 +232,19 @@ export default {
             selectedNode: selectedNode,
             selectedTree: selectedTree,
             includeSub:   includeSub
-        };
+        }
     },
 
     refresh: function () {
-        initTree();
+        initTree()
     },
 
     reset: function () {
         if ($el) {
-            clearSelection();
-            selectedNode = all;
-            selectNode(selectedNode);
+            clearSelection()
+            selectedNode = all
+            selectNode(selectedNode)
         }
     }
-};
+}
 

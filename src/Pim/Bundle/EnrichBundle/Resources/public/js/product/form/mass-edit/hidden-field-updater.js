@@ -10,20 +10,20 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import $ from 'jquery';
-import BaseForm from 'pim/form';
-import UserContext from 'pim/user-context';
+import _ from 'underscore'
+import $ from 'jquery'
+import BaseForm from 'pim/form'
+import UserContext from 'pim/user-context'
 export default BaseForm.extend({
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:remove-attribute:after', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -34,31 +34,31 @@ export default BaseForm.extend({
              * These unused values will be removed later in the back office.
              */
     render: function () {
-        var selectedLocale = UserContext.get('catalogLocale');
-        var selectedChannel = UserContext.get('catalogScope');
-        var data = this.getFormData().values;
+        var selectedLocale = UserContext.get('catalogLocale')
+        var selectedChannel = UserContext.get('catalogScope')
+        var data = this.getFormData().values
 
         data = _.mapObject(data, function (attributeValues) {
             return _.map(attributeValues, function (value) {
                 if (null !== value.locale && selectedLocale !== value.locale) {
-                    value.data = null;
+                    value.data = null
                 }
                 if (null !== value.scope && selectedChannel !== value.scope) {
-                    value.data = null;
+                    value.data = null
                 }
 
-                return value;
-            });
-        });
+                return value
+            })
+        })
 
-        this.setData({values: data}, {silent: true});
+        this.setData({values: data}, {silent: true})
 
-        var stringData = JSON.stringify(data, null, 0);
-        $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData);
-        $('#pim_enrich_mass_edit_choose_action_operation_attribute_locale').val(selectedLocale);
-        $('#pim_enrich_mass_edit_choose_action_operation_attribute_channel').val(selectedChannel);
+        var stringData = JSON.stringify(data, null, 0)
+        $('#pim_enrich_mass_edit_choose_action_operation_values').val(stringData)
+        $('#pim_enrich_mass_edit_choose_action_operation_attribute_locale').val(selectedLocale)
+        $('#pim_enrich_mass_edit_choose_action_operation_attribute_channel').val(selectedChannel)
 
-        return this;
+        return this
     }
-});
+})
 

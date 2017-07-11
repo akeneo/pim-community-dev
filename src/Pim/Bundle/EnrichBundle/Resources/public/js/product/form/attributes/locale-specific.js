@@ -6,14 +6,14 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseForm from 'pim/form';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseForm from 'pim/form'
 export default BaseForm.extend({
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -24,17 +24,17 @@ export default BaseForm.extend({
              * @returns {Promise}
              */
     addFieldExtension: function (event) {
-        var field = event.field;
+        var field = event.field
 
         if (!field.attribute.is_locale_specific) {
-            return;
+            return
         }
 
         if (!_.contains(field.attribute.available_locales, field.context.locale)) {
-            this.updateFieldElements(field);
+            this.updateFieldElements(field)
         }
 
-        return this;
+        return this
     },
 
             /**
@@ -43,14 +43,14 @@ export default BaseForm.extend({
              * @param {Object} field
              */
     updateFieldElements: function (field) {
-        var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
-        var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
+        var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
+        var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>'
 
         field.addElement(
                     'field-input',
                     'input_placeholder',
                     element
-                );
+                )
     }
-});
+})
 

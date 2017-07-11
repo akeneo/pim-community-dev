@@ -1,9 +1,9 @@
 
 
-import BaseController from 'pim/controller/group';
+import BaseController from 'pim/controller/group'
 export default BaseController.extend({
     initialize: function () {
-        this.config = __moduleConfig;
+        this.config = __moduleConfig
     }
-});
+})
 

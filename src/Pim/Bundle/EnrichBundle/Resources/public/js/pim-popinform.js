@@ -1,19 +1,19 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import 'jquery.multiselect';
-import 'jquery.multiselect.filter';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import 'jquery.multiselect'
+import 'jquery.multiselect.filter'
 
 
 export default function (elementId) {
-    var $el = $('#' + elementId);
+    var $el = $('#' + elementId)
     if (!$el || !$el.length || !_.isObject($el)) {
-        throw new Error('Unable to instantiate available attributes form on this element');
+        throw new Error('Unable to instantiate available attributes form on this element')
     }
 
-    var classes = 'pimmultiselect pimmultiselect_' + elementId;
+    var classes = 'pimmultiselect pimmultiselect_' + elementId
     if (!_.isUndefined($el.attr('data-classes'))) {
-        classes = classes + ' ' + $el.attr('data-classes');
+        classes = classes + ' ' + $el.attr('data-classes')
     }
 
     var opts = {
@@ -29,39 +29,39 @@ export default function (elementId) {
             at: 'right bottom',
             collision: 'none'
         }
-    };
-    opts.selectedText = opts.title;
-    opts.noneSelectedText = opts.title;
+    }
+    opts.selectedText = opts.title
+    opts.noneSelectedText = opts.title
 
-    var $select = $el.find('select');
+    var $select = $el.find('select')
 
     $select.multiselect(opts).multiselectfilter({
         label: false,
         placeholder: opts.placeholder
-    });
+    })
 
-    var $menu = $('.ui-multiselect-menu.pimmultiselect_' + elementId).appendTo($('#container'));
-    var saveButton = $el.attr('data-save-button');
-    var target = $el.attr('data-target');
+    var $menu = $('.ui-multiselect-menu.pimmultiselect_' + elementId).appendTo($('#container'))
+    var saveButton = $el.attr('data-save-button')
+    var target = $el.attr('data-target')
 
-    var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
+    var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu)
     var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
-        $select.multiselect('close');
+        $select.multiselect('close')
         if ($select.val() !== null) {
-            Backbone.Router.prototype.trigger('route');
-            $el.submit();
+            Backbone.Router.prototype.trigger('route')
+            $el.submit()
         }
-    }).appendTo(footerContainer);
+    }).appendTo(footerContainer)
 
-    var $openButton = $el.find('button.pimmultiselect').addClass('btn btn-group');
-    $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
+    var $openButton = $el.find('button.pimmultiselect').addClass('btn btn-group')
+    $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style')
     if (target) {
-        $openButton.prependTo($(target));
+        $openButton.prependTo($(target))
     }
 
-    $menu.find('input[type="search"]').width(207);
+    $menu.find('input[type="search"]').width(207)
 
-    var $content = $menu.find('.ui-multiselect-checkboxes');
+    var $content = $menu.find('.ui-multiselect-checkboxes')
     if (!$content.html()) {
         $content.html(
                     $('<span>', { html: opts.emptyText, css: {
@@ -70,8 +70,8 @@ export default function (elementId) {
                         'padding': '15px',
                         'font-size': '13px'
                     }})
-                );
-        $saveButton.addClass('disabled');
+                )
+        $saveButton.addClass('disabled')
     }
 };
 

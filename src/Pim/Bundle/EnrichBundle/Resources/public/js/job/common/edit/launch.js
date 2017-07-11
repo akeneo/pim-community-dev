@@ -6,15 +6,15 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import Routing from 'routing';
-import router from 'pim/router';
-import propertyAccessor from 'pim/common/property';
-import messenger from 'oro/messenger';
-import template from 'pim/template/export/common/edit/launch';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import Routing from 'routing'
+import router from 'pim/router'
+import propertyAccessor from 'pim/common/property'
+import messenger from 'oro/messenger'
+import template from 'pim/template/export/common/edit/launch'
 export default BaseForm.extend({
     template: _.template(template),
     events: {
@@ -25,9 +25,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -36,17 +36,17 @@ export default BaseForm.extend({
     render: function () {
         this.isVisible().then(function (isVisible) {
             if (!isVisible) {
-                return this;
+                return this
             }
 
             this.$el.html(this.template({
                 label: __(this.config.label)
-            }));
-        }.bind(this));
+            }))
+        }.bind(this))
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
             /**
@@ -55,11 +55,11 @@ export default BaseForm.extend({
     launch: function () {
         $.post(this.getUrl())
                     .then(function (response) {
-                        router.redirect(response.redirectUrl);
+                        router.redirect(response.redirectUrl)
                     })
                     .fail(function () {
-                        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
-                    });
+                        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
+                    })
     },
 
             /**
@@ -68,13 +68,13 @@ export default BaseForm.extend({
              * @return {string}
              */
     getUrl: function () {
-        var params = {};
+        var params = {}
         params[this.config.identifier.name] = propertyAccessor.accessProperty(
                     this.getFormData(),
                     this.config.identifier.path
-                );
+                )
 
-        return Routing.generate(this.config.route, params);
+        return Routing.generate(this.config.route, params)
     },
 
             /**
@@ -83,7 +83,7 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     isVisible: function () {
-        return $.Deferred().resolve(true).promise();
+        return $.Deferred().resolve(true).promise()
     }
-});
+})
 

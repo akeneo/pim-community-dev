@@ -1,18 +1,18 @@
 
 
-import _ from 'underscore';
-import SimpleselectField from 'pim/simple-select-field';
-import Routing from 'routing';
-import FetcherRegistry from 'pim/fetcher-registry';
+import _ from 'underscore'
+import SimpleselectField from 'pim/simple-select-field'
+import Routing from 'routing'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default SimpleselectField.extend({
     fieldType: 'reference-simple-select',
     getTemplateContext: function () {
         return SimpleselectField.prototype.getTemplateContext.apply(this, arguments)
                     .then(function (templateContext) {
-                        templateContext.userCanAddOption = false;
+                        templateContext.userCanAddOption = false
 
-                        return templateContext;
-                    });
+                        return templateContext
+                    })
     },
     getChoiceUrl: function () {
         return FetcherRegistry.getFetcher('reference-data-configuration').fetchAll()
@@ -25,8 +25,8 @@ export default SimpleselectField.extend({
                                 'collectionId': this.attribute.id,
                                 'options': {'type': 'code'}
                             }
-                        );
-                    }, this));
+                        )
+                    }, this))
     }
-});
+})
 

@@ -7,11 +7,11 @@
  */
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/export/product/edit/content/data/help';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/export/product/edit/content/data/help'
 export default BaseForm.extend({
     template: _.template(template),
 
@@ -19,9 +19,9 @@ export default BaseForm.extend({
          * {@inheritdoc}
          */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -31,22 +31,22 @@ export default BaseForm.extend({
          * @param {Object} event
          */
     addFilterExtension: function (event) {
-        var key  = 'pim_enrich.export.product.filter.' + event.filter.shortname + '.help';
-        var text = __(key);
+        var key  = 'pim_enrich.export.product.filter.' + event.filter.shortname + '.help'
+        var text = __(key)
 
         if (key === text) {
-            return;
+            return
         }
 
-        var $content = $(this.template({text: text}));
+        var $content = $(this.template({text: text}))
 
-        $content.find('[data-toggle="tooltip"]').tooltip();
+        $content.find('[data-toggle="tooltip"]').tooltip()
 
         event.filter.addElement(
                 'after-input',
                 'help',
                 $content
-            );
+            )
     }
-});
+})
 

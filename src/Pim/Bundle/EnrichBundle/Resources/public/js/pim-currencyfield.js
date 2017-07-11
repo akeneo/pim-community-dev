@@ -1,8 +1,8 @@
-import $ from 'jquery';
-import Backbone from 'backbone';
-import _ from 'underscore';
-import mediator from 'oro/mediator';
-import 'bootstrap';
+import $ from 'jquery'
+import Backbone from 'backbone'
+import _ from 'underscore'
+import mediator from 'oro/mediator'
+import 'bootstrap'
 
         /**
          * Allow expanding/collapsing currency fields
@@ -64,55 +64,55 @@ export default Backbone.View.extend({
     },
 
     initialize: function () {
-        this._extractMetadata();
-        this.render();
+        this._extractMetadata()
+        this.render()
 
         if (this.scopable) {
             mediator.on('scopablefield:changescope', function (scope) {
-                this._changeDefault(scope);
-            }.bind(this));
+                this._changeDefault(scope)
+            }.bind(this))
 
             mediator.on('scopablefield:collapse', function (id) {
                 if (!id || this.$el.find('#' + id).length) {
-                    this._collapse();
+                    this._collapse()
                 }
-            }.bind(this));
+            }.bind(this))
 
             mediator.on('scopablefield:expand', function (id) {
                 if (!id || this.$el.find('#' + id).length) {
-                    this._expand();
+                    this._expand()
                 }
-            }.bind(this));
+            }.bind(this))
         }
     },
 
     _extractMetadata: function () {
-        this.scopable = this.$el.hasClass('scopable');
-        var currencies = [];
+        this.scopable = this.$el.hasClass('scopable')
+        var currencies = []
 
         this.$el.find(this.fieldSelector).each(function () {
-            var metadata = $(this).data('metadata');
-            currencies.push(metadata.label);
-        });
+            var metadata = $(this).data('metadata')
+            currencies.push(metadata.label)
+        })
 
-        this.currencies = _.uniq(currencies);
+        this.currencies = _.uniq(currencies)
     },
 
     _renderTarget: function (index, target) {
-        var $target = $(target);
-        var data = [];
+        var $target = $(target)
+        var data = []
 
-        var extractScope = this.scopable;
+        var extractScope = this.scopable
 
         $target.find(this.fieldSelector).each(function () {
-            var metadata = $(this).data('metadata');
+            var metadata = $(this).data('metadata')
             if (extractScope) {
-                metadata.scope = $(this).parent().parent().parent().data('scope');
+                metadata.scope = $(this).parent().parent().parent().data('scope')
             }
-            data.push(metadata);
-        });
+            data.push(metadata)
+        })
 
-        $target.empty();
+        $target.empty()
         $target.prepend(
                     this.template({
                         currencies:   this.currencies,
@@ -123,113 +123,113 @@ export default Backbone.View.extend({
                         inputClass:   this.currencies.length > this.inputThreshold ?
                                         this.smallInputClass : this.inputClass
                     })
-                );
+                )
 
         if (this.first) {
-            $target.parent().parent().addClass('first');
-            this.first = false;
+            $target.parent().parent().addClass('first')
+            this.first = false
         }
     },
 
     render: function () {
-        this.$el.addClass('control-group').find('.control-group.hide').removeClass('hide');
+        this.$el.addClass('control-group').find('.control-group.hide').removeClass('hide')
 
-        var $label = this.$el.find('label.control-label:first').prependTo(this.$el);
-        this.$el.find('label.control-label:not(:first)').remove();
+        var $label = this.$el.find('label.control-label:first').prependTo(this.$el)
+        this.$el.find('label.control-label:not(:first)').remove()
 
-        var $fields = this.$el.find('div[data-scope]');
+        var $fields = this.$el.find('div[data-scope]')
 
         if (this.scopable && $fields.length > 1) {
-            var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon });
-            $label.prepend($toggleIcon);
+            var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon })
+            $label.prepend($toggleIcon)
         }
 
         $fields.each(function () {
-            var $parent = $(this).parent();
-            $(this).insertBefore($parent);
-            $parent.remove();
-        });
+            var $parent = $(this).parent()
+            $(this).insertBefore($parent)
+            $parent.remove()
+        })
 
         if (this.scopable) {
-            this.$el.find('div.controls').addClass('input-prepend');
+            this.$el.find('div.controls').addClass('input-prepend')
         }
 
         var $header = $(this.currencyTemplate({
             currencies: this.currencies,
             scopable:   this.scopable,
             small:      this.currencies.length > this.inputThreshold
-        }));
-        $header.insertAfter($label);
-        var $iconsContainer = this.$el.find('.icons-container:first');
-        $iconsContainer.insertAfter($header);
+        }))
+        $header.insertAfter($label)
+        var $iconsContainer = this.$el.find('.icons-container:first')
+        $iconsContainer.insertAfter($header)
 
         _.each(this.$el.find('.validation-tooltip'), function (tooltip) {
-            $(tooltip).appendTo($iconsContainer);
-        });
+            $(tooltip).appendTo($iconsContainer)
+        })
 
-        var $targets = this.$el.find('div.controls');
+        var $targets = this.$el.find('div.controls')
 
-        $targets.each(this._renderTarget.bind(this));
+        $targets.each(this._renderTarget.bind(this))
 
         if (this.scopable) {
-            $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'));
-            this._collapse();
-            mediator.trigger('scopablefield:rendered', this.$el);
+            $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'))
+            this._collapse()
+            mediator.trigger('scopablefield:rendered', this.$el)
         } else {
-            $iconsContainer.appendTo(this.$el.find('.controls'));
+            $iconsContainer.appendTo(this.$el.find('.controls'))
         }
 
-        return this;
+        return this
     },
 
     _expand: function () {
         if (!this.expanded) {
-            this.expanded = true;
+            this.expanded = true
 
-            this.$el.find('div[data-scope]').removeClass('hide');
-            this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
-            this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
+            this.$el.find('div[data-scope]').removeClass('hide')
+            this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon)
+            this.$el.removeClass('collapsed').addClass('expanded').trigger('expand')
         }
 
-        return this;
+        return this
     },
 
     _collapse: function () {
         if (this.expanded) {
-            this.expanded = false;
+            this.expanded = false
 
-            this.$el.find('div[data-scope]:not(:first)').addClass('hide');
-            this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
-            this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
+            this.$el.find('div[data-scope]:not(:first)').addClass('hide')
+            this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon)
+            this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse')
         }
 
-        return this;
+        return this
     },
 
     _toggle: function (e) {
         if (e) {
-            e.preventDefault();
+            e.preventDefault()
         }
 
-        return this.expanded ? this._collapse() : this._expand();
+        return this.expanded ? this._collapse() : this._expand()
     },
 
     _changeDefault: function (scope) {
-        var $fields = this.$el.find('>div[data-scope]');
-        this.$el.find('.first').removeClass('first');
-        var $firstField = $fields.filter('[data-scope="' + scope + '"]');
+        var $fields = this.$el.find('>div[data-scope]')
+        this.$el.find('.first').removeClass('first')
+        var $firstField = $fields.filter('[data-scope="' + scope + '"]')
 
-        $firstField.addClass('first').insertBefore($fields.eq(0));
+        $firstField.addClass('first').insertBefore($fields.eq(0))
 
         if (this.scopable) {
-            var $iconsContainer = this.$el.find('.icons-container:first');
-            $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'));
+            var $iconsContainer = this.$el.find('.icons-container:first')
+            $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'))
         }
 
-        this._toggle();
-        this._toggle();
+        this._toggle()
+        this._toggle()
 
-        return this;
+        return this
     }
-});
+})
 

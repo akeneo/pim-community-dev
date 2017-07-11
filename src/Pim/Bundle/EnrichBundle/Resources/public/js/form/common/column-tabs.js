@@ -7,10 +7,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import FormTabs from 'pim/form/common/form-tabs';
-import template from 'pim/template/form/column-tabs';
+import $ from 'jquery'
+import _ from 'underscore'
+import FormTabs from 'pim/form/common/form-tabs'
+import template from 'pim/template/form/column-tabs'
 export default FormTabs.extend({
     className: '',
 
@@ -22,17 +22,17 @@ export default FormTabs.extend({
              * {@inheritdoc}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'column-tab:select-tab', this.selectTab);
+        this.listenTo(this.getRoot(), 'column-tab:select-tab', this.selectTab)
 
-        return FormTabs.prototype.configure.apply(this, arguments);
+        return FormTabs.prototype.configure.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     registerTab: function (event) {
-        FormTabs.prototype.registerTab.apply(this, arguments);
-        this.getRoot().trigger('column-tab:register', event);
+        FormTabs.prototype.registerTab.apply(this, arguments)
+        this.getRoot().trigger('column-tab:register', event)
     }
-});
+})
 

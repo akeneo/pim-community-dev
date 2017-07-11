@@ -7,13 +7,13 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/index/create-button';
-import Routing from 'routing';
-import DialogForm from 'pim/dialogform';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/index/create-button'
+import Routing from 'routing'
+import DialogForm from 'pim/dialogform'
 export default BaseForm.extend({
     template: _.template(template),
     dialog: null,
@@ -22,9 +22,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -35,11 +35,11 @@ export default BaseForm.extend({
             title: __(this.config.title),
             iconName: this.config.iconName,
             url: Routing.generate(this.config.url)
-        }));
+        }))
 
-        this.dialog = new DialogForm('#create-button-extension');
+        this.dialog = new DialogForm('#create-button-extension')
 
-        return this;
+        return this
     }
-});
+})
 

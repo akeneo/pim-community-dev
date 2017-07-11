@@ -7,13 +7,13 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/download-file';
-import Routing from 'routing';
-import UserContext from 'pim/user-context';
-import propertyAccessor from 'pim/common/property';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/download-file'
+import Routing from 'routing'
+import UserContext from 'pim/user-context'
+import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
     template: _.template(template),
 
@@ -21,18 +21,18 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (meta) {
-        this.config = meta.config;
+        this.config = meta.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -40,15 +40,15 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.isVisible()) {
-            return this;
+            return this
         }
         this.$el.html(this.template({
             btnLabel: __(this.config.label),
             btnIcon: this.config.iconName,
             url: this.getUrl()
-        }));
+        }))
 
-        return this;
+        return this
     },
 
             /**
@@ -57,19 +57,19 @@ export default BaseForm.extend({
              * @returns {string}
              */
     getUrl: function () {
-        var parameters = {};
+        var parameters = {}
         if (this.config.urlParams) {
-            var formData = this.getFormData();
+            var formData = this.getFormData()
             this.config.urlParams.forEach(function (urlParam) {
                 parameters[urlParam.property] =
-                            propertyAccessor.accessProperty(formData, urlParam.path);
-            });
+                            propertyAccessor.accessProperty(formData, urlParam.path)
+            })
         }
 
         return Routing.generate(
                     this.config.url,
                     parameters
-                );
+                )
     },
 
             /**
@@ -78,7 +78,7 @@ export default BaseForm.extend({
              * @returns {boolean}
              */
     isVisible: function () {
-        return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath);
+        return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath)
     }
-});
+})
 

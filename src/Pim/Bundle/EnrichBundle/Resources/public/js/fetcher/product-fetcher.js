@@ -1,17 +1,17 @@
 
 
-import $ from 'jquery';
-import Backbone from 'backbone';
-import Routing from 'routing';
-import mediator from 'oro/mediator';
-import CacheInvalidator from 'pim/cache-invalidator';
-import ProductManager from 'pim/product-manager';
+import $ from 'jquery'
+import Backbone from 'backbone'
+import Routing from 'routing'
+import mediator from 'oro/mediator'
+import CacheInvalidator from 'pim/cache-invalidator'
+import ProductManager from 'pim/product-manager'
 export default Backbone.Model.extend({
             /**
              * @param {Object} options
              */
     initialize: function (options) {
-        this.options = options || {};
+        this.options = options || {}
     },
 
             /**
@@ -24,17 +24,17 @@ export default Backbone.Model.extend({
     fetch: function (identifier) {
         return $.getJSON(Routing.generate(this.options.urls.get, { id: identifier }))
                     .then(function (product) {
-                        var cacheInvalidator = new CacheInvalidator();
-                        cacheInvalidator.checkStructureVersion(product);
+                        var cacheInvalidator = new CacheInvalidator()
+                        cacheInvalidator.checkStructureVersion(product)
 
-                        return ProductManager.generateMissing(product);
+                        return ProductManager.generateMissing(product)
                     }.bind(this))
                     .then(function (product) {
-                        mediator.trigger('pim_enrich:form:product:post_fetch', product);
+                        mediator.trigger('pim_enrich:form:product:post_fetch', product)
 
-                        return product;
+                        return product
                     })
-                    .promise();
+                    .promise()
     }
-});
+})
 

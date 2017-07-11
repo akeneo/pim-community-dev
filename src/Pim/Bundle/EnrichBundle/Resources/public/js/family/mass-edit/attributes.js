@@ -7,8 +7,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import BaseAttributesView from 'pim/family-edit-form/attributes/attributes';
-import mediator from 'oro/mediator';
+import BaseAttributesView from 'pim/family-edit-form/attributes/attributes'
+import mediator from 'oro/mediator'
 export default BaseAttributesView.extend({
     lock: false,
 
@@ -19,14 +19,14 @@ export default BaseAttributesView.extend({
         mediator.on(
                     'mass-edit:form:lock',
                     this.onLock.bind(this)
-                );
+                )
 
         mediator.on(
                     'mass-edit:form:unlock',
                     this.onUnlock.bind(this)
-                );
+                )
 
-        return BaseAttributesView.prototype.configure.apply(this, arguments);
+        return BaseAttributesView.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -34,10 +34,10 @@ export default BaseAttributesView.extend({
              */
     toggleAttribute: function () {
         if (this.lock) {
-            return false;
+            return false
         }
 
-        BaseAttributesView.prototype.toggleAttribute.apply(this, arguments);
+        BaseAttributesView.prototype.toggleAttribute.apply(this, arguments)
     },
 
             /**
@@ -45,24 +45,24 @@ export default BaseAttributesView.extend({
              */
     onRemoveAttribute: function () {
         if (this.lock) {
-            return false;
+            return false
         }
 
-        BaseAttributesView.prototype.onRemoveAttribute.apply(this, arguments);
+        BaseAttributesView.prototype.onRemoveAttribute.apply(this, arguments)
     },
 
             /**
              * Lock event callback
              */
     onLock: function () {
-        this.lock = true;
+        this.lock = true
     },
 
             /**
              * Unlock event callback
              */
     onUnlock: function () {
-        this.lock = false;
+        this.lock = false
     }
-});
+})
 

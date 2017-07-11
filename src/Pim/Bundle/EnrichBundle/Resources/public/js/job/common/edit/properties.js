@@ -6,11 +6,11 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import template from 'pim/template/export/common/edit/properties';
-import BaseForm from 'pim/form';
-import propertyAccessor from 'pim/common/property';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import template from 'pim/template/export/common/edit/properties'
+import BaseForm from 'pim/form'
+import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
     template: _.template(template),
     errors: {},
@@ -19,9 +19,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -31,21 +31,21 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.config.tabCode ? this.config.tabCode : this.code,
             label: __(this.config.tabTitle)
-        });
+        })
         this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:post_fetch',
                     this.resetValidationErrors.bind(this)
-                );
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
+                )
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this))
         this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:validation_error',
                     this.setValidationErrors.bind(this)
-                );
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this));
+                )
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -54,14 +54,14 @@ export default BaseForm.extend({
              * @param {event} event
              */
     setValidationErrors: function (event) {
-        this.errors = event.response;
+        this.errors = event.response
     },
 
             /**
              * Remove validation error
              */
     resetValidationErrors: function () {
-        this.errors = {};
+        this.errors = {}
     },
 
             /**
@@ -72,7 +72,7 @@ export default BaseForm.extend({
              * @return {mixed}
              */
     getValidationErrorsForField: function (field) {
-        return propertyAccessor.accessProperty(this.errors, field, null);
+        return propertyAccessor.accessProperty(this.errors, field, null)
     },
 
             /**
@@ -80,14 +80,14 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         this.$el.html(
                     this.template({__: __})
-                );
+                )
 
-        this.renderExtensions();
+        this.renderExtensions()
     }
-});
+})
 

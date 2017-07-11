@@ -7,18 +7,18 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import template from 'pim/template/form/add-select/select';
-import BaseForm from 'pim/form';
-import LineView from 'pim/common/add-select/line';
-import FooterView from 'pim/common/add-select/footer';
-import UserContext from 'pim/user-context';
-import FetcherRegistry from 'pim/fetcher-registry';
-import ChoicesFormatter from 'pim/formatter/choices/base';
-import mediator from 'oro/mediator';
-import initSelect2 from 'pim/initselect2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import template from 'pim/template/form/add-select/select'
+import BaseForm from 'pim/form'
+import LineView from 'pim/common/add-select/line'
+import FooterView from 'pim/common/add-select/footer'
+import UserContext from 'pim/user-context'
+import FetcherRegistry from 'pim/fetcher-registry'
+import ChoicesFormatter from 'pim/formatter/choices/base'
+import mediator from 'oro/mediator'
+import initSelect2 from 'pim/initselect2'
 export default BaseForm.extend({
     tagName: 'div',
     targetElement: 'input[type="hidden"]',
@@ -63,24 +63,24 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (meta) {
-        this.config = $.extend(true, {}, this.defaultConfig, meta.config);
+        this.config = $.extend(true, {}, this.defaultConfig, meta.config)
 
         if (_.isNull(this.config.mainFetcher)) {
-            throw new Error('Fetcher code must be provided in config');
+            throw new Error('Fetcher code must be provided in config')
         }
 
-        this.config.select2.placeholder = __(this.config.select2.placeholder);
-        this.config.select2.title       = __(this.config.select2.title);
-        this.config.select2.buttonTitle = __(this.config.select2.buttonTitle);
-        this.config.select2.emptyText   = __(this.config.select2.emptyText);
+        this.config.select2.placeholder = __(this.config.select2.placeholder)
+        this.config.select2.title       = __(this.config.select2.title)
+        this.config.select2.buttonTitle = __(this.config.select2.buttonTitle)
+        this.config.select2.emptyText   = __(this.config.select2.emptyText)
 
-        this.resultsPerPage = this.config.resultsPerPage;
-        this.mainFetcher    = this.config.mainFetcher;
-        this.className      = this.config.className;
+        this.resultsPerPage = this.config.resultsPerPage
+        this.mainFetcher    = this.config.mainFetcher
+        this.className      = this.config.className
 
-        this.disableEvent = this.config.events.disable;
-        this.enableEvent  = this.config.events.enable;
-        this.addEvent     = this.config.events.add;
+        this.disableEvent = this.config.events.disable
+        this.enableEvent  = this.config.events.enable
+        this.addEvent     = this.config.events.add
     },
 
             /**
@@ -91,15 +91,15 @@ export default BaseForm.extend({
             mediator.on(
                         this.disableEvent,
                         this.onDisable.bind(this)
-                    );
+                    )
 
             mediator.on(
                         this.enableEvent,
                         this.onEnable.bind(this)
-                    );
+                    )
         }
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -108,64 +108,64 @@ export default BaseForm.extend({
              * @return {Object}
              */
     render: function () {
-        this.$el.html(this.template());
+        this.$el.html(this.template())
 
-        this.$('input[type="hidden"]').prop('readonly', this.disabled);
+        this.$('input[type="hidden"]').prop('readonly', this.disabled)
 
-        this.initializeSelectWidget();
-        this.delegateEvents();
+        this.initializeSelectWidget()
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
             /**
              * Initialize select2 and format elements.
              */
     initializeSelectWidget: function () {
-        var $select = this.$(this.targetElement);
+        var $select = this.$(this.targetElement)
 
         var opts = {
             dropdownCssClass: 'select2--bigDrop select2--annotedLabels ' + this.config.select2.dropdownCssClass,
             formatResult: this.onGetResult.bind(this),
             query: this.onGetQuery.bind(this)
-        };
+        }
 
-        opts = $.extend(true, {}, this.config.select2, opts);
+        opts = $.extend(true, {}, this.config.select2, opts)
 
-        $select = initSelect2.init($select, opts);
+        $select = initSelect2.init($select, opts)
 
         mediator.once('hash_navigation_request:start', function () {
-            $select.select2('close');
-            $select.select2('destroy');
-        });
+            $select.select2('close')
+            $select.select2('destroy')
+        })
 
-        $select.on('select2-selecting', this.onSelecting.bind(this));
+        $select.on('select2-selecting', this.onSelecting.bind(this))
 
-        $select.on('select2-open', this.onSelectOpen.bind(this));
+        $select.on('select2-open', this.onSelectOpen.bind(this))
 
         this.footerViewInstance = new this.footerView({
             buttonTitle: this.config.select2.buttonTitle,
             countTitle: this.config.select2.countTitle,
             addEvent: this.addEvent
-        });
+        })
 
         this.footerViewInstance.on(this.addEvent, function () {
-            $select.select2('close');
+            $select.select2('close')
             if (0 < this.selection.length) {
-                this.addItems();
+                this.addItems()
             }
-        }.bind(this));
+        }.bind(this))
 
-        var $menu = this.$('.select2-drop');
+        var $menu = this.$('.select2-drop')
 
-        $menu.append(this.footerViewInstance.render().$el);
+        $menu.append(this.footerViewInstance.render().$el)
     },
 
             /**
              * Triggers configured event with items codes selected
              */
     addItems: function () {
-        this.getRoot().trigger(this.addEvent, { codes: this.selection });
+        this.getRoot().trigger(this.addEvent, { codes: this.selection })
     },
 
             /**
@@ -184,7 +184,7 @@ export default BaseForm.extend({
                 page: page,
                 locale: UserContext.get('catalogLocale')
             }
-        });
+        })
     },
 
             /**
@@ -193,7 +193,7 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     getItemsToExclude: function () {
-        return $.Deferred().resolve([]);
+        return $.Deferred().resolve([])
     },
 
             /**
@@ -203,10 +203,10 @@ export default BaseForm.extend({
              */
     prepareChoices: function (items) {
         return _.chain(_.sortBy(items, function (item) {
-            return item.sort_order;
+            return item.sort_order
         })).map(function (item) {
-            return ChoicesFormatter.formatOne(item);
-        }).value();
+            return ChoicesFormatter.formatOne(item)
+        }).value()
     },
 
             /**
@@ -217,7 +217,7 @@ export default BaseForm.extend({
              * @returns {Object}
              */
     onGetResult: function (item) {
-        var line = _.findWhere(this.itemViews, {itemCode: item.id});
+        var line = _.findWhere(this.itemViews, {itemCode: item.id})
 
         if (_.isUndefined(line) || _.isNull(line)) {
             line = {
@@ -226,12 +226,12 @@ export default BaseForm.extend({
                     checked: _.contains(this.selection, item.id),
                     item: item
                 })
-            };
+            }
 
-            this.itemViews.push(line);
+            this.itemViews.push(line)
         }
 
-        return line.itemView.render().$el;
+        return line.itemView.render().$el
     },
 
             /**
@@ -240,22 +240,22 @@ export default BaseForm.extend({
              * @param {Object} options
              */
     onGetQuery: function (options) {
-        clearTimeout(this.queryTimer);
+        clearTimeout(this.queryTimer)
         this.queryTimer = setTimeout(function () {
-            var page = 1;
+            var page = 1
             if (options.context && options.context.page) {
-                page = options.context.page;
+                page = options.context.page
             }
-            var searchParameters = this.getSelectSearchParameters(options.term, page);
+            var searchParameters = this.getSelectSearchParameters(options.term, page)
 
             this.getItemsToExclude()
                         .then(function (identifiersToExclude) {
-                            searchParameters.options.excluded_identifiers = identifiersToExclude;
+                            searchParameters.options.excluded_identifiers = identifiersToExclude
 
-                            return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                            return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters)
                         }.bind(this))
                         .then(function (items) {
-                            var choices = this.prepareChoices(items);
+                            var choices = this.prepareChoices(items)
 
                             options.callback({
                                 results: choices,
@@ -263,9 +263,9 @@ export default BaseForm.extend({
                                 context: {
                                     page: page + 1
                                 }
-                            });
-                        }.bind(this));
-        }.bind(this), 400);
+                            })
+                        }.bind(this))
+        }.bind(this), 400)
     },
 
             /**
@@ -274,53 +274,53 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     onSelecting: function (event) {
-        var itemCode = event.val;
-        var alreadySelected = _.contains(this.selection, itemCode);
+        var itemCode = event.val
+        var alreadySelected = _.contains(this.selection, itemCode)
 
         if (alreadySelected) {
-            this.selection = _.without(this.selection, itemCode);
+            this.selection = _.without(this.selection, itemCode)
         } else {
-            this.selection.push(itemCode);
+            this.selection.push(itemCode)
         }
 
-        var line = _.findWhere(this.itemViews, {itemCode: itemCode});
-        line.itemView.setCheckedCheckbox(!alreadySelected);
+        var line = _.findWhere(this.itemViews, {itemCode: itemCode})
+        line.itemView.setCheckedCheckbox(!alreadySelected)
 
-        this.updateSelectedCounter();
-        event.preventDefault();
+        this.updateSelectedCounter()
+        event.preventDefault()
     },
 
             /**
              * Cleans select2 when open
              */
     onSelectOpen: function () {
-        this.selection = [];
-        this.itemViews = [];
-        this.updateSelectedCounter();
+        this.selection = []
+        this.itemViews = []
+        this.updateSelectedCounter()
     },
 
             /**
              * Update counter of selected items
              */
     updateSelectedCounter: function () {
-        this.footerViewInstance.updateNumberOfItems(this.selection.length);
+        this.footerViewInstance.updateNumberOfItems(this.selection.length)
     },
 
             /**
              * Disable callback
              */
     onDisable: function () {
-        this.disabled = true;
-        this.render();
+        this.disabled = true
+        this.render()
     },
 
             /**
              * Enable callback
              */
     onEnable: function () {
-        this.disabled = false;
-        this.render();
+        this.disabled = false
+        this.render()
     }
-});
+})
 
 

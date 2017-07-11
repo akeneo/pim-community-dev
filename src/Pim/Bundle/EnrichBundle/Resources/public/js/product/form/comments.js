@@ -7,16 +7,16 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
-import UserContext from 'pim/user-context';
-import template from 'pim/template/product/comments';
-import Routing from 'routing';
-import messenger from 'oro/messenger';
-import Dialog from 'pim/dialog';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import UserContext from 'pim/user-context'
+import template from 'pim/template/product/comments'
+import Routing from 'routing'
+import messenger from 'oro/messenger'
+import Dialog from 'pim/dialog'
 export default BaseForm.extend({
     template: _.template(template),
 
@@ -36,9 +36,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        this.comment = new Backbone.Model();
+        this.comment = new Backbone.Model()
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -48,9 +48,9 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: __('pim_comment.product.panel.comment.title')
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -58,11 +58,11 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
-            return this;
+            return this
         }
 
         this.loadData().done(function (data) {
-            this.comments = data;
+            this.comments = data
 
             this.$el.html(
                         this.template({
@@ -71,11 +71,11 @@ export default BaseForm.extend({
                             currentUser: UserContext.toJSON(),
                             emptyLabel: __('comment.index.empty')
                         })
-                    );
-            this.delegateEvents();
-        }.bind(this));
+                    )
+            this.delegateEvents()
+        }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -91,7 +91,7 @@ export default BaseForm.extend({
                             id: this.getFormData().meta.id
                         }
                     )
-                );
+                )
     },
 
             /**
@@ -100,13 +100,13 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     toggleButtons: function (event) {
-        var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
+        var $element = $(event.currentTarget).parents('.comment-thread, .comment-create')
         if ($element.find('textarea').val()) {
-            $element.addClass('active');
-            $element.find('.AknButtonList').removeClass('AknButtonList--hide');
+            $element.addClass('active')
+            $element.find('.AknButtonList').removeClass('AknButtonList--hide')
         } else {
-            $element.removeClass('active');
-            $element.find('.AknButtonList').addClass('AknButtonList--hide');
+            $element.removeClass('active')
+            $element.find('.AknButtonList').addClass('AknButtonList--hide')
         }
     },
 
@@ -116,10 +116,10 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     cancelComment: function (event) {
-        var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
-        $element.find('textarea').val('');
-        $element.removeClass('active');
-        $element.find('.AknButtonList').addClass('AknButtonList--hide');
+        var $element = $(event.currentTarget).parents('.comment-thread, .comment-create')
+        $element.find('textarea').val('')
+        $element.removeClass('active')
+        $element.find('.AknButtonList').addClass('AknButtonList--hide')
     },
 
             /**
@@ -132,11 +132,11 @@ export default BaseForm.extend({
             contentType: 'application/json',
             data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
         }).done(function () {
-            this.render();
-            messenger.notify('success', __('flash.comment.create.success'));
+            this.render()
+            messenger.notify('success', __('flash.comment.create.success'))
         }.bind(this)).fail(function () {
-            messenger.notify('error', __('flash.comment.create.error'));
-        });
+            messenger.notify('error', __('flash.comment.create.error'))
+        })
     },
 
             /**
@@ -149,7 +149,7 @@ export default BaseForm.extend({
                     __('confirmation.remove.comment'),
                     __('pim_enrich.confirmation.delete_item'),
                     this.doRemove.bind(this, event)
-                );
+                )
     },
 
             /**
@@ -164,11 +164,11 @@ export default BaseForm.extend({
             headers: { accept: 'application/json' },
             data: { _method: 'DELETE' }
         }).done(function () {
-            this.render();
-            messenger.notify('success', __('flash.comment.delete.success'));
+            this.render()
+            messenger.notify('success', __('flash.comment.delete.success'))
         }.bind(this)).fail(function () {
-            messenger.notify('error', __('flash.comment.delete.error'));
-        });
+            messenger.notify('error', __('flash.comment.delete.error'))
+        })
     },
 
             /**
@@ -177,7 +177,7 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     saveReply: function (event) {
-        var $thread = $(event.currentTarget).parents('.comment-thread');
+        var $thread = $(event.currentTarget).parents('.comment-thread')
 
         $.ajax({
             type: 'POST',
@@ -191,12 +191,12 @@ export default BaseForm.extend({
             contentType: 'application/json',
             data: JSON.stringify({ 'body': $thread.find('textarea').val()})
         }).done(function () {
-            $thread.find('textarea').val('');
-            this.render();
-            messenger.notify('success', __('flash.comment.reply.success'));
+            $thread.find('textarea').val('')
+            this.render()
+            messenger.notify('success', __('flash.comment.reply.success'))
         }.bind(this)).fail(function () {
-            messenger.notify('error', __('flash.comment.reply.error'));
-        });
+            messenger.notify('error', __('flash.comment.reply.error'))
+        })
     }
-});
+})
 

@@ -1,16 +1,16 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseFetcher from 'pim/base-fetcher';
-import Routing from 'routing';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseFetcher from 'pim/base-fetcher'
+import Routing from 'routing'
 export default BaseFetcher.extend({
     entityActivatedListPromise: null,
             /**
              * @param {Object} options
              */
     initialize: function (options) {
-        this.options = options || {};
+        this.options = options || {}
     },
 
             /**
@@ -23,25 +23,25 @@ export default BaseFetcher.extend({
     fetchActivated: function () {
         if (!this.entityActivatedListPromise) {
             if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
+                return $.Deferred().reject().promise()
             }
 
             this.entityActivatedListPromise = $.getJSON(
                         Routing.generate(this.options.urls.list),
                         {activated: true}
-                    ).then(_.identity).promise();
+                    ).then(_.identity).promise()
         }
 
-        return this.entityActivatedListPromise;
+        return this.entityActivatedListPromise
     },
 
             /**
              * {inheritdoc}
              */
     clear: function () {
-        this.entityActivatedListPromise = null;
+        this.entityActivatedListPromise = null
 
-        BaseFetcher.prototype.clear.apply(this, arguments);
+        BaseFetcher.prototype.clear.apply(this, arguments)
     }
-});
+})
 

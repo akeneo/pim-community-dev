@@ -1,18 +1,18 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import BaseFilter from 'pim/filter/filter';
-import Routing from 'routing';
-import CategoryTree from 'pim/filter/product/category/selector';
-import fetcherRegistry from 'pim/fetcher-registry';
-import template from 'pim/template/filter/product/category';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import BaseFilter from 'pim/filter/filter'
+import Routing from 'routing'
+import CategoryTree from 'pim/filter/product/category/selector'
+import fetcherRegistry from 'pim/fetcher-registry'
+import template from 'pim/template/filter/product/category'
+import 'jquery.select2'
 var TreeModal = Backbone.BootstrapModal.extend({
     className: 'modal jstree-modal'
-});
+})
 
 export default BaseFilter.extend({
     shortname: 'category',
@@ -26,12 +26,12 @@ export default BaseFilter.extend({
          * {@inherit}
          */
     configure: function () {
-        this.listenTo(this, 'channel:update:after', this.channelUpdated.bind(this));
+        this.listenTo(this, 'channel:update:after', this.channelUpdated.bind(this))
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: 'IN CHILDREN', value: []});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), operator: 'IN CHILDREN', value: []})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -40,7 +40,7 @@ export default BaseFilter.extend({
          * @return {String}
          */
     renderInput: function () {
-        var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length;
+        var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length
 
         return this.template({
             isEditable: this.isEditable(),
@@ -52,7 +52,7 @@ export default BaseFilter.extend({
                     categoryCount
                 ),
             value: this.getValue()
-        });
+        })
     },
 
         /**
@@ -60,9 +60,9 @@ export default BaseFilter.extend({
          */
     channelUpdated: function () {
         this.getCurrentChannel().then(function (channel) {
-            this.setDefaultValues(channel);
-            this.render();
-        }.bind(this));
+            this.setDefaultValues(channel)
+            this.render()
+        }.bind(this))
     },
 
         /**
@@ -74,11 +74,11 @@ export default BaseFilter.extend({
                 this.getCurrentChannel()
             ).then(function (templateContext, channel) {
                 if ('IN CHILDREN' === this.getOperator()) {
-                    this.setDefaultValues(channel);
+                    this.setDefaultValues(channel)
                 }
 
-                return templateContext;
-            }.bind(this));
+                return templateContext
+            }.bind(this))
     },
 
         /**
@@ -90,9 +90,9 @@ export default BaseFilter.extend({
             cancelText: __('pim_connector.export.categories.selector.modal.cancel'),
             okText: __('pim_connector.export.categories.selector.modal.confirm'),
             content: ''
-        });
+        })
 
-        modal.render();
+        modal.render()
 
         var tree = new CategoryTree({
             el: modal.$el.find('.modal-body'),
@@ -100,41 +100,41 @@ export default BaseFilter.extend({
                 channel: this.getParentForm().getFilters().structure.scope,
                 categories: 'IN CHILDREN' === this.getOperator() ? [] : this.getValue()
             }
-        });
+        })
 
-        tree.render();
-        modal.open();
+        tree.render()
+        modal.open()
 
         modal.on('cancel', function () {
-            modal.remove();
-            tree.remove();
-        });
+            modal.remove()
+            tree.remove()
+        })
 
         modal.on('ok', function () {
             if (_.isEmpty(tree.attributes.categories)) {
                 this.getCurrentChannel().then(function (channel) {
-                    this.setDefaultValues(channel);
-                }.bind(this));
+                    this.setDefaultValues(channel)
+                }.bind(this))
             } else {
                 this.setData({
                     field: this.getField(),
                     operator: 'IN',
                     value: tree.attributes.categories
-                });
+                })
             }
 
-            modal.close();
-            modal.remove();
-            tree.remove();
-            this.render();
-        }.bind(this));
+            modal.close()
+            modal.remove()
+            tree.remove()
+            this.render()
+        }.bind(this))
     },
 
         /**
          * {@inheritdoc}
          */
     isEmpty: function () {
-        return false;
+        return false
     },
 
         /**
@@ -144,7 +144,7 @@ export default BaseFilter.extend({
          */
     getCurrentChannel: function () {
         return fetcherRegistry.getFetcher('channel')
-                .fetch(this.getParentForm().getFilters().structure.scope);
+                .fetch(this.getParentForm().getFilters().structure.scope)
     },
 
         /**
@@ -154,14 +154,14 @@ export default BaseFilter.extend({
          */
     setDefaultValues: function (channel) {
         if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category_tree])) {
-            return;
+            return
         }
 
         this.setData({
             field: this.getField(),
             operator: 'IN CHILDREN',
             value: [channel.category_tree]
-        });
+        })
     }
-});
+})
 

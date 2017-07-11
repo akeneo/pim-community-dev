@@ -6,16 +6,16 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import template from 'pim/template/export/product/edit/content/structure/attributes';
-import BaseForm from 'pim/form';
-import LoadingMask from 'oro/loading-mask';
-import fetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import AttributeSelector from 'pim/job/product/edit/content/structure/attributes-selector';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import template from 'pim/template/export/product/edit/content/structure/attributes'
+import BaseForm from 'pim/form'
+import LoadingMask from 'oro/loading-mask'
+import fetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import AttributeSelector from 'pim/job/product/edit/content/structure/attributes-selector'
 export default BaseForm.extend({
     className: 'AknFieldContainer attributes',
     template: _.template(template),
@@ -29,9 +29,9 @@ export default BaseForm.extend({
              * @param {Object} config
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        return BaseForm.prototype.initialize.apply(this, arguments);
+        return BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -39,10 +39,10 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
-        var attributes = this.getFilters().structure.attributes || [];
+        var attributes = this.getFilters().structure.attributes || []
 
         this.$el.html(
                     this.template({
@@ -57,12 +57,12 @@ export default BaseForm.extend({
                         ),
                         errors: this.getParent().getValidationErrorsForField('attributes')
                     })
-                );
+                )
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        this.$('[data-toggle="tooltip"]').tooltip();
-        this.renderExtensions();
+        this.$('[data-toggle="tooltip"]').tooltip()
+        this.renderExtensions()
     },
 
             /**
@@ -73,17 +73,17 @@ export default BaseForm.extend({
     isEditable: function () {
         return undefined !== this.config.readOnly ?
                     !this.config.readOnly :
-                    true;
+                    true
     },
 
     openSelector: function (e) {
-        e.preventDefault();
-        var loadingMask = new LoadingMask();
-        loadingMask.render().$el.appendTo(this.getRoot().$el);
-        loadingMask.show();
-        var selectedAttributes = this.getFilters().structure.attributes || [];
-        var attributeSelector = new AttributeSelector();
-        attributeSelector.setSelected(selectedAttributes);
+        e.preventDefault()
+        var loadingMask = new LoadingMask()
+        loadingMask.render().$el.appendTo(this.getRoot().$el)
+        loadingMask.show()
+        var selectedAttributes = this.getFilters().structure.attributes || []
+        var attributeSelector = new AttributeSelector()
+        attributeSelector.setSelected(selectedAttributes)
 
         var modal = new Backbone.BootstrapModal({
             className: 'modal modal-large column-configurator-modal',
@@ -97,24 +97,24 @@ export default BaseForm.extend({
             title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
             content: '<div class="AknColumnConfigurator attribute-selector"></div>',
             okText: _.__('pim_enrich.export.product.filter.attributes.modal.apply')
-        });
+        })
 
-        loadingMask.hide();
-        loadingMask.$el.remove();
+        loadingMask.hide()
+        loadingMask.$el.remove()
 
-        modal.open();
-        attributeSelector.setElement('.attribute-selector').render();
+        modal.open()
+        attributeSelector.setElement('.attribute-selector').render()
 
         modal.on('ok', function () {
-            var values = attributeSelector.getSelected();
-            var data = this.getFilters();
+            var values = attributeSelector.getSelected()
+            var data = this.getFilters()
 
-            data.structure.attributes = values;
+            data.structure.attributes = values
 
-            this.setData(data);
-            modal.close();
-            this.render();
-        }.bind(this));
+            this.setData(data)
+            modal.close()
+            this.render()
+        }.bind(this))
     },
 
             /**
@@ -123,7 +123,7 @@ export default BaseForm.extend({
              * @return {object}
              */
     getFilters: function () {
-        return this.getFormData().configuration.filters;
+        return this.getFormData().configuration.filters
     }
-});
+})
 

@@ -7,18 +7,18 @@
  */
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
 export default BaseForm.extend({
         /**
          * {@inheritdoc}
          */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -27,7 +27,7 @@ export default BaseForm.extend({
          * @param {Object} event
          */
     addFilterExtension: function (event) {
-        event.filter.setEditable(false);
+        event.filter.setEditable(false)
     }
-});
+})
 

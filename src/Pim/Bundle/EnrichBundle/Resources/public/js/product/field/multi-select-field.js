@@ -7,17 +7,17 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import Field from 'pim/field';
-import _ from 'underscore';
-import fieldTemplate from 'pim/template/product/field/multi-select';
-import Routing from 'routing';
-import createOption from 'pim/attribute-option/create';
-import SecurityContext from 'pim/security-context';
-import initSelect2 from 'pim/initselect2';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import AttributeManager from 'pim/attribute-manager';
+import $ from 'jquery'
+import Field from 'pim/field'
+import _ from 'underscore'
+import fieldTemplate from 'pim/template/product/field/multi-select'
+import Routing from 'routing'
+import createOption from 'pim/attribute-option/create'
+import SecurityContext from 'pim/security-context'
+import initSelect2 from 'pim/initselect2'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import AttributeManager from 'pim/attribute-manager'
 export default Field.extend({
     fieldTemplate: _.template(fieldTemplate),
     choicePromise: null,
@@ -32,11 +32,11 @@ export default Field.extend({
              */
     getTemplateContext: function () {
         return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
-            var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit');
-            templateContext.userCanAddOption = this.editable && isAllowed;
+            var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit')
+            templateContext.userCanAddOption = this.editable && isAllowed
 
-            return templateContext;
-        }.bind(this));
+            return templateContext
+        }.bind(this))
     },
 
             /**
@@ -44,32 +44,32 @@ export default Field.extend({
              */
     createOption: function () {
         if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
-            return;
+            return
         }
         createOption(this.attribute).then(function (option) {
             if (this.isEditable()) {
-                var value = this.getCurrentValue().data;
-                value.push(option.code);
-                this.setCurrentValue(value);
+                var value = this.getCurrentValue().data
+                value.push(option.code)
+                this.setCurrentValue(value)
             }
 
-            this.choicePromise = null;
-            this.render();
-        }.bind(this));
+            this.choicePromise = null
+            this.render()
+        }.bind(this))
     },
 
             /**
              * {@inheritdoc}
              */
     renderInput: function (context) {
-        return this.fieldTemplate(context);
+        return this.fieldTemplate(context)
     },
 
             /**
              * {@inheritdoc}
              */
     postRender: function () {
-        this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('[data-toggle="tooltip"]').tooltip()
         this.getChoiceUrl().then(function (choiceUrl) {
             var options = {
                 ajax: {
@@ -83,24 +83,24 @@ export default Field.extend({
                                 limit: 20,
                                 page: page
                             }
-                        };
+                        }
                     }.bind(this),
                     results: function (response) {
                         if (response.results) {
-                            response.more = 20 === _.keys(response.results).length;
+                            response.more = 20 === _.keys(response.results).length
 
-                            return response;
+                            return response
                         }
 
                         var data = {
                             more: 20 === _.keys(response).length,
                             results: []
-                        };
+                        }
                         _.each(response, function (value) {
-                            data.results.push(this.convertBackendItem(value));
-                        }.bind(this));
+                            data.results.push(this.convertBackendItem(value))
+                        }.bind(this))
 
-                        return data;
+                        return data
                     }.bind(this)
                 },
                 initSelection: function (element, callback) {
@@ -109,38 +109,38 @@ export default Field.extend({
                                 this.attribute,
                                 UserContext.get('catalogLocale'),
                                 UserContext.get('catalogScope')
-                            ).data;
+                            ).data
 
                     if (null === this.choicePromise || this.promiseIdentifiers !== identifiers) {
                         this.choicePromise = $.get(choiceUrl, {
                             options: {
                                 identifiers: identifiers
                             }
-                        });
-                        this.promiseIdentifiers = identifiers;
+                        })
+                        this.promiseIdentifiers = identifiers
                     }
 
                     this.choicePromise.then(function (results) {
                         if (_.has(results, 'results')) {
-                            results = results.results;
+                            results = results.results
                         }
 
                         var choices = _.map($(element).val().split(','), function (choice) {
-                            var option = _.findWhere(results, {code: choice});
+                            var option = _.findWhere(results, {code: choice})
                             if (option) {
-                                return this.convertBackendItem(option);
+                                return this.convertBackendItem(option)
                             }
 
-                            return _.findWhere(results, {id: choice});
-                        }.bind(this));
-                        callback(_.compact(choices));
-                    }.bind(this));
+                            return _.findWhere(results, {id: choice})
+                        }.bind(this))
+                        callback(_.compact(choices))
+                    }.bind(this))
                 }.bind(this),
                 multiple: true
-            };
+            }
 
-            initSelect2.init(this.$('input.select-field'), options);
-        }.bind(this));
+            initSelect2.init(this.$('input.select-field'), options)
+        }.bind(this))
     },
 
             /**
@@ -156,21 +156,21 @@ export default Field.extend({
                             identifier: this.attribute.code
                         }
                     )
-                ).promise();
+                ).promise()
     },
 
             /**
              * {@inheritdoc}
              */
     updateModel: function () {
-        var data = this.$('.field-input:first input.select-field').val().split(',');
+        var data = this.$('.field-input:first input.select-field').val().split(',')
         if (1 === data.length && '' === data[0]) {
-            data = [];
+            data = []
         }
 
-        this.choicePromise = null;
+        this.choicePromise = null
 
-        this.setCurrentValue(data);
+        this.setCurrentValue(data)
     },
 
             /**
@@ -184,7 +184,7 @@ export default Field.extend({
         return {
             id: item.code,
             text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
-        };
+        }
     }
-});
+})
 

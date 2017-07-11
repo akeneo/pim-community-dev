@@ -1,14 +1,14 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/attribute/attribute';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import template from 'pim/template/filter/attribute/price-collection';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/attribute/attribute'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import template from 'pim/template/filter/attribute/price-collection'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'price-collection',
     template: _.template(template),
@@ -28,10 +28,10 @@ export default BaseFilter.extend({
                     amount: '',
                     currency: ''
                 }
-            });
-        }.bind(this));
+            })
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -41,7 +41,7 @@ export default BaseFilter.extend({
         return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() ||
                 undefined === this.getValue().amount ||
-                '' === this.getValue().amount);
+                '' === this.getValue().amount)
     },
 
         /**
@@ -54,14 +54,14 @@ export default BaseFilter.extend({
             field: this.getField(),
             operator: this.getOperator(),
             operators: this.config.operators
-        }));
+        }))
     },
 
         /**
          * {@inheritdoc}
          */
     postRender: function () {
-        this.$('.operator, .currency').select2({minimumResultsForSearch: -1});
+        this.$('.operator, .currency').select2({minimumResultsForSearch: -1})
     },
 
         /**
@@ -74,8 +74,8 @@ export default BaseFilter.extend({
             ).then(function (templateContext, currencies) {
                 return _.extend({}, templateContext, {
                     currencies: currencies
-                });
-            }.bind(this));
+                })
+            }.bind(this))
     },
 
         /**
@@ -85,15 +85,15 @@ export default BaseFilter.extend({
         var value = {
             amount: this.$('[name="filter-data"]').val(),
             currency: this.$('select[name="filter-currency"]').val()
-        };
+        }
 
-        var operator = this.$('[name="filter-operator"]').val();
+        var operator = this.$('[name="filter-operator"]').val()
 
         this.setData({
             field: this.getField(),
             operator: operator,
             value: value
-        });
+        })
     }
-});
+})
 

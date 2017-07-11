@@ -7,10 +7,10 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import mediator from 'oro/mediator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/status-switcher';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/status-switcher'
+
 export default BaseForm.extend({
     className: 'AknDropdownButton AknDropdown status-switcher',
     template: _.template(template),
@@ -18,45 +18,43 @@ export default BaseForm.extend({
         'click .AknDropdown-menuLink': 'updateStatus'
     },
 
-            /**
-             * {@inheritdoc}
-             */
+    /**
+     * {@inheritdoc}
+     */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
-            /**
-             * {@inheritdoc}
-             */
+    /**
+     * {@inheritdoc}
+     */
     render: function () {
-        var status = this.getRoot().getFormData().enabled;
+        var status = this.getRoot().getFormData().enabled
 
         this.$el.html(this.template({
             status: status
-        }));
-        this.$el
-                    .addClass(status ? 'AknDropdownButton--apply' : 'AknDropdownButton--important')
-                    .removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply')
-                    .find('.AknCaret')
-                    .addClass(status ? 'AknCaret--apply' : 'AknCaret--important')
-                    .removeClass(status ? 'AknCaret--important' : 'AknCaret--apply');
-        this.delegateEvents();
+        }))
+        this.$el.addClass(status ? 'AknDropdownButton--apply' : 'AknDropdownButton--important')
+        .removeClass(status ? 'AknDropdownButton--important' : 'AknDropdownButton--apply')
+        .find('.AknCaret')
+        .addClass(status ? 'AknCaret--apply' : 'AknCaret--important')
+        .removeClass(status ? 'AknCaret--important' : 'AknCaret--apply')
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
-            /**
-             * Update the current status of the product
-             *
-             * @param {Event} event
-             */
+    /**
+     * Update the current status of the product
+     *
+     * @param {Event} event
+     */
     updateStatus: function (event) {
-        var newStatus = event.currentTarget.dataset.status === 'enable';
-        this.getFormModel().set('enabled', newStatus);
-        this.getRoot().trigger('pim_enrich:form:entity:update_state');
-        this.render();
+        var newStatus = event.currentTarget.dataset.status === 'enable'
+        this.getFormModel().set('enabled', newStatus)
+        this.getRoot().trigger('pim_enrich:form:entity:update_state')
+        this.render()
     }
-});
-
+})

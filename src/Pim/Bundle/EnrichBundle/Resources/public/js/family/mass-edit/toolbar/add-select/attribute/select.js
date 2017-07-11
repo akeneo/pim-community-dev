@@ -7,10 +7,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import FetcherRegistry from 'pim/fetcher-registry';
-import FamilyAddAttributeSelect from 'pim/family-edit-form/attributes/toolbar/add-select/attribute';
+import $ from 'jquery'
+import _ from 'underscore'
+import FetcherRegistry from 'pim/fetcher-registry'
+import FamilyAddAttributeSelect from 'pim/family-edit-form/attributes/toolbar/add-select/attribute'
 export default FamilyAddAttributeSelect.extend({
             /**
              * {@inheritdoc}
@@ -22,15 +22,15 @@ export default FamilyAddAttributeSelect.extend({
                         var existingAttributes = _.pluck(
                             this.getFormData().attributes,
                             'code'
-                        );
+                        )
 
                         if (!_.contains(existingAttributes, identifier.code)) {
-                            existingAttributes.push(identifier.code);
+                            existingAttributes.push(identifier.code)
                         }
 
-                        return existingAttributes;
-                    }.bind(this));
+                        return existingAttributes
+                    }.bind(this))
     }
-});
+})
 
 

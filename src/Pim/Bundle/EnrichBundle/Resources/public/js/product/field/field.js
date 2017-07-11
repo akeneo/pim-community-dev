@@ -7,16 +7,16 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import Backbone from 'backbone';
-import _ from 'underscore';
-import fieldTemplate from 'pim/template/product/field/field';
-import AttributeManager from 'pim/attribute-manager';
-import i18n from 'pim/i18n';
-import mediator from 'oro/mediator';
+import $ from 'jquery'
+import Backbone from 'backbone'
+import _ from 'underscore'
+import fieldTemplate from 'pim/template/product/field/field'
+import AttributeManager from 'pim/attribute-manager'
+import i18n from 'pim/i18n'
+import mediator from 'oro/mediator'
 var FieldModel = Backbone.Model.extend({
     values: []
-});
+})
 
 export default Backbone.View.extend({
     tagName: 'div',
@@ -25,7 +25,7 @@ export default Backbone.View.extend({
     attributes: function () {
         return {
             'data-attribute': this.options ? this.options.code : null
-        };
+        }
     },
     attribute: null,
     context: {},
@@ -45,12 +45,12 @@ export default Backbone.View.extend({
              * @returns {Object}
              */
     initialize: function (attribute) {
-        this.attribute = attribute;
-        this.model     = new FieldModel({values: []});
-        this.elements  = {};
-        this.context   = {};
+        this.attribute = attribute
+        this.model     = new FieldModel({values: []})
+        this.elements  = {}
+        this.context   = {}
 
-        return this;
+        return this
     },
 
             /**
@@ -59,24 +59,24 @@ export default Backbone.View.extend({
              * @returns {Object}
              */
     render: function () {
-        this.setEditable(!this.locked);
-        this.setValid(true);
-        this.elements = {};
-        var promises  = [];
-        mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
+        this.setEditable(!this.locked)
+        this.setValid(true)
+        this.elements = {}
+        var promises  = []
+        mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises})
 
         $.when.apply($, promises)
                     .then(this.getTemplateContext.bind(this))
                     .then(function (templateContext) {
-                        this.$el.html(this.template(templateContext));
-                        this.$('.original-field .field-input').append(this.renderInput(templateContext));
+                        this.$el.html(this.template(templateContext))
+                        this.$('.original-field .field-input').append(this.renderInput(templateContext))
 
-                        this.renderElements();
-                        this.postRender();
-                        this.delegateEvents();
-                    }.bind(this));
+                        this.renderElements()
+                        this.postRender()
+                        this.delegateEvents()
+                    }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -86,19 +86,19 @@ export default Backbone.View.extend({
         _.each(this.elements, function (elements, position) {
             var $container = 'field-input' === position ?
                         this.$('.original-field .field-input') :
-                        this.$('.' + position + '-elements-container');
+                        this.$('.' + position + '-elements-container')
 
-            $container.empty();
+            $container.empty()
 
             _.each(elements, function (element) {
                 if (typeof element.render === 'function') {
-                    $container.append(element.render().$el);
+                    $container.append(element.render().$el)
                 } else {
-                    $container.append(element);
+                    $container.append(element)
                 }
-            }.bind(this));
+            }.bind(this))
 
-        }.bind(this));
+        }.bind(this))
     },
 
             /**
@@ -107,7 +107,7 @@ export default Backbone.View.extend({
              * @throws {Error} if this method is not implemented
              */
     renderInput: function () {
-        throw new Error('You should implement your field template');
+        throw new Error('You should implement your field template')
     },
 
             /**
@@ -125,14 +125,14 @@ export default Backbone.View.extend({
     renderCopyInput: function (value) {
         return this.getTemplateContext()
                     .then(function (context) {
-                        var copyContext = $.extend(true, {}, context);
-                        copyContext.value = value;
-                        copyContext.context.locale = value.locale;
-                        copyContext.context.scope = value.scope;
-                        copyContext.editMode = 'view';
+                        var copyContext = $.extend(true, {}, context)
+                        copyContext.value = value
+                        copyContext.context.locale = value.locale
+                        copyContext.context.scope = value.scope
+                        copyContext.editMode = 'view'
 
-                        return this.renderInput(copyContext);
-                    }.bind(this));
+                        return this.renderInput(copyContext)
+                    }.bind(this))
     },
 
             /**
@@ -141,7 +141,7 @@ export default Backbone.View.extend({
              * @returns {Promise}
              */
     getTemplateContext: function () {
-        var deferred = $.Deferred();
+        var deferred = $.Deferred()
 
         deferred.resolve({
             type: this.attribute.field_type,
@@ -153,16 +153,16 @@ export default Backbone.View.extend({
             info: this.elements,
             editMode: this.getEditMode(),
             i18n: i18n
-        });
+        })
 
-        return deferred.promise();
+        return deferred.promise()
     },
 
             /**
              * Update the model linked to this field
              */
     updateModel: function () {
-        this.valid = true;
+        this.valid = true
     },
 
             /**
@@ -172,10 +172,10 @@ export default Backbone.View.extend({
              */
     setValues: function (values) {
         if (_.isUndefined(values) || values.length === 0) {
-            console.error('Value array is empty');
+            console.error('Value array is empty')
         }
 
-        this.model.set('values', values);
+        this.model.set('values', values)
     },
 
             /**
@@ -184,7 +184,7 @@ export default Backbone.View.extend({
              * @param {Object} context
              */
     setContext: function (context) {
-        this.context = context;
+        this.context = context
     },
 
             /**
@@ -196,9 +196,9 @@ export default Backbone.View.extend({
              */
     addElement: function (position, code, element) {
         if (!this.elements[position]) {
-            this.elements[position] = {};
+            this.elements[position] = {}
         }
-        this.elements[position][code] = element;
+        this.elements[position][code] = element
     },
 
             /**
@@ -209,7 +209,7 @@ export default Backbone.View.extend({
              */
     removeElement: function (position, code) {
         if (this.elements[position] && this.elements[position][code]) {
-            delete this.elements[position][code];
+            delete this.elements[position][code]
         }
     },
 
@@ -219,7 +219,7 @@ export default Backbone.View.extend({
              * @param {boolean} valid
              */
     setValid: function (valid) {
-        this.valid = valid;
+        this.valid = valid
     },
 
             /**
@@ -228,14 +228,14 @@ export default Backbone.View.extend({
              * @returns {boolean}
              */
     isValid: function () {
-        return this.valid;
+        return this.valid
     },
 
             /**
              * Set the focus on the input of this field
              */
     setFocus: function () {
-        this.$('input:first').focus();
+        this.$('input:first').focus()
     },
 
             /**
@@ -244,7 +244,7 @@ export default Backbone.View.extend({
              * @param {boolean} editable
              */
     setEditable: function (editable) {
-        this.editable = editable;
+        this.editable = editable
     },
 
             /**
@@ -253,7 +253,7 @@ export default Backbone.View.extend({
              * @param {boolean} locked
              */
     setLocked: function (locked) {
-        this.locked = locked;
+        this.locked = locked
     },
 
             /**
@@ -262,7 +262,7 @@ export default Backbone.View.extend({
              * @returns {boolean}
              */
     isEditable: function () {
-        return this.editable;
+        return this.editable
     },
 
             /**
@@ -271,7 +271,7 @@ export default Backbone.View.extend({
              * @param {boolean} ready
              */
     setReady: function (ready) {
-        this.ready = ready;
+        this.ready = ready
     },
 
             /**
@@ -280,7 +280,7 @@ export default Backbone.View.extend({
              * @returns {boolean}
              */
     isReady: function () {
-        return this.ready;
+        return this.ready
     },
 
             /**
@@ -290,9 +290,9 @@ export default Backbone.View.extend({
              */
     getEditMode: function () {
         if (this.editable) {
-            return 'edit';
+            return 'edit'
         } else {
-            return 'view';
+            return 'view'
         }
     },
 
@@ -302,7 +302,7 @@ export default Backbone.View.extend({
              * @returns {boolean}
              */
     canBeSeen: function () {
-        return true;
+        return true
     },
 
             /**
@@ -317,7 +317,7 @@ export default Backbone.View.extend({
                     this.attribute,
                     this.context.locale,
                     this.context.scope
-                );
+                )
     },
 
             /**
@@ -326,10 +326,10 @@ export default Backbone.View.extend({
              * @param {*} value
              */
     setCurrentValue: function (value) {
-        var productValue = this.getCurrentValue();
+        var productValue = this.getCurrentValue()
 
-        productValue.data = value;
-        mediator.trigger('pim_enrich:form:entity:update_state');
+        productValue.data = value
+        mediator.trigger('pim_enrich:form:entity:update_state')
     },
 
             /**
@@ -340,7 +340,7 @@ export default Backbone.View.extend({
     getLabel: function () {
         return this.attribute.labels[this.context.uiLocale] ?
                     this.attribute.labels[this.context.uiLocale] :
-                    '[' + this.attribute.code + ']';
+                    '[' + this.attribute.code + ']'
     }
-});
+})
 

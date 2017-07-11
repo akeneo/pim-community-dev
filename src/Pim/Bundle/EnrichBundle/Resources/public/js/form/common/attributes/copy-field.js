@@ -7,12 +7,12 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import Backbone from 'backbone';
-import _ from 'underscore';
-import Field from 'pim/field';
-import template from 'pim/template/form/tab/attribute/copy-field';
-import i18n from 'pim/i18n';
-import mediator from 'oro/mediator';
+import Backbone from 'backbone'
+import _ from 'underscore'
+import Field from 'pim/field'
+import template from 'pim/template/form/tab/attribute/copy-field'
+import i18n from 'pim/i18n'
+import mediator from 'oro/mediator'
 export default Field.extend({
     tagName: 'div',
     field: null,
@@ -26,10 +26,10 @@ export default Field.extend({
              * Initialize the view
              */
     initialize: function () {
-        this.selected = false;
-        this.field    = null;
+        this.selected = false
+        this.field    = null
 
-        Field.prototype.initialize.apply(this, arguments);
+        Field.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -39,7 +39,7 @@ export default Field.extend({
              * @returns {Object}
              */
     render: function () {
-        this.$el.empty();
+        this.$el.empty()
 
         var templateContext = {
             type: this.field.attribute.field_type,
@@ -49,20 +49,20 @@ export default Field.extend({
             selected: this.selected,
             context: this.context,
             i18n: i18n
-        };
+        }
 
-        mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []});
+        mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []})
 
-        this.$el.html(this.template(templateContext));
+        this.$el.html(this.template(templateContext))
         this.field.renderCopyInput(this.getCurrentValue())
                     .then(function (render) {
-                        this.$('.field-input').html(render);
-                        this.renderElements();
-                    }.bind(this));
+                        this.$('.field-input').html(render)
+                        this.renderElements()
+                    }.bind(this))
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
             /**
@@ -72,18 +72,18 @@ export default Field.extend({
     renderElements: function () {
         _.each(this.elements, function (elements, position) {
             if ('field-input' === position) {
-                var $container = this.$('.field-input');
-                $container.empty();
+                var $container = this.$('.field-input')
+                $container.empty()
 
                 _.each(elements, function (element) {
                     if (typeof element.render === 'function') {
-                        $container.append(element.render().$el);
+                        $container.append(element.render().$el)
                     } else {
-                        $container.append(element);
+                        $container.append(element)
                     }
-                }.bind(this));
+                }.bind(this))
             }
-        }.bind(this));
+        }.bind(this))
     },
 
             /**
@@ -92,15 +92,15 @@ export default Field.extend({
              * @param {Field} field
              */
     setField: function (field) {
-        this.field = field;
+        this.field = field
     },
 
             /**
              * Callback called when the copy field is clicked, toggle the select checkbox state
              */
     onSelect: function () {
-        this.selected = !this.selected;
-        this.$('.copy-field-selector').prop('checked', this.selected);
+        this.selected = !this.selected
+        this.$('.copy-field-selector').prop('checked', this.selected)
     },
 
             /**
@@ -109,7 +109,7 @@ export default Field.extend({
              * @param {boolean} selected
              */
     setSelected: function (selected) {
-        this.selected = selected;
+        this.selected = selected
     }
-});
+})
 

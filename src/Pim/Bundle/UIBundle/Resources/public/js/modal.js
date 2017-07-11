@@ -1,6 +1,6 @@
-import _ from 'underscore';
-import Backbone from 'backbone';
-import 'bootstrap-modal';
+import _ from 'underscore'
+import Backbone from 'backbone'
+import 'bootstrap-modal'
 
 
     /**
@@ -16,11 +16,11 @@ export default Backbone.BootstrapModal.extend({
     className: 'modal oro-modal-danger',
 
     open: function () {
-        Backbone.BootstrapModal.prototype.open.apply(this, arguments);
+        Backbone.BootstrapModal.prototype.open.apply(this, arguments)
 
         this.once('cancel', _.bind(function () {
-            this.$el.trigger('hidden');
-        }, this));
+            this.$el.trigger('hidden')
+        }, this))
     }
-});
+})
 

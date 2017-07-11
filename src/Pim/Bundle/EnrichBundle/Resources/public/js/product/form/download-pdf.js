@@ -7,11 +7,11 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/download-pdf';
-import Routing from 'routing';
-import UserContext from 'pim/user-context';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/download-pdf'
+import Routing from 'routing'
+import UserContext from 'pim/user-context'
 export default BaseForm.extend({
     tagName: 'a',
 
@@ -23,10 +23,10 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     configure: function () {
-        UserContext.off('change:catalogLocale change:catalogScope', this.render);
-        this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
+        UserContext.off('change:catalogLocale change:catalogScope', this.render)
+        this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -34,10 +34,10 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.getFormData().meta) {
-            return;
+            return
         }
 
-        this.$el.html(this.template());
+        this.$el.html(this.template())
         this.$el.attr('href', Routing.generate(
                     'pim_pdf_generator_download_product_pdf',
             {
@@ -45,9 +45,9 @@ export default BaseForm.extend({
                 dataLocale: UserContext.get('catalogLocale'),
                 dataScope:  UserContext.get('catalogScope')
             }
-                ));
+                ))
 
-        return this;
+        return this
     }
-});
+})
 

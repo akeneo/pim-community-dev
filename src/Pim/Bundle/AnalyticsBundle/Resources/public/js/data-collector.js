@@ -1,14 +1,12 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import Routing from 'routing';
+import $ from 'jquery'
+import Routing from 'routing'
 
 
-        /**
-         * @return {Object}
-         */
+/**
+ * @return {Object}
+ */
 export default {
     collect: function (route) {
-        return $.getJSON(Routing.generate(route));
+        return $.getJSON(Routing.generate(route))
     }
-};
-
+}

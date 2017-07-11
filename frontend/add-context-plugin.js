@@ -1,5 +1,3 @@
-/* eslint-env es6 */
-var fs = require('fs')
 const path = require('path')
 
 module.exports = function(extras) {

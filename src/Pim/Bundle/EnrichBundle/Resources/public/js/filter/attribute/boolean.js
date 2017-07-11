@@ -7,15 +7,15 @@
  */
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/attribute/attribute';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import template from 'pim/template/filter/attribute/boolean';
-import 'bootstrap.bootstrapswitch';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/attribute/attribute'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import template from 'pim/template/filter/attribute/boolean'
+import 'bootstrap.bootstrapswitch'
 export default BaseFilter.extend({
     shortname: 'boolean',
     template: _.template(template),
@@ -28,10 +28,10 @@ export default BaseFilter.extend({
          */
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: '=', value: true});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), operator: '=', value: true})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -45,14 +45,14 @@ export default BaseFilter.extend({
                 on: __('switch_on'),
                 off: __('switch_off')
             }
-        }));
+        }))
     },
 
         /**
          * {@inheritdoc}
          */
     postRender: function () {
-        this.$('.switch').bootstrapSwitch();
+        this.$('.switch').bootstrapSwitch()
     },
 
         /**
@@ -63,7 +63,7 @@ export default BaseFilter.extend({
             field: this.getField(),
             operator: '=',
             value: this.$('[name="filter-value"]').is(':checked')
-        });
+        })
     }
-});
+})
 

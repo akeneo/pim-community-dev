@@ -8,12 +8,12 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import router from 'pim/router';
-import template from 'pim/template/menu/tab';
-import mediator from 'oro/mediator';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import router from 'pim/router'
+import template from 'pim/template/menu/tab'
+import mediator from 'oro/mediator'
 export default BaseForm.extend({
     template: _.template(template),
     events: {
@@ -26,22 +26,22 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
-        this.items = [];
+        this.config = config.config
+        this.items = []
 
-        mediator.on('pim_menu:highlight:tab', this.highlight, this);
-        mediator.on('pim_menu:redirect:tab', this.redirect, this);
+        mediator.on('pim_menu:highlight:tab', this.highlight, this)
+        mediator.on('pim_menu:redirect:tab', this.redirect, this)
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_menu:register_item', this.registerItem);
+        this.listenTo(this.getRoot(), 'pim_menu:register_item', this.registerItem)
 
-        BaseForm.prototype.configure.apply(this, arguments);
+        BaseForm.prototype.configure.apply(this, arguments)
     },
 
 
@@ -53,9 +53,9 @@ export default BaseForm.extend({
             active: this.active,
             title: this.getLabel(),
             iconModifier: this.config.iconModifier
-        }));
+        }))
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     },
 
             /**
@@ -65,7 +65,7 @@ export default BaseForm.extend({
              */
     redirect: function (event) {
         if ((!_.has(event, 'extension') || event.extension === this.code) && undefined !== this.getRoute()) {
-            router.redirectToRoute(this.getRoute());
+            router.redirectToRoute(this.getRoute())
         }
     },
 
@@ -82,9 +82,9 @@ export default BaseForm.extend({
              */
     getRoute: function () {
         if (undefined !== this.config.to) {
-            return this.config.to;
+            return this.config.to
         } else {
-            return _.first(_.sortBy(this.items, 'position')).route;
+            return _.first(_.sortBy(this.items, 'position')).route
         }
     },
 
@@ -94,7 +94,7 @@ export default BaseForm.extend({
              * @returns {string}
              */
     getLabel: function () {
-        return __(this.config.title);
+        return __(this.config.title)
     },
 
             /**
@@ -104,9 +104,9 @@ export default BaseForm.extend({
              * @param {string} event.extension The extension code to highlight
              */
     highlight: function (event) {
-        this.active = (event.extension === this.code);
+        this.active = (event.extension === this.code)
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -118,8 +118,8 @@ export default BaseForm.extend({
              */
     registerItem: function (event) {
         if (event.target === this.code) {
-            this.items.push(event);
+            this.items.push(event)
         }
     }
-});
+})
 

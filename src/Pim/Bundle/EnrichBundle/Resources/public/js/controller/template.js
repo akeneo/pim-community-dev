@@ -1,8 +1,8 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseController from 'pim/controller/base';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseController from 'pim/controller/base'
 export default BaseController.extend({
             /**
              * {@inheritdoc}
@@ -10,7 +10,7 @@ export default BaseController.extend({
     renderRoute: function (route, path) {
         return $.get(path)
                     .then(this.renderTemplate.bind(this))
-                    .promise();
+                    .promise()
     },
 
             /**
@@ -20,10 +20,10 @@ export default BaseController.extend({
              */
     renderTemplate: function (content) {
         if (!this.active) {
-            return;
+            return
         }
 
-        this.$el.html(content);
+        this.$el.html(content)
     }
-});
+})
 

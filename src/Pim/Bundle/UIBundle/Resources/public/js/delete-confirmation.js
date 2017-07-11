@@ -1,6 +1,6 @@
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Modal from 'oro/modal';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Modal from 'oro/modal'
 
 
     /**
@@ -19,10 +19,10 @@ export default Modal.extend({
             title: __('Delete Confirmation'),
             okText: __('Yes, Delete'),
             cancelText: __('Cancel')
-        }, options);
+        }, options)
 
-        arguments[0] = options;
-        Modal.prototype.initialize.apply(this, arguments);
+        arguments[0] = options
+        Modal.prototype.initialize.apply(this, arguments)
     }
-});
+})
 

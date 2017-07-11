@@ -1,14 +1,14 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/attribute/attribute';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import template from 'pim/template/filter/attribute/string';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/attribute/attribute'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import template from 'pim/template/filter/attribute/string'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'string',
     template: _.template(template),
@@ -21,10 +21,10 @@ export default BaseFilter.extend({
          */
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), value: '', operator: _.first(this.config.operators)});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), value: '', operator: _.first(this.config.operators)})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -32,7 +32,7 @@ export default BaseFilter.extend({
          */
     isEmpty: function () {
         return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() || '' === this.getValue());
+                (undefined === this.getValue() || '' === this.getValue())
     },
 
         /**
@@ -45,30 +45,30 @@ export default BaseFilter.extend({
             field: this.getField(),
             operator: this.getOperator(),
             operators: this.config.operators
-        }));
+        }))
     },
 
         /**
          * {@inheritdoc}
          */
     postRender: function () {
-        this.$('.operator').select2({minimumResultsForSearch: -1});
+        this.$('.operator').select2({minimumResultsForSearch: -1})
     },
 
         /**
          * {@inherit}
          */
     updateState: function () {
-        var value    = this.$('[name="filter-value"]').val();
-        var operator = this.$('[name="filter-operator"]').val();
+        var value    = this.$('[name="filter-value"]').val()
+        var operator = this.$('[name="filter-operator"]').val()
 
         this.setData({
             field: this.getField(),
             operator: operator,
             value: value
-        });
+        })
 
-        this.render();
+        this.render()
     }
-});
+})
 

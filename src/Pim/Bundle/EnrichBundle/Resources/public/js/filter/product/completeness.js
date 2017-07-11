@@ -1,11 +1,11 @@
 
 
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/filter';
-import Routing from 'routing';
-import template from 'pim/template/filter/product/completeness';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/filter'
+import Routing from 'routing'
+import template from 'pim/template/filter/product/completeness'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'completeness',
     template: _.template(template),
@@ -17,19 +17,19 @@ export default BaseFilter.extend({
          * {@inheritdoc}
          */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
     },
 
         /**
          * {@inheritdoc}
          */
     configure: function () {
-        this.on('locales:update:after', this.updateState.bind(this));
+        this.on('locales:update:after', this.updateState.bind(this))
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -44,21 +44,21 @@ export default BaseFilter.extend({
             operator: this.getOperator(),
             value: this.getValue(),
             operatorChoices: this.config.operators
-        });
+        })
     },
 
         /**
          * Initializes select2 after rendering.
          */
     postRender: function () {
-        this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1});
+        this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1})
     },
 
         /**
          * {@inheritdoc}
          */
     isEmpty: function () {
-        return false;
+        return false
     },
 
         /**
@@ -70,7 +70,7 @@ export default BaseFilter.extend({
             operator: this.$('[name="filter-operator"]').val(),
             value: 100,
             context: {'locales': this.getParentForm().getFilters().structure.locales}
-        });
+        })
     }
-});
+})
 

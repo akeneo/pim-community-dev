@@ -7,11 +7,11 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/index/index';
-import formBuilder from 'pim/form-builder';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/index/index'
+import formBuilder from 'pim/form-builder'
 export default BaseForm.extend({
     template: _.template(template),
 
@@ -19,9 +19,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -30,15 +30,15 @@ export default BaseForm.extend({
     render: function () {
         this.$el.html(this.template({
             title: __(this.config.title)
-        }));
+        }))
 
-        this.renderExtensions();
+        this.renderExtensions()
 
         formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-            form.setElement('.user-menu').render();
-        }.bind(this));
+            form.setElement('.user-menu').render()
+        }.bind(this))
 
-        return this;
+        return this
     }
-});
+})
 

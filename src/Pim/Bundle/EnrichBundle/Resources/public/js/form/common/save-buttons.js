@@ -7,12 +7,12 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import mediator from 'oro/mediator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/save-buttons';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import mediator from 'oro/mediator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/save-buttons'
 export default BaseForm.extend({
     className: 'AknTitleContainer-rightButton',
     template: _.template(template),
@@ -28,25 +28,25 @@ export default BaseForm.extend({
     initialize: function () {
         this.model = new Backbone.Model({
             buttons: []
-        });
+        })
 
-        this.on('save-buttons:add-button', this.addButton.bind(this));
+        this.on('save-buttons:add-button', this.addButton.bind(this))
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     render: function () {
-        var buttons = this.model.get('buttons');
+        var buttons = this.model.get('buttons')
         this.$el.html(this.template({
             primaryButton: _.first(buttons),
             secondaryButtons: buttons.slice(1)
-        }));
-        this.delegateEvents();
+        }))
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
             /**
@@ -55,13 +55,13 @@ export default BaseForm.extend({
              * @param {Object} options
              */
     addButton: function (options) {
-        var button = _.extend({}, this.buttonDefaults, options);
-        this.events = _.extend(this.events, button.events);
-        var buttons = this.model.get('buttons');
+        var button = _.extend({}, this.buttonDefaults, options)
+        this.events = _.extend(this.events, button.events)
+        var buttons = this.model.get('buttons')
 
-        buttons.push(button);
-        buttons = _.sortBy(buttons, 'priority').reverse();
-        this.model.set('buttons', buttons);
+        buttons.push(button)
+        buttons = _.sortBy(buttons, 'priority').reverse()
+        this.model.set('buttons', buttons)
     }
-});
+})
 

@@ -1,12 +1,12 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/export/common/edit/validation';
-import messenger from 'oro/messenger';
-import propertyAccessor from 'pim/common/property';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/export/common/edit/validation'
+import messenger from 'oro/messenger'
+import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
     template: _.template(template),
     errors: [],
@@ -15,16 +15,16 @@ export default BaseForm.extend({
          * {@inherit}
          */
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
     setValidationErrors: function (event) {
-        this.errors = event.response;
+        this.errors = event.response
 
-        this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
+        this.getRoot().trigger('pim_enrich:form:entity:validation_error', event)
     },
 
         /**
@@ -34,7 +34,7 @@ export default BaseForm.extend({
          * @param {Object} event
          */
     addFilterExtension: function (event) {
-        var filter = event.filter;
+        var filter = event.filter
 
         if (null !== propertyAccessor
                 .accessProperty(this.errors, 'configuration.filters.data' + filter.getField())
@@ -44,14 +44,14 @@ export default BaseForm.extend({
                         this.errors,
                         'configuration.filters.data' + filter.getField()
                     )
-            }));
+            }))
 
             event.filter.addElement(
                     'below-input',
                     'validation',
                     content
-                );
+                )
         }
     }
-});
+})
 

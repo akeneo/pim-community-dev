@@ -7,10 +7,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import template from 'pim/template/form/add-select/footer';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import template from 'pim/template/form/add-select/footer'
 export default Backbone.View.extend({
     template: _.template(template),
     buttonTitle: null,
@@ -26,9 +26,9 @@ export default Backbone.View.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        this.buttonTitle   = this.options.buttonTitle;
-        this.countTitle    = this.options.countTitle;
-        this.addEvent      = this.options.addEvent;
+        this.buttonTitle   = this.options.buttonTitle
+        this.countTitle    = this.options.countTitle
+        this.addEvent      = this.options.addEvent
     },
 
             /**
@@ -39,9 +39,9 @@ export default Backbone.View.extend({
             buttonTitle: this.buttonTitle,
             numberOfItems: this.numberOfItems,
             countTitle: this.countTitle
-        }));
+        }))
 
-        return this;
+        return this
     },
 
             /**
@@ -50,16 +50,16 @@ export default Backbone.View.extend({
              * @param {int|string} number
              */
     updateNumberOfItems: function (number) {
-        this.numberOfItems = number;
+        this.numberOfItems = number
 
-        this.render();
+        this.render()
     },
 
             /**
              * Method called when the 'add' button is clicked
              */
     onAdd: function () {
-        this.trigger(this.addEvent);
+        this.trigger(this.addEvent)
     }
-});
+})
 

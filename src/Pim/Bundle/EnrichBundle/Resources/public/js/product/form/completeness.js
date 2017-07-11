@@ -7,14 +7,14 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/completeness';
-import FetcherRegistry from 'pim/fetcher-registry';
-import i18n from 'pim/i18n';
-import UserContext from 'pim/user-context';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/completeness'
+import FetcherRegistry from 'pim/fetcher-registry'
+import i18n from 'pim/i18n'
+import UserContext from 'pim/user-context'
 export default BaseForm.extend({
     template: _.template(template),
     className: 'panel-pane completeness-panel',
@@ -28,9 +28,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        this.initialFamily = null;
+        this.initialFamily = null
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -40,13 +40,13 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: __('pim_enrich.form.product.panel.completeness.title')
-        });
+        })
 
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
-        this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
-        this.listenTo(UserContext, 'change:catalogLocale', this.render);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render)
+        this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily)
+        this.listenTo(UserContext, 'change:catalogLocale', this.render)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -54,7 +54,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
-            return this;
+            return this
         }
 
         if (this.getFormData().meta) {
@@ -63,7 +63,7 @@ export default BaseForm.extend({
                         FetcherRegistry.getFetcher('locale').fetchActivated()
                     ).then(function (channels, locales) {
                         if (null === this.initialFamily) {
-                            this.initialFamily = this.getFormData().family;
+                            this.initialFamily = this.getFormData().family
                         }
 
                         this.$el.html(
@@ -77,12 +77,12 @@ export default BaseForm.extend({
                                 catalogLocale: UserContext.get('catalogLocale'),
                                 hasFamilyChanged: this.getFormData().family !== this.initialFamily
                             })
-                        );
-                        this.delegateEvents();
-                    }.bind(this));
+                        )
+                        this.delegateEvents()
+                    }.bind(this))
         }
 
-        return this;
+        return this
     },
 
             /**
@@ -94,11 +94,11 @@ export default BaseForm.extend({
              */
     sortCompleteness: function (completenesses) {
         if (_.isEmpty(completenesses)) {
-            return [];
+            return []
         }
-        var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})];
+        var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})]
 
-        return _.union(sortedCompleteness, completenesses);
+        return _.union(sortedCompleteness, completenesses)
     },
 
             /**
@@ -107,11 +107,11 @@ export default BaseForm.extend({
              * @param Event event
              */
     switchLocale: function (event) {
-        var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
+        var $completenessBlock = $(event.currentTarget).parents('.completeness-block')
         if ($completenessBlock.attr('data-closed') === 'false') {
-            $completenessBlock.attr('data-closed', 'true');
+            $completenessBlock.attr('data-closed', 'true')
         } else {
-            $completenessBlock.attr('data-closed', 'false');
+            $completenessBlock.attr('data-closed', 'false')
         }
     },
 
@@ -128,7 +128,7 @@ export default BaseForm.extend({
                 locale: event.currentTarget.dataset.locale,
                 scope: event.currentTarget.dataset.channel
             }
-                );
+                )
     },
 
             /**
@@ -136,12 +136,12 @@ export default BaseForm.extend({
              */
     onChangeFamily: function () {
         if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
-            var data = this.getFormData();
-            data.meta.completenesses = [];
-            this.setData(data);
+            var data = this.getFormData()
+            data.meta.completenesses = []
+            this.setData(data)
 
-            this.render();
+            this.render()
         }
     }
-});
+})
 

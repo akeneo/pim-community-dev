@@ -8,17 +8,17 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import mediator from 'oro/mediator';
-import template from 'pim/template/form/tab/attribute/copy';
-import CopyField from 'pim/form/common/attributes/copy-field';
-import FieldManager from 'pim/field-manager';
-import AttributeManager from 'pim/attribute-manager';
-import UserContext from 'pim/user-context';
-import FetcherRegistry from 'pim/fetcher-registry';
-import i18n from 'pim/i18n';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import mediator from 'oro/mediator'
+import template from 'pim/template/form/tab/attribute/copy'
+import CopyField from 'pim/form/common/attributes/copy-field'
+import FieldManager from 'pim/field-manager'
+import AttributeManager from 'pim/attribute-manager'
+import UserContext from 'pim/user-context'
+import FetcherRegistry from 'pim/fetcher-registry'
+import i18n from 'pim/i18n'
 export default BaseForm.extend({
     template: _.template(template),
     className: 'AknAttributeActions-copyActions attribute-copy-actions',
@@ -42,28 +42,28 @@ export default BaseForm.extend({
              * @returns {Promise}
              */
     configure: function () {
-        this.locale = UserContext.get('catalogLocale');
-        this.scope  = UserContext.get('catalogScope');
+        this.locale = UserContext.get('catalogLocale')
+        this.scope  = UserContext.get('catalogScope')
         this.getScopeLabel(this.scope).then(function (scopeLabel) {
-            this.scopeLabel = scopeLabel;
-        }.bind(this));
+            this.scopeLabel = scopeLabel
+        }.bind(this))
 
-        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
 
-        this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-        this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+        this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this))
+        this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this))
         this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-            this.setScope(event.scopeCode);
-        }.bind(this));
+            this.setScope(event.scopeCode)
+        }.bind(this))
         this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-            this.setLocale(event.localeCode);
-        }.bind(this));
+            this.setLocale(event.localeCode)
+        }.bind(this))
 
         return this.getScopeLabel(this.scope).then(function (scopeLabel) {
-            this.scopeLabel = scopeLabel;
+            this.scopeLabel = scopeLabel
         }.bind(this)).then(function () {
             return BaseForm.prototype.configure.apply(this, arguments)
-        });
+        })
     },
 
             /**
@@ -72,7 +72,7 @@ export default BaseForm.extend({
              * @returns {Object}
              */
     getSourceData: function () {
-        return this.getFormData().values;
+        return this.getFormData().values
     },
 
             /**
@@ -81,16 +81,16 @@ export default BaseForm.extend({
              * @returns {Object}
              */
     render: function () {
-        this.trigger('comparison:change', this.copying);
+        this.trigger('comparison:change', this.copying)
 
-        this.$el.html(this.template({'copying': this.copying}));
+        this.$el.html(this.template({'copying': this.copying}))
         if (this.copying) {
-            this.renderExtensions();
+            this.renderExtensions()
         }
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
             /**
@@ -99,9 +99,9 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     addFieldExtension: function (event) {
-        var field = event.field;
+        var field = event.field
         if (this.copying && this.canBeCopied(field)) {
-            field.addElement('comparison', this.code, this.getCopyField(field));
+            field.addElement('comparison', this.code, this.getCopyField(field))
         }
     },
 
@@ -113,23 +113,23 @@ export default BaseForm.extend({
              * @returns {CopyField}
              */
     getCopyField: function (field) {
-        var code = field.attribute.code;
+        var code = field.attribute.code
         if (!_.has(this.copyFields, code)) {
-            var sourceData = this.getSourceData();
-            var copyField = new CopyField(field.attribute);
+            var sourceData = this.getSourceData()
+            var copyField = new CopyField(field.attribute)
 
             copyField.setContext({
                 locale: this.locale,
                 scope: this.scope,
                 scopeLabel: i18n.getLabel(this.scopeLabel, this.locale, this.scope)
-            });
-            copyField.setValues(sourceData[code]);
-            copyField.setField(field);
+            })
+            copyField.setValues(sourceData[code])
+            copyField.setField(field)
 
-            this.copyFields[code] = copyField;
+            this.copyFields[code] = copyField
         }
 
-        return this.copyFields[code];
+        return this.copyFields[code]
     },
 
             /**
@@ -139,7 +139,7 @@ export default BaseForm.extend({
              * @returns {boolean}
              */
     canBeCopied: function (field) {
-        return field.attribute.localizable || field.attribute.scopable;
+        return field.attribute.localizable || field.attribute.scopable
     },
 
             /**
@@ -148,37 +148,37 @@ export default BaseForm.extend({
     copy: function () {
         _.each(this.copyFields, function (copyField) {
             if (copyField.selected && copyField.field && copyField.field.isEditable()) {
-                var formValues = this.getFormModel().get('values');
+                var formValues = this.getFormModel().get('values')
                 var oldValue = AttributeManager.getValue(
                             formValues[copyField.field.attribute.code],
                             copyField.field.attribute,
                             UserContext.get('catalogLocale'),
                             UserContext.get('catalogScope')
-                        );
+                        )
 
-                oldValue.data = copyField.getCurrentValue().data;
-                this.getRoot().trigger('pim_enrich:form:entity:update_state');
-                copyField.setSelected(false);
+                oldValue.data = copyField.getCurrentValue().data
+                this.getRoot().trigger('pim_enrich:form:entity:update_state')
+                copyField.setSelected(false)
             }
-        }.bind(this));
+        }.bind(this))
 
-        this.trigger('copy:copy-fields:after');
+        this.trigger('copy:copy-fields:after')
     },
 
             /**
              * Enter in copy mode
              */
     startCopying: function () {
-        this.copying = true;
-        this.triggerContextChange();
+        this.copying = true
+        this.triggerContextChange()
     },
 
             /**
              * Close copy mode
              */
     stopCopying: function () {
-        this.copying = false;
-        this.triggerContextChange();
+        this.copying = false
+        this.triggerContextChange()
     },
 
             /**
@@ -188,9 +188,9 @@ export default BaseForm.extend({
              */
     initLocale: function (event) {
         if (undefined === this.getLocale()) {
-            this.setLocale(event.localeCode);
+            this.setLocale(event.localeCode)
         } else {
-            event.localeCode = this.getLocale();
+            event.localeCode = this.getLocale()
         }
     },
 
@@ -200,8 +200,8 @@ export default BaseForm.extend({
              * @param {string} locale
              */
     setLocale: function (locale) {
-        this.locale = locale;
-        this.triggerContextChange();
+        this.locale = locale
+        this.triggerContextChange()
     },
 
             /**
@@ -210,7 +210,7 @@ export default BaseForm.extend({
              * @returns {string}
              */
     getLocale: function () {
-        return this.locale;
+        return this.locale
     },
 
             /**
@@ -220,9 +220,9 @@ export default BaseForm.extend({
              */
     initScope: function (event) {
         if (undefined === this.getScope()) {
-            this.setScope(event.scopeCode);
+            this.setScope(event.scopeCode)
         } else {
-            event.scopeCode = this.getScope();
+            event.scopeCode = this.getScope()
         }
     },
 
@@ -233,10 +233,10 @@ export default BaseForm.extend({
              */
     setScope: function (scopeCode) {
         this.getScopeLabel(scopeCode).then(function (scopeLabel) {
-            this.scopeLabel = scopeLabel;
-            this.scope = scopeCode;
-            this.triggerContextChange();
-        }.bind(this));
+            this.scopeLabel = scopeLabel
+            this.scope = scopeCode
+            this.triggerContextChange()
+        }.bind(this))
     },
 
             /**
@@ -245,44 +245,44 @@ export default BaseForm.extend({
              * @returns {string}
              */
     getScope: function () {
-        return this.scope;
+        return this.scope
     },
 
             /**
              * Reset copy fields cache then trigger the context change event
              */
     triggerContextChange: function () {
-        this.copyFields = {};
-        this.trigger('copy:context:change');
+        this.copyFields = {}
+        this.trigger('copy:context:change')
     },
 
             /**
              * Mark all fields (from all attribute groups) as selected
              */
     selectAll: function () {
-        var fieldPromises = [];
+        var fieldPromises = []
         _.each(this.getSourceData(), function (value, attributeCode) {
-            fieldPromises.push(FieldManager.getField(attributeCode));
-        }.bind(this));
+            fieldPromises.push(FieldManager.getField(attributeCode))
+        }.bind(this))
 
         $.when.apply(this, fieldPromises)
                     .then(function () {
-                        this.selectFields(arguments);
-                    }.bind(this));
+                        this.selectFields(arguments)
+                    }.bind(this))
     },
 
             /**
              * Mark all visible fields (from active attribute group) as selected
              */
     selectAllVisible: function () {
-        this.selectFields(FieldManager.getVisibleFields());
+        this.selectFields(FieldManager.getVisibleFields())
     },
 
             /**
              * Mark all fields as unselected
              */
     selectNone: function () {
-        this.selectFields([]);
+        this.selectFields([])
     },
 
             /**
@@ -290,8 +290,8 @@ export default BaseForm.extend({
              */
     unselectAll: function () {
         _.each(this.copyFields, function (field) {
-            field.setSelected(false);
-        });
+            field.setSelected(false)
+        })
     },
 
             /**
@@ -300,15 +300,15 @@ export default BaseForm.extend({
              * @param {Field[]} fields
              */
     selectFields: function (fields) {
-        this.unselectAll();
+        this.unselectAll()
 
         _.each(fields, function (field) {
             if (this.canBeCopied(field)) {
-                this.getCopyField(field).setSelected(true);
+                this.getCopyField(field).setSelected(true)
             }
-        }.bind(this));
+        }.bind(this))
 
-        this.trigger('copy:select:after');
+        this.trigger('copy:select:after')
     },
 
             /**
@@ -320,10 +320,10 @@ export default BaseForm.extend({
              */
     getScopeLabel: function (scopeCode) {
         return FetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
-            var scope = _.findWhere(channels, { code: scopeCode });
+            var scope = _.findWhere(channels, { code: scopeCode })
 
-            return scope.labels;
-        });
+            return scope.labels
+        })
     }
-});
+})
 

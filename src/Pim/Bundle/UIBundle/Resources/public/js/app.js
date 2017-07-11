@@ -1,5 +1,5 @@
-import $ from 'jquery';
-import _ from 'underscore';
+import $ from 'jquery'
+import _ from 'underscore'
 
 
         /**
@@ -21,7 +21,7 @@ export default {
              * @return {String}
              */
     packToQueryString: function (object) {
-        return $.param(object);
+        return $.param(object)
     },
 
             /**
@@ -33,41 +33,41 @@ export default {
     unpackFromQueryString: function (query) {
         var setValue = function (root, path, value) {
             if (path.length > 1) {
-                var dir = path.shift();
+                var dir = path.shift()
                 if (typeof root[dir] === 'undefined') {
-                    root[dir] = path[0] === '' ? [] : {};
+                    root[dir] = path[0] === '' ? [] : {}
                 }
-                setValue(root[dir], path, value);
+                setValue(root[dir], path, value)
             } else {
                 if (root instanceof Array) {
-                    root.push(value);
+                    root.push(value)
                 } else {
-                    root[path] = value;
+                    root[path] = value
                 }
             }
-        };
-        var nvp = query.split('&');
-        var data = {};
+        }
+        var nvp = query.split('&')
+        var data = {}
         for (var i = 0; i < nvp.length; i++) {
-            var pair  = nvp[i].split('=');
-            var name  = this._decodeComponent(pair[0]);
-            var value = this._decodeComponent(pair[1]);
+            var pair  = nvp[i].split('=')
+            var name  = this._decodeComponent(pair[0])
+            var value = this._decodeComponent(pair[1])
 
-            var path = name.match(/(^[^\[]+)(\[.*\]$)?/);
-            var first = path[1];
+            var path = name.match(/(^[^\[]+)(\[.*\]$)?/)
+            var first = path[1]
             if (path[2]) {
                         //case of 'array[level1]' || 'array[level1][level2]'
-                path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][');
+                path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][')
             } else {
                         //case of 'name'
-                path = [];
+                path = []
             }
-            path.unshift(first);
+            path.unshift(first)
 
-            setValue(data, path, value);
+            setValue(data, path, value)
         }
 
-        return data;
+        return data
     },
 
             /**
@@ -78,10 +78,10 @@ export default {
              * @protected
              */
     _decodeComponent: function (string) {
-        var result = string.replace(/\+/g, '%20');
-        result = decodeURIComponent(result);
+        var result = string.replace(/\+/g, '%20')
+        result = decodeURIComponent(result)
 
-        return result;
+        return result
     },
 
             /**
@@ -97,20 +97,20 @@ export default {
              * @return {Object}
              */
     invertKeys: function (object, keys) {
-        var result = _.extend({}, object);
+        var result = _.extend({}, object)
         for (var key in keys) {
-            var mirrorKey;
-            var baseKey;
-            baseKey = key;
-            mirrorKey = keys[key];
+            var mirrorKey
+            var baseKey
+            baseKey = key
+            mirrorKey = keys[key]
 
             if (baseKey in result) {
-                result[mirrorKey] = result[baseKey];
-                delete result[baseKey];
+                result[mirrorKey] = result[baseKey]
+                delete result[baseKey]
             }
         }
 
-        return result;
+        return result
     },
 
             /**
@@ -125,34 +125,34 @@ export default {
             if (_.isNumber(value1) || _.isNumber(value2)) {
                 var toNumber = function (v) {
                     if (_.isString(v) && v === '') {
-                        return NaN;
+                        return NaN
                     }
 
-                    return Number(v);
-                };
+                    return Number(v)
+                }
 
-                return (toNumber(value1) == toNumber(value2));
+                return (toNumber(value1) == toNumber(value2))
             }
 
-            return ((value1 || '') == (value2 || ''));
+            return ((value1 || '') == (value2 || ''))
 
         } else if (_.isObject(value1)) {
-            var valueKeys = _.keys(value1);
+            var valueKeys = _.keys(value1)
 
             if (_.isObject(value2)) {
-                valueKeys = _.unique(valueKeys.concat(_.keys(value2)));
+                valueKeys = _.unique(valueKeys.concat(_.keys(value2)))
             }
 
             for (var index in valueKeys) {
-                var key = valueKeys[index];
+                var key = valueKeys[index]
                 if (!_.has(value2, key) || !this.isEqualsLoosely(value1[key], value2[key])) {
-                    return false;
+                    return false
                 }
             }
 
-            return true;
+            return true
         } else {
-            return value1 == value2;
+            return value1 == value2
         }
     },
 
@@ -163,7 +163,7 @@ export default {
              * @return {*}
              */
     deepClone: function (value) {
-        return $.extend(true, {}, value);
+        return $.extend(true, {}, value)
     }
-};
+}
 

@@ -7,17 +7,17 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
-import formTemplate from 'pim/template/product/tab/categories';
-import switcherTemplate from 'pim/template/product/tab/catalog-switcher';
-import UserContext from 'pim/user-context';
-import Routing from 'routing';
-import TreeAssociate from 'pim/tree/associate';
-import mediator from 'oro/mediator';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import formTemplate from 'pim/template/product/tab/categories'
+import switcherTemplate from 'pim/template/product/tab/catalog-switcher'
+import UserContext from 'pim/user-context'
+import Routing from 'routing'
+import TreeAssociate from 'pim/tree/associate'
+import mediator from 'oro/mediator'
 export default BaseForm.extend({
     template: _.template(formTemplate),
     switcherTemplate: _.template(switcherTemplate),
@@ -43,11 +43,11 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        this.state = new Backbone.Model();
+        this.state = new Backbone.Model()
 
-        this.state.set('selectedCategories', []);
+        this.state.set('selectedCategories', [])
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -58,9 +58,9 @@ export default BaseForm.extend({
             code: this.code,
             isVisible: this.isVisible.bind(this),
             label: __('pim_enrich.form.product.tab.categories.title')
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -68,10 +68,10 @@ export default BaseForm.extend({
              */
     render: function () {
         this.loadTrees().done(function (trees) {
-            this.trees = trees;
+            this.trees = trees
 
-            this.state.set('currentTree', _.first(this.trees).code);
-            this.state.set('currentTreeId', _.first(this.trees).id);
+            this.state.set('currentTree', _.first(this.trees).code)
+            this.state.set('currentTreeId', _.first(this.trees).id)
 
             this.$el.html(
                         this.template({
@@ -80,20 +80,20 @@ export default BaseForm.extend({
                             state: this.state.toJSON(),
                             trees: this.trees
                         })
-                    );
+                    )
 
             this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
                 list_categories: 'pim_enrich_product_listcategories',
                 children:        'pim_enrich_categorytree_children'
-            });
+            })
 
-            this.delegateEvents();
+            this.delegateEvents()
 
-            this.initCategoryCount();
-            this.renderCategorySwitcher();
-        }.bind(this));
+            this.initCategoryCount()
+            this.renderCategorySwitcher()
+        }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -111,7 +111,7 @@ export default BaseForm.extend({
                         'label'
                     ),
             label: __('pim_enrich.form.product.tab.categories.catalog_selector')
-        }));
+        }))
     },
 
             /**
@@ -124,15 +124,15 @@ export default BaseForm.extend({
                     Routing.generate('pim_enrich_product_category_rest_list', { id: this.getFormData().meta.id })
                 ).then(function (data) {
                     _.each(data.categories, function (category) {
-                        this.cache[category.id] = category;
-                    }.bind(this));
+                        this.cache[category.id] = category
+                    }.bind(this))
 
                     if (_.isEmpty(this.state.get('selectedCategories'))) {
-                        this.state.set('selectedCategories', _.pluck(data.categories, 'id'));
+                        this.state.set('selectedCategories', _.pluck(data.categories, 'id'))
                     }
 
-                    return data.trees;
-                }.bind(this));
+                    return data.trees
+                }.bind(this))
     },
 
             /**
@@ -141,11 +141,11 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     changeTree: function (event) {
-        this.state.set('currentTree', event.currentTarget.dataset.tree);
-        this.state.set('currentTreeId', event.currentTarget.dataset.treeId);
-        this.treeAssociate.switchTree(event.currentTarget.dataset.treeId);
+        this.state.set('currentTree', event.currentTarget.dataset.tree)
+        this.state.set('currentTreeId', event.currentTarget.dataset.treeId)
+        this.treeAssociate.switchTree(event.currentTarget.dataset.treeId)
 
-        this.renderCategorySwitcher();
+        this.renderCategorySwitcher()
     },
 
             /**
@@ -154,17 +154,17 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     updateModel: function (event) {
-        var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity);
-        this.state.set('selectedCategories', selectedIds);
+        var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity)
+        this.state.set('selectedCategories', selectedIds)
 
-        var rootTreeCode = this.state.get('currentTree');
+        var rootTreeCode = this.state.get('currentTree')
         this.categoriesCount[rootTreeCode] =
-                    this.$('li[data-code=' + rootTreeCode +  '] .jstree-checked').length;
-        this.renderCategorySwitcher();
+                    this.$('li[data-code=' + rootTreeCode +  '] .jstree-checked').length
+        this.renderCategorySwitcher()
 
-        var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this));
-        this.getFormModel().set('categories', categoryCodes);
-        mediator.trigger('pim_enrich:form:entity:update_state');
+        var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this))
+        this.getFormModel().set('categories', categoryCodes)
+        mediator.trigger('pim_enrich:form:entity:update_state')
     },
 
             /**
@@ -172,15 +172,15 @@ export default BaseForm.extend({
              */
     initCategoryCount: function () {
         _.each(this.trees, function (tree) {
-            var selectedCategories = [];
-            var hiddenSelection = this.$('#hidden-tree-input').val();
-            hiddenSelection = hiddenSelection.length > 0 ? hiddenSelection.split(',') : [];
+            var selectedCategories = []
+            var hiddenSelection = this.$('#hidden-tree-input').val()
+            hiddenSelection = hiddenSelection.length > 0 ? hiddenSelection.split(',') : []
             _.each(hiddenSelection, function (categoryId) {
-                selectedCategories.push(this.cache[categoryId]);
-            }.bind(this));
+                selectedCategories.push(this.cache[categoryId])
+            }.bind(this))
 
-            this.categoriesCount[tree.code] = _.where(selectedCategories, {rootId: tree.id}).length;
-        }.bind(this));
+            this.categoriesCount[tree.code] = _.where(selectedCategories, {rootId: tree.id}).length
+        }.bind(this))
     },
 
             /**
@@ -192,15 +192,15 @@ export default BaseForm.extend({
              */
     getCategoryCode: function (id) {
         if (!this.cache[id]) {
-            var $categoryElement = this.$('#node_' + id);
-            var $rootElement     = $categoryElement.closest('.root-unselectable');
+            var $categoryElement = this.$('#node_' + id)
+            var $rootElement     = $categoryElement.closest('.root-unselectable')
             this.cache[id] = {
                 code: String($categoryElement.data('code')),
                 rootId: $rootElement.data('tree-id')
-            };
+            }
         }
 
-        return this.cache[id].code;
+        return this.cache[id].code
     },
 
             /**
@@ -209,7 +209,7 @@ export default BaseForm.extend({
              * @returns {boolean}
              */
     isVisible: function () {
-        return true;
+        return true
     }
-});
+})
 

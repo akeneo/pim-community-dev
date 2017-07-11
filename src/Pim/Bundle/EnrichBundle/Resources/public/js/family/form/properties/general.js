@@ -7,14 +7,14 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import propertyAccessor from 'pim/common/property';
-import template from 'pim/template/form/tab/section';
-import LoadingMask from 'oro/loading-mask';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import propertyAccessor from 'pim/common/property'
+import template from 'pim/template/form/tab/section'
+import LoadingMask from 'oro/loading-mask'
+import 'jquery.select2'
 export default BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),
@@ -24,9 +24,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -34,7 +34,7 @@ export default BaseForm.extend({
              */
     configure: function () {
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -44,9 +44,9 @@ export default BaseForm.extend({
         this.$el.html(this.template({
             sectionTitle: __(this.config.label),
             dropZone: this.config.dropZone
-        }));
+        }))
 
-        this.renderExtensions();
+        this.renderExtensions()
     },
 
             /**
@@ -62,7 +62,7 @@ export default BaseForm.extend({
                         this.errors,
                         field,
                         []
-                    );
+                    )
     },
 
             /**
@@ -71,31 +71,31 @@ export default BaseForm.extend({
              * @param {Object} errors
              */
     setValidationErrors: function (errors) {
-        this.errors = errors.response;
+        this.errors = errors.response
     },
 
             /**
              * Resets validation errors
              */
     resetValidationErrors: function () {
-        this.errors = {};
-        this.render();
+        this.errors = {}
+        this.render()
     },
 
             /**
              * Shows the loading mask
              */
     showLoadingMask: function () {
-        this.loadingMask = new LoadingMask();
-        this.loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+        this.loadingMask = new LoadingMask()
+        this.loadingMask.render().$el.appendTo(this.getRoot().$el).show()
     },
 
             /**
              * Hides the loading mask
              */
     hideLoadingMask: function () {
-        this.loadingMask.hide().$el.remove();
+        this.loadingMask.hide().$el.remove()
     }
-});
+})
 
 

@@ -7,11 +7,11 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/locale-switcher';
-import FetcherRegistry from 'pim/fetcher-registry';
-import i18n from 'pim/i18n';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/locale-switcher'
+import FetcherRegistry from 'pim/fetcher-registry'
+import i18n from 'pim/i18n'
 export default BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown AknButtonList-item locale-switcher',
@@ -26,8 +26,8 @@ export default BaseForm.extend({
     render: function () {
         this.getDisplayedLocales()
                     .done(function (locales) {
-                        var params = { localeCode: _.first(locales).code };
-                        this.trigger('pim_enrich:form:locale_switcher:pre_render', params);
+                        var params = { localeCode: _.first(locales).code }
+                        this.trigger('pim_enrich:form:locale_switcher:pre_render', params)
 
                         this.$el.html(
                             this.template({
@@ -36,11 +36,11 @@ export default BaseForm.extend({
                                 i18n: i18n,
                                 displayInline: this.displayInline
                             })
-                        );
-                        this.delegateEvents();
-                    }.bind(this));
+                        )
+                        this.delegateEvents()
+                    }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -49,7 +49,7 @@ export default BaseForm.extend({
              * @returns {Promise}
              */
     getDisplayedLocales: function () {
-        return FetcherRegistry.getFetcher('locale').fetchActivated();
+        return FetcherRegistry.getFetcher('locale').fetchActivated()
     },
 
             /**
@@ -60,9 +60,9 @@ export default BaseForm.extend({
     changeLocale: function (event) {
         this.trigger('pim_enrich:form:locale_switcher:change', {
             localeCode: event.currentTarget.dataset.locale
-        });
+        })
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -71,7 +71,7 @@ export default BaseForm.extend({
              * @param {Boolean} value
              */
     setDisplayInline: function (value) {
-        this.displayInline = value;
+        this.displayInline = value
     }
-});
+})
 

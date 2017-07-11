@@ -7,12 +7,12 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import router from 'pim/router';
-import template from 'pim/template/menu/item';
-import mediator from 'oro/mediator';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import router from 'pim/router'
+import template from 'pim/template/menu/item'
+import mediator from 'oro/mediator'
 export default BaseForm.extend({
     template: _.template(template),
     events: {
@@ -24,12 +24,12 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        mediator.on('pim_menu:highlight:item', this.highlight, this);
-        mediator.on('pim_menu:redirect:item', this.redirect, this);
+        mediator.on('pim_menu:highlight:item', this.highlight, this)
+        mediator.on('pim_menu:redirect:item', this.redirect, this)
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -42,9 +42,9 @@ export default BaseForm.extend({
             code: this.getRoute(),
             label: this.getLabel(),
             position: this.position
-        });
+        })
 
-        BaseForm.prototype.configure.apply(this, arguments);
+        BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -54,11 +54,11 @@ export default BaseForm.extend({
         this.$el.empty().append(this.template({
             title: this.getLabel(),
             active: this.active
-        }));
+        }))
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     },
 
             /**
@@ -68,7 +68,7 @@ export default BaseForm.extend({
              */
     redirect: function (event) {
         if (!_.has(event, 'extension') || event.extension === this.code) {
-            router.redirectToRoute(this.getRoute());
+            router.redirectToRoute(this.getRoute())
         }
     },
 
@@ -78,7 +78,7 @@ export default BaseForm.extend({
              * @returns {string|undefined}
              */
     getRoute: function () {
-        return this.config.to;
+        return this.config.to
     },
 
             /**
@@ -87,7 +87,7 @@ export default BaseForm.extend({
              * @returns {string}
              */
     getLabel: function () {
-        return __(this.config.title);
+        return __(this.config.title)
     },
 
             /**
@@ -97,9 +97,9 @@ export default BaseForm.extend({
              * @param {string} event.extension The extension code to highlight
              */
     highlight: function (event) {
-        this.active = (event.extension === this.code);
+        this.active = (event.extension === this.code)
 
-        this.render();
+        this.render()
     }
-});
+})
 

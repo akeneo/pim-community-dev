@@ -7,12 +7,12 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/scope-switcher';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/scope-switcher'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
 export default BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown AknButtonList-item scope-switcher',
@@ -28,10 +28,10 @@ export default BaseForm.extend({
         FetcherRegistry.getFetcher('channel')
                     .fetchAll()
                     .then(function (channels) {
-                        var params = { scopeCode: channels[0].code };
-                        this.trigger('pim_enrich:form:scope_switcher:pre_render', params);
+                        var params = { scopeCode: channels[0].code }
+                        this.trigger('pim_enrich:form:scope_switcher:pre_render', params)
 
-                        var scope = _.findWhere(channels, { code: params.scopeCode });
+                        var scope = _.findWhere(channels, { code: params.scopeCode })
 
                         this.$el.html(
                             this.template({
@@ -45,13 +45,13 @@ export default BaseForm.extend({
                                 i18n: i18n,
                                 displayInline: this.displayInline
                             })
-                        );
+                        )
 
-                        this.delegateEvents();
+                        this.delegateEvents()
                     }.bind(this)
-                );
+                )
 
-        return this;
+        return this
     },
 
             /**
@@ -62,9 +62,9 @@ export default BaseForm.extend({
     changeScope: function (event) {
         this.trigger('pim_enrich:form:scope_switcher:change', {
             scopeCode: event.currentTarget.dataset.scope
-        });
+        })
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -73,7 +73,7 @@ export default BaseForm.extend({
              * @param {Boolean} value
              */
     setDisplayInline: function (value) {
-        this.displayInline = value;
+        this.displayInline = value
     }
-});
+})
 

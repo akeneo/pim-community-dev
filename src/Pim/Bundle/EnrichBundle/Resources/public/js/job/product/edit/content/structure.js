@@ -6,11 +6,11 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import template from 'pim/template/export/product/edit/content/structure';
-import BaseForm from 'pim/form';
-import propertyAccessor from 'pim/common/property';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import template from 'pim/template/export/product/edit/content/structure'
+import BaseForm from 'pim/form'
+import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
     className: 'structure-filters',
     errors: {},
@@ -24,15 +24,15 @@ export default BaseForm.extend({
                     this.getRoot(),
                     'pim_enrich:form:entity:bad_request',
                     this.setValidationErrors.bind(this)
-                );
+                )
         this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:post_fetch',
                     this.resetValidationErrors.bind(this)
-                );
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
+                )
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -41,14 +41,14 @@ export default BaseForm.extend({
              * @param {event} event
              */
     setValidationErrors: function (event) {
-        this.errors = event.response;
+        this.errors = event.response
     },
 
             /**
              * Rest validation error after fetch
              */
     resetValidationErrors: function () {
-        this.errors = {};
+        this.errors = {}
     },
 
             /**
@@ -59,7 +59,7 @@ export default BaseForm.extend({
              * @return {mixed}
              */
     getValidationErrorsForField: function (field) {
-        return propertyAccessor.accessProperty(this.errors, 'configuration.filters.structure.' + field, []);
+        return propertyAccessor.accessProperty(this.errors, 'configuration.filters.structure.' + field, [])
     },
 
             /**
@@ -69,13 +69,13 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
-        this.$el.html(this.template({__: __}));
+        this.$el.html(this.template({__: __}))
 
-        this.renderExtensions();
+        this.renderExtensions()
 
-        return this;
+        return this
     }
-});
+})
 

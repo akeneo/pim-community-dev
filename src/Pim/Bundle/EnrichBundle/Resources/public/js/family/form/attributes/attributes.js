@@ -7,18 +7,18 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import $ from 'jquery';
-import BaseForm from 'pim/form';
-import template from 'pim/template/family/tab/attributes/attributes';
-import UserContext from 'pim/user-context';
-import SecurityContext from 'pim/security-context';
-import i18n from 'pim/i18n';
-import FetcherRegistry from 'pim/fetcher-registry';
-import Dialog from 'pim/dialog';
-import Messanger from 'oro/messenger';
-import LoadingMask from 'oro/loading-mask';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import $ from 'jquery'
+import BaseForm from 'pim/form'
+import template from 'pim/template/family/tab/attributes/attributes'
+import UserContext from 'pim/user-context'
+import SecurityContext from 'pim/security-context'
+import i18n from 'pim/i18n'
+import FetcherRegistry from 'pim/fetcher-registry'
+import Dialog from 'pim/dialog'
+import Messanger from 'oro/messenger'
+import LoadingMask from 'oro/loading-mask'
 export default BaseForm.extend({
     className: 'tabsection-content tab-content',
     attributeRequiredIconClass: 'AknAcl-icon AknAcl-icon--granted icon-ok required',
@@ -41,7 +41,7 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
     },
 
             /**
@@ -52,21 +52,21 @@ export default BaseForm.extend({
                     this.getRoot(),
                     'pim_enrich:form:entity:post_fetch',
                     this.render
-                );
+                )
 
         this.listenTo(
                     this.getRoot(),
                     'add-attribute:add',
                     this.onAddAttributes
-                );
+                )
 
         this.listenTo(
                     this.getRoot(),
                     'add-attribute-group:add',
                     this.onAddAttributesByAttributeGroups
-                );
+                )
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -74,11 +74,11 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
-        var data = this.getFormData();
-        var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'));
+        var data = this.getFormData()
+        var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'))
 
         $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
@@ -87,22 +87,22 @@ export default BaseForm.extend({
                         {'apply_filters': false}
                     )
                 ).then(function (channels, attributeGroups) {
-                    this.channels = channels;
+                    this.channels = channels
                     var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                        return attribute.group_code;
-                    });
+                        return attribute.group_code
+                    })
 
                     _.sortBy(groupedAttributes, function (attributes, group) {
-                        return _.findWhere(attributeGroups, {code: group}).sort_order;
-                    }.bind(this));
+                        return _.findWhere(attributeGroups, {code: group}).sort_order
+                    }.bind(this))
 
                     _.each(groupedAttributes, function (attributes, group) {
                         attributes = _.sortBy(attributes, function (attribute) {
-                            return attribute.sort_order;
-                        });
+                            return attribute.sort_order
+                        })
 
-                        groupedAttributes[group] = attributes;
-                    });
+                        groupedAttributes[group] = attributes
+                    })
 
                     this.$el.html(this.template({
                         label: __(this.config.label),
@@ -116,13 +116,13 @@ export default BaseForm.extend({
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
                         catalogLocale: this.catalogLocale
-                    }));
+                    }))
 
-                    $(this.$el).find('[data-original-title]').tooltip();
+                    $(this.$el).find('[data-original-title]').tooltip()
 
-                    this.delegateEvents();
-                    this.renderExtensions();
-                }.bind(this));
+                    this.delegateEvents()
+                    this.renderExtensions()
+                }.bind(this))
     },
 
             /**
@@ -131,13 +131,13 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     toggleGroup: function (event) {
-        event.preventDefault();
-        var target = event.currentTarget;
+        event.preventDefault()
+        var target = event.currentTarget
 
-        $(target).parent().find('tr:not(.group)').toggle();
-        $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+        $(target).parent().find('tr:not(.group)').toggle()
+        $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt')
 
-        return this;
+        return this
     },
 
             /**
@@ -146,27 +146,27 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     toggleAttribute: function (event) {
-        event.preventDefault();
-        var target = event.currentTarget;
+        event.preventDefault()
+        var target = event.currentTarget
 
         if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
-            return this;
+            return this
         }
 
         if (!this.isAttributeEditable(target.dataset.type)) {
-            return this;
+            return this
         }
 
-        var attribute = target.dataset.attribute;
-        var channel = target.dataset.channel;
+        var attribute = target.dataset.attribute
+        var channel = target.dataset.channel
 
         if ('true' === target.dataset.required) {
-            this.removeFromAttributeRequirements(attribute, channel);
+            this.removeFromAttributeRequirements(attribute, channel)
         } else {
-            this.addToAttributeRequirements(attribute, channel);
+            this.addToAttributeRequirements(attribute, channel)
         }
 
-        return this.render();
+        return this.render()
     },
 
             /**
@@ -177,7 +177,7 @@ export default BaseForm.extend({
              * @returns {boolean}
              */
     isAttributeEditable: function (type) {
-        return this.identifierAttribute !== type;
+        return this.identifierAttribute !== type
     },
 
             /**
@@ -187,12 +187,12 @@ export default BaseForm.extend({
              * @param {string} channel
              */
     addToAttributeRequirements: function (attribute, channel) {
-        var data = this.getFormData();
-        var requirements = data.attribute_requirements[channel] || [];
-        requirements.push(attribute);
-        data.attribute_requirements[channel] = requirements;
+        var data = this.getFormData()
+        var requirements = data.attribute_requirements[channel] || []
+        requirements.push(attribute)
+        data.attribute_requirements[channel] = requirements
 
-        return this.setData(data);
+        return this.setData(data)
     },
 
             /**
@@ -202,12 +202,12 @@ export default BaseForm.extend({
              * @param {string} channel
              */
     removeFromAttributeRequirements: function (attribute, channel) {
-        var data = this.getFormData();
+        var data = this.getFormData()
         data.attribute_requirements[channel] = data.attribute_requirements[channel] ?
                     data.attribute_requirements[channel].filter(function (item) {
-                        return attribute !== item;
-                    }) : [];
-        this.setData(data);
+                        return attribute !== item
+                    }) : []
+        this.setData(data)
     },
 
             /**
@@ -219,25 +219,25 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     onRemoveAttribute: function (event) {
-        event.preventDefault();
-        var attributeAsLabel = this.getFormData().attribute_as_label;
+        event.preventDefault()
+        var attributeAsLabel = this.getFormData().attribute_as_label
 
         if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
-            return false;
+            return false
         }
 
-        var attributeToRemove = event.currentTarget.dataset.attribute;
+        var attributeToRemove = event.currentTarget.dataset.attribute
 
         if (attributeAsLabel === attributeToRemove) {
             Messanger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
-                    );
+                    )
 
-            return false;
+            return false
         }
 
-        return this.removeAttribute(attributeToRemove);
+        return this.removeAttribute(attributeToRemove)
     },
 
             /**
@@ -251,22 +251,22 @@ export default BaseForm.extend({
                 identifiers: event.codes,
                 limit: event.codes.length
             }
-        };
-        var loadingMask = new LoadingMask();
-        loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+        }
+        var loadingMask = new LoadingMask()
+        loadingMask.render().$el.appendTo(this.getRoot().$el).show()
 
         $.when(
                     FetcherRegistry.getFetcher('attribute')
                         .search(options)
                 ).then(function (attributes) {
                     _.each(attributes, function (attribute) {
-                        this.addAttribute(attribute);
-                    }.bind(this));
+                        this.addAttribute(attribute)
+                    }.bind(this))
 
-                    this.render();
+                    this.render()
                 }.bind(this)).always(function () {
-                    loadingMask.hide().$el.remove();
-                });
+                    loadingMask.hide().$el.remove()
+                })
     },
 
             /**
@@ -275,8 +275,8 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     onAddAttributesByAttributeGroups: function (event) {
-        var loadingMask = new LoadingMask();
-        loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+        var loadingMask = new LoadingMask()
+        loadingMask.render().$el.appendTo(this.getRoot().$el).show()
 
         $.when(
                     FetcherRegistry.getFetcher('attribute-group')
@@ -289,15 +289,15 @@ export default BaseForm.extend({
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {
-                    var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
+                    var existingAttributes = _.pluck(this.getFormData().attributes, 'code')
                     var groupsAttributes = [].concat.apply(
                         [],
                         _.pluck(attributeGroups, 'attributes')
-                    );
+                    )
                     var attributesToAdd = _.filter(groupsAttributes, function (attribute) {
                         return !_.contains(existingAttributes, attribute) &&
-                            attribute !== identifier.code;
-                    });
+                            attribute !== identifier.code
+                    })
 
                     return FetcherRegistry.getFetcher('attribute')
                         .search({
@@ -305,16 +305,16 @@ export default BaseForm.extend({
                                 identifiers: attributesToAdd,
                                 limit: attributesToAdd.length
                             }
-                        });
+                        })
                 }.bind(this)).then(function (attributes) {
                     _.each(attributes, function (attribute) {
-                        this.addAttribute(attribute);
-                    }.bind(this));
+                        this.addAttribute(attribute)
+                    }.bind(this))
 
-                    this.render();
+                    this.render()
                 }.bind(this)).always(function () {
-                    loadingMask.hide().$el.remove();
-                });
+                    loadingMask.hide().$el.remove()
+                })
     },
 
             /**
@@ -324,19 +324,19 @@ export default BaseForm.extend({
              */
     removeAttribute: function (attribute) {
         _.each(this.channels, function (channel) {
-            this.removeFromAttributeRequirements(attribute, channel.code);
-        }.bind(this));
+            this.removeFromAttributeRequirements(attribute, channel.code)
+        }.bind(this))
 
-        var data = this.getFormData();
+        var data = this.getFormData()
 
         data.attributes.splice(
                     _.pluck(data.attributes, 'code').indexOf(attribute),
                     1
-                );
+                )
 
-        this.setData(data);
+        this.setData(data)
 
-        return this.render();
+        return this.render()
     },
 
             /**
@@ -345,16 +345,16 @@ export default BaseForm.extend({
              * @param {Object} attribute
              */
     addAttribute: function (attribute) {
-        var data = this.getFormData();
+        var data = this.getFormData()
         if ('undefined' !== typeof _.findWhere(
                     data.attributes, {
                         code: attribute.code
                     })) {
-            return this;
+            return this
         }
 
-        data.attributes.push(attribute);
-        this.setData(data);
+        data.attributes.push(attribute)
+        this.setData(data)
     }
-});
+})
 

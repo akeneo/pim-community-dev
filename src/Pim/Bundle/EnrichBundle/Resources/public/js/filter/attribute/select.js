@@ -1,15 +1,15 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Routing from 'routing';
-import BaseFilter from 'pim/filter/attribute/attribute';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import template from 'pim/template/filter/attribute/select';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Routing from 'routing'
+import BaseFilter from 'pim/filter/attribute/attribute'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import template from 'pim/template/filter/attribute/select'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'select',
     template: _.template(template),
@@ -22,9 +22,9 @@ export default BaseFilter.extend({
          * {@inheritdoc}
          */
     initialize: function () {
-        this.choicePromise = null;
+        this.choicePromise = null
 
-        return BaseFilter.prototype.initialize.apply(this, arguments);
+        return BaseFilter.prototype.initialize.apply(this, arguments)
     },
 
         /**
@@ -32,10 +32,10 @@ export default BaseFilter.extend({
          */
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode() + '.code'});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode() + '.code'})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -43,7 +43,7 @@ export default BaseFilter.extend({
          */
     isEmpty: function () {
         return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() || _.isEmpty(this.getValue()));
+                (undefined === this.getValue() || _.isEmpty(this.getValue()))
     },
 
         /**
@@ -51,7 +51,7 @@ export default BaseFilter.extend({
          */
     renderInput: function () {
         if (undefined === this.getOperator()) {
-            this.setOperator(_.first(_.values(this.config.operators)));
+            this.setOperator(_.first(_.values(this.config.operators)))
         }
 
         return this.template({
@@ -61,7 +61,7 @@ export default BaseFilter.extend({
             operator: this.getOperator(),
             editable: this.isEditable(),
             operators: this.config.operators
-        });
+        })
     },
 
         /**
@@ -70,10 +70,10 @@ export default BaseFilter.extend({
     postRender: function (templateContext) {
         this.$('.operator').select2({
             minimumResultsForSearch: -1
-        });
+        })
 
         if (!_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator())) {
-            this.$('.value').select2(templateContext.select2Options);
+            this.$('.value').select2(templateContext.select2Options)
         }
     },
 
@@ -87,7 +87,7 @@ export default BaseFilter.extend({
                 .then(function (attribute) {
                     return this.cleanInvalidValues(attribute, this.getValue()).then(function (cleanedValues) {
                         if (!_.isEqual(this.getValue(), cleanedValues)) {
-                            this.setValue(cleanedValues, {silent: false});
+                            this.setValue(cleanedValues, {silent: false})
                         }
 
                         return {
@@ -95,30 +95,30 @@ export default BaseFilter.extend({
                             select2Options: this.getSelect2Options(attribute),
                             removable: this.isRemovable(),
                             editable: this.isEditable()
-                        };
-                    }.bind(this));
-                }.bind(this));
+                        }
+                    }.bind(this))
+                }.bind(this))
     },
 
         /**
          * {@inheritdoc}
          */
     updateState: function () {
-        var cleanedValues = [];
-        var operator = this.$('[name="filter-operator"]').val();
+        var cleanedValues = []
+        var operator = this.$('[name="filter-operator"]').val()
 
         if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
-            var value = this.$('[name="filter-value"]').val().split(/[\s,]+/);
+            var value = this.$('[name="filter-value"]').val().split(/[\s,]+/)
             cleanedValues = _.reject(value, function (val) {
-                return '' === val;
-            });
+                return '' === val
+            })
         }
 
         this.setData({
             field: this.getField(),
             operator: operator,
             value: cleanedValues
-        });
+        })
     },
 
         /**
@@ -127,7 +127,7 @@ export default BaseFilter.extend({
          * @returns {Object}
          */
     getSelect2Options: function (attribute) {
-        var choiceUrl = this.getChoiceUrl(attribute);
+        var choiceUrl = this.getChoiceUrl(attribute)
 
         return {
             ajax: {
@@ -139,23 +139,23 @@ export default BaseFilter.extend({
                         options: {
                             locale: UserContext.get('uiLocale')
                         }
-                    };
+                    }
                 },
                 results: function (data) {
-                    return data;
+                    return data
                 }
             },
             initSelection: function (element, callback) {
                 this.getChoices(attribute).then(function (response) {
-                    var results = response.results;
+                    var results = response.results
                     var choices = _.map($(element).val().split(','), function (choice) {
-                        return _.findWhere(results, {id: choice});
-                    });
-                    callback(choices);
-                }.bind(this));
+                        return _.findWhere(results, {id: choice})
+                    })
+                    callback(choices)
+                }.bind(this))
             }.bind(this),
             multiple: true
-        };
+        }
     },
 
         /**
@@ -167,13 +167,13 @@ export default BaseFilter.extend({
          * @returns {Promise}
          */
     getChoices: function (attribute) {
-        var choiceUrl = this.getChoiceUrl(attribute);
+        var choiceUrl = this.getChoiceUrl(attribute)
 
         if (null === this.choicePromise) {
-            this.choicePromise = $.get(choiceUrl);
+            this.choicePromise = $.get(choiceUrl)
         }
 
-        return this.choicePromise;
+        return this.choicePromise
     },
 
         /**
@@ -193,7 +193,7 @@ export default BaseFilter.extend({
                 options: {type: 'code'},
                 referenceDataName: attribute.reference_data_name
             }
-            );
+            )
     },
 
         /**
@@ -207,11 +207,11 @@ export default BaseFilter.extend({
          */
     cleanInvalidValues: function (attribute, currentValues) {
         return this.getChoices(attribute).then(function (response) {
-            var possibleValues = _.pluck(response.results, 'id');
-            currentValues  = undefined !== currentValues ? currentValues : [];
+            var possibleValues = _.pluck(response.results, 'id')
+            currentValues  = undefined !== currentValues ? currentValues : []
 
-            return _.intersection(currentValues, possibleValues);
-        }.bind(this));
+            return _.intersection(currentValues, possibleValues)
+        }.bind(this))
     }
-});
+})
 

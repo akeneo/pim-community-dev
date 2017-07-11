@@ -7,17 +7,16 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import mediator from 'oro/mediator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/sequential-edit';
-import Routing from 'routing';
-import router from 'pim/router';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import 'bootstrap';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/sequential-edit'
+import router from 'pim/router'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import 'bootstrap'
+
 export default BaseForm.extend({
     id: 'sequentialEdit',
     className: 'AknSequentialEdit',
@@ -26,28 +25,28 @@ export default BaseForm.extend({
         'click .next, .previous': 'followLink'
     },
     initialize: function () {
-        this.model = new Backbone.Model();
+        this.model = new Backbone.Model()
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
     configure: function () {
-        FetcherRegistry.clear('sequential-edit');
+        FetcherRegistry.clear('sequential-edit')
 
         return $.when(
                     FetcherRegistry.getFetcher('sequential-edit')
                         .fetchAll()
                         .then(
                             function (sequentialEdit) {
-                                this.model.set(sequentialEdit);
+                                this.model.set(sequentialEdit)
                             }.bind(this)
                         ),
                     BaseForm.prototype.configure.apply(this, arguments)
-                );
+                )
     },
     addSaveButton: function () {
-        var objectSet    = this.model.get('objectSet');
-        var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
-        var nextObject   = objectSet[currentIndex + 1];
+        var objectSet    = this.model.get('objectSet')
+        var currentIndex = objectSet.indexOf(this.getFormData().meta.id)
+        var nextObject   = objectSet[currentIndex + 1]
 
         this.trigger('save-buttons:register-button', {
             className: 'save-and-continue',
@@ -58,54 +57,54 @@ export default BaseForm.extend({
             events: {
                 'click .save-and-continue': this.saveAndContinue.bind(this)
             }
-        });
+        })
     },
     render: function () {
         if (!this.configured || !this.model.get('objectSet')) {
-            return this;
+            return this
         }
 
-        this.addSaveButton();
+        this.addSaveButton()
 
         this.getTemplateParameters().done(function (templateParameters) {
-            this.$el.html(this.template(templateParameters));
-            this.$('[data-toggle="tooltip"]').tooltip();
-            this.delegateEvents();
-            this.preloadNext();
-        }.bind(this));
+            this.$el.html(this.template(templateParameters))
+            this.$('[data-toggle="tooltip"]').tooltip()
+            this.delegateEvents()
+            this.preloadNext()
+        }.bind(this))
 
-        return this;
+        return this
     },
     getTemplateParameters: function () {
-        var objectSet     = this.model.get('objectSet');
-        var currentObject = this.getFormData().meta.id;
-        var index         = objectSet.indexOf(currentObject);
-        var previous      = objectSet[index - 1];
-        var next          = objectSet[index + 1];
+        var objectSet     = this.model.get('objectSet')
+        var currentObject = this.getFormData().meta.id
+        var index         = objectSet.indexOf(currentObject)
+        var previous      = objectSet[index - 1]
+        var next          = objectSet[index + 1]
 
-        var previousObject = null;
-        var nextObject = null;
+        var previousObject = null
+        var nextObject = null
 
-        var promises = [];
+        var promises = []
         if (previous) {
             promises.push(FetcherRegistry.getFetcher('product').fetch(previous).then(function (product) {
-                var label = product.meta.label[UserContext.get('catalogLocale')];
+                var label = product.meta.label[UserContext.get('catalogLocale')]
                 previousObject = {
                     id:         product.meta.id,
                     label:      label,
                     shortLabel: label.length > 25 ? label.slice(0, 22) + '...' : label
-                };
-            }));
+                }
+            }))
         }
         if (next) {
             promises.push(FetcherRegistry.getFetcher('product').fetch(next).then(function (product) {
-                var label = product.meta.label[UserContext.get('catalogLocale')];
+                var label = product.meta.label[UserContext.get('catalogLocale')]
                 nextObject = {
                     id:         product.meta.id,
                     label:      label,
                     shortLabel: label.length > 25 ? label.slice(0, 22) + '...' : label
-                };
-            }));
+                }
+            }))
         }
 
         return $.when.apply($, promises).then(function () {
@@ -115,46 +114,45 @@ export default BaseForm.extend({
                 previousObject: previousObject,
                 nextObject:     nextObject,
                 ratio:          (index + 1) / objectSet.length * 100
-            };
-        });
+            }
+        })
     },
     preloadNext: function () {
-        var objectSet = this.model.get('objectSet');
-        var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
-        var pending = objectSet[currentIndex + 2];
+        var objectSet = this.model.get('objectSet')
+        var currentIndex = objectSet.indexOf(this.getFormData().meta.id)
+        var pending = objectSet[currentIndex + 2]
         if (pending) {
             setTimeout(function () {
-                FetcherRegistry.getFetcher('product').fetch(pending);
-            }, 2000);
+                FetcherRegistry.getFetcher('product').fetch(pending)
+            }, 2000)
         }
     },
     saveAndContinue: function () {
         this.parent.getExtension('save').save({ silent: true }).done(function () {
-            var objectSet = this.model.get('objectSet');
-            var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
-            var nextObject = objectSet[currentIndex + 1];
+            var objectSet = this.model.get('objectSet')
+            var currentIndex = objectSet.indexOf(this.getFormData().meta.id)
+            var nextObject = objectSet[currentIndex + 1]
             if (nextObject) {
-                this.goToProduct(nextObject);
+                this.goToProduct(nextObject)
             } else {
-                this.finish();
+                this.finish()
             }
-        }.bind(this));
+        }.bind(this))
     },
     followLink: function (event) {
         this.getRoot().trigger('pim_enrich:form:state:confirm', {
             action: function () {
-                this.goToProduct(event.currentTarget.dataset.id);
+                this.goToProduct(event.currentTarget.dataset.id)
             }.bind(this)
-        });
+        })
     },
     goToProduct: function (id) {
         router.redirectToRoute(
                     'pim_enrich_product_edit',
                     { id: id }
-                );
+                )
     },
     finish: function () {
-        router.redirectToRoute('pim_enrich_product_index');
+        router.redirectToRoute('pim_enrich_product_index')
     }
-});
-
+})

@@ -7,14 +7,14 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import template from 'pim/template/export/product/edit/content/data';
-import BaseForm from 'pim/form';
-import fetcherRegistry from 'pim/fetcher-registry';
-import formBuilder from 'pim/form-builder';
-import PropertyAccessor from 'pim/common/property';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import template from 'pim/template/export/product/edit/content/data'
+import BaseForm from 'pim/form'
+import fetcherRegistry from 'pim/fetcher-registry'
+import formBuilder from 'pim/form-builder'
+import PropertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
     filterViews: [],
     template: _.template(template),
@@ -23,9 +23,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -34,17 +34,17 @@ export default BaseForm.extend({
     configure: function () {
         this.onExtensions('add-attribute:add', function (event) {
             this.addFilters(event.codes).then(function () {
-                this.updateModel();
-                this.render();
-            }.bind(this));
-        }.bind(this));
+                this.updateModel()
+                this.render()
+            }.bind(this))
+        }.bind(this))
 
-        this.filterViews = [];
+        this.filterViews = []
 
         return $.when(
                     BaseForm.prototype.configure.apply(this, arguments),
                     this.addConfigFilters()
-                );
+                )
     },
 
             /**
@@ -56,13 +56,13 @@ export default BaseForm.extend({
                 // We pre-fetch the attributes to add to avoid multiple http requests
         return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(fieldCodes)
                     .then(function () {
-                        return $.when.apply($, _.map(fieldCodes, this.addFilter.bind(this)));
+                        return $.when.apply($, _.map(fieldCodes, this.addFilter.bind(this)))
                     }.bind(this))
                     .then(function () {
                         if (!_.isEmpty(this.getFormData())) {
-                            this.updateFiltersData(_.extend({}, this.getFilters().data));
+                            this.updateFiltersData(_.extend({}, this.getFilters().data))
                         }
-                    }.bind(this));
+                    }.bind(this))
     },
 
             /**
@@ -71,24 +71,24 @@ export default BaseForm.extend({
              * @param {string} fieldCode
              */
     addFilter: function (fieldCode) {
-        var deferred = $.Deferred();
+        var deferred = $.Deferred()
 
         this.getFilterConfig(fieldCode)
                     .then(this.buildFilterView.bind(this))
                     .then(function (filterView) {
-                        this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this));
-                        this.listenTo(filterView, 'filter:remove', this.removeFilter.bind(this));
+                        this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this))
+                        this.listenTo(filterView, 'filter:remove', this.removeFilter.bind(this))
                         this.listenTo(this.getRoot(), 'channel:update:after', function (scope) {
-                            filterView.trigger('channel:update:after', scope);
-                        }.bind(this));
+                            filterView.trigger('channel:update:after', scope)
+                        }.bind(this))
 
-                        this.filterViews.push(filterView);
+                        this.filterViews.push(filterView)
                     }.bind(this))
                     .always(function () {
-                        deferred.resolve();
-                    });
+                        deferred.resolve()
+                    })
 
-        return deferred.promise();
+        return deferred.promise()
     },
 
             /**
@@ -100,19 +100,19 @@ export default BaseForm.extend({
              */
     buildFilterView: function (filterConfig) {
         return formBuilder.buildForm(filterConfig.view).then(function (filterView) {
-            filterView.setRemovable(filterConfig.isRemovable);
-            filterView.setType(filterConfig.view);
-            filterView.setParentForm(this);
-            filterView.setCode(filterConfig.field);
+            filterView.setRemovable(filterConfig.isRemovable)
+            filterView.setType(filterConfig.view)
+            filterView.setParentForm(this)
+            filterView.setCode(filterConfig.field)
 
             return filterView.configure().then(function () {
-                var data = {};
-                filterView.trigger('pim_enrich:form:entity:pre_update', data);
-                filterView.setData(data, {silent: true});
+                var data = {}
+                filterView.trigger('pim_enrich:form:entity:pre_update', data)
+                filterView.setData(data, {silent: true})
 
-                return filterView;
-            });
-        }.bind(this));
+                return filterView
+            })
+        }.bind(this))
     },
 
             /**
@@ -123,12 +123,12 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     getFilterConfig: function (fieldCode) {
-        var filterConfig = _.findWhere(this.config.filters, {field: fieldCode});
+        var filterConfig = _.findWhere(this.config.filters, {field: fieldCode})
 
         if (undefined !== filterConfig) {
-            filterConfig.isRemovable = false;
+            filterConfig.isRemovable = false
 
-            return $.Deferred().resolve(filterConfig).promise();
+            return $.Deferred().resolve(filterConfig).promise()
         }
 
         return fetcherRegistry.getFetcher('attribute').fetch(fieldCode)
@@ -137,8 +137,8 @@ export default BaseForm.extend({
                             field: attribute.code,
                             view: attribute.filter_types['product-export-builder'],
                             isRemovable: true
-                        };
-                    });
+                        }
+                    })
     },
 
             /**
@@ -146,41 +146,41 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured || _.isEmpty(this.getFormData())) {
-            return this;
+            return this
         }
 
-        this.$el.html(this.template({__: __}));
+        this.$el.html(this.template({__: __}))
 
         $.when(
                     fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(),
                     this.addExistingFilters()
                 ).then(function (identifier) {
-                    var filtersContainer = this.$('.filters').empty();
+                    var filtersContainer = this.$('.filters').empty()
 
-                    var configuredFieldCodes = _.pluck(this.config.filters, 'field');
-                    var savedFieldCodes = _.pluck(this.filterViews, 'filterCode').sort();
+                    var configuredFieldCodes = _.pluck(this.config.filters, 'field')
+                    var savedFieldCodes = _.pluck(this.filterViews, 'filterCode').sort()
                     var fieldCodes = _.union(
                         configuredFieldCodes,
                         _.without(savedFieldCodes, identifier.code),
                         [identifier.code]
-                    );
+                    )
 
                     var filterViews = _.map(fieldCodes, function (code) {
-                        var view = _.findWhere(this.filterViews, {filterCode: code});
+                        var view = _.findWhere(this.filterViews, {filterCode: code})
 
                         if (undefined === view) {
-                            return;
+                            return
                         }
 
-                        return view.render().$el;
-                    }.bind(this));
+                        return view.render().$el
+                    }.bind(this))
 
-                    filtersContainer.append(filterViews);
+                    filtersContainer.append(filterViews)
 
-                    this.renderExtensions();
-                }.bind(this));
+                    this.renderExtensions()
+                }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -190,28 +190,28 @@ export default BaseForm.extend({
              */
     getCurrentFilters: function () {
         return _.map(this.filterViews, function (filterView) {
-            return filterView.getCode();
-        });
+            return filterView.getCode()
+        })
     },
 
             /**
              * Add filters from the configuration (the field filters and identifier)
              */
     addConfigFilters: function () {
-        var promises = [];
-        this.getRoot().trigger('pim_enrich:form:filter:set-default', promises);
+        var promises = []
+        this.getRoot().trigger('pim_enrich:form:filter:set-default', promises)
 
         return $.when.apply($, promises).then(function () {
             var defaultFieldCodes = 0 !== arguments.length ?
                         _.union(_.flatten(_.toArray(arguments))) :
-                        [];
-            var configFilterCodes = _.pluck(this.config.filters, 'field');
+                        []
+            var configFilterCodes = _.pluck(this.config.filters, 'field')
 
-            return _.union(configFilterCodes, defaultFieldCodes);
+            return _.union(configFilterCodes, defaultFieldCodes)
         }.bind(this))
                 .then(function (defaultFilterCodes) {
-                    return this.addFilters(defaultFilterCodes);
-                }.bind(this));
+                    return this.addFilters(defaultFilterCodes)
+                }.bind(this))
     },
 
             /**
@@ -219,14 +219,14 @@ export default BaseForm.extend({
              */
     addExistingFilters: function () {
         var filterCodes = _.map(_.pluck(this.getFilters().data, 'field'), function (field) {
-            return field.replace(/\.code$/, '');
-        });
+            return field.replace(/\.code$/, '')
+        })
 
         var existingFilterCodes = _.map(this.filterViews, function (filterView) {
-            return filterView.getCode();
-        });
+            return filterView.getCode()
+        })
 
-        return this.addFilters(_.difference(filterCodes, existingFilterCodes));
+        return this.addFilters(_.difference(filterCodes, existingFilterCodes))
     },
 
             /**
@@ -235,17 +235,17 @@ export default BaseForm.extend({
              * @returns {Promise}
              */
     getDefaultFilterFields: function () {
-        var promises = [];
-        this.getRoot().trigger('pim_enrich:form:filter:set-default', promises);
+        var promises = []
+        this.getRoot().trigger('pim_enrich:form:filter:set-default', promises)
 
         return $.when.apply($, promises).then(function () {
             var defaultFields = 0 !== arguments.length ?
                         _.union(_.flatten(_.toArray(arguments))) :
-                        [];
-            var configFields = _.pluck(this.config.filters, 'field');
+                        []
+            var configFields = _.pluck(this.config.filters, 'field')
 
-            return _.union(configFields, defaultFields);
-        }.bind(this));
+            return _.union(configFields, defaultFields)
+        }.bind(this))
     },
 
             /**
@@ -255,34 +255,34 @@ export default BaseForm.extend({
              */
     updateFiltersData: function (data) {
         _.each(this.filterViews, function (filterView) {
-            var filterData = _.findWhere(data, {field: filterView.getField()});
-            filterData = filterData || {};
-            filterView.trigger('pim_enrich:form:entity:pre_update', filterData);
-            filterView.setData(filterData, {silent: true});
-        }.bind(this));
+            var filterData = _.findWhere(data, {field: filterView.getField()})
+            filterData = filterData || {}
+            filterView.trigger('pim_enrich:form:entity:pre_update', filterData)
+            filterView.setData(filterData, {silent: true})
+        }.bind(this))
 
-        this.updateModel();
+        this.updateModel()
     },
 
             /**
              * Updates the form model by iterating over filter views
              */
     updateModel: function () {
-        var data = this.getFormData();
+        var data = this.getFormData()
         if (_.isEmpty(data)) {
-            return;
+            return
         }
 
-        var dataFilterCollection = [];
+        var dataFilterCollection = []
 
         _.each(this.filterViews, function (filterView) {
             if (!filterView.isEmpty()) {
-                dataFilterCollection.push(filterView.getFormData());
+                dataFilterCollection.push(filterView.getFormData())
             }
-        });
-        data = PropertyAccessor.updateProperty(data, 'configuration.filters.data', dataFilterCollection);
+        })
+        data = PropertyAccessor.updateProperty(data, 'configuration.filters.data', dataFilterCollection)
 
-        this.setData(data);
+        this.setData(data)
     },
 
             /**
@@ -291,13 +291,13 @@ export default BaseForm.extend({
              * @param {string} fieldCode
              */
     removeFilter: function (fieldCode) {
-        var cleanedFieldCode = fieldCode.replace(/\.code$/, '');
+        var cleanedFieldCode = fieldCode.replace(/\.code$/, '')
         this.filterViews = _.filter(this.filterViews, function (filterView) {
-            return filterView.getCode() !== cleanedFieldCode;
-        });
+            return filterView.getCode() !== cleanedFieldCode
+        })
 
-        this.updateModel();
-        this.render();
+        this.updateModel()
+        this.render()
     },
 
             /**
@@ -306,7 +306,7 @@ export default BaseForm.extend({
              * @return {object}
              */
     getFilters: function () {
-        return this.getFormData().configuration.filters;
+        return this.getFormData().configuration.filters
     }
-});
+})
 

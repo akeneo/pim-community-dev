@@ -1,19 +1,19 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import template from 'pim/template/datagrid/configure-columns-action';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import template from 'pim/template/datagrid/configure-columns-action'
 var Column = Backbone.Model.extend({
     defaults: {
         label: '',
         displayed: false,
         group: __('system_filter_group')
     }
-});
+})
 
-var ColumnList = Backbone.Collection.extend({ model: Column });
+var ColumnList = Backbone.Collection.extend({ model: Column })
 
 export default Backbone.View.extend({
     collection: ColumnList,
@@ -28,93 +28,93 @@ export default Backbone.View.extend({
     },
 
     search: function (e) {
-        var search = $(e.currentTarget).val();
+        var search = $(e.currentTarget).val()
 
         var matchesSearch = function (text) {
-            return ('' + text).toUpperCase().indexOf(('' + search).toUpperCase()) >= 0;
-        };
+            return ('' + text).toUpperCase().indexOf(('' + search).toUpperCase()) >= 0
+        }
 
         this.$('#column-list').find('li').each(function () {
             if (matchesSearch($(this).data('value')) || matchesSearch($(this).text())) {
-                $(this).removeClass('AknVerticalList-item--hide');
+                $(this).removeClass('AknVerticalList-item--hide')
             } else {
-                $(this).addClass('AknVerticalList-item--hide');
+                $(this).addClass('AknVerticalList-item--hide')
             }
-        });
+        })
     },
 
     filter: function (e) {
-        var filter = $(e.currentTarget).data('value');
+        var filter = $(e.currentTarget).data('value')
 
-        $(e.currentTarget).addClass('active').siblings('.active').removeClass('active');
+        $(e.currentTarget).addClass('active').siblings('.active').removeClass('active')
 
         if (_.isUndefined(filter)) {
-            this.$('#column-list li').removeClass('AknVerticalList-item--hide');
+            this.$('#column-list li').removeClass('AknVerticalList-item--hide')
         } else {
             this.$('#column-list').find('li').each(function () {
                 if (filter === $(this).data('group')) {
-                    $(this).removeClass('AknVerticalList-item--hide');
+                    $(this).removeClass('AknVerticalList-item--hide')
                 } else {
-                    $(this).addClass('AknVerticalList-item--hide');
+                    $(this).addClass('AknVerticalList-item--hide')
                 }
-            });
+            })
         }
     },
 
     remove: function (e) {
-        var $item = $(e.currentTarget).parent();
-        $item.appendTo(this.$('#column-list'));
+        var $item = $(e.currentTarget).parent()
+        $item.appendTo(this.$('#column-list'))
 
-        var model = _.first(this.collection.where({code: $item.data('value')}));
-        model.set('displayed', false);
+        var model = _.first(this.collection.where({code: $item.data('value')}))
+        model.set('displayed', false)
 
-        this.validateSubmission();
+        this.validateSubmission()
     },
 
     reset: function () {
         _.each(this.collection.where({displayed: true, removable: true}), function (model) {
-            model.set('displayed', false);
-            this.$('#column-selection li[data-value="' + model.get('code') + '"]').appendTo(this.$('#column-list'));
-        }.bind(this));
-        this.validateSubmission();
+            model.set('displayed', false)
+            this.$('#column-selection li[data-value="' + model.get('code') + '"]').appendTo(this.$('#column-list'))
+        }.bind(this))
+        this.validateSubmission()
     },
 
     render: function () {
-        var systemColumn = this.collection.where({group: __('system_filter_group')});
+        var systemColumn = this.collection.where({group: __('system_filter_group')})
 
         var groups = 0 !== systemColumn.length ?
                 [{ position: 0, name: _.__('system_filter_group'), itemCount: 0 }] :
-                [];
+                []
 
         _.each(this.collection.toJSON(), function (column) {
             if (_.isEmpty(_.where(groups, {name: column.group}))) {
-                var position = parseInt(column.groupOrder, 10);
+                var position = parseInt(column.groupOrder, 10)
                 if (!_.isNumber(position) || !_.isEmpty(_.where(groups, {position: position}))) {
                     position = _.max(groups, function (group) {
-                        return group.position;
-                    }) + 1;
+                        return group.position
+                    }) + 1
                 }
 
                 groups.push({
                     position:  position,
                     name:      column.group,
                     itemCount: 1
-                });
+                })
             } else {
-                _.first(_.where(groups, {name: column.group})).itemCount += 1;
+                _.first(_.where(groups, {name: column.group})).itemCount += 1
             }
-        });
+        })
 
         groups = _.sortBy(groups, function (group) {
-            return group.position;
-        });
+            return group.position
+        })
 
         this.$el.html(
                 this.template({
                     groups:  groups,
                     columns: this.collection.toJSON()
                 })
-            );
+            )
 
         this.$('#column-list, #column-selection').sortable({
             connectWith: '.connected-sortable',
@@ -123,44 +123,44 @@ export default Backbone.View.extend({
             cursor: 'move',
             cancel: 'div.alert',
             receive: function (event, ui) {
-                var model = _.first(this.collection.where({code: ui.item.data('value')}));
-                model.set('displayed', ui.sender.is('#column-list') && model.get('removable'));
+                var model = _.first(this.collection.where({code: ui.item.data('value')}))
+                model.set('displayed', ui.sender.is('#column-list') && model.get('removable'))
 
                 if (!model.get('removable')) {
-                    $(ui.sender).sortable('cancel');
+                    $(ui.sender).sortable('cancel')
                 } else {
-                    this.validateSubmission();
+                    this.validateSubmission()
                 }
             }.bind(this)
-        }).disableSelection();
+        }).disableSelection()
 
-        this.$('ul').css('height', $(window).height() * 0.7);
+        this.$('ul').css('height', $(window).height() * 0.7)
 
-        return this;
+        return this
     },
 
     validateSubmission: function () {
         if (this.collection.where({displayed: true}).length) {
-            this.$('.alert').hide();
-            this.$('.AknMessageBox--error').addClass('AknMessageBox--hide');
+            this.$('.alert').hide()
+            this.$('.AknMessageBox--error').addClass('AknMessageBox--hide')
             this.$el.closest('.modal')
                     .find('.btn.ok:not(.btn-primary)')
                     .addClass('btn-primary')
-                    .attr('disabled', false);
+                    .attr('disabled', false)
         } else {
-            this.$('.alert').show();
-            this.$('.AknMessageBox--error').removeClass('AknMessageBox--hide');
+            this.$('.alert').show()
+            this.$('.AknMessageBox--error').removeClass('AknMessageBox--hide')
             this.$el.closest('.modal')
                     .find('.btn.ok.btn-primary')
                     .removeClass('btn-primary')
-                    .attr('disabled', true);
+                    .attr('disabled', true)
         }
     },
 
     getDisplayed: function () {
         return _.map(this.$('#column-selection li'), function (el) {
-            return $(el).data('value');
-        });
+            return $(el).data('value')
+        })
     }
-});
+})
 

@@ -1,11 +1,11 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import mediator from 'oro/mediator';
-import TemplateController from 'pim/controller/template';
-import router from 'pim/router';
-import 'jquery.form';
+import $ from 'jquery'
+import _ from 'underscore'
+import mediator from 'oro/mediator'
+import TemplateController from 'pim/controller/template'
+import router from 'pim/router'
+import 'jquery.form'
 export default TemplateController.extend({
     events: {
         'submit form': 'submitForm'
@@ -19,17 +19,17 @@ export default TemplateController.extend({
              * @return {boolean}
              */
     submitForm: function (event) {
-        var $form = $(event.currentTarget);
+        var $form = $(event.currentTarget)
 
-        router.showLoadingMask();
+        router.showLoadingMask()
 
         $form.ajaxSubmit({
             complete: function (xhr) {
-                this.afterSubmit(xhr, $form);
+                this.afterSubmit(xhr, $form)
             }.bind(this)
-        });
+        })
 
-        return false;
+        return false
     },
 
             /**
@@ -39,7 +39,7 @@ export default TemplateController.extend({
              */
     afterSubmit: function (xhr) {
         if (!this.active) {
-            return;
+            return
         }
 
         if (xhr.responseJSON && xhr.responseJSON.route) {
@@ -47,12 +47,12 @@ export default TemplateController.extend({
                         xhr.responseJSON.route,
                         xhr.responseJSON.params ? xhr.responseJSON.params : {},
                         {trigger: true}
-                    );
+                    )
         } else {
-            this.renderTemplate(xhr.responseText);
-            mediator.trigger('route_complete pim:reinit');
-            router.hideLoadingMask();
+            this.renderTemplate(xhr.responseText)
+            mediator.trigger('route_complete pim:reinit')
+            router.hideLoadingMask()
         }
     }
-});
+})
 

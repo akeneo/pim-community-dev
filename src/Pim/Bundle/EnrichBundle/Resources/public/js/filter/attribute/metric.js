@@ -1,14 +1,14 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/attribute/attribute';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import template from 'pim/template/filter/attribute/metric';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/attribute/attribute'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import template from 'pim/template/filter/attribute/metric'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'metric',
     template: _.template(template),
@@ -32,9 +32,9 @@ export default BaseFilter.extend({
                             amount: '',
                             unit: attribute.default_metric_unit
                         }
-                    });
-                }.bind(this));
-            }.bind(this));
+                    })
+                }.bind(this))
+            }.bind(this))
     },
 
         /**
@@ -44,7 +44,7 @@ export default BaseFilter.extend({
         return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() ||
                 undefined === this.getValue().amount ||
-                '' === this.getValue().amount);
+                '' === this.getValue().amount)
     },
 
         /**
@@ -57,14 +57,14 @@ export default BaseFilter.extend({
             field: this.getField(),
             operator: this.getOperator(),
             operators: this.config.operators
-        }));
+        }))
     },
 
         /**
          * {@inheritdoc}
          */
     postRender: function () {
-        this.$('.operator, .unit').select2({minimumResultsForSearch: -1});
+        this.$('.operator, .unit').select2({minimumResultsForSearch: -1})
     },
 
         /**
@@ -77,8 +77,8 @@ export default BaseFilter.extend({
             ).then(function (templateContext, measures) {
                 return _.extend({}, templateContext, {
                     units: measures[templateContext.attribute.metric_family]
-                });
-            }.bind(this));
+                })
+            }.bind(this))
     },
 
         /**
@@ -88,15 +88,15 @@ export default BaseFilter.extend({
         var value = {
             amount: this.$('[name="filter-data"]').val(),
             unit: this.$('select[name="filter-unit"]').val()
-        };
+        }
 
-        var operator = this.$('[name="filter-operator"]').val();
+        var operator = this.$('[name="filter-operator"]').val()
 
         this.setData({
             field: this.getField(),
             operator: operator,
             value: value
-        });
+        })
     }
-});
+})
 

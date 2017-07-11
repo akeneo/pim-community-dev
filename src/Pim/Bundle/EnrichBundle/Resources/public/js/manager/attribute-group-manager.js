@@ -1,9 +1,9 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import FetcherRegistry from 'pim/fetcher-registry';
-import AttributeManager from 'pim/attribute-manager';
+import $ from 'jquery'
+import _ from 'underscore'
+import FetcherRegistry from 'pim/fetcher-registry'
+import AttributeManager from 'pim/attribute-manager'
 export default {
         /**
          * Get all the attribute group for the given object
@@ -19,12 +19,12 @@ export default {
             ).then(function (attributeGroups, ObjectAttributes) {
                 return _.reduce(attributeGroups, function (result, attributeGroup) {
                     if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
-                        result[attributeGroup.code] = attributeGroup;
+                        result[attributeGroup.code] = attributeGroup
                     }
 
-                    return result;
-                }, {});
-            });
+                    return result
+                }, {})
+            })
     },
 
         /**
@@ -36,18 +36,18 @@ export default {
          * @return {Object}
          */
     getAttributeGroupValues: function (values, attributeGroup) {
-        var matchingValues = {};
+        var matchingValues = {}
         if (!attributeGroup) {
-            return matchingValues;
+            return matchingValues
         }
 
         _.each(attributeGroup.attributes, function (attributeCode) {
             if (values[attributeCode]) {
-                matchingValues[attributeCode] = values[attributeCode];
+                matchingValues[attributeCode] = values[attributeCode]
             }
-        });
+        })
 
-        return matchingValues;
+        return matchingValues
     },
 
         /**
@@ -59,15 +59,15 @@ export default {
          * @return {String}
          */
     getAttributeGroupForAttribute: function (attributeGroups, attributeCode) {
-        var result = null;
+        var result = null
 
         _.each(attributeGroups, function (attributeGroup) {
             if (-1 !== attributeGroup.attributes.indexOf(attributeCode)) {
-                result = attributeGroup.code;
+                result = attributeGroup.code
             }
-        });
+        })
 
-        return result;
+        return result
     }
-};
+}
 

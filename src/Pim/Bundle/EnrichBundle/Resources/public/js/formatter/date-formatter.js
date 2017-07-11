@@ -8,10 +8,10 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Datepicker from 'datepicker';
-import DateContext from 'pim/date-context';
+import $ from 'jquery'
+import _ from 'underscore'
+import Datepicker from 'datepicker'
+import DateContext from 'pim/date-context'
 export default {
             /**
              * Date widget options
@@ -35,19 +35,19 @@ export default {
              */
     format: function (date, fromFormat, toFormat) {
         if (_.isEmpty(date) || _.isUndefined(date) || _.isArray(date)) {
-            return null;
+            return null
         }
 
-        var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-        var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
+        var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat})
+        var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker')
 
         if (null !== fakeDatepicker.parseDate(date)) {
-            fakeDatepicker.setValue(date);
-            fakeDatepicker.format = toFormat;
-            fakeDatepicker._compileFormat();
+            fakeDatepicker.setValue(date)
+            fakeDatepicker.format = toFormat
+            fakeDatepicker._compileFormat()
         }
 
-        return fakeDatepicker.formatDate(fakeDatepicker.getDate());
+        return fakeDatepicker.formatDate(fakeDatepicker.getDate())
     }
-};
+}
 

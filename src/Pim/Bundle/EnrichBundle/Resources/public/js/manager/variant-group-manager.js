@@ -1,11 +1,11 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import mediator from 'oro/mediator';
-import Routing from 'routing';
-import AttributeManager from 'pim/attribute-manager';
-import FetcherRegistry from 'pim/fetcher-registry';
+import $ from 'jquery'
+import _ from 'underscore'
+import mediator from 'oro/mediator'
+import Routing from 'routing'
+import AttributeManager from 'pim/attribute-manager'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default {
     productValues: null,
     doGenerateMissing: function (variantGroup) {
@@ -16,14 +16,14 @@ export default {
                             FetcherRegistry.getFetcher('locale').fetchActivated(),
                             FetcherRegistry.getFetcher('channel').fetchAll(),
                             FetcherRegistry.getFetcher('currency').fetchAll()
-                        );
+                        )
                     })
                     .then(function (attributes, locales, channels, currencies) {
-                        var oldValues = {};
-                        var newValues = {};
+                        var oldValues = {}
+                        var newValues = {}
 
                         if (!_.isArray(variantGroup.values)) {
-                            oldValues = variantGroup.values;
+                            oldValues = variantGroup.values
                         }
 
                         _.each(attributes, function (attribute) {
@@ -33,16 +33,16 @@ export default {
                                 locales,
                                 channels,
                                 currencies
-                            );
-                        });
+                            )
+                        })
 
-                        variantGroup.values = newValues;
+                        variantGroup.values = newValues
 
-                        return variantGroup;
-                    });
+                        return variantGroup
+                    })
     },
     generateMissing: function (product) {
-        return this.doGenerateMissing(product);
+        return this.doGenerateMissing(product)
     }
-};
+}
 

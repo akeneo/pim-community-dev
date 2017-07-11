@@ -6,13 +6,13 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import template from 'pim/template/export/product/edit/content/structure/locales';
-import BaseForm from 'pim/form';
-import fetcherRegistry from 'pim/fetcher-registry';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import template from 'pim/template/export/product/edit/content/structure/locales'
+import BaseForm from 'pim/form'
+import fetcherRegistry from 'pim/fetcher-registry'
+import 'jquery.select2'
 export default BaseForm.extend({
     className: 'AknFieldContainer',
     template: _.template(template),
@@ -23,9 +23,9 @@ export default BaseForm.extend({
              * @param {Object} config
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        return BaseForm.prototype.initialize.apply(this, arguments);
+        return BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -34,9 +34,9 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'channel:update:after', this.channelUpdated.bind(this));
+        this.listenTo(this.getRoot(), 'channel:update:after', this.channelUpdated.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -46,7 +46,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         fetcherRegistry.getFetcher('channel')
@@ -60,15 +60,15 @@ export default BaseForm.extend({
                                 availableLocales: !scope ? [] : scope.locales,
                                 errors: this.getParent().getValidationErrorsForField('locales')
                             })
-                        );
+                        )
 
-                        this.$('.select2').select2().on('change', this.updateState.bind(this));
-                        this.$('[data-toggle="tooltip"]').tooltip();
+                        this.$('.select2').select2().on('change', this.updateState.bind(this))
+                        this.$('[data-toggle="tooltip"]').tooltip()
 
-                        this.renderExtensions();
-                    }.bind(this));
+                        this.renderExtensions()
+                    }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -79,7 +79,7 @@ export default BaseForm.extend({
     isEditable: function () {
         return undefined !== this.config.readOnly ?
                     !this.config.readOnly :
-                    true;
+                    true
     },
 
             /**
@@ -88,7 +88,7 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     updateState: function (event) {
-        this.setLocales(event.val);
+        this.setLocales(event.val)
     },
 
             /**
@@ -97,14 +97,14 @@ export default BaseForm.extend({
              * @param {Array} codes
              */
     setLocales: function (codes) {
-        var data = this.getFilters();
-        var before = data.structure.locales;
+        var data = this.getFilters()
+        var before = data.structure.locales
 
-        data.structure.locales = codes;
-        this.setData(data);
+        data.structure.locales = codes
+        this.setData(data)
 
         if (before !== codes) {
-            this.getRoot().trigger('locales:update:after', codes);
+            this.getRoot().trigger('locales:update:after', codes)
         }
     },
 
@@ -114,13 +114,13 @@ export default BaseForm.extend({
              * @returns {Array}
              */
     getLocales: function () {
-        var structure = this.getFilters().structure;
+        var structure = this.getFilters().structure
 
         if (_.isUndefined(structure)) {
-            return [];
+            return []
         }
 
-        return _.isUndefined(structure.locales) ? [] : structure.locales;
+        return _.isUndefined(structure.locales) ? [] : structure.locales
     },
 
             /**
@@ -129,8 +129,8 @@ export default BaseForm.extend({
     channelUpdated: function () {
         this.initializeDefaultLocales()
                     .then(function () {
-                        this.render();
-                    }.bind(this));
+                        this.render()
+                    }.bind(this))
     },
 
             /**
@@ -142,8 +142,8 @@ export default BaseForm.extend({
         return fetcherRegistry.getFetcher('channel')
                     .fetch(this.getCurrentScope())
                     .then(function (scope) {
-                        this.setLocales(_.pluck(scope.locales, 'code'));
-                    }.bind(this));
+                        this.setLocales(_.pluck(scope.locales, 'code'))
+                    }.bind(this))
     },
 
             /**
@@ -152,7 +152,7 @@ export default BaseForm.extend({
              * @return {String}
              */
     getCurrentScope: function () {
-        return this.getFilters().structure.scope;
+        return this.getFilters().structure.scope
     },
 
             /**
@@ -161,7 +161,7 @@ export default BaseForm.extend({
              * @return {object}
              */
     getFilters: function () {
-        return this.getFormData().configuration.filters;
+        return this.getFormData().configuration.filters
     }
-});
+})
 

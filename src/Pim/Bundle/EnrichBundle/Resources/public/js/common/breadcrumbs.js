@@ -7,13 +7,13 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/common/breadcrumbs';
-import mediator from 'oro/mediator';
-import FormRegistry from 'pim/form-registry';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/common/breadcrumbs'
+import mediator from 'oro/mediator'
+import FormRegistry from 'pim/form-registry'
 export default BaseForm.extend({
     className: 'AknBreadcrumb',
     template: _.template(template),
@@ -29,9 +29,9 @@ export default BaseForm.extend({
              * @param {string} [config.item] The sub item to highlight (optional)
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        return BaseForm.prototype.initialize.apply(this, arguments);
+        return BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -42,10 +42,10 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     configure: function () {
-        mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab });
-        mediator.trigger('pim_menu:highlight:item', { extension: this.config.item });
+        mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab })
+        mediator.trigger('pim_menu:highlight:item', { extension: this.config.item })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -56,31 +56,31 @@ export default BaseForm.extend({
                     FormRegistry.getFormMeta(this.config.tab),
                     FormRegistry.getFormMeta(this.config.item)
                 ).then(function (metaTab, metaItem) {
-                    var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) };
-                    var breadcrumbItem = null;
+                    var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) }
+                    var breadcrumbItem = null
                     if (undefined !== metaItem) {
-                        breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) };
+                        breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) }
                     }
 
                     this.$el.empty().append(this.template({
                         breadcrumbTab: breadcrumbTab,
                         breadcrumbItem: breadcrumbItem
-                    }));
-                }.bind(this));
+                    }))
+                }.bind(this))
     },
 
             /**
              * Redirects to the linked tab
              */
     redirectTab: function () {
-        mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab });
+        mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab })
     },
 
             /**
              * Redirects to the linked item
              */
     redirectItem: function () {
-        mediator.trigger('pim_menu:redirect:item', { extension: this.config.item });
+        mediator.trigger('pim_menu:redirect:item', { extension: this.config.item })
     }
-});
+})
 

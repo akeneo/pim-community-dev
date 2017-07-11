@@ -1,9 +1,9 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import router from 'pim/router';
-import AbstractWidget from 'pim/dashboard/abstract-widget';
-import template from 'pim/dashboard/template/last-operations-widget';
-import viewAllBtnTemplate from 'pim/dashboard/template/view-all-btn';
+import $ from 'jquery'
+import _ from 'underscore'
+import router from 'pim/router'
+import AbstractWidget from 'pim/dashboard/abstract-widget'
+import template from 'pim/dashboard/template/last-operations-widget'
+import viewAllBtnTemplate from 'pim/dashboard/template/view-all-btn'
 
 
 export default AbstractWidget.extend({
@@ -37,8 +37,8 @@ export default AbstractWidget.extend({
              * @param {Object} event
              */
     showOperationDetails: function (event) {
-        event.preventDefault();
-        var operationType = $(event.currentTarget).data('operation-type');
+        event.preventDefault()
+        var operationType = $(event.currentTarget).data('operation-type')
 
         switch (operationType) {
         case 'import':
@@ -46,14 +46,14 @@ export default AbstractWidget.extend({
             router.redirectToRoute(
                             'pim_importexport_' + operationType + '_execution_show',
                             { id: $(event.currentTarget).data('id') }
-                        );
-            break;
+                        )
+            break
         default:
             router.redirectToRoute(
                             'pim_enrich_job_tracker_show',
                             { id: $(event.currentTarget).data('id') }
-                        );
-            break;
+                        )
+            break
         }
     },
 
@@ -63,23 +63,23 @@ export default AbstractWidget.extend({
              * @param {Object} event
              */
     showTracker: function (event) {
-        event.preventDefault();
+        event.preventDefault()
 
-        router.redirectToRoute('pim_enrich_job_tracker_index');
+        router.redirectToRoute('pim_enrich_job_tracker_index')
     },
 
             /**
              * {@inheritdoc}
              */
     _afterLoad: function () {
-        AbstractWidget.prototype._afterLoad.apply(this, arguments);
+        AbstractWidget.prototype._afterLoad.apply(this, arguments)
 
-        var $btn = this._getViewAllBtn();
+        var $btn = this._getViewAllBtn()
 
         if (!_.isEmpty(this.data)) {
-            this._addShowTrackerBtn();
+            this._addShowTrackerBtn()
         } else if (0 > $btn.length) {
-            $btn.hide();
+            $btn.hide()
         }
     },
 
@@ -87,33 +87,33 @@ export default AbstractWidget.extend({
              * Add the button which show the job tracker
              */
     _addShowTrackerBtn: function () {
-        var $btn = this._getViewAllBtn();
+        var $btn = this._getViewAllBtn()
 
         if (0 < $btn.length) {
-            return;
+            return
         }
 
-        var $jobTrackerBtn = $(this.jobTrackerBtnTemplate({ title: this.viewAllTitle }));
+        var $jobTrackerBtn = $(this.jobTrackerBtnTemplate({ title: this.viewAllTitle }))
 
-        this.$el.closest('.AknWidget').find('.widget-actions').prepend($jobTrackerBtn);
-        $jobTrackerBtn.on('click', this.showTracker.bind(this));
+        this.$el.closest('.AknWidget').find('.widget-actions').prepend($jobTrackerBtn)
+        $jobTrackerBtn.on('click', this.showTracker.bind(this))
     },
 
             /**
              * {@inheritdoc}
              */
     _processResponse: function (data) {
-        this.options.contentLoaded = true;
+        this.options.contentLoaded = true
 
         _.each(data, function (operation) {
             operation.labelClass = this.labelClasses[operation.status] ?
                         this.labelClasses[operation.status]
-                        : '';
+                        : ''
             operation.statusLabel = operation.statusLabel.slice(0, 1).toUpperCase() +
-                        operation.statusLabel.slice(1).toLowerCase();
-        }, this);
+                        operation.statusLabel.slice(1).toLowerCase()
+        }, this)
 
-        return data;
+        return data
     },
 
             /**
@@ -122,7 +122,7 @@ export default AbstractWidget.extend({
              * @return {jQuery}
              */
     _getViewAllBtn: function () {
-        return $('.view-all-btn[title="' + this.viewAllTitle + '"]');
+        return $('.view-all-btn[title="' + this.viewAllTitle + '"]')
     }
-});
+})
 

@@ -7,10 +7,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/properties/input';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/properties/input'
 export default BaseForm.extend({
     className: 'input',
     template: _.template(template),
@@ -20,14 +20,14 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -35,7 +35,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         this.$el.html(this.template({
@@ -47,9 +47,9 @@ export default BaseForm.extend({
             requiredLabel: __('pim_enrich.form.required'),
             isRequired: true,
             isReadOnly: true
-        }));
+        }))
 
-        this.renderExtensions();
+        this.renderExtensions()
     }
-});
+})
 

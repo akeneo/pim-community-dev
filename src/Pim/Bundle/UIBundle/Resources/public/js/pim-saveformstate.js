@@ -1,62 +1,62 @@
-import $ from 'jquery';
+import $ from 'jquery'
 
 
-var formId;
-var cb;
+var formId
+var cb
 function saveFormState() {
-    var $form        = $('#' + formId);
-    var activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href');
-    var $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a');
-    var activeGroup;
+    var $form        = $('#' + formId)
+    var activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href')
+    var $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a')
+    var activeGroup
 
     if ($activeGroup.length) {
-        activeGroup = $activeGroup.attr('href');
+        activeGroup = $activeGroup.attr('href')
         if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
-            activeGroup = $activeGroup.attr('id') ? '#' + $activeGroup.attr('id') : null;
+            activeGroup = $activeGroup.attr('id') ? '#' + $activeGroup.attr('id') : null
         }
     } else {
-        activeGroup = null;
+        activeGroup = null
     }
 
     if (activeTab) {
-        sessionStorage[formId + '_activeTab'] = activeTab;
+        sessionStorage[formId + '_activeTab'] = activeTab
     }
     if (activeGroup) {
-        sessionStorage[formId + '_activeGroup'] = activeGroup;
+        sessionStorage[formId + '_activeGroup'] = activeGroup
     }
 }
 
 function restoreFormState() {
     if (sessionStorage.redirectTab) {
-        var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
+        var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']')
         if ($redirectTab.length && !$('.loading-mask').is(':visible')) {
-            $redirectTab.tab('show');
+            $redirectTab.tab('show')
             if (cb) {
-                cb($redirectTab);
+                cb($redirectTab)
             }
-            sessionStorage.removeItem('redirectTab');
+            sessionStorage.removeItem('redirectTab')
         }
     } else if (sessionStorage[formId + '_activeTab']) {
-        var $activeTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
+        var $activeTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']')
         if ($activeTab.length) {
-            $activeTab.tab('show');
+            $activeTab.tab('show')
             if (cb) {
-                cb($activeTab);
+                cb($activeTab)
             }
         }
     }
 
     if (sessionStorage[formId + '_activeGroup']) {
-        var $activeGroup = $('a[href=' + sessionStorage[formId + '_activeGroup'] + ']');
+        var $activeGroup = $('a[href=' + sessionStorage[formId + '_activeGroup'] + ']')
         if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
-            $activeGroup.tab('show');
+            $activeGroup.tab('show')
             if (cb) {
-                cb($activeGroup);
+                cb($activeGroup)
             }
         } else {
-            var $tree = $('div[data-selected-tree]');
+            var $tree = $('div[data-selected-tree]')
             if ($tree.length && !$('.loading-mask').is(':visible')) {
-                $tree.attr('data-selected-tree', sessionStorage[formId + '_activeGroup'].match(/\d/g).join(''));
+                $tree.attr('data-selected-tree', sessionStorage[formId + '_activeGroup'].match(/\d/g).join(''))
             }
         }
     }
@@ -64,16 +64,16 @@ function restoreFormState() {
 
 export default function (id, callback) {
     if (typeof Storage === 'undefined') {
-        return;
+        return
     }
     if (!id || !$('#' + id).length) {
-        return;
+        return
     }
-    formId = id;
-    cb     = callback;
+    formId = id
+    cb     = callback
 
-    restoreFormState();
-    $('#' + formId).on('shown', 'a[data-toggle="tab"]', saveFormState);
-    $('#' + formId).on('tab.loaded', restoreFormState);
+    restoreFormState()
+    $('#' + formId).on('shown', 'a[data-toggle="tab"]', saveFormState)
+    $('#' + formId).on('tab.loaded', restoreFormState)
 };
 

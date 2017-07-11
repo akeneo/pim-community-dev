@@ -8,10 +8,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import Column from 'pim/form/common/column';
-import router from 'pim/router';
-import mediator from 'oro/mediator';
+import _ from 'underscore'
+import Column from 'pim/form/common/column'
+import router from 'pim/router'
+import mediator from 'oro/mediator'
 export default Column.extend({
     active: false,
 
@@ -19,9 +19,9 @@ export default Column.extend({
              * {@inheritdoc}
              */
     initialize: function () {
-        mediator.on('pim_menu:highlight:tab', this.highlight, this);
+        mediator.on('pim_menu:highlight:tab', this.highlight, this)
 
-        Column.prototype.initialize.apply(this, arguments);
+        Column.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -29,9 +29,9 @@ export default Column.extend({
              */
     render: function () {
         if (this.active) {
-            return Column.prototype.render.apply(this, arguments);
+            return Column.prototype.render.apply(this, arguments)
         } else {
-            return this.$el.empty();
+            return this.$el.empty()
         }
     },
 
@@ -42,9 +42,9 @@ export default Column.extend({
              * @param {string} event.extension The extension code to highlight
              */
     highlight: function (event) {
-        this.active = (event.extension === this.getTab());
+        this.active = (event.extension === this.getTab())
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -53,7 +53,7 @@ export default Column.extend({
              * @returns {string}
              */
     getTab: function () {
-        return this.config.tab;
+        return this.config.tab
     },
 
             /**
@@ -62,7 +62,7 @@ export default Column.extend({
              * {@inheritdoc}
              */
     redirect: function (event) {
-        router.redirectToRoute(event.currentTarget.dataset.tab);
+        router.redirectToRoute(event.currentTarget.dataset.tab)
     },
 
             /**
@@ -75,13 +75,13 @@ export default Column.extend({
              * @param {number}   navigationItem.position
              */
     registerNavigationItem: function (navigationItem) {
-        Column.prototype.registerNavigationItem.apply(this, arguments);
+        Column.prototype.registerNavigationItem.apply(this, arguments)
 
         this.getRoot().trigger('pim_menu:register_item', {
             target: this.getTab(),
             route: navigationItem.code,
             position: navigationItem.position
-        });
+        })
     }
-});
+})
 

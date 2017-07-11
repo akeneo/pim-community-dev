@@ -7,15 +7,15 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import template from 'pim/template/create/tab/properties/general';
-import UserContext from 'pim/user-context';
-import mediator from 'oro/mediator';
-import propertyAccessor from 'pim/common/property';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import template from 'pim/template/create/tab/properties/general'
+import UserContext from 'pim/user-context'
+import mediator from 'oro/mediator'
+import propertyAccessor from 'pim/common/property'
+import 'jquery.select2'
 export default BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),
@@ -29,9 +29,9 @@ export default BaseForm.extend({
              * @param {Object} meta
              */
     initialize: function (meta) {
-        this.config = meta.config;
+        this.config = meta.config
 
-        return BaseForm.prototype.initialize.apply(this, arguments);
+        return BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -42,16 +42,16 @@ export default BaseForm.extend({
                     this.getRoot(),
                     'pim_enrich:form:entity:bad_request',
                     this.setValidationErrors.bind(this)
-                );
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
+                )
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
 
         this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:pre_save',
                     this.resetValidationErrors.bind(this)
-                );
+                )
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -59,7 +59,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         this.$el.html(this.template({
@@ -70,10 +70,10 @@ export default BaseForm.extend({
             errors: this.getValidationErrorsForField('code'),
             label: __(this.config.codeLabel),
             requiredLabel: __('pim_enrich.form.required')
-        }));
+        }))
 
-        this.delegateEvents();
-        this.renderExtensions();
+        this.delegateEvents()
+        this.renderExtensions()
     },
 
             /**
@@ -82,10 +82,10 @@ export default BaseForm.extend({
              * @param {Object} event
              */
     updateCode: function (event) {
-        var data = this.getFormData();
-        data.code = event.target.value;
+        var data = this.getFormData()
+        data.code = event.target.value
 
-        this.setData(data);
+        this.setData(data)
     },
 
             /**
@@ -101,7 +101,7 @@ export default BaseForm.extend({
                         this.errors,
                         field,
                         []
-                    );
+                    )
     },
 
             /**
@@ -110,12 +110,12 @@ export default BaseForm.extend({
              * @param {Object} errors
              */
     setValidationErrors: function (errors) {
-        this.errors = errors.response;
+        this.errors = errors.response
     },
 
     resetValidationErrors: function () {
-        this.errors = {};
-        this.render();
+        this.errors = {}
+        this.render()
     }
-});
+})
 

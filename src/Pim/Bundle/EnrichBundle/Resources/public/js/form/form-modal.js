@@ -42,11 +42,11 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import mediator from 'oro/mediator';
-import FormBuilder from 'pim/form-builder';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import mediator from 'oro/mediator'
+import FormBuilder from 'pim/form-builder'
 export default Backbone.View.extend({
             /**
              * The form name the modal should display.
@@ -87,9 +87,9 @@ export default Backbone.View.extend({
              * @param {Object}   modalParameters
              */
     initialize: function (formName, submitCallback, modalParameters) {
-        this.formName        = formName;
-        this.submitCallback  = submitCallback;
-        this.modalParameters = _.extend(this.modalParameters, modalParameters);
+        this.formName        = formName
+        this.submitCallback  = submitCallback
+        this.modalParameters = _.extend(this.modalParameters, modalParameters)
     },
 
             /**
@@ -99,60 +99,60 @@ export default Backbone.View.extend({
              * @return {Promise}
              */
     open: function () {
-        var deferred = $.Deferred();
+        var deferred = $.Deferred()
 
         FormBuilder
                     .build(this.formName)
                     .then(function (form) {
-                        this.modal = new Backbone.BootstrapModal(this.modalParameters);
-                        this.modal.open();
+                        this.modal = new Backbone.BootstrapModal(this.modalParameters)
+                        this.modal.open()
 
-                        form.setElement(this.modal.$('.modal-body')).render();
+                        form.setElement(this.modal.$('.modal-body')).render()
 
                         mediator.on('pim_enrich:form:modal:ok_button:disable', function () {
-                            this.disableOkBtn();
-                        }.bind(this));
+                            this.disableOkBtn()
+                        }.bind(this))
 
                         mediator.on('pim_enrich:form:modal:ok_button:enable', function () {
-                            this.enableOkBtn();
-                        }.bind(this));
+                            this.enableOkBtn()
+                        }.bind(this))
 
-                        this.modal.on('cancel', deferred.reject);
+                        this.modal.on('cancel', deferred.reject)
                         this.modal.on('ok', function () {
                             if (this.modal.$('.modal-footer .ok').hasClass('disabled')) {
-                                return;
+                                return
                             }
                             this.submitCallback(form).then(function () {
-                                var data = form.getFormData();
-                                deferred.resolve(data);
+                                var data = form.getFormData()
+                                deferred.resolve(data)
 
-                                this.modal.close();
-                            }.bind(this));
-                        }.bind(this));
-                    }.bind(this));
+                                this.modal.close()
+                            }.bind(this))
+                        }.bind(this))
+                    }.bind(this))
 
-        return deferred;
+        return deferred
     },
 
             /**
              * Close the modal UI element.
              */
     close: function () {
-        this.modal.close();
+        this.modal.close()
     },
 
             /**
              * Enable the modal ok button.
              */
     enableOkBtn: function () {
-        this.modal.$('.modal-footer .ok').removeClass('disabled');
+        this.modal.$('.modal-footer .ok').removeClass('disabled')
     },
 
             /**
              * Disable the modal ok button.
              */
     disableOkBtn: function () {
-        this.modal.$('.modal-footer .ok').addClass('disabled');
+        this.modal.$('.modal-footer .ok').addClass('disabled')
     }
-});
+})
 

@@ -1,9 +1,7 @@
-/* eslint-env es6 */
 const utils = require('loader-utils')
 const path = require('path')
 const hasModule = (content) => content.indexOf('module') >= 0
 const { chain } = require('lodash')
-
 
 function formatModuleName(name) {
     if (!name) return
@@ -35,5 +33,5 @@ module.exports = function(content) {
     const moduleName = aliases[modulePath]
     const moduleConfig = options.configMap[formatModuleName(moduleName)] || {}
 
-    return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`;
+    return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`
 }

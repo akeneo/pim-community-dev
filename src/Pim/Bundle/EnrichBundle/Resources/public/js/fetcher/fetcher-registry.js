@@ -1,9 +1,9 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseFetcher from 'pim/base-fetcher';
-import requireContext from 'require-context';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseFetcher from 'pim/base-fetcher'
+import requireContext from 'require-context'
 export default {
     fetchers: {},
     initializePromise: null,
@@ -14,30 +14,30 @@ export default {
     initialize: function () {
         if (null === this.initializePromise) {
             var fetcherList = __moduleConfig.fetchers
-            var deferred = $.Deferred();
+            var deferred = $.Deferred()
             var defaultFetcher = 'pim/base-fetcher'
-            var fetchers = {};
+            var fetchers = {}
 
             _.each(fetcherList, function (config, name) {
-                config = _.isString(config) ? { module: config } : config;
-                config.options = config.options || { };
-                fetchers[name] = config;
-            });
+                config = _.isString(config) ? { module: config } : config
+                config.options = config.options || { }
+                fetchers[name] = config
+            })
 
             for (var fetcher in fetcherList) {
                 var moduleName = fetcherList[fetcher].module || defaultFetcher
-                var ResolvedModule = requireContext(moduleName);
+                var ResolvedModule = requireContext(moduleName)
                 fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
                 fetchers[fetcher].options = fetcherList[fetcher].options
             }
 
-            this.fetchers = fetchers;
-            deferred.resolve();
+            this.fetchers = fetchers
+            deferred.resolve()
 
-            this.initializePromise = deferred.promise();
+            this.initializePromise = deferred.promise()
         }
 
-        return this.initializePromise;
+        return this.initializePromise
     },
 
         /**
@@ -50,7 +50,7 @@ export default {
     getFetcher: function (entityType) {
         var fetcher = (this.fetchers[entityType] || this.fetchers.default)
 
-        return fetcher.loadedModule;
+        return fetcher.loadedModule
     },
 
         /**
@@ -60,7 +60,7 @@ export default {
          * @param {String|integer} entity
          */
     clear: function (entityType, entity) {
-        return this.getFetcher(entityType).clear(entity);
+        return this.getFetcher(entityType).clear(entity)
     },
 
         /**
@@ -68,8 +68,8 @@ export default {
          */
     clearAll: function () {
         _.each(this.fetchers, function (fetcher) {
-            fetcher.loadedModule.clear();
-        });
+            fetcher.loadedModule.clear()
+        })
     }
-};
+}
 

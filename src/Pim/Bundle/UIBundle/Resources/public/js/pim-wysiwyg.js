@@ -7,10 +7,10 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import 'summernote';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import 'summernote'
         /**
          * Wysiwyg editor default configuration
          */
@@ -24,13 +24,13 @@ var config = {
                 ['insert', ['link']],
                 ['view', ['codeview']]
     ]
-};
+}
 
 Backbone.Router.prototype.on('route', function () {
     $('textarea.wysiwyg').each(function () {
-        $(this).destroy();
-    });
-});
+        $(this).destroy()
+    })
+})
 
 export default {
             /**
@@ -50,11 +50,11 @@ export default {
         this.settings = _.extend(
                     _.clone(config),
                     options
-                );
+                )
 
-        $el.summernote(this.settings);
+        $el.summernote(this.settings)
 
-        return this;
+        return this
     },
 
             /**
@@ -65,11 +65,11 @@ export default {
              * @returns {Object}
              */
     readonly: function ($el) {
-        var editable = $el.parent().find('.note-editable');
+        var editable = $el.parent().find('.note-editable')
 
-        editable.attr('contenteditable', false);
+        editable.attr('contenteditable', false)
 
-        return this;
+        return this
     }
-};
+}
 

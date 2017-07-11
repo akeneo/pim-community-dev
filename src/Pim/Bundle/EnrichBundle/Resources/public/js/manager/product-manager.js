@@ -1,11 +1,11 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import mediator from 'oro/mediator';
-import Routing from 'routing';
-import AttributeManager from 'pim/attribute-manager';
-import FetcherRegistry from 'pim/fetcher-registry';
+import $ from 'jquery'
+import _ from 'underscore'
+import mediator from 'oro/mediator'
+import Routing from 'routing'
+import AttributeManager from 'pim/attribute-manager'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default {
     productValues: null,
     doGenerateMissing: function (product) {
@@ -17,11 +17,11 @@ export default {
                             FetcherRegistry.getFetcher('channel').fetchAll(),
                             FetcherRegistry.getFetcher('currency').fetchAll(),
                             FetcherRegistry.getFetcher('association-type').fetchAll()
-                        );
+                        )
                     })
                     .then(function (attributes, locales, channels, currencies, associationTypes) {
-                        var oldValues = _.isArray(product.values) && 0 === product.values.length ? {} : product.values;
-                        var newValues = {};
+                        var oldValues = _.isArray(product.values) && 0 === product.values.length ? {} : product.values
+                        var newValues = {}
 
                         _.each(attributes, function (attribute) {
                             newValues[attribute.code] = AttributeManager.generateMissingValues(
@@ -30,24 +30,24 @@ export default {
                                 locales,
                                 channels,
                                 currencies
-                            );
-                        });
+                            )
+                        })
 
-                        var associations = {};
+                        var associations = {}
                         _.each(associationTypes, function (assocType) {
                             associations[assocType.code] = AttributeManager.generateMissingAssociations(
                                 _.has(product.associations, assocType.code) ? product.associations[assocType.code] : {}
-                            );
-                        });
+                            )
+                        })
 
-                        product.values       = newValues;
-                        product.associations = associations;
+                        product.values       = newValues
+                        product.associations = associations
 
-                        return product;
-                    });
+                        return product
+                    })
     },
     generateMissing: function (product) {
-        return this.doGenerateMissing(product);
+        return this.doGenerateMissing(product)
     }
-};
+}
 

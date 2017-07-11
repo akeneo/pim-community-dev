@@ -1,14 +1,14 @@
 
 
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseFilter from 'pim/filter/filter';
-import Routing from 'routing';
-import template from 'pim/template/filter/product/family';
-import fetcherRegistry from 'pim/fetcher-registry';
-import userContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseFilter from 'pim/filter/filter'
+import Routing from 'routing'
+import template from 'pim/template/filter/product/family'
+import fetcherRegistry from 'pim/fetcher-registry'
+import userContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import 'jquery.select2'
 export default BaseFilter.extend({
     shortname: 'family',
     config: {},
@@ -21,7 +21,7 @@ export default BaseFilter.extend({
          * {@inheritdoc}
          */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
         this.selectOptions = {
             allowClear: true,
@@ -38,25 +38,25 @@ export default BaseFilter.extend({
                             page: page,
                             locale: userContext.get('uiLocale')
                         }
-                    };
+                    }
                 },
                 results: function (families) {
                     var data = {
                         more: 20 === _.keys(families).length,
                         results: []
-                    };
+                    }
                     _.each(families, function (value, key) {
                         data.results.push({
                             id: key,
                             text: i18n.getLabel(value.labels, userContext.get('uiLocale'), value.code)
-                        });
-                    });
+                        })
+                    })
 
-                    return data;
+                    return data
                 }
             },
             initSelection: function (element, callback) {
-                var families = this.getValue();
+                var families = this.getValue()
                 if (null !== families) {
                     fetcherRegistry.getFetcher('family')
                             .fetchByIdentifiers(families)
@@ -65,14 +65,14 @@ export default BaseFilter.extend({
                                     return {
                                         id: family.code,
                                         text: i18n.getLabel(family.labels, userContext.get('uiLocale'), family.code)
-                                    };
-                                }));
-                            });
+                                    }
+                                }))
+                            })
                 }
             }.bind(this)
-        };
+        }
 
-        return BaseFilter.prototype.initialize.apply(this, arguments);
+        return BaseFilter.prototype.initialize.apply(this, arguments)
     },
 
         /**
@@ -80,10 +80,10 @@ export default BaseFilter.extend({
          */
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: '='});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode(), operator: '='})
+        }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments);
+        return BaseFilter.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -96,28 +96,28 @@ export default BaseFilter.extend({
             field: this.getField(),
             value: this.getValue(),
             shortname: this.shortname
-        });
+        })
     },
 
         /**
          * {@inheritdoc}
          */
     postRender: function () {
-        this.$('[name="filter-value"]').select2(this.selectOptions);
+        this.$('[name="filter-value"]').select2(this.selectOptions)
     },
 
         /**
          * {@inheritdoc}
          */
     isEmpty: function () {
-        return _.isEmpty(this.getValue());
+        return _.isEmpty(this.getValue())
     },
 
         /**
          * {@inheritdoc}
          */
     updateState: function () {
-        var value = this.$('[name="filter-value"]').val();
+        var value = this.$('[name="filter-value"]').val()
 
         this.setData({
             field: this.getField(),
@@ -125,7 +125,7 @@ export default BaseFilter.extend({
             value: '' === value ?
                     [] :
                     value.split(',')
-        });
+        })
     }
-});
+})
 

@@ -1,9 +1,9 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseFetcher from 'pim/base-fetcher';
-import Routing from 'routing';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseFetcher from 'pim/base-fetcher'
+import Routing from 'routing'
 export default BaseFetcher.extend({
     identifierPromise: null,
     fetchByTypesPromises: [],
@@ -15,23 +15,23 @@ export default BaseFetcher.extend({
          */
     getIdentifierAttribute: function () {
         if (null === this.identifierPromise) {
-            this.identifierPromise = $.Deferred();
+            this.identifierPromise = $.Deferred()
 
             return this.fetchByTypes([this.options.identifier_type])
                     .then(function (attributes) {
                         if (attributes.length > 0) {
-                            this.identifierPromise.resolve(attributes[0]).promise();
+                            this.identifierPromise.resolve(attributes[0]).promise()
 
-                            return this.identifierPromise;
+                            return this.identifierPromise
                         }
 
                         return this.identifierPromise
                             .reject()
-                            .promise();
-                    }.bind(this));
+                            .promise()
+                    }.bind(this))
         }
 
-        return this.identifierPromise;
+        return this.identifierPromise
     },
 
         /**
@@ -42,7 +42,7 @@ export default BaseFetcher.extend({
          * @return {Promise}
          */
     fetchByTypes: function (attributeTypes) {
-        var cacheKey = attributeTypes.sort().join('');
+        var cacheKey = attributeTypes.sort().join('')
 
         if (!_.has(this.fetchByTypesPromises, cacheKey)) {
             this.fetchByTypesPromises[cacheKey] = this.getJSON(
@@ -50,10 +50,10 @@ export default BaseFetcher.extend({
                     {types: attributeTypes.join(',')}
                 )
                 .then(_.identity)
-                .promise();
+                .promise()
         }
 
-        return this.fetchByTypesPromises[cacheKey];
+        return this.fetchByTypesPromises[cacheKey]
     },
 
         /**
@@ -64,16 +64,16 @@ export default BaseFetcher.extend({
          * {@inheritdoc}
          */
     getJSON: function (url, parameters) {
-        return $.post(Routing.generate(url), parameters, null, 'json');
+        return $.post(Routing.generate(url), parameters, null, 'json')
     },
 
         /**
          * {@inheritdoc}
          */
     clear: function () {
-        BaseFetcher.prototype.clear.apply(this, arguments);
+        BaseFetcher.prototype.clear.apply(this, arguments)
 
-        this.identifierPromise = null;
+        this.identifierPromise = null
     }
-});
+})
 

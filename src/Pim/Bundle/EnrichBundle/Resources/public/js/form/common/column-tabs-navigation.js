@@ -9,11 +9,11 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/column-tabs-navigation';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/column-tabs-navigation'
 export default BaseForm.extend({
     className: 'AknColumn-block',
     template: _.template(template),
@@ -30,23 +30,23 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (meta) {
-        this.config = meta.config;
+        this.config = meta.config
 
-        return BaseForm.prototype.initialize.apply(this, arguments);
+        return BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.tabs = [];
+        this.tabs = []
 
-        this.currentTab = sessionStorage.getItem(this.currentKey);
+        this.currentTab = sessionStorage.getItem(this.currentKey)
 
-        this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab);
-        this.listenTo(this.getRoot(), 'column-tab:select-tab', this.setCurrentTab);
+        this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab)
+        this.listenTo(this.getRoot(), 'column-tab:select-tab', this.setCurrentTab)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -59,7 +59,7 @@ export default BaseForm.extend({
                         tabs: this.getTabs(),
                         currentTab: this.getCurrentTabOrDefault(),
                         title: __(this.config.title)
-                    }));
+                    }))
     },
 
             /**
@@ -72,11 +72,11 @@ export default BaseForm.extend({
             code: event.code,
             isVisible: event.isVisible,
             label: event.label
-        };
-        this.tabs.push(tab);
-        this.trigger('pim_menu:column:register_navigation_item', tab);
+        }
+        this.tabs.push(tab)
+        this.trigger('pim_menu:column:register_navigation_item', tab)
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -85,9 +85,9 @@ export default BaseForm.extend({
              * @param event
              */
     selectTab: function (event) {
-        this.getRoot().trigger('column-tab:select-tab', event);
-        this.setCurrentTab(event.currentTarget.dataset.tab);
-        this.render();
+        this.getRoot().trigger('column-tab:select-tab', event)
+        this.setCurrentTab(event.currentTarget.dataset.tab)
+        this.render()
     },
 
             /**
@@ -96,7 +96,7 @@ export default BaseForm.extend({
              * @param {string} tabCode
              */
     setCurrentTab: function (tabCode) {
-        this.currentTab = tabCode;
+        this.currentTab = tabCode
     },
 
             /**
@@ -104,9 +104,9 @@ export default BaseForm.extend({
              * If there is no selected tab, returns the first available tab.
              */
     getCurrentTabOrDefault: function () {
-        var result = _.findWhere(this.getTabs(), {code: this.currentTab});
+        var result = _.findWhere(this.getTabs(), {code: this.currentTab})
 
-        return (undefined !== result) ? result.code : _.first(_.pluck(this.tabs, 'code'));
+        return (undefined !== result) ? result.code : _.first(_.pluck(this.tabs, 'code'))
     },
 
             /**
@@ -114,8 +114,8 @@ export default BaseForm.extend({
              */
     getTabs: function () {
         return _.filter(this.tabs, function (tab) {
-            return !_.isFunction(tab.isVisible) || tab.isVisible();
-        });
+            return !_.isFunction(tab.isVisible) || tab.isVisible()
+        })
     }
-});
+})
 

@@ -7,12 +7,12 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import template from 'pim/template/form/tab/properties';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import template from 'pim/template/form/tab/properties'
+import 'jquery.select2'
 export default BaseForm.extend({
     className: 'properties',
     template: _.template(template),
@@ -21,9 +21,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -33,18 +33,18 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: __(this.config.label)
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     render: function () {
-        this.$el.html(this.template({}));
+        this.$el.html(this.template({}))
 
-        this.renderExtensions();
+        this.renderExtensions()
     }
-});
+})
 

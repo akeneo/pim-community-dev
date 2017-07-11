@@ -6,8 +6,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import BaseLabel from 'pim/form/common/label';
-import __ from 'oro/translator';
+import BaseLabel from 'pim/form/common/label'
+import __ from 'oro/translator'
 export default BaseLabel.extend({
 
             /**
@@ -16,10 +16,10 @@ export default BaseLabel.extend({
              * @return {String}
              */
     getLabel: function () {
-        var jobInstance = this.getFormData().jobInstance;
-        var prefix = __('pim_enrich.form.job_execution.title.details');
+        var jobInstance = this.getFormData().jobInstance
+        var prefix = __('pim_enrich.form.job_execution.title.details')
 
-        return prefix + ' - ' + jobInstance.label + ' [' + jobInstance.code + ']';
+        return prefix + ' - ' + jobInstance.label + ' [' + jobInstance.code + ']'
     }
-});
+})
 

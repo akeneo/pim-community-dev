@@ -1,9 +1,9 @@
 /* global describe, it, expect, spyOn, beforeEach */
 
 
-import $ from 'jquery';
-import Attributes from 'pim/mass-product-edit-form/attributes';
-import SecurityContext from 'pim/security-context';
+import $ from 'jquery'
+import Attributes from 'pim/mass-product-edit-form/attributes'
+import SecurityContext from 'pim/security-context'
 describe('Mass edit attributes module', function () {
     var event = {
         currentTarget: {
@@ -11,10 +11,10 @@ describe('Mass edit attributes module', function () {
                 attribute: 'description'
             }
         }
-    };
+    }
 
-    var product;
-    var attributes;
+    var product
+    var attributes
 
     beforeEach(function () {
         product = {
@@ -39,26 +39,26 @@ describe('Mass edit attributes module', function () {
                             }
                 ]
             }
-        };
+        }
 
         attributes = new Attributes({
             removeAttributeRoute: 'pim_enrich_product_remove_attribute_rest',
             removeAttributeACL: 'pim_enrich_product_remove_attribute',
             tabTitle: 'pim_enrich.form.product.tab.attributes.title',
             deletionFailed: 'pim_enrich.form.product.flash.attribute_deletion_error'
-        });
+        })
 
-        spyOn(SecurityContext, 'isGranted').and.returnValue(true);
-        spyOn(attributes, 'getFormData').and.returnValue(product);
-        spyOn(attributes, 'setData');
-        spyOn($, 'ajax');
+        spyOn(SecurityContext, 'isGranted').and.returnValue(true)
+        spyOn(attributes, 'getFormData').and.returnValue(product)
+        spyOn(attributes, 'setData')
+        spyOn($, 'ajax')
 
-        attributes.removeAttribute(event);
-    });
+        attributes.removeAttribute(event)
+    })
 
     it('does not make an XHR call', function () {
-        expect($.ajax).not.toHaveBeenCalled();
-    });
+        expect($.ajax).not.toHaveBeenCalled()
+    })
 
     it('removes the attribute from the product', function () {
         var expectedProduct = {
@@ -71,9 +71,9 @@ describe('Mass edit attributes module', function () {
                             }
                 ]
             }
-        };
+        }
 
-        expect(attributes.setData).toHaveBeenCalledWith(expectedProduct);
-    });
-});
+        expect(attributes.setData).toHaveBeenCalledWith(expectedProduct)
+    })
+})
 

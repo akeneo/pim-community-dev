@@ -6,10 +6,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/import/file-path';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/import/file-path'
 export default BaseForm.extend({
     className: 'AknCenteredBox',
     template: _.template(template),
@@ -18,9 +18,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -30,11 +30,11 @@ export default BaseForm.extend({
         this.$el.html(this.template({
             path: this.getFormData().configuration.filePath,
             label: __(this.config.label)
-        }));
+        }))
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     }
-});
+})
 

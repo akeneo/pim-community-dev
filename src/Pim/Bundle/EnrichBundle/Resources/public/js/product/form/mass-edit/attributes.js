@@ -10,10 +10,10 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import FieldManager from 'pim/field-manager';
-import SecurityContext from 'pim/security-context';
-import BaseAttributes from 'pim/form/common/attributes';
-import mediator from 'oro/mediator';
+import FieldManager from 'pim/field-manager'
+import SecurityContext from 'pim/security-context'
+import BaseAttributes from 'pim/form/common/attributes'
+import mediator from 'oro/mediator'
 export default BaseAttributes.extend({
     locked: false,
 
@@ -23,10 +23,10 @@ export default BaseAttributes.extend({
              * {@inheritdoc}
              */
     configure: function () {
-        mediator.on('mass-edit:form:lock', this.onLock.bind(this));
-        mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
+        mediator.on('mass-edit:form:lock', this.onLock.bind(this))
+        mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this))
 
-        return BaseAttributes.prototype.configure.apply(this, arguments);
+        return BaseAttributes.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -36,10 +36,10 @@ export default BaseAttributes.extend({
              */
     appendField: function (panel, field) {
         if (field.canBeSeen()) {
-            field.setLocked(this.locked);
-            field.render();
-            FieldManager.addVisibleField(field.attribute.code);
-            panel.append(field.$el);
+            field.setLocked(this.locked)
+            field.render()
+            FieldManager.addVisibleField(field.attribute.code)
+            panel.append(field.$el)
         }
     },
 
@@ -49,7 +49,7 @@ export default BaseAttributes.extend({
              * {@inheritdoc}
              */
     onLock: function () {
-        this.locked = true;
+        this.locked = true
     },
 
             /**
@@ -58,8 +58,8 @@ export default BaseAttributes.extend({
              * {@inheritdoc}
              */
     onUnlock: function () {
-        this.locked = false;
-        this.render();
+        this.locked = false
+        this.render()
     },
 
             /**
@@ -67,21 +67,21 @@ export default BaseAttributes.extend({
              */
     removeAttribute: function (event) {
         if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
-            return;
+            return
         }
-        var attributeCode = event.currentTarget.dataset.attribute;
-        var product = this.getFormData();
-        var fields = FieldManager.getFields();
+        var attributeCode = event.currentTarget.dataset.attribute
+        var product = this.getFormData()
+        var fields = FieldManager.getFields()
 
-        this.triggerExtensions('add-attribute:update:available-attributes');
+        this.triggerExtensions('add-attribute:update:available-attributes')
 
-        delete product.values[attributeCode];
-        delete fields[attributeCode];
+        delete product.values[attributeCode]
+        delete fields[attributeCode]
 
-        this.setData(product);
-        this.getRoot().trigger('pim_enrich:form:remove-attribute:after');
+        this.setData(product)
+        this.getRoot().trigger('pim_enrich:form:remove-attribute:after')
 
-        this.render();
+        this.render()
     }
-});
+})
 

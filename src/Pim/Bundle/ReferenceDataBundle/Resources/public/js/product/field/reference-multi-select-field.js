@@ -1,18 +1,18 @@
 
 
-import _ from 'underscore';
-import MultiselectField from 'pim/multi-select-field';
-import Routing from 'routing';
-import FetcherRegistry from 'pim/fetcher-registry';
+import _ from 'underscore'
+import MultiselectField from 'pim/multi-select-field'
+import Routing from 'routing'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default MultiselectField.extend({
     fieldType: 'reference-multi-select',
     getTemplateContext: function () {
         return MultiselectField.prototype.getTemplateContext.apply(this, arguments)
                     .then(function (templateContext) {
-                        templateContext.userCanAddOption = false;
+                        templateContext.userCanAddOption = false
 
-                        return templateContext;
-                    });
+                        return templateContext
+                    })
     },
     getChoiceUrl: function () {
         return FetcherRegistry.getFetcher('reference-data-configuration').fetchAll()
@@ -25,8 +25,8 @@ export default MultiselectField.extend({
                                 'collectionId': this.attribute.id,
                                 'options': {'type': 'code'}
                             }
-                        );
-                    }, this));
+                        )
+                    }, this))
     }
-});
+})
 

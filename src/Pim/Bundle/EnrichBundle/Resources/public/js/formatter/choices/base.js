@@ -1,8 +1,8 @@
 
 
-import _ from 'underscore';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
+import _ from 'underscore'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
 export default {
         /**
          * Format a collection of entities into a list of choices as follows.
@@ -38,12 +38,12 @@ export default {
          * @return {Array}
          */
     format: function (entities) {
-        var choices = [];
+        var choices = []
         _.each(entities, function (entity) {
-            choices.push(this.formatOne(entity));
-        }.bind(this));
+            choices.push(this.formatOne(entity))
+        }.bind(this))
 
-        return choices;
+        return choices
     },
 
         /**
@@ -70,7 +70,7 @@ export default {
         return {
             id: entity.code,
             text: i18n.getLabel(entity.labels, UserContext.get('catalogLocale'), entity.code)
-        };
+        }
     }
-};
+}
 

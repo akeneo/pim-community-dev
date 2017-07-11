@@ -14,15 +14,15 @@
              * @return {Object} AbstractWidget instance
              */
             getWidget: function (options, ClassFunction) {
-                var widget = this.widgetsRegistry[options.alias];
+                var widget = this.widgetsRegistry[options.alias]
                 if (!widget) {
-                    widget = new ClassFunction(options);
-                    this.widgetsRegistry[options.alias] = widget;
+                    widget = new ClassFunction(options)
+                    this.widgetsRegistry[options.alias] = widget
                 } else {
-                    widget.setElement(options.el);
+                    widget.setElement(options.el)
                 }
 
-                return widget;
+                return widget
             }
-        };
+        }
 

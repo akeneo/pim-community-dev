@@ -7,18 +7,18 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import ProductManager from 'pim/product-manager';
-import modalTemplate from 'pim/template/product/meta/change-family-modal';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import Routing from 'routing';
-import initSelect2 from 'pim/initselect2';
-import 'bootstrap-modal';
-import 'jquery.select2';
+import _ from 'underscore'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import ProductManager from 'pim/product-manager'
+import modalTemplate from 'pim/template/product/meta/change-family-modal'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import Routing from 'routing'
+import initSelect2 from 'pim/initselect2'
+import 'bootstrap-modal'
+import 'jquery.select2'
 export default BaseForm.extend({
     tagName: 'i',
     className: 'icon-pencil change-family AknTitleContainer-metaLink',
@@ -27,9 +27,9 @@ export default BaseForm.extend({
         'click': 'showModal'
     },
     render: function () {
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     },
     showModal: function () {
         var familyModal = new Backbone.BootstrapModal({
@@ -39,24 +39,24 @@ export default BaseForm.extend({
             content: this.modalTemplate({
                 product: this.getFormData()
             })
-        });
+        })
 
         familyModal.on('ok', function () {
-            var selectedFamily = familyModal.$('.family-select2').select2('val') || null;
+            var selectedFamily = familyModal.$('.family-select2').select2('val') || null
 
-            this.getFormModel().set('family', selectedFamily);
+            this.getFormModel().set('family', selectedFamily)
             ProductManager.generateMissing(this.getFormData()).then(function (product) {
-                this.getRoot().trigger('pim_enrich:form:change-family:before');
+                this.getRoot().trigger('pim_enrich:form:change-family:before')
 
-                this.setData(product);
+                this.setData(product)
 
-                this.getRoot().trigger('pim_enrich:form:change-family:after');
-                familyModal.close();
-            }.bind(this));
-        }.bind(this));
+                this.getRoot().trigger('pim_enrich:form:change-family:after')
+                familyModal.close()
+            }.bind(this))
+        }.bind(this))
 
-        familyModal.open();
-        var self = this;
+        familyModal.open()
+        var self = this
 
         var options = {
             allowClear: true,
@@ -72,25 +72,25 @@ export default BaseForm.extend({
                             page: page,
                             locale: UserContext.get('catalogLocale')
                         }
-                    };
+                    }
                 },
                 results: function (families) {
                     var data = {
                         more: 20 === _.keys(families).length,
                         results: []
-                    };
+                    }
                     _.each(families, function (value, key) {
                         data.results.push({
                             id: key,
                             text: i18n.getLabel(value.labels, UserContext.get('catalogLocale'), value.code)
-                        });
-                    });
+                        })
+                    })
 
-                    return data;
+                    return data
                 }
             },
             initSelection: function (element, callback) {
-                var productFamily = self.getFormData().family;
+                var productFamily = self.getFormData().family
                 if (null !== productFamily) {
                     FetcherRegistry.getFetcher('family')
                                 .fetch(self.getFormData().family)
@@ -102,14 +102,14 @@ export default BaseForm.extend({
                                             UserContext.get('catalogLocale'),
                                             family.code
                                         )
-                                    });
-                                });
+                                    })
+                                })
                 }
 
             }
-        };
+        }
 
-        initSelect2.init(familyModal.$('.family-select2'), options).select2('val', []);
+        initSelect2.init(familyModal.$('.family-select2'), options).select2('val', [])
     }
-});
+})
 

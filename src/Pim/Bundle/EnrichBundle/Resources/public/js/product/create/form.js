@@ -1,19 +1,19 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import Routing from 'routing';
-import BaseForm from 'pim/form';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import __ from 'oro/translator';
-import LoadingMask from 'oro/loading-mask';
-import FetcherRegistry from 'pim/fetcher-registry';
-import initSelect2 from 'pim/initselect2';
-import template from 'pim/template/product-create-popin';
-import errorTemplate from 'pim/template/product-create-error';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import Routing from 'routing'
+import BaseForm from 'pim/form'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import __ from 'oro/translator'
+import LoadingMask from 'oro/loading-mask'
+import FetcherRegistry from 'pim/fetcher-registry'
+import initSelect2 from 'pim/initselect2'
+import template from 'pim/template/product-create-popin'
+import errorTemplate from 'pim/template/product-create-error'
+import 'jquery.select2'
 export default BaseForm.extend({
     template: _.template(template),
     errorTemplate: _.template(errorTemplate),
@@ -31,15 +31,15 @@ export default BaseForm.extend({
         return $.when(
                     FetcherRegistry.initialize(),
                     BaseForm.prototype.configure.apply(this, arguments)
-                );
+                )
     },
 
             /**
              * Model update callback
              */
     updateModel: function () {
-        this.getFormModel().set('identifier', this.$('[data-code="identifier"] input').val());
-        this.getFormModel().set('family', this.$('[data-code="family"] input').select2('val'));
+        this.getFormModel().set('identifier', this.$('[data-code="identifier"] input').val())
+        this.getFormModel().set('family', this.$('[data-code="family"] input').select2('val'))
     },
 
             /**
@@ -48,19 +48,19 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     save: function () {
-        this.validationErrors = {};
+        this.validationErrors = {}
 
-        var loadingMask = new LoadingMask();
-        this.$el.empty().append(loadingMask.render().$el.show());
+        var loadingMask = new LoadingMask()
+        this.$el.empty().append(loadingMask.render().$el.show())
 
         return $.post(Routing.generate('pim_enrich_product_rest_create'), this.getFormData())
                     .fail(function (response) {
-                        this.validationErrors = response.responseJSON.values;
-                        this.render();
+                        this.validationErrors = response.responseJSON.values
+                        this.render()
                     }.bind(this))
                     .always(function () {
-                        loadingMask.remove();
-                    });
+                        loadingMask.remove()
+                    })
     },
 
             /**
@@ -70,7 +70,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         return FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
@@ -89,17 +89,17 @@ export default BaseForm.extend({
                                 errors: this.validationErrors,
                                 __: __
                             })
-                        );
-                        this.initSelect2();
+                        )
+                        this.initSelect2()
 
-                        return this.renderExtensions();
+                        return this.renderExtensions()
                     }.bind(this), function () {
                         this.$el.html(
                             this.errorTemplate({
                                 message: __('error.creating.product')
                             })
-                        );
-                    }.bind(this));
+                        )
+                    }.bind(this))
     },
 
             /**
@@ -120,26 +120,26 @@ export default BaseForm.extend({
                             page: page,
                             locale: UserContext.get('catalogLocale')
                         }
-                    };
+                    }
                 },
                 results: function (families) {
                     var data = {
                         more: 20 === _.keys(families).length,
                         results: []
-                    };
+                    }
                     _.each(families, function (value, key) {
                         data.results.push({
                             id: key,
                             text: i18n.getLabel(value.labels, UserContext.get('catalogLocale'), value.code)
-                        });
-                    });
+                        })
+                    })
 
-                    return data;
+                    return data
                 }
             }
-        };
+        }
 
-        initSelect2.init(this.$('[data-code="family"] input'), options);
+        initSelect2.init(this.$('[data-code="family"] input'), options)
     }
-});
+})
 

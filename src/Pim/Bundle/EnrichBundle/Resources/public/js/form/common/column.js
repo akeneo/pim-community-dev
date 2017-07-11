@@ -6,11 +6,11 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/form/column';
-import navigationTemplate from 'pim/template/form/column-navigation';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/column'
+import navigationTemplate from 'pim/template/form/column-navigation'
 export default BaseForm.extend({
     className: 'AknColumn',
     template: _.template(template),
@@ -30,46 +30,46 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (meta) {
-        this.config = meta.config;
-        this.navigationItems = [];
+        this.config = meta.config
+        this.navigationItems = []
 
-        return BaseForm.prototype.initialize.apply(this, arguments);
+        return BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function () {
-        this.onExtensions('pim_menu:column:register_navigation_item', this.registerNavigationItem);
+        this.onExtensions('pim_menu:column:register_navigation_item', this.registerNavigationItem)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     render: function () {
-        this.$el.empty().append(this.template());
+        this.$el.empty().append(this.template())
 
         if (!_.isEmpty(this.getNavigationItems())) {
             this.$el.find('.column-inner').prepend(this.navigationTemplate({
                 navigationItems: this.getNavigationItems(),
                 title: __(this.config.navigationTitle)
-            }));
+            }))
         }
 
         if (this.isCollapsed()) {
-            this.setCollapsed(true);
+            this.setCollapsed(true)
         }
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     toggleColumn: function () {
-        this.setCollapsed(!this.isCollapsed());
+        this.setCollapsed(!this.isCollapsed())
     },
 
             /**
@@ -80,13 +80,13 @@ export default BaseForm.extend({
              * @returns {boolean}
              */
     isCollapsed: function () {
-        var result = sessionStorage.getItem(this.getSessionStorageKey());
+        var result = sessionStorage.getItem(this.getSessionStorageKey())
 
         if (null === result) {
-            return false;
+            return false
         }
 
-        return '1' === result;
+        return '1' === result
     },
 
             /**
@@ -95,12 +95,12 @@ export default BaseForm.extend({
              * @param {boolean} value
              */
     setCollapsed: function (value) {
-        sessionStorage.setItem(this.getSessionStorageKey(), value ? '1' : '0');
+        sessionStorage.setItem(this.getSessionStorageKey(), value ? '1' : '0')
 
         if (value) {
-            this.$el.addClass('AknColumn--collapsed');
+            this.$el.addClass('AknColumn--collapsed')
         } else {
-            this.$el.removeClass('AknColumn--collapsed');
+            this.$el.removeClass('AknColumn--collapsed')
         }
     },
 
@@ -110,7 +110,7 @@ export default BaseForm.extend({
              * @returns {string}
              */
     getSessionStorageKey: function () {
-        return 'collapsedColumn_' + this.config.stateCode;
+        return 'collapsedColumn_' + this.config.stateCode
     },
 
             /**
@@ -122,7 +122,7 @@ export default BaseForm.extend({
              * @param {string}   navigationItem.code
              */
     registerNavigationItem: function (navigationItem) {
-        this.navigationItems.push(navigationItem);
+        this.navigationItems.push(navigationItem)
     },
 
             /**
@@ -132,15 +132,15 @@ export default BaseForm.extend({
              */
     getNavigationItems: function () {
         return _.filter(this.navigationItems, function (navigationItem) {
-            return !_.isFunction(navigationItem.isVisible) || navigationItem.isVisible();
-        });
+            return !_.isFunction(navigationItem.isVisible) || navigationItem.isVisible()
+        })
     },
 
             /**
              * @param {Event} event
              */
     redirect: function (event) {
-        this.getRoot().trigger('column-tab:select-tab', event);
+        this.getRoot().trigger('column-tab:select-tab', event)
     }
-});
+})
 

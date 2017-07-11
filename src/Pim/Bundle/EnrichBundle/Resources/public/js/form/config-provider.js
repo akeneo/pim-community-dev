@@ -1,16 +1,16 @@
 
 
-import $ from 'jquery';
-import Routing from 'routing';
-var promise = null;
+import $ from 'jquery'
+import Routing from 'routing'
+var promise = null
 
 var loadConfig = function () {
     if (null === promise) {
-        promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).promise();
+        promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).promise()
     }
 
-    return promise;
-};
+    return promise
+}
 
 export default {
             /**
@@ -20,8 +20,8 @@ export default {
              */
     getExtensionMap: function () {
         return loadConfig().then(function (config) {
-            return config.extensions;
-        });
+            return config.extensions
+        })
     },
 
             /**
@@ -31,15 +31,15 @@ export default {
              */
     getAttributeFields: function () {
         return loadConfig().then(function (config) {
-            return config.attribute_fields;
-        });
+            return config.attribute_fields
+        })
     },
 
             /**
              * Clear cache of form registry
              */
     clear: function () {
-        promise = null;
+        promise = null
     }
-};
+}
 

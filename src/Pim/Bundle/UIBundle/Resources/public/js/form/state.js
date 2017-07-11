@@ -1,15 +1,15 @@
 /* global confirm */
-import _ from 'underscore';
-import Backbone from 'backbone';
-import mediator from 'oro/mediator';
-import __ from 'oro/translator';
+import _ from 'underscore'
+import Backbone from 'backbone'
+import mediator from 'oro/mediator'
+import __ from 'oro/translator'
 
 
-var $ = Backbone.$;
+var $ = Backbone.$
 
 var formState = function () {
-    this.initialize.apply(this, arguments);
-};
+    this.initialize.apply(this, arguments)
+}
 
 _.extend(formState.prototype, {
     UNLOAD_EVENT: 'beforeunload.configFormState',
@@ -20,17 +20,17 @@ _.extend(formState.prototype, {
     data: null,
 
     initialize: function () {
-        mediator.once('hash_navigation_request:start', this._onDestroyHandler, this);
+        mediator.once('hash_navigation_request:start', this._onDestroyHandler, this)
 
-        $(window).on(this.LOAD_EVENT, _.bind(this._collectHandler, this));
-        this._collectHandler();
+        $(window).on(this.LOAD_EVENT, _.bind(this._collectHandler, this))
+        this._collectHandler()
 
         $(window).on(this.UNLOAD_EVENT, _.bind(function () {
             if (this.isChanged()) {
-                return this.CONFIRMATION_MESSAGE;
+                return this.CONFIRMATION_MESSAGE
             }
-        }, this));
-        mediator.on('hash_navigation_click', this._confirmHashChange, this);
+        }, this))
+        mediator.on('hash_navigation_click', this._confirmHashChange, this)
     },
 
             /**
@@ -40,10 +40,10 @@ _.extend(formState.prototype, {
              */
     isChanged: function () {
         if (!_.isNull(this.data)) {
-            return this.data !== this.getState();
+            return this.data !== this.getState()
         }
 
-        return false;
+        return false
     },
 
             /**
@@ -52,20 +52,20 @@ _.extend(formState.prototype, {
              * @returns {*}
              */
     getState: function () {
-        var form = $(this.FORM_SELECTOR);
+        var form = $(this.FORM_SELECTOR)
 
         if (form.length) {
             return JSON.stringify(
                         _.reject(
                             $(this.FORM_SELECTOR).serializeArray(),
                             function (el) {
-                                return el.name === 'input_action';
+                                return el.name === 'input_action'
                             }
                         )
-                    );
+                    )
         }
 
-        return false;
+        return false
     },
 
             /**
@@ -76,7 +76,7 @@ _.extend(formState.prototype, {
              */
     _confirmHashChange: function (event) {
         if (this.isChanged()) {
-            event.stoppedProcess = !confirm(this.CONFIRMATION_MESSAGE);
+            event.stoppedProcess = !confirm(this.CONFIRMATION_MESSAGE)
         }
     },
 
@@ -86,7 +86,7 @@ _.extend(formState.prototype, {
              * @private
              */
     _collectHandler: function () {
-        this.data = this.getState();
+        this.data = this.getState()
     },
 
             /**
@@ -97,15 +97,15 @@ _.extend(formState.prototype, {
     _onDestroyHandler: function () {
         if (_.isNull(this.data)) {
                     // data was not collected disable listener
-            mediator.off('hash_navigation_request:complete', this._collectHandler, this);
+            mediator.off('hash_navigation_request:complete', this._collectHandler, this)
         } else {
-            this.data = null;
+            this.data = null
         }
-        mediator.off('hash_navigation_click', this._confirmHashChange, this);
-        $(window).off(this.UNLOAD_EVENT);
-        $(document).off(this.LOAD_EVENT);
+        mediator.off('hash_navigation_click', this._confirmHashChange, this)
+        $(window).off(this.UNLOAD_EVENT)
+        $(document).off(this.LOAD_EVENT)
     }
-});
+})
 
-export default formState;
+export default formState
 

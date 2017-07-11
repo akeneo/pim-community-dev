@@ -6,15 +6,15 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
 export default BaseForm.extend({
     configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -25,23 +25,23 @@ export default BaseForm.extend({
              * @returns {Promise}
              */
     addFieldExtension: function (event) {
-        var field = event.field;
+        var field = event.field
 
         if (!field.attribute.localizable) {
-            return;
+            return
         }
 
         var retrieveChannel = FetcherRegistry.getFetcher('channel')
                     .fetch(field.context.scope)
                     .then(function (channel) {
                         if (!this.channelHasLocale(channel, field.context.locale)) {
-                            this.updateFieldElements(field.context, field);
+                            this.updateFieldElements(field.context, field)
                         }
-                    }.bind(this));
+                    }.bind(this))
 
-        event.promises.push(retrieveChannel);
+        event.promises.push(retrieveChannel)
 
-        return this;
+        return this
     },
 
             /**
@@ -52,7 +52,7 @@ export default BaseForm.extend({
              * @returns {boolean}
              */
     channelHasLocale: function (channel, locale) {
-        return _.contains(_.pluck(channel.locales, 'code'), locale);
+        return _.contains(_.pluck(channel.locales, 'code'), locale)
     },
 
             /**
@@ -64,14 +64,14 @@ export default BaseForm.extend({
         var message = _.__('pim_enrich.entity.product.localizable.channel_locale_unavailable', {
             channel: context.scope,
             locale: context.locale
-        });
-        var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
+        })
+        var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>'
 
         field.addElement(
                     'field-input',
                     'input_placeholder',
                     element
-                );
+                )
     }
-});
+})
 

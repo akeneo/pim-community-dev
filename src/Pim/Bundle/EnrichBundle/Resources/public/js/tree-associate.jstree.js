@@ -1,21 +1,21 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import Routing from 'routing';
-import mediator from 'oro/mediator';
-import 'jquery.jstree';
+import $ from 'jquery'
+import _ from 'underscore'
+import Routing from 'routing'
+import mediator from 'oro/mediator'
+import 'jquery.jstree'
 
 
 export default function (elementId, hiddenCategoryId, routes) {
-    var $el = $(elementId);
+    var $el = $(elementId)
     if (!$el || !$el.length || !_.isObject($el)) {
-        return;
+        return
     }
-    var self         = this;
-    var currentTree  = -1;
-    var id           = $el.attr('data-id');
-    var selectedTree = $el.attr('data-selected-tree');
-    var dataLocale   = $el.attr('data-datalocale');
-    var locked       = false;
+    var self         = this
+    var currentTree  = -1
+    var id           = $el.attr('data-id')
+    var selectedTree = $el.attr('data-selected-tree')
+    var dataLocale   = $el.attr('data-datalocale')
+    var locked       = false
 
     this.config = {
         core: {
@@ -35,7 +35,7 @@ export default function (elementId, hiddenCategoryId, routes) {
             real_checkboxes: true,
             override_ui: true,
             real_checkboxes_names: function (n) {
-                return ['category_' + n[0].id, 1];
+                return ['category_' + n[0].id, 1]
             }
         },
         themes: {
@@ -45,11 +45,11 @@ export default function (elementId, hiddenCategoryId, routes) {
         json_data: {
             ajax: {
                 url: function (node) {
-                    var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
+                    var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item')
 
                     if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
-                        var selected = this.parseHiddenCategories();
+                        var selected = this.parseHiddenCategories()
 
                         return Routing.generate(
                                     routes.list_categories,
@@ -61,7 +61,7 @@ export default function (elementId, hiddenCategoryId, routes) {
                                 context: 'associate',
                                 selected: selected
                             }
-                                );
+                                )
                     }
 
                     return Routing.generate(
@@ -71,29 +71,29 @@ export default function (elementId, hiddenCategoryId, routes) {
                             dataLocale: dataLocale,
                             context: 'associate'
                         }
-                            );
+                            )
                 }.bind(this),
                 data: function (node) {
-                    var data           = {};
-                    var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
+                    var data           = {}
+                    var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item')
 
                     if (node && node !== -1 && node.attr) {
-                        data.id = node.attr('id').replace('node_', '');
+                        data.id = node.attr('id').replace('node_', '')
                     } else {
                         if (!treeHasItem) {
-                            data.id = currentTree;
+                            data.id = currentTree
                         }
-                        data.include_parent = 'true';
+                        data.include_parent = 'true'
                     }
 
-                    return data;
+                    return data
                 },
                 complete: function () {
                             // Disable the root checkbox
-                    $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled');
+                    $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled')
                             // Lock the loaded tree if the state is locked
                     if (locked) {
-                        this.lock();
+                        this.lock()
                     }
                 }
             }
@@ -112,107 +112,107 @@ export default function (elementId, hiddenCategoryId, routes) {
             select_limit: 1,
             select_multiple_modifier: false
         }
-    };
+    }
 
     this.switchTree = function (treeId) {
-        currentTree = treeId;
-        var $tree = $('#tree-' + treeId);
+        currentTree = treeId
+        var $tree = $('#tree-' + treeId)
 
-        $('#trees').find('> div').hide();
-        $('#trees-list').find('li').removeClass('active');
-        $('#tree-link-' + treeId).parent().addClass('active');
+        $('#trees').find('> div').hide()
+        $('#trees-list').find('li').removeClass('active')
+        $('#tree-link-' + treeId).parent().addClass('active')
 
-        $('.tree[data-tree-id=' + treeId + ']').show();
-        $tree.show();
-        $('#tree-link-' + treeId).trigger('shown');
+        $('.tree[data-tree-id=' + treeId + ']').show()
+        $tree.show()
+        $('#tree-link-' + treeId).trigger('shown')
 
                 // If empty, load the associated jstree
         if ($tree.children('ul').size() === 0) {
-            self.initTree(treeId);
+            self.initTree(treeId)
         }
-    };
+    }
 
     this.initTree = function (treeId) {
-        var $tree = $('#tree-' + treeId);
-        $tree.jstree(self.config);
+        var $tree = $('#tree-' + treeId)
+        $tree.jstree(self.config)
 
         $tree.bind('check_node.jstree', function (e, d) {
             if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
-                var selected = this.parseHiddenCategories();
-                var id = d.rslt.obj[0].id.replace('node_', '');
+                var selected = this.parseHiddenCategories()
+                var id = d.rslt.obj[0].id.replace('node_', '')
                 if ($.inArray(id, selected) < 0) {
-                    selected.push(id);
-                    selected = $.unique(selected);
-                    selected = selected.join(',');
-                    $(hiddenCategoryId).val(selected).trigger('change');
-                    var treeId = e.target.id;
-                    var treeLinkId = treeId.replace('-', '-link-');
-                    $('#' + treeLinkId + ' i').addClass('AknAcl-icon--granted');
+                    selected.push(id)
+                    selected = $.unique(selected)
+                    selected = selected.join(',')
+                    $(hiddenCategoryId).val(selected).trigger('change')
+                    var treeId = e.target.id
+                    var treeLinkId = treeId.replace('-', '-link-')
+                    $('#' + treeLinkId + ' i').addClass('AknAcl-icon--granted')
                 }
             }
-        }.bind(this));
+        }.bind(this))
 
         $tree.bind('uncheck_node.jstree', function (e, d) {
             if (d.inst.get_checked()) {
-                var selected = this.parseHiddenCategories();
-                var id = d.rslt.obj[0].id.replace('node_', '');
-                selected.splice($.inArray(id, selected), 1);
-                selected = selected.join(',');
-                $(hiddenCategoryId).val(selected).trigger('change');
-                var treeId = e.target.id;
+                var selected = this.parseHiddenCategories()
+                var id = d.rslt.obj[0].id.replace('node_', '')
+                selected.splice($.inArray(id, selected), 1)
+                selected = selected.join(',')
+                $(hiddenCategoryId).val(selected).trigger('change')
+                var treeId = e.target.id
                 if ($('#' + treeId).jstree('get_checked').length === 0) {
-                    var treeLinkId = treeId.replace('-', '-link-');
-                    $('#' + treeLinkId + ' i').removeClass('AknAcl-icon--granted');
+                    var treeLinkId = treeId.replace('-', '-link-')
+                    $('#' + treeLinkId + ' i').removeClass('AknAcl-icon--granted')
                 }
             }
-        }.bind(this));
-    };
+        }.bind(this))
+    }
 
     var setLocked = function () {
         $('#trees-list').find('a').each(function () {
-            var ref = $.jstree._reference(this.id.replace('tree-link-', '#tree-'));
+            var ref = $.jstree._reference(this.id.replace('tree-link-', '#tree-'))
             if (ref) {
                 if (locked) {
-                    ref.lock();
+                    ref.lock()
                 } else {
-                    ref.unlock();
+                    ref.unlock()
                 }
             }
-        });
-    };
+        })
+    }
 
     this.lock = function () {
-        locked = true;
-        setLocked();
-    };
+        locked = true
+        setLocked()
+    }
 
     this.unlock = function () {
-        locked = false;
-        setLocked();
-    };
+        locked = false
+        setLocked()
+    }
 
     this.bindEvents = function () {
         $('#trees-list').on('click', 'a', function () {
-            self.switchTree(this.id.replace('tree-link-', ''));
-        });
-        mediator.on('jstree:lock', this.lock);
-        mediator.on('jstree:unlock', this.unlock);
-    };
+            self.switchTree(this.id.replace('tree-link-', ''))
+        })
+        mediator.on('jstree:lock', this.lock)
+        mediator.on('jstree:unlock', this.unlock)
+    }
 
             /**
              * @return {Array}
              */
     this.parseHiddenCategories = function () {
-        var hiddenValue = $(hiddenCategoryId).val();
+        var hiddenValue = $(hiddenCategoryId).val()
 
-        return hiddenValue.length > 0 ? hiddenValue.split(',') : [];
-    };
+        return hiddenValue.length > 0 ? hiddenValue.split(',') : []
+    }
 
     this.init = function () {
-        self.switchTree(selectedTree);
-        self.bindEvents();
-    };
+        self.switchTree(selectedTree)
+        self.bindEvents()
+    }
 
-    this.init();
+    this.init()
 };
 

@@ -10,16 +10,16 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
-import template from 'pim/template/grid/view-selector';
-import initSelect2 from 'pim/initselect2';
-import DatagridState from 'pim/datagrid/state';
-import FetcherRegistry from 'pim/fetcher-registry';
-import FormBuilder from 'pim/form-builder';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import template from 'pim/template/grid/view-selector'
+import initSelect2 from 'pim/initselect2'
+import DatagridState from 'pim/datagrid/state'
+import FetcherRegistry from 'pim/fetcher-registry'
+import FormBuilder from 'pim/form-builder'
 export default BaseForm.extend({
     template: _.template(template),
     resultsPerPage: 20,
@@ -44,43 +44,43 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (meta) {
-        this.config = meta.config;
+        this.config = meta.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
              * {@inheritdoc}
              */
     configure: function (gridAlias) {
-        this.gridAlias = gridAlias;
+        this.gridAlias = gridAlias
 
         if (_.has(__moduleConfig, 'forwarded-events')) {
-            this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
+            this.forwardMediatorEvents(__moduleConfig['forwarded-events'])
         }
 
-        this.listenTo(this.getRoot(), 'grid:view-selector:view-created', this.onViewCreated.bind(this));
-        this.listenTo(this.getRoot(), 'grid:view-selector:view-saved', this.onViewSaved.bind(this));
-        this.listenTo(this.getRoot(), 'grid:view-selector:view-removed', this.onViewRemoved.bind(this));
-        this.listenTo(this.getRoot(), 'grid:view-selector:close-selector', this.closeSelect2.bind(this));
-        this.listenTo(this.getRoot(), 'grid:product-grid:state_changed', this.onGridStateChange.bind(this));
+        this.listenTo(this.getRoot(), 'grid:view-selector:view-created', this.onViewCreated.bind(this))
+        this.listenTo(this.getRoot(), 'grid:view-selector:view-saved', this.onViewSaved.bind(this))
+        this.listenTo(this.getRoot(), 'grid:view-selector:view-removed', this.onViewRemoved.bind(this))
+        this.listenTo(this.getRoot(), 'grid:view-selector:close-selector', this.closeSelect2.bind(this))
+        this.listenTo(this.getRoot(), 'grid:product-grid:state_changed', this.onGridStateChange.bind(this))
 
-        Backbone.Router.prototype.on('route', this.unbindEvents.bind(this));
+        Backbone.Router.prototype.on('route', this.unbindEvents.bind(this))
 
         return FetcherRegistry.getFetcher('datagrid-view')
                     .defaultColumns(this.gridAlias)
                     .then(function (columns) {
-                        this.defaultColumns = columns;
+                        this.defaultColumns = columns
 
-                        return BaseForm.prototype.configure.apply(this, arguments);
-                    }.bind(this));
+                        return BaseForm.prototype.configure.apply(this, arguments)
+                    }.bind(this))
     },
 
             /**
              * Detach event listeners
              */
     unbindEvents: function () {
-        this.off();
+        this.off()
     },
 
             /**
@@ -88,32 +88,32 @@ export default BaseForm.extend({
              */
     render: function () {
         this.initializeSelection().then(function () {
-            this.initializeViewTypes();
+            this.initializeViewTypes()
 
             this.$el.html(this.template({
                 __: __,
                 currentViewType: this.currentViewType,
                 viewTypes: this.config.viewTypes,
                 displayViewSwitcher: this.config.viewTypes.length > 1
-            }));
+            }))
 
-            this.initializeSelectWidget();
-            this.renderExtensions();
-        }.bind(this));
+            this.initializeSelectWidget()
+            this.renderExtensions()
+        }.bind(this))
     },
 
             /**
              * Initialize the view type to display at initialization.
              */
     initializeViewTypes: function () {
-        this.currentViewType = 'view';
+        this.currentViewType = 'view'
     },
 
             /**
              * Initialize the Select2 component and format elements.
              */
     initializeSelectWidget: function () {
-        var $select = this.$('input[type="hidden"]');
+        var $select = this.$('input[type="hidden"]')
 
         var options = {
             dropdownCssClass: 'select2--bigDrop grid-view-selector',
@@ -125,10 +125,10 @@ export default BaseForm.extend({
                      */
             formatResult: function (item, $container) {
                 FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
-                    form.setParent(this);
-                    form.setView(item, this.currentViewType, this.currentView.id);
-                    $container.append(form.render().$el);
-                }.bind(this));
+                    form.setParent(this)
+                    form.setView(item, this.currentViewType, this.currentView.id)
+                    $container.append(form.render().$el)
+                }.bind(this))
             }.bind(this),
 
                     /**
@@ -136,40 +136,40 @@ export default BaseForm.extend({
                      */
             formatSelection: function (item, $container) {
                 FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
-                    form.setParent(this);
-                    form.setView(item);
+                    form.setParent(this)
+                    form.setView(item)
 
                     return form.configure().then(function () {
-                        $container.append(form.render().$el);
-                        this.onGridStateChange();
-                    }.bind(this));
-                }.bind(this));
+                        $container.append(form.render().$el)
+                        this.onGridStateChange()
+                    }.bind(this))
+                }.bind(this))
             }.bind(this),
 
             query: function (options) {
-                clearTimeout(this.queryTimer);
+                clearTimeout(this.queryTimer)
                 this.queryTimer = setTimeout(function () {
 
-                    var page = 1;
+                    var page = 1
                     if (options.context && options.context.page) {
-                        page = options.context.page;
+                        page = options.context.page
                     }
 
-                    var searchParameters = this.getSelectSearchParameters(options.term, page);
-                    var fetcher = this.config.fetchers[this.currentViewType];
+                    var searchParameters = this.getSelectSearchParameters(options.term, page)
+                    var fetcher = this.config.fetchers[this.currentViewType]
 
                     if (this.currentLoadingPage === page && this.currentLoadingTerm === options.term) {
-                        return;
+                        return
                     }
 
-                    this.currentLoadingPage = page;
-                    this.currentLoadingTerm = options.term;
+                    this.currentLoadingPage = page
+                    this.currentLoadingTerm = options.term
 
                     FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
-                        var choices = this.toSelect2Format(views);
+                        var choices = this.toSelect2Format(views)
 
                         if (page === 1 && !options.term) {
-                            choices = this.ensureDefaultView(choices);
+                            choices = this.ensureDefaultView(choices)
                         }
 
                         options.callback({
@@ -178,9 +178,9 @@ export default BaseForm.extend({
                             context: {
                                 page: page + 1
                             }
-                        });
-                    }.bind(this));
-                }.bind(this), 400);
+                        })
+                    }.bind(this))
+                }.bind(this), 400)
             }.bind(this),
 
                     /**
@@ -188,23 +188,23 @@ export default BaseForm.extend({
                      * we select the user's one. If he doesn't have one, we create a default one for him!
                      */
             initSelection: function (element, callback) {
-                callback(this.currentView);
+                callback(this.currentView)
             }.bind(this)
-        };
+        }
 
-        this.select2Instance = initSelect2.init($select, options);
+        this.select2Instance = initSelect2.init($select, options)
         this.select2Instance.on('select2-selecting', function (event) {
-            var view = event.object;
-            this.selectView(view);
-        }.bind(this));
+            var view = event.object
+            this.selectView(view)
+        }.bind(this))
 
         this.select2Instance.on('select2-close', function () {
-            this.currentLoadingPage = null;
-            this.currentLoadingTerm = null;
-        }.bind(this));
+            this.currentLoadingPage = null
+            this.currentLoadingTerm = null
+        }.bind(this))
 
-        var $search = this.$('.select2-search');
-        $search.prepend($('<i class="icon-search"></i>'));
+        var $search = this.$('.select2-search')
+        $search.prepend($('<i class="icon-search"></i>'))
     },
 
             /**
@@ -213,9 +213,9 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     switchViewType: function (event) {
-        this.currentViewType = $(event.target).data('value');
+        this.currentViewType = $(event.target).data('value')
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -225,49 +225,49 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     initializeSelection: function () {
-        var activeViewId = DatagridState.get(this.gridAlias, 'view');
-        var isDefaultView = ('0' === activeViewId);
-        var deferred = $.Deferred();
+        var activeViewId = DatagridState.get(this.gridAlias, 'view')
+        var isDefaultView = ('0' === activeViewId)
+        var deferred = $.Deferred()
 
         this.getUserDefaultView().then(function (userDefaultView) {
             if (userDefaultView && (!activeViewId || isDefaultView)) {
                         // User is on default view but has a custom default one
-                userDefaultView.text = userDefaultView.label;
-                deferred.resolve(userDefaultView);
+                userDefaultView.text = userDefaultView.label
+                deferred.resolve(userDefaultView)
             } else if (activeViewId && !isDefaultView) {
                         // User is on an existing view
                 FetcherRegistry.getFetcher('datagrid-view')
                             .fetch(activeViewId, {alias: this.gridAlias, cached: false})
                             .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
-                                deferred.resolve(view);
+                                deferred.resolve(view)
                             })
                             .fail(function () {
-                                this.selectView(userDefaultView ? userDefaultView : this.getDefaultView());
-                            }.bind(this));
+                                this.selectView(userDefaultView ? userDefaultView : this.getDefaultView())
+                            }.bind(this))
             } else {
                         // Other, set the default view
-                deferred.resolve(this.getDefaultView());
+                deferred.resolve(this.getDefaultView())
             }
-        }.bind(this));
+        }.bind(this))
 
         deferred.then(function (initView) {
-            var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns']);
+            var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns'])
 
-            this.initialView = $.extend(true, {}, initView);
-            this.currentView = $.extend(true, {}, initView);
+            this.initialView = $.extend(true, {}, initView)
+            this.currentView = $.extend(true, {}, initView)
 
             if (0 !== this.initialView.id && datagridState.columns !== null) {
-                this.currentView.filters = datagridState.filters;
-                this.currentView.columns = datagridState.columns.split(',');
+                this.currentView.filters = datagridState.filters
+                this.currentView.columns = datagridState.columns.split(',')
             }
 
-            this.getRoot().trigger('grid:view-selector:initialized', this.currentView);
+            this.getRoot().trigger('grid:view-selector:initialized', this.currentView)
 
-            return initView;
-        }.bind(this));
+            return initView
+        }.bind(this))
 
-        return deferred;
+        return deferred
     },
 
             /**
@@ -279,9 +279,9 @@ export default BaseForm.extend({
              * @return {Promise}
              */
     postFetchDatagridView: function (view) {
-        view.text = view.label;
+        view.text = view.label
 
-        return $.Deferred().resolve(view).promise();
+        return $.Deferred().resolve(view).promise()
     },
 
             /**
@@ -296,7 +296,7 @@ export default BaseForm.extend({
             columns: this.defaultColumns,
             type: 'view',
             filters: ''
-        };
+        }
     },
 
             /**
@@ -308,10 +308,10 @@ export default BaseForm.extend({
         return FetcherRegistry.getFetcher('datagrid-view')
                     .defaultUserView(this.gridAlias)
                     .then(function (defaultUserView) {
-                        this.defaultUserView = defaultUserView.view;
+                        this.defaultUserView = defaultUserView.view
 
-                        return defaultUserView.view;
-                    }.bind(this));
+                        return defaultUserView.view
+                    }.bind(this))
     },
 
             /**
@@ -323,12 +323,12 @@ export default BaseForm.extend({
              */
     ensureDefaultView: function (choices) {
         if (null !== this.defaultUserView || 'view' !== this.currentViewType) {
-            return choices;
+            return choices
         }
 
-        choices.push(this.getDefaultView());
+        choices.push(this.getDefaultView())
 
-        return choices;
+        return choices
     },
 
             /**
@@ -336,17 +336,17 @@ export default BaseForm.extend({
              * It allows this selector to react to new filters / columns etc..
              */
     onGridStateChange: function () {
-        var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns']);
+        var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns'])
         if (null === datagridState.columns) {
-            datagridState.columns = '';
+            datagridState.columns = ''
         }
 
         if (null !== this.currentView) {
-            this.currentView.filters = datagridState.filters;
-            this.currentView.columns = datagridState.columns.split(',');
+            this.currentView.filters = datagridState.filters
+            this.currentView.columns = datagridState.columns.split(',')
         }
 
-        this.getRoot().trigger('grid:view-selector:state-changed', datagridState);
+        this.getRoot().trigger('grid:view-selector:state-changed', datagridState)
     },
 
             /**
@@ -356,12 +356,12 @@ export default BaseForm.extend({
              * @param {int} viewId
              */
     onViewCreated: function (viewId) {
-        FetcherRegistry.getFetcher('datagrid-view').clear();
+        FetcherRegistry.getFetcher('datagrid-view').clear()
         FetcherRegistry.getFetcher('datagrid-view')
                     .fetch(viewId, {alias: this.gridAlias})
                     .then(function (view) {
-                        this.selectView(view);
-                    }.bind(this));
+                        this.selectView(view)
+                    }.bind(this))
     },
 
             /**
@@ -371,7 +371,7 @@ export default BaseForm.extend({
              * @param {int} viewId
              */
     onViewSaved: function (viewId) {
-        this.onViewCreated(viewId);
+        this.onViewCreated(viewId)
     },
 
             /**
@@ -379,8 +379,8 @@ export default BaseForm.extend({
              * We reset all filters on the grid.
              */
     onViewRemoved: function () {
-        FetcherRegistry.getFetcher('datagrid-view').clear();
-        this.selectView(this.getDefaultView());
+        FetcherRegistry.getFetcher('datagrid-view').clear()
+        this.selectView(this.getDefaultView())
     },
 
             /**
@@ -388,7 +388,7 @@ export default BaseForm.extend({
              */
     closeSelect2: function () {
         if (null !== this.select2Instance) {
-            this.select2Instance.select2('close');
+            this.select2Instance.select2('close')
         }
     },
 
@@ -402,11 +402,11 @@ export default BaseForm.extend({
             view: view.id,
             filters: view.filters,
             columns: view.columns.join(',')
-        });
+        })
 
-        this.currentView = view;
-        this.trigger('grid:view-selector:view-selected', view);
-        this.reloadPage();
+        this.currentView = view
+        this.trigger('grid:view-selector:view-selected', view)
+        this.reloadPage()
     },
 
             /**
@@ -425,7 +425,7 @@ export default BaseForm.extend({
                 limit: this.getResultsPerPage(),
                 page: page
             }
-        });
+        })
     },
 
             /**
@@ -438,27 +438,27 @@ export default BaseForm.extend({
              */
     toSelect2Format: function (data) {
         return _.map(data, function (view) {
-            view.text = view.label;
+            view.text = view.label
 
             if (!_.has(view, 'id') && _.has(view, 'code')) {
-                view.id = view.code;
+                view.id = view.code
             }
 
-            return view;
-        });
+            return view
+        })
     },
 
             /**
              * Reload the page.
              */
     reloadPage: function () {
-        var url = window.location.hash;
-        Backbone.history.fragment = new Date().getTime();
-        Backbone.history.navigate(url, true);
+        var url = window.location.hash
+        Backbone.history.fragment = new Date().getTime()
+        Backbone.history.navigate(url, true)
     },
 
     getResultsPerPage: function () {
-        return this.resultsPerPage;
+        return this.resultsPerPage
     }
-});
+})
 

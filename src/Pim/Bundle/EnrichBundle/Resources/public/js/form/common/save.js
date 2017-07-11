@@ -7,12 +7,12 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import mediator from 'oro/mediator';
-import LoadingMask from 'oro/loading-mask';
-import messenger from 'oro/messenger';
+import $ from 'jquery'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import mediator from 'oro/mediator'
+import LoadingMask from 'oro/loading-mask'
+import messenger from 'oro/messenger'
 export default BaseForm.extend({
     loadingMask: null,
     updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
@@ -23,9 +23,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -39,43 +39,43 @@ export default BaseForm.extend({
             events: {
                 'click .save': this.save.bind(this)
             }
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
              * Save the current form
              */
     save: function () {
-        throw new Error('This method must be implemented');
+        throw new Error('This method must be implemented')
     },
 
             /**
              * Show the loading mask
              */
     showLoadingMask: function () {
-        this.loadingMask = new LoadingMask();
-        this.loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+        this.loadingMask = new LoadingMask()
+        this.loadingMask.render().$el.appendTo(this.getRoot().$el).show()
     },
 
             /**
              * Hide the loading mask
              */
     hideLoadingMask: function () {
-        this.loadingMask.hide().$el.remove();
+        this.loadingMask.hide().$el.remove()
     },
 
             /**
              * What to do after a save
              */
     postSave: function () {
-        this.getRoot().trigger('pim_enrich:form:entity:post_save');
+        this.getRoot().trigger('pim_enrich:form:entity:post_save')
 
         messenger.notify(
                     'success',
                     this.updateSuccessMessage
-                );
+                )
     },
 
             /**
@@ -89,22 +89,22 @@ export default BaseForm.extend({
             mediator.trigger(
                             'pim_enrich:form:entity:bad_request',
                             {'sentData': this.getFormData(), 'response': response.responseJSON}
-                        );
-            break;
+                        )
+            break
         case 500:
                         /* global console */
-            var message = response.responseJSON ? response.responseJSON : response;
+            var message = response.responseJSON ? response.responseJSON : response
 
-            console.error('Errors:', message);
-            this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
-            break;
+            console.error('Errors:', message)
+            this.getRoot().trigger('pim_enrich:form:entity:error:save', message)
+            break
         default:
         }
 
         messenger.notify(
                     'error',
                     this.updateFailureMessage
-                );
+                )
     }
-});
+})
 

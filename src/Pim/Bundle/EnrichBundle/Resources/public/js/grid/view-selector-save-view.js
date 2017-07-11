@@ -9,17 +9,17 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import template from 'pim/template/grid/view-selector/save-view';
-import DatagridState from 'pim/datagrid/state';
-import Dialog from 'pim/dialog';
-import Routing from 'routing';
-import UserContext from 'pim/user-context';
-import DatagridViewSaver from 'pim/saver/datagrid-view';
-import messenger from 'oro/messenger';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/grid/view-selector/save-view'
+import DatagridState from 'pim/datagrid/state'
+import Dialog from 'pim/dialog'
+import Routing from 'routing'
+import UserContext from 'pim/user-context'
+import DatagridViewSaver from 'pim/saver/datagrid-view'
+import messenger from 'oro/messenger'
 export default BaseForm.extend({
     template: _.template(template),
     tagName: 'span',
@@ -32,9 +32,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     configure: function () {
-        this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange);
+        this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -44,17 +44,17 @@ export default BaseForm.extend({
         if ('view' !== this.getRoot().currentViewType ||
                     UserContext.get('meta').id !== this.getRoot().currentView.owner_id
                 ) {
-            this.$el.html('');
+            this.$el.html('')
 
-            return;
+            return
         }
 
         this.$el.html(this.template({
             dirty: this.dirty,
             label: __('grid.view_selector.save_changes')
-        }));
+        }))
 
-        this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('[data-toggle="tooltip"]').tooltip()
     },
 
             /**
@@ -63,15 +63,15 @@ export default BaseForm.extend({
              * @param {Object} datagridState
              */
     onDatagridStateChange: function (datagridState) {
-        var initialView = this.getRoot().initialView;
-        var initialViewExists = null !== initialView && 0 !== initialView.id;
+        var initialView = this.getRoot().initialView
+        var initialViewExists = null !== initialView && 0 !== initialView.id
 
         if (initialViewExists) {
-            var filtersModified = initialView.filters !== datagridState.filters;
-            var columnsModified = !_.isEqual(initialView.columns, datagridState.columns.split(','));
+            var filtersModified = initialView.filters !== datagridState.filters
+            var columnsModified = !_.isEqual(initialView.columns, datagridState.columns.split(','))
 
-            this.dirty = filtersModified || columnsModified;
-            this.render();
+            this.dirty = filtersModified || columnsModified
+            this.render()
         }
     },
 
@@ -80,21 +80,21 @@ export default BaseForm.extend({
              * to select it.
              */
     saveView: function () {
-        var gridState = DatagridState.get(this.getRoot().gridAlias, ['filters', 'columns']);
+        var gridState = DatagridState.get(this.getRoot().gridAlias, ['filters', 'columns'])
 
-        var currentView = $.extend(true, {}, this.getRoot().currentView);
-        currentView.filters = gridState.filters;
-        currentView.columns = gridState.columns;
+        var currentView = $.extend(true, {}, this.getRoot().currentView)
+        currentView.filters = gridState.filters
+        currentView.columns = gridState.columns
 
         DatagridViewSaver.save(currentView, this.getRoot().gridAlias)
                     .done(function (response) {
-                        this.getRoot().trigger('grid:view-selector:view-saved', response.id);
+                        this.getRoot().trigger('grid:view-selector:view-saved', response.id)
                     }.bind(this))
                     .fail(function (response) {
                         _.each(response.responseJSON, function (error) {
-                            messenger.notify('error', error);
-                        });
-                    });
+                            messenger.notify('error', error)
+                        })
+                    })
     }
-});
+})
 

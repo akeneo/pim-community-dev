@@ -1,11 +1,11 @@
 
 
-import _ from 'underscore';
-import __ from 'oro/translator';
-import $ from 'jquery';
-import BaseForm from 'pim/form';
-import template from 'pim/template/system/tab/loading-message';
-import 'bootstrap.bootstrapswitch';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import $ from 'jquery'
+import BaseForm from 'pim/form'
+import template from 'pim/template/system/tab/loading-message'
+import 'bootstrap.bootstrapswitch'
 export default BaseForm.extend({
     events: {
         'change input[type="checkbox"]': 'updateBoolean',
@@ -23,9 +23,9 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: this.label
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -35,13 +35,13 @@ export default BaseForm.extend({
         this.$el.html(this.template({
             'loading_message_enabled': this.getFormData().pim_ui___loading_message_enabled.value,
             'loading_messages': this.getFormData().pim_ui___loading_messages.value
-        }));
+        }))
 
-        this.$el.find('.switch').bootstrapSwitch();
+        this.$el.find('.switch').bootstrapSwitch()
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     },
 
             /**
@@ -50,9 +50,9 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     updateBoolean: function (event) {
-        var data = this.getFormData();
-        data.pim_ui___loading_message_enabled.value = $(event.target).prop('checked') ? '1' : '0';
-        this.setData(data);
+        var data = this.getFormData()
+        data.pim_ui___loading_message_enabled.value = $(event.target).prop('checked') ? '1' : '0'
+        this.setData(data)
     },
 
             /**
@@ -61,9 +61,9 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     updateText: function (event) {
-        var data = this.getFormData();
-        data.pim_ui___loading_messages.value = $(event.target).val();
-        this.setData(data);
+        var data = this.getFormData()
+        data.pim_ui___loading_messages.value = $(event.target).val()
+        this.setData(data)
     }
-});
+})
 

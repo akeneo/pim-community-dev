@@ -1,6 +1,6 @@
 
 
-import Backbone from 'backbone';
+import Backbone from 'backbone'
 export default Backbone.View.extend({
     active: false,
 
@@ -13,15 +13,15 @@ export default Backbone.View.extend({
          * @return {Promise}
          */
     renderRoute: function () {
-        throw new Error('Method renderRoute is abstract and must be implemented!');
+        throw new Error('Method renderRoute is abstract and must be implemented!')
     },
 
     remove: function () {
-        this.setActive(false);
+        this.setActive(false)
     },
 
     setActive: function (active) {
-        this.active = active;
+        this.active = active
     },
 
         /**
@@ -30,10 +30,10 @@ export default Backbone.View.extend({
          * @return {boolean}
          */
     canLeave: function () {
-        var event = {canLeave: true};
-        this.trigger('pim:controller:can-leave', event);
+        var event = {canLeave: true}
+        this.trigger('pim:controller:can-leave', event)
 
-        return event.canLeave;
+        return event.canLeave
     }
-});
+})
 

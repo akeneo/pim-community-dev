@@ -7,11 +7,11 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import Grid from 'pim/common/grid';
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import Grid from 'pim/common/grid'
 export default BaseForm.extend({
     className: 'products',
 
@@ -19,9 +19,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -31,9 +31,9 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: __(this.config.label)
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -50,20 +50,20 @@ export default BaseForm.extend({
                     selection: this.getFormData().products,
                     selectionIdentifier: 'identifier'
                 }
-                    );
+                    )
 
             this.productGroupGrid.on('grid:selection:updated', function (selection) {
-                this.setData('products', selection);
-            }.bind(this));
+                this.setData('products', selection)
+            }.bind(this))
 
             this.getRoot().on('pim_enrich:form:entity:post_fetch', function () {
-                this.productGroupGrid.refresh();
-            }.bind(this));
+                this.productGroupGrid.refresh()
+            }.bind(this))
         }
 
-        this.$el.empty().append(this.productGroupGrid.render().$el);
+        this.$el.empty().append(this.productGroupGrid.render().$el)
 
-        this.renderExtensions();
+        this.renderExtensions()
     }
-});
+})
 

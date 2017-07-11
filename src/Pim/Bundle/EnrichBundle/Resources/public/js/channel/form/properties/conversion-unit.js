@@ -7,15 +7,15 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import template from 'pim/template/channel/tab/properties/conversion-unit';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import template from 'pim/template/channel/tab/properties/conversion-unit'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import 'jquery.select2'
 export default BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),
@@ -26,9 +26,9 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
             /**
@@ -36,7 +36,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured) {
-            return this;
+            return this
         }
 
         $.when(
@@ -53,13 +53,13 @@ export default BaseForm.extend({
                         fieldBaseId: this.config.fieldBaseId,
                         doNotConvertLabel: __('pim_enrich.form.channel.tab.properties.conversion_unit.do_not_convert'),
                         i18n: i18n
-                    }));
+                    }))
 
-                    this.$('.select2').select2().on('change', this.updateState.bind(this));
-                    this.renderExtensions();
-                }.bind(this));
+                    this.$('.select2').select2().on('change', this.updateState.bind(this))
+                    this.renderExtensions()
+                }.bind(this))
 
-        return this;
+        return this
     },
 
             /**
@@ -71,7 +71,7 @@ export default BaseForm.extend({
         this.setAttributeConversionUnit(
                     event.currentTarget.id.replace(this.config.fieldBaseId, ''),
                     event.currentTarget.value
-                );
+                )
 
     },
 
@@ -82,19 +82,19 @@ export default BaseForm.extend({
              * @param {String} value
              */
     setAttributeConversionUnit: function (attribute, value) {
-        var data = this.getFormData();
+        var data = this.getFormData()
 
         if (_.isEmpty(data.conversion_units)) {
-            data.conversion_units = {};
+            data.conversion_units = {}
         }
 
         if (value !== 'no_conversion') {
-            data.conversion_units[attribute] = value;
+            data.conversion_units[attribute] = value
         } else {
-            delete data.conversion_units[attribute];
+            delete data.conversion_units[attribute]
         }
 
-        this.setData(data);
+        this.setData(data)
     }
-});
+})
 

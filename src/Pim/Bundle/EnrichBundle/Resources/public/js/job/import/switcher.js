@@ -7,9 +7,9 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import template from 'pim/template/import/switcher';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/import/switcher'
 export default BaseForm.extend({
     className: 'AknButtonList',
     template: _.template(template),
@@ -23,11 +23,11 @@ export default BaseForm.extend({
              * {@inheritdoc}
              */
     configure: function () {
-        this.actions = [];
+        this.actions = []
 
-        this.listenTo(this.getRoot(), 'switcher:register', this.registerAction);
+        this.listenTo(this.getRoot(), 'switcher:register', this.registerAction)
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -35,19 +35,19 @@ export default BaseForm.extend({
              */
     render: function () {
         if (_.isEmpty(this.actions)) {
-            return;
+            return
         }
 
         if (null === this.currentActionCode) {
-            this.setCurrentActionCode(_.first(this.actions).code);
+            this.setCurrentActionCode(_.first(this.actions).code)
         }
 
         this.$el.empty().append(this.template({
             actions: this.actions,
             current: this.currentActionCode
-        }));
+        }))
 
-        return BaseForm.prototype.render.apply(this, arguments);
+        return BaseForm.prototype.render.apply(this, arguments)
     },
 
             /**
@@ -58,8 +58,8 @@ export default BaseForm.extend({
              * @param {String} action.code  The extension code to display on click
              */
     registerAction: function (action) {
-        this.actions.push(action);
-        this.render();
+        this.actions.push(action)
+        this.render()
     },
 
             /**
@@ -68,8 +68,8 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     switch: function (event) {
-        this.setCurrentActionCode(event.target.dataset.code);
-        this.render();
+        this.setCurrentActionCode(event.target.dataset.code)
+        this.render()
     },
 
             /**
@@ -78,8 +78,8 @@ export default BaseForm.extend({
              * @param {String} code The code of the current extension
              */
     setCurrentActionCode: function (code) {
-        this.currentActionCode = code;
-        this.getRoot().trigger('switcher:switch', { code: code });
+        this.currentActionCode = code
+        this.getRoot().trigger('switcher:switch', { code: code })
     }
-});
+})
 

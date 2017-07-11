@@ -1,9 +1,9 @@
 
 
-import _ from 'underscore';
-import BaseForm from 'pim/form';
-import Grid from 'pim/common/grid';
-import __ from 'oro/translator';
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import Grid from 'pim/common/grid'
+import __ from 'oro/translator'
 export default BaseForm.extend({
     className: 'tabbable tabs-left history',
     historyGrid: null,
@@ -12,8 +12,8 @@ export default BaseForm.extend({
              * @param {Object} meta
              */
     initialize: function (meta) {
-        this.config = _.extend({}, meta.config);
-        this.config.modelDependent = false;
+        this.config = _.extend({}, meta.config)
+        this.config.modelDependent = false
     },
 
             /**
@@ -23,9 +23,9 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.config.tabCode ? this.config.tabCode : this.code,
             label: __(this.config.title)
-        });
+        })
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -39,12 +39,12 @@ export default BaseForm.extend({
                     object_class: this.config.class,
                     object_id: this.getFormData().meta.id
                 }
-                    );
+                    )
         }
 
-        this.$el.empty().append(this.historyGrid.render().$el);
+        this.$el.empty().append(this.historyGrid.render().$el)
 
-        return this;
+        return this
     }
-});
+})
 

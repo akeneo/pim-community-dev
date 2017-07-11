@@ -8,11 +8,11 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import propertyAccessor from 'pim/common/property';
-import template from 'pim/template/export/common/edit/field/field';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import propertyAccessor from 'pim/common/property'
+import template from 'pim/template/export/common/edit/field/field'
 export default BaseForm.extend({
     template: _.template(template),
 
@@ -20,9 +20,9 @@ export default BaseForm.extend({
          * {@inheritdoc}
          */
     initialize: function (config) {
-        this.config = config.config;
+        this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments);
+        BaseForm.prototype.initialize.apply(this, arguments)
     },
 
         /**
@@ -31,14 +31,14 @@ export default BaseForm.extend({
     render: function () {
         this.$el.html(
                 this.template(this.getTemplateContext())
-            );
+            )
 
-        this.$('.field-input').prepend(this.renderInput(this.getTemplateContext()));
-        this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('.field-input').prepend(this.renderInput(this.getTemplateContext()))
+        this.$('[data-toggle="tooltip"]').tooltip()
 
-        this.delegateEvents();
+        this.delegateEvents()
 
-        return this;
+        return this
     },
 
         /**
@@ -49,7 +49,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     renderInput: function (templateContext) {
-        return this.fieldTemplate(templateContext);
+        return this.fieldTemplate(templateContext)
     },
 
         /**
@@ -63,7 +63,7 @@ export default BaseForm.extend({
             value: this.getValue(),
             config: this.config,
             error: this.getParent().getValidationErrorsForField(this.getFieldCode())
-        };
+        }
     },
 
         /**
@@ -72,7 +72,7 @@ export default BaseForm.extend({
          * @return {mixed}
          */
     getValue: function () {
-        return propertyAccessor.accessProperty(this.getFormData(), this.getFieldCode());
+        return propertyAccessor.accessProperty(this.getFormData(), this.getFieldCode())
     },
 
         /**
@@ -81,16 +81,16 @@ export default BaseForm.extend({
          * @return {strign}
          */
     getFieldCode: function () {
-        return this.config.fieldCode;
+        return this.config.fieldCode
     },
 
         /**
          * Update the model after dom update
          */
     updateState: function () {
-        var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue());
+        var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue())
 
-        this.setData(data);
+        this.setData(data)
     }
-});
+})
 

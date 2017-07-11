@@ -7,18 +7,18 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import Backbone from 'backbone';
-import BaseForm from 'pim/form';
-import template from 'pim/template/product/history';
-import Routing from 'routing';
-import mediator from 'oro/mediator';
-import FetcherRegistry from 'pim/fetcher-registry';
-import UserContext from 'pim/user-context';
-import i18n from 'pim/i18n';
-import 'bootstrap-modal';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/history'
+import Routing from 'routing'
+import mediator from 'oro/mediator'
+import FetcherRegistry from 'pim/fetcher-registry'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
+import 'bootstrap-modal'
 export default BaseForm.extend({
     template: _.template(template),
     className: 'panel-pane history-panel',
@@ -36,12 +36,12 @@ export default BaseForm.extend({
         this.trigger('tab:register', {
             code: this.code,
             label: __('pim_enrich.form.product.panel.history.title')
-        });
+        })
 
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
-        this.onExtensions('action:register',  this.addAction.bind(this));
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update)
+        this.onExtensions('action:register',  this.addAction.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
             /**
@@ -49,7 +49,7 @@ export default BaseForm.extend({
              */
     render: function () {
         if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
-            return this;
+            return this
         }
 
         if (this.getFormData().meta) {
@@ -61,23 +61,23 @@ export default BaseForm.extend({
                                     expanded: true,
                                     hasAction: this.actions
                                 })
-                            );
+                            )
 
-                            this.renderExtensions();
+                            this.renderExtensions()
 
                             if (this.actions) {
                                 _.each(this.$el.find('td.actions'), function (element) {
                                     _.each(this.actions, function (action) {
-                                        $(element).append(action.clone(true));
-                                    }.bind(this));
-                                }.bind(this));
+                                        $(element).append(action.clone(true))
+                                    }.bind(this))
+                                }.bind(this))
                             }
 
-                            this.delegateEvents();
-                        }.bind(this));
+                            this.delegateEvents()
+                        }.bind(this))
         }
 
-        return this;
+        return this
     },
 
             /**
@@ -85,10 +85,10 @@ export default BaseForm.extend({
              */
     update: function () {
         if (this.getFormData().meta) {
-            FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
+            FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id)
         }
 
-        this.render();
+        this.render()
     },
 
             /**
@@ -100,7 +100,7 @@ export default BaseForm.extend({
         return FetcherRegistry.getFetcher('product-history').fetch(
                     this.getFormData().meta.id,
                     { entityId: this.getFormData().meta.id }
-                ).then(this.addAttributesLabelToVersions.bind(this));
+                ).then(this.addAttributesLabelToVersions.bind(this))
     },
 
             /**
@@ -109,20 +109,20 @@ export default BaseForm.extend({
              * @param {Array} versions
              */
     addAttributesLabelToVersions: function (versions) {
-        var codes = this.getAttributeCodesInVersions(versions);
+        var codes = this.getAttributeCodesInVersions(versions)
 
         return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(codes)
                     .then(function (attributes) {
                         _.each(versions, function (version) {
                             _.each(version.changeset, function (data, index) {
-                                var code      = index.split('-')[0];
-                                var attribute = _.findWhere(attributes, { code: code });
-                                data.label    = attribute ? this.getAttributeLabel(attribute, index) : index;
-                            }.bind(this));
-                        }.bind(this));
+                                var code      = index.split('-')[0]
+                                var attribute = _.findWhere(attributes, { code: code })
+                                data.label    = attribute ? this.getAttributeLabel(attribute, index) : index
+                            }.bind(this))
+                        }.bind(this))
 
-                        return versions;
-                    }.bind(this));
+                        return versions
+                    }.bind(this))
     },
 
             /**
@@ -133,14 +133,14 @@ export default BaseForm.extend({
              * @returns {Array}
              */
     getAttributeCodesInVersions: function (versions) {
-        var codes = [];
+        var codes = []
         _.each(versions, function (version) {
             _.each(version.changeset, function (data, index) {
-                codes.push(index.split('-')[0]);
-            });
-        });
+                codes.push(index.split('-')[0])
+            })
+        })
 
-        return _.uniq(codes);
+        return _.uniq(codes)
     },
 
             /**
@@ -152,27 +152,27 @@ export default BaseForm.extend({
              * @return {string}
              */
     getAttributeLabel: function (attribute, key) {
-        var uiLocale = UserContext.get('catalogLocale');
-        var label    = i18n.getLabel(attribute.labels, uiLocale, attribute.code);
+        var uiLocale = UserContext.get('catalogLocale')
+        var label    = i18n.getLabel(attribute.labels, uiLocale, attribute.code)
 
-        key = key.split('-');
-        key.shift();
+        key = key.split('-')
+        key.shift()
 
-        var info = '';
+        var info = ''
         if (attribute.localizable) {
-            info += i18n.getFlag(key.shift());
+            info += i18n.getFlag(key.shift())
         }
         if (attribute.scopable) {
-            info = '<span>' + key.shift() + '</span>' + info;
+            info = '<span>' + key.shift() + '</span>' + info
         }
         if (0 < key.length) {
-            info = key.join(' ') + info;
+            info = key.join(' ') + info
         }
         if (info) {
-            info = ' <span class="attribute-info">' + info + '</span>';
+            info = ' <span class="attribute-info">' + info + '</span>'
         }
 
-        return label + info;
+        return label + info
     },
 
             /**
@@ -181,7 +181,7 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     addAction: function (event) {
-        this.actions[event.code] = event.element;
+        this.actions[event.code] = event.element
     },
 
             /**
@@ -190,18 +190,18 @@ export default BaseForm.extend({
              * @param {Event} event
              */
     toggleVersion: function (event) {
-        var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
-        var $body = $row.closest('.AknGrid');
+        var $row = $(event.currentTarget).closest('.AknGrid-bodyRow')
+        var $body = $row.closest('.AknGrid')
 
-        $body.find('tr.changeset').addClass('hide');
-        $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
+        $body.find('tr.changeset').addClass('hide')
+        $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down')
 
         if (!$row.hasClass('expanded')) {
-            $row.next('tr.changeset').removeClass('hide');
-            $row.find('i').toggleClass('icon-chevron-right icon-chevron-down');
+            $row.next('tr.changeset').removeClass('hide')
+            $row.find('i').toggleClass('icon-chevron-right icon-chevron-down')
         }
-        $row.siblings().removeClass('expanded');
-        $row.toggleClass('expanded');
+        $row.siblings().removeClass('expanded')
+        $row.toggleClass('expanded')
     }
-});
+})
 

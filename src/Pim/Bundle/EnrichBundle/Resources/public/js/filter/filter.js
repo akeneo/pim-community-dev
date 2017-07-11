@@ -1,11 +1,11 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import __ from 'oro/translator';
-import mediator from 'oro/mediator';
-import BaseForm from 'pim/form';
-import filterTemplate from 'pim/template/filter/filter';
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import mediator from 'oro/mediator'
+import BaseForm from 'pim/form'
+import filterTemplate from 'pim/template/filter/filter'
 export default BaseForm.extend({
     className: 'AknFieldContainer control-group filter-item',
     elements: {},
@@ -15,10 +15,10 @@ export default BaseForm.extend({
 
     configure: function () {
         this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode()});
-        }.bind(this));
+            _.defaults(data, {field: this.getCode()})
+        }.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments);
+        return BaseForm.prototype.configure.apply(this, arguments)
     },
 
         /**
@@ -27,7 +27,7 @@ export default BaseForm.extend({
          * @param {string} parentForm
          */
     setParentForm: function (parentForm) {
-        this.parentForm = parentForm;
+        this.parentForm = parentForm
     },
 
         /**
@@ -36,7 +36,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     getParentForm: function () {
-        return this.parentForm;
+        return this.parentForm
     },
 
         /**
@@ -45,7 +45,7 @@ export default BaseForm.extend({
          * @param {string} code
          */
     setCode: function (code) {
-        this.filterCode = code;
+        this.filterCode = code
     },
 
         /**
@@ -54,7 +54,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     getCode: function () {
-        return this.filterCode;
+        return this.filterCode
     },
 
         /**
@@ -66,7 +66,7 @@ export default BaseForm.extend({
         this.setData(
                 {field: field},
                 {silent: true}
-            );
+            )
     },
 
         /**
@@ -75,7 +75,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     getField: function () {
-        return this.getFormData().field;
+        return this.getFormData().field
     },
 
         /**
@@ -84,7 +84,7 @@ export default BaseForm.extend({
          * @param {string} type
          */
     setType: function (type) {
-        this.type = type;
+        this.type = type
     },
 
         /**
@@ -93,7 +93,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     getType: function () {
-        return this.type;
+        return this.type
     },
 
         /**
@@ -105,7 +105,7 @@ export default BaseForm.extend({
         this.setData(
                 {operator: operator},
                 {silent: true}
-            );
+            )
     },
 
         /**
@@ -114,7 +114,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     getOperator: function () {
-        return this.getFormData().operator;
+        return this.getFormData().operator
     },
 
         /**
@@ -124,12 +124,12 @@ export default BaseForm.extend({
          * @param {object} [options]
          */
     setValue: function (value, options) {
-        options = options || {silent: true};
+        options = options || {silent: true}
 
         this.setData(
                 {value: value},
                 options
-            );
+            )
     },
 
         /**
@@ -138,7 +138,7 @@ export default BaseForm.extend({
          * @return {string}
          */
     getValue: function () {
-        return this.getFormData().value;
+        return this.getFormData().value
     },
 
         /**
@@ -147,7 +147,7 @@ export default BaseForm.extend({
          * @param {boolean} editable
          */
     setEditable: function (editable) {
-        this.editable = Boolean(editable);
+        this.editable = Boolean(editable)
     },
 
         /**
@@ -156,7 +156,7 @@ export default BaseForm.extend({
          * @returns {boolean}
          */
     isEditable: function () {
-        return this.editable;
+        return this.editable
     },
 
         /**
@@ -165,7 +165,7 @@ export default BaseForm.extend({
          * @returns {boolean}
          */
     isEmpty: function () {
-        return false;
+        return false
     },
 
         /**
@@ -174,7 +174,7 @@ export default BaseForm.extend({
          * @param {boolean} removable
          */
     setRemovable: function (removable) {
-        this.removable = removable;
+        this.removable = removable
     },
 
         /**
@@ -183,14 +183,14 @@ export default BaseForm.extend({
          * @return {boolean}
          */
     isRemovable: function () {
-        return this.removable;
+        return this.removable
     },
 
         /**
          * Triggers the filter removal event.
          */
     removeFilter: function () {
-        this.trigger('filter:remove', this.getField());
+        this.trigger('filter:remove', this.getField())
     },
 
         /**
@@ -199,28 +199,28 @@ export default BaseForm.extend({
          * @return {Object}
          */
     render: function () {
-        var promises  = [];
-        this.elements = {};
-        this.setEditable(true);
+        var promises  = []
+        this.elements = {}
+        this.setEditable(true)
 
-        mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this, promises: promises});
+        mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this, promises: promises})
 
         $.when.apply($, promises)
                 .then(this.getTemplateContext.bind(this))
                 .then(function (templateContext) {
-                    this.el.dataset.name = this.getField();
-                    this.el.dataset.type = this.getType();
+                    this.el.dataset.name = this.getField()
+                    this.el.dataset.type = this.getType()
 
-                    this.$el.html(this.filterTemplate(templateContext));
-                    this.$('.remove').on('click', this.removeFilter.bind(this));
-                    this.$('.filter-input').replaceWith(this.renderInput(templateContext));
+                    this.$el.html(this.filterTemplate(templateContext))
+                    this.$('.remove').on('click', this.removeFilter.bind(this))
+                    this.$('.filter-input').replaceWith(this.renderInput(templateContext))
 
-                    this.renderElements();
-                    this.postRender(templateContext);
-                    this.delegateEvents();
-                }.bind(this));
+                    this.renderElements()
+                    this.postRender(templateContext)
+                    this.delegateEvents()
+                }.bind(this))
 
-        return this;
+        return this
     },
 
         /**
@@ -233,7 +233,7 @@ export default BaseForm.extend({
             label: __('pim_enrich.export.product.filter.' + this.shortname + '.title'),
             removable: this.isRemovable(),
             editable: this.isEditable()
-        }).promise();
+        }).promise()
     },
 
         /**
@@ -242,7 +242,7 @@ export default BaseForm.extend({
          * @throws {Error} if this method is not implemented
          */
     renderInput: function () {
-        throw new Error('You should implement your filter template');
+        throw new Error('You should implement your filter template')
     },
 
         /**
@@ -250,17 +250,17 @@ export default BaseForm.extend({
          */
     renderElements: function () {
         _.each(this.elements, function (elements, position) {
-            var $container = this.$('.' + position + '-elements-container');
-            $container.empty();
+            var $container = this.$('.' + position + '-elements-container')
+            $container.empty()
 
             _.each(elements, function (element) {
                 if ('function' === typeof element.render) {
-                    $container.append(element.render().$el);
+                    $container.append(element.render().$el)
                 } else {
-                    $container.append(element);
+                    $container.append(element)
                 }
-            });
-        }.bind(this));
+            })
+        }.bind(this))
     },
 
         /**
@@ -277,10 +277,10 @@ export default BaseForm.extend({
          */
     addElement: function (position, code, element) {
         if (!this.elements[position]) {
-            this.elements[position] = {};
+            this.elements[position] = {}
         }
 
-        this.elements[position][code] = element;
+        this.elements[position][code] = element
     }
-});
+})
 

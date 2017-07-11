@@ -1,11 +1,11 @@
-import Backbone from 'backbone';
-import $ from 'jquery';
-import _ from 'underscore';
-import Routing from 'routing';
-import NotificationList from 'pim/notification-list';
-import Indicator from 'pim/indicator';
-import notificationTpl from 'pim/template/notification/notification';
-import notificationFooterTpl from 'pim/template/notification/notification-footer';
+import Backbone from 'backbone'
+import $ from 'jquery'
+import _ from 'underscore'
+import Routing from 'routing'
+import NotificationList from 'pim/notification-list'
+import Indicator from 'pim/indicator'
+import notificationTpl from 'pim/template/notification/notification'
+import notificationFooterTpl from 'pim/template/notification/notification-footer'
 
 
 export default Backbone.View.extend({
@@ -35,101 +35,101 @@ export default Backbone.View.extend({
     },
 
     markAllAsRead: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation()
+        e.preventDefault()
 
         $.ajax({
             type: 'POST',
             url: Routing.generate('pim_notification_notification_mark_viewed'),
             async: true
-        });
+        })
 
-        this.collection.trigger('mark_as_read', null);
+        this.collection.trigger('mark_as_read', null)
         _.each(this.collection.models, function (model) {
-            model.set('viewed', true);
-        });
+            model.set('viewed', true)
+        })
     },
 
     initialize: function (opts) {
-        this.options = _.extend({}, this.options, opts);
-        this.collection = new NotificationList();
+        this.options = _.extend({}, this.options, opts)
+        this.collection = new NotificationList()
         this.indicator  = new Indicator({
             el: this.$('.AknNotificationMenu-countContainer'),
             value: 0,
             className: this.options.indicatorBaseClass,
             emptyClass: this.options.indicatorEmptyClass
-        });
+        })
 
         this.collection.on('load:unreadCount', function (count, reset) {
-            this.scheduleRefresh();
+            this.scheduleRefresh()
             if (this.freezeCount) {
-                this.freezeCount = false;
+                this.freezeCount = false
 
-                return;
+                return
             }
             if (this.indicator.get('value') !== count) {
-                this.indicator.set('value', count);
+                this.indicator.set('value', count)
                 if (reset) {
-                    this.collection.hasMore = true;
-                    this.collection.reset();
-                    this.renderFooter();
+                    this.collection.hasMore = true
+                    this.collection.reset()
+                    this.renderFooter()
                 }
             }
-        }, this);
+        }, this)
 
         this.collection.on('mark_as_read', function (id) {
-            var value = null === id ? 0 : this.indicator.get('value') - 1;
-            this.indicator.set('value', value);
+            var value = null === id ? 0 : this.indicator.get('value') - 1
+            this.indicator.set('value', value)
             if (0 === value) {
-                this.renderFooter();
+                this.renderFooter()
             }
             if (null !== id) {
-                this.freezeCount = true;
+                this.freezeCount = true
             }
-        }, this);
+        }, this)
 
-        this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
+        this.collection.on('loading:start loading:finish remove', this.renderFooter, this)
 
-        this.render();
+        this.render()
 
-        this.scheduleRefresh();
+        this.scheduleRefresh()
     },
 
     scheduleRefresh: function () {
         if (this.refreshLocked) {
-            return;
+            return
         }
         if (null !== this.refreshTimeout) {
-            clearTimeout(this.refreshTimeout);
+            clearTimeout(this.refreshTimeout)
         }
 
-        this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
+        this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval)
     },
 
     refresh: function () {
-        this.refreshLocked = true;
+        this.refreshLocked = true
         $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
                     .then(_.bind(function (count) {
-                        this.refreshLocked = false;
-                        this.collection.trigger('load:unreadCount', count, true);
-                    }, this));
+                        this.refreshLocked = false
+                        this.collection.trigger('load:unreadCount', count, true)
+                    }, this))
     },
 
     onOpen: function () {
         if (!this.collection.length) {
-            this.collection.loadNotifications();
+            this.collection.loadNotifications()
         }
     },
 
     render: function () {
-        this.$el.html(this.template());
-        this.collection.setElement(this.$('ul'));
-        this.indicator.setElement(this.$('.AknNotificationMenu-countContainer'));
-        this.renderFooter();
+        this.$el.html(this.template())
+        this.collection.setElement(this.$('ul'))
+        this.indicator.setElement(this.$('.AknNotificationMenu-countContainer'))
+        this.renderFooter()
     },
 
     renderFooter: function () {
-        this.$('p').remove();
+        this.$('p').remove()
 
         this.$('ul').append(
                     this.footerTemplate({
@@ -139,7 +139,7 @@ export default Backbone.View.extend({
                         hasMore:          this.collection.hasMore,
                         hasUnread:        this.indicator.get('value') > 0
                     })
-                );
+                )
     }
-});
+})
 

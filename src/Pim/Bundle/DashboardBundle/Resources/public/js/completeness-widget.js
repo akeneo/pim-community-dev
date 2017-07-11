@@ -1,7 +1,7 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import AbstractWidget from 'pim/dashboard/abstract-widget';
-import template from 'pim/dashboard/template/completeness-widget';
+import $ from 'jquery'
+import _ from 'underscore'
+import AbstractWidget from 'pim/dashboard/abstract-widget'
+import template from 'pim/dashboard/template/completeness-widget'
 
 
 export default AbstractWidget.extend({
@@ -18,8 +18,8 @@ export default AbstractWidget.extend({
     template: _.template(template),
 
     _afterLoad: function () {
-        AbstractWidget.prototype._afterLoad.apply(this, arguments);
-        this.loadMore();
+        AbstractWidget.prototype._afterLoad.apply(this, arguments)
+        this.loadMore()
     },
 
     events: {
@@ -28,46 +28,46 @@ export default AbstractWidget.extend({
 
     loadMore: function (e) {
         if (undefined !== e) {
-            e.preventDefault();
+            e.preventDefault()
         }
 
-        var $nextChannels = $('.completeness-widget .channels:not(:visible)');
+        var $nextChannels = $('.completeness-widget .channels:not(:visible)')
         if ($nextChannels.length) {
-            $nextChannels.first().show();
+            $nextChannels.first().show()
         }
 
         if ($nextChannels.length <= 1) {
-            $('.completeness-widget .load-more').hide();
+            $('.completeness-widget .load-more').hide()
         }
     },
 
     _processResponse: function (data) {
-        var channelArray = [];
+        var channelArray = []
         _.each(data, function (channelResult, channel) {
-            channelResult.name = channel;
-            channelResult.locales = channelResult.locales || {};
-            var divider = channelResult.total * _.keys(channelResult.locales).length;
+            channelResult.name = channel
+            channelResult.locales = channelResult.locales || {}
+            var divider = channelResult.total * _.keys(channelResult.locales).length
 
             channelResult.percentage = divider === 0 ?
                         0 :
-                        Math.round(channelResult.complete / divider * 100);
+                        Math.round(channelResult.complete / divider * 100)
 
             _.each(channelResult.locales, function (localeResult, locale) {
-                var divider = channelResult.total;
+                var divider = channelResult.total
                 var ratio = divider === 0 ?
                             0 :
-                            Math.round(localeResult / divider * 100);
+                            Math.round(localeResult / divider * 100)
 
                 channelResult.locales[locale] = {
                     complete: localeResult,
                     ratio: ratio
-                };
-            });
+                }
+            })
 
-            channelArray.push(channelResult);
-        });
+            channelArray.push(channelResult)
+        })
 
-        return channelArray;
+        return channelArray
     }
-});
+})
 

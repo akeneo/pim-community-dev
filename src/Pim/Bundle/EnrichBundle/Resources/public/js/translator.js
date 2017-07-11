@@ -1,16 +1,16 @@
-import _ from 'underscore';
-import Translator from 'translator-lib';
-import 'json';
+import _ from 'underscore'
+import Translator from 'translator-lib'
+import 'json'
 
 
-var dict = {};
-var debug = false;
-var add = Translator.add;
-var get = Translator.get;
-var fromJSON = Translator.fromJSON;
+var dict = {}
+var debug = false
+var add = Translator.add
+var get = Translator.get
+var fromJSON = Translator.fromJSON
 
-Translator.placeHolderPrefix = '{{ ';
-Translator.placeHolderSuffix = ' }}';
+Translator.placeHolderPrefix = '{{ '
+Translator.placeHolderSuffix = ' }}'
 
     /**
      * Adds a translation to Translator object and stores
@@ -19,9 +19,9 @@ Translator.placeHolderSuffix = ' }}';
      * @param {string} id
      */
 Translator.add = function (id) {
-    dict[id] = 1;
-    add.apply(Translator, arguments);
-};
+    dict[id] = 1
+    add.apply(Translator, arguments)
+}
 
     /**
      * Fetches translation by its id,
@@ -31,10 +31,10 @@ Translator.add = function (id) {
      * @returns {string}
      */
 Translator.get = function (id) {
-    checkTranslation(id);
+    checkTranslation(id)
 
-    return get.apply(Translator, arguments);
-};
+    return get.apply(Translator, arguments)
+}
 
     /**
      * Parses JSON data in store translations inside,
@@ -45,12 +45,12 @@ Translator.get = function (id) {
      */
 Translator.fromJSON = function (data) {
     if (typeof data === 'string') {
-        data = JSON.parse(data);
+        data = JSON.parse(data)
     }
-    debug = data.debug || false;
+    debug = data.debug || false
 
-    return fromJSON.call(Translator, data);
-};
+    return fromJSON.call(Translator, data)
+}
 
     /**
      * Checks if translation for passed id exist, if it's debug mode
@@ -60,15 +60,15 @@ Translator.fromJSON = function (data) {
      */
 function checkTranslation(id) {
     if (!debug) {
-        return;
+        return
     }
-    var domains = Translator.defaultDomains;
+    var domains = Translator.defaultDomains
     var checker = function (domain) {
-        return dict.hasOwnProperty(domain ? domain + ':' + id : id);
-    };
-    domains = _.union([undefined], _.isArray(domains) ? domains : [domains]);
+        return dict.hasOwnProperty(domain ? domain + ':' + id : id)
+    }
+    domains = _.union([undefined], _.isArray(domains) ? domains : [domains])
     if (!_.some(domains, checker)) {
-        console.error('Untranslated: %s', id);
+        console.error('Untranslated: %s', id)
     }
 }
 
@@ -79,7 +79,7 @@ _.mixin({
          * @returns {string}
          */
     __: _.bind(Translator.get, Translator)
-});
+})
 
     /**
      * Shortcut for Translator.get() method call
@@ -87,4 +87,4 @@ _.mixin({
      * @export oro/translator
      * @returns {string}
      */
-export default _.__;
+export default _.__

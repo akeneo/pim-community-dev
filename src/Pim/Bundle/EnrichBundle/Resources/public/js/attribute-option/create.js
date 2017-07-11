@@ -1,20 +1,20 @@
 
 
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import Routing from 'routing';
-import FormBuilder from 'pim/form-builder';
-import messenger from 'oro/messenger';
-import errorTemplate from 'pim/template/attribute-option/validation-error';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import Routing from 'routing'
+import FormBuilder from 'pim/form-builder'
+import messenger from 'oro/messenger'
+import errorTemplate from 'pim/template/attribute-option/validation-error'
 var CreateOptionView = Backbone.View.extend({
     errorTemplate: _.template(errorTemplate),
     attribute: null,
     initialize: function (options) {
-        this.attribute = options.attribute;
+        this.attribute = options.attribute
     },
     createOption: function () {
-        var deferred = $.Deferred();
+        var deferred = $.Deferred()
 
         FormBuilder.build('pim-attribute-option-form').done(function (form) {
             var modal = new Backbone.BootstrapModal({
@@ -28,14 +28,14 @@ var CreateOptionView = Backbone.View.extend({
                 content: '',
                 cancelText: _.__('pim_enrich.form.attribute_option.add_option_modal.cancel'),
                 okText: _.__('pim_enrich.form.attribute_option.add_option_modal.confirm')
-            });
-            modal.open();
+            })
+            modal.open()
 
-            form.setElement(modal.$('.modal-body')).render();
+            form.setElement(modal.$('.modal-body')).render()
 
-            modal.on('cancel', deferred.reject);
+            modal.on('cancel', deferred.reject)
             modal.on('ok', function () {
-                form.$('.validation-errors').remove();
+                form.$('.validation-errors').remove()
                 $.ajax({
                     method: 'POST',
                     url: Routing.generate(
@@ -44,44 +44,44 @@ var CreateOptionView = Backbone.View.extend({
                             ),
                     data: JSON.stringify(form.getFormData())
                 }).done(function (option) {
-                    modal.close();
+                    modal.close()
                     messenger.notify(
                                 'success',
                                 _.__('pim_enrich.form.attribute_option.flash.option_created')
-                            );
-                    deferred.resolve(option);
+                            )
+                    deferred.resolve(option)
                 }).fail(function (xhr) {
-                    var response = xhr.responseJSON;
+                    var response = xhr.responseJSON
 
                     if (response.code) {
                         form.$('input[name="code"]').after(
                                     this.errorTemplate({
                                         errors: [response.code]
                                     })
-                                );
+                                )
                     } else {
                         messenger.notify(
                                     'error',
                                     _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
-                                );
+                                )
                     }
-                }.bind(this));
-            }.bind(this));
-        }.bind(this));
+                }.bind(this))
+            }.bind(this))
+        }.bind(this))
 
-        return deferred.promise();
+        return deferred.promise()
     }
-});
+})
 
 export default function (attribute) {
     if (!attribute) {
-        throw new Error('Attribute must be provided to create a new option');
+        throw new Error('Attribute must be provided to create a new option')
     }
 
-    var view = new CreateOptionView({ attribute: attribute });
+    var view = new CreateOptionView({ attribute: attribute })
 
     return view.createOption().always(function () {
-        view.remove();
-    });
+        view.remove()
+    })
 };
 

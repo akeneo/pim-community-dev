@@ -1,9 +1,9 @@
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import __ from 'oro/translator';
-import router from 'pim/router';
-import 'bootstrap-modal';
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import __ from 'oro/translator'
+import router from 'pim/router'
+import 'bootstrap-modal'
 
 
         /**
@@ -31,10 +31,10 @@ export default {
                 title: title,
                 content: content,
                 okText: __('OK')
-            });
-            alert.open();
+            })
+            alert.open()
         } else {
-            window.alert(content);
+            window.alert(content)
         }
     },
 
@@ -53,19 +53,19 @@ export default {
                 content: content,
                 okText: okText,
                 cancelText: __('Cancel')
-            });
+            })
 
             redirectModal.on('ok', function () {
-                router.redirect(location);
-            });
+                router.redirect(location)
+            })
 
             $('.modal-body a', redirectModal.el).on('click', function () {
-                redirectModal.close();
-            });
+                redirectModal.close()
+            })
 
-            redirectModal.open();
+            redirectModal.open()
         } else {
-            window.alert(content);
+            window.alert(content)
         }
     },
 
@@ -77,30 +77,30 @@ export default {
              * @param function callback
              */
     confirm: function (content, title, callback) {
-        var deferred = $.Deferred();
+        var deferred = $.Deferred()
 
         var success = function () {
             deferred.resolve();
-            (callback || $.noop)();
-        };
+            (callback || $.noop)()
+        }
         var cancel = function () {
-            deferred.reject();
-        };
+            deferred.reject()
+        }
         if (!_.isUndefined(Backbone.BootstrapModal)) {
             var confirm = new Backbone.BootstrapModal({
                 title: title,
                 content: content,
                 okText: __('OK'),
                 cancelText: __('Cancel')
-            });
-            confirm.on('ok', success);
-            confirm.on('cancel', cancel);
-            confirm.open();
+            })
+            confirm.on('ok', success)
+            confirm.on('cancel', cancel)
+            confirm.open()
         } else {
-            (window.confirm(content) ? success : cancel)();
+            (window.confirm(content) ? success : cancel)()
         }
 
-        return deferred.promise();
+        return deferred.promise()
     }
-};
+}
 

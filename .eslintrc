@@ -11,7 +11,9 @@
     "__dirname": true,
     "__moduleConfig": true,
     "__contextPlaceholder": true,
-    "__contextPaths": true
+    "__contextPaths": true,
+    "Backbone": true,
+    "$": true
   },
   "rules": {
     "space-infix-ops": 2,
@@ -128,6 +130,7 @@
     "linebreak-style": [
       2,
       "unix"
-    ]
+    ],
+    semi: ['error', 'never']
   }
 }

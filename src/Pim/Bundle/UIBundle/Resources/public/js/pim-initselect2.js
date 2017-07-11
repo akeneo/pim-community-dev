@@ -1,9 +1,9 @@
 /* jshint unused:vars */
-import $ from 'jquery';
-import _ from 'underscore';
-import ChoicesFormatter from 'pim/formatter/choices/base';
-import UserContext from 'pim/user-context';
-import 'jquery.select2';
+import $ from 'jquery'
+import _ from 'underscore'
+import ChoicesFormatter from 'pim/formatter/choices/base'
+import UserContext from 'pim/user-context'
+import 'jquery.select2'
 
 
 export default {
@@ -11,82 +11,82 @@ export default {
     defaultOptions: {
         allowClear: false,
         formatSearching: function () {
-            return _.__('pim_enrich.form.product.tab.attributes.info.search_attributes');
+            return _.__('pim_enrich.form.product.tab.attributes.info.search_attributes')
         },
         formatNoMatches: function () {
-            return _.__('pim_enrich.form.product.tab.attributes.info.no_match');
+            return _.__('pim_enrich.form.product.tab.attributes.info.no_match')
         },
         formatLoadMore: function () {
-            return _.__('pim_enrich.form.product.tab.attributes.info.load_more');
+            return _.__('pim_enrich.form.product.tab.attributes.info.load_more')
         }
     },
     init: function ($target, options) {
-        var self = this;
+        var self = this
 
         $target.find('input.select2:not(.select2-offscreen)').each(function () {
-            var options = self.initOptions(options);
+            var options = self.initOptions(options)
 
-            var $el = $(this);
-            var value = _.map(_.compact($el.val().split(',')), $.trim);
-            var tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
+            var $el = $(this)
+            var value = _.map(_.compact($el.val().split(',')), $.trim)
+            var tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim)
 
             $el.select2($.extend(true, options, {
                 tags: _.union(tags, value).sort(),
                 tokenSeparators: [',', ' ']
-            }));
-        });
+            }))
+        })
 
         $target.find('select.select2:not(.select2-offscreen)').each(function () {
-            var options = self.initOptions(options);
+            var options = self.initOptions(options)
 
-            var $el = $(this);
-            var $empty = $el.children('[value=""]');
+            var $el = $(this)
+            var $empty = $el.children('[value=""]')
 
             if ($empty.length && $empty.html()) {
-                $el.attr('data-placeholder', $empty.html());
-                $empty.html('');
+                $el.attr('data-placeholder', $empty.html())
+                $empty.html('')
             }
 
             $el.select2($.extend(true, options, {
                 allowClear: true
-            }));
-        });
+            }))
+        })
 
         $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
-            self.initSelect.call(self, $(this));
-        });
+            self.initSelect.call(self, $(this))
+        })
 
         if ($target.hasClass('select-field')) {
-            options = self.initOptions(options);
-            $target.select2('destroy').select2(options);
+            options = self.initOptions(options)
+            $target.select2('destroy').select2(options)
         }
 
-        return $target;
+        return $target
     },
     initSelect: function ($select, options) {
-        options = this.initOptions(options);
-        var self = this;
-        var queryTimer;
+        options = this.initOptions(options)
+        var self = this
+        var queryTimer
 
         if ($select.attr('data-multiple')) {
-            options.multiple = true;
+            options.multiple = true
         }
         if (!options.multiple) {
             if (!$select.attr('data-required')) {
-                options.allowClear = true;
+                options.allowClear = true
             }
-            options.placeholder = ' ';
+            options.placeholder = ' '
         }
 
-        options.minimumInputLength = $select.attr('data-min-input-length');
+        options.minimumInputLength = $select.attr('data-min-input-length')
         options.query = function (options) {
-            var page = 1;
+            var page = 1
 
             if (options.context && options.context.page) {
-                page = options.context.page;
+                page = options.context.page
             }
 
-            window.clearTimeout(queryTimer);
+            window.clearTimeout(queryTimer)
             queryTimer = window.setTimeout(function () {
                 $.ajax({
                     url: $select.attr('data-url'),
@@ -102,7 +102,7 @@ export default {
                     type: 'GET',
                     success: function (data) {
                         if (_.isUndefined(data.results)) {
-                            data.results = ChoicesFormatter.format(data);
+                            data.results = ChoicesFormatter.format(data)
                         }
                         options.callback({
                             results: data.results,
@@ -110,39 +110,39 @@ export default {
                             context: {
                                 page: page + 1
                             }
-                        });
+                        })
                     }
-                });
-            }, 400);
-        };
+                })
+            }, 400)
+        }
         options.initSelection = function (element, callback) {
-            var choices = $.parseJSON($select.attr('data-choices'));
+            var choices = $.parseJSON($select.attr('data-choices'))
 
-            callback(choices);
-        };
+            callback(choices)
+        }
 
-        $select.select2(options);
+        $select.select2(options)
     },
     getSelectOptions: function (data) {
-        return data;
+        return data
     },
     getAjaxParameters: function () {
-        return {};
+        return {}
     },
     hasCachableResults: function () {
-        return true;
+        return true
     },
     matchLocalResults: function (data, term) {
         var matchingResults = _.filter(data.results, function (result) {
-            return $.fn.select2.defaults.matcher(term, result.text);
-        });
+            return $.fn.select2.defaults.matcher(term, result.text)
+        })
 
-        return _.extend({}, data, {results: matchingResults});
+        return _.extend({}, data, {results: matchingResults})
     },
     initOptions: function (options) {
-        var defaultOptions = $.extend(true, {}, this.defaultOptions);
+        var defaultOptions = $.extend(true, {}, this.defaultOptions)
 
-        return $.extend(true, defaultOptions, options);
+        return $.extend(true, defaultOptions, options)
     }
-};
+}
 

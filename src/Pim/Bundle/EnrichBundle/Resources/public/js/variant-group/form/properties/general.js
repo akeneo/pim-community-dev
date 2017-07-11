@@ -7,12 +7,12 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore';
-import __ from 'oro/translator';
-import BaseForm from 'pim/form';
-import FetcherRegistry from 'pim/fetcher-registry';
-import template from 'pim/template/variant-group/tab/properties/general';
-import 'jquery.select2';
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/variant-group/tab/properties/general'
+import 'jquery.select2'
+
 export default BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),
@@ -28,11 +28,10 @@ export default BaseForm.extend({
             typeLabel: __('pim_enrich.form.variant_group.tab.properties.type'),
             axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis'),
             __: __
-        }));
+        }))
 
-        this.$el.find('select.select2').select2({});
+        this.$el.find('select.select2').select2({})
 
-        this.renderExtensions();
+        this.renderExtensions()
     }
-});
-
+})
