@@ -72,9 +72,8 @@ class Client
             $params['parent'] = $parent;
         }
 
-        if (isset($body['routing'])) {
-            $params['routing'] = $body['routing'];
-            unset($body['routing']);
+        if (isset($body['root_ancestor'])) {
+            $params['routing'] = $body['root_ancestor'];
         }
 
         return $this->client->index($params);
@@ -99,14 +98,25 @@ class Client
                 throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
             }
 
-            $params['body'][] = [
+            $enveloppe = [
                 'index' => [
-                    '_index' => $this->indexName,
-                    '_type' => $indexType,
-                    '_id' => $document[$keyAsId],
+                    '_index'  => $this->indexName,
+                    '_type'   => $indexType,
+                    '_id'     => $document[$keyAsId],
                 ],
             ];
 
+            if (isset($document['parent'])) {
+                $enveloppe['index']['_parent'] = $document['parent'];
+            }
+            if (isset($document['root_ancestor'])) {
+                $enveloppe['index']['_routing'] = $document['root_ancestor'];
+            }
+
+//            var_dump($enveloppe);
+//            var_dump($document);
+
+            $params['body'][] = $enveloppe;
             $params['body'][] = $document;
 
             if (null !== $refresh) {
