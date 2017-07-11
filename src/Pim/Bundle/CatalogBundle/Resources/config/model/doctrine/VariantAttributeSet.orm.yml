@@ -9,6 +9,9 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
             id: true
             generator:
                 strategy: AUTO
+        level:
+            type: integer
+            column: level
 
     manyToMany:
         attributes:

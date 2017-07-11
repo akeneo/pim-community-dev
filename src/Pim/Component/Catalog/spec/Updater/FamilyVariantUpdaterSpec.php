@@ -9,14 +9,13 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Updater\FamilyVariantUpdater;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FamilyVariantUpdaterSpec extends ObjectBehavior
 {
@@ -76,13 +75,15 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
 
-        $familyVariant->addVariantAttributeSet(1, $attributeSet1)->shouldBeCalled();
+        $familyVariant->addVariantAttributeSet($attributeSet1)->shouldBeCalled();
         $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
+        $attributeSet1->setLevel(1)->shouldBeCalled();
 
-        $familyVariant->addVariantAttributeSet(2, $attributeSet2)->shouldBeCalled();
+        $familyVariant->addVariantAttributeSet($attributeSet2)->shouldBeCalled();
         $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
+        $attributeSet2->setLevel(2)->shouldBeCalled();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',
@@ -93,11 +94,13 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
             'variant_attribute_sets' => [
                 [
                     'axes' => ['color'],
-                    'attributes' => ['description']
+                    'attributes' => ['description'],
+                    'level' => 1,
                 ],
                 [
                     'axes' => ['size', 'other'],
-                    'attributes' => ['size', 'sku']
+                    'attributes' => ['size', 'sku'],
+                    'level' => 2,
                 ]
             ],
         ], []);
@@ -117,7 +120,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throw_an_exception_if_code_is_not_string(FamilyVariantInterface $familyVariant)
+    function it_throws_an_exception_if_code_is_not_string(FamilyVariantInterface $familyVariant)
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
             $familyVariant,
@@ -127,7 +130,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throw_an_exception_if_labels_are_not_an_array(FamilyVariantInterface $familyVariant)
+    function it_throws_an_exception_if_labels_are_not_an_array(FamilyVariantInterface $familyVariant)
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
             $familyVariant,
@@ -137,7 +140,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throw_an_exception_if_variant_attributes_are_not_an_array(FamilyVariantInterface $familyVariant)
+    function it_throws_an_exception_if_variant_attribute_sets_are_not_an_array(FamilyVariantInterface $familyVariant)
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
             $familyVariant,

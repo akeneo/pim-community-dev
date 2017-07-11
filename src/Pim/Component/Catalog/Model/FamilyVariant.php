@@ -87,13 +87,19 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariantAttributeSet(int $level): VariantAttributeSetInterface
+    public function getVariantAttributeSet(int $level): ?VariantAttributeSetInterface
     {
         if ($level <= 0) {
             throw new \InvalidArgumentException('The level must be greater than 0');
         }
 
-        return $this->variantAttributeSets->get($level);
+        foreach ($this->variantAttributeSets as $variantAttributeSet) {
+            if ($level === $variantAttributeSet->getLevel()) {
+                return $variantAttributeSet;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -127,13 +133,9 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function addVariantAttributeSet(int $level, VariantAttributeSetInterface $variantAttributeSet): void
+    public function addVariantAttributeSet(VariantAttributeSetInterface $variantAttributeSet): void
     {
-        if ($level <= 0) {
-            throw new \InvalidArgumentException('The level must be greater than 0');
-        }
-
-        $this->variantAttributeSets->set($level, $variantAttributeSet);
+        $this->variantAttributeSets->add($variantAttributeSet);
     }
 
     /**

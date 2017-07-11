@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class FamilyVariantValidator extends ConstraintValidator
 {
+    const MAXIMUM_AXES_NUMBER = 5;
+
     /** @var TranslatorInterface */
     private $translator;
 
@@ -83,7 +85,6 @@ class FamilyVariantValidator extends ConstraintValidator
     {
         $axisCodes = [];
         foreach ($axes as $axis) {
-            /** @var $axis AttributeInterface */
             $axisCodes[] = $axis->getCode();
             if ($axis->isLocalizable() || $axis->isScopable() || $axis->isLocaleSpecific()) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_wrong_type');
@@ -116,7 +117,14 @@ class FamilyVariantValidator extends ConstraintValidator
         $numberOfLevel = $familyVariant->getLevel();
         $i = 0;
         while ($i !== $numberOfLevel) {
-            if (5 < $familyVariant->getVariantAttributeSet($i + 1)->getAxes()->count()) {
+            $attributeSet = $familyVariant->getVariantAttributeSet($i + 1);
+
+            if (null === $attributeSet) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_level_do_not_exist');
+                $this->context->buildViolation($message, [
+                    '%level%' => $i + 1,
+                ])->addViolation();
+            } elseif (static::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_number_of_axes');
                 $this->context->buildViolation($message)->addViolation();
             }

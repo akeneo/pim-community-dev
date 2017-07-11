@@ -45,8 +45,8 @@ class FamilyVariantSpec extends ObjectBehavior
         Collection $attribute2,
         \Iterator $iterator
     ) {
-        $this->addVariantAttributeSet(1, $variantAttributeSet1);
-        $this->addVariantAttributeSet(2, $variantAttributeSet2);
+        $this->addVariantAttributeSet($variantAttributeSet1);
+        $this->addVariantAttributeSet($variantAttributeSet2);
         $this->setFamily($family);
 
         $family->getAttributes()->willReturn($familyAttributes);
@@ -56,12 +56,14 @@ class FamilyVariantSpec extends ObjectBehavior
         $variantAttributeSet1->getAxes()->willReturn($axes1);
         $attribute1->getIterator()->willReturn($iterator);
         $variantAttributeSet1->getAttributes()->willReturn($attribute1);
+        $variantAttributeSet1->getLevel()->willReturn(1);
 
         $axes2->getIterator()->willReturn($iterator);
         $variantAttributeSet2->getAxes()->willReturn($axes2);
 
         $attribute2->getIterator()->willReturn($iterator);
         $variantAttributeSet2->getAttributes()->willReturn($attribute2);
+        $variantAttributeSet2->getLevel()->willReturn(2);
 
         $this->getCommonAttributes()->shouldHaveType(CommonAttributeCollection::class);
     }
@@ -70,8 +72,11 @@ class FamilyVariantSpec extends ObjectBehavior
         VariantAttributeSetInterface $variantAttributeSet1,
         VariantAttributeSetInterface $variantAttributeSet2
     ) {
-        $this->addVariantAttributeSet(1, $variantAttributeSet1)->shouldReturn(null);
-        $this->addVariantAttributeSet(2, $variantAttributeSet2)->shouldReturn(null);
+        $variantAttributeSet1->getLevel()->willReturn(1);
+        $variantAttributeSet2->getLevel()->willReturn(2);
+
+        $this->addVariantAttributeSet($variantAttributeSet1)->shouldReturn(null);
+        $this->addVariantAttributeSet($variantAttributeSet2)->shouldReturn(null);
 
         $this->getVariantAttributeSet(1)->shouldReturn($variantAttributeSet1);
         $this->getVariantAttributeSet(2)->shouldReturn($variantAttributeSet2);
@@ -85,8 +90,8 @@ class FamilyVariantSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $size
     ) {
-        $this->addVariantAttributeSet(1, $variantAttributeSet1);
-        $this->addVariantAttributeSet(2, $variantAttributeSet2);
+        $this->addVariantAttributeSet($variantAttributeSet1);
+        $this->addVariantAttributeSet($variantAttributeSet2);
 
         $variantAttributeSet1->getAxes()->willReturn($axes1);
         $variantAttributeSet2->getAxes()->willReturn($axes2);
@@ -110,8 +115,8 @@ class FamilyVariantSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $size
     ) {
-        $this->addVariantAttributeSet(1, $variantAttributeSet1);
-        $this->addVariantAttributeSet(2, $variantAttributeSet2);
+        $this->addVariantAttributeSet($variantAttributeSet1);
+        $this->addVariantAttributeSet($variantAttributeSet2);
 
         $commonAttributeSet->getAttributes()->willReturn($commonAttributes);
         $variantAttributeSet1->getAttributes()->willReturn($attributes1);
@@ -126,14 +131,8 @@ class FamilyVariantSpec extends ObjectBehavior
         $axes->toArray([$color, $size]);
     }
 
-    function it_throws_an_exception_if_variant_attribute_set_index_is_invalid(
-        VariantAttributeSetInterface $variantAttributeSets
-    ) {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('addVariantAttributeSet', [
-            0,
-            $variantAttributeSets
-        ]);
-
+    function it_throws_an_exception_if_variant_attribute_set_index_is_invalid()
+    {
         $this->shouldThrow(\InvalidArgumentException::class)->during('getVariantAttributeSet', [
             0,
         ]);

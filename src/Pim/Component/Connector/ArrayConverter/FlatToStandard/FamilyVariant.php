@@ -30,28 +30,36 @@ class FamilyVariant implements ArrayConverterInterface
      *
      * Before:
      * [
-     *      'code'                => 'pc_monitors',
-     *      'label-en_US'         => 'PC Monitors',
-     *      'label-fr_FR'         => 'Moniteurs',
-     *      'attributes'          => 'sku,name,description,price',
-     *      'attribute_as_label'  => 'name',
-     *      'requirements-print'  => 'sku,name,description',
-     *      'requirements-mobile' => 'sku,name',
+     *      'code'                 => 'my-tshirt',
+     *      'family'               => 't-shirt',
+     *      'label-fr_FR'          => 'Mon tshirt',
+     *      'label-en_US'          => 'My tshirt',
+     *      'variant-axes_1'       => 'color',
+     *      'variant-attributes_1' => 'description',
+     *      'variant-axes_2'       => 'size,other',
+     *      'variant-attributes_2' => 'size,other,sku',
      * ]
      *
      * After:
      * [
-     *      'code'                   => 'pc_monitors',
-     *      'attributes'             => ['sku', 'name', 'description', 'price'],
-     *      'attribute_as_label'     => 'name',
-     *      'attribute_requirements' => [
-     *          'mobile' => ['sku', 'name'],
-     *          'print'  => ['sku', 'name', 'description'],
+     *      'labels' => [
+     *          'fr_FR' => 'Mon tshirt',
+     *          'en_US' => 'My tshirt',
      *      ],
-     *      'labels'                 => [
-     *          'fr_FR' => 'Moniteurs',
-     *          'en_US' => 'PC Monitors',
+     *      'variant_attribute_sets' => [
+     *          [
+     *              'level' => 1,
+     *              'axes' => ['color'],
+     *              'attributes' => ['description'],
+     *          ],
+     *          [
+     *              'level' => 2,
+     *              'axes' => ['size', 'other'],
+     *              'attributes' => ['size', 'other', 'sku'],
+     *          ],
      *      ],
+     *      'code' => 'my-tshirt',
+     *      'family' => 't-shirt',
      * ]
      */
     public function convert(array $item, array $options = []): array
@@ -91,19 +99,38 @@ class FamilyVariant implements ArrayConverterInterface
                 case 'code':
                 case 'family':
                     $convertedItem[$field] = (string) $data;
+
                     break;
                 case (false !== strpos($field, 'variant-axes_')):
                     $matches = null;
                     preg_match('/^variant-axes_(?P<level>.*)$/', $field, $matches);
-                    $convertedItem['variant_attribute_sets'][$matches['level'] - 1]['axes'] = explode(',', $data);
+                    $level = (int) $matches['level'];
+
+                    if (!isset($convertedItem['variant_attribute_sets'][$level - 1]) ||
+                        !isset($convertedItem['variant_attribute_sets'][$level - 1]['level'])
+                    ) {
+                        $convertedItem['variant_attribute_sets'][$level - 1]['level'] = $level;
+                    }
+
+                    $convertedItem['variant_attribute_sets'][$level - 1]['axes'] = explode(',', $data);
+
                     break;
                 case (false !== strpos($field, 'variant-attributes_')):
                     $matches = null;
                     preg_match('/^variant-attributes_(?P<level>.*)$/', $field, $matches);
-                    $convertedItem['variant_attribute_sets'][$matches['level'] - 1]['attributes'] = explode(
+                    $level = (int) $matches['level'];
+
+                    if (!isset($convertedItem['variant_attribute_sets'][$level - 1]) ||
+                        !isset($convertedItem['variant_attribute_sets'][$level - 1]['level'])
+                    ) {
+                        $convertedItem['variant_attribute_sets'][$level - 1]['level'] = $level;
+                    }
+
+                    $convertedItem['variant_attribute_sets'][$level - 1]['attributes'] = explode(
                         ',',
                         $data
                     );
+
                     break;
             }
         }

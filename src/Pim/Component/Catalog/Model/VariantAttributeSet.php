@@ -21,6 +21,9 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     /** @var Collection */
     private $axes;
 
+    /** @var int */
+    private $level;
+
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
@@ -65,5 +68,21 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     public function setAxes(array $axes): void
     {
         $this->axes = new ArrayCollection($axes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLevel(int $level): void
+    {
+        $this->level = $level;
     }
 }
