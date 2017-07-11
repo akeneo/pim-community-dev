@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
- * Product category filter Michel
+ * Product category filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
