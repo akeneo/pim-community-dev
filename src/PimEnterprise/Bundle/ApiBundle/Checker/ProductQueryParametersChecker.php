@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ApiBundle\Checker;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\ApiBundle\Checker\ProductQueryParametersCheckerInterface;
+use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -21,10 +21,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProductQueryParametersChecker implements ProductQueryParametersCheckerInterface
+class QueryParametersChecker implements QueryParametersCheckerInterface
 {
-    /** @var ProductQueryParametersCheckerInterface */
-    private $productQueryParametersChecker;
+    /** @var QueryParametersCheckerInterface */
+    private $queryParametersChecker;
 
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
@@ -39,20 +39,20 @@ class ProductQueryParametersChecker implements ProductQueryParametersCheckerInte
     private $categoryRepository;
 
     /**
-     * @param ProductQueryParametersCheckerInterface $productQueryParametersChecker
-     * @param AuthorizationCheckerInterface          $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface  $localeRepository
-     * @param IdentifiableObjectRepositoryInterface  $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface  $categoryRepository
+     * @param QueryParametersCheckerInterface       $queryParametersChecker
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $categoryRepository
      */
     public function __construct(
-        ProductQueryParametersCheckerInterface $productQueryParametersChecker,
+        QueryParametersCheckerInterface $queryParametersChecker,
         AuthorizationCheckerInterface $authorizationChecker,
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $categoryRepository
     ) {
-        $this->productQueryParametersChecker = $productQueryParametersChecker;
+        $this->queryParametersChecker = $queryParametersChecker;
         $this->authorizationChecker = $authorizationChecker;
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
@@ -64,7 +64,7 @@ class ProductQueryParametersChecker implements ProductQueryParametersCheckerInte
      */
     public function checkLocalesParameters(array $locales, ChannelInterface $channel = null)
     {
-        $this->productQueryParametersChecker->checkLocalesParameters($locales, $channel);
+        $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
 
         $errors = [];
         foreach ($locales as $locale) {
@@ -86,7 +86,7 @@ class ProductQueryParametersChecker implements ProductQueryParametersCheckerInte
      */
     public function checkAttributesParameters(array $attributes)
     {
-        $this->productQueryParametersChecker->checkAttributesParameters($attributes);
+        $this->queryParametersChecker->checkAttributesParameters($attributes);
 
         $errors = [];
         foreach ($attributes as $attributeCode) {
@@ -110,7 +110,7 @@ class ProductQueryParametersChecker implements ProductQueryParametersCheckerInte
      */
     public function checkCategoriesParameters($categories)
     {
-        $this->productQueryParametersChecker->checkCategoriesParameters($categories);
+        $this->queryParametersChecker->checkCategoriesParameters($categories);
 
         $errors = [];
         foreach ($categories as $category) {
