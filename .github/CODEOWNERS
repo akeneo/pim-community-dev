@@ -1,17 +1,16 @@
 # cf https://github.com/blog/2392-introducing-code-owners
 
-*       @momoss
+*       @nidup
 
 *.js    @juliensnz
 
 *.less  @pierallard
 
-src/Pim/* @jjanvier
+src/Pim/Bundle/ApiBundle/** @skeleton
+src/Pim/Component/Api/** @skeleton
 
-src/Pim/Bundle/ApiBundle/* @solivier
+src/Pim/Bundle/CatalogBundle/** @jjanvier
+src/Pim/Component/Catalog/** @jjanvier
 
-/src/Pim/Bundle/ApiBundle/* @solivier
-
-src/Pim/Bundle/CatalogBundle/*.php @ahocquard
-
-src/Pim/Component/Catalog/* @damien-carcel
+docker/** @damien-carcel
+docker-compose.yml.dist @damien-carcel
