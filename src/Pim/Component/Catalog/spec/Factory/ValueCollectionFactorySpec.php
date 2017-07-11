@@ -140,7 +140,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
                 'red'
             )
         );
-        
+
         $logger->warning('Tried to load a product value with the option "color.red" that does not exist.');
 
         $actualValues = $this->createFromStorageFormat([

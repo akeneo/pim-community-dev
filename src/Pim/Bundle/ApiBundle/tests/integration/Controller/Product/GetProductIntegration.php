@@ -247,10 +247,6 @@ class GetProductIntegration extends AbstractProductTestCase
     {
         $result = json_decode($response->getContent(), true);
 
-        $result = $this->sanitizeMediaAttributeData($result);
-
-        $expected = $this->sanitizeMediaAttributeData($expected);
-
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
 

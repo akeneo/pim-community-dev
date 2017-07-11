@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -79,6 +80,7 @@ class FixturesLoader
             $this->dropDatabase();
             $this->createDatabase();
             $this->restoreDatabase($dumpFile);
+            $this->createUserSystem();
 
             return;
         }
@@ -344,5 +346,27 @@ class FixturesLoader
         }
 
         return $process->getOutput();
+    }
+
+    /**
+     * Create a token with a user system with all access
+     */
+    private function createUserSystem()
+    {
+        $user = $this->container->get('pim_user.factory.user')->create();
+        $user->setUsername('system');
+        $groups = $this->container->get('pim_user.repository.group')->findAll();
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+
+        $roles = $this->container->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->container->get('security.token_storage')->setToken($token);
     }
 }

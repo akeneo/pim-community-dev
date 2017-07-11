@@ -121,7 +121,7 @@ class VersionManager
         if ($this->realTimeVersioning) {
             $manager = $this->registry->getManagerForClass(ClassUtils::getClass($versionable));
             $manager->refresh($versionable);
-
+            
             $createdVersions = $this->buildPendingVersions($versionable);
 
             $builtVersions = array_filter(
