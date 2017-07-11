@@ -1,10 +1,9 @@
 
-
         /**
          * Widget container maintain a widget registry to use them on dashboard.
          */
         export default {
-            widgetsRegistry: {},
+          widgetsRegistry: {},
             /**
              * Get or create a widget
              *
@@ -13,16 +12,15 @@
              *
              * @return {Object} AbstractWidget instance
              */
-            getWidget: function (options, ClassFunction) {
-                var widget = this.widgetsRegistry[options.alias]
-                if (!widget) {
-                    widget = new ClassFunction(options)
-                    this.widgetsRegistry[options.alias] = widget
-                } else {
-                    widget.setElement(options.el)
-                }
-
-                return widget
+          getWidget: function (options, ClassFunction) {
+            var widget = this.widgetsRegistry[options.alias]
+            if (!widget) {
+              widget = new ClassFunction(options)
+              this.widgetsRegistry[options.alias] = widget
+            } else {
+              widget.setElement(options.el)
             }
-        }
 
+            return widget
+          }
+        }

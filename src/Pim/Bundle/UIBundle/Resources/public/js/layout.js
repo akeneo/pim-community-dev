@@ -2,24 +2,23 @@ import $ from 'jquery'
 import 'bootstrap'
 import 'jquery-ui'
 
-
     // todo: remove this or move somewhere else
     /**
      * Fix for IE8 compatibility
      */
 if (!Date.prototype.toISOString) {
-    (function () {
-        function pad(number) {
-            var r = String(number)
-            if (r.length === 1) {
-                r = '0' + r
-            }
+  (function () {
+    function pad (number) {
+      var r = String(number)
+      if (r.length === 1) {
+        r = '0' + r
+      }
 
-            return r
-        }
+      return r
+    }
 
-        Date.prototype.toISOString = function () {
-            return this.getUTCFullYear() +
+    Date.prototype.toISOString = function () {
+      return this.getUTCFullYear() +
                     '-' + pad(this.getUTCMonth() + 1) +
                     '-' + pad(this.getUTCDate()) +
                     'T' + pad(this.getUTCHours()) +
@@ -27,115 +26,114 @@ if (!Date.prototype.toISOString) {
                     ':' + pad(this.getUTCSeconds()) +
                     '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) +
                     'Z'
-        }
-    }())
+    }
+  }())
 }
 
 var layout = {}
 
 layout.init = function (container) {
-    container = $(container || document.body)
+  container = $(container || document.body)
 
-    container.find('[data-spy="scroll"]').each(function () {
-        var $spy = $(this)
-        $spy.scrollspy($spy.data())
-        $spy = $(this).scrollspy('refresh')
-        $('.scrollspy-nav ul.nav li').removeClass('active')
-        $('.scrollspy-nav ul.nav li:first').addClass('active')
-    })
+  container.find('[data-spy="scroll"]').each(function () {
+    var $spy = $(this)
+    $spy.scrollspy($spy.data())
+    $spy = $(this).scrollspy('refresh')
+    $('.scrollspy-nav ul.nav li').removeClass('active')
+    $('.scrollspy-nav ul.nav li:first').addClass('active')
+  })
 
-    container.find('[data-toggle="tooltip"]').tooltip()
+  container.find('[data-toggle="tooltip"]').tooltip()
 
-    var handlePopoverMouseout = function (e, popover) {
-        var popoverHandler = $(e.relatedTarget).closest('.popover')
-        if (!popoverHandler.length) {
-            popover.data('popover-timer',
+  var handlePopoverMouseout = function (e, popover) {
+    var popoverHandler = $(e.relatedTarget).closest('.popover')
+    if (!popoverHandler.length) {
+      popover.data('popover-timer',
                     setTimeout(function () {
-                        popover.popover('hide')
-                        popover.data('popover-active', false)
+                      popover.popover('hide')
+                      popover.data('popover-active', false)
                     }, 500))
-        } else {
-            popoverHandler.one('mouseout', function (evt) {
-                handlePopoverMouseout(evt, popover)
-            })
-        }
+    } else {
+      popoverHandler.one('mouseout', function (evt) {
+        handlePopoverMouseout(evt, popover)
+      })
     }
-    $('form label [data-toggle="popover"]')
+  }
+  $('form label [data-toggle="popover"]')
             .popover({
-                animation: true,
-                delay: { show: 0, hide: 0 },
-                html: true,
-                trigger: 'manual'
+              animation: true,
+              delay: { show: 0, hide: 0 },
+              html: true,
+              trigger: 'manual'
             })
             .mouseover(function () {
-                var popoverEl = $(this)
-                clearTimeout(popoverEl.data('popover-timer'))
-                if (!popoverEl.data('popover-active')) {
-                    popoverEl.data('popover-active', true)
-                    $(this).popover('show')
-                }
+              var popoverEl = $(this)
+              clearTimeout(popoverEl.data('popover-timer'))
+              if (!popoverEl.data('popover-active')) {
+                popoverEl.data('popover-active', true)
+                $(this).popover('show')
+              }
             })
             .mouseout(function (e) {
-                var popover = $(this)
-                setTimeout(function () {
-                    handlePopoverMouseout(e, popover)
-                }, 500)
+              var popover = $(this)
+              setTimeout(function () {
+                handlePopoverMouseout(e, popover)
+              }, 500)
             })
 
-    setTimeout(function () {
-        layout.scrollspyTop()
-    }, 500)
+  setTimeout(function () {
+    layout.scrollspyTop()
+  }, 500)
 }
 
 layout.adjustScrollspy = function () {
-    $('[data-spy="scroll"]').each(function () {
-        var $spy = $(this)
-        var spyHeight = $spy.innerHeight()
+  $('[data-spy="scroll"]').each(function () {
+    var $spy = $(this)
+    var spyHeight = $spy.innerHeight()
 
-        var isMultipleRows = $spy.find('.responsive-section').length > 1
+    var isMultipleRows = $spy.find('.responsive-section').length > 1
 
-        $spy.find('.responsive-section:last').each(function () {
-            var $row = $(this)
-            var titleHeight = $row.find('.scrollspy-title').outerHeight()
-            var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight
+    $spy.find('.responsive-section:last').each(function () {
+      var $row = $(this)
+      var titleHeight = $row.find('.scrollspy-title').outerHeight()
+      var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight
 
-            var rowOrigHeight = $row.data('originalHeight')
-            if (!rowOrigHeight) {
-                rowOrigHeight = $row.height()
-                $row.data('originalHeight', rowOrigHeight)
-            }
+      var rowOrigHeight = $row.data('originalHeight')
+      if (!rowOrigHeight) {
+        rowOrigHeight = $row.height()
+        $row.data('originalHeight', rowOrigHeight)
+      }
 
-            if ($row.height() === rowAdjHeight) {
-                return
-            }
+      if ($row.height() === rowAdjHeight) {
+        return
+      }
 
-            if (rowAdjHeight < rowOrigHeight) {
-                rowAdjHeight = rowOrigHeight
-            }
+      if (rowAdjHeight < rowOrigHeight) {
+        rowAdjHeight = rowOrigHeight
+      }
 
-            $row.outerHeight(rowAdjHeight)
-        })
-
-        $spy.scrollspy('refresh')
+      $row.outerHeight(rowAdjHeight)
     })
+
+    $spy.scrollspy('refresh')
+  })
 }
 
 layout.scrollspyTop = function () {
-    $('[data-spy="scroll"]').each(function () {
-        var $spy = $(this)
-        var targetSelector = $spy.data('target')
-        var target = $(targetSelector)
+  $('[data-spy="scroll"]').each(function () {
+    var $spy = $(this)
+    var targetSelector = $spy.data('target')
+    var target = $(targetSelector)
 
-        target.each(function () {
-            var $target = $(this)
-            var firstItemHref = $target.find('li.active:first a').attr('href')
-            var $firstItem = $(firstItemHref)
-            var top = $firstItem.position().top
+    target.each(function () {
+      var $target = $(this)
+      var firstItemHref = $target.find('li.active:first a').attr('href')
+      var $firstItem = $(firstItemHref)
+      var top = $firstItem.position().top
 
-            $spy.scrollTop(top)
-        })
+      $spy.scrollTop(top)
     })
+  })
 }
 
 export default layout
-

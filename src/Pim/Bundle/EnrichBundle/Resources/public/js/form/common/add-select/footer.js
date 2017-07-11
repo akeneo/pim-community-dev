@@ -1,5 +1,4 @@
 
-
 /**
  * Common add select footer view
  *
@@ -12,54 +11,53 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import template from 'pim/template/form/add-select/footer'
 export default Backbone.View.extend({
-    template: _.template(template),
-    buttonTitle: null,
-    numberOfItems: 0,
-    countTitle: null,
-    addEvent: null,
+  template: _.template(template),
+  buttonTitle: null,
+  numberOfItems: 0,
+  countTitle: null,
+  addEvent: null,
 
-    events: {
-        'click button': 'onAdd'
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    initialize: function () {
-        this.buttonTitle   = this.options.buttonTitle
-        this.countTitle    = this.options.countTitle
-        this.addEvent      = this.options.addEvent
-    },
+  events: {
+    'click button': 'onAdd'
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            buttonTitle: this.buttonTitle,
-            numberOfItems: this.numberOfItems,
-            countTitle: this.countTitle
-        }))
+  initialize: function () {
+    this.buttonTitle = this.options.buttonTitle
+    this.countTitle = this.options.countTitle
+    this.addEvent = this.options.addEvent
+  },
 
-        return this
-    },
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    this.$el.html(this.template({
+      buttonTitle: this.buttonTitle,
+      numberOfItems: this.numberOfItems,
+      countTitle: this.countTitle
+    }))
+
+    return this
+  },
 
             /**
              * Update the item counter line and re-render the view.
              *
              * @param {int|string} number
              */
-    updateNumberOfItems: function (number) {
-        this.numberOfItems = number
+  updateNumberOfItems: function (number) {
+    this.numberOfItems = number
 
-        this.render()
-    },
+    this.render()
+  },
 
             /**
              * Method called when the 'add' button is clicked
              */
-    onAdd: function () {
-        this.trigger(this.addEvent)
-    }
+  onAdd: function () {
+    this.trigger(this.addEvent)
+  }
 })
-

@@ -19,48 +19,47 @@ import pageTitle from 'pim/page-title'
 import template from 'pim/template/app'
 import flashTemplate from 'pim/template/common/flash'
 export default BaseForm.extend({
-    tagName: 'div',
-    className: 'app',
-    template: _.template(template),
-    flashTemplate: _.template(flashTemplate),
+  tagName: 'div',
+  className: 'app',
+  template: _.template(template),
+  flashTemplate: _.template(flashTemplate),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function () {
-        initLayout()
-        initSignin()
+  initialize: function () {
+    initLayout()
+    initSignin()
 
-        return BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    return BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    configure: function () {
-        return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
+  configure: function () {
+    return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
                     .then(function () {
-                        messenger.showQueuedMessages()
+                      messenger.showQueuedMessages()
 
-                        init()
+                      init()
 
-                        pageTitle.set('Akeneo PIM')
+                      pageTitle.set('Akeneo PIM')
 
-                        return BaseForm.prototype.configure.apply(this, arguments)
+                      return BaseForm.prototype.configure.apply(this, arguments)
                     }.bind(this))
-    },
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({}))
+  render: function () {
+    this.$el.html(this.template({}))
 
-        if (!Backbone.History.started) {
-            Backbone.history.start()
-        }
-
-        return BaseForm.prototype.render.apply(this, arguments)
+    if (!Backbone.History.started) {
+      Backbone.history.start()
     }
-})
 
+    return BaseForm.prototype.render.apply(this, arguments)
+  }
+})

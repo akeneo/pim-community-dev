@@ -13,14 +13,13 @@ export default Attributes.extend({
             /**
              * {@inheritdoc}
              */
-    generateRemoveAttributeUrl: function (attribute) {
-        return Routing.generate(
+  generateRemoveAttributeUrl: function (attribute) {
+    return Routing.generate(
                     this.config.removeAttributeRoute,
-            {
-                id: this.getFormData().meta.id,
-                attributeId: attribute.id
-            }
+      {
+        id: this.getFormData().meta.id,
+        attributeId: attribute.id
+      }
                 )
-    }
+  }
 })
-

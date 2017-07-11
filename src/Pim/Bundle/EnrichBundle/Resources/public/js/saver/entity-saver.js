@@ -1,5 +1,4 @@
 
-
 /**
  * Module to save group type
  *
@@ -14,19 +13,18 @@ export default _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-    getUrl: function (identifier) {
-        return Routing.generate(this.url, { identifier: identifier })
-    },
+  getUrl: function (identifier) {
+    return Routing.generate(this.url, { identifier: identifier })
+  },
 
             /**
              * Sets the url
              *
              * @param {Sringt} url Route url
              */
-    setUrl: function (url) {
-        this.url = url
+  setUrl: function (url) {
+    this.url = url
 
-        return this
-    }
+    return this
+  }
 })
-

@@ -18,6 +18,29 @@
   "bugs": {
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
+  "standard": {
+    "globals": [
+      "Translator",
+      "require",
+      "define",
+      "module",
+      "__dirname",
+      "__moduleConfig",
+      "__contextPlaceholder",
+      "__contextPaths",
+      "Backbone",
+      "$"
+    ],
+    "ignore": [
+      "src/**/lib/**/*.js",
+      "src/**/DataGridBundle/**/*.js",
+      "src/**/NavigationBundle/**/*.js",
+      "src/Oro/**/**/*.js",
+      "src/**/js/jstree/**.js",
+      "src/**/js/tree-**.js",
+      "src/**/js/jquery**.js"
+    ]
+  },
   "dependencies": {
     "JSON2": "0.1.0",
     "babel-cli": "^6.24.1",
@@ -67,5 +90,9 @@
     "webpack-sources": "^1.0.1",
     "write-file-webpack-plugin": "^4.1.0",
     "yamljs": "0.2.10"
+  },
+
+  "devDependencies": {
+    "standard": "*"
   }
 }

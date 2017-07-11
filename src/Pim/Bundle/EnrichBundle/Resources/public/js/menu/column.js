@@ -1,5 +1,4 @@
 
-
 /**
  * Extension for menu columns
  * This extends the default column and adds some behaviors only used in the menu context (visibility)
@@ -13,27 +12,27 @@ import Column from 'pim/form/common/column'
 import router from 'pim/router'
 import mediator from 'oro/mediator'
 export default Column.extend({
-    active: false,
+  active: false,
 
             /**
              * {@inheritdoc}
              */
-    initialize: function () {
-        mediator.on('pim_menu:highlight:tab', this.highlight, this)
+  initialize: function () {
+    mediator.on('pim_menu:highlight:tab', this.highlight, this)
 
-        Column.prototype.initialize.apply(this, arguments)
-    },
+    Column.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        if (this.active) {
-            return Column.prototype.render.apply(this, arguments)
-        } else {
-            return this.$el.empty()
-        }
-    },
+  render: function () {
+    if (this.active) {
+      return Column.prototype.render.apply(this, arguments)
+    } else {
+      return this.$el.empty()
+    }
+  },
 
             /**
              * Highlight or un-highlight tab
@@ -41,29 +40,29 @@ export default Column.extend({
              * @param {Event} event
              * @param {string} event.extension The extension code to highlight
              */
-    highlight: function (event) {
-        this.active = (event.extension === this.getTab())
+  highlight: function (event) {
+    this.active = (event.extension === this.getTab())
 
-        this.render()
-    },
+    this.render()
+  },
 
             /**
              * Returns the code of the attached tab
              *
              * @returns {string}
              */
-    getTab: function () {
-        return this.config.tab
-    },
+  getTab: function () {
+    return this.config.tab
+  },
 
             /**
              * The DOM element contains a `data-tab` attribute for compatibility with tab Bootstram tabs.
              *
              * {@inheritdoc}
              */
-    redirect: function (event) {
-        router.redirectToRoute(event.currentTarget.dataset.tab)
-    },
+  redirect: function (event) {
+    router.redirectToRoute(event.currentTarget.dataset.tab)
+  },
 
             /**
              * Registers a new item to display on navigation template
@@ -74,14 +73,13 @@ export default Column.extend({
              * @param {string}   navigationItem.route
              * @param {number}   navigationItem.position
              */
-    registerNavigationItem: function (navigationItem) {
-        Column.prototype.registerNavigationItem.apply(this, arguments)
+  registerNavigationItem: function (navigationItem) {
+    Column.prototype.registerNavigationItem.apply(this, arguments)
 
-        this.getRoot().trigger('pim_menu:register_item', {
-            target: this.getTab(),
-            route: navigationItem.code,
-            position: navigationItem.position
-        })
-    }
+    this.getRoot().trigger('pim_menu:register_item', {
+      target: this.getTab(),
+      route: navigationItem.code,
+      position: navigationItem.position
+    })
+  }
 })
-

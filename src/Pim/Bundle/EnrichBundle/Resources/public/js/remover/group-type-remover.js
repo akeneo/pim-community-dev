@@ -1,5 +1,4 @@
 
-
 /**
  * Module to remove group type
  *
@@ -18,8 +17,7 @@ export default _.extend({}, BaseRemover, {
              *
              * {@inheritdoc}
              */
-    getUrl: function (code) {
-        return Routing.generate(__moduleConfig.url, {code: code})
-    }
+  getUrl: function (code) {
+    return Routing.generate(__moduleConfig.url, {code: code})
+  }
 })
-

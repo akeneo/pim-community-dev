@@ -1,44 +1,43 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import BaseFetcher from 'pim/base-fetcher'
 import requireContext from 'require-context'
 export default {
-    fetchers: {},
-    initializePromise: null,
+  fetchers: {},
+  initializePromise: null,
 
         /**
          * @return Promise
          */
-    initialize: function () {
-        if (null === this.initializePromise) {
-            var fetcherList = __moduleConfig.fetchers
-            var deferred = $.Deferred()
-            var defaultFetcher = 'pim/base-fetcher'
-            var fetchers = {}
+  initialize: function () {
+    if (this.initializePromise === null) {
+      var fetcherList = __moduleConfig.fetchers
+      var deferred = $.Deferred()
+      var defaultFetcher = 'pim/base-fetcher'
+      var fetchers = {}
 
-            _.each(fetcherList, function (config, name) {
-                config = _.isString(config) ? { module: config } : config
-                config.options = config.options || { }
-                fetchers[name] = config
-            })
+      _.each(fetcherList, function (config, name) {
+        config = _.isString(config) ? { module: config } : config
+        config.options = config.options || { }
+        fetchers[name] = config
+      })
 
-            for (var fetcher in fetcherList) {
-                var moduleName = fetcherList[fetcher].module || defaultFetcher
-                var ResolvedModule = requireContext(moduleName)
-                fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
-                fetchers[fetcher].options = fetcherList[fetcher].options
-            }
+      for (var fetcher in fetcherList) {
+        var moduleName = fetcherList[fetcher].module || defaultFetcher
+        var ResolvedModule = requireContext(moduleName)
+        fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
+        fetchers[fetcher].options = fetcherList[fetcher].options
+      }
 
-            this.fetchers = fetchers
-            deferred.resolve()
+      this.fetchers = fetchers
+      deferred.resolve()
 
-            this.initializePromise = deferred.promise()
-        }
+      this.initializePromise = deferred.promise()
+    }
 
-        return this.initializePromise
-    },
+    return this.initializePromise
+  },
 
         /**
          * Get the related fetcher for the given collection name
@@ -47,11 +46,11 @@ export default {
          *
          * @return Fetcher
          */
-    getFetcher: function (entityType) {
-        var fetcher = (this.fetchers[entityType] || this.fetchers.default)
+  getFetcher: function (entityType) {
+    var fetcher = (this.fetchers[entityType] || this.fetchers.default)
 
-        return fetcher.loadedModule
-    },
+    return fetcher.loadedModule
+  },
 
         /**
          * Clear the fetcher cache for the given collection name
@@ -59,17 +58,16 @@ export default {
          * @param {String}         entityType
          * @param {String|integer} entity
          */
-    clear: function (entityType, entity) {
-        return this.getFetcher(entityType).clear(entity)
-    },
+  clear: function (entityType, entity) {
+    return this.getFetcher(entityType).clear(entity)
+  },
 
         /**
          * Clear all fetchers cache
          */
-    clearAll: function () {
-        _.each(this.fetchers, function (fetcher) {
-            fetcher.loadedModule.clear()
-        })
-    }
+  clearAll: function () {
+    _.each(this.fetchers, function (fetcher) {
+      fetcher.loadedModule.clear()
+    })
+  }
 }
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Module used to display the localized properties of an object
  *
@@ -12,124 +11,122 @@ import BaseForm from 'pim/form'
 import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/form/properties/translation'
 export default BaseForm.extend({
-    className: 'tabsection translation-container',
-    template: _.template(template),
-    events: {
-        'change .label-field': 'updateModel'
-    },
-    validationErrors: {},
-    locales: null,
+  className: 'tabsection translation-container',
+  template: _.template(template),
+  events: {
+    'change .label-field': 'updateModel'
+  },
+  validationErrors: {},
+  locales: null,
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    configure: function () {
-        this.listenTo(
+  configure: function () {
+    this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:pre_save',
                     this.onPreSave
                 )
 
-        this.listenTo(
+    this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:bad_request',
                     this.onValidationError
                 )
 
-        this.listenTo(
+    this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:locales_updated',
                     this.onLocalesUpdated.bind(this)
                 )
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * Pre save callback
              */
-    onPreSave: function () {
-        this.validationErrors = {}
+  onPreSave: function () {
+    this.validationErrors = {}
 
-        this.render()
-    },
+    this.render()
+  },
 
             /**
              * On validation callback
              *
              * @param {Event} event
              */
-    onValidationError: function (event) {
-        this.validationErrors = event.response.translations ? event.response.translations : {}
+  onValidationError: function (event) {
+    this.validationErrors = event.response.translations ? event.response.translations : {}
 
-        this.render()
-    },
+    this.render()
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        if (!this.locales) {
-            FetcherRegistry.getFetcher('locale')
+  render: function () {
+    if (!this.locales) {
+      FetcherRegistry.getFetcher('locale')
                         .search({'activated': true, 'cached': true})
                         .then(function (locales) {
-                            this.locales = locales
-                            this.render()
+                          this.locales = locales
+                          this.render()
                         }.bind(this))
-        }
+    }
 
-        this.$el.html(this.template({
-            model: this.getFormData(),
-            locales: this.locales,
-            errors: this.validationErrors,
-            label: this.config.label,
-            fieldBaseId: this.config.fieldBaseId,
-            isReadOnly: false /* false as default default value */
-        }))
+    this.$el.html(this.template({
+      model: this.getFormData(),
+      locales: this.locales,
+      errors: this.validationErrors,
+      label: this.config.label,
+      fieldBaseId: this.config.fieldBaseId,
+      isReadOnly: false /* false as default default value */
+    }))
 
-        this.delegateEvents()
+    this.delegateEvents()
 
-        this.renderExtensions()
-    },
+    this.renderExtensions()
+  },
 
             /**
              * @param {Object} event
              */
-    updateModel: function (event) {
-        var data = this.getFormData()
+  updateModel: function (event) {
+    var data = this.getFormData()
 
-        if (Array.isArray(data.labels)) {
-            data.labels = {}
-        }
+    if (Array.isArray(data.labels)) {
+      data.labels = {}
+    }
 
-        data.labels[event.target.dataset.locale] = event.target.value
+    data.labels[event.target.dataset.locale] = event.target.value
 
-        this.setData(data)
-    },
+    this.setData(data)
+  },
 
             /**
              * Updates locales if were updated
              */
-    onLocalesUpdated: function () {
-        FetcherRegistry.getFetcher('locale')
+  onLocalesUpdated: function () {
+    FetcherRegistry.getFetcher('locale')
                     .search({'activated': true, 'cached': false})
                     .then(function (locales) {
-                        if (!_.isEqual(this.locales, locales)) {
-                            this.locales = locales
+                      if (!_.isEqual(this.locales, locales)) {
+                        this.locales = locales
 
-                            return this.render()
-                        }
-
+                        return this.render()
+                      }
                     }.bind(this))
-    }
+  }
 })
-

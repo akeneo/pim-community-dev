@@ -1,5 +1,4 @@
 
-
 /**
  * This class is used to manage wysiwyg
  *
@@ -15,28 +14,28 @@ import 'summernote'
          * Wysiwyg editor default configuration
          */
 var config = {
-    disableResizeEditor: true,
-    height: 200,
-    iconPrefix: 'icon-',
-    toolbar: [
+  disableResizeEditor: true,
+  height: 200,
+  iconPrefix: 'icon-',
+  toolbar: [
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul', 'ol']],
                 ['insert', ['link']],
                 ['view', ['codeview']]
-    ]
+  ]
 }
 
 Backbone.Router.prototype.on('route', function () {
-    $('textarea.wysiwyg').each(function () {
-        $(this).destroy()
-    })
+  $('textarea.wysiwyg').each(function () {
+    $(this).destroy()
+  })
 })
 
 export default {
             /**
              * Wysiwyg editor settings
              */
-    settings: [],
+  settings: [],
 
             /**
              * Initialise the wysiwyg
@@ -46,16 +45,16 @@ export default {
              *
              * @returns {Object}
              */
-    init: function ($el, options) {
-        this.settings = _.extend(
+  init: function ($el, options) {
+    this.settings = _.extend(
                     _.clone(config),
                     options
                 )
 
-        $el.summernote(this.settings)
+    $el.summernote(this.settings)
 
-        return this
-    },
+    return this
+  },
 
             /**
              * Put the wysiwyg in readonly mode for the given element
@@ -64,12 +63,11 @@ export default {
              *
              * @returns {Object}
              */
-    readonly: function ($el) {
-        var editable = $el.parent().find('.note-editable')
+  readonly: function ($el) {
+    var editable = $el.parent().find('.note-editable')
 
-        editable.attr('contenteditable', false)
+    editable.attr('contenteditable', false)
 
-        return this
-    }
+    return this
+  }
 }
-

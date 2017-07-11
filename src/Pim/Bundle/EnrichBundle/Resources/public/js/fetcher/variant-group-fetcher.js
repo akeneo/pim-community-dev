@@ -1,5 +1,4 @@
 
-
 import $ from 'jquery'
 import BaseFetcher from 'pim/base-fetcher'
 import Routing from 'routing'
@@ -10,9 +9,9 @@ export default BaseFetcher.extend({
             /**
              * @param {Object} options
              */
-    initialize: function (options) {
-        this.options = options || {}
-    },
+  initialize: function (options) {
+    this.options = options || {}
+  },
 
             /**
              * Fetch an element based on its identifier
@@ -22,25 +21,24 @@ export default BaseFetcher.extend({
              *
              * @return {Promise}
              */
-    fetch: function (identifier, options) {
-        options = options || {}
+  fetch: function (identifier, options) {
+    options = options || {}
 
-        options.code = identifier
-        var promise = BaseFetcher.prototype.fetch.apply(this, [identifier, options])
+    options.code = identifier
+    var promise = BaseFetcher.prototype.fetch.apply(this, [identifier, options])
 
-        return promise
+    return promise
                     .then(function (variantGroup) {
-                        var cacheInvalidator = new CacheInvalidator()
-                        cacheInvalidator.checkStructureVersion(variantGroup)
+                      var cacheInvalidator = new CacheInvalidator()
+                      cacheInvalidator.checkStructureVersion(variantGroup)
 
-                        return variantGroup
+                      return variantGroup
                     })
                     .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (variantGroup) {
-                        mediator.trigger('pim_enrich:form:variant_group:post_fetch', variantGroup)
+                      mediator.trigger('pim_enrich:form:variant_group:post_fetch', variantGroup)
 
-                        return variantGroup
+                      return variantGroup
                     })
-    }
+  }
 })
-

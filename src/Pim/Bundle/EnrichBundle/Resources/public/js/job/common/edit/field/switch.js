@@ -1,5 +1,4 @@
 
-
 /**
  * Switch view extension
  *
@@ -12,27 +11,26 @@ import BaseField from 'pim/job/common/edit/field/field'
 import fieldTemplate from 'pim/template/export/common/edit/field/switch'
 import 'bootstrap.bootstrapswitch'
 export default BaseField.extend({
-    fieldTemplate: _.template(fieldTemplate),
-    events: {
-        'change input': 'updateState'
-    },
+  fieldTemplate: _.template(fieldTemplate),
+  events: {
+    'change input': 'updateState'
+  },
 
         /**
          * {@inheritdoc}
          */
-    render: function () {
-        BaseField.prototype.render.apply(this, arguments)
+  render: function () {
+    BaseField.prototype.render.apply(this, arguments)
 
-        this.$('.switch').bootstrapSwitch()
-    },
+    this.$('.switch').bootstrapSwitch()
+  },
 
         /**
          * Get the field dom value
          *
          * @return {string}
          */
-    getFieldValue: function () {
-        return this.$('input[type="checkbox"]').prop('checked')
-    }
+  getFieldValue: function () {
+    return this.$('input[type="checkbox"]').prop('checked')
+  }
 })
-

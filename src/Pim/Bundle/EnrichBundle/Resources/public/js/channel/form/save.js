@@ -1,5 +1,4 @@
 
-
 /**
  * Save extension for channel
  *
@@ -19,63 +18,61 @@ import UserContext from 'pim/user-context'
 import Routing from 'routing'
 import router from 'pim/router'
 export default BaseSave.extend({
-    updateSuccessMessage: __('pim_enrich.entity.channel.info.update_successful'),
-    updateFailureMessage: __('pim_enrich.entity.channel.info.update_failed'),
-    createSuccessMessage: __('pim_enrich.entity.channel.info.create_successful'),
-    createFailureMessage: __('pim_enrich.entity.channel.info.create_failed'),
+  updateSuccessMessage: __('pim_enrich.entity.channel.info.update_successful'),
+  updateFailureMessage: __('pim_enrich.entity.channel.info.update_failed'),
+  createSuccessMessage: __('pim_enrich.entity.channel.info.create_successful'),
+  createFailureMessage: __('pim_enrich.entity.channel.info.create_failed'),
 
             /**
              * {@inheritdoc}
              */
-    postSave: function (isUpdate) {
-        this.getRoot().trigger('pim_enrich:form:entity:post_save')
-        var code = this.getFormData().code
-        if (!isUpdate) {
-            messenger.notify(
+  postSave: function (isUpdate) {
+    this.getRoot().trigger('pim_enrich:form:entity:post_save')
+    var code = this.getFormData().code
+    if (!isUpdate) {
+      messenger.notify(
                         'success',
                         this.createSuccessMessage
                     )
-            router.redirectToRoute(this.config.redirectUrl, {'code': code})
+      router.redirectToRoute(this.config.redirectUrl, {'code': code})
 
-            return
-        }
+      return
+    }
 
-        messenger.notify(
+    messenger.notify(
                     'success',
                     this.updateSuccessMessage
                 )
-    },
+  },
 
             /**
              * {@inheritdoc}
              */
-    save: function () {
-        var channel = $.extend(true, {}, this.getFormData())
-        var code = null
-        var isUpdate = false
-        var method = 'POST'
+  save: function () {
+    var channel = $.extend(true, {}, this.getFormData())
+    var code = null
+    var isUpdate = false
+    var method = 'POST'
 
-        if (_.has(channel.meta, 'id')) {
-            code = channel.code
-            isUpdate = true
-            method = 'PUT'
-        }
+    if (_.has(channel.meta, 'id')) {
+      code = channel.code
+      isUpdate = true
+      method = 'PUT'
+    }
 
-        delete channel.meta
+    delete channel.meta
 
-        this.showLoadingMask()
-        this.getRoot().trigger('pim_enrich:form:entity:pre_save')
+    this.showLoadingMask()
+    this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
-        return ChannelSaver
+    return ChannelSaver
                     .save(code, channel, method)
                     .then(function (data) {
-
-                        this.setData(data)
-                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
-                        this.postSave(isUpdate)
+                      this.setData(data)
+                      this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+                      this.postSave(isUpdate)
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this))
-    }
+  }
 })
-

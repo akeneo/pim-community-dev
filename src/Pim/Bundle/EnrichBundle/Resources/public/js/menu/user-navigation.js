@@ -1,5 +1,4 @@
 
-
 /**
  * This extension will display the user navigation.
  * The user navigation contains:
@@ -18,58 +17,57 @@ import UserContext from 'pim/user-context'
 import Notifications from 'pim/notifications'
 import template from 'pim/template/menu/user-navigation'
 export default BaseForm.extend({
-    className: 'AknHeader-userMenu',
-    template: _.template(template),
-    events: {
-        'click .logout': 'logout',
-        'click .user-account': 'userAccount'
-    },
+  className: 'AknHeader-userMenu',
+  template: _.template(template),
+  events: {
+    'click .logout': 'logout',
+    'click .user-account': 'userAccount'
+  },
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            firstName: UserContext.get('firstName'),
-            lastName: UserContext.get('lastName'),
-            avatar: UserContext.get('avatar'),
-            logoutLabel: __(this.config.logout),
-            userAccountLabel: __(this.config.userAccount)
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      firstName: UserContext.get('firstName'),
+      lastName: UserContext.get('lastName'),
+      avatar: UserContext.get('avatar'),
+      logoutLabel: __(this.config.logout),
+      userAccountLabel: __(this.config.userAccount)
+    }))
 
-        var notificationView = new Notifications({
-            imgUrl: 'bundles/pimimportexport/images/loading.gif',
-            loadingText: __('pim_notification.loading'),
-            noNotificationsMessage: __('pim_notification.no_notifications'),
-            markAsReadMessage: __('pim_notification.mark_all_as_read')
-        })
-        notificationView.setElement(this.$('.notification')).render()
-        notificationView.refresh()
+    var notificationView = new Notifications({
+      imgUrl: 'bundles/pimimportexport/images/loading.gif',
+      loadingText: __('pim_notification.loading'),
+      noNotificationsMessage: __('pim_notification.no_notifications'),
+      markAsReadMessage: __('pim_notification.mark_all_as_read')
+    })
+    notificationView.setElement(this.$('.notification')).render()
+    notificationView.refresh()
 
-        return BaseForm.prototype.render.apply(this, arguments)
-    },
+    return BaseForm.prototype.render.apply(this, arguments)
+  },
 
             /**
              * Redirect user to logout
              */
-    logout: function () {
-        router.redirectToRoute('oro_user_security_logout')
-    },
+  logout: function () {
+    router.redirectToRoute('oro_user_security_logout')
+  },
 
             /**
              * Redirect user it's account details
              */
-    userAccount: function () {
-        router.redirectToRoute('oro_user_profile_view')
-    }
+  userAccount: function () {
+    router.redirectToRoute('oro_user_profile_view')
+  }
 })
-

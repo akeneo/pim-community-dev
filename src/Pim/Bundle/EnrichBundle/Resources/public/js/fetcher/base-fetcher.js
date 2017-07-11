@@ -1,61 +1,60 @@
 /* global console */
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 import Routing from 'routing'
 export default Backbone.Model.extend({
-    entityListPromise: null,
-    entityPromises: {},
+  entityListPromise: null,
+  entityPromises: {},
 
         /**
          * @param {Object} options
          */
-    initialize: function (options) {
-        this.entityListPromise = null
-        this.entityPromises    = {}
-        this.options           = options || {}
-    },
+  initialize: function (options) {
+    this.entityListPromise = null
+    this.entityPromises = {}
+    this.options = options || {}
+  },
 
         /**
          * Fetch all elements of the collection
          *
          * @return {Promise}
          */
-    fetchAll: function () {
-        if (!this.entityListPromise) {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise()
-            }
+  fetchAll: function () {
+    if (!this.entityListPromise) {
+      if (!_.has(this.options.urls, 'list')) {
+        return $.Deferred().reject().promise()
+      }
 
-            this.entityListPromise = $.getJSON(
+      this.entityListPromise = $.getJSON(
                     Routing.generate(this.options.urls.list)
                 ).then(_.identity).promise()
-        }
+    }
 
-        return this.entityListPromise
-    },
+    return this.entityListPromise
+  },
 
         /**
          * Search elements of the collection
          *
          * @return {Promise}
          */
-    search: function (searchOptions) {
-        var url = ''
-        if (!_.has(this.options.urls, 'search')) {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise()
-            } else {
-                url = this.options.urls.list
-            }
-        } else {
-            url = this.options.urls.search
-        }
+  search: function (searchOptions) {
+    var url = ''
+    if (!_.has(this.options.urls, 'search')) {
+      if (!_.has(this.options.urls, 'list')) {
+        return $.Deferred().reject().promise()
+      } else {
+        url = this.options.urls.list
+      }
+    } else {
+      url = this.options.urls.search
+    }
 
-        return this.getJSON(url, searchOptions).then(_.identity).promise()
-    },
+    return this.getJSON(url, searchOptions).then(_.identity).promise()
+  },
 
         /**
          * Fetch an element based on its identifier
@@ -65,38 +64,38 @@ export default Backbone.Model.extend({
          *
          * @return {Promise}
          */
-    fetch: function (identifier, options) {
-        options = options || {}
+  fetch: function (identifier, options) {
+    options = options || {}
 
-        if (!(identifier in this.entityPromises) || false === options.cached) {
-            var deferred = $.Deferred()
+    if (!(identifier in this.entityPromises) || options.cached === false) {
+      var deferred = $.Deferred()
 
-            if (this.options.urls.get) {
-                $.getJSON(
+      if (this.options.urls.get) {
+        $.getJSON(
                         Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
                     ).then(_.identity).done(function (entity) {
-                        deferred.resolve(entity)
+                      deferred.resolve(entity)
                     }).fail(function (promise, status, error) {
-                        console.error('Error during fetching: ', error)
+                      console.error('Error during fetching: ', error)
 
-                        return deferred.reject(promise)
+                      return deferred.reject(promise)
                     })
-            } else {
-                this.fetchAll().done(function (entities) {
-                    var entity = _.findWhere(entities, {code: identifier})
-                    if (entity) {
-                        deferred.resolve(entity)
-                    } else {
-                        deferred.reject()
-                    }
-                })
-            }
+      } else {
+        this.fetchAll().done(function (entities) {
+          var entity = _.findWhere(entities, {code: identifier})
+          if (entity) {
+            deferred.resolve(entity)
+          } else {
+            deferred.reject()
+          }
+        })
+      }
 
-            this.entityPromises[identifier] = deferred.promise()
-        }
+      this.entityPromises[identifier] = deferred.promise()
+    }
 
-        return this.entityPromises[identifier]
-    },
+    return this.entityPromises[identifier]
+  },
 
         /**
          * Fetch all entities for the given identifiers
@@ -105,31 +104,31 @@ export default Backbone.Model.extend({
          *
          * @return {Promise}
          */
-    fetchByIdentifiers: function (identifiers, options) {
-        options = options || {}
-        if (0 === identifiers.length) {
-            return $.Deferred().resolve([]).promise()
-        }
+  fetchByIdentifiers: function (identifiers, options) {
+    options = options || {}
+    if (identifiers.length === 0) {
+      return $.Deferred().resolve([]).promise()
+    }
 
-        var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises))
-        if (0 === uncachedIdentifiers.length) {
-            return this.getObjects(_.pick(this.entityPromises, identifiers))
-        }
+    var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises))
+    if (uncachedIdentifiers.length === 0) {
+      return this.getObjects(_.pick(this.entityPromises, identifiers))
+    }
 
-        return $.when(
+    return $.when(
                     this.getJSON(
                         this.options.urls.list,
                         _.extend({ identifiers: uncachedIdentifiers.join(',') }, options)
                     ).then(_.identity),
                     this.getIdentifierField()
                 ).then(function (entities, identifierCode) {
-                    _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise()
-                    }.bind(this))
+                  _.each(entities, function (entity) {
+                    this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise()
+                  }.bind(this))
 
-                    return this.getObjects(_.pick(this.entityPromises, identifiers))
+                  return this.getObjects(_.pick(this.entityPromises, identifiers))
                 }.bind(this))
-    },
+  },
 
         /**
          * Get the list of elements in JSON format.
@@ -139,32 +138,32 @@ export default Backbone.Model.extend({
          *
          * @returns {Promise}
          */
-    getJSON: function (url, parameters) {
-        return $.getJSON(Routing.generate(url, parameters))
-    },
+  getJSON: function (url, parameters) {
+    return $.getJSON(Routing.generate(url, parameters))
+  },
 
         /**
          * Get the identifier attribute of the collection
          *
          * @return {Promise}
          */
-    getIdentifierField: function () {
-        return $.Deferred().resolve('code')
-    },
+  getIdentifierField: function () {
+    return $.Deferred().resolve('code')
+  },
 
         /**
          * Clear cache of the fetcher
          *
          * @param {string|null} identifier
          */
-    clear: function (identifier) {
-        if (identifier) {
-            delete this.entityPromises[identifier]
-        } else {
-            this.entityListPromise = null
-            this.entityPromises    = {}
-        }
-    },
+  clear: function (identifier) {
+    if (identifier) {
+      delete this.entityPromises[identifier]
+    } else {
+      this.entityListPromise = null
+      this.entityPromises = {}
+    }
+  },
 
         /**
          * Wait for promises to resolve and return the promises results wrapped in a Promise
@@ -173,10 +172,9 @@ export default Backbone.Model.extend({
          *
          * @return {Promise}
          */
-    getObjects: function (promises) {
-        return $.when.apply($, _.toArray(promises)).then(function () {
-            return 0 !== arguments.length ? _.toArray(arguments) : []
-        })
-    }
+  getObjects: function (promises) {
+    return $.when.apply($, _.toArray(promises)).then(function () {
+      return arguments.length !== 0 ? _.toArray(arguments) : []
+    })
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Attributes tab top toolbar view
  *
@@ -12,30 +11,29 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/family/tab/attributes/toolbar'
 export default BaseForm.extend({
-    className: 'AknGridToolbar',
-    template: _.template(template),
-    errors: [],
+  className: 'AknGridToolbar',
+  template: _.template(template),
+  errors: [],
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        if (!this.configured) {
-            return this
-        }
-
-        this.$el.html(this.template({}))
-
-        this.renderExtensions()
+  render: function () {
+    if (!this.configured) {
+      return this
     }
-})
 
+    this.$el.html(this.template({}))
+
+    this.renderExtensions()
+  }
+})

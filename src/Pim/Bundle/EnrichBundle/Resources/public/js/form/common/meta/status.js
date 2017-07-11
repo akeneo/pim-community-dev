@@ -13,44 +13,43 @@ import mediator from 'oro/mediator'
 import formTemplate from 'pim/template/form/meta/status'
 import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
-    tagName: 'span',
-    className: 'AknTitleContainer-metaItem',
-    template: _.template(formTemplate),
+  tagName: 'span',
+  className: 'AknTitleContainer-metaItem',
+  template: _.template(formTemplate),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (meta) {
-        this.config = meta.config
-        this.label   = __(this.config.label)
-        this.value   = __(this.config.value)
+  initialize: function (meta) {
+    this.config = meta.config
+    this.label = __(this.config.label)
+    this.value = __(this.config.value)
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        var status = this.getFormData()
-        var value = this.config.valuePath ?
-                    propertyAccessor.accessProperty(status, this.config.valuePath) : ''
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-        this.$el.html(this.template({
-            label: this.label,
-            value: value
-        }))
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-        return this
-    }
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    var status = this.getFormData()
+    var value = this.config.valuePath
+                    ? propertyAccessor.accessProperty(status, this.config.valuePath) : ''
+
+    this.$el.html(this.template({
+      label: this.label,
+      value: value
+    }))
+
+    return this
+  }
 })
-

@@ -14,14 +14,13 @@ export default Label.extend({
              * Provide the object label
              * @return {String}
              */
-    getLabel: function () {
-        var meta = this.getFormData().meta
+  getLabel: function () {
+    var meta = this.getFormData().meta
 
-        if (meta && meta.label) {
-            return meta.label[UserContext.get('catalogLocale')]
-        }
-
-        return null
+    if (meta && meta.label) {
+      return meta.label[UserContext.get('catalogLocale')]
     }
-})
 
+    return null
+  }
+})

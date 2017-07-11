@@ -16,45 +16,44 @@ export default BaseLaunch.extend({
             /**
              * {@inherit}
              */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:job:file_updated', this.render.bind(this))
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:job:file_updated', this.render.bind(this))
 
-        return BaseLaunch.prototype.configure.apply(this, arguments)
-    },
+    return BaseLaunch.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * {@inherit}
              */
-    launch: function () {
-        if (this.getFormData().file) {
-            var formData = new FormData()
-            formData.append('file', this.getFormData().file)
+  launch: function () {
+    if (this.getFormData().file) {
+      var formData = new FormData()
+      formData.append('file', this.getFormData().file)
 
-            router.showLoadingMask()
+      router.showLoadingMask()
 
-            $.ajax({
-                url: this.getUrl(),
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData: false
-            })
+      $.ajax({
+        url: this.getUrl(),
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false
+      })
                     .then(function (response) {
-                        router.redirect(response.redirectUrl)
-                    }.bind(this))
+                      router.redirect(response.redirectUrl)
+                    })
                     .fail(function () {
-                        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
+                      messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
                     })
                     .always(router.hideLoadingMask())
-        }
-    },
+    }
+  },
 
             /**
              * {@inherit}
              */
-    isVisible: function () {
-        return $.Deferred().resolve(this.getFormData().file).promise()
-    }
+  isVisible: function () {
+    return $.Deferred().resolve(this.getFormData().file).promise()
+  }
 })
-

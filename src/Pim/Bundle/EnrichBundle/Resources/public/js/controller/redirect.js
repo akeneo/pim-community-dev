@@ -1,5 +1,4 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import BaseController from 'pim/controller/base'
@@ -8,25 +7,24 @@ export default BaseController.extend({
             /**
              * {@inheritdoc}
              */
-    renderRoute: function (route, path) {
-        return $.get(path).then(this.redirect.bind(this)).promise()
-    },
+  renderRoute: function (route, path) {
+    return $.get(path).then(this.redirect.bind(this)).promise()
+  },
 
             /**
              * Redirect to the given route
              *
              * @param {Object} response
              */
-    redirect: function (response) {
-        if (!this.active) {
-            return
-        }
+  redirect: function (response) {
+    if (!this.active) {
+      return
+    }
 
-        router.redirectToRoute(
+    router.redirectToRoute(
                     response.route,
                     response.params ? response.params : {},
                     {trigger: true}
                 )
-    }
+  }
 })
-

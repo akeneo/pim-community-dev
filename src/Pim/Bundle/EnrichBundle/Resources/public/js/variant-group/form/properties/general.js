@@ -1,5 +1,4 @@
 
-
 /**
  * Module used to display the generals properties of a variant group
  *
@@ -14,24 +13,24 @@ import template from 'pim/template/variant-group/tab/properties/general'
 import 'jquery.select2'
 
 export default BaseForm.extend({
-    className: 'tabsection',
-    template: _.template(template),
+  className: 'tabsection',
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            model: this.getFormData(),
-            sectionTitle: __('pim_enrich.form.variant_group.tab.properties.general'),
-            codeLabel: __('pim_enrich.form.variant_group.tab.properties.code'),
-            typeLabel: __('pim_enrich.form.variant_group.tab.properties.type'),
-            axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis'),
-            __: __
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      model: this.getFormData(),
+      sectionTitle: __('pim_enrich.form.variant_group.tab.properties.general'),
+      codeLabel: __('pim_enrich.form.variant_group.tab.properties.code'),
+      typeLabel: __('pim_enrich.form.variant_group.tab.properties.type'),
+      axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis'),
+      __: __
+    }))
 
-        this.$el.find('select.select2').select2({})
+    this.$el.find('select.select2').select2({})
 
-        this.renderExtensions()
-    }
+    this.renderExtensions()
+  }
 })

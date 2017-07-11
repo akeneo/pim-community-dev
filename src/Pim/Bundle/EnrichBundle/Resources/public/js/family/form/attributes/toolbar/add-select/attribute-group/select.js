@@ -1,5 +1,4 @@
 
-
 /**
  * Family add attribute group select extension view
  *
@@ -12,7 +11,5 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseAddSelect from 'pim/common/add-select'
 export default BaseAddSelect.extend({
-    className: 'AknButtonList-item add-attribute-group'
+  className: 'AknButtonList-item add-attribute-group'
 })
-
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Family mass edit attributes requirements table view
  *
@@ -10,59 +9,58 @@
 import BaseAttributesView from 'pim/family-edit-form/attributes/attributes'
 import mediator from 'oro/mediator'
 export default BaseAttributesView.extend({
-    lock: false,
+  lock: false,
 
             /**
              * {@inheritdoc}
              */
-    configure: function () {
-        mediator.on(
+  configure: function () {
+    mediator.on(
                     'mass-edit:form:lock',
                     this.onLock.bind(this)
                 )
 
-        mediator.on(
+    mediator.on(
                     'mass-edit:form:unlock',
                     this.onUnlock.bind(this)
                 )
 
-        return BaseAttributesView.prototype.configure.apply(this, arguments)
-    },
+    return BaseAttributesView.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    toggleAttribute: function () {
-        if (this.lock) {
-            return false
-        }
+  toggleAttribute: function () {
+    if (this.lock) {
+      return false
+    }
 
-        BaseAttributesView.prototype.toggleAttribute.apply(this, arguments)
-    },
+    BaseAttributesView.prototype.toggleAttribute.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    onRemoveAttribute: function () {
-        if (this.lock) {
-            return false
-        }
+  onRemoveAttribute: function () {
+    if (this.lock) {
+      return false
+    }
 
-        BaseAttributesView.prototype.onRemoveAttribute.apply(this, arguments)
-    },
+    BaseAttributesView.prototype.onRemoveAttribute.apply(this, arguments)
+  },
 
             /**
              * Lock event callback
              */
-    onLock: function () {
-        this.lock = true
-    },
+  onLock: function () {
+    this.lock = true
+  },
 
             /**
              * Unlock event callback
              */
-    onUnlock: function () {
-        this.lock = false
-    }
+  onUnlock: function () {
+    this.lock = false
+  }
 })
-

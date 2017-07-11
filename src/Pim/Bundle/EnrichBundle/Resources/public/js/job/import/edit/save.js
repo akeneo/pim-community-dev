@@ -1,5 +1,4 @@
 
-
 /**
  * Save extension for job instance
  *
@@ -13,8 +12,7 @@ export default BaseSave.extend({
             /**
              * {@inheritdoc}
              */
-    getJobInstanceSaver: function () {
-        return JobInstanceSaver
-    }
+  getJobInstanceSaver: function () {
+    return JobInstanceSaver
+  }
 })
-

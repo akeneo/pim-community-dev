@@ -1,5 +1,4 @@
 
-
 /**
  * Module to save job instance
  *
@@ -14,8 +13,7 @@ export default _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-    getUrl: function (identifier) {
-        return Routing.generate(__moduleConfig.url, {identifier: identifier})
-    }
+  getUrl: function (identifier) {
+    return Routing.generate(__moduleConfig.url, {identifier: identifier})
+  }
 })
-

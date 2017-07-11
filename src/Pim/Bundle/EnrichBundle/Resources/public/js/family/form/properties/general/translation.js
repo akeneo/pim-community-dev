@@ -1,5 +1,4 @@
 
-
 /**
  * Family label translation fields view
  *
@@ -13,30 +12,29 @@ import SecurityContext from 'pim/security-context'
 import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/form/properties/translation'
 export default BaseTranslation.extend({
-    template: _.template(template),
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        FetcherRegistry.getFetcher('locale')
+  render: function () {
+    FetcherRegistry.getFetcher('locale')
                     .search({'activated': true, 'cached': true})
                     .then(function (locales) {
-                        this.locales = locales
+                      this.locales = locales
 
-                        this.$el.html(this.template({
-                            model: this.getFormData(),
-                            locales: this.locales,
-                            errors: this.validationErrors,
-                            label: this.config.label,
-                            fieldBaseId: this.config.fieldBaseId,
-                            isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
-                        }))
+                      this.$el.html(this.template({
+                        model: this.getFormData(),
+                        locales: this.locales,
+                        errors: this.validationErrors,
+                        label: this.config.label,
+                        fieldBaseId: this.config.fieldBaseId,
+                        isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
+                      }))
 
-                        this.renderExtensions()
+                      this.renderExtensions()
                     }.bind(this))
 
-        this.delegateEvents()
-    }
+    this.delegateEvents()
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Variant group edit form add attribute select extension view
  *
@@ -14,13 +13,13 @@ export default AddAttributeSelect.extend({
             /**
              * {@inheritdoc}
              */
-    getItemsToExclude: function () {
-        return AddAttributeSelect.prototype.getItemsToExclude.apply(this, arguments)
+  getItemsToExclude: function () {
+    return AddAttributeSelect.prototype.getItemsToExclude.apply(this, arguments)
         .then(function (excludedAttributes) {
-            return _.union(
+          return _.union(
                 excludedAttributes,
                 this.getFormData().axes
             )
         }.bind(this))
-    }
+  }
 })

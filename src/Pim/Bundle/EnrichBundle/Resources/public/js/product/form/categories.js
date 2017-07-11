@@ -19,169 +19,169 @@ import Routing from 'routing'
 import TreeAssociate from 'pim/tree/associate'
 import mediator from 'oro/mediator'
 export default BaseForm.extend({
-    template: _.template(formTemplate),
-    switcherTemplate: _.template(switcherTemplate),
-    className: 'tab-pane active',
-    id: 'product-categories',
-    treeLinkSelector: 'tree-link-',
-    treeHasItemClass: 'tree-has-item',
-    events: {
-        'click .nav-tabs li': 'changeTree',
-        'change #hidden-tree-input': 'updateModel'
-    },
-    treeAssociate: null,
-    cache: {},
-    trees: [],
+  template: _.template(formTemplate),
+  switcherTemplate: _.template(switcherTemplate),
+  className: 'tab-pane active',
+  id: 'product-categories',
+  treeLinkSelector: 'tree-link-',
+  treeHasItemClass: 'tree-has-item',
+  events: {
+    'click .nav-tabs li': 'changeTree',
+    'change #hidden-tree-input': 'updateModel'
+  },
+  treeAssociate: null,
+  cache: {},
+  trees: [],
 
             /**
              * Associates the tree code to the number of selected categories
              * Example: { master: 1, sales: 12 }
              */
-    categoriesCount: {},
+  categoriesCount: {},
 
             /**
              * {@inheritdoc}
              */
-    initialize: function () {
-        this.state = new Backbone.Model()
+  initialize: function () {
+    this.state = new Backbone.Model()
 
-        this.state.set('selectedCategories', [])
+    this.state.set('selectedCategories', [])
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.trigger('tab:register', {
-            code: this.code,
-            isVisible: this.isVisible.bind(this),
-            label: __('pim_enrich.form.product.tab.categories.title')
-        })
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.loadTrees().done(function (trees) {
-            this.trees = trees
+  configure: function () {
+    this.trigger('tab:register', {
+      code: this.code,
+      isVisible: this.isVisible.bind(this),
+      label: __('pim_enrich.form.product.tab.categories.title')
+    })
 
-            this.state.set('currentTree', _.first(this.trees).code)
-            this.state.set('currentTreeId', _.first(this.trees).id)
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-            this.$el.html(
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    this.loadTrees().done(function (trees) {
+      this.trees = trees
+
+      this.state.set('currentTree', _.first(this.trees).code)
+      this.state.set('currentTreeId', _.first(this.trees).id)
+
+      this.$el.html(
                         this.template({
-                            product: this.getFormData(),
-                            locale: UserContext.get('catalogLocale'),
-                            state: this.state.toJSON(),
-                            trees: this.trees
+                          product: this.getFormData(),
+                          locale: UserContext.get('catalogLocale'),
+                          state: this.state.toJSON(),
+                          trees: this.trees
                         })
                     )
 
-            this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
-                list_categories: 'pim_enrich_product_listcategories',
-                children:        'pim_enrich_categorytree_children'
-            })
+      this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
+        list_categories: 'pim_enrich_product_listcategories',
+        children: 'pim_enrich_categorytree_children'
+      })
 
-            this.delegateEvents()
+      this.delegateEvents()
 
-            this.initCategoryCount()
-            this.renderCategorySwitcher()
-        }.bind(this))
+      this.initCategoryCount()
+      this.renderCategorySwitcher()
+    }.bind(this))
 
-        return this
-    },
+    return this
+  },
 
             /**
              * Renders the category switcher in the main template
              */
-    renderCategorySwitcher: function () {
-        this.$el.find('.catalog-switcher:first').html(this.switcherTemplate({
-            state: this.state.toJSON(),
-            trees: this.trees,
-            categoriesCount: this.categoriesCount,
-            treeLinkSelector: this.treeLinkSelector,
-            currentCategory: _.result(_.findWhere(
+  renderCategorySwitcher: function () {
+    this.$el.find('.catalog-switcher:first').html(this.switcherTemplate({
+      state: this.state.toJSON(),
+      trees: this.trees,
+      categoriesCount: this.categoriesCount,
+      treeLinkSelector: this.treeLinkSelector,
+      currentCategory: _.result(_.findWhere(
                         this.trees,
                         {code: this.state.toJSON().currentTree}),
                         'label'
                     ),
-            label: __('pim_enrich.form.product.tab.categories.catalog_selector')
-        }))
-    },
+      label: __('pim_enrich.form.product.tab.categories.catalog_selector')
+    }))
+  },
 
             /**
              * Load category trees
              *
              * @returns {promise}
              */
-    loadTrees: function () {
-        return $.getJSON(
+  loadTrees: function () {
+    return $.getJSON(
                     Routing.generate('pim_enrich_product_category_rest_list', { id: this.getFormData().meta.id })
                 ).then(function (data) {
-                    _.each(data.categories, function (category) {
-                        this.cache[category.id] = category
-                    }.bind(this))
+                  _.each(data.categories, function (category) {
+                    this.cache[category.id] = category
+                  }.bind(this))
 
-                    if (_.isEmpty(this.state.get('selectedCategories'))) {
-                        this.state.set('selectedCategories', _.pluck(data.categories, 'id'))
-                    }
+                  if (_.isEmpty(this.state.get('selectedCategories'))) {
+                    this.state.set('selectedCategories', _.pluck(data.categories, 'id'))
+                  }
 
-                    return data.trees
+                  return data.trees
                 }.bind(this))
-    },
+  },
 
             /**
              * Displays the current tree when the user choose another one
              *
              * @param {Event} event
              */
-    changeTree: function (event) {
-        this.state.set('currentTree', event.currentTarget.dataset.tree)
-        this.state.set('currentTreeId', event.currentTarget.dataset.treeId)
-        this.treeAssociate.switchTree(event.currentTarget.dataset.treeId)
+  changeTree: function (event) {
+    this.state.set('currentTree', event.currentTarget.dataset.tree)
+    this.state.set('currentTreeId', event.currentTarget.dataset.treeId)
+    this.treeAssociate.switchTree(event.currentTarget.dataset.treeId)
 
-        this.renderCategorySwitcher()
-    },
+    this.renderCategorySwitcher()
+  },
 
             /**
              * Change the current model when categories are checked/unchecked
              *
              * @param {Event} event
              */
-    updateModel: function (event) {
-        var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity)
-        this.state.set('selectedCategories', selectedIds)
+  updateModel: function (event) {
+    var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity)
+    this.state.set('selectedCategories', selectedIds)
 
-        var rootTreeCode = this.state.get('currentTree')
-        this.categoriesCount[rootTreeCode] =
-                    this.$('li[data-code=' + rootTreeCode +  '] .jstree-checked').length
-        this.renderCategorySwitcher()
+    var rootTreeCode = this.state.get('currentTree')
+    this.categoriesCount[rootTreeCode] =
+                    this.$('li[data-code=' + rootTreeCode + '] .jstree-checked').length
+    this.renderCategorySwitcher()
 
-        var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this))
-        this.getFormModel().set('categories', categoryCodes)
-        mediator.trigger('pim_enrich:form:entity:update_state')
-    },
+    var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this))
+    this.getFormModel().set('categories', categoryCodes)
+    mediator.trigger('pim_enrich:form:entity:update_state')
+  },
 
             /**
              * Initialize category count with hidden values
              */
-    initCategoryCount: function () {
-        _.each(this.trees, function (tree) {
-            var selectedCategories = []
-            var hiddenSelection = this.$('#hidden-tree-input').val()
-            hiddenSelection = hiddenSelection.length > 0 ? hiddenSelection.split(',') : []
-            _.each(hiddenSelection, function (categoryId) {
-                selectedCategories.push(this.cache[categoryId])
-            }.bind(this))
+  initCategoryCount: function () {
+    _.each(this.trees, function (tree) {
+      var selectedCategories = []
+      var hiddenSelection = this.$('#hidden-tree-input').val()
+      hiddenSelection = hiddenSelection.length > 0 ? hiddenSelection.split(',') : []
+      _.each(hiddenSelection, function (categoryId) {
+        selectedCategories.push(this.cache[categoryId])
+      }.bind(this))
 
-            this.categoriesCount[tree.code] = _.where(selectedCategories, {rootId: tree.id}).length
-        }.bind(this))
-    },
+      this.categoriesCount[tree.code] = _.where(selectedCategories, {rootId: tree.id}).length
+    }.bind(this))
+  },
 
             /**
              * Fetch category code from cache
@@ -190,26 +190,25 @@ export default BaseForm.extend({
              *
              * @returns {string}
              */
-    getCategoryCode: function (id) {
-        if (!this.cache[id]) {
-            var $categoryElement = this.$('#node_' + id)
-            var $rootElement     = $categoryElement.closest('.root-unselectable')
-            this.cache[id] = {
-                code: String($categoryElement.data('code')),
-                rootId: $rootElement.data('tree-id')
-            }
-        }
+  getCategoryCode: function (id) {
+    if (!this.cache[id]) {
+      var $categoryElement = this.$('#node_' + id)
+      var $rootElement = $categoryElement.closest('.root-unselectable')
+      this.cache[id] = {
+        code: String($categoryElement.data('code')),
+        rootId: $rootElement.data('tree-id')
+      }
+    }
 
-        return this.cache[id].code
-    },
+    return this.cache[id].code
+  },
 
             /**
              * Check if this extension is visible
              *
              * @returns {boolean}
              */
-    isVisible: function () {
-        return true
-    }
+  isVisible: function () {
+    return true
+  }
 })
-

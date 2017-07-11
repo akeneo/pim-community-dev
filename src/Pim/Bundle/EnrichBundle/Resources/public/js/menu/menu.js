@@ -1,5 +1,4 @@
 
-
 /**
  * Base extension for menu
  *
@@ -11,16 +10,15 @@ import _ from 'underscore'
 import BaseForm from 'pim/form'
 import template from 'pim/template/menu/menu'
 export default BaseForm.extend({
-    className: 'AknHeader',
-    template: _.template(template),
+  className: 'AknHeader',
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.empty().append(this.template())
+  render: function () {
+    this.$el.empty().append(this.template())
 
-        return BaseForm.prototype.render.apply(this, arguments)
-    }
+    return BaseForm.prototype.render.apply(this, arguments)
+  }
 })
-

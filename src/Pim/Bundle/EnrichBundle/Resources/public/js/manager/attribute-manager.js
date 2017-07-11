@@ -1,5 +1,4 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
@@ -11,20 +10,20 @@ export default {
              *
              * @return {Promise}
              */
-    getAttributes: function (entity) {
-        if (!entity.family) {
-            return $.Deferred().resolve(_.keys(entity.values))
-        } else {
-            return FetcherRegistry.getFetcher('family')
+  getAttributes: function (entity) {
+    if (!entity.family) {
+      return $.Deferred().resolve(_.keys(entity.values))
+    } else {
+      return FetcherRegistry.getFetcher('family')
                         .fetch(entity.family)
                         .then(function (family) {
-                            return _.union(
+                          return _.union(
                                 _.keys(entity.values),
                                 _.pluck(family.attributes, 'code')
                             )
                         })
-        }
-    },
+    }
+  },
 
             /**
              * Get all optional attributes available for a product
@@ -33,21 +32,21 @@ export default {
              *
              * @return {Array}
              */
-    getAvailableOptionalAttributes: function (product) {
-        return $.when(
+  getAvailableOptionalAttributes: function (product) {
+    return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
                     this.getAttributes(product)
                 ).then(function (attributes, productAttributes) {
-                    var optionalAttributes = _.map(
+                  var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),
                         function (attributeCode) {
-                            return _.findWhere(attributes, { code: attributeCode })
+                          return _.findWhere(attributes, { code: attributeCode })
                         }
                     )
 
-                    return optionalAttributes
+                  return optionalAttributes
                 })
-    },
+  },
 
             /**
              * Check if an attribute is optional
@@ -57,21 +56,21 @@ export default {
              *
              * @return {Promise}
              */
-    isOptional: function (attribute, product) {
-        var promise = new $.Deferred()
+  isOptional: function (attribute, product) {
+    var promise = new $.Deferred()
 
-        if ('pim_catalog_identifier' === attribute.type) {
-            promise.resolve(false)
-        } else if (undefined !== product.family && null !== product.family) {
-            promise = FetcherRegistry.getFetcher('family').fetch(product.family).then(function (family) {
-                return !_.contains(_.pluck(family.attributes, 'code'), attribute.code)
-            })
-        } else {
-            promise.resolve(true)
-        }
+    if (attribute.type === 'pim_catalog_identifier') {
+      promise.resolve(false)
+    } else if (undefined !== product.family && product.family !== null) {
+      promise = FetcherRegistry.getFetcher('family').fetch(product.family).then(function (family) {
+        return !_.contains(_.pluck(family.attributes, 'code'), attribute.code)
+      })
+    } else {
+      promise.resolve(true)
+    }
 
-        return promise
-    },
+    return promise
+  },
 
             /**
              * Get the value in the given collection for the given locale and scope
@@ -83,12 +82,12 @@ export default {
              *
              * @return {Object}
              */
-    getValue: function (values, attribute, locale, scope) {
-        locale = attribute.localizable ? locale : null
-        scope  = attribute.scopable ? scope : null
+  getValue: function (values, attribute, locale, scope) {
+    locale = attribute.localizable ? locale : null
+    scope = attribute.scopable ? scope : null
 
-        return _.findWhere(values, { scope: scope, locale: locale })
-    },
+    return _.findWhere(values, { scope: scope, locale: locale })
+  },
 
             /**
              * Get values for the given object
@@ -97,17 +96,17 @@ export default {
              *
              * @return {Promise}
              */
-    getValues: function (object) {
-        return this.getAttributes(object).then(function (attributes) {
-            _.each(attributes, function (attributeCode) {
-                if (!_.has(object.values, attributeCode)) {
-                    object.values[attributeCode] = []
-                }
-            })
+  getValues: function (object) {
+    return this.getAttributes(object).then(function (attributes) {
+      _.each(attributes, function (attributeCode) {
+        if (!_.has(object.values, attributeCode)) {
+          object.values[attributeCode] = []
+        }
+      })
 
-            return object.values
-        })
-    },
+      return object.values
+    })
+  },
 
             /**
              * Generate a single value for the given attribute, scope and locale
@@ -118,16 +117,16 @@ export default {
              *
              * @return {Object}
              */
-    generateValue: function (attribute, locale, scope) {
-        locale = attribute.localizable ? locale : null
-        scope  = attribute.scopable ? scope : null
+  generateValue: function (attribute, locale, scope) {
+    locale = attribute.localizable ? locale : null
+    scope = attribute.scopable ? scope : null
 
-        return {
-            'locale': locale,
-            'scope':  scope,
-            'data':   attribute.empty_value
-        }
-    },
+    return {
+      'locale': locale,
+      'scope': scope,
+      'data': attribute.empty_value
+    }
+  },
 
             /**
              * Generate all missing values for an attribute
@@ -140,29 +139,29 @@ export default {
              *
              * @return {Array}
              */
-    generateMissingValues: function (values, attribute, locales, channels, currencies) {
-        _.each(locales, function (locale) {
-            _.each(channels, function (channel) {
-                var newValue = this.getValue(
+  generateMissingValues: function (values, attribute, locales, channels, currencies) {
+    _.each(locales, function (locale) {
+      _.each(channels, function (channel) {
+        var newValue = this.getValue(
                             values,
                             attribute,
                             locale.code,
                             channel.code
                         )
 
-                if (!newValue) {
-                    newValue = this.generateValue(attribute, locale.code, channel.code)
-                    values.push(newValue)
-                }
+        if (!newValue) {
+          newValue = this.generateValue(attribute, locale.code, channel.code)
+          values.push(newValue)
+        }
 
-                if ('pim_catalog_price_collection' === attribute.type) {
-                    newValue.data = this.generateMissingPrices(newValue.data, currencies)
-                }
-            }.bind(this))
-        }.bind(this))
+        if (attribute.type === 'pim_catalog_price_collection') {
+          newValue.data = this.generateMissingPrices(newValue.data, currencies)
+        }
+      }.bind(this))
+    }.bind(this))
 
-        return values
-    },
+    return values
+  },
 
             /**
              * Generate missing prices in the given collection for the given currencies
@@ -172,20 +171,20 @@ export default {
              *
              * @return {Array}
              */
-    generateMissingPrices: function (prices, currencies) {
-        var generatedPrices = []
-        _.each(currencies, function (currency) {
-            var price = _.findWhere(prices, { currency: currency.code })
+  generateMissingPrices: function (prices, currencies) {
+    var generatedPrices = []
+    _.each(currencies, function (currency) {
+      var price = _.findWhere(prices, { currency: currency.code })
 
-            if (!price) {
-                price = { amount: null, currency: currency.code }
-            }
+      if (!price) {
+        price = { amount: null, currency: currency.code }
+      }
 
-            generatedPrices.push(price)
-        })
+      generatedPrices.push(price)
+    })
 
-        return _.sortBy(generatedPrices, 'currency')
-    },
+    return _.sortBy(generatedPrices, 'currency')
+  },
 
             /**
              * Generate missing product associations
@@ -194,11 +193,10 @@ export default {
              *
              * @return {Array}
              */
-    generateMissingAssociations: function (values) {
-        values.products = _.result(values, 'products', []).sort()
-        values.groups = _.result(values, 'groups', []).sort()
+  generateMissingAssociations: function (values) {
+    values.products = _.result(values, 'products', []).sort()
+    values.groups = _.result(values, 'groups', []).sort()
 
-        return values
-    }
+    return values
+  }
 }
-

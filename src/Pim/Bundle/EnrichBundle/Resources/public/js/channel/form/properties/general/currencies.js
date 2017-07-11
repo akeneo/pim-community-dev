@@ -1,5 +1,4 @@
 
-
 /**
  * Module used to display the currencies general properties field of a channel
  *
@@ -15,67 +14,66 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/channel/tab/properties/general/currencies'
 import 'jquery.select2'
 export default BaseForm.extend({
-    className: 'AknFieldContainer',
-    template: _.template(template),
+  className: 'AknFieldContainer',
+  template: _.template(template),
 
             /**
              * Configures this extension.
              *
              * @return {Promise}
              */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        if (!this.configured) {
-            return this
-        }
+  render: function () {
+    if (!this.configured) {
+      return this
+    }
 
-        FetcherRegistry.getFetcher('currency').fetchAll().then(function (currencies) {
-            this.$el.html(this.template({
-                currentCurrencies: this.getFormData().currencies,
-                currencies: currencies,
-                errors: this.getParent().getValidationErrorsForField('currencies'),
-                label: __('pim_enrich.form.channel.tab.properties.currencies'),
-                requiredLabel: __('pim_enrich.form.required')
-            }))
+    FetcherRegistry.getFetcher('currency').fetchAll().then(function (currencies) {
+      this.$el.html(this.template({
+        currentCurrencies: this.getFormData().currencies,
+        currencies: currencies,
+        errors: this.getParent().getValidationErrorsForField('currencies'),
+        label: __('pim_enrich.form.channel.tab.properties.currencies'),
+        requiredLabel: __('pim_enrich.form.required')
+      }))
 
-            this.$('.select2').select2().on('change', this.updateState.bind(this))
+      this.$('.select2').select2().on('change', this.updateState.bind(this))
 
-            this.renderExtensions()
-        }.bind(this))
+      this.renderExtensions()
+    }.bind(this))
 
-        return this
-    },
+    return this
+  },
 
             /**
              * Sets new currencies on change.
              *
              * @param {Object} event
              */
-    updateState: function (event) {
-        this.setCurrencies(event.val)
-    },
+  updateState: function (event) {
+    this.setCurrencies(event.val)
+  },
 
             /**
              * Sets specified currencies into root model.
              *
              * @param {Array} codes
              */
-    setCurrencies: function (codes) {
-        if (null === codes) {
-            codes = []
-        }
-        var data = this.getFormData()
-
-        data.currencies = codes
-        this.setData(data)
+  setCurrencies: function (codes) {
+    if (codes === null) {
+      codes = []
     }
-})
+    var data = this.getFormData()
 
+    data.currencies = codes
+    this.setData(data)
+  }
+})

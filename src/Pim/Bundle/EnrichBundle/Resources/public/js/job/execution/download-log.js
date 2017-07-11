@@ -12,19 +12,18 @@ export default DownloadFile.extend({
             /**
              * {@inheritdoc}
              */
-    isVisible: function () {
-        var formData = this.getFormData()
-        if (DownloadFile.prototype.isVisible.apply(this)) {
-            if (formData.jobInstance.type === 'export') {
-                return SecurityContext.isGranted(this.config.aclIdExport)
-            } else if (formData.jobInstance.type === 'import') {
-                return SecurityContext.isGranted(this.config.aclIdImport)
-            } else {
-                return true
-            }
-        } else {
-            return false
-        }
+  isVisible: function () {
+    var formData = this.getFormData()
+    if (DownloadFile.prototype.isVisible.apply(this)) {
+      if (formData.jobInstance.type === 'export') {
+        return SecurityContext.isGranted(this.config.aclIdExport)
+      } else if (formData.jobInstance.type === 'import') {
+        return SecurityContext.isGranted(this.config.aclIdImport)
+      } else {
+        return true
+      }
+    } else {
+      return false
     }
+  }
 })
-

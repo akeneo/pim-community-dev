@@ -1,5 +1,4 @@
 
-
 /**
  * Grid renderer for last job execution list
  *
@@ -11,30 +10,29 @@ import BaseForm from 'pim/form'
 import Grid from 'pim/common/grid'
 import UserContext from 'pim/user-context'
 export default BaseForm.extend({
-    grid: null,
+  grid: null,
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        var metaData = this.config.metadata || {}
-        metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale')
-        metaData.jobCode = this.getFormData().code
+  render: function () {
+    var metaData = this.config.metadata || {}
+    metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale')
+    metaData.jobCode = this.getFormData().code
 
-        this.grid = new Grid(this.config.alias, metaData)
+    this.grid = new Grid(this.config.alias, metaData)
 
-        this.$el.empty().append(this.grid.render().$el)
+    this.$el.empty().append(this.grid.render().$el)
 
-        return this
-    }
+    return this
+  }
 })
-

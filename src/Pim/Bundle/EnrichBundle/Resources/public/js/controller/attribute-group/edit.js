@@ -1,5 +1,4 @@
 
-
 /**
  * Attribute group edit controller
  *
@@ -20,36 +19,35 @@ export default BaseController.extend({
             /**
              * {@inheritdoc}
              */
-    renderRoute: function (route) {
-        return FetcherRegistry.getFetcher('attribute-group').fetch(route.params.identifier, {cached: false})
+  renderRoute: function (route) {
+    return FetcherRegistry.getFetcher('attribute-group').fetch(route.params.identifier, {cached: false})
                     .then(function (attributeGroup) {
-                        if (!this.active) {
-                            return
-                        }
+                      if (!this.active) {
+                        return
+                      }
 
-                        PageTitle.set({
-                            'group.label':
+                      PageTitle.set({
+                        'group.label':
                             _.escape(attributeGroup.labels[UserContext.get('catalogLocale')])
-                        })
+                      })
 
-                        return FormBuilder.build('pim-attribute-group-edit-form')
+                      return FormBuilder.build('pim-attribute-group-edit-form')
                             .then(function (form) {
-                                this.on('pim:controller:can-leave', function (event) {
-                                    form.trigger('pim_enrich:form:can-leave', event)
-                                })
-                                form.setData(attributeGroup)
+                              this.on('pim:controller:can-leave', function (event) {
+                                form.trigger('pim_enrich:form:can-leave', event)
+                              })
+                              form.setData(attributeGroup)
 
-                                form.trigger('pim_enrich:form:entity:post_fetch', attributeGroup)
+                              form.trigger('pim_enrich:form:entity:post_fetch', attributeGroup)
 
-                                form.setElement(this.$el).render()
+                              form.setElement(this.$el).render()
                             }.bind(this))
                     }.bind(this))
                     .fail(function (response) {
-                        var message = response.responseJSON ? response.responseJSON.message : __('error.common')
+                      var message = response.responseJSON ? response.responseJSON.message : __('error.common')
 
-                        var errorView = new Error(message, response.status)
-                        errorView.setElement(this.$el).render()
+                      var errorView = new Error(message, response.status)
+                      errorView.setElement(this.$el).render()
                     })
-    }
+  }
 })
-

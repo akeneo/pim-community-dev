@@ -1,5 +1,4 @@
 
-
 /**
  * Family mass edit form add attribute select extension view
  *
@@ -15,22 +14,20 @@ export default FamilyAddAttributeSelect.extend({
             /**
              * {@inheritdoc}
              */
-    getItemsToExclude: function () {
-        return FetcherRegistry.getFetcher(this.mainFetcher)
+  getItemsToExclude: function () {
+    return FetcherRegistry.getFetcher(this.mainFetcher)
                     .getIdentifierAttribute()
                     .then(function (identifier) {
-                        var existingAttributes = _.pluck(
+                      var existingAttributes = _.pluck(
                             this.getFormData().attributes,
                             'code'
                         )
 
-                        if (!_.contains(existingAttributes, identifier.code)) {
-                            existingAttributes.push(identifier.code)
-                        }
+                      if (!_.contains(existingAttributes, identifier.code)) {
+                        existingAttributes.push(identifier.code)
+                      }
 
-                        return existingAttributes
+                      return existingAttributes
                     }.bind(this))
-    }
+  }
 })
-
-

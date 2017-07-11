@@ -15,69 +15,68 @@ import router from 'pim/router'
 import propertyAccessor from 'pim/common/property'
 import template from 'pim/template/form/redirect'
 export default BaseForm.extend({
-    template: _.template(template),
-    events: {
-        'click': 'redirect'
-    },
+  template: _.template(template),
+  events: {
+    'click': 'redirect'
+  },
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.isVisible().then(function (isVisible) {
-            if (!isVisible) {
-                return this
-            }
-
-            this.$el.html(this.template({
-                label: __(this.config.label),
-                buttonClass: this.config.buttonClass || 'AknButton--action'
-            }))
-        }.bind(this))
-
+  render: function () {
+    this.isVisible().then(function (isVisible) {
+      if (!isVisible) {
         return this
-    },
+      }
+
+      this.$el.html(this.template({
+        label: __(this.config.label),
+        buttonClass: this.config.buttonClass || 'AknButton--action'
+      }))
+    }.bind(this))
+
+    return this
+  },
 
             /**
              * Redirect to the route given in the config
              */
-    redirect: function () {
-        router.redirect(this.getUrl())
-    },
+  redirect: function () {
+    router.redirect(this.getUrl())
+  },
 
             /**
              * Get the route to redirect to
              *
              * @return {string}
              */
-    getUrl: function () {
-        var params = {}
-        if (this.config.identifier) {
-            params[this.config.identifier.name] = propertyAccessor.accessProperty(
+  getUrl: function () {
+    var params = {}
+    if (this.config.identifier) {
+      params[this.config.identifier.name] = propertyAccessor.accessProperty(
                         this.getFormData(),
                         this.config.identifier.path
                     )
-        }
+    }
 
-        return Routing.generate(this.config.route, params)
-    },
+    return Routing.generate(this.config.route, params)
+  },
 
             /**
              * Should this extension render
              *
              * @return {Promise}
              */
-    isVisible: function () {
-        return $.Deferred().resolve(true).promise()
-    }
+  isVisible: function () {
+    return $.Deferred().resolve(true).promise()
+  }
 })
-

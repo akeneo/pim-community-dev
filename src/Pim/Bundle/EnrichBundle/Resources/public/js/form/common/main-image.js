@@ -10,26 +10,25 @@ import _ from 'underscore'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/main-image'
 export default BaseForm.extend({
-    template: _.template(template),
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.empty().append(this.template({
-            path: this.config.path
-        }))
+  render: function () {
+    this.$el.empty().append(this.template({
+      path: this.config.path
+    }))
 
-        return BaseForm.prototype.render.apply(this, arguments)
-    }
+    return BaseForm.prototype.render.apply(this, arguments)
+  }
 })
-

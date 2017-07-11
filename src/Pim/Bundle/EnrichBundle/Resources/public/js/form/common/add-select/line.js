@@ -1,5 +1,4 @@
 
-
 /**
  * Common add select line view
  *
@@ -12,39 +11,38 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import template from 'pim/template/form/add-select/line'
 export default Backbone.View.extend({
-    className: '.select2-results',
-    template: _.template(template),
-    checked: false,
-    item: null,
+  className: '.select2-results',
+  template: _.template(template),
+  checked: false,
+  item: null,
 
             /**
              * {@inheritdoc}
              */
-    initialize: function () {
-        this.item = this.options.item
-    },
+  initialize: function () {
+    this.item = this.options.item
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            item:    this.item,
-            checked: this.checked
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      item: this.item,
+      checked: this.checked
+    }))
 
-        return this
-    },
+    return this
+  },
 
             /**
              * Update the checkbox status then render the view
              *
              * @param {bool} checked
              */
-    setCheckedCheckbox: function (checked) {
-        this.checked = checked
+  setCheckedCheckbox: function (checked) {
+    this.checked = checked
 
-        this.render()
-    }
+    this.render()
+  }
 })
-

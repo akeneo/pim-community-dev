@@ -11,30 +11,29 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/import/file-path'
 export default BaseForm.extend({
-    className: 'AknCenteredBox',
-    template: _.template(template),
+  className: 'AknCenteredBox',
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            path: this.getFormData().configuration.filePath,
-            label: __(this.config.label)
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      path: this.getFormData().configuration.filePath,
+      label: __(this.config.label)
+    }))
 
-        this.delegateEvents()
+    this.delegateEvents()
 
-        return BaseForm.prototype.render.apply(this, arguments)
-    }
+    return BaseForm.prototype.render.apply(this, arguments)
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Module to save channel
  *
@@ -16,36 +15,35 @@ export default _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-    getUrl: function (code) {
-        if (null === code) {
-            return Routing.generate(__moduleConfig.postUrl)
-        }
+  getUrl: function (code) {
+    if (code === null) {
+      return Routing.generate(__moduleConfig.postUrl)
+    }
 
-        return Routing.generate(__moduleConfig.putUrl, {code: code})
-    },
+    return Routing.generate(__moduleConfig.putUrl, {code: code})
+  },
 
             /**
              * {@inheritdoc}
              */
-    save: function (code, data, method) {
-        var queryData = data
-        var locales = []
+  save: function (code, data, method) {
+    var queryData = data
+    var locales = []
 
-        _.each(data.locales, function (locale) {
-            locales.push(locale.code)
-        })
+    _.each(data.locales, function (locale) {
+      locales.push(locale.code)
+    })
 
-        queryData.locales = locales
+    queryData.locales = locales
 
-        return $.ajax({
-            type: method,
-            url: this.getUrl(code),
-            data: JSON.stringify(queryData)
-        }).then(function (entity) {
-            mediator.trigger('pim_enrich:form:entity:post_save', entity)
+    return $.ajax({
+      type: method,
+      url: this.getUrl(code),
+      data: JSON.stringify(queryData)
+    }).then(function (entity) {
+      mediator.trigger('pim_enrich:form:entity:post_save', entity)
 
-            return entity
-        }.bind(this))
-    }
+      return entity
+    })
+  }
 })
-

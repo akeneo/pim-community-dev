@@ -1,5 +1,4 @@
 
-
 /**
  * Module to save family
  *
@@ -14,8 +13,7 @@ export default _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-    getUrl: function (code) {
-        return Routing.generate(__moduleConfig.putUrl, {code: code})
-    }
+  getUrl: function (code) {
+    return Routing.generate(__moduleConfig.putUrl, {code: code})
+  }
 })
-

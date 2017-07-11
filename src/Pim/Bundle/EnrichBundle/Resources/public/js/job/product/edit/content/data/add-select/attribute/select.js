@@ -1,5 +1,4 @@
 
-
 /**
  * Product export profile edit form attribute add select extension view
  *
@@ -14,8 +13,7 @@ export default AddAttributeSelect.extend({
             /**
              * {@inheritdoc}
              */
-    getItemsToExclude: function () {
-        return $.Deferred().resolve(this.getParent().getCurrentFilters())
-    }
+  getItemsToExclude: function () {
+    return $.Deferred().resolve(this.getParent().getCurrentFilters())
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Property accessor extension
  *
@@ -18,18 +17,18 @@
          *
          * @return {mixed}
          */
-        accessProperty: function (data, path, defaultValue) {
-            defaultValue = defaultValue || null
-            var pathPart = path.split('.')
+      accessProperty: function (data, path, defaultValue) {
+        defaultValue = defaultValue || null
+        var pathPart = path.split('.')
 
-            if (undefined === data[pathPart[0]]) {
-                return defaultValue
-            }
+        if (undefined === data[pathPart[0]]) {
+          return defaultValue
+        }
 
-            return 1 === pathPart.length ?
-                data[pathPart[0]] :
-                this.accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'), defaultValue)
-        },
+        return pathPart.length === 1
+                ? data[pathPart[0]]
+                : this.accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'), defaultValue)
+      },
 
         /**
          * Update a property in an object
@@ -40,14 +39,13 @@
          *
          * @return {mixed}
          */
-        updateProperty: function (data, path, value) {
-            var pathPart = path.split('.')
+      updateProperty: function (data, path, value) {
+        var pathPart = path.split('.')
 
-            data[pathPart[0]] = 1 === pathPart.length ?
-                value :
-                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value)
+        data[pathPart[0]] = pathPart.length === 1
+                ? value
+                : this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value)
 
-            return data
-        }
+        return data
+      }
     }
-

@@ -20,30 +20,30 @@ export default {
      *
      * @return {promise}
      */
-    getFields: function (root, product) {
-        var filterPromises = []
+  getFields: function (root, product) {
+    var filterPromises = []
 
-        root.trigger(
+    root.trigger(
             'pim_enrich:form:field:to-fill-filter',
             {'filters': filterPromises}
         )
 
-        return $.when.apply($, filterPromises).then(function () {
-            return arguments
-        }).then(function (filters) {
-            return attributeManager.getAttributes(product)
+    return $.when.apply($, filterPromises).then(function () {
+      return arguments
+    }).then(function (filters) {
+      return attributeManager.getAttributes(product)
             .then(function (attributeCodes) {
-                return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes)
+              return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes)
             })
             .then(function (attributesToFilter) {
-                var filteredAttributes = _.reduce(filters, function (attributes, filter) {
-                    return filter(attributes)
-                }, attributesToFilter)
+              var filteredAttributes = _.reduce(filters, function (attributes, filter) {
+                return filter(attributes)
+              }, attributesToFilter)
 
-                return _.map(filteredAttributes, function (attribute) {
-                    return attribute.code
-                })
+              return _.map(filteredAttributes, function (attribute) {
+                return attribute.code
+              })
             })
-        })
-    }
+    })
+  }
 }

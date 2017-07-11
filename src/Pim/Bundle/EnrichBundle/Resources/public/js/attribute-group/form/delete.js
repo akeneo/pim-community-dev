@@ -9,5 +9,5 @@
 import DeleteForm from 'pim/form/common/delete'
 import AttributeGroupRemover from 'pim/remover/attribute-group'
 export default DeleteForm.extend({
-    remover: AttributeGroupRemover
+  remover: AttributeGroupRemover
 })

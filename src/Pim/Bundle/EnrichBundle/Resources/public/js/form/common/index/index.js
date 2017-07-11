@@ -1,5 +1,4 @@
 
-
 /**
  * Index extension for any basic screen with grid
  *
@@ -13,32 +12,31 @@ import BaseForm from 'pim/form'
 import template from 'pim/template/form/index/index'
 import formBuilder from 'pim/form-builder'
 export default BaseForm.extend({
-    template: _.template(template),
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            title: __(this.config.title)
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      title: __(this.config.title)
+    }))
 
-        this.renderExtensions()
+    this.renderExtensions()
 
-        formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-            form.setElement('.user-menu').render()
-        }.bind(this))
+    formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+      form.setElement('.user-menu').render()
+    })
 
-        return this
-    }
+    return this
+  }
 })
-

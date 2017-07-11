@@ -1,5 +1,4 @@
 
-
 /**
  * Module used to display the generals properties of a group
  *
@@ -14,24 +13,23 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/group/tab/properties/general'
 import 'jquery.select2'
 export default BaseForm.extend({
-    className: 'tabsection',
-    template: _.template(template),
+  className: 'tabsection',
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            model: this.getFormData(),
-            sectionTitle: __('pim_enrich.form.group.tab.properties.general'),
-            codeLabel: __('pim_enrich.form.group.tab.properties.code'),
-            typeLabel: __('pim_enrich.form.group.tab.properties.type'),
-            __: __
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      model: this.getFormData(),
+      sectionTitle: __('pim_enrich.form.group.tab.properties.general'),
+      codeLabel: __('pim_enrich.form.group.tab.properties.code'),
+      typeLabel: __('pim_enrich.form.group.tab.properties.type'),
+      __: __
+    }))
 
-        this.$el.find('select.select2').select2({})
+    this.$el.find('select.select2').select2({})
 
-        this.renderExtensions()
-    }
+    this.renderExtensions()
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Module used to display a simple properties tab
  *
@@ -14,37 +13,36 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/form/tab/properties'
 import 'jquery.select2'
 export default BaseForm.extend({
-    className: 'properties',
-    template: _.template(template),
+  className: 'properties',
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.trigger('tab:register', {
-            code: this.code,
-            label: __(this.config.label)
-        })
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({}))
+  configure: function () {
+    this.trigger('tab:register', {
+      code: this.code,
+      label: __(this.config.label)
+    })
 
-        this.renderExtensions()
-    }
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
+
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    this.$el.html(this.template({}))
+
+    this.renderExtensions()
+  }
 })
-

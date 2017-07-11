@@ -1,5 +1,4 @@
 
-
 /**
  * Extension to display breadcrumbItems on every page
  *
@@ -15,12 +14,12 @@ import template from 'pim/template/common/breadcrumbs'
 import mediator from 'oro/mediator'
 import FormRegistry from 'pim/form-registry'
 export default BaseForm.extend({
-    className: 'AknBreadcrumb',
-    template: _.template(template),
-    events: {
-        'click .breadcrumb-tab': 'redirectTab',
-        'click .breadcrumb-item': 'redirectItem'
-    },
+  className: 'AknBreadcrumb',
+  template: _.template(template),
+  events: {
+    'click .breadcrumb-tab': 'redirectTab',
+    'click .breadcrumb-item': 'redirectItem'
+  },
 
             /**
              * {@inheritdoc}
@@ -28,11 +27,11 @@ export default BaseForm.extend({
              * @param {string} config.tab The main tab to highlight
              * @param {string} [config.item] The sub item to highlight (optional)
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        return BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    return BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * This method will configure the breadcrumb. The configuration of this module contains backbone extension
@@ -41,46 +40,45 @@ export default BaseForm.extend({
              *
              * {@inheritdoc}
              */
-    configure: function () {
-        mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab })
-        mediator.trigger('pim_menu:highlight:item', { extension: this.config.item })
+  configure: function () {
+    mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab })
+    mediator.trigger('pim_menu:highlight:item', { extension: this.config.item })
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        return $.when(
+  render: function () {
+    return $.when(
                     FormRegistry.getFormMeta(this.config.tab),
                     FormRegistry.getFormMeta(this.config.item)
                 ).then(function (metaTab, metaItem) {
-                    var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) }
-                    var breadcrumbItem = null
-                    if (undefined !== metaItem) {
-                        breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) }
-                    }
+                  var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) }
+                  var breadcrumbItem = null
+                  if (undefined !== metaItem) {
+                    breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) }
+                  }
 
-                    this.$el.empty().append(this.template({
-                        breadcrumbTab: breadcrumbTab,
-                        breadcrumbItem: breadcrumbItem
-                    }))
+                  this.$el.empty().append(this.template({
+                    breadcrumbTab: breadcrumbTab,
+                    breadcrumbItem: breadcrumbItem
+                  }))
                 }.bind(this))
-    },
+  },
 
             /**
              * Redirects to the linked tab
              */
-    redirectTab: function () {
-        mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab })
-    },
+  redirectTab: function () {
+    mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab })
+  },
 
             /**
              * Redirects to the linked item
              */
-    redirectItem: function () {
-        mediator.trigger('pim_menu:redirect:item', { extension: this.config.item })
-    }
+  redirectItem: function () {
+    mediator.trigger('pim_menu:redirect:item', { extension: this.config.item })
+  }
 })
-

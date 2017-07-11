@@ -13,75 +13,74 @@ import fetcherRegistry from 'pim/fetcher-registry'
 import UserContext from 'pim/user-context'
 import toFillFieldProvider from 'pim/provider/to-fill-field-provider'
 export default BaseForm.extend({
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
-        this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter)
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
+    this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter)
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * Add filter on field if the user doesn't have the right to edit it.
              *
              * @param {object} event
              */
-    addFieldFilter: function (event) {
-        event.filters.push($.Deferred().resolve({
-            completenesses: this.getFormData().meta.completenesses,
-            family: this.getFormData().family
-        }).then(function (completenesses) {
-            if (null === completenesses.family) {
-                return $.Deferred().resolve([])
-            }
+  addFieldFilter: function (event) {
+    event.filters.push($.Deferred().resolve({
+      completenesses: this.getFormData().meta.completenesses,
+      family: this.getFormData().family
+    }).then(function (completenesses) {
+      if (completenesses.family === null) {
+        return $.Deferred().resolve([])
+      }
 
-            var localeCompleteness = _.findWhere(
+      var localeCompleteness = _.findWhere(
                         completenesses.completenesses,
                         {locale: UserContext.get('catalogLocale')}
                     )
 
-            if (undefined === localeCompleteness ||
+      if (undefined === localeCompleteness ||
                         undefined === localeCompleteness.channels[UserContext.get('catalogScope')]
                     ) {
-                return $.Deferred().resolve([])
-            }
+        return $.Deferred().resolve([])
+      }
 
-            var missingAttributeCodes = _.pluck(
+      var missingAttributeCodes = _.pluck(
                         localeCompleteness.channels[UserContext.get('catalogScope')].missing,
                         'code'
                     )
 
-            return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(missingAttributeCodes)
-        })
+      return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(missingAttributeCodes)
+    })
                 .then(function (missingAttributes) {
-                    return function (attributes) {
-                        return _.filter(missingAttributes, function (missingAttribute) {
-                            return _.contains(_.pluck(attributes, 'code'), missingAttribute.code)
-                        })
-                    }
+                  return function (attributes) {
+                    return _.filter(missingAttributes, function (missingAttribute) {
+                      return _.contains(_.pluck(attributes, 'code'), missingAttribute.code)
+                    })
+                  }
                 }))
-    },
+  },
 
             /**
              * {@inheritDoc}
              */
-    addFieldExtension: function (event) {
-        event.promises.push(
+  addFieldExtension: function (event) {
+    event.promises.push(
                     toFillFieldProvider.getFields(this.getRoot(), this.getFormData()).then(function (fields) {
-                        var field = event.field
+                      var field = event.field
 
-                        if (_.contains(fields, field.attribute.code)) {
-                            field.addElement(
+                      if (_.contains(fields, field.attribute.code)) {
+                        field.addElement(
                                 'badge',
                                 'completeness',
                                 '<span class="AknBadge AknBadge--round AknBadge--highlight"></span>'
                             )
-                        }
+                      }
 
-                        return event
-                    }.bind(this))
+                      return event
+                    })
                 )
 
-        return this
-    }
+    return this
+  }
 })
-

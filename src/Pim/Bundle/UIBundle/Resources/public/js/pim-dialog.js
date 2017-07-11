@@ -5,7 +5,6 @@ import __ from 'oro/translator'
 import router from 'pim/router'
 import 'bootstrap-modal'
 
-
         /**
          * Dialog class purposes an easier way to call ModalDialog components
          *
@@ -24,19 +23,19 @@ export default {
              * @param string content
              * @param string title
              */
-    alert: function (content, title) {
-        if (!_.isUndefined(Backbone.BootstrapModal)) {
-            var alert = new Backbone.BootstrapModal({
-                allowCancel: false,
-                title: title,
-                content: content,
-                okText: __('OK')
-            })
-            alert.open()
-        } else {
-            window.alert(content)
-        }
-    },
+  alert: function (content, title) {
+    if (!_.isUndefined(Backbone.BootstrapModal)) {
+      var alert = new Backbone.BootstrapModal({
+        allowCancel: false,
+        title: title,
+        content: content,
+        okText: __('OK')
+      })
+      alert.open()
+    } else {
+      window.alert(content)
+    }
+  },
 
             /**
              * Open a modal dialog with cancel button and specific redirection when
@@ -45,29 +44,29 @@ export default {
              * @param string okText
              * @param string location
              */
-    redirect: function (content, title, okText, location) {
-        if (!_.isUndefined(Backbone.BootstrapModal)) {
-            var redirectModal = new Backbone.BootstrapModal({
-                allowCancel: true,
-                title: title,
-                content: content,
-                okText: okText,
-                cancelText: __('Cancel')
-            })
+  redirect: function (content, title, okText, location) {
+    if (!_.isUndefined(Backbone.BootstrapModal)) {
+      var redirectModal = new Backbone.BootstrapModal({
+        allowCancel: true,
+        title: title,
+        content: content,
+        okText: okText,
+        cancelText: __('Cancel')
+      })
 
-            redirectModal.on('ok', function () {
-                router.redirect(location)
-            })
+      redirectModal.on('ok', function () {
+        router.redirect(location)
+      })
 
-            $('.modal-body a', redirectModal.el).on('click', function () {
-                redirectModal.close()
-            })
+      $('.modal-body a', redirectModal.el).on('click', function () {
+        redirectModal.close()
+      })
 
-            redirectModal.open()
-        } else {
-            window.alert(content)
-        }
-    },
+      redirectModal.open()
+    } else {
+      window.alert(content)
+    }
+  },
 
             /**
              * Open a confirm modal dialog to validate the action made by user
@@ -76,31 +75,30 @@ export default {
              * @param string title
              * @param function callback
              */
-    confirm: function (content, title, callback) {
-        var deferred = $.Deferred()
+  confirm: function (content, title, callback) {
+    var deferred = $.Deferred()
 
-        var success = function () {
-            deferred.resolve();
-            (callback || $.noop)()
-        }
-        var cancel = function () {
-            deferred.reject()
-        }
-        if (!_.isUndefined(Backbone.BootstrapModal)) {
-            var confirm = new Backbone.BootstrapModal({
-                title: title,
-                content: content,
-                okText: __('OK'),
-                cancelText: __('Cancel')
-            })
-            confirm.on('ok', success)
-            confirm.on('cancel', cancel)
-            confirm.open()
-        } else {
-            (window.confirm(content) ? success : cancel)()
-        }
-
-        return deferred.promise()
+    var success = function () {
+      deferred.resolve();
+      (callback || $.noop)()
     }
-}
+    var cancel = function () {
+      deferred.reject()
+    }
+    if (!_.isUndefined(Backbone.BootstrapModal)) {
+      var confirm = new Backbone.BootstrapModal({
+        title: title,
+        content: content,
+        okText: __('OK'),
+        cancelText: __('Cancel')
+      })
+      confirm.on('ok', success)
+      confirm.on('cancel', cancel)
+      confirm.open()
+    } else {
+      (window.confirm(content) ? success : cancel)()
+    }
 
+    return deferred.promise()
+  }
+}

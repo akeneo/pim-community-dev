@@ -11,43 +11,43 @@
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 export default BaseForm.extend({
-    visible: false,
+  visible: false,
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'switcher:switch', this.switch)
-
-        this.getRoot().trigger('switcher:register', {
-            label: __(this.config.label),
-            code: this.code
-        })
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.empty()
+  configure: function () {
+    this.listenTo(this.getRoot(), 'switcher:switch', this.switch)
 
-        if (this.visible) {
-            return BaseForm.prototype.render.apply(this, arguments)
-        }
+    this.getRoot().trigger('switcher:register', {
+      label: __(this.config.label),
+      code: this.code
+    })
 
-        this.delegateEvents()
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
+
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    this.$el.empty()
+
+    if (this.visible) {
+      return BaseForm.prototype.render.apply(this, arguments)
+    }
+
+    this.delegateEvents()
+  },
 
             /**
              * This will enable or disable the current item.
@@ -55,10 +55,9 @@ export default BaseForm.extend({
              * @param {Object} event
              * @param {String} event.code The code of the current switcher item
              */
-    switch: function (event) {
-        this.visible = event.code === this.code
+  switch: function (event) {
+    this.visible = event.code === this.code
 
-        this.render()
-    }
+    this.render()
+  }
 })
-

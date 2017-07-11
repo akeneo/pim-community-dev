@@ -2,7 +2,6 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import 'bootstrap-modal'
 
-
     /**
      * Implementation of Bootstrap Modal
      * Oro extension of Bootstrap Modal wrapper for use with Backbone.
@@ -13,14 +12,13 @@ import 'bootstrap-modal'
      */
 export default Backbone.BootstrapModal.extend({
         /** @property {String} */
-    className: 'modal oro-modal-danger',
+  className: 'modal oro-modal-danger',
 
-    open: function () {
-        Backbone.BootstrapModal.prototype.open.apply(this, arguments)
+  open: function () {
+    Backbone.BootstrapModal.prototype.open.apply(this, arguments)
 
-        this.once('cancel', _.bind(function () {
-            this.$el.trigger('hidden')
-        }, this))
-    }
+    this.once('cancel', _.bind(function () {
+      this.$el.trigger('hidden')
+    }, this))
+  }
 })
-

@@ -6,7 +6,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
@@ -17,53 +16,52 @@ import i18n from 'pim/i18n'
 import template from 'pim/template/filter/attribute/boolean'
 import 'bootstrap.bootstrapswitch'
 export default BaseFilter.extend({
-    shortname: 'boolean',
-    template: _.template(template),
-    events: {
-        'change [name="filter-value"]': 'updateState'
-    },
+  shortname: 'boolean',
+  template: _.template(template),
+  events: {
+    'change [name="filter-value"]': 'updateState'
+  },
 
         /**
          * {@inheritdoc}
          */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-            _.defaults(data, {field: this.getCode(), operator: '=', value: true})
-        }.bind(this))
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+      _.defaults(data, {field: this.getCode(), operator: '=', value: true})
+    }.bind(this))
 
-        return BaseFilter.prototype.configure.apply(this, arguments)
-    },
-
-        /**
-         * {@inheritdoc}
-         */
-    renderInput: function (templateContext) {
-        return this.template(_.extend({}, templateContext, {
-            value: this.getValue(),
-            field: this.getField(),
-            labels: {
-                on: __('switch_on'),
-                off: __('switch_off')
-            }
-        }))
-    },
+    return BaseFilter.prototype.configure.apply(this, arguments)
+  },
 
         /**
          * {@inheritdoc}
          */
-    postRender: function () {
-        this.$('.switch').bootstrapSwitch()
-    },
+  renderInput: function (templateContext) {
+    return this.template(_.extend({}, templateContext, {
+      value: this.getValue(),
+      field: this.getField(),
+      labels: {
+        on: __('switch_on'),
+        off: __('switch_off')
+      }
+    }))
+  },
 
         /**
          * {@inheritdoc}
          */
-    updateState: function () {
-        this.setData({
-            field: this.getField(),
-            operator: '=',
-            value: this.$('[name="filter-value"]').is(':checked')
-        })
-    }
+  postRender: function () {
+    this.$('.switch').bootstrapSwitch()
+  },
+
+        /**
+         * {@inheritdoc}
+         */
+  updateState: function () {
+    this.setData({
+      field: this.getField(),
+      operator: '=',
+      value: this.$('[name="filter-value"]').is(':checked')
+    })
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Override of the attributes module.
  *
@@ -15,73 +14,72 @@ import SecurityContext from 'pim/security-context'
 import BaseAttributes from 'pim/form/common/attributes'
 import mediator from 'oro/mediator'
 export default BaseAttributes.extend({
-    locked: false,
+  locked: false,
 
             /**
              * Listen to mass edit form unlock and lock events
              *
              * {@inheritdoc}
              */
-    configure: function () {
-        mediator.on('mass-edit:form:lock', this.onLock.bind(this))
-        mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this))
+  configure: function () {
+    mediator.on('mass-edit:form:lock', this.onLock.bind(this))
+    mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this))
 
-        return BaseAttributes.prototype.configure.apply(this, arguments)
-    },
+    return BaseAttributes.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * Override for field render to maintain form locked state
              * @param  {jQueryElement} panel Attribute panel element
              * @param  {Object} field Attribute field
              */
-    appendField: function (panel, field) {
-        if (field.canBeSeen()) {
-            field.setLocked(this.locked)
-            field.render()
-            FieldManager.addVisibleField(field.attribute.code)
-            panel.append(field.$el)
-        }
-    },
+  appendField: function (panel, field) {
+    if (field.canBeSeen()) {
+      field.setLocked(this.locked)
+      field.render()
+      FieldManager.addVisibleField(field.attribute.code)
+      panel.append(field.$el)
+    }
+  },
 
             /**
              * Set mass edit form as locked
              *
              * {@inheritdoc}
              */
-    onLock: function () {
-        this.locked = true
-    },
+  onLock: function () {
+    this.locked = true
+  },
 
             /**
              * Set mass edit form as unlocked
              *
              * {@inheritdoc}
              */
-    onUnlock: function () {
-        this.locked = false
-        this.render()
-    },
+  onUnlock: function () {
+    this.locked = false
+    this.render()
+  },
 
             /**
              * {@inheritdoc}
              */
-    removeAttribute: function (event) {
-        if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
-            return
-        }
-        var attributeCode = event.currentTarget.dataset.attribute
-        var product = this.getFormData()
-        var fields = FieldManager.getFields()
-
-        this.triggerExtensions('add-attribute:update:available-attributes')
-
-        delete product.values[attributeCode]
-        delete fields[attributeCode]
-
-        this.setData(product)
-        this.getRoot().trigger('pim_enrich:form:remove-attribute:after')
-
-        this.render()
+  removeAttribute: function (event) {
+    if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
+      return
     }
-})
+    var attributeCode = event.currentTarget.dataset.attribute
+    var product = this.getFormData()
+    var fields = FieldManager.getFields()
 
+    this.triggerExtensions('add-attribute:update:available-attributes')
+
+    delete product.values[attributeCode]
+    delete fields[attributeCode]
+
+    this.setData(product)
+    this.getRoot().trigger('pim_enrich:form:remove-attribute:after')
+
+    this.render()
+  }
+})

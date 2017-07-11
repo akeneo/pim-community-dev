@@ -1,5 +1,4 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
@@ -10,93 +9,92 @@ import i18n from 'pim/i18n'
 import template from 'pim/template/filter/attribute/metric'
 import 'jquery.select2'
 export default BaseFilter.extend({
-    shortname: 'metric',
-    template: _.template(template),
-    events: {
-        'change [name="filter-data"], [name="filter-operator"], select.unit': 'updateState'
-    },
+  shortname: 'metric',
+  template: _.template(template),
+  events: {
+    'change [name="filter-data"], [name="filter-operator"], select.unit': 'updateState'
+  },
 
         /**
          * {@inheritdoc}
          */
-    configure: function () {
-        return $.when(
+  configure: function () {
+    return $.when(
                 FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
                 BaseFilter.prototype.configure.apply(this, arguments)
             ).then(function (attribute) {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                    _.defaults(data, {
-                        field: this.getCode(),
-                        operator: _.first(_.values(this.config.operators)),
-                        value: {
-                            amount: '',
-                            unit: attribute.default_metric_unit
-                        }
-                    })
-                }.bind(this))
+              this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+                _.defaults(data, {
+                  field: this.getCode(),
+                  operator: _.first(_.values(this.config.operators)),
+                  value: {
+                    amount: '',
+                    unit: attribute.default_metric_unit
+                  }
+                })
+              }.bind(this))
             }.bind(this))
-    },
+  },
 
         /**
          * {@inheritdoc}
          */
-    isEmpty: function () {
-        return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
+  isEmpty: function () {
+    return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
                 (undefined === this.getValue() ||
                 undefined === this.getValue().amount ||
-                '' === this.getValue().amount)
-    },
+                this.getValue().amount === '')
+  },
 
         /**
          * {@inheritdoc}
          */
-    renderInput: function (templateContext) {
-        return this.template(_.extend({}, templateContext, {
-            __: __,
-            value: this.getValue(),
-            field: this.getField(),
-            operator: this.getOperator(),
-            operators: this.config.operators
-        }))
-    },
+  renderInput: function (templateContext) {
+    return this.template(_.extend({}, templateContext, {
+      __: __,
+      value: this.getValue(),
+      field: this.getField(),
+      operator: this.getOperator(),
+      operators: this.config.operators
+    }))
+  },
 
         /**
          * {@inheritdoc}
          */
-    postRender: function () {
-        this.$('.operator, .unit').select2({minimumResultsForSearch: -1})
-    },
+  postRender: function () {
+    this.$('.operator, .unit').select2({minimumResultsForSearch: -1})
+  },
 
         /**
          * {@inheritdoc}
          */
-    getTemplateContext: function () {
-        return $.when(
+  getTemplateContext: function () {
+    return $.when(
                 BaseFilter.prototype.getTemplateContext.apply(this, arguments),
                 FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, measures) {
-                return _.extend({}, templateContext, {
-                    units: measures[templateContext.attribute.metric_family]
-                })
-            }.bind(this))
-    },
+              return _.extend({}, templateContext, {
+                units: measures[templateContext.attribute.metric_family]
+              })
+            })
+  },
 
         /**
          * {@inheritdoc}
          */
-    updateState: function () {
-        var value = {
-            amount: this.$('[name="filter-data"]').val(),
-            unit: this.$('select[name="filter-unit"]').val()
-        }
-
-        var operator = this.$('[name="filter-operator"]').val()
-
-        this.setData({
-            field: this.getField(),
-            operator: operator,
-            value: value
-        })
+  updateState: function () {
+    var value = {
+      amount: this.$('[name="filter-data"]').val(),
+      unit: this.$('select[name="filter-unit"]').val()
     }
-})
 
+    var operator = this.$('[name="filter-operator"]').val()
+
+    this.setData({
+      field: this.getField(),
+      operator: operator,
+      value: value
+    })
+  }
+})

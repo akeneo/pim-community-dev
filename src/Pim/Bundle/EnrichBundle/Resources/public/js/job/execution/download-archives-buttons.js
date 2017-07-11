@@ -14,70 +14,69 @@ import Routing from 'routing'
 import propertyAccessor from 'pim/common/property'
 import securityContext from 'pim/security-context'
 export default BaseForm.extend({
-    template: _.template(template),
+  template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (meta) {
-        this.config = meta.config
+  initialize: function (meta) {
+    this.config = meta.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        if (!this.isVisible()) {
-            return this
-        }
-        var formData = this.getFormData()
-        this.$el.html(this.template({
-            __: __,
-            archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
-            executionId: formData.meta.id,
-            generateRoute: this.getUrl.bind(this)
-        }))
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-        return this
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
+
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    if (!this.isVisible()) {
+      return this
+    }
+    var formData = this.getFormData()
+    this.$el.html(this.template({
+      __: __,
+      archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
+      executionId: formData.meta.id,
+      generateRoute: this.getUrl.bind(this)
+    }))
+
+    return this
+  },
 
             /**
              * Get the url from parameters
              *
              * @returns {string}
              */
-    getUrl: function (parameters) {
-        return Routing.generate(
+  getUrl: function (parameters) {
+    return Routing.generate(
                     this.config.url,
                     parameters
                 )
-    },
+  },
 
             /**
              * Returns true if the extension should be visible
              *
              * @returns {boolean}
              */
-    isVisible: function () {
-        var formData = this.getFormData()
-        if (formData.jobInstance.type === 'export') {
-            return securityContext.isGranted(this.config.aclIdExport)
-        } else if (formData.jobInstance.type === 'import') {
-            return securityContext.isGranted(this.config.aclIdImport)
-        } else {
-            return true
-        }
+  isVisible: function () {
+    var formData = this.getFormData()
+    if (formData.jobInstance.type === 'export') {
+      return securityContext.isGranted(this.config.aclIdExport)
+    } else if (formData.jobInstance.type === 'import') {
+      return securityContext.isGranted(this.config.aclIdImport)
+    } else {
+      return true
     }
+  }
 })
-

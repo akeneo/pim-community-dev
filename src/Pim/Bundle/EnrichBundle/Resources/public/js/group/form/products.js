@@ -1,5 +1,4 @@
 
-
 /**
  * Module used to display the product datagrid in a group
  *
@@ -13,57 +12,56 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import UserContext from 'pim/user-context'
 import Grid from 'pim/common/grid'
 export default BaseForm.extend({
-    className: 'products',
+  className: 'products',
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.trigger('tab:register', {
-            code: this.code,
-            label: __(this.config.label)
-        })
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        if (!this.productGroupGrid) {
-            this.productGroupGrid = new Grid(
+  configure: function () {
+    this.trigger('tab:register', {
+      code: this.code,
+      label: __(this.config.label)
+    })
+
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
+
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    if (!this.productGroupGrid) {
+      this.productGroupGrid = new Grid(
                         this.config.gridId,
-                {
-                    locale: UserContext.get('catalogLocale'),
-                    currentGroup: this.getFormData().meta.id,
-                    id: this.getFormData().meta.id,
-                    selection: this.getFormData().products,
-                    selectionIdentifier: 'identifier'
-                }
+        {
+          locale: UserContext.get('catalogLocale'),
+          currentGroup: this.getFormData().meta.id,
+          id: this.getFormData().meta.id,
+          selection: this.getFormData().products,
+          selectionIdentifier: 'identifier'
+        }
                     )
 
-            this.productGroupGrid.on('grid:selection:updated', function (selection) {
-                this.setData('products', selection)
-            }.bind(this))
+      this.productGroupGrid.on('grid:selection:updated', function (selection) {
+        this.setData('products', selection)
+      }.bind(this))
 
-            this.getRoot().on('pim_enrich:form:entity:post_fetch', function () {
-                this.productGroupGrid.refresh()
-            }.bind(this))
-        }
-
-        this.$el.empty().append(this.productGroupGrid.render().$el)
-
-        this.renderExtensions()
+      this.getRoot().on('pim_enrich:form:entity:post_fetch', function () {
+        this.productGroupGrid.refresh()
+      }.bind(this))
     }
-})
 
+    this.$el.empty().append(this.productGroupGrid.render().$el)
+
+    this.renderExtensions()
+  }
+})

@@ -15,11 +15,10 @@ export default BaseLabel.extend({
              *
              * @return {String}
              */
-    getLabel: function () {
-        var jobInstance = this.getFormData().jobInstance
-        var prefix = __('pim_enrich.form.job_execution.title.details')
+  getLabel: function () {
+    var jobInstance = this.getFormData().jobInstance
+    var prefix = __('pim_enrich.form.job_execution.title.details')
 
-        return prefix + ' - ' + jobInstance.label + ' [' + jobInstance.code + ']'
-    }
+    return prefix + ' - ' + jobInstance.label + ' [' + jobInstance.code + ']'
+  }
 })
-

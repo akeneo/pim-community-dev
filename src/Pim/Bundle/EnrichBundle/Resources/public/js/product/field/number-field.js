@@ -11,21 +11,20 @@ import Field from 'pim/field'
 import _ from 'underscore'
 import fieldTemplate from 'pim/template/product/field/number'
 export default Field.extend({
-    fieldTemplate: _.template(fieldTemplate),
-    events: {
-        'change .field-input:first input[type="text"]': 'updateModel'
-    },
-    renderInput: function (context) {
-        return this.fieldTemplate(context)
-    },
-    updateModel: function () {
-        var data = this.$('.field-input:first input[type="text"]').val()
+  fieldTemplate: _.template(fieldTemplate),
+  events: {
+    'change .field-input:first input[type="text"]': 'updateModel'
+  },
+  renderInput: function (context) {
+    return this.fieldTemplate(context)
+  },
+  updateModel: function () {
+    var data = this.$('.field-input:first input[type="text"]').val()
 
-        if ('' === data) {
-            data = this.attribute.empty_value
-        }
-
-        this.setCurrentValue(data)
+    if (data === '') {
+      data = this.attribute.empty_value
     }
-})
 
+    this.setCurrentValue(data)
+  }
+})

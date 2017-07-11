@@ -1,5 +1,4 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
@@ -8,24 +7,24 @@ import template from 'pim/template/export/common/edit/validation'
 import messenger from 'oro/messenger'
 import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
-    template: _.template(template),
-    errors: [],
+  template: _.template(template),
+  errors: [],
 
         /**
          * {@inherit}
          */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this))
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-    setValidationErrors: function (event) {
-        this.errors = event.response
+  setValidationErrors: function (event) {
+    this.errors = event.response
 
-        this.getRoot().trigger('pim_enrich:form:entity:validation_error', event)
-    },
+    this.getRoot().trigger('pim_enrich:form:entity:validation_error', event)
+  },
 
         /**
          * Adds the extension to filters.
@@ -33,25 +32,24 @@ export default BaseForm.extend({
          *
          * @param {Object} event
          */
-    addFilterExtension: function (event) {
-        var filter = event.filter
+  addFilterExtension: function (event) {
+    var filter = event.filter
 
-        if (null !== propertyAccessor
-                .accessProperty(this.errors, 'configuration.filters.data' + filter.getField())
+    if (propertyAccessor
+                .accessProperty(this.errors, 'configuration.filters.data' + filter.getField()) !== null
             ) {
-            var content = $(this.template({
-                errors: propertyAccessor.accessProperty(
+      var content = $(this.template({
+        errors: propertyAccessor.accessProperty(
                         this.errors,
                         'configuration.filters.data' + filter.getField()
                     )
-            }))
+      }))
 
-            event.filter.addElement(
+      event.filter.addElement(
                     'below-input',
                     'validation',
                     content
                 )
-        }
     }
+  }
 })
-

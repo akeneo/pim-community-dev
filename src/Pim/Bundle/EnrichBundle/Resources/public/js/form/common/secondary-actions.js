@@ -11,9 +11,9 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/secondary-actions'
 export default BaseForm.extend({
-    className: 'AknSecondaryActions AknDropdown AknButtonList-item secondary-actions',
+  className: 'AknSecondaryActions AknDropdown AknButtonList-item secondary-actions',
 
-    template: _.template(template),
+  template: _.template(template),
 
             /**
              * When there is no extensions attached to this module, nothing is rendered.
@@ -21,16 +21,15 @@ export default BaseForm.extend({
              *
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.empty()
+  render: function () {
+    this.$el.empty()
 
-        if (!_.isEmpty(this.extensions)) {
-            this.$el.html(this.template({
-                titleLabel: __('pim_enrich.navigation.other_actions')
-            }))
+    if (!_.isEmpty(this.extensions)) {
+      this.$el.html(this.template({
+        titleLabel: __('pim_enrich.navigation.other_actions')
+      }))
 
-            this.renderExtensions()
-        }
+      this.renderExtensions()
     }
+  }
 })
-

@@ -1,5 +1,4 @@
 
-
 /**
  * Group meta extension to display number of products this group contains
  *
@@ -12,44 +11,43 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import formTemplate from 'pim/template/group/meta/product-count'
 export default BaseForm.extend({
-    tagName: 'span',
-    template: _.template(formTemplate),
+  tagName: 'span',
+  template: _.template(formTemplate),
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render)
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        var group = this.getFormData()
-        var html = ''
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render)
 
-        if (_.has(group, 'products')) {
-            html = this.template({
-                label: __(this.config.productCountLabel),
-                productCount: group.products.length
-            })
-        }
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-        this.$el.html(html)
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    var group = this.getFormData()
+    var html = ''
 
-        return this
+    if (_.has(group, 'products')) {
+      html = this.template({
+        label: __(this.config.productCountLabel),
+        productCount: group.products.length
+      })
     }
-})
 
+    this.$el.html(html)
+
+    return this
+  }
+})

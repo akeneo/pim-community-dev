@@ -1,5 +1,4 @@
 
-
 /**
  * Module to display a line in the Select2 dropdown of the Datagrid View Selector.
  * This module accepts extensions to display more info beside the view.
@@ -14,24 +13,24 @@ import Backbone from 'backbone'
 import BaseForm from 'pim/form'
 import template from 'pim/template/grid/view-selector/line'
 export default BaseForm.extend({
-    template: _.template(template),
-    datagridView: null,
-    datagridViewType: null,
-    currentViewId: null,
+  template: _.template(template),
+  datagridView: null,
+  datagridViewType: null,
+  currentViewId: null,
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            view: this.datagridView,
-            isCurrent: (this.currentViewId === this.datagridView.id)
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      view: this.datagridView,
+      isCurrent: (this.currentViewId === this.datagridView.id)
+    }))
 
-        this.renderExtensions()
+    this.renderExtensions()
 
-        return this
-    },
+    return this
+  },
 
             /**
              * Set the view of this module.
@@ -40,10 +39,9 @@ export default BaseForm.extend({
              * @param {String}  viewType
              * @param {int}     currentViewId
              */
-    setView: function (view, viewType, currentViewId) {
-        this.datagridView = view
-        this.datagridViewType = viewType
-        this.currentViewId = currentViewId
-    }
+  setView: function (view, viewType, currentViewId) {
+    this.datagridView = view
+    this.datagridViewType = viewType
+    this.currentViewId = currentViewId
+  }
 })
-

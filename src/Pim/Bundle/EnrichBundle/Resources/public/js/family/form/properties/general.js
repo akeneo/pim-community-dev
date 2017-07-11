@@ -1,5 +1,4 @@
 
-
 /**
  * Extension used for family properties tab general tab section
  *
@@ -16,38 +15,37 @@ import template from 'pim/template/form/tab/section'
 import LoadingMask from 'oro/loading-mask'
 import 'jquery.select2'
 export default BaseForm.extend({
-    className: 'tabsection',
-    template: _.template(template),
-    errors: [],
+  className: 'tabsection',
+  template: _.template(template),
+  errors: [],
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
-
-            /**
-             * {@inheritdoc}
-             */
-    configure: function () {
-
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            sectionTitle: __(this.config.label),
-            dropZone: this.config.dropZone
-        }))
+  configure: function () {
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-        this.renderExtensions()
-    },
+            /**
+             * {@inheritdoc}
+             */
+  render: function () {
+    this.$el.html(this.template({
+      sectionTitle: __(this.config.label),
+      dropZone: this.config.dropZone
+    }))
+
+    this.renderExtensions()
+  },
 
             /**
              * Get the validation errors for the given field
@@ -56,46 +54,44 @@ export default BaseForm.extend({
              *
              * @return {mixed}
              */
-    getValidationErrorsForField: function (field) {
-        return propertyAccessor
+  getValidationErrorsForField: function (field) {
+    return propertyAccessor
                     .accessProperty(
                         this.errors,
                         field,
                         []
                     )
-    },
+  },
 
             /**
              * Sets errors
              *
              * @param {Object} errors
              */
-    setValidationErrors: function (errors) {
-        this.errors = errors.response
-    },
+  setValidationErrors: function (errors) {
+    this.errors = errors.response
+  },
 
             /**
              * Resets validation errors
              */
-    resetValidationErrors: function () {
-        this.errors = {}
-        this.render()
-    },
+  resetValidationErrors: function () {
+    this.errors = {}
+    this.render()
+  },
 
             /**
              * Shows the loading mask
              */
-    showLoadingMask: function () {
-        this.loadingMask = new LoadingMask()
-        this.loadingMask.render().$el.appendTo(this.getRoot().$el).show()
-    },
+  showLoadingMask: function () {
+    this.loadingMask = new LoadingMask()
+    this.loadingMask.render().$el.appendTo(this.getRoot().$el).show()
+  },
 
             /**
              * Hides the loading mask
              */
-    hideLoadingMask: function () {
-        this.loadingMask.hide().$el.remove()
-    }
+  hideLoadingMask: function () {
+    this.loadingMask.hide().$el.remove()
+  }
 })
-
-

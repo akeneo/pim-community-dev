@@ -1,5 +1,3 @@
-
-
 /**
  * Save extension for job instance
  *
@@ -13,34 +11,34 @@ import BaseSave from 'pim/form/common/save'
 import router from 'pim/router'
 
 export default BaseSave.extend({
-    updateSuccessMessage: __('pim_enrich.entity.job_instance.info.update_successful'),
-    updateFailureMessage: __('pim_enrich.entity.job_instance.info.update_failed'),
+  updateSuccessMessage: __('pim_enrich.entity.job_instance.info.update_successful'),
+  updateFailureMessage: __('pim_enrich.entity.job_instance.info.update_failed'),
 
             /**
              * {@inheritdoc}
              */
-    save: function () {
-        var jobInstance = $.extend(true, {}, this.getFormData())
+  save: function () {
+    var jobInstance = $.extend(true, {}, this.getFormData())
 
-        delete jobInstance.meta
-        delete jobInstance.connector
+    delete jobInstance.meta
+    delete jobInstance.connector
 
-        this.showLoadingMask()
-        this.getRoot().trigger('pim_enrich:form:entity:pre_save')
+    this.showLoadingMask()
+    this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
-        return this.getJobInstanceSaver()
-            .save(jobInstance.code, jobInstance)
-            .then(function (data) {
-                this.postSave()
+    return this.getJobInstanceSaver()
+        .save(jobInstance.code, jobInstance)
+        .then(function (data) {
+          this.postSave()
 
-                this.setData(data)
-                this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
-                router.redirectToRoute(
-                    this.config.redirectPath,
-                    {code: jobInstance.code}
-                )
-            }.bind(this))
-            .fail(this.fail.bind(this))
-            .always(this.hideLoadingMask.bind(this))
-    }
+          this.setData(data)
+          this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+          router.redirectToRoute(
+                this.config.redirectPath,
+                {code: jobInstance.code}
+            )
+        }.bind(this))
+        .fail(this.fail.bind(this))
+        .always(this.hideLoadingMask.bind(this))
+  }
 })

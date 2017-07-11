@@ -1,5 +1,4 @@
 
-
 /**
  * Module to remove attribute group
  *
@@ -14,8 +13,7 @@ export default _.extend({}, BaseRemover, {
             /**
              * {@inheritdoc}
              */
-    getUrl: function (code) {
-        return Routing.generate(__moduleConfig.url, {identifier: code})
-    }
+  getUrl: function (code) {
+    return Routing.generate(__moduleConfig.url, {identifier: code})
+  }
 })
-

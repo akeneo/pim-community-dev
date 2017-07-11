@@ -1,5 +1,4 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
@@ -12,20 +11,20 @@ export default {
          *
          * @return {Promise}
          */
-    getAttributeGroupsForObject: function (object) {
-        return $.when(
+  getAttributeGroupsForObject: function (object) {
+    return $.when(
                 FetcherRegistry.getFetcher('attribute-group').fetchAll(),
                 AttributeManager.getAttributes(object)
             ).then(function (attributeGroups, ObjectAttributes) {
-                return _.reduce(attributeGroups, function (result, attributeGroup) {
-                    if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
-                        result[attributeGroup.code] = attributeGroup
-                    }
+              return _.reduce(attributeGroups, function (result, attributeGroup) {
+                if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
+                  result[attributeGroup.code] = attributeGroup
+                }
 
-                    return result
-                }, {})
+                return result
+              }, {})
             })
-    },
+  },
 
         /**
          * Get attribute group values filtered from the whole list
@@ -35,20 +34,20 @@ export default {
          *
          * @return {Object}
          */
-    getAttributeGroupValues: function (values, attributeGroup) {
-        var matchingValues = {}
-        if (!attributeGroup) {
-            return matchingValues
-        }
+  getAttributeGroupValues: function (values, attributeGroup) {
+    var matchingValues = {}
+    if (!attributeGroup) {
+      return matchingValues
+    }
 
-        _.each(attributeGroup.attributes, function (attributeCode) {
-            if (values[attributeCode]) {
-                matchingValues[attributeCode] = values[attributeCode]
-            }
-        })
+    _.each(attributeGroup.attributes, function (attributeCode) {
+      if (values[attributeCode]) {
+        matchingValues[attributeCode] = values[attributeCode]
+      }
+    })
 
-        return matchingValues
-    },
+    return matchingValues
+  },
 
         /**
          * Get the attribute group for the given attribute
@@ -58,16 +57,15 @@ export default {
          *
          * @return {String}
          */
-    getAttributeGroupForAttribute: function (attributeGroups, attributeCode) {
-        var result = null
+  getAttributeGroupForAttribute: function (attributeGroups, attributeCode) {
+    var result = null
 
-        _.each(attributeGroups, function (attributeGroup) {
-            if (-1 !== attributeGroup.attributes.indexOf(attributeCode)) {
-                result = attributeGroup.code
-            }
-        })
+    _.each(attributeGroups, function (attributeGroup) {
+      if (attributeGroup.attributes.indexOf(attributeCode) !== -1) {
+        result = attributeGroup.code
+      }
+    })
 
-        return result
-    }
+    return result
+  }
 }
-

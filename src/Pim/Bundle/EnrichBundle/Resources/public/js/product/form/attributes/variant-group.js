@@ -15,34 +15,33 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import mediator from 'oro/mediator'
 import variantGroupTemplate from 'pim/template/product/tab/attribute/variant-group'
 export default BaseForm.extend({
-    template: _.template(variantGroupTemplate),
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
+  template: _.template(variantGroupTemplate),
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
-    addFieldExtension: function (event) {
-        var product = this.getFormData()
-        if (!product.variant_group) {
-            return
-        }
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
+  addFieldExtension: function (event) {
+    var product = this.getFormData()
+    if (!product.variant_group) {
+      return
+    }
 
-        event.promises.push(
+    event.promises.push(
                     FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group, {cached: true})
                         .then(function (variantGroup) {
-                            var field = event.field
-                            if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
-                                var $element = this.template({
-                                    variantGroup: variantGroup
-                                })
+                          var field = event.field
+                          if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
+                            var $element = this.template({
+                              variantGroup: variantGroup
+                            })
 
-                                field.setEditable(false)
-                                field.addElement('footer', 'updated_by', $element)
-                            }
+                            field.setEditable(false)
+                            field.addElement('footer', 'updated_by', $element)
+                          }
                         }.bind(this))
                 )
 
-        return this
-    }
+    return this
+  }
 })
-

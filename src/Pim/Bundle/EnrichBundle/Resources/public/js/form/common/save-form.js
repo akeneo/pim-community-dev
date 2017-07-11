@@ -1,5 +1,4 @@
 
-
 /**
  * Save extension for simple entity types
  *
@@ -22,13 +21,13 @@ export default BaseSave.extend({
             /**
              * Sets message labels for updates
              */
-    configure: function () {
-        this.updateSuccessMessage = __(this.config.updateSuccessMessage)
-        this.updateFailureMessage = __(this.config.updateFailureMessage)
-        this.notReadyMessage = __(this.config.notReadyMessage)
+  configure: function () {
+    this.updateSuccessMessage = __(this.config.updateSuccessMessage)
+    this.updateFailureMessage = __(this.config.updateFailureMessage)
+    this.notReadyMessage = __(this.config.notReadyMessage)
 
-        return BaseSave.prototype.configure.apply(this, arguments)
-    },
+    return BaseSave.prototype.configure.apply(this, arguments)
+  },
 
             /**
              * Given an array of fields, return the translation for each in a map
@@ -37,15 +36,15 @@ export default BaseSave.extend({
              * @param  {String} catalogLocale The locale
              * @return {Array}                An array of labels
              */
-    getFieldLabels: function (fields, catalogLocale) {
-        return _.map(fields, function (field) {
-            return i18n.getLabel(
+  getFieldLabels: function (fields, catalogLocale) {
+    return _.map(fields, function (field) {
+      return i18n.getLabel(
                         field.attribute.label,
                         catalogLocale,
                         field.attribute.code
                     )
-        })
-    },
+    })
+  },
 
             /**
              * Shows an error message for the given message text and labels
@@ -53,44 +52,43 @@ export default BaseSave.extend({
              * @param  {String} message The given error message
              * @param  {Array} labels   An array of field names
              */
-    showFlashMessage: function (message, labels) {
-        var flash = __(message, { 'fields': labels.join(', ') })
-        messenger.notify('error', flash)
-    },
+  showFlashMessage: function (message, labels) {
+    var flash = __(message, { 'fields': labels.join(', ') })
+    messenger.notify('error', flash)
+  },
 
             /**
              * {@inheritdoc}
              */
-    save: function () {
-        var entity = $.extend(true, {}, this.getFormData())
-        delete entity.meta
+  save: function () {
+    var entity = $.extend(true, {}, this.getFormData())
+    delete entity.meta
 
-        var notReadyFields = FieldManager.getNotReadyFields()
+    var notReadyFields = FieldManager.getNotReadyFields()
 
-        if (0 < notReadyFields.length) {
-            var catalogLocale = UserContext.get('catalogLocale')
-            var fieldLabels = this.getFieldLabels(notReadyFields, catalogLocale)
+    if (notReadyFields.length > 0) {
+      var catalogLocale = UserContext.get('catalogLocale')
+      var fieldLabels = this.getFieldLabels(notReadyFields, catalogLocale)
 
-            return this.showFlashMessage(this.notReadyMessage, fieldLabels)
-        }
+      return this.showFlashMessage(this.notReadyMessage, fieldLabels)
+    }
 
-        this.showLoadingMask()
-        this.getRoot().trigger('pim_enrich:form:entity:pre_save')
+    this.showLoadingMask()
+    this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
-        return EntitySaver
+    return EntitySaver
                     .setUrl(this.config.url)
                     .save(entity.code, entity, this.config.method || 'POST')
                     .then(function (data) {
-                        this.postSave()
-                        this.setData(data)
-                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+                      this.postSave()
+                      this.setData(data)
+                      this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
 
-                        if (this.config.redirectAfter) {
-                            router.redirectToRoute(this.config.redirectAfter, {identifier: entity.code})
-                        }
+                      if (this.config.redirectAfter) {
+                        router.redirectToRoute(this.config.redirectAfter, {identifier: entity.code})
+                      }
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this))
-    }
+  }
 })
-

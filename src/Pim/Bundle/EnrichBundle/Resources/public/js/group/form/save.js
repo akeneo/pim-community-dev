@@ -1,5 +1,4 @@
 
-
 /**
  * Save extension for Group
  *
@@ -17,49 +16,48 @@ import FieldManager from 'pim/field-manager'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
 export default BaseSave.extend({
-    updateSuccessMessage: __('pim_enrich.entity.group.info.update_successful'),
-    updateFailureMessage: __('pim_enrich.entity.group.info.update_failed'),
+  updateSuccessMessage: __('pim_enrich.entity.group.info.update_successful'),
+  updateFailureMessage: __('pim_enrich.entity.group.info.update_failed'),
 
             /**
              * {@inheritdoc}
              */
-    save: function () {
-        var group = $.extend(true, {}, this.getFormData())
+  save: function () {
+    var group = $.extend(true, {}, this.getFormData())
 
-        delete group.meta
+    delete group.meta
 
-        var notReadyFields = FieldManager.getNotReadyFields()
+    var notReadyFields = FieldManager.getNotReadyFields()
 
-        if (0 < notReadyFields.length) {
-            var fieldLabels = _.map(notReadyFields, function (field) {
-                return i18n.getLabel(
+    if (notReadyFields.length > 0) {
+      var fieldLabels = _.map(notReadyFields, function (field) {
+        return i18n.getLabel(
                             field.attribute.label,
                             UserContext.get('catalogLocale'),
                             field.attribute.code
                         )
-            })
+      })
 
-            messenger.notify(
+      messenger.notify(
                         'error',
                         __('pim_enrich.entity.group.info.field_not_ready', {'fields': fieldLabels.join(', ')})
                     )
 
-            return
-        }
+      return
+    }
 
-        this.showLoadingMask()
-        this.getRoot().trigger('pim_enrich:form:entity:pre_save')
+    this.showLoadingMask()
+    this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
-        return GroupSaver
+    return GroupSaver
                     .save(group.code, group)
                     .then(function (data) {
-                        this.postSave()
+                      this.postSave()
 
-                        this.setData(data)
-                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+                      this.setData(data)
+                      this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this))
-    }
+  }
 })
-

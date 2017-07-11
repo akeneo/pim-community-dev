@@ -2,7 +2,6 @@ import _ from 'underscore'
 import Translator from 'translator-lib'
 import 'json'
 
-
 var dict = {}
 var debug = false
 var add = Translator.add
@@ -19,8 +18,8 @@ Translator.placeHolderSuffix = ' }}'
      * @param {string} id
      */
 Translator.add = function (id) {
-    dict[id] = 1
-    add.apply(Translator, arguments)
+  dict[id] = 1
+  add.apply(Translator, arguments)
 }
 
     /**
@@ -31,9 +30,9 @@ Translator.add = function (id) {
      * @returns {string}
      */
 Translator.get = function (id) {
-    checkTranslation(id)
+  checkTranslation(id)
 
-    return get.apply(Translator, arguments)
+  return get.apply(Translator, arguments)
 }
 
     /**
@@ -44,12 +43,12 @@ Translator.get = function (id) {
      * @returns {Object} Translator
      */
 Translator.fromJSON = function (data) {
-    if (typeof data === 'string') {
-        data = JSON.parse(data)
-    }
-    debug = data.debug || false
+  if (typeof data === 'string') {
+    data = JSON.parse(data)
+  }
+  debug = data.debug || false
 
-    return fromJSON.call(Translator, data)
+  return fromJSON.call(Translator, data)
 }
 
     /**
@@ -58,18 +57,18 @@ Translator.fromJSON = function (data) {
      *
      * @param {string} id
      */
-function checkTranslation(id) {
-    if (!debug) {
-        return
-    }
-    var domains = Translator.defaultDomains
-    var checker = function (domain) {
-        return dict.hasOwnProperty(domain ? domain + ':' + id : id)
-    }
-    domains = _.union([undefined], _.isArray(domains) ? domains : [domains])
-    if (!_.some(domains, checker)) {
-        console.error('Untranslated: %s', id)
-    }
+function checkTranslation (id) {
+  if (!debug) {
+    return
+  }
+  var domains = Translator.defaultDomains
+  var checker = function (domain) {
+    return dict.hasOwnProperty(domain ? domain + ':' + id : id)
+  }
+  domains = _.union([undefined], _.isArray(domains) ? domains : [domains])
+  if (!_.some(domains, checker)) {
+    console.error('Untranslated: %s', id)
+  }
 }
 
 _.mixin({
@@ -78,7 +77,7 @@ _.mixin({
          * Due to it's underscore mixin, it can be used inside templates
          * @returns {string}
          */
-    __: _.bind(Translator.get, Translator)
+  __: _.bind(Translator.get, Translator)
 })
 
     /**

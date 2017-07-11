@@ -1,38 +1,37 @@
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import BaseFetcher from 'pim/base-fetcher'
 import Routing from 'routing'
 export default BaseFetcher.extend({
-    identifierPromise: null,
-    fetchByTypesPromises: [],
+  identifierPromise: null,
+  fetchByTypesPromises: [],
 
         /**
          * Return the identifier attribute
          *
          * @return {Promise}
          */
-    getIdentifierAttribute: function () {
-        if (null === this.identifierPromise) {
-            this.identifierPromise = $.Deferred()
+  getIdentifierAttribute: function () {
+    if (this.identifierPromise === null) {
+      this.identifierPromise = $.Deferred()
 
-            return this.fetchByTypes([this.options.identifier_type])
+      return this.fetchByTypes([this.options.identifier_type])
                     .then(function (attributes) {
-                        if (attributes.length > 0) {
-                            this.identifierPromise.resolve(attributes[0]).promise()
-
-                            return this.identifierPromise
-                        }
+                      if (attributes.length > 0) {
+                        this.identifierPromise.resolve(attributes[0]).promise()
 
                         return this.identifierPromise
+                      }
+
+                      return this.identifierPromise
                             .reject()
                             .promise()
                     }.bind(this))
-        }
+    }
 
-        return this.identifierPromise
-    },
+    return this.identifierPromise
+  },
 
         /**
          * Fetch attributes by types
@@ -41,20 +40,20 @@ export default BaseFetcher.extend({
          *
          * @return {Promise}
          */
-    fetchByTypes: function (attributeTypes) {
-        var cacheKey = attributeTypes.sort().join('')
+  fetchByTypes: function (attributeTypes) {
+    var cacheKey = attributeTypes.sort().join('')
 
-        if (!_.has(this.fetchByTypesPromises, cacheKey)) {
-            this.fetchByTypesPromises[cacheKey] = this.getJSON(
+    if (!_.has(this.fetchByTypesPromises, cacheKey)) {
+      this.fetchByTypesPromises[cacheKey] = this.getJSON(
                     this.options.urls.list,
                     {types: attributeTypes.join(',')}
                 )
                 .then(_.identity)
                 .promise()
-        }
+    }
 
-        return this.fetchByTypesPromises[cacheKey]
-    },
+    return this.fetchByTypesPromises[cacheKey]
+  },
 
         /**
          * This method overrides the base method, to send a POST query instead of a GET query, because the request
@@ -63,17 +62,16 @@ export default BaseFetcher.extend({
          *
          * {@inheritdoc}
          */
-    getJSON: function (url, parameters) {
-        return $.post(Routing.generate(url), parameters, null, 'json')
-    },
+  getJSON: function (url, parameters) {
+    return $.post(Routing.generate(url), parameters, null, 'json')
+  },
 
         /**
          * {@inheritdoc}
          */
-    clear: function () {
-        BaseFetcher.prototype.clear.apply(this, arguments)
+  clear: function () {
+    BaseFetcher.prototype.clear.apply(this, arguments)
 
-        this.identifierPromise = null
-    }
+    this.identifierPromise = null
+  }
 })
-

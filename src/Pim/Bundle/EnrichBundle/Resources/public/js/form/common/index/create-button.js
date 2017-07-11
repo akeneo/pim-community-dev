@@ -1,5 +1,4 @@
 
-
 /**
  * Create button
  *
@@ -15,31 +14,30 @@ import template from 'pim/template/form/index/create-button'
 import Routing from 'routing'
 import DialogForm from 'pim/dialogform'
 export default BaseForm.extend({
-    template: _.template(template),
-    dialog: null,
+  template: _.template(template),
+  dialog: null,
 
             /**
              * {@inheritdoc}
              */
-    initialize: function (config) {
-        this.config = config.config
+  initialize: function (config) {
+    this.config = config.config
 
-        BaseForm.prototype.initialize.apply(this, arguments)
-    },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
             /**
              * {@inheritdoc}
              */
-    render: function () {
-        this.$el.html(this.template({
-            title: __(this.config.title),
-            iconName: this.config.iconName,
-            url: Routing.generate(this.config.url)
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      title: __(this.config.title),
+      iconName: this.config.iconName,
+      url: Routing.generate(this.config.url)
+    }))
 
-        this.dialog = new DialogForm('#create-button-extension')
+    this.dialog = new DialogForm('#create-button-extension')
 
-        return this
-    }
+    return this
+  }
 })
-

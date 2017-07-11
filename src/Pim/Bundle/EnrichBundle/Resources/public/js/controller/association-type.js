@@ -1,5 +1,4 @@
 
-
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseController from 'pim/controller/base'
@@ -14,14 +13,14 @@ export default BaseController.extend({
             /**
              * {@inheritdoc}
              */
-    renderRoute: function (route) {
-        return FetcherRegistry.getFetcher('association-type').fetch(route.params.code, {cached: false})
+  renderRoute: function (route) {
+    return FetcherRegistry.getFetcher('association-type').fetch(route.params.code, {cached: false})
                     .then(function (associationType) {
-                        if (!this.active) {
-                            return
-                        }
+                      if (!this.active) {
+                        return
+                      }
 
-                        var label = _.escape(
+                      var label = _.escape(
                             i18n.getLabel(
                                 associationType.labels,
                                 UserContext.get('catalogLocale'),
@@ -29,24 +28,23 @@ export default BaseController.extend({
                             )
                         )
 
-                        PageTitle.set({'association type.label': _.escape(label) })
+                      PageTitle.set({'association type.label': _.escape(label) })
 
-                        FormBuilder.build(associationType.meta.form)
+                      FormBuilder.build(associationType.meta.form)
                             .then(function (form) {
-                                this.on('pim:controller:can-leave', function (event) {
-                                    form.trigger('pim_enrich:form:can-leave', event)
-                                })
-                                form.setData(associationType)
-                                form.trigger('pim_enrich:form:entity:post_fetch', associationType)
-                                form.setElement(this.$el).render()
+                              this.on('pim:controller:can-leave', function (event) {
+                                form.trigger('pim_enrich:form:can-leave', event)
+                              })
+                              form.setData(associationType)
+                              form.trigger('pim_enrich:form:entity:post_fetch', associationType)
+                              form.setElement(this.$el).render()
                             }.bind(this))
                     }.bind(this))
                 .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common')
+                  var message = response.responseJSON ? response.responseJSON.message : __('error.common')
 
-                    var errorView = new Error(message, response.status)
-                    errorView.setElement(this.$el).render()
+                  var errorView = new Error(message, response.status)
+                  errorView.setElement(this.$el).render()
                 })
-    }
+  }
 })
-

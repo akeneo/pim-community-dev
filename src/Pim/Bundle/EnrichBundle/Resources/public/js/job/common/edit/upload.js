@@ -1,5 +1,4 @@
 
-
 /**
  * Displays a drop zone to upload a file.
  *
@@ -13,50 +12,49 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/export/common/edit/upload'
 export default BaseForm.extend({
-    template: _.template(template),
-    events: {
-        'change input[type="file"]': 'addFile',
-        'click .clear-field': 'removeFile'
-    },
+  template: _.template(template),
+  events: {
+    'change input[type="file"]': 'addFile',
+    'click .clear-field': 'removeFile'
+  },
 
         /**
          * {@inheritdoc}
          */
-    render: function () {
-        this.$el.html(this.template({
-            file: this.getFormData().file
-        }))
+  render: function () {
+    this.$el.html(this.template({
+      file: this.getFormData().file
+    }))
 
-        this.delegateEvents()
+    this.delegateEvents()
 
-        return this
-    },
+    return this
+  },
 
         /**
          * When a file is added to the dom input
          */
-    addFile: function () {
-        var input = this.$('input[type="file"]').get(0)
-        if (!input || 0 === input.files.length) {
-            return
-        }
+  addFile: function () {
+    var input = this.$('input[type="file"]').get(0)
+    if (!input || input.files.length === 0) {
+      return
+    }
 
-        this.setData({file: input.files[0]})
+    this.setData({file: input.files[0]})
 
-        this.getRoot().trigger('pim_enrich:form:job:file_updated')
+    this.getRoot().trigger('pim_enrich:form:job:file_updated')
 
-        this.render()
-    },
+    this.render()
+  },
 
         /**
          * When the user remove the file from the input
          */
-    removeFile: function () {
-        this.setData({file: null})
+  removeFile: function () {
+    this.setData({file: null})
 
-        this.getRoot().trigger('pim_enrich:form:job:file_updated')
+    this.getRoot().trigger('pim_enrich:form:job:file_updated')
 
-        this.render()
-    }
+    this.render()
+  }
 })
-

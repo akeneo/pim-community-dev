@@ -1,5 +1,4 @@
 
-
 /**
  * Date format fetcher
  *
@@ -16,13 +15,12 @@ export default SelectField.extend({
         /**
          * {@inherit}
          */
-    configure: function () {
-        return $.when(
+  configure: function () {
+    return $.when(
                 FetcherRegistry.getFetcher('formats').fetchAll(),
                 SelectField.prototype.configure.apply(this, arguments)
             ).then(function (formats) {
-                this.config.options = formats.date_formats
+              this.config.options = formats.date_formats
             }.bind(this))
-    }
+  }
 })
-

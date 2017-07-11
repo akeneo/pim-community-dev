@@ -6,7 +6,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-
 import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
@@ -15,19 +14,18 @@ export default BaseForm.extend({
         /**
          * {@inheritdoc}
          */
-    configure: function () {
-        this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
 
-        return BaseForm.prototype.configure.apply(this, arguments)
-    },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
         /**
          * Sets filters in readonly mode.
          *
          * @param {Object} event
          */
-    addFilterExtension: function (event) {
-        event.filter.setEditable(false)
-    }
+  addFilterExtension: function (event) {
+    event.filter.setEditable(false)
+  }
 })
-
