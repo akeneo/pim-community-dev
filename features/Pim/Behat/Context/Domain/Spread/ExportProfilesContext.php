@@ -28,7 +28,7 @@ class ExportProfilesContext extends ImportExportContext
     {
         $this->spin(function () use ($code, $csv) {
             $path = $this->getExportedFile($code);
-            $config =  $this->getCsvJobConfiguration($code);
+            $config = $this->getCsvJobConfiguration($code);
 
             $expectedLines = $this->getExpectedLines($csv, $config);
             $actualLines = $this->getActualLines($path, 'csv', $config);
