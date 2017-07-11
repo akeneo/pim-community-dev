@@ -12,7 +12,7 @@ Feature: Delete an association type
     Given I am on the association types page
     Then I should see association type Cross sell
     When I click on the "Delete" action of the row which contains "Cross sell"
-    And I confirm the deletion
+    And I confirm the deletionaaaaa
     Then I should not see association type Cross sell
 
   Scenario: Successfully delete a association type from the edit page

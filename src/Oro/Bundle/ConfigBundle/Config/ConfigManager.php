@@ -7,7 +7,7 @@ use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Symfony\Component\Form\FormInterface;
 
-class ConfigManager
+class ConfigManagerOOOO
 {
     const SECTION_VIEW_SEPARATOR = '___';
     const SECTION_MODEL_SEPARATOR = '.';
