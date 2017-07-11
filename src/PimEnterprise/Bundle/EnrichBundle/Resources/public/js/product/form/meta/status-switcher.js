@@ -8,7 +8,7 @@
  */
 define(
     [
-        'pim/product-edit-form/status-switcher'
+        'pim/product-edit-form/meta/status-switcher'
     ],
     function (
         StatusSwitcher

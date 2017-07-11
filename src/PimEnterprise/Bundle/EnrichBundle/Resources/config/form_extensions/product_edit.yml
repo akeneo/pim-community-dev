@@ -99,11 +99,11 @@ extensions:
         position: 110
 
     pim-product-edit-form-status-switcher:
-        module: pimee/product-edit-form/status-switcher
-        parent: pim-product-edit-form
-        targetZone: title-buttons
+        module: pimee/product-edit-form/meta/status-switcher
+        parent: pim-product-edit-form-meta
+        targetZone: meta
         aclResourceId: pim_enrich_product_change_state
-        position: 110
+        position: 80
 
     pim-product-edit-form-read-only-attribute:
         module: pimee/product-edit-form/attributes/read-only-attribute
