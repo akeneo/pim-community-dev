@@ -3,7 +3,7 @@ define(['jquery', 'underscore'],
         'use strict';
 
         /**
-         * Main Application
+         * Main Application Michel
          *
          * @export oro/app
          * @name oro.app
