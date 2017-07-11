@@ -129,6 +129,12 @@ services:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.family'
 
+    pim_connector.reader.file.csv_family_variant:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family_variant'
+
     pim_connector.reader.file.csv_association:
         class: '%pim_connector.reader.file.csv_association.class%'
         arguments:
@@ -278,6 +284,12 @@ services:
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.family'
+
+    pim_connector.reader.file.xlsx_family_variant:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family_variant'
 
     pim_connector.reader.file.xlsx_category:
         class: '%pim_connector.reader.file.xlsx.class%'

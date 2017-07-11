@@ -7,7 +7,6 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Webmozart\Assert\Assert;
 
 class FamilyVariantIntegration extends TestCase
 {
@@ -80,7 +79,7 @@ class FamilyVariantIntegration extends TestCase
     /**
      * Validation: Family variant code is unique
      */
-    function testTheFamilyVariantCodeUniqueness()
+    public function testTheFamilyVariantCodeUniqueness()
     {
         $this->createDefaultFamilyVariant();
 
@@ -112,7 +111,7 @@ class FamilyVariantIntegration extends TestCase
     /**
      * Validation: An attribute can only be used one time as an axis
      */
-    function testTheAttributeSetAxisUniqueness()
+    public function testTheAttributeSetAxisUniqueness()
     {
         $this->createDefaultFamilyVariant();
 
@@ -138,13 +137,16 @@ class FamilyVariantIntegration extends TestCase
 
         $errors = $this->get('validator')->validate($variantFamily);
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals('Variant axes must be unique, "color" are used several times in variant attributes sets', $errors->get(0)->getMessage());
+        $this->assertEquals(
+            'Variant axes must be unique, "color" are used several times in variant attributes sets',
+            $errors->get(0)->getMessage()
+        );
     }
 
     /**
      * Validation: An attribute can only be used for one attribute set
      */
-    function testTheAttributeSetAttributeUniqueness()
+    public function testTheAttributeSetAttributeUniqueness()
     {
         $this->createDefaultFamilyVariant();
 
@@ -170,14 +172,17 @@ class FamilyVariantIntegration extends TestCase
 
         $errors = $this->get('validator')->validate($variantFamily);
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals('Attributes must be unique, "rating" are used several times in variant attributes sets', $errors->get(0)->getMessage());
+        $this->assertEquals(
+            'Attributes must be unique, "rating" are used several times in variant attributes sets',
+            $errors->get(0)->getMessage()
+        );
     }
 
     /**
      * Validation: Available attributes for axis are metric, simple select and reference data simple select
      * Validation: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
      */
-    function testTheAttributeSetAxesType()
+    public function testTheAttributeSetAxesType()
     {
         $this->createDefaultFamilyVariant();
 
@@ -218,7 +223,7 @@ class FamilyVariantIntegration extends TestCase
      * Validation: Available attributes for axis are metric, simple select and reference data simple select
      * Validation: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
      */
-    function testTheNumberOfAttributeSetType()
+    public function testTheNumberOfAttributeSetType()
     {
         $variantFamily = $this->get('pim_catalog.factory.family_variant')->create();
 
@@ -293,7 +298,7 @@ class FamilyVariantIntegration extends TestCase
      */
     private function extractAttributeCode(Collection $collection): array
     {
-        $codes = $collection->map(function(AttributeInterface $attribute) {
+        $codes = $collection->map(function (AttributeInterface $attribute) {
             return $attribute->getCode();
         })->toArray();
 

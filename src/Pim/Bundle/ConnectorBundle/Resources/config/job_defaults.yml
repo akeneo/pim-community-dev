@@ -64,7 +64,7 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    pim_connector.job.job_parameters.default_values_provider.product_xslx_export:
+    pim_connector.job.job_parameters.default_values_provider.product_xlsx_export:
         class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
@@ -100,6 +100,7 @@ services:
             -
                 - 'csv_attribute_import'
                 - 'csv_family_import'
+                - 'csv_family_variant_import'
                 - 'csv_group_import'
                 - 'csv_association_type_import'
                 - 'csv_attribute_option_import'
@@ -118,6 +119,7 @@ services:
             -
                 - 'xlsx_attribute_import'
                 - 'xlsx_family_import'
+                - 'xlsx_family_variant_import'
                 - 'xlsx_group_import'
                 - 'xlsx_association_type_import'
                 - 'xlsx_attribute_option_import'

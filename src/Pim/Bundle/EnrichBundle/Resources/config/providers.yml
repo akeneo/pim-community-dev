@@ -96,6 +96,7 @@ services:
                 csv_channel_import: pim-job-instance-csv-base-import
                 csv_currency_import: pim-job-instance-csv-base-import
                 csv_family_import: pim-job-instance-csv-base-import
+                csv_family_variant_import: pim-job-instance-csv-base-import
                 csv_group_import: pim-job-instance-csv-base-import
                 csv_group_type_import: pim-job-instance-csv-base-import
                 csv_locale_import: pim-job-instance-csv-base-import
@@ -109,6 +110,7 @@ services:
                 xlsx_channel_import: pim-job-instance-xlsx-base-import
                 xlsx_currency_import: pim-job-instance-xlsx-base-import
                 xlsx_family_import: pim-job-instance-xlsx-base-import
+                xlsx_family_variant_import: pim-job-instance-xlsx-base-import
                 xlsx_group_import: pim-job-instance-xlsx-base-import
                 xlsx_group_type_import: pim-job-instance-xlsx-base-import
                 xlsx_locale_import: pim-job-instance-xlsx-base-import
