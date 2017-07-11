@@ -142,6 +142,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $mug->getLabel('en_US')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
+        $mug->getImage()->willReturn([
+            'filePath'         => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
+        ]);
 
         $mug->getAssociations()->willReturn([$upsell]);
         $upsell->getAssociationType()->willReturn($groupType);
@@ -169,13 +173,17 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'model_type'        => 'product',
                     'structure_version' => 12,
                     'completenesses'    => null,
+                    'image'             => [
+                        'filePath'         => '/p/i/m/4/all.png',
+                        'originalFileName' => 'all.png',
+                    ],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
                     'associations'      => [
                         'group' => ['groupIds' => [12]]
-                    ],
+                    ]
                 ]
             ]
         );

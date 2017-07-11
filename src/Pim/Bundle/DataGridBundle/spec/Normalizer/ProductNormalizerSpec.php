@@ -97,6 +97,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
+        $product->getImage()->willReturn([
+            'filePath'         => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
+        ]);
         $completeness->getLocale()->willReturn($localeEN);
         $completeness->getChannel()->willReturn($channelEcommerce);
         $completeness->getRatio()->willReturn(76);
@@ -121,6 +125,10 @@ class ProductNormalizerSpec extends ObjectBehavior
             'created'      => '2017-01-01T01:03:34+01:00',
             'updated'      => '2017-01-01T01:04:34+01:00',
             'label'        => 'Purple tshirt',
+            'image'        => [
+                'filePath'         => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png',
+            ],
             'completeness' => 76
         ];
 
@@ -180,6 +188,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
+        $product->getImage()->willReturn([
+            'filePath'         => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
+        ]);
         $completeness->getLocale()->willReturn($localeEN);
         $completeness->getChannel()->willReturn($channelEcommerce);
         $completeness->getRatio()->willReturn(76);
@@ -204,6 +216,10 @@ class ProductNormalizerSpec extends ObjectBehavior
             'created'      => '2017-01-01T01:03:34+01:00',
             'updated'      => '2017-01-01T01:04:34+01:00',
             'label'        => 'Purple tshirt',
+            'image'        => [
+                'filePath'         => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png',
+            ],
             'completeness' => 76
         ];
 

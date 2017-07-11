@@ -398,7 +398,10 @@ JSON;
                 'ecommerce_china'    => [ 'sku' ],
                 'tablet'             => [ 'sku' ],
             ],
-            'labels'                 => [],
+            'labels'                 => [
+                'fr_FR' => 'Une famille A',
+                'en_US' => 'A family A'
+            ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.family');
 
