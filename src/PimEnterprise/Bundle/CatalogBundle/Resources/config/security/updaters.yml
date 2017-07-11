@@ -33,6 +33,7 @@ services:
             - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
 
     pim_catalog.updater.product_without_permission:
         class: '%pim_catalog.updater.product.class%'

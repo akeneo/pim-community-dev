@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
@@ -41,19 +42,25 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
     /**
      * @param PropertySetterInterface               $propertySetter
      * @param AuthorizationCheckerInterface         $authorizationChecker
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->propertySetter = $propertySetter;
         $this->authorizationChecker = $authorizationChecker;
         $this->attributeRepository = $attributeRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -74,6 +81,7 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         $newValue = $entityWithValues->getValue($field, $locale, $channel);
 
         $this->checkGrantedAttributeGroup($attribute, $oldValue, $newValue);
+        $this->checkGrantedLocalizableAttribute($attribute, $oldValue, $newValue);
     }
 
     /**
@@ -108,6 +116,48 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
                     'Attribute "%s" belongs to the attribute group "%s" on which you only have view permission.',
                     $attribute->getCode(),
                     $attribute->getGroup()->getCode()
+                ));
+            }
+        }
+    }
+
+    /**
+     * Check if a locale is granted
+     *
+     * @param AttributeInterface $attribute
+     * @param ValueInterface     $oldValue
+     * @param ValueInterface     $newValue
+     */
+    private function checkGrantedLocalizableAttribute(
+        AttributeInterface $attribute,
+        ValueInterface $oldValue = null,
+        ValueInterface $newValue = null
+    ) {
+        if (!$attribute->isLocalizable() || !$attribute->isLocaleSpecific() && null === $newValue->getLocale()) {
+            return;
+        }
+
+        $locale = $this->localeRepository->findOneByIdentifier($newValue->getLocale());
+        $canView = $this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale);
+        $canEdit = $this->authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale);
+
+        if (!$canView && !$canEdit) {
+            throw new UnknownPropertyException($locale->getCode(), sprintf(
+                'Attribute "%s" expects an existing and activated locale, "%s" given.',
+                $attribute->getCode(),
+                $locale->getCode()
+            ));
+        }
+
+        if ($canView && !$canEdit) {
+            $valueIsDeleted = null !== $oldValue && $oldValue->hasData() && null === $newValue;
+            $valueIsAdded = null === $oldValue && null !== $newValue && $newValue->hasData();
+            $valueIsChanged = null !== $oldValue && null !== $newValue && !$oldValue->isEqual($newValue);
+
+            if ($valueIsChanged || $valueIsAdded || $valueIsDeleted) {
+                throw new ResourceAccessDeniedException($newValue, sprintf(
+                    'You only have a view permission on the locale "%s".',
+                    $locale->getCode()
                 ));
             }
         }
