@@ -68,12 +68,22 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     protected function indexProductModels(array $productModels)
     {
         foreach ($productModels as $productModel) {
+            $parent = null;
+            $rootAncestor = null;
+
+            if (isset($productModel['parent'])) {
+                $parent = $productModel['parent'];
+            }
+            if (isset($productModel['root_ancestor'])) {
+                $rootAncestor = $productModel['root_ancestor'];
+            }
+
             $this->esClient->index(
                 self::PRODUCT_MODEL_DOCUMENT_TYPE . $productModel['level'],
                 $productModel['identifier'],
                 $productModel,
-                $productModel['parent'],
-                $productModel['root_ancestor']
+                $parent,
+                $rootAncestor
             );
         }
 

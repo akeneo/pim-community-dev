@@ -9,16 +9,16 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  */
 class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 {
-    const PRODUCT_MODEL_DOCUMENT_TYPE = 'pim_catalog_product_model_parent_';
+    const PRODUCT_MODEL_DOCUMENT_TYPE = 'pim_catalog_product_model_parent';
 
     public function testDefaultDisplay()
     {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
-    /** @group todo */
     public function testSearchTshirtInDescription()
     {
+        $this->markTestIncomplete('Ask delphine about where description attribute is.');
         $query = [
             'query' => [
                 'bool' => [
@@ -39,7 +39,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
         );
 
-        $this->assertProducts($productsFound, ['model-tshirt', 'model-tshirt-unique']);
+        $this->assertProducts($productsFound, ['model-tshirt-red', 'model-tshirt-unique']);
     }
 
     public function testSearchColorRed()
@@ -61,7 +61,14 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
         );
 
-        $this->assertProducts($productsFound, ['model-tshirt-red', 'model-tshirt-unique']);
+        $this->assertProducts($productsFound, [
+            'model-tshirt-red',
+            'model-tshirt-unique-color',
+            'model-tshirt-unique-size-red',
+            'running-shoes-s-red',
+            'running-shoes-m-red',
+            'running-shoes-l-red',
+        ]);
     }
 
     public function testSearchColorGrey()
@@ -105,7 +112,14 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
         );
 
-        $this->assertProducts($productsFound, ['model-tshirt-blue', 'watch']);
+        $this->assertProducts($productsFound, [
+            'model-tshirt-blue',
+            'model-tshirt-unique-size-blue',
+            'running-shoes-s-blue',
+            'running-shoes-m-blue',
+            'running-shoes-l-blue',
+            'watch',
+        ]);
     }
 
     public function testSearchSizeS()
@@ -129,7 +143,15 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
         $this->assertProducts(
             $productsFound,
-            ['tshirt-grey-s', 'tshirt-blue-s', 'tshirt-red-s', 'tshirt-unique-s']
+            [
+                'tshirt-grey-s',
+                'tshirt-blue-s',
+                'tshirt-red-s',
+                'tshirt-unique-color-s',
+                'model-running-shoes-s',
+                'biker-jacket-leather-s',
+                'biker-jacket-polyester-s',
+            ]
         );
     }
 
@@ -156,15 +178,17 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             $productsFound,
             [
                 'tshirt-grey-m',
-                'tshirt-blue-m',
                 'tshirt-red-m',
-                'tshirt-unique-m',
+                'tshirt-blue-m',
+                'tshirt-unique-color-m',
                 'hat-m',
+                'model-running-shoes-m',
+                'biker-jacket-leather-m',
+                'biker-jacket-polyester-m',
             ]
         );
     }
 
-    /** @group todo */
     public function testSearchColorGreyAndSizeM()
     {
         $query = [
@@ -173,10 +197,49 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     'filter' => [
                         [
                             'has_parent' => [
-                                'type'  => 'pim_catalog_product_model_0',
+                                'type'  => 'pim_catalog_product_model_parent_1',
                                 'query' => [
                                     'terms' => [
                                         'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'terms' => [
+                                'values.size-option.<all_channels>.<all_locales>' => ['s'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
+
+        $this->assertProducts($productsFound, ['tshirt-grey-s']);
+    }
+
+    public function testSearchSizeMAndGrandParentColorWhite()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'has_parent' => [
+                                'type'  => 'pim_catalog_product_model_parent_1',
+                                'query' => [
+                                    'has_parent' => [
+                                        'type'  => 'pim_catalog_product_model_parent_2',
+                                        'query' => [
+                                            'terms' => [
+                                                'values.color-option.<all_channels>.<all_locales>' => ['white'],
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -196,14 +259,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
         );
 
-        $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
+        $this->assertProducts($productsFound, ['biker-jacket-polyester-m', 'biker-jacket-leather-m']);
     }
 
     // Do more complex use cases
-    // - Having a configuration where variation goes inverse: size - color (for instance)
-    // - Having a configuration where variation is diffenent: material - size (for instance)
     // - Where color == grey and name == tshirt (Search on a model and one property of his parent)
-    // - Look at grand father
 
     /**
      * {@inheritdoc}
@@ -215,7 +275,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'model-tshirt',
                 'type'       => 'PimCatalogProductModel',
-                'level'      => 1,
+                'level'      => 2,
                 'family'     => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -230,7 +290,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'type'          => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt',
                 'root_ancestor' => 'model-tshirt',
-                'level'         => 0,
+                'level'         => 1,
                 'family'        => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -255,7 +315,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'type'          => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt',
                 'root_ancestor' => 'model-tshirt',
-                'level'         => 0,
+                'level'         => 1,
                 'family'        => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -280,7 +340,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'type'          => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt',
                 'root_ancestor' => 'model-tshirt',
-                'level'         => 0,
+                'level'         => 1,
                 'family'        => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -307,7 +367,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'type'          => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt-unique-color',
                 'root_ancestor' => 'model-tshirt-unique-color',
-                'level'         => 0,
+                'level'         => 1,
                 'family'        => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -334,7 +394,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'type'          => 'PimCatalogProductModel',
                 'parent'        => 'model-hat',
                 'root_ancestor' => 'model-hat',
-                'level'         => 0,
+                'level'         => 1,
                 'family'        => [
                     'code'   => 'hats',
                     'labels' => [
@@ -356,7 +416,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'type'          => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
-                'level'         => 0,
+                'level'         => 1,
                 'family'        => [
                     'code'   => 'tshirt',
                     'labels' => [
@@ -381,7 +441,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'model-running-shoes',
                 'type'       => 'PimCatalogProductModel',
-                'level'      => 1,
+                'level'      => 2,
                 'family'     => [
                     'code'   => 'shoe',
                     'labels' => [
@@ -393,7 +453,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier'    => 'model-running-shoes-s',
                 'type'          => 'PimCatalogProductModel',
-                'level'         => 0,
+                'level'         => 1,
                 'parent'        => 'model-running-shoes',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -414,7 +474,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier'    => 'model-running-shoes-m',
                 'type'          => 'PimCatalogProductModel',
-                'level'         => 0,
+                'level'         => 1,
                 'parent'        => 'model-running-shoes',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -435,7 +495,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier'    => 'model-running-shoes-l',
                 'type'          => 'PimCatalogProductModel',
-                'level'         => 0,
+                'level'         => 1,
                 'parent'        => 'model-running-shoes',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -457,7 +517,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'model-biker-jacket',
                 'type'       => 'PimCatalogProductModel',
-                'level'      => 1,
+                'level'      => 2,
                 'family'     => [
                     'code'   => 'jacket',
                     'labels' => [
@@ -476,7 +536,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier'    => 'model-biker-jacket-leather',
                 'type'          => 'PimCatalogProductModel',
-                'level'         => 0,
+                'level'         => 1,
                 'parent'        => 'model-biker-jacket',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -497,7 +557,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier'    => 'model-biker-jacket-polyester',
                 'type'          => 'PimCatalogProductModel',
-                'level'         => 0,
+                'level'         => 1,
                 'parent'        => 'model-biker-jacket',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1065,7 +1125,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
             // Running shoes
             [
-                'identifier'    => 'model-running-shoes-s-white',
+                'identifier'    => 'running-shoes-s-white',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-s',
                 'root_ancestor' => 'model-running-shoes',
@@ -1085,7 +1145,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-s-blue',
+                'identifier'    => 'running-shoes-s-blue',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-s',
                 'root_ancestor' => 'model-running-shoes',
@@ -1105,7 +1165,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-s-red',
+                'identifier'    => 'running-shoes-s-red',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-s',
                 'root_ancestor' => 'model-running-shoes',
@@ -1125,7 +1185,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-m-white',
+                'identifier'    => 'running-shoes-m-white',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-m',
                 'root_ancestor' => 'model-running-shoes',
@@ -1145,7 +1205,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-m-blue',
+                'identifier'    => 'running-shoes-m-blue',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-m',
                 'root_ancestor' => 'model-running-shoes',
@@ -1165,7 +1225,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-m-red',
+                'identifier'    => 'running-shoes-m-red',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-m',
                 'root_ancestor' => 'model-running-shoes',
@@ -1185,7 +1245,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-l-white',
+                'identifier'    => 'running-shoes-l-white',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-l',
                 'root_ancestor' => 'model-running-shoes',
@@ -1205,7 +1265,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-l-blue',
+                'identifier'    => 'running-shoes-l-blue',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-l',
                 'root_ancestor' => 'model-running-shoes',
@@ -1225,7 +1285,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-running-shoes-l-red',
+                'identifier'    => 'running-shoes-l-red',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-l',
                 'root_ancestor' => 'model-running-shoes',
@@ -1246,7 +1306,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
             // Biker
             [
-                'identifier'    => 'model-biker-jacket-leather-s',
+                'identifier'    => 'biker-jacket-leather-s',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-leather',
                 'root_ancestor' => 'model-biker-jacket',
@@ -1270,7 +1330,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier'    => 'model-biker-jacket-leather-m',
+                'identifier'    => 'biker-jacket-leather-m',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-leather',
                 'root_ancestor' => 'model-biker-jacket',
@@ -1294,7 +1354,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier'    => 'model-biker-jacket-leather-l',
+                'identifier'    => 'biker-jacket-leather-l',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-leather',
                 'root_ancestor' => 'model-biker-jacket',
@@ -1319,7 +1379,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
             ],
 
             [
-                'identifier'    => 'model-biker-jacket-polyester-s',
+                'identifier'    => 'biker-jacket-polyester-s',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-polyester',
                 'root_ancestor' => 'model-biker-jacket',
@@ -1343,7 +1403,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier'    => 'model-biker-jacket-polyester-m',
+                'identifier'    => 'biker-jacket-polyester-m',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-polyester',
                 'root_ancestor' => 'model-biker-jacket',
@@ -1367,7 +1427,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 ],
             ],
             [
-                'identifier'    => 'model-biker-jacket-polyester-l',
+                'identifier'    => 'biker-jacket-polyester-l',
                 'type'          => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-polyester',
                 'root_ancestor' => 'model-biker-jacket',
