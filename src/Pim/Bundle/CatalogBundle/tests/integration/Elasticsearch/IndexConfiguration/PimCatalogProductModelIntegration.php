@@ -189,7 +189,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         );
     }
 
-    public function testSearchColorGreyAndSizeM()
+    public function testSearchColorGreyAndSizeS()
     {
         $query = [
             'query' => [
@@ -221,6 +221,40 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         );
 
         $this->assertProducts($productsFound, ['tshirt-grey-s']);
+    }
+
+    public function testSearchColorGreyAndSizeM()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        [
+                            'has_parent' => [
+                                'type'  => 'pim_catalog_product_model_parent_1',
+                                'query' => [
+                                    'terms' => [
+                                        'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'terms' => [
+                                'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
+
+        $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
     }
 
     public function testSearchSizeMAndGrandParentColorWhite()
@@ -260,6 +294,86 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
         );
 
         $this->assertProducts($productsFound, ['biker-jacket-polyester-m', 'biker-jacket-leather-m']);
+    }
+
+    public function testSearchColorGreyAndDescriptionTshirt()
+    {
+        $this->markTestIncomplete('Not done');
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
+
+        $this->assertProducts($productsFound, ['model-tshirt-grey']);
+    }
+
+    /** @group todo */
+    public function testSearchMaterialCotton()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.material.<all_channels>.<all_locales>' => ['cotton'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-tshirt-grey',
+                'model-tshirt-red',
+                'model-tshirt-unique-color',
+                'model-tshirt-unique-size'
+            ]
+        );
+    }
+
+    public function testSearchMaterialLeather()
+    {
+        $this->markTestIncomplete('Not done');
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.material.<all_channels>.<all_locales>' => ['leather'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-running-shoes',
+                'model-biker-jacket-leather',
+            ]
+        );
     }
 
     // Do more complex use cases
