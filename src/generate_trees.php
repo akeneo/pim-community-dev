@@ -33,12 +33,18 @@ function generateCotonTshirtRounddNeckDivided($folie)
             'identifier'    => $label,
             'level'         => 0,
             'values'        => [
-                'color-text'    => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+
+                ],
+                'color-option'    => [
                     '<all_channels>' => [
                         '<all_locales>' => $color,
                     ],
                 ],
-                'material-text' => [
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => $materials[$color],
                     ],
@@ -59,7 +65,13 @@ function generateCotonTshirtRounddNeckDivided($folie)
                 'root_ancestor' => $rootParentLabel,
                 'parent'        => $label,
                 'values'        => [
-                    'size-text' => [
+                    'name-text'   => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided ' . $color . ' ' . $size . ' #' . $folie,
+                        ],
+
+                    ],
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => $size,
                         ],
@@ -79,6 +91,14 @@ function generateCotonTshirtRounddNeckDivided($folie)
                     ],
                 ],
                 'identifier' => $rootParentLabel,
+                'values'     => [
+                    'name-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $rootParentLabel,
+                        ],
+
+                    ],
+                ],
                 'level'      => 1,
             ],
         ],
@@ -106,12 +126,18 @@ function generateTshirtKurtCobainPrint($folie)
             'parent'        => '_no_parent_',
             'root_ancestor' => '_no_parent_',
             'values'        => [
-                'color-text'    => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+
+                ],
+                'color-option'    => [
                     '<all_channels>' => [
                         '<all_locales>' => $color,
                     ],
                 ],
-                'material-text' => [
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => $materials[$color],
                     ],
@@ -133,7 +159,12 @@ function generateTshirtKurtCobainPrint($folie)
                 'root_ancestor' => '_no_parent_',
                 'identifier'    => 'T-shirt with a Kurt Cobain print motif ' . $size . ' #' . $folie,
                 'values'        => [
-                    'size-text' => [
+                    'name-text'  => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif ' . $size . ' #' . $folie,
+                        ],
+                    ],
+                    'size-otion' => [
                         '<all_channels>' => [
                             '<all_locales>' => $size,
                         ],
@@ -148,6 +179,8 @@ function generateTshirtKurtCobainPrint($folie)
 
 function generateMetalWatch($folie)
 {
+    $label = 'Metal watch blue/white striped #' . $folie;
+
     return [
         [
             'family'        => [
@@ -156,16 +189,21 @@ function generateMetalWatch($folie)
                     'fr_FR' => 'La famille des watch',
                 ],
             ],
-            'identifier'    => 'Metal watch blue/white striped #' . $folie,
+            'identifier'    => $label,
             'parent'        => '_no_parent_',
             'root_ancestor' => '_no_parent_',
             'values'        => [
-                'color-text'    => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+                ],
+                'color-option'    => [
                     '<all_channels>' => [
                         '<all_locales>' => 'blue',
                     ],
                 ],
-                'material-text' => [
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => 'metal',
                     ],
@@ -195,12 +233,17 @@ function generateBraidedHat($folie)
             'parent'        => '_no_parent_',
             'root_ancestor' => '_no_parent_',
             'values'        => [
-                'color-text'    => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+                ],
+                'color-option'    => [
                     '<all_channels>' => [
                         '<all_locales>' => $color,
                     ],
                 ],
-                'material-text' => [
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => $materials[$color],
                     ],
@@ -222,7 +265,12 @@ function generateBraidedHat($folie)
                 'root_ancestor' => '_no_parent_',
                 'identifier'    => 'Braided hat ' . $size . ' #' . $folie,
                 'values'        => [
-                    'size-text' => [
+                    'name-text'   => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Braided hat ' . $size . ' #' . $folie,
+                        ],
+                    ],
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => $size,
                         ],
@@ -254,12 +302,17 @@ function generateTshirtUniqueSize($folie)
             'parent'        => '_no_parent_',
             'root_ancestor' => '_no_parent_',
             'values'        => [
-                'material-text' => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+                ],
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => 'cotton',
                     ],
                 ],
-                'size-text'     => [
+                'size-option'     => [
                     '<all_channels>' => [
                         '<all_locales>' => $size,
                     ],
@@ -280,7 +333,12 @@ function generateTshirtUniqueSize($folie)
                 'root_ancestor' => '_no_parent_',
                 'identifier'    => 'T-shirt unique size #' . $color . ' #' . $folie,
                 'values'        => [
-                    'color-text' => [
+                    'name-text'    => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'T-shirt unique size #' . $color . ' #' . $folie,
+                        ],
+                    ],
+                    'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => $color,
                         ],
@@ -314,12 +372,17 @@ function generateRunningShoes($folie)
             'root_ancestor' => $rootParentLabel,
             'identifier'    => $label,
             'values'        => [
-                'material-text' => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+                ],
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => 'leather',
                     ],
                 ],
-                'size-text'     => [
+                'size-option'     => [
                     '<all_channels>' => [
                         '<all_locales>' => $size,
                     ],
@@ -340,7 +403,12 @@ function generateRunningShoes($folie)
                 'root_ancestor' => $rootParentLabel,
                 'identifier'    => 'Running shoes ' . $size . ' ' . $color . ' #' . $folie,
                 'values'        => [
-                    'color-text' => [
+                    'name-text'    => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Running shoes ' . $size . ' ' . $color . ' #' . $folie,
+                        ],
+                    ],
+                    'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => $color,
                         ],
@@ -360,6 +428,13 @@ function generateRunningShoes($folie)
                     ],
                 ],
                 'identifier' => $rootParentLabel,
+                'values'     => [
+                    'name-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $rootParentLabel,
+                        ],
+                    ],
+                ],
                 'level'      => 1,
             ],
         ],
@@ -388,7 +463,12 @@ function generateBikerJacket($folie)
             'root_ancestor' => $rootParentLabel,
             'identifier'    => $label,
             'values'        => [
-                'material-text' => [
+                'name-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => $label,
+                    ],
+                ],
+                'material-option' => [
                     '<all_channels>' => [
                         '<all_locales>' => $material,
                     ],
@@ -410,7 +490,12 @@ function generateBikerJacket($folie)
                 'root_ancestor' => $rootParentLabel,
                 'identifier'    => 'Biker jacket ' . $material . ' ' . $size . ' #' . $folie,
                 'values'        => [
-                    'size-text' => [
+                    'name-text'   => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Biker jacket ' . $material . ' ' . $size . ' #' . $folie,
+                        ],
+                    ],
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => $size,
                         ],
@@ -432,7 +517,12 @@ function generateBikerJacket($folie)
                 ],
                 'level'      => 1,
                 'values'     => [
-                    'color-text' => [
+                    'name-text'    => [
+                        '<all_channels>' => [
+                            '<all_locales>' => $rootParentLabel,
+                        ],
+                    ],
+                    'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'white',
                         ],
