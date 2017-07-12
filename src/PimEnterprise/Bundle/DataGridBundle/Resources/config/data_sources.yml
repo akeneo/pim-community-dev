@@ -40,20 +40,9 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_rule }
 
-    pim_datagrid.datasource.support_resolver:
-        class: '%pim_datagrid.datasource.support_resolver.class%'
-        calls:
-            - [addSmartDatasource, ['pim_datasource_product']]
-            - [addSmartDatasource, ['pim_datasource_associated_product']]
-            - [addSmartDatasource, ['pim_datasource_smart']]
-            - [addSmartDatasource, ['pimee_datasource_product_history']]
-            - [addSmartDatasource, ['pimee_datasource_published_product']]
-            - [addSmartDatasource, ['pimee_datasource_product_draft']]
-
     pim_datagrid.datasource.adapter_resolver:
         class: '%pim_datagrid.datasource.adapter_resolver.class%'
         arguments:
-            - '@pim_datagrid.datasource.support_resolver'
             - '%pim_filter.datasource.orm_adapter.class%'
             - '%pim_filter.datasource.product_orm_adapter.class%'
         calls:
