@@ -108,3 +108,30 @@ Feature: Validate values for unique attributes when importing products
     And I filter by "sku" with operator "is equal to" and value "17727158"
     And I should see products 17727158
     And the grid should contain 1 elements
+
+
+  Scenario: Successfully import products and update them with another import
+    Given the following CSV file to import:
+      """
+      sku;family;name-en_US;price
+      SKU-001;heels;red heels;"100 EUR, 90 USD"
+      SKU-002;sneakers;air max;"90 EUR, 80 USD"
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath          | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see "created 2"
+    And there should be 2 products
+    Given the following CSV file to import:
+      """
+      sku;family;name-en_US;price
+      SKU-002;heels;red heels;"100 EUR, 90 USD"
+      SKU-001;sneakers;air max;"90 EUR, 80 USD"
+      """
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see "processed 2"
+    And there should be 2 products
