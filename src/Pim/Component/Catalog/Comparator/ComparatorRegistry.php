@@ -46,6 +46,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     public function addAttributeComparator(ComparatorInterface $comparator, $priority)
     {
         $this->comparators[self::COMPARATOR_ATTRIBUTE][$priority][] = $comparator;
+        krsort($this->comparators[self::COMPARATOR_ATTRIBUTE]);
     }
 
     /**
@@ -74,6 +75,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     public function addFieldComparator(ComparatorInterface $comparator, $priority)
     {
         $this->comparators[self::COMPARATOR_FIELD][$priority][] = $comparator;
+        krsort($this->comparators[self::COMPARATOR_FIELD]);
     }
 
     /**
