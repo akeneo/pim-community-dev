@@ -1,12 +1,5 @@
 services:
     # Form
-    pim_enrich.form.attribute:
-        class: 'Symfony\Component\Form\Form'
-        factory: 'form.factory:createNamed'
-        arguments:
-            - 'pim_enrich_attribute_form'
-            - '%pim_enrich.form.type.attribute.class%'
-
     pim_enrich.form.attribute_group:
         class: 'Symfony\Component\Form\Form'
         factory: 'form.factory:createNamed'

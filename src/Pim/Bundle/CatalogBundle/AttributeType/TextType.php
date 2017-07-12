@@ -3,9 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
 
 /**
  * Text attribute type
@@ -16,40 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
  */
 class TextType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'maxCharacters' => [
-                'name'      => 'maxCharacters',
-                'fieldType' => FormTextType::class
-            ],
-            'validationRule' => [
-                'name'      => 'validationRule',
-                'fieldType' => ChoiceType::class,
-                'options'   => [
-                    'choices' => [
-                        null     => 'None',
-                        'email'  => 'E-mail',
-                        'url'    => 'URL',
-                        'regexp' => 'Regular expression'
-                    ],
-                    'select2' => true
-                ]
-            ],
-            'validationRegexp' => [
-                'name' => 'validationRegexp'
-            ]
-        ];
-
-        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
-        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
-
-        return $properties;
-    }
-
     /**
      * {@inheritdoc}
      */

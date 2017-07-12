@@ -22,10 +22,6 @@ locale:
     resource: '@PimEnrichBundle/Resources/config/routing/locale.yml'
     prefix: /configuration/locale
 
-attribute:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute.yml'
-    prefix: /configuration/attribute
-
 attribute_front:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute/front.yml'
     prefix: /configuration/attribute
