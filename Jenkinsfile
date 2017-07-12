@@ -4,28 +4,10 @@ def editions = ["ce"]
 def phpVersion = "7.1"
 def features = "features"
 def launchUnitTests = "yes"
-def launchIntegrationTests = "yes"
-def launchBehatTests = "yes"
+def launchIntegrationTests = "no"
+def launchBehatTests = "no"
 
 stage("Checkout") {
-    milestone 1
-    if (env.BRANCH_NAME =~ /^PR-/) {
-        userInput = input(message: 'Launch tests?', parameters: [
-            choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
-            choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-            choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
-            string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
-            string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
-        ])
-
-        editions = userInput['editions'].tokenize(',')
-        features = userInput['features']
-        phpVersion = userInput['phpVersion']
-        launchUnitTests = userInput['launchUnitTests']
-        launchIntegrationTests = userInput['launchIntegrationTests']
-        launchBehatTests = userInput['launchBehatTests']
-    }
     milestone 2
 
     node {
@@ -113,14 +95,6 @@ if (launchUnitTests.equals("yes")) {
 
         tasks["phpunit-7.1"] = {runPhpUnitTest("7.1")}
 
-        tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
-
-        tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
-
-        tasks["php-coupling-detector"] = {runPhpCouplingDetectorTest()}
-
-        tasks["grunt"] = {runGruntTest()}
-
         parallel tasks
     }
 }
@@ -177,13 +151,26 @@ def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("--privileged -v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev"
+
+                sh '''
+                    version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
+                    curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version
+                    curl -A "Docker" -o /tmp/blackfire-agent.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/agent/linux/amd64
+                    curl -A "Docker" -o /tmp/blackfire.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/client/linux/amd64
+                    tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp
+                    tar zxpf /tmp/blackfire-agent.tar.gz -C /tmp
+                    tar zxpf /tmp/blackfire.tar.gz -C /tmp
+                    sudo mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so
+                    sudo mv /tmp/agent /usr/bin/blackfire-agent
+                    sudo mv /tmp/blackfire /usr/bin/blackfire
+                    sudo sh -c 'printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.1/cli/conf.d/blackfire.ini'
+                '''
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
-
-                sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
+                sh "blackfire run --client-id=0bcc8900-d697-490f-a25e-77e1f306e77b --client-token=15594f09f24bbeb5e716425e16d71a238728d23429f62d0e6b47373c17a4c4dd bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
