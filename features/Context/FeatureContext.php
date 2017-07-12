@@ -153,22 +153,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    public function getSmartRegistry()
-    {
-        return $this->getContainer()->get('akeneo_storage_utils.doctrine.smart_manager_registry');
-    }
-
-    /**
      * Transform a list to array
      *
      * @param string $list
@@ -259,6 +243,8 @@ class FeatureContext extends PimContext implements KernelAwareContext
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {
+            $this->getSubcontext('hook')->collectErrors();
+
             if ($defaultCondition) {
                 foreach ($conditions as $condition) {
                     $result = $this->getSession()->evaluateScript($condition);

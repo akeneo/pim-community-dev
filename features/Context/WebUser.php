@@ -1754,7 +1754,7 @@ class WebUser extends PimContext
     public function productShouldBeDisabled(Product $product)
     {
         $this->spin(function () use ($product) {
-            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+            $this->getMainContext()->getEntityManager()->refresh($product);
 
             return !$product->isEnabled();
         }, 'Product was expected to be be disabled');
@@ -1770,7 +1770,7 @@ class WebUser extends PimContext
     public function productShouldBeEnabled(Product $product)
     {
         $this->spin(function () use ($product) {
-            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+            $this->getMainContext()->getEntityManager()->refresh($product);
 
             return $product->isEnabled();
         }, 'Product was expected to be be enabled');
@@ -2412,17 +2412,7 @@ class WebUser extends PimContext
      */
     public function clearUOW()
     {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->clear();
-        }
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
+        $this->getMainContext()->getEntityManager()->clear();
     }
 
     /**
