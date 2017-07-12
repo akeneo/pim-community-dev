@@ -41,6 +41,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      * @param string                   $productValueClass
      * @param string                   $attributeClass
      * @param string                   $assetClass
+     * @param int                      $commitBatchSize
      */
     public function __construct(
         EntityManagerInterface $manager,
@@ -48,9 +49,10 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $productClass,
         $productValueClass,
         $attributeClass,
-        $assetClass
+        $assetClass,
+        $commitBatchSize = 1000
     ) {
-        parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
+        parent::__construct($manager, $productClass, $productValueClass, $attributeClass, $commitBatchSize);
 
         $this->assetRepository = $assetRepository;
         $this->assetClass      = $assetClass;
@@ -116,21 +118,32 @@ SQL;
         }
         $fetchStmt->execute();
 
-        $this->connection->beginTransaction();
         $insertSql = <<<SQL
     INSERT INTO {$tempTableName} (value_id, locale_id, channel_id) VALUES (?, ?, ?)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
                 $insertStmt->bindValue(1, $completeness['value_id']);
                 $insertStmt->bindValue(2, $completeness['locale_id']);
                 $insertStmt->bindValue(3, $completeness['channel_id']);
                 $insertStmt->execute();
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
             }
 
-            $this->connection->commit();
+            if ($count > 0) {
+                $this->connection->commit();
+            }
         } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
