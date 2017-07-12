@@ -243,6 +243,8 @@ class FeatureContext extends PimContext implements KernelAwareContext
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {
+            $this->getSubcontext('hook')->collectErrors();
+
             if ($defaultCondition) {
                 foreach ($conditions as $condition) {
                     $result = $this->getSession()->evaluateScript($condition);
