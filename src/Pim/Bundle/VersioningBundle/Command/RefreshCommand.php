@@ -136,10 +136,7 @@ class RefreshCommand extends ContainerAwareCommand
      */
     protected function getObjectManager()
     {
-        return $this
-            ->getContainer()
-            ->get('akeneo_storage_utils.doctrine.smart_manager_registry')
-            ->getManagerForClass($this->getVersionClass());
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 
     /**

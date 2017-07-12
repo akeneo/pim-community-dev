@@ -9,12 +9,12 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\DBAL\Schema\Table;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
@@ -1129,8 +1129,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeCategories($expectedTotal)
     {
-        $class      = $this->getContainer()->getParameter('pim_catalog.entity.category.class');
-        $repository = $this->getSmartRegistry()->getRepository($class);
+        $repository = $this->getCategoryRepository();
         $total      = count($repository->findAll());
 
         assertEquals($expectedTotal, $total);
@@ -1774,10 +1773,6 @@ class FixturesContext extends BaseFixturesContext
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
-        /*
-         * When using ODM, one must persist and flush category without product
-         * before adding and persisting products inside it
-         */
         $products = $category->getProducts();
         $this->validate($category);
         $this->getContainer()->get('pim_catalog.saver.category')->save($category);
@@ -1970,6 +1965,14 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function getCategoryRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
      * @return MountManager
      */
     protected function getMountManager()
@@ -2059,14 +2062,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 
     /**
