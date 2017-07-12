@@ -12,6 +12,9 @@ Feature: Export published products
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully export published products
     Given I add the "english UK" locale to the "mobile" channel
+    And the following locale accesses:
+      | locale | user group | access |
+      | en_GB  | Manager    | edit   |
     And the following job "csv_clothing_mobile_published_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv        |
       | filters  | {"structure":{"locales":["fr_FR","en_US","en_GB","de_DE"],"scope":"mobile"},"data":[]} |
