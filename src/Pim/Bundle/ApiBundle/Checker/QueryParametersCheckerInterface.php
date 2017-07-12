@@ -17,28 +17,28 @@ interface QueryParametersCheckerInterface
      * Checks $localeCodes if they exist.
      * Throws an exception if one of them does not exist or, if there is a $channel, one of them does not belong to it.
      *
-     * @param array                 $locales
+     * @param array                 $localeCodes
      * @param ChannelInterface|null $channel
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkLocalesParameters(array $locales, ChannelInterface $channel = null);
+    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null);
 
     /**
-     * Checks $attributes if they exist. Thrown an exception if one of them does not exist.
+     * Checks $attributeCodes if they exist. Thrown an exception if one of them does not exist.
      *
-     * @param array $attributes
+     * @param array $attributeCodes
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkAttributesParameters(array $attributes);
+    public function checkAttributesParameters(array $attributeCodes);
 
     /**
-     * Checks $attributes if they exist. Thrown an exception if one of them does not exist.
+     * Checks $categoryCodes if they exist. Thrown an exception if one of them does not exist.
      *
-     * @param string $attributes
+     * @param array $categoryCodes
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkCategoriesParameters($categories);
+    public function checkCategoriesParameters(array $categoryCodes);
 }

@@ -230,6 +230,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
         $this->assertSame($message, $content['message']);
     }
+
     /**
      * {@inheritdoc}
      */

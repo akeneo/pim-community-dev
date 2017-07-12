@@ -40,10 +40,10 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkLocalesParameters(array $locales, ChannelInterface $channel = null)
+    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null)
     {
         $errors = [];
-        foreach ($locales as $locale) {
+        foreach ($localeCodes as $locale) {
             if (null === $this->localeRepository->findOneByIdentifier($locale)) {
                 $errors[] = $locale;
             }
@@ -55,7 +55,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
         }
 
         if (null !== $channel) {
-            $diff = array_diff($locales, $channel->getLocaleCodes());
+            $diff = array_diff($localeCodes, $channel->getLocaleCodes());
             if ($diff) {
                 $plural = sprintf(count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', implode(', ', $diff));
                 throw new UnprocessableEntityHttpException(
@@ -68,10 +68,10 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkAttributesParameters(array $attributes)
+    public function checkAttributesParameters(array $attributeCodes)
     {
         $errors = [];
-        foreach ($attributes as $attributeCode) {
+        foreach ($attributeCodes as $attributeCode) {
             if (null === $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $errors[] = $attributeCode;
             }
@@ -86,10 +86,8 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkCategoriesParameters($categories)
+    public function checkCategoriesParameters(array $categoryCodes)
     {
-        $categoryCodes = explode(',', $categories);
-
         $errors = [];
         foreach ($categoryCodes as $categoryCode) {
             if (null === $this->categoryRepository->findOneByIdentifier($categoryCode)) {

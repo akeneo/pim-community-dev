@@ -491,7 +491,8 @@ class ProductController
             }
 
             if (isset($search['categories'])) {
-                $this->queryParametersChecker->checkCategoriesParameters($search['categories']);
+                $categoryCodes = explode(',', $search['categories']);
+                $this->queryParametersChecker->checkCategoriesParameters($categoryCodes);
             }
         }
 
