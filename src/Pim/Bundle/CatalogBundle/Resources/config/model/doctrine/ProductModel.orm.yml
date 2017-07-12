@@ -75,3 +75,8 @@ Pim\Component\Catalog\Model\ProductModel:
                     onDelete: 'SET NULL'
             gedmo:
                 - treeParent
+        familyVariant:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id

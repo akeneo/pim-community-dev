@@ -173,4 +173,14 @@ interface ProductModelInterface extends
      * @return Collection
      */
     public function getChildren(): Collection;
+
+    /**
+     * @return FamilyVariantInterface
+     */
+    public function getFamilyVariant(): FamilyVariantInterface;
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
 }

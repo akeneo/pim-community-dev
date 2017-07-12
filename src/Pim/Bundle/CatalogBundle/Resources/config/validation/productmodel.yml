@@ -1,16 +1,20 @@
 Pim\Component\Catalog\Model\ProductModel:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [identifier]
-            message: The same identifier is already set on another product model
+            fields: ['identifier']
+            message: 'product_model.identifier.unique.message'
     properties:
         identifier:
-            - NotBlank: ~
+            - NotBlank:
+                message: 'product_model.identifier.not_blank.message'
             - Regex:
                 pattern: '/^[^,;]+$/'
                 message: 'regex.comma_or_semicolon.message'
             - Length:
                 max: 255
+        familyVariant:
+            - NotBlank:
+                message: 'product_model.family_variant.not_blank.message'
     # Needed ?
     getters:
         values:
