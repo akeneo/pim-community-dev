@@ -130,17 +130,18 @@ class NavigationContext extends PimContext implements PageObjectAware
 
     /**
      * @param string $page
+     * @param array $options
      *
      * @Given /^I am on the ([^"]*) page$/
      * @Given /^I go to the ([^"]*) page$/
      */
-    public function iAmOnThePage($page)
+    public function iAmOnThePage($page, array $options = [])
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
 
-        $this->spin(function () use ($page) {
-            $this->openPage($page);
-            $expectedFullUrl = $this->getCurrentPage()->getUrl();
+        $this->spin(function () use ($page, $options) {
+            $this->openPage($page, $options);
+            $expectedFullUrl = $this->getCurrentPage()->getUrl($options);
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
@@ -408,19 +409,14 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @param string  $pageName
      * @param array   $options
-     * @param boolean $wait     should the script wait for the page to load
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($pageName, array $options = [], $wait = true)
+    public function openPage($pageName, array $options = [])
     {
         $this->currentPage = $pageName;
 
         $page = $this->getCurrentPage()->open($options);
-
-        if ($wait) {
-            $this->wait();
-        }
 
         return $page;
     }
