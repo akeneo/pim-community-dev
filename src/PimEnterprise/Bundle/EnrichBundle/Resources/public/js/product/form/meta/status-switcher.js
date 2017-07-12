@@ -19,6 +19,8 @@ define(
                     return this.remove();
                 }
 
+                this.delegateEvents();
+
                 return StatusSwitcher.prototype.render.apply(this, arguments);
             }
         });
