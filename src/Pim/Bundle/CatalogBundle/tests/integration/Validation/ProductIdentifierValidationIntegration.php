@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\ProductValidation;
+namespace tests\integration\Pim\Bundle\CatalogBundle\Validation;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
