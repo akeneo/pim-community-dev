@@ -62,12 +62,12 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkLocalesParameters(array $locales, ChannelInterface $channel = null)
+    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null)
     {
-        $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
+        $this->queryParametersChecker->checkLocalesParameters($localeCodes, $channel);
 
         $errors = [];
-        foreach ($locales as $locale) {
+        foreach ($localeCodes as $locale) {
             $locale = $this->localeRepository->findOneByIdentifier($locale);
 
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
@@ -84,18 +84,18 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkAttributesParameters(array $attributes)
+    public function checkAttributesParameters(array $attributeCodes)
     {
-        $this->queryParametersChecker->checkAttributesParameters($attributes);
+        $this->queryParametersChecker->checkAttributesParameters($attributeCodes);
 
         $errors = [];
-        foreach ($attributes as $attributeCode) {
+        foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             $group = $attribute->getGroup();
 
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)) {
-                $errors[] = $attribute;
+                $errors[] = $attributeCode;
             }
         }
 
@@ -108,12 +108,12 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkCategoriesParameters($categories)
+    public function checkCategoriesParameters(array $categoryCodes)
     {
-        $this->queryParametersChecker->checkCategoriesParameters($categories);
+        $this->queryParametersChecker->checkCategoriesParameters($categoryCodes);
 
         $errors = [];
-        foreach ($categories as $category) {
+        foreach ($categoryCodes as $category) {
             $category = $this->categoryRepository->findOneByIdentifier($category['value']);
 
             $errors = [];
