@@ -36,12 +36,12 @@ interface ProductModelInterface extends
     /**
      * Sets the product model identifier.
      *
-     * @param ValueInterface $identifier
+     * @param string $identifier
      *
-     * @return ProductModelInterface
+     * @return void
      *
      */
-    public function setIdentifier(ValueInterface $identifier): ProductModelInterface;
+    public function setIdentifier(string $identifier): void;
 
     /**
      * Gets the products of the product model.

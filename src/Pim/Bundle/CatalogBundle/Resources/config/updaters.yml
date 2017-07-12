@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.updater.product.class:                        Pim\Component\Catalog\Updater\ProductUpdater
+    pim_catalog.updater.product_model.class:                  Pim\Component\Catalog\Updater\ProductModelUpdater
     pim_catalog.updater.entity_with_values.class:               Pim\Component\Catalog\Updater\EntityWithValuesUpdater
     pim_catalog.updater.product_property_setter.class:        Pim\Component\Catalog\Updater\ProductPropertySetter
     pim_catalog.updater.entity_with_values_property_setter.class: Pim\Component\Catalog\Updater\EntityWithValuesPropertySetter
@@ -60,6 +61,14 @@ services:
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
             - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
+            - ['identifier', 'created', 'updated']
+
+    pim_catalog.updater.product_model:
+        class: '%pim_catalog.updater.product_model.class%'
+        arguments:
+            - '@pim_catalog.updater.entity_with_values_property_setter'
+            - '@pim_catalog.updater.entity_with_values'
+            - ['family_variant', 'categories']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.entity_with_values:

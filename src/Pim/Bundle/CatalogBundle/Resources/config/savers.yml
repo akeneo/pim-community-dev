@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.saver.base.class:                          Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
-    pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
+    pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver
     pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
@@ -22,6 +22,13 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
+
+    pim_catalog.saver.product_model:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.product_model.interface%'
 
     pim_catalog.synchronizer.product_unique_data:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'

@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -113,7 +113,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function validateProduct($product)
     {
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof EntityWithValuesInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expects a Pim\Component\Catalog\Model\ProductInterface, "%s" provided',

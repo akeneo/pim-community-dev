@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -54,7 +54,7 @@ class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
     public function computeRawValues(GenericEvent $event)
     {
         $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof EntityWithValuesInterface) {
             return;
         }
 

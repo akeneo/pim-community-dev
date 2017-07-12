@@ -9,7 +9,7 @@ parameters:
     pim_catalog.event_subscriber.currency_disabling.class: Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Pim\Bundle\CatalogBundle\EventSubscriber\ResetUniqueValidationSubscriber
     pim_catalog.event_subscriber.compute_product_raw_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductRawValuesSubscriber
-    pim_catalog.event_subscriber.load_product_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber
+    pim_catalog.event_subscriber.load_product_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber
     pim_catalog.event_subscriber.compute_product_template_raw_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductTemplateRawValuesSubscriber
     pim_catalog.event_subscriber.load_product_template_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductTemplateValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber

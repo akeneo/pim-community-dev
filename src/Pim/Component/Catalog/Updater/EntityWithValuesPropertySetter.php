@@ -55,15 +55,12 @@ class EntityWithValuesPropertySetter implements PropertySetterInterface
             throw UnknownPropertyException::unknownProperty($field);
         }
 
-        if (!$setter instanceof AttributeSetterInterface) {
-            throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($entityWithValues),
-                AttributeSetterInterface::class
-            );
+        if ($setter instanceof AttributeSetterInterface) {
+            $attribute = $this->getAttribute($field);
+            $setter->setAttributeData($entityWithValues, $attribute, $data, $options);
+        } else {
+            $setter->setFieldData($entityWithValues, $field, $data, $options);
         }
-
-        $attribute = $this->getAttribute($field);
-        $setter->setAttributeData($entityWithValues, $attribute, $data, $options);
 
         return $this;
     }

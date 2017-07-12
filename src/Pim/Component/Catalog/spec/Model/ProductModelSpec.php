@@ -44,18 +44,6 @@ class ProductModelSpec extends ObjectBehavior
         $this->shouldImplement(CategoryAwareInterface::class);
     }
 
-    function it_has_an_identifier(ValueInterface $identifier, AttributeInterface $identifierAttribute)
-    {
-        $identifier->getData()->willReturn('foobar');
-        $identifier->getAttribute()->willReturn($identifierAttribute);
-        $identifier->getLocale()->willReturn(null);
-        $identifier->getScope()->willReturn(null);
-
-        $this->setIdentifier($identifier);
-
-        $this->getIdentifier()->shouldReturn('foobar');
-    }
-
     function it_adds_a_value(
         ValueCollectionInterface $values,
         ValueInterface $value,
