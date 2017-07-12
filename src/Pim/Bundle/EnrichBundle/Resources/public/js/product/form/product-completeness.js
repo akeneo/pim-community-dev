@@ -28,11 +28,14 @@ define(
             render: function () {
                 this.$el.empty();
 
-                this.$el.append(this.template({
-                    label: __('pim_enrich.entity.product.completeness'),
-                    completeness: this.getRatio(),
-                    badgeClass: this.getBadgeClass()
-                }));
+                var ratio = this.getRatio();
+                if (null !== ratio) {
+                    this.$el.append(this.template({
+                        label: __('pim_enrich.entity.product.completeness'),
+                        completeness: ratio,
+                        badgeClass: this.getBadgeClass()
+                    }));
+                }
 
                 return this;
             },
@@ -40,13 +43,17 @@ define(
             /**
              * Returns the ratio of the current locale and current scope
              *
-             * @returns number
+             * @returns number|null
              */
             getRatio: function () {
                 var completeness = _.findWhere(
                     this.getFormData().meta.completenesses,
                     { locale: UserContext.get('catalogLocale') }
                 );
+
+                if (undefined === completeness) {
+                    return null;
+                }
 
                 return completeness.channels[UserContext.get('catalogScope')].completeness.ratio;
             },
