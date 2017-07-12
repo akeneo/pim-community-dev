@@ -17,6 +17,7 @@ use Akeneo\Test\Integration\TestCase;
 abstract class AbstractPimCatalogTestCase extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
+    const PRODUCT_MODEL_DOCUMENT_TYPE = 'pim_catalog_product_model_parent_';
 
     /**
      * {@inheritdoc}
@@ -52,13 +53,28 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     protected function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $parentId = null;
-            if (isset($product['parent'])) {
-                $parentId = $product['parent'];
-                unset($product['parent']);
-            }
+            $this->esClient->index(
+                self::DOCUMENT_TYPE,
+                $product['identifier'],
+                $product,
+                $product['parent'],
+                $product['root_ancestor']
+            );
+        }
 
-            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $parentId, $product);
+        $this->esClient->refreshIndex();
+    }
+
+    protected function indexProductModels(array $productModels)
+    {
+        foreach ($productModels as $productModel) {
+            $this->esClient->index(
+                self::PRODUCT_MODEL_DOCUMENT_TYPE . $productModel['level'],
+                $productModel['identifier'],
+                $productModel,
+                $productModel['parent'],
+                $productModel['root_ancestor']
+            );
         }
 
         $this->esClient->refreshIndex();
