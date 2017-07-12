@@ -49,13 +49,15 @@ class Client
     /**
      * @param string       $indexType
      * @param string       $id
-     * @param string       $parent
      * @param array        $body
+     * @param null         $parentId
+     * @param string|null  $routing
      * @param Refresh|null $refresh
      *
      * @return array see <a href='psi_element://https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}'>https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}</a>
+     * @internal param string $parentId
      */
-    public function index($indexType, $id, $parent, array $body, Refresh $refresh = null)
+    public function index($indexType, $id, array $body, $parentId = null, $routing = null, Refresh $refresh = null)
     {
         $params = [
             'index' => $this->indexName,
@@ -68,12 +70,11 @@ class Client
             $params['refresh'] = $refresh->getType();
         }
 
-        if (null !== $parent) {
-            $params['parent'] = $parent;
+        if (null !== $parentId) {
+            $params['parent'] = $parentId;
         }
-
-        if (isset($body['root_ancestor'])) {
-            $params['routing'] = $body['root_ancestor'];
+        if (null !== $routing) {
+            $params['routing'] = $routing;
         }
 
         return $this->client->index($params);
@@ -98,22 +99,23 @@ class Client
                 throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
             }
 
-            $enveloppe = [
+            $metaData = [
                 'index' => [
-                    '_index'  => $this->indexName,
-                    '_type'   => $indexType,
-                    '_id'     => $document[$keyAsId],
+                    '_index' => $this->indexName,
+                    '_type'  => $indexType,
+                    '_id'    => $document[$keyAsId],
                 ],
             ];
 
             if (isset($document['parent'])) {
-                $enveloppe['index']['_parent'] = $document['parent'];
-            }
-            if (isset($document['root_ancestor'])) {
-                $enveloppe['index']['_routing'] = $document['root_ancestor'];
+                $metaData['index']['_parent'] = $document['parent'];
             }
 
-            $params['body'][] = $enveloppe;
+            if (isset($document['root_ancestor'])) {
+                $metaData['index']['_routing'] = $document['root_ancestor'];
+            }
+
+            $params['body'][] = $metaData;
             $params['body'][] = $document;
 
             if (null !== $refresh) {
