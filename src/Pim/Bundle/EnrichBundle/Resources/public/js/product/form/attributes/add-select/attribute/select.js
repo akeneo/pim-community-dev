@@ -73,14 +73,30 @@ define(
 
                         return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes)
                             .then(function (attributeGroups) {
-                                return _.map(attributes, function (attribute) {
-                                    return _.extend(
-                                        attribute,
-                                        {group: _.findWhere(attributeGroups, {code: attribute.group})}
-                                    );
-                                });
-                            });
+                                return this.populateGroupProperties(attributes, attributeGroups);
+                            }.bind(this));
                     });
+            },
+
+            /**
+             * Transforms each attribute
+             *
+             * { code: 'name', group: 'marketing', ...  }
+             *
+             * into
+             *
+             * { code: 'name', group: { code: 'marketing', sort_order: 2, ... }, ...  }
+             *
+             * @param {Array} attributes
+             * @param {Array} attributeGroups
+             */
+            populateGroupProperties: function (attributes, attributeGroups) {
+                return _.map(attributes, function (attribute) {
+                    return _.extend(
+                        attribute,
+                        {group: _.findWhere(attributeGroups, {code: attribute.group})}
+                    );
+                });
             },
 
             /**

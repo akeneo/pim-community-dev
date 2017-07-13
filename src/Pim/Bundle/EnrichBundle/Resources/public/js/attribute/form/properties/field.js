@@ -158,6 +158,8 @@ function (
         },
 
         /**
+         * Receives the new value and updates the data model with it.
+         *
          * @param {*} value
          */
         updateModel: function (value) {
@@ -167,6 +169,10 @@ function (
             this.setData(newData);
         },
 
+        /**
+         * Method responsible for reading the current value from the  DOM.
+         * Must be implemented in concrete classes.
+         */
         getFieldValue: function () {
             throw new Error('Please implement the getFieldValue() method in your concrete field class.');
         }
