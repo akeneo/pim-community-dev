@@ -324,7 +324,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'terms' => [
-                            'values.material.<all_channels>.<all_locales>' => ['cotton'],
+                            'values.material-option.<all_channels>.<all_locales>' => ['cotton'],
                         ],
                     ],
                 ],
@@ -342,20 +342,19 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                 'model-tshirt-grey',
                 'model-tshirt-red',
                 'model-tshirt-unique-color',
-                'model-tshirt-unique-size'
+                'model-tshirt-unique-size',
             ]
         );
     }
 
     public function testSearchMaterialLeather()
     {
-        $this->markTestIncomplete('Not done');
         $query = [
             'query' => [
                 'bool' => [
                     'filter' => [
                         'terms' => [
-                            'values.material.<all_channels>.<all_locales>' => ['leather'],
+                            'values.material-option.<all_channels>.<all_locales>' => ['leather'],
                         ],
                     ],
                 ],
@@ -364,7 +363,7 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [self::PRODUCT_MODEL_DOCUMENT_TYPE . '_1', self::PRODUCT_MODEL_DOCUMENT_TYPE . '_2']
         );
 
         $this->assertProducts(
@@ -422,6 +421,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                             '<all_locales>' => 'tshirt-grey.jpg',
                         ],
                     ],
+                    'material-option'    => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'cotton',
+                        ],
+                    ],
                 ],
             ],
             [
@@ -445,6 +449,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     'main_picture-media' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-blue.jpg',
+                        ],
+                    ],
+                    'material-blue'      => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'polyester',
                         ],
                     ],
                 ],
@@ -472,6 +481,11 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                             '<all_locales>' => 'tshirt-red.jpg',
                         ],
                     ],
+                    'material-option'    => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'cotton',
+                        ],
+                    ],
                 ],
             ],
 
@@ -489,14 +503,19 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     ],
                 ],
                 'values'        => [
-                    'image-media'  => [
+                    'image-media'     => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-rockstar.jpg',
                         ],
                     ],
-                    'color-option' => [
+                    'color-option'    => [
                         '<all_channels>' => [
                             '<all_locales>' => 'red',
+                        ],
+                    ],
+                    'material-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'cotton',
                         ],
                     ],
                 ],
@@ -516,9 +535,14 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     ],
                 ],
                 'values'        => [
-                    'color-option' => [
+                    'color-option'    => [
                         '<all_channels>' => [
                             '<all_locales>' => 'grey',
+                        ],
+                    ],
+                    'material-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'wool',
                         ],
                     ],
                 ],
@@ -538,14 +562,19 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     ],
                 ],
                 'values'        => [
-                    'image-media' => [
+                    'image-media'     => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-unique-size.jpg',
                         ],
                     ],
-                    'size-option' => [
+                    'size-option'     => [
                         '<all_channels>' => [
                             '<all_locales>' => 'u',
+                        ],
+                    ],
+                    'material-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'cotton',
                         ],
                     ],
                 ],
@@ -560,6 +589,13 @@ class PimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
                     'code'   => 'shoe',
                     'labels' => [
                         'fr_FR' => 'La famille des chaussures de courses',
+                    ],
+                ],
+                'values'     => [
+                    'material-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'leather',
+                        ],
                     ],
                 ],
             ],
