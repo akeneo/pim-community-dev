@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,46 +25,6 @@ class GetProductWithPermissionsIntegration extends AbstractProductTestCase
         $client->request('GET', 'api/rest/v1/products/product_viewable_by_everybody_1');
 
         $this->assertResponse($client->getResponse(), $standardizedProducts['product_viewable_by_everybody_1']);
-    }
-
-    public function testProductAttributeNotViewableByRedactor()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/products?attributes=a_metric_without_decimal_negative');
-        $this->assert($client, 'Attribute "a_metric_without_decimal_negative" does not exist.');
-    }
-
-    public function testProductAttributesNotViewableByRedactor()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/products?attributes=a_metric_without_decimal_negative,a_localized_and_scopable_text_area');
-        $this->assert($client, 'Attribute "a_metric_without_decimal_negative" does not exist.');
-    }
-
-    public function testProductOneAttributeNotViewableByRedactor()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/products?locales=a_multi_select,a_metric_without_decimal_negative,a_localized_and_scopable_text_area');
-        $this->assert($client, 'Attributes "a_multi_select, a_metric_without_decimal_negative" do not exist.');
-    }
-
-    public function testProductLocaleNotViewableByRedactor()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/products?locales=de_DE');
-        $this->assert($client, 'Locale "de_DE" does not exist.');
-    }
-
-    public function testProductLocalesNotViewableByRedactor()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/products?locales=de_DE,en_US');
-        $this->assert($client, 'Locales "de_DE, en_US" do not exist.');
     }
 
     public function testProductViewableByRedactor()
@@ -147,21 +106,5 @@ JSON;
         NormalizedProductCleaner::clean($result);
 
         $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * @param Client $client
-     * @param string $message
-     */
-    private function assert(Client $client, $message)
-    {
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertCount(2, $content);
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
-
-        $this->assertSame($message, $content['message']);
     }
 }

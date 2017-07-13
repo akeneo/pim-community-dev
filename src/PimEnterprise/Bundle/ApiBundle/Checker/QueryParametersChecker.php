@@ -108,17 +108,17 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkCategoriesParameters(array $categoryCodes)
+    public function checkCategoriesParameters(array $categories)
     {
-        $this->queryParametersChecker->checkCategoriesParameters($categoryCodes);
-
+        $this->queryParametersChecker->checkCategoriesParameters($categories);
         $errors = [];
-        foreach ($categoryCodes as $category) {
-            $category = $this->categoryRepository->findOneByIdentifier($category['value']);
+        foreach ($categories as $category) {
+            foreach ($category['value'] as $value) {
+                $category = $this->categoryRepository->findOneByIdentifier($value);
 
-            $errors = [];
-            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category->getCode())) {
-                $errors[] = $category;
+                if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
+                    $errors[] = $category->getCode();
+                }
             }
         }
 
