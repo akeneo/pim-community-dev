@@ -260,7 +260,7 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Validation: Available attributes for axis are metric, simple select and reference data simple select
+     * Validation: Available axes must have parents
      */
     public function testTheNumberOfAttributeSetLevel()
     {

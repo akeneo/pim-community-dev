@@ -36,6 +36,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
@@ -496,24 +497,34 @@ class FixturesContext extends BaseFixturesContext
                     assertEquals($value, $familyVariant->getTranslation($matches['locale'])->getLabel());
                 } elseif (preg_match('/^variant-attributes_(?P<level>.*)$/', $key, $matches)) {
                     $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
-                    $variantAttributes = array_map(
-                        function (AttributeInterface $attribute) {
-                            return $attribute->getCode();
-                        },
-                        $variantAttributeSet->getAttributes()->toArray()
-                    );
 
-                    $this->assertArrayEquals(explode(',', $value), $variantAttributes);
+                    if (null === $variantAttributeSet) {
+                        assertEmpty($value);
+                    } else {
+                        $variantAttributes = array_map(
+                            function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            },
+                            $variantAttributeSet->getAttributes()->toArray()
+                        );
+
+                        $this->assertArrayEquals(explode(',', $value), $variantAttributes);
+                    }
                 } elseif (preg_match('/^variant-axes_(?P<level>.*)$/', $key, $matches)) {
                     $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
-                    $variantAxes= array_map(
-                        function (AttributeInterface $attribute) {
-                            return $attribute->getCode();
-                        },
-                        $variantAttributeSet->getAxes()->toArray()
-                    );
 
-                    $this->assertArrayEquals(explode(',', $value), $variantAxes);
+                    if (null === $variantAttributeSet) {
+                        assertEmpty($value);
+                    } else {
+                        $variantAxes= array_map(
+                            function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            },
+                            $variantAttributeSet->getAxes()->toArray()
+                        );
+
+                        $this->assertArrayEquals(explode(',', $value), $variantAxes);
+                    }
                 } else {
                     throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
                 }
@@ -1142,6 +1153,18 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getRows() as $data) {
             copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
         }
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
+     * @Then /^there should be (\d+) family variants?$/
+     */
+    public function thereShouldBeFamilyVariants($expectedTotal)
+    {
+        $total = count($this->getFamilyVariantRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -1992,6 +2015,14 @@ class FixturesContext extends BaseFixturesContext
         $this->getContainer()->get('pim_datagrid.saver.datagrid_view')->save($view);
 
         return $view;
+    }
+
+    /**
+     * @return FamilyVariantRepositoryInterface
+     */
+    protected function getFamilyVariantRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.family_variant');
     }
 
     /**

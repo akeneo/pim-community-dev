@@ -54,7 +54,7 @@ class FamilyVariantValidator extends ConstraintValidator
 
         $this->validateAxesAttributes($familyVariant->getAxes());
         $this->validateAttributes($familyVariant->getAttributes());
-        $this->validateNumberOfAxis($familyVariant);
+        $this->validateNumberOfLevelAndAxis($familyVariant);
     }
 
     /**
@@ -112,7 +112,7 @@ class FamilyVariantValidator extends ConstraintValidator
     /**
      * @param FamilyVariantInterface $familyVariant
      */
-    private function validateNumberOfAxis(FamilyVariantInterface $familyVariant): void
+    private function validateNumberOfLevelAndAxis(FamilyVariantInterface $familyVariant): void
     {
         $numberOfLevel = $familyVariant->getLevel();
         $i = 0;
