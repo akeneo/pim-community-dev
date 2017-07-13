@@ -5,7 +5,6 @@ namespace Pim\Bundle\ApiBundle\Checker;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-
 /**
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
