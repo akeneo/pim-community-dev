@@ -42,6 +42,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var string */
     protected $attributeClass;
 
+    /** @var int */
+    protected $commitBatchSize;
+
     /**
      * Constructor
      *
@@ -49,14 +52,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * @param string                 $productClass
      * @param string                 $productValueClass
      * @param string                 $attributeClass
+     * @param int                    $commitBatchSize
      */
-    public function __construct(EntityManagerInterface $manager, $productClass, $productValueClass, $attributeClass)
-    {
+    public function __construct(
+        EntityManagerInterface $manager,
+        $productClass,
+        $productValueClass,
+        $attributeClass,
+        $commitBatchSize = 1000
+    ) {
         $this->manager = $manager;
         $this->connection = $manager->getConnection();
         $this->productClass = $productClass;
         $this->productValueClass = $productValueClass;
         $this->attributeClass = $attributeClass;
+        $this->commitBatchSize = $commitBatchSize;
     }
 
     /**
@@ -141,22 +151,34 @@ SQL;
         }
         $fetchStmt->execute();
 
-        $this->connection->beginTransaction();
         $insertSql = <<<SQL
     INSERT INTO {$tempTableName} (locale_id, channel_id, value_id) 
     VALUES (?, ?, ?)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
                 $insertStmt->bindValue(1, $completeness['locale_id']);
                 $insertStmt->bindValue(2, $completeness['channel_id']);
                 $insertStmt->bindValue(3, $completeness['value_id']);
                 $insertStmt->execute();
+                $count++;
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
             }
 
-            $this->connection->commit();
+            if ($count > 0) {
+                $this->connection->commit();
+            }
         } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
@@ -194,21 +216,33 @@ SQL;
         }
         $fetchStmt->execute();
 
-        $this->connection->beginTransaction();
         $insertSql = <<<SQL
     INSERT INTO {$tempTableName} (locale_id, channel_id, product_id) VALUES (?, ?, ?)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
                 $insertStmt->bindValue(1, $completeness['locale_id']);
                 $insertStmt->bindValue(2, $completeness['channel_id']);
                 $insertStmt->bindValue(3, $completeness['product_id']);
                 $insertStmt->execute();
+                $count++;
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
             }
 
-            $this->connection->commit();
+            if ($count > 0) {
+                $this->connection->commit();
+            }
         } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
@@ -327,15 +361,19 @@ MISSING_SQL;
         }
         $fetchStmt->execute();
 
-        $this->connection->beginTransaction();
         $insertSql = <<<SQL
     INSERT INTO pim_catalog_completeness
     (locale_id, channel_id, product_id, ratio, missing_count, required_count) VALUES (?, ?, ?, ?, ?, ?)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
 
         try {
             while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
                 $insertStmt->bindValue(1, $completeness['locale_id']);
                 $insertStmt->bindValue(2, $completeness['channel_id']);
                 $insertStmt->bindValue(3, $completeness['product_id']);
@@ -343,9 +381,17 @@ SQL;
                 $insertStmt->bindValue(5, $completeness['missing_count']);
                 $insertStmt->bindValue(6, $completeness['required_count']);
                 $insertStmt->execute();
+                $count++;
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
             }
 
-            $this->connection->commit();
+            if ($count > 0) {
+                $this->connection->commit();
+            }
         } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
