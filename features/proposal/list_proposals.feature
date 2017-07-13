@@ -79,12 +79,12 @@ Feature: List proposals
   Scenario: Successfully review a proposal with a new simple select value
     Given I am logged in as "Julia"
     And I am on the "additional_materials" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I create the following attribute options:
       | Code | en_US | fr_FR | de_DE |
       | Blue | Blue  | Bleu  | Blau  |
     And I am on the "weather_conditions" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I create the following attribute options:
       | Code | en_US | fr_FR | de_DE |
       | Blue | Blue  | Bleu  | Blau  |

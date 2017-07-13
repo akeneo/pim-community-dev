@@ -51,6 +51,11 @@ pimee_catalog_rule:
                     success: You successfuly deleted the rules.
                     error: An error occured during the deletion of the rules.
                     empty_selection: No rules selected.
+    form:
+        attribute:
+            tab:
+                rules:
+                    title: Rules
 confirmation:
     remove:
         rule: Are you sure you want to delete this rule? It is not possible to undo this action

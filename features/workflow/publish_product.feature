@@ -142,8 +142,8 @@ Feature: Publish a product
     And I edit the "my-jacket" product
     When I press the secondary action "Publish"
     And I confirm the publishing
-    Then I edit the "climate" attribute
-    And I visit the "Values" tab
+    And I am on the "climate" attribute page
+    And I visit the "Options" tab
     When I remove the "Hot" option
     And I confirm the deletion
     Then I should see the text "Impossible to remove attribute option linked to a published product"

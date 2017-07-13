@@ -19,6 +19,15 @@ pim_enrich:
     entity:
         attribute_label:
             pim_assets_collection: Assets collection
+        attribute:
+            type:
+                pim_assets_collection: Assets collection
+    form:
+        attribute:
+            tab:
+                properties:
+                    label:
+                        is_read_only: Read only
 
 pimee_enrich:
     form:

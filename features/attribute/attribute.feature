@@ -18,16 +18,16 @@ Feature: Display available field options
     Then I should see the <fields> fields
 
     Examples:
-      | type       | fields                                                                                                       |
-      | Identifier | Read only, Max characters, Validation rule                                                                   |
-      | Date       | Read only, Min date, Max date                                                                                |
-      | File       | Read only, Max file size (MB), Allowed extensions                                                            |
-      | Image      | Read only, Max file size (MB), Allowed extensions                                                            |
-      | Metric     | Read only, Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit |
-      | Price      | Read only, Min number, Max number, Allow decimals                                                            |
-      | Number     | Read only, Min number, Max number, Allow decimals, Allow negative values                                     |
-      | Text Area  | Read only, Max characters, WYSIWYG enabled                                                                   |
-      | Text       | Read only, Max characters, Validation rule                                                                   |
+      | type       | fields                                                                                            |
+      | Identifier | Read only, Max characters, Validation rule                                                        |
+      | Date       | Read only, Min date, Max date                                                                     |
+      | File       | Read only, Max file size (MB), Allowed extensions                                                 |
+      | Image      | Read only, Max file size (MB), Allowed extensions                                                 |
+      | Metric     | Read only, Min number, Max number, Decimal values allowed, Negative values allowed, Metric family |
+      | Price      | Read only, Min number, Max number, Decimal values allowed                                         |
+      | Number     | Read only, Min number, Max number, Decimal values allowed, Negative values allowed                |
+      | Text Area  | Read only, Max characters, Rich text editor enabled                                               |
+      | Text       | Read only, Max characters, Validation rule                                                        |
 
   Scenario: Successfully set attribute to read only
     Given I am on the "description" attribute page
@@ -36,10 +36,12 @@ Feature: Display available field options
     When I am on the "my-jacket" product page
     Then the field Description should be disabled
 
+  @skip @info To be fixed in TIP-764
   Scenario: Successfully set attribute to read only during mass edit
     Given I am on the "description" attribute page
     And I check the "Read only" switch
     And I save the "attribute"
+    And I should not see the text "There are unsaved change"
     And I am on the products page
     When I select row my-jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -47,14 +49,16 @@ Feature: Display available field options
     And I display the Description attribute
     Then the field Description should be disabled
 
+  @skip @info To be fixed in TIP-764
   Scenario: Successfully display read only attributes
     Given I am on the "description" attribute page
     And I check the "Read only" switch
     And I save the "attribute"
+    And I should not see the text "There are unsaved change"
     And I am on the products page
-    And I select rows my-jacket
+    When I select rows my-jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name and Description in group "Product information"
     When I display the Name and Description attributes
-    And the field Description should be disabled
+    Then the field Description should be disabled

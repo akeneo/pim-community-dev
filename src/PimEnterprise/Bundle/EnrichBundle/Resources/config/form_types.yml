@@ -93,8 +93,3 @@ services:
             - ['scope', 'locale']
         tags:
             - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
-
-    pimee_enrich.form.extension.attribute:
-        class: '%pimee_enrich.form.extension.attribute.class%'
-        tags:
-            - { name: form.type_extension, extended_type: '%pim_enrich.form.type.attribute.class%' }

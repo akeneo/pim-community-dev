@@ -1,0 +1,8 @@
+extensions:
+    pim-attribute-edit-form-properties-common-is-read-only:
+        module: pim/attribute-edit-form/properties/boolean
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 180
+        config:
+            fieldName: is_read_only

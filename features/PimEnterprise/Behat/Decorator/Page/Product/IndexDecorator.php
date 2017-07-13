@@ -35,11 +35,16 @@ class IndexDecorator extends ElementDecorator
     {
         $selector = $this->selectors['Create project button'];
 
-        $button = $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
-        }, sprintf('Create project button not found (%s).', $selector));
+        $this->spin(function () use ($selector) {
+            $button = $this->find('css', $selector);
+            if (null === $button) {
+                return false;
+            }
 
-        $button->click();
+            $button->click();
+
+            return true;
+        }, sprintf('Create project button not found (%s).', $selector));
     }
 
     /**
