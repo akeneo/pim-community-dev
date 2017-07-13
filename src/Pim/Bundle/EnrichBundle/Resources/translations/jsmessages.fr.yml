@@ -270,21 +270,6 @@ pim_enrich:
         updated_by: Mis à jour par
       btn:
         save: Enregistrer
-    attribute_label:
-      pim_catalog_identifier: Identifiant
-      pim_catalog_text: Texte
-      pim_catalog_textarea: Zone de texte
-      pim_catalog_number: Nombre
-      pim_catalog_price_collection: Prix
-      pim_catalog_multiselect: Liste à choix multiples
-      pim_catalog_simpleselect: Liste à choix unique
-      pim_catalog_file: Fichier
-      pim_catalog_image: Image
-      pim_catalog_boolean: "Oui / Non"
-      pim_catalog_date: Date
-      pim_catalog_metric: Unité de mesure
-      pim_reference_data_simpleselect: Liste à choix unique de données référentielles
-      pim_reference_data_multiselect: Liste à choix multiples de données référentielles
     attribute_option:
       code: Code
       label: Libellé
@@ -330,6 +315,27 @@ pim_enrich:
       info:
         update_failed: Le groupe d'attributs n'a pas pu être mis à jour.
         update_successful: Groupe d'attributs mis à jour avec succès
+    attribute:
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: Identifiant
+        pim_catalog_text: Texte
+        pim_catalog_textarea: Zone de texte
+        pim_catalog_number: Nombre
+        pim_catalog_price_collection: Prix
+        pim_catalog_multiselect: Liste à choix multiples
+        pim_catalog_simpleselect: Liste à choix unique
+        pim_catalog_file: Fichier
+        pim_catalog_image: Image
+        pim_catalog_boolean: "Oui / Non"
+        pim_catalog_date: Date
+        pim_catalog_metric: Unité de mesure
+        pim_reference_data_simpleselect: Liste à choix unique de données référentielles
+        pim_reference_data_multiselect: Liste à choix multiples de données référentielles
+      validation_rule:
+        email: E-mail
+        regexp: Expression régulière
+        url: URL
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
@@ -614,6 +620,57 @@ pim_enrich:
         history:
           title: Historique
       file_path: Chemin du fichier
+    attribute:
+      meta:
+        created: Created
+        created_by: by
+        updated: Last update
+        updated_by: by
+      tab:
+        properties:
+          title: Propriétés
+          section:
+            common: Paramètres généraux
+            type_specific: Paramètres spécifiques
+            validation: Paramètres de validation
+          label:
+            allowed_extensions: Extensions autorisées
+            auto_option_sorting: Trier automatiquement les options par ordre alphabétique
+            available_locales: Locales disponibles
+            code: Code
+            date_max: Date maxi
+            date_min: Date mini
+            decimals_allowed: Autoriser les nombres décimaux
+            default_metric_unit: Unité de mesure par défaut
+            group: Groupe d'attributs
+            is_locale_specific: Spécifique à une locale
+            localizable: Valeur par locale
+            max_characters: Nombre maximum de caractères
+            max_file_size: Taille de fichier maximale (Mo)
+            metric_family: Type de mesure
+            minimum_input_length: Longueur minimum avant autocomplétion
+            negative_allowed: Autoriser les valeurs négatives
+            number_max: Nombre max
+            number_min: Nombre min
+            reference_data_name: Type de données référentielles
+            scopable: Valeur par canal
+            type: Type d'attribut
+            unique: Valeur unique
+            useable_as_grid_filter: Utilisable sur la grille
+            validation_regexp: Expression régulière
+            validation_rule: Règle de validation
+            wysiwyg_enabled: Editeur texte riche activé
+          default_label:
+            default_metric_unit: Choisissez une unité
+            group: Choisissez un groupe d'attributs
+            metric_family: Choisissez une famille
+            reference_data_name: Choisissez un type de données référentielles
+        labels:
+            title: Labels
+        choices:
+            title: Options
+        history:
+            title: Historique
     mass_edit:
       family:
         attributes:

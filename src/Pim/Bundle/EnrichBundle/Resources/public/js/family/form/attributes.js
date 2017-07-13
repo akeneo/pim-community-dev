@@ -12,8 +12,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'pim/template/family/tab/attributes',
-        'jquery.select2'
+        'pim/template/family/tab/attributes'
     ],
     function (
         _,
@@ -55,7 +54,7 @@ define([
                     return this;
                 }
 
-                this.$el.html(this.template({}));
+                this.$el.html(this.template());
 
                 this.renderExtensions();
             }

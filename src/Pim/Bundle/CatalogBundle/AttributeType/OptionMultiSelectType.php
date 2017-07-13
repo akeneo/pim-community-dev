@@ -2,11 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType;
-use Pim\Bundle\UIBundle\Form\Type\NumberType as FormNumberType;
-use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Multi options (select) attribute type
@@ -17,35 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class OptionMultiSelectType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'minimumInputLength' => [
-                'name'      => 'minimumInputLength',
-                'fieldType' => FormNumberType::class
-            ],
-            'options' => [
-                'name'      => 'options',
-                'fieldType' => OptionsType::class
-            ],
-            'autoOptionSorting' => [
-                'name'      => 'autoOptionSorting',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'label'         => 'Automatic option sorting',
-                    'property_path' => 'properties[autoOptionSorting]',
-                    'help'          => 'info.attribute.auto option sorting',
-                    'attr'          => [
-                        'class' => 'hide'
-                    ]
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

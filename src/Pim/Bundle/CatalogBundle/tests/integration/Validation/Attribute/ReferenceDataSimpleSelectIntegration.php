@@ -160,6 +160,28 @@ class ReferenceDataSimpleSelectIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function testReferenceDataMultiSelectShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'auto_option_sorting' => false,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
+    }
+
     public function testNumberShouldNotHaveMaxCharacters()
     {
         $attribute = $this->createAttribute();

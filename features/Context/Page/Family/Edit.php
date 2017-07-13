@@ -130,7 +130,12 @@ class Edit extends Form
             },
             $this->getElement('Attribute as label choices')->findAll('css', 'option')
         );
-        $options[0] = $this->find('css', '#s2id_pim_enrich_family_form_label_attribute_as_label .select2-chosen')->getText();
+
+        $selectedOption = $this->spin(function () {
+            return $this->find('css', '#s2id_pim_enrich_family_form_label_attribute_as_label .select2-chosen');
+        }, 'Cannot find attribute as label option.');
+
+        $options[0] = $selectedOption->getText();
 
         return $options;
     }

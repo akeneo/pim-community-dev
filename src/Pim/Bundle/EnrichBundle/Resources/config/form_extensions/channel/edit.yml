@@ -69,13 +69,20 @@ extensions:
         config:
             entity: pim_enrich.entity.channel.title
 
-    pim-channel-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-channel-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-channel-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: pim_enrich.form.channel.tab.properties.title
+
+    pim-channel-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-channel-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-channel-edit-form-properties-general:
         module: pim/create/properties/general
@@ -104,13 +111,23 @@ extensions:
         targetZone: general-select-fields
         position: 130
 
-    pim-channel-edit-form-properties-translation:
-        module: pim/common/properties/translation
+    pim-channel-edit-form-properties-translation-section:
+        module: pim/common/simple-view
         parent: pim-channel-edit-form-properties
         targetZone: accordion
         position: 140
         config:
-            label: 'pim_enrich.form.channel.tab.properties.label_translations'
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.channel.tab.properties.label_translations
+                dropZone: content
+
+    pim-channel-edit-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-channel-edit-form-properties-translation-section
+        targetZone: content
+        position: 100
+        config:
             fieldBaseId: 'pim_enrich_channel_form_label_'
 
     pim-channel-edit-form-properties-conversion-unit:

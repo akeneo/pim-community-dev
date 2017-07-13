@@ -77,6 +77,9 @@ class ProductController
     /** @var ConverterInterface */
     protected $productValueConverter;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -92,6 +95,7 @@ class ProductController
      * @param AttributeConverterInterface  $localizedConverter
      * @param ProductFilterInterface       $emptyValuesFilter
      * @param ConverterInterface           $productValueConverter
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -107,7 +111,8 @@ class ProductController
         ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter,
-        ConverterInterface $productValueConverter
+        ConverterInterface $productValueConverter,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -123,6 +128,7 @@ class ProductController
         $this->localizedConverter = $localizedConverter;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -179,11 +185,16 @@ class ProductController
             ));
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-        ];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse(['values' => $normalizedViolations], 400);
     }
 
     /**
@@ -231,11 +242,16 @@ class ProductController
             return new JsonResponse($normalizedProduct);
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-        ];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse(['values' => $normalizedViolations], 400);
     }
 
     /**

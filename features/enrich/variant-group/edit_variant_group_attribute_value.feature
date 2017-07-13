@@ -115,7 +115,7 @@ Feature: Editing attribute values of a variant group also updates products
   Scenario: Change a pim_catalog_simpleselect locale specific attribute of a variant group
     Given I set the "English (United States), French (France)" locales to the "mobile" channel
     And I am on the "simple_select_local_specific" attribute page
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I create the following attribute options:
       | Code  |
       | red   |

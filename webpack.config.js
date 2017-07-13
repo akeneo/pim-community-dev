@@ -64,7 +64,7 @@ module.exports = {
             // Inject the module config (to replace module.config() from requirejs)
             {
                 test: /\.js$/,
-                exclude: /node_modules|spec/,
+                exclude: /\/node_modules\/|\/spec\//,
                 use: [
                     {
                         loader: resolve(__dirname, 'frontend/config-loader'),
