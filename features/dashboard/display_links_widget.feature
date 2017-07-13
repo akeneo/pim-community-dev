@@ -15,11 +15,14 @@ Feature: Display links widget
     When I follow "Manage Products"
     Then I should be on the products page
     When I am on the dashboard page
+    Then I should see the text "Manage Families"
     And I follow "Manage Families"
     Then I should be on the families page
     When I am on the dashboard page
+    Then I should see the text "Manage Attributes"
     And I follow "Manage Attributes"
     Then I should be on the attributes page
     When I am on the dashboard page
+    Then I should see the text "Manage Categories"
     And I follow "Manage Categories"
     Then I should be on the categories page

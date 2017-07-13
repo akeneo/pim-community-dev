@@ -343,7 +343,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iShouldSeeTheAvailableFilters($not, $filters)
     {
-        $available = !(bool)$not;
+        $available = !$not;
 
         $filters = $this->getMainContext()->listToArray($filters);
         foreach ($filters as $filter) {
