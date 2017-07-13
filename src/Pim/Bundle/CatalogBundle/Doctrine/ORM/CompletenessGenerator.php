@@ -153,7 +153,7 @@ SQL;
 
         $insertSql = <<<SQL
     INSERT INTO {$tempTableName} (locale_id, channel_id, value_id) 
-    VALUES (?, ?, ?)
+    VALUES (:locale_id, :channel_id, :value_id)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
         $count = 0;
@@ -164,9 +164,9 @@ SQL;
                     $this->connection->beginTransaction();
                 }
 
-                $insertStmt->bindValue(1, $completeness['locale_id']);
-                $insertStmt->bindValue(2, $completeness['channel_id']);
-                $insertStmt->bindValue(3, $completeness['value_id']);
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->bindValue('value_id', $completeness['value_id']);
                 $insertStmt->execute();
                 $count++;
 
@@ -217,7 +217,8 @@ SQL;
         $fetchStmt->execute();
 
         $insertSql = <<<SQL
-    INSERT INTO {$tempTableName} (locale_id, channel_id, product_id) VALUES (?, ?, ?)
+    INSERT INTO {$tempTableName} (locale_id, channel_id, product_id) 
+    VALUES (:locale_id, :channel_id, :product_id)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
         $count = 0;
@@ -228,9 +229,9 @@ SQL;
                     $this->connection->beginTransaction();
                 }
 
-                $insertStmt->bindValue(1, $completeness['locale_id']);
-                $insertStmt->bindValue(2, $completeness['channel_id']);
-                $insertStmt->bindValue(3, $completeness['product_id']);
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->bindValue('product_id', $completeness['product_id']);
                 $insertStmt->execute();
                 $count++;
 
@@ -362,8 +363,8 @@ MISSING_SQL;
         $fetchStmt->execute();
 
         $insertSql = <<<SQL
-    REPLACE pim_catalog_completeness
-    (locale_id, channel_id, product_id, ratio, missing_count, required_count) VALUES (?, ?, ?, ?, ?, ?)
+    REPLACE pim_catalog_completeness (locale_id, channel_id, product_id, ratio, missing_count, required_count) 
+    VALUES (:locale_id, :channel_id, :product_id, :ratio, :missing_count, :required_count)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
         $count = 0;
@@ -374,12 +375,12 @@ SQL;
                     $this->connection->beginTransaction();
                 }
 
-                $insertStmt->bindValue(1, $completeness['locale_id']);
-                $insertStmt->bindValue(2, $completeness['channel_id']);
-                $insertStmt->bindValue(3, $completeness['product_id']);
-                $insertStmt->bindValue(4, $completeness['ratio']);
-                $insertStmt->bindValue(5, $completeness['missing_count']);
-                $insertStmt->bindValue(6, $completeness['required_count']);
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->bindValue('product_id', $completeness['product_id']);
+                $insertStmt->bindValue('ratio', $completeness['ratio']);
+                $insertStmt->bindValue('missing_count', $completeness['missing_count']);
+                $insertStmt->bindValue('required_count', $completeness['required_count']);
                 $insertStmt->execute();
                 $count++;
 
