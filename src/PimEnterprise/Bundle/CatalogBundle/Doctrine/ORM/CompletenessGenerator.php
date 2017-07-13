@@ -119,7 +119,8 @@ SQL;
         $fetchStmt->execute();
 
         $insertSql = <<<SQL
-    INSERT INTO {$tempTableName} (value_id, locale_id, channel_id) VALUES (?, ?, ?)
+    INSERT INTO {$tempTableName} (value_id, locale_id, channel_id) 
+    VALUES (:value_id, :locale_id, :channel_id)
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
         $count = 0;
@@ -130,9 +131,9 @@ SQL;
                     $this->connection->beginTransaction();
                 }
 
-                $insertStmt->bindValue(1, $completeness['value_id']);
-                $insertStmt->bindValue(2, $completeness['locale_id']);
-                $insertStmt->bindValue(3, $completeness['channel_id']);
+                $insertStmt->bindValue('value_id', $completeness['value_id']);
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
                 $insertStmt->execute();
 
                 if ($count === $this->commitBatchSize) {
