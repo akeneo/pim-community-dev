@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
@@ -153,7 +154,7 @@ class ProductNormalizer implements NormalizerInterface
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
-            'image'             => $product->getImage(),
+            'image'             => $this->normalizeImage($product->getImage()),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
@@ -223,5 +224,22 @@ class ProductNormalizer implements NormalizerInterface
             }
         }
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
+    }
+
+    /**
+     * @param FileInfoInterface|null $data
+     *
+     * @return array
+     */
+    protected function normalizeImage(FileInfoInterface $data = null)
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        return [
+            'filePath'         => $data->getKey(),
+            'originalFileName' => $data->getOriginalFilename()
+        ];
     }
 }

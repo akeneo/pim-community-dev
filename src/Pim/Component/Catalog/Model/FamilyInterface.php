@@ -101,7 +101,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
      *
      * @return FamilyInterface
      */
-    public function setAttributeAsImage(AttributeInterface $attributeAsImage = null);
+    public function setAttributeAsImage(?AttributeInterface $attributeAsImage);
 
     /**
      * @return AttributeInterface

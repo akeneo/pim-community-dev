@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -49,7 +50,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
         $data['label'] = $product->getLabel($locale);
-        $data['image'] = $product->getImage();
+        $data['image'] = $this->normalizeImage($product->getImage());
         $data['completeness'] = $this->getCompleteness($product, $context);
 
         return $data;
@@ -131,6 +132,23 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     protected function getLabel($code, $value = null)
     {
         return '' === $value || null === $value ? sprintf('[%s]', $code) : $value;
+    }
+
+    /**
+     * @param FileInfoInterface|null $data
+     *
+     * @return array
+     */
+    protected function normalizeImage(FileInfoInterface $data = null)
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        return [
+            'filePath'         => $data->getKey(),
+            'originalFileName' => $data->getOriginalFilename()
+        ];
     }
 
     /**

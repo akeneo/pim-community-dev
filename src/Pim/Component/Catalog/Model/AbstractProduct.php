@@ -366,16 +366,13 @@ abstract class AbstractProduct implements ProductInterface
                 if (null !== $value) {
                     $data = $value->getData();
                     if (!empty($data)) {
-                        return [
-                            'filePath'         => $data->getKey(),
-                            'originalFileName' => $data->getOriginalFilename(),
-                        ];
+                        return $data;
                     }
                 }
             }
         }
 
-        return 'YOLO';
+        return null;
     }
 
     /**

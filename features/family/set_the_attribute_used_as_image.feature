@@ -1,6 +1,6 @@
 @javascript
 Feature: Set the attribute used as the main picture
-  In order to let the user which attribute is used as the main picture in the UI for each family
+  In order to let the user know which attribute is used as the main picture in the UI for each family
   As an administrator
   I need to be able to set the attribute used as the main picture
 
@@ -15,7 +15,7 @@ Feature: Set the attribute used as the main picture
       | Bags | brand      |
     And I am logged in as "Peter"
 
-  Scenario: Successfully show default attribute_as_image
+  Scenario: Successfully show default value for attribute_as_image
     Given I am on the "Bags" family page
     Then I should see the text "Not selected"
 

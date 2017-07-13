@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
@@ -24,7 +25,7 @@ class Family implements FamilyInterface
     /** @var string */
     protected $code;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $attributes;
 
     /**
@@ -35,7 +36,7 @@ class Family implements FamilyInterface
      */
     protected $locale;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $translations;
 
     /** @var AttributeInterface */
@@ -44,7 +45,7 @@ class Family implements FamilyInterface
     /** @var AttributeInterface */
     protected $attributeAsImage;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $requirements;
 
     /** @var \DateTime */
@@ -244,7 +245,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributeAsImage(AttributeInterface $attributeAsImage = null)
+    public function setAttributeAsImage(?AttributeInterface $attributeAsImage)
     {
         $this->attributeAsImage = $attributeAsImage;
 

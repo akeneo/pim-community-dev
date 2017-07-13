@@ -27,6 +27,8 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
+                console.log('render');
+                debugger;
                 this.config = config.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -36,6 +38,8 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                console.log('render');
+                debugger;
                 this.$el.empty().append(this.template({
                     path: this.getPath()
                 }));
@@ -43,14 +47,21 @@ define(
                 return BaseForm.prototype.render.apply(this, arguments);
             },
 
+            /**
+             * Returns the path of the image to display
+             *
+             * @returns {string}
+             */
             getPath: function () {
                 if (undefined !== this.config.path) {
                     return this.config.path;
                 }
+                debugger;
+                console.log(this.getFormData());
 
-                var image = this.getFormData().meta.image;
+                var filePath = _.result(this.getFormData().meta.image, 'filePath', null);
 
-                return MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail_small');
+                return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
             }
         });
     }
