@@ -235,18 +235,22 @@ class EnterpriseAssetContext extends PimContext
         }
 
         foreach ($table->getHash() as $data) {
-            $this->getMainContext()->executeScript(
-                "document.querySelector('.dz-hidden-input').style.visibility = 'visible';
-                document.querySelector('.dz-hidden-input').style.height = '10px';
-                document.querySelector('.dz-hidden-input').style.width = '10px';
-                document.querySelector('.dz-hidden-input').style.display = 'block';"
-            );
-            $uploadContainer = $this->getCurrentPage()->find('css', '.dz-hidden-input');
+            $this->spin(function () use ($fullPath, $data) {
+                $this->getMainContext()->executeScript(
+                    "document.querySelector('.dz-hidden-input').style.visibility = 'visible';
+                    document.querySelector('.dz-hidden-input').style.height = '10px';
+                    document.querySelector('.dz-hidden-input').style.width = '10px';
+                    document.querySelector('.dz-hidden-input').style.display = 'block';"
+                );
+                $uploadContainer = $this->getCurrentPage()->find('css', '.dz-hidden-input');
 
-            $file = $fullPath . $data['name'];
-            if (is_file($file)) {
-                $uploadContainer->attachFile($file);
-            }
+                $file = $fullPath . $data['name'];
+                if (is_file($file)) {
+                    $uploadContainer->attachFile($file);
+                }
+
+                return true;
+            }, sprintf('Cannot attach file "%s"', $data['name']));
         }
     }
 
