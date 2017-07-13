@@ -67,11 +67,11 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
         $this->queryParametersChecker->checkLocalesParameters($localeCodes, $channel);
 
         $errors = [];
-        foreach ($localeCodes as $locale) {
-            $locale = $this->localeRepository->findOneByIdentifier($locale);
+        foreach ($localeCodes as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
 
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-                $errors[] = $locale;
+                $errors[] = $localeCode;
             }
         }
 
