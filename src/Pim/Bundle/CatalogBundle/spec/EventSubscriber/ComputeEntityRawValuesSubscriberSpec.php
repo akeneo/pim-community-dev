@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductRawValuesSubscriber;
+use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeEntityRawValuesSubscriber;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ComputeProductRawValuesSubscriberSpec extends ObjectBehavior
+class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $serializer, AttributeRepositoryInterface $attributeRepository)
     {
@@ -20,7 +20,7 @@ class ComputeProductRawValuesSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ComputeProductRawValuesSubscriber::class);
+        $this->shouldHaveType(ComputeEntityRawValuesSubscriber::class);
     }
 
     function it_subscribes_to_pre_save_event()

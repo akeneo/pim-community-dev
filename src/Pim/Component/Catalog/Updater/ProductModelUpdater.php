@@ -41,7 +41,6 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         array $supportedFields,
         array $ignoredFields
     ) {
-
         $this->propertySetter = $propertySetter;
         $this->valuesUpdater = $valuesUpdater;
         $this->supportedFields = $supportedFields;

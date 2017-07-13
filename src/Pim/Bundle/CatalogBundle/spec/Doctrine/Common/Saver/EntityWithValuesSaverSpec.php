@@ -2,46 +2,42 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ProductSaverSpec extends ObjectBehavior
+class EntityWithValuesSaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher, $uniqueDataSynchronizer);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $uniqueDataSynchronizer);
     }
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType(SaverInterface::class);
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
+        $this->shouldHaveType(BulkSaverInterface::class);
     }
 
     function it_saves_a_product_after_droping_its_previous_completenesses(
         $objectManager,
-        $completenessManager,
         $eventDispatcher,
         $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
-        $completenessManager->schedule($product)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
-
         $objectManager->persist($product)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -54,17 +50,11 @@ class ProductSaverSpec extends ObjectBehavior
 
     function it_saves_multiple_products_after_droping_their_previous_completenesses(
         $objectManager,
-        $completenessManager,
         $eventDispatcher,
         $uniqueDataSynchronizer,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $completenessManager->schedule($product1)->shouldBeCalled();
-        $completenessManager->schedule($product2)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
-
         $objectManager->persist($product1)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
         $objectManager->persist($product2)->shouldBeCalled();
@@ -88,7 +78,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface, "stdClass" provided'))
+            ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\EntityWithValuesInterface, "stdClass" provided'))
             ->duringSave($otherObject);
     }
 }

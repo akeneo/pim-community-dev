@@ -59,61 +59,6 @@ class ProductModelIntegration extends TestCase
         $this->assertEquals($sku->getData(), 'T-shirt super beau');
     }
 
-//    /**
-//     * Basic validation, a product model identifier must not be empty
-//     */
-//    public function testThatTheProductModelIdentifierMustNotBeEmpty()
-//    {
-//        $productModel = $this->createProductModelObject(
-//            [
-//
-//            ]
-//        );
-//
-//        $errors = $this->get('validator')->validate($productModel);
-//
-//        $this->assertEquals('The product model identifier must not be empty', $errors->get('TODO')->getMessage());
-//    }
-//
-//    /**
-//     * Basic validation, a product model identifier must be valide
-//     */
-//    public function testThatTheProductModelIdentifierMustBeValid()
-//    {
-//        $productModel = $this->createProductModelObject(
-//            [
-//
-//            ]
-//        );
-//
-//        $errors = $this->get('validator')->validate($productModel);
-//
-//        $this->assertEquals('The product model identifier must not be empty', $errors->get('TODO')->getMessage());
-//    }
-//
-//    /**
-//     * Family variant validation: A product model must all have the family attributes and its axes.
-//     */
-//    public function testTheProductModelValidityDependingOnItsFamily()
-//    {
-//        $productModel = $this->createProductModelObject(
-//            [
-//
-//            ]
-//        );
-//
-//        $errors = $this->get('validator')->validate($productModel);
-//
-//        $this->assertEquals(
-//            'It misses the following attributes "%s" to the product model',
-//            $errors->get('TODO')->getMessage()
-//        );
-//        $this->assertEquals(
-//            'The value of following attributes "%s" must not be empty',
-//            $errors->get('TODO')->getMessage()
-//        );
-//    }
-
     /**
      * {@inheritdoc}
      */

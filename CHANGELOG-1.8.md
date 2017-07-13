@@ -5,6 +5,7 @@
 - TIP-718: Update group types form
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
+- PIM-6448: PIM-6448: Product model CRUD API
 
 ## Technical improvements
 
@@ -207,6 +208,7 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue`
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
+- PIM-6448: Rename `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver`
 
 ### Constructors
 
