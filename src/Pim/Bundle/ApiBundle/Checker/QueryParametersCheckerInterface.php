@@ -34,11 +34,11 @@ interface QueryParametersCheckerInterface
     public function checkAttributesParameters(array $attributeCodes);
 
     /**
-     * Checks $categoryCodes if they exist. Thrown an exception if one of them does not exist.
+     * Checks $categories if they exist. Thrown an exception if one of them does not exist.
      *
-     * @param array $categoryCodes
+     * @param array $categories
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkCategoriesParameters(array $categoryCodes);
+    public function checkCategoriesParameters(array $categories);
 }

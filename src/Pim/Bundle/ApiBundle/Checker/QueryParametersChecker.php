@@ -86,12 +86,14 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkCategoriesParameters(array $categoryCodes)
+    public function checkCategoriesParameters(array $categories)
     {
         $errors = [];
-        foreach ($categoryCodes as $categoryCode) {
-            if (null === $this->categoryRepository->findOneByIdentifier($categoryCode)) {
-                $errors[] = $categoryCode;
+        foreach ($categories as $category) {
+            foreach ($category['value'] as $value) {
+                if (null === $this->categoryRepository->findOneByIdentifier($value)) {
+                    $errors[] = $value;
+                }
             }
         }
 

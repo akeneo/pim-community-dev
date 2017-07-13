@@ -491,8 +491,7 @@ class ProductController
             }
 
             if (isset($search['categories'])) {
-                $categoryCodes = explode(',', $search['categories']);
-                $this->queryParametersChecker->checkCategoriesParameters($categoryCodes);
+                $this->queryParametersChecker->checkCategoriesParameters($search['categories']);
             }
         }
 
@@ -530,7 +529,8 @@ class ProductController
                 }
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
-                $this->queryParametersChecker->checkLocalesParameters([$context['locale']]);
+                $locales = explode(',', $context['locale']);
+                $this->queryParametersChecker->checkLocalesParameters($locales);
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
                 if (isset($filter['locales'])) {
