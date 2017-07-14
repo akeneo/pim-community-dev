@@ -60,28 +60,6 @@ services:
             - '@router'
             - '@pim_catalog.saver.currency'
 
-    pim_enrich.controller.attribute:
-        class: '%pim_enrich.controller.attribute.class%'
-        arguments:
-            - '@request_stack'
-            - '@router'
-            - '@form.factory'
-            - '@translator'
-            - '@pim_enrich.form.handler.attribute'
-            - '@pim_enrich.form.attribute'
-            - '@pim_catalog.repository.locale'
-            - '@pim_versioning.manager.version'
-            - '@pim_catalog.saver.attribute'
-            - '@pim_catalog.remover.attribute'
-            - '@pim_catalog.saver.attribute_option'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.registry.attribute_type'
-            - '@pim_catalog.factory.attribute'
-            - '@pim_catalog.factory.attribute_option'
-            - '@pim_catalog.factory.attribute_option_value'
-            - '%akeneo_measure.measures_config%'
-
     pim_enrich.controller.family:
         class: '%pim_enrich.controller.family.class%'
         arguments:
