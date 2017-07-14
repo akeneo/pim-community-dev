@@ -15,7 +15,7 @@ define(
                 }
 
                 var ResolvedModule = requireContext(form.module);
-                deferred.resolve(ResolvedModule)
+                deferred.resolve(ResolvedModule);
 
                 return deferred.promise();
             });

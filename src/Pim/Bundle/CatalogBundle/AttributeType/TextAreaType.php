@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
 
 /**
  * Text area attribute type
@@ -16,23 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as FormTextType;
  */
 class TextAreaType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'maxCharacters' => [
-                'name'      => 'maxCharacters',
-                'fieldType' => FormTextType::class
-            ],
-            'wysiwygEnabled' => [
-                'name'      => 'wysiwygEnabled',
-                'fieldType' => SwitchType::class
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -290,8 +290,8 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully validate products with a custom validation on identifier
     Given I am on the "SKU" attribute page
     When I fill in the following information:
-      | Validation rule   | Regular expression |
-      | Validation regexp | /^\d+$/            |
+      | Validation rule    | Regular expression |
+      | Regular expression | /^\d+$/            |
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
     And I am on the products page

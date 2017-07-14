@@ -20,69 +20,6 @@ class IdentifierType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return [
-            'maxCharacters' => [
-                'name'      => 'maxCharacters',
-                'fieldType' => FormTextType::class
-            ],
-            'validationRule' => [
-                'name'      => 'validationRule',
-                'fieldType' => ChoiceType::class,
-                'options'   => [
-                    'choices' => [
-                        null     => 'None',
-                        'regexp' => 'Regular expression'
-                    ],
-                    'select2' => true
-                ]
-            ],
-            'validationRegexp' => [
-                'name' => 'validationRegexp'
-            ],
-            'scopable' => [
-                'name'      => 'scopable',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'data'      => false,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'unique' => [
-                'name'      => 'unique',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'required' => [
-                'name'      => 'required',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'useableAsGridFilter' => [
-                'name'      => 'useableAsGridFilter',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ]
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return AttributeTypes::IDENTIFIER;

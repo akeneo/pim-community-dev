@@ -40,7 +40,8 @@ Feature: Export products according to a date
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
-    And I follow "Content"
+    Then I should see the text "Content"
+    When I follow "Content"
     Then I filter by "updated" with operator "No date condition" and value ""
     And I filter by "updated" with operator "Updated products over the last n days (e.g. 6)" and value "12"
     And I filter by "updated" with operator "Updated products since this date" and value ""

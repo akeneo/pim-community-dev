@@ -1,9 +1,0 @@
-{% form_theme form 'PimEnrichBundle:Attribute/Tab:_form_theme.html.twig' %}
-
-{% for form_type in allowed_form_types %}
-    {% if attribute(form.children, form_type) is defined  %}
-        {% set form_view = attribute(form.children, form_type) %}
-
-        {{ form_row(form_view, { 'label': ('pim_enrich_attribute_form.'~form_view.vars.name)|trans }) }}
-    {% endif %}
-{% endfor %}

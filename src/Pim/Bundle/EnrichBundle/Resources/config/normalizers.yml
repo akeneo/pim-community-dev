@@ -89,12 +89,11 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
-
     pim_enrich.normalizer.family:
         class: '%pim_enrich.normalizer.family.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.family'
-            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_enrich.normalizer.attribute'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
             - '@pim_versioning.manager.version'
@@ -144,6 +143,10 @@ services:
             - '@pim_enrich.provider.field.chained'
             - '@pim_enrich.provider.empty_value.chained'
             - '@pim_enrich.provider.filter.chained'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_enrich.provider.structure_version.attribute'
+            - '@pim_catalog.localization.localizer.number'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -179,7 +182,12 @@ services:
     pim_enrich.normalizer.variant_group_violation:
         class: '%pim_enrich.normalizer.variant_group_violation.class%'
         arguments:
-            - '@pim_internal_api_serializer'
+            - '@pim_enrich.normalizer.product_violation'
+
+    pim_enrich.normalizer.violation:
+        class: '%pim_enrich.normalizer.violation.class%'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
     pim_enrich.normalizer.violation:
         class: '%pim_enrich.normalizer.violation.class%'
@@ -187,7 +195,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
     pim_enrich.normalizer.group_violation:
-        class: %pim_enrich.normalizer.variant_group_violation.class%
+        class: '%pim_enrich.normalizer.variant_group_violation.class%'
         arguments:
             - '@pim_internal_api_serializer'
 

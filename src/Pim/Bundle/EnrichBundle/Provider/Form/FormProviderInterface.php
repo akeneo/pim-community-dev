@@ -17,7 +17,7 @@ interface FormProviderInterface
      *
      * @param mixed $element
      *
-     * @throws RuntimeException If no form is found for the given element
+     * @throws NoCompatibleFormProviderFoundException If no form is found for the given element
      *
      * @return string
      */

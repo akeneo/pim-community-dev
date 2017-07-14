@@ -310,21 +310,7 @@ pim_enrich:
                 title: Create a new family
             message:
                 created: Family successfully created
-        attribute_label:
-            pim_catalog_identifier:           Identifier
-            pim_catalog_text:                 Text
-            pim_catalog_textarea:             Text Area
-            pim_catalog_number:               Number
-            pim_catalog_price_collection:     Price
-            pim_catalog_multiselect:          Multi select
-            pim_catalog_simpleselect:         Simple select
-            pim_catalog_file:                 File
-            pim_catalog_image:                Image
-            pim_catalog_boolean:              "Yes/No"
-            pim_catalog_date:                 Date
-            pim_catalog_metric:               Metric
-            pim_reference_data_simpleselect:  Reference data simple select
-            pim_reference_data_multiselect:   Reference data multi select
+>>>>>>> master
         attribute_option:
             code: Code
             label: Label
@@ -376,6 +362,34 @@ pim_enrich:
             info:
                 update_failed: The job profile could not be updated.
                 update_successful: The job profile has been successfully updated.
+        attribute:
+            info:
+                deletion_successful: Attribute successfully deleted.
+                deletion_failed: The attribute could not be deleted.
+                update_successful: Attribute successfully updated.
+                update_failed: The attribute could not be updated.
+                create_successful: Attribute successfully created.
+                create_failed: The attribute could not be created.
+            scopable: Scopable
+            type:
+                pim_catalog_identifier:             Identifier
+                pim_catalog_text:                   Text
+                pim_catalog_textarea:               Text Area
+                pim_catalog_number:                 Number
+                pim_catalog_price_collection:       Price
+                pim_catalog_multiselect:            Multi select
+                pim_catalog_simpleselect:           Simple select
+                pim_catalog_file:                   File
+                pim_catalog_image:                  Image
+                pim_catalog_boolean:                "Yes/No"
+                pim_catalog_date:                   Date
+                pim_catalog_metric:                 Metric
+                pim_reference_data_simpleselect:    Reference data simple select
+                pim_reference_data_multiselect:     Reference data multi select
+            validation_rule:
+                email: E-mail
+                regexp: Regular expression
+                url: URL
         attribute_group:
             info:
                 update_failed: Attribute group could not be updated
@@ -671,6 +685,57 @@ pim_enrich:
                 history:
                     title: History
             file_path: File path
+        attribute:
+            meta:
+                created: Created
+                created_by: by
+                updated: Last update
+                updated_by: by
+            tab:
+                properties:
+                    title: Properties
+                    section:
+                        common: General parameters
+                        type_specific: Type specific parameters
+                        validation: Validation parameters
+                    label:
+                        allowed_extensions: Allowed extensions
+                        auto_option_sorting: Sort automatically options by alphabetical order
+                        available_locales: Available locales
+                        code: Code
+                        date_max: Max date
+                        date_min: Min date
+                        decimals_allowed: Decimal values allowed
+                        default_metric_unit: Default metric unit
+                        group: Attribute group
+                        is_locale_specific: Locale specific
+                        localizable: Value per locale
+                        max_characters: Max characters
+                        max_file_size: Max file size (MB)
+                        metric_family: Metric family
+                        minimum_input_length: Minimum length for autocompletion
+                        negative_allowed: Negative values allowed
+                        number_max: Max number
+                        number_min: Min number
+                        reference_data_name: Reference data type
+                        scopable: Value per channel
+                        type: Type
+                        unique: Unique value
+                        useable_as_grid_filter: Usable in grid
+                        validation_regexp: Regular expression
+                        validation_rule: Validation rule
+                        wysiwyg_enabled: Rich text editor enabled
+                    default_label:
+                        default_metric_unit: Choose a unit
+                        group: Choose the attribute group
+                        metric_family: Choose a family
+                        reference_data_name: Choose the reference data type
+                labels:
+                    title: Label translations
+                choices:
+                    title: Options
+                history:
+                    title: History
         mass_edit:
             family:
                 attributes:
