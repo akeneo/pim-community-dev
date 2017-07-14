@@ -1215,7 +1215,6 @@ batch_jobs:
         validation.label: File validation
         import.label: Group type import
 
-
 job_tracker:
     download_archive:
         archive: Download generated archive
