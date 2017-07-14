@@ -310,7 +310,6 @@ pim_enrich:
                 title: Create a new family
             message:
                 created: Family successfully created
->>>>>>> master
         attribute_option:
             code: Code
             label: Label
