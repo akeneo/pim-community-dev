@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -19,6 +17,7 @@ use Akeneo\Test\Integration\TestCase;
 abstract class AbstractPimCatalogIntegration extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
+    const PRODUCT_MODEL_DOCUMENT_TYPE = 'pim_catalog_product_model_parent_';
 
     /**
      * {@inheritdoc}
@@ -54,7 +53,38 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     protected function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $this->esClient->index(
+                self::DOCUMENT_TYPE,
+                $product['identifier'],
+                $product,
+                $product['parent'],
+                $product['root_ancestor']
+            );
+        }
+
+        $this->esClient->refreshIndex();
+    }
+
+    protected function indexProductModels(array $productModels)
+    {
+        foreach ($productModels as $productModel) {
+            $parent = null;
+            $rootAncestor = null;
+
+            if (isset($productModel['parent'])) {
+                $parent = $productModel['parent'];
+            }
+            if (isset($productModel['root_ancestor'])) {
+                $rootAncestor = $productModel['root_ancestor'];
+            }
+
+            $this->esClient->index(
+                self::PRODUCT_MODEL_DOCUMENT_TYPE . $productModel['level'],
+                $productModel['identifier'],
+                $productModel,
+                $parent,
+                $rootAncestor
+            );
         }
 
         $this->esClient->refreshIndex();
@@ -64,13 +94,16 @@ abstract class AbstractPimCatalogIntegration extends TestCase
      * Executes the given query and returns the list of skus found.
      *
      * @param array $query
+     * @param array $types
      *
      * @return array
      */
-    protected function getSearchQueryResults(array $query)
+    protected function getSearchQueryResults(array $query, array $types = [])
     {
         $identifiers = [];
-        $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
+        $types = self::DOCUMENT_TYPE . ',' . join(',', $types);
+
+        $response = $this->esClient->search($types, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];
