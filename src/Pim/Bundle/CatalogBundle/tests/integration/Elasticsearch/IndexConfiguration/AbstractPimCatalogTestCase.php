@@ -16,7 +16,7 @@ use Akeneo\Test\Integration\TestCase;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractPimCatalogIntegration extends TestCase
+abstract class AbstractPimCatalogTestCase extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
