@@ -22,10 +22,7 @@
     <testsuites>
         <!-- PIM test suites -->
         <testsuite name="PIM_Integration_Test">
-            <directory suffix="Integration.php">../src/Akeneo/Bundle/*Bundle/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Akeneo/Component/*/tests/integration</directory>
-            <directory suffix="Integration.php">../src/PimEnterprise/Bundle/*Bundle/tests/integration</directory>
-            <directory suffix="Integration.php">../src/PimEnterprise/Component/*/tests/integration</directory>
+            <file></file>
         </testsuite>
     </testsuites>
 

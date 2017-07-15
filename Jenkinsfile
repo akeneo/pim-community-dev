@@ -1,12 +1,15 @@
 #!groovy
 
-def features = "features,vendor/akeneo/pim-community-dev/features"
-def ceBranch = "dev-master"
-def ceOwner = "akeneo"
-def phpVersion = "7.1"
-def launchUnitTests = "yes"
-def launchIntegrationTests = "yes"
-def launchBehatTests = "yes"
+String features = "features,vendor/akeneo/pim-community-dev/features"
+String ceBranch = "dev-master"
+String ceOwner = "akeneo"
+String phpVersion = "7.1"
+String launchUnitTests = "yes"
+String launchIntegrationTests = "yes"
+String launchBehatTests = "yes"
+
+Integer nbAvailableNode = 2
+def testFiles = []
 
 stage("Checkout") {
     milestone 1
@@ -64,6 +67,18 @@ stage("Checkout") {
             stash "project_files_full"
         }
 
+        unstash "project_files_full"
+
+        def output = sh (
+            returnStdout: true,
+            script: 'find src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
+        )
+        def files = output.tokenize('\n')
+        for (file in files) {
+            def fileInfo = file.tokenize(' ')
+            testFiles += ["nbTests": fileInfo[0] as Integer , "path": fileInfo[1]]
+        }
+
         deleteDir()
     }
 }
@@ -84,17 +99,14 @@ if (launchUnitTests.equals("yes")) {
     }
 }
 
-if (launchIntegrationTests.equals("yes")) {
+if ('yes' == launchIntegrationTests) {
     stage("Integration tests") {
-        def tasks = [:]
-
-        tasks["integration-7.1"] = {runIntegrationTest("7.1")}
-
+        def tasks = buildIntegrationTestTasks('7.1', nbAvailableNode, testFiles)
         parallel tasks
     }
 }
 
-if (launchBehatTests.equals("yes")) {
+if ('yes' == launchBehatTests) {
     stage("Functional tests") {
         def tasks = [:]
 
@@ -110,7 +122,6 @@ def runGruntTest() {
         try {
             docker.image('node:8').inside("") {
                 unstash "project_files_full"
-                sh "npm install"
                 sh "npm run lint"
             }
         } finally {
@@ -128,9 +139,8 @@ def runPhpSpecTest(phpVersion) {
         deleteDir()
         try {
             docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
-                unstash "project_files"
+                unstash "project_files_full"
 
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
@@ -148,7 +158,37 @@ def runPhpSpecTest(phpVersion) {
     }
 }
 
-def runIntegrationTest(phpVersion) {
+/**
+ * Build a list of tasks to run integration tests on multiple nodes in parallel.
+ * Each nodes should run approximately the same number of tests.
+ *
+ * @param phpVersion      version of php to run the tests with
+ * @param nbAvailableNode number of available nodes to execute the integration tests
+ * @param testFiles       list of file containing the filepath of the file and the number of integration tests in the file
+ *                        [
+ *                            ["path" : "filePath1", "nbTests" : 10],
+ *                            ["path" : "filePath2", "nbTests" : 25]
+ *                        ]
+ *
+ * @return list of tasks to execute in parallel
+ */
+def buildIntegrationTestTasks(String phpVersion, Integer nbAvailableNode, def testFiles) {
+    def tasks = [:]
+
+    def filesPerNode = getTestFilesPerNode(nbAvailableNode, testFiles)
+
+    Integer nodeId = 1
+    for (files in filesPerNode) {
+        def listFiles = files
+
+        tasks["integration-${phpVersion}-${nodeId}"] = {runIntegrationTest(phpVersion, listFiles)}
+        nodeId++;
+    }
+
+    return tasks
+}
+
+void runIntegrationTest(String phpVersion, testFiles) {
     node('docker') {
         deleteDir()
 
@@ -158,11 +198,10 @@ def runIntegrationTest(phpVersion) {
 
         try {
             docker.image("elasticsearch:5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
-                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
+                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=250m --tmpfs=/tmp/:rw,noexec,nosuid,size=100m") {
                     docker.image("akeneo/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
-                        unstash "project_files"
+                        unstash "project_files_full"
 
-                        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
@@ -170,6 +209,14 @@ def runIntegrationTest(phpVersion) {
                         sh "./app/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
+
+                        String testSuiteFiles = ""
+                        for (testFile in testFiles) {
+                            testSuiteFiles += "<file>../${testFile}</file>"
+                        }
+
+                        sh "sed -i \"s#<file></file>#${testSuiteFiles}#\" app/phpunit.xml.dist"
+
                         sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
@@ -192,9 +239,8 @@ def runPhpCsFixerTest() {
         deleteDir()
         try {
             docker.image("akeneo/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
-                unstash "project_files"
+                unstash "project_files_full"
 
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
@@ -246,9 +292,8 @@ def runPhpCouplingDetectorTest() {
         deleteDir()
         try {
             docker.image("akeneo/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
-                unstash "project_files"
+                unstash "project_files_full"
 
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
             }
         } finally {
@@ -259,4 +304,52 @@ def runPhpCouplingDetectorTest() {
             deleteDir()
         }
     }
+}
+
+/**
+ * Calculate and return a list of files to execute in each node, in order to execute approximately the same
+ * number of integration tests per node.
+ *
+ * @param nbNode number of available nodes to execute the integration tests
+ * @param files   list of file containing the filepath of the file and the number of integration tests in the file
+ *                [
+ *                    ["path" : "filePath1", "nbTests" : 10],
+ *                    ["path" : "filePath2", "nbTests" : 25]
+ *                ]
+ *
+ * @return an array, each entry being a list of filepath to execute in a node.
+ *         [
+ *             ["filePath1", "filePath2"]
+ *             ["filePath3", "filePath4"]
+ *         ]
+ */
+def getTestFilesPerNode(Integer nbNode, def files) {
+    def filesPerNode = []
+
+    Integer nbIntegrationTests = 0;
+    for (file in files) {
+        nbIntegrationTests += file["nbTests"]
+    }
+    Integer nbTestsPerNode = nbIntegrationTests.intdiv(nbNode) + 1
+
+    Integer nodeTestCounter = 0
+    def nodeFiles = []
+
+    for (file in files) {
+        nodeTestCounter += file["nbTests"]
+        nodeFiles += file["path"]
+
+        if (nodeTestCounter > nbTestsPerNode) {
+            filesPerNode << nodeFiles
+
+            nodeFiles = []
+            nodeTestCounter = 0
+        }
+    }
+
+    if (nodeTestCounter > 0) {
+        filesPerNode << nodeFiles
+    }
+
+    return filesPerNode
 }
