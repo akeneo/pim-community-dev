@@ -200,9 +200,6 @@ pim_enrich:
           family: Выберите семейство
           save: Сохранить
           cancel: Отмена
-    attribute:
-      scopable: Область назначаема
-      global: Глобальный
     association_type:
       meta:
         created: Создано
@@ -239,21 +236,6 @@ pim_enrich:
         updated_by: Обновлена
       btn:
         save: Сохранить
-    attribute_label:
-      pim_catalog_identifier: Идентификатор
-      pim_catalog_text: Текст
-      pim_catalog_textarea: Текст
-      pim_catalog_number: Число
-      pim_catalog_price_collection: Цена
-      pim_catalog_multiselect: Множественный выбор
-      pim_catalog_simpleselect: Простой выбор
-      pim_catalog_file: Файл
-      pim_catalog_image: Изображение
-      pim_catalog_boolean: "Да/Нет"
-      pim_catalog_date: Дата
-      pim_catalog_metric: Метрическая
-      pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
-      pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
     attribute_option:
       code: Код
       label: Метка
@@ -285,6 +267,27 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+    attribute:
+      scopable: Область назначаема
+      type:
+        pim_catalog_identifier: Идентификатор
+        pim_catalog_text: Текст
+        pim_catalog_textarea: Текст
+        pim_catalog_number: Число
+        pim_catalog_price_collection: Цена
+        pim_catalog_multiselect: Множественный выбор
+        pim_catalog_simpleselect: Простой выбор
+        pim_catalog_file: Файл
+        pim_catalog_image: Изображение
+        pim_catalog_boolean: "Да/Нет"
+        pim_catalog_date: Дата
+        pim_catalog_metric: Метрическая
+        pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
+        pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
+      validation_rule:
+        email: E-mail
+        regexp: Регулярное выражение
+        url: URL
     attribute_group:
       info:
         update_successful: Группа атрибутов успешно обновлена
@@ -557,6 +560,46 @@ pim_enrich:
         history:
           title: Журнал
       file_path: Путь к файлу
+    attribute:
+      meta:
+        created: Создано
+        updated: Последнее обновление
+      tab:
+        properties:
+          title: Свойства
+          section:
+            common: Общие параметры
+            validation: Параметры проверки
+          label:
+            allowed_extensions: Допустимые расширения
+            available_locales: Доступные локали
+            code: Код
+            date_max: Макс. дата
+            date_min: Мин. дата
+            default_metric_unit: Единица измерения по умолчанию
+            group: Группа атрибутов
+            is_locale_specific: Специфично для локали
+            max_characters: Максимум символов
+            max_file_size: Максимальный размер файла (МБ)
+            metric_family: Семейство измерений
+            number_max: Макс. число
+            number_min: Мин. число
+            type: Тип
+            unique: Уникальное значение
+            useable_as_grid_filter: Используется в сетке
+            validation_regexp: Регулярное выражение
+            validation_rule: Правило проверки
+          default_label:
+            default_metric_unit: Выберите единицу измерения
+            group: Выберите группу атрибутов
+            metric_family: Выберите семейство
+            reference_data_name: Выберите ссылочный тип данных
+        labels:
+          title: Переводы меток
+        choices:
+          title: Параметры
+        history:
+          title: Журнал
     mass_edit:
       family:
         attributes:

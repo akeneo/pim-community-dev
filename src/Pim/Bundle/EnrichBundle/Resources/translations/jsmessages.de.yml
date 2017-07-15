@@ -203,9 +203,6 @@ pim_enrich:
           family: Wählen Sie eine Produktfamilie
           save: Speichern
           cancel: Abbrechen
-    attribute:
-      scopable: Je Ausgabekanal individualisierbar
-      global: Global
     association_type:
       info:
         deletion_successful: Verbindungstyp erfolgreich entfernt.
@@ -265,21 +262,6 @@ pim_enrich:
         updated_by: Aktualisiert von
       btn:
         save: Speichern
-    attribute_label:
-      pim_catalog_identifier: Kennung
-      pim_catalog_text: Text
-      pim_catalog_textarea: Textbereich
-      pim_catalog_number: Nummer
-      pim_catalog_price_collection: Preis
-      pim_catalog_multiselect: Mehrfachauswahl
-      pim_catalog_simpleselect: Einfachauswahl
-      pim_catalog_file: Datei
-      pim_catalog_image: Abbildung
-      pim_catalog_boolean: "Ja/Nein"
-      pim_catalog_date: Datum
-      pim_catalog_metric: Maßeinheit
-      pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
-      pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
     attribute_option:
       code: Code
       label: Bezeichnung
@@ -321,6 +303,27 @@ pim_enrich:
       info:
         update_failed: Das Job-Profil konnte nicht aktualisiert werden.
         update_successful: Das Job-Profil wurde erfolgreich aktualisiert.
+    attribute:
+      scopable: Je Ausgabekanal individualisierbar
+      type:
+        pim_catalog_identifier: Kennung
+        pim_catalog_text: Text
+        pim_catalog_textarea: Textbereich
+        pim_catalog_number: Nummer
+        pim_catalog_price_collection: Preis
+        pim_catalog_multiselect: Mehrfachauswahl
+        pim_catalog_simpleselect: Einfachauswahl
+        pim_catalog_file: Datei
+        pim_catalog_image: Abbildung
+        pim_catalog_boolean: "Ja/Nein"
+        pim_catalog_date: Datum
+        pim_catalog_metric: Maßeinheit
+        pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+        pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+      validation_rule:
+        email: E-Mail
+        regexp: Regulärer Ausdruck
+        url: URL
     attribute_group:
       info:
         update_successful: Attributgruppe erfolgreich aktualisiert
@@ -607,6 +610,48 @@ pim_enrich:
         history:
           title: Historie
       file_path: Dateipfad
+    attribute:
+      meta:
+        created: Erstellt
+        updated: Letzte Aktualisierung
+      tab:
+        properties:
+          title: Eigenschaften
+          section:
+            common: Allgemeine Parameter
+            validation: Validierungsparameter
+          label:
+            allowed_extensions: Zulässige Dateiendungen
+            available_locales: Verfügbare Gebietsschemata
+            code: Code
+            date_max: Max. Datum
+            date_min: Min. Datum
+            default_metric_unit: Standard-Maßeinheit
+            group: Attributgruppe
+            is_locale_specific: Gebietsschema-spezifisch
+            localizable: Wert je Gebietsschema
+            max_characters: Max. Zeichen
+            max_file_size: Maximale Dateigröße (MB)
+            metric_family: Metrische Gruppe
+            number_max: Max. Wert
+            number_min: Min. Wert
+            scopable: Wert je Ausgabekanal
+            type: Typ
+            unique: Eindeutiger Wert
+            useable_as_grid_filter: Verwendbar im Raster
+            validation_regexp: Regulärer Ausdruck
+            validation_rule: Validierungsregel
+          default_label:
+            default_metric_unit: Wählen Sie eine Einheit
+            group: Wählen Sie die Attributgruppe
+            metric_family: Wählen Sie eine Produktfamilie
+            reference_data_name: Wählen Sie den Referenz-Datentyp
+        labels:
+          title: Feldbezeichner-Übersetzungen
+        choices:
+          title: Optionen
+        history:
+          title: Historie
     mass_edit:
       family:
         attributes:

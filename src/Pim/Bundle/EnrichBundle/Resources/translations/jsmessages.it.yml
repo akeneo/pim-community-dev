@@ -205,9 +205,6 @@ pim_enrich:
           family: Scegli una famiglia
           save: Salva
           cancel: Cancella
-    attribute:
-      scopable: Customizzazione per canale
-      global: Globale
     association_type:
       info:
         deletion_successful: Tipo di associazione rimosso con successo.
@@ -267,21 +264,6 @@ pim_enrich:
         updated_by: Aggiornato da
       btn:
         save: Salva
-    attribute_label:
-      pim_catalog_identifier: Identificatore
-      pim_catalog_text: Testo
-      pim_catalog_textarea: Area di testo
-      pim_catalog_number: Numero
-      pim_catalog_price_collection: Prezzo
-      pim_catalog_multiselect: Selezione multipla
-      pim_catalog_simpleselect: Selezione singola
-      pim_catalog_file: File
-      pim_catalog_image: Immagine
-      pim_catalog_boolean: "Sì/No"
-      pim_catalog_date: Data
-      pim_catalog_metric: Metrico
-      pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
-      pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
     attribute_option:
       code: Codice
       label: Etichetta
@@ -323,6 +305,27 @@ pim_enrich:
       info:
         update_failed: Il profilo del job non può essere aggiornato.
         update_successful: Il profilo del job è stato aggiornato con successo.
+    attribute:
+      scopable: Customizzazione per canale
+      type:
+        pim_catalog_identifier: Identificatore
+        pim_catalog_text: Testo
+        pim_catalog_textarea: Area di testo
+        pim_catalog_number: Numero
+        pim_catalog_price_collection: Prezzo
+        pim_catalog_multiselect: Selezione multipla
+        pim_catalog_simpleselect: Selezione singola
+        pim_catalog_file: File
+        pim_catalog_image: Immagine
+        pim_catalog_boolean: "Sì/No"
+        pim_catalog_date: Data
+        pim_catalog_metric: Metrico
+        pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
+        pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
+      validation_rule:
+        email: E-mail
+        regexp: Espressione regolare
+        url: URL
     attribute_group:
       info:
         update_successful: Gruppo di attributi aggiornato con successo
@@ -607,6 +610,48 @@ pim_enrich:
         history:
           title: Cronologia
       file_path: Percorso del file
+    attribute:
+      meta:
+        created: Creato
+        updated: Ultimo aggiornamento
+      tab:
+        properties:
+          title: Proprietà
+          section:
+            common: Parametri generali
+            validation: Parametri di validazione
+          label:
+            allowed_extensions: Estensioni consentite
+            available_locales: Impostazioni locali disponibili
+            code: Codice
+            date_max: Data massima
+            date_min: Data minima
+            default_metric_unit: Unità metrica di default
+            group: Attributo di gruppo
+            is_locale_specific: Impostazioni locali specifiche
+            localizable: Valore per impostazioni internazionali
+            max_characters: Numero massimo di caratteri
+            max_file_size: Dimensione massima del file (MB)
+            metric_family: Famiglia metrica
+            number_max: Numero massimo
+            number_min: Numero minimo
+            scopable: Valore per canale
+            type: Tipo
+            unique: Valore univoco
+            useable_as_grid_filter: Utilizzabile nella griglia
+            validation_regexp: Espressione regolare
+            validation_rule: Regola di convalida
+          default_label:
+            default_metric_unit: Scegli un'unità
+            group: Scegliere l'attributo di gruppo
+            metric_family: Scegli una famiglia
+            reference_data_name: Scegli il tipo di dati di riferimento
+        labels:
+          title: Traduzioni etichetta
+        choices:
+          title: Opzioni
+        history:
+          title: Cronologia
     mass_edit:
       family:
         attributes:

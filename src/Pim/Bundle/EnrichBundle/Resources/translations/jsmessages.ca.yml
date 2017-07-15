@@ -200,9 +200,6 @@ pim_enrich:
           family: Trieu una família
           save: Desar
           cancel: Cancelar
-    attribute:
-      scopable: Abastable
-      global: Global
     association_type:
       meta:
         created: Creat
@@ -239,21 +236,6 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
-    attribute_label:
-      pim_catalog_identifier: Identificador
-      pim_catalog_text: Texte
-      pim_catalog_textarea: Àrea de Text
-      pim_catalog_number: Nombre
-      pim_catalog_price_collection: Preu
-      pim_catalog_multiselect: Selecció múltiple
-      pim_catalog_simpleselect: Selecció simple
-      pim_catalog_file: Arxiu
-      pim_catalog_image: Imatge
-      pim_catalog_boolean: "Sí/No"
-      pim_catalog_date: Data
-      pim_catalog_metric: Mètrica
-      pim_reference_data_simpleselect: Selecció simple de dades de referència
-      pim_reference_data_multiselect: Selecció múltiple de dades de referència
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -290,6 +272,27 @@ pim_enrich:
         created_by: Creat per
         updated: Actualitzat
         updated_by: Actualitzat per
+    attribute:
+      scopable: Abastable
+      type:
+        pim_catalog_identifier: Identificador
+        pim_catalog_text: Texte
+        pim_catalog_textarea: Àrea de Text
+        pim_catalog_number: Nombre
+        pim_catalog_price_collection: Preu
+        pim_catalog_multiselect: Selecció múltiple
+        pim_catalog_simpleselect: Selecció simple
+        pim_catalog_file: Arxiu
+        pim_catalog_image: Imatge
+        pim_catalog_boolean: "Sí/No"
+        pim_catalog_date: Data
+        pim_catalog_metric: Mètrica
+        pim_reference_data_simpleselect: Selecció simple de dades de referència
+        pim_reference_data_multiselect: Selecció múltiple de dades de referència
+      validation_rule:
+        email: Correu electrònic
+        regexp: Expressió regular
+        url: URL
     attribute_group:
       info:
         update_successful: Grup d'atributs actualitzat correctament
@@ -562,6 +565,46 @@ pim_enrich:
         history:
           title: Històric
       file_path: Ruta de l'arxiu
+    attribute:
+      meta:
+        created: Creat
+        updated: Darrera actualització
+      tab:
+        properties:
+          title: Propietats
+          section:
+            common: Paràmetres generals
+            validation: Paràmetres de validació
+          label:
+            allowed_extensions: Extensions permeses
+            available_locales: Configuracions regionals disponibles
+            code: Codi
+            date_max: Data màxima
+            date_min: Data mínima
+            default_metric_unit: Unitat mètrica per defecte
+            group: Grup d'atributs
+            is_locale_specific: Configuració regional específica
+            max_characters: Màxim de caràcters
+            max_file_size: Mida màxima de l'arxiu (MB)
+            metric_family: Família mètrica
+            number_max: Nombre màxim
+            number_min: Nombre mínim
+            type: Tipus
+            unique: Valor únic
+            useable_as_grid_filter: Utilitzable en quadrícula
+            validation_regexp: Expressió regular
+            validation_rule: Regla de validació
+          default_label:
+            default_metric_unit: Trieu una unitat
+            group: Trieu el grup de l'atribut
+            metric_family: Trieu una família
+            reference_data_name: Triar el tipus de dades de referència
+        labels:
+          title: Traduccions d'etiquetes
+        choices:
+          title: Opcions
+        history:
+          title: Històric
     mass_edit:
       family:
         attributes:

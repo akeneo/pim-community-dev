@@ -131,6 +131,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: tilbage til liste
+    other_actions: andre handlinger
   entity:
     save:
       label: Gem
@@ -138,6 +139,8 @@ pim_enrich:
       update_failed: Opdateringen fejlede
       update_successful: Opdatering lykkedes
     product:
+      navigation: Produkt navigation
+      infos: Produkt info
       title: produkt
       btn:
         enable: Aktivér
@@ -208,15 +211,13 @@ pim_enrich:
           family: Vælg familie
           save: Gem
           cancel: Annuller
-    attribute:
-      scopable: Omfangbar
-      global: Global
     association_type:
       info:
         deletion_successful: Sammenhængs type slettet.
         deletion_failed: Sammenhængs type kunne ikke slettes.
         update_successful: Sammenhængstype opdateret
         update_failed: Sammenhængs type kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -231,6 +232,7 @@ pim_enrich:
         deletion_failed: Gruppetypen kunne ikke slettes.
         update_successful: Gruppetypen opdateret
         update_failed: Gruppetypen kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -248,6 +250,7 @@ pim_enrich:
         update_failed: Kanalen kunne ikke opdateres.
         create_successful: Kanal oprettet.
         create_failed: Kanalen kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -270,21 +273,6 @@ pim_enrich:
         updated_by: opdateret af
       btn:
         save: Gem
-    attribute_label:
-      pim_catalog_identifier: Identifikator
-      pim_catalog_text: Tekst
-      pim_catalog_textarea: Tekstområde
-      pim_catalog_number: Tal
-      pim_catalog_price_collection: Pris
-      pim_catalog_multiselect: Multi Select
-      pim_catalog_simpleselect: Simple select
-      pim_catalog_file: Fil
-      pim_catalog_image: Billede
-      pim_catalog_boolean: "Ja / Nej"
-      pim_catalog_date: Dato
-      pim_catalog_metric: Metrisk
-      pim_reference_data_simpleselect: Referencedata simpel valg
-      pim_reference_data_multiselect: Reference data multi valg
     attribute_option:
       code: Kode
       label: Etiket
@@ -296,6 +284,7 @@ pim_enrich:
         deletion_failed: Variantgruppen kunne ikke slettes.
         update_successful: Variantgruppe opdateret
         update_failed: Variantgruppen kunne ikke opdateres.
+        field_not_ready: 'Variant gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
         no_attributes: Denne variant gruppe har ingen attributter endnu
       btn:
@@ -313,6 +302,7 @@ pim_enrich:
         deletion_failed: Gruppen kunne ikke slettes.
         update_successful: Gruppe opdateret
         update_failed: Gruppen kunne ikke opdateres.
+        field_not_ready: 'Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       btn:
         save: Gem
       meta:
@@ -326,6 +316,27 @@ pim_enrich:
       info:
         update_failed: Jobprofil kunne ikke opdateres.
         update_successful: Jobprofil er blevet opdateret.
+    attribute:
+      scopable: Omfangbar
+      type:
+        pim_catalog_identifier: Identifikator
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Tekstområde
+        pim_catalog_number: Tal
+        pim_catalog_price_collection: Pris
+        pim_catalog_multiselect: Multi Select
+        pim_catalog_simpleselect: Simple select
+        pim_catalog_file: Fil
+        pim_catalog_image: Billede
+        pim_catalog_boolean: "Ja / Nej"
+        pim_catalog_date: Dato
+        pim_catalog_metric: Metrisk
+        pim_reference_data_simpleselect: Referencedata simpel valg
+        pim_reference_data_multiselect: Reference data multi valg
+      validation_rule:
+        email: E-mail
+        regexp: Regulære udtryk
+        url: URL
     attribute_group:
       info:
         update_failed: Attributgruppe kunne ikke opdateres
@@ -357,6 +368,7 @@ pim_enrich:
             show_products: Vis produkter
             show_groups: Vis grupper
             number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
+          association_type_selector: Sammenhængstyper
         attributes:
           title: Egenskaber
           btn:
@@ -371,6 +383,7 @@ pim_enrich:
           attribute_group_selector: Attributgruppe
         categories:
           title: Kategorier
+          catalog_selector: Katalog
       panel:
         completeness:
           title: Fuldstændighed
@@ -551,9 +564,12 @@ pim_enrich:
         export.title: Eksporter nu
         import.launch: Importer nu
         import.upload: Indlæs og importer nu
+        import.upload_file: Overfør en fil
       meta:
         job: Job
         connector: Connector
+      subsection:
+        last_executions: Sidste kørsel
       tab:
         content:
           title: Indhold
@@ -614,6 +630,48 @@ pim_enrich:
         history:
           title: Historik
       file_path: Fil sti
+    attribute:
+      meta:
+        created: Oprettet
+        updated: Sidst opdateret
+      tab:
+        properties:
+          title: Egenskaber
+          section:
+            common: Generelle parametre
+            validation: Valideringsparametre
+          label:
+            allowed_extensions: Tilladte filendelser
+            available_locales: Tilgængelige landestandarder
+            code: Kode
+            date_max: Maks. dato
+            date_min: Min. dato
+            default_metric_unit: Standard metriske enhed
+            group: Attributgruppe
+            is_locale_specific: Landestandard specifik
+            localizable: Værdi pr. landestandard
+            max_characters: Maks. tegn
+            max_file_size: Maks. filstørrelse (MB)
+            metric_family: Metriske familie
+            number_max: Maks. antal
+            number_min: Min. antal
+            scopable: Værdi pr. kanal
+            type: Type
+            unique: Unik værdi
+            useable_as_grid_filter: Brugbare i gitter
+            validation_regexp: Regulære udtryk
+            validation_rule: Valideringsregel
+          default_label:
+            default_metric_unit: Vælg enhed
+            group: Vælg attributgruppe
+            metric_family: Vælg familie
+            reference_data_name: Vælg reference datatype
+        labels:
+          title: Etiket oversættelser
+        choices:
+          title: Valgmuligheder
+        history:
+          title: Historik
     mass_edit:
       family:
         attributes:
@@ -904,7 +962,9 @@ job_tracker:
 pim_menu:
   tab:
     dashboard: Kontrolpanel
+    imports: Import
     products: Produkter
+    exports: Exports
     settings: Indstillinger
     system: System
   item:
@@ -931,9 +991,14 @@ pim_menu:
     user_role: Roller
     info: Systemoplysninger
     job_tracker: Process overvågning
+  navigation:
+    system: System navigation
+    user: Brugere håndtering navigation
+    settings: Indstillinger for navigation
   user:
     logout: Log ud
     user_account: Min konto
 pim_notification:
   mark_all_as_read: Markér alle som læst
+  no_notifications: Ingen notifikation
   loading: Indlæser...

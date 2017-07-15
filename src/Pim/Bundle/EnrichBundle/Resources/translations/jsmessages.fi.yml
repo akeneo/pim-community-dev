@@ -200,9 +200,6 @@ pim_enrich:
           family: Valitse perhe
           save: Tallenna
           cancel: Peruuta
-    attribute:
-      scopable: Scopable
-      global: Globaali
     association_type:
       meta:
         created: Luotu
@@ -239,21 +236,6 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
-    attribute_label:
-      pim_catalog_identifier: Tunniste
-      pim_catalog_text: Teksti
-      pim_catalog_textarea: Tekstialue
-      pim_catalog_number: Numero
-      pim_catalog_price_collection: Hinta
-      pim_catalog_multiselect: Monivalinta
-      pim_catalog_simpleselect: Yksinkertainen valinta
-      pim_catalog_file: Tiedosto
-      pim_catalog_image: Kuva
-      pim_catalog_boolean: "Kyllä/ei"
-      pim_catalog_date: Päivämäärä
-      pim_catalog_metric: Metriikka
-      pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
-      pim_reference_data_multiselect: Viitetiedot monivalinta
     attribute_option:
       code: Koodi
       label: Nimike
@@ -285,6 +267,27 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+    attribute:
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: Tunniste
+        pim_catalog_text: Teksti
+        pim_catalog_textarea: Tekstialue
+        pim_catalog_number: Numero
+        pim_catalog_price_collection: Hinta
+        pim_catalog_multiselect: Monivalinta
+        pim_catalog_simpleselect: Yksinkertainen valinta
+        pim_catalog_file: Tiedosto
+        pim_catalog_image: Kuva
+        pim_catalog_boolean: "Kyllä/ei"
+        pim_catalog_date: Päivämäärä
+        pim_catalog_metric: Metriikka
+        pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
+        pim_reference_data_multiselect: Viitetiedot monivalinta
+      validation_rule:
+        email: Sähköposti
+        regexp: Tavallinen virke
+        url: URL-osoite
     attribute_group:
       info:
         update_successful: Attribuuttiryhmän päivittäminen onnistui
@@ -557,6 +560,46 @@ pim_enrich:
         history:
           title: Historia
       file_path: Tiedostopolku
+    attribute:
+      meta:
+        created: Luotu
+        updated: Viimeisin päivitys
+      tab:
+        properties:
+          title: Ominaisuudet
+          section:
+            common: Yleiset parametrit
+            validation: Validaatioparametrit
+          label:
+            allowed_extensions: Sallitut laajennukset
+            available_locales: Saatavilla olevat alueet
+            code: Koodi
+            date_max: Max päivämäärä
+            date_min: Min päivämäärä
+            default_metric_unit: Metrinen oletusyksikkö
+            group: Attribuuttiryhmä
+            is_locale_specific: Aluespesifi
+            max_characters: Maksimimerkkimäärä
+            max_file_size: Suurin tiedostokoko (Mt)
+            metric_family: Metrinen perhe
+            number_max: Max numero
+            number_min: Min numero
+            type: Tyyppi
+            unique: Yksilöllinen arvo
+            useable_as_grid_filter: Käytettävissä ruudukossa
+            validation_regexp: Tavallinen virke
+            validation_rule: Kelpoisuussääntö
+          default_label:
+            default_metric_unit: Valitse yksikkö
+            group: Valitse attribuuttiryhmä
+            metric_family: Valitse perhe
+            reference_data_name: Valitse viite-datatyyppi
+        labels:
+          title: Nimikkeiden käännökset
+        choices:
+          title: Vaihtoehdot
+        history:
+          title: Historia
     mass_edit:
       family:
         attributes:

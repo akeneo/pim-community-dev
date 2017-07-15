@@ -185,9 +185,6 @@ pim_enrich:
           family: Wybierz rodzinę
           save: Zapisz
           cancel: Anuluj
-    attribute:
-      scopable: Określaj zasięg
-      global: Globalnie
     association_type:
       meta:
         created: Utworzono
@@ -216,21 +213,6 @@ pim_enrich:
         updated: Zaktualizowano
       btn:
         save: Zapisz
-    attribute_label:
-      pim_catalog_identifier: Identyfikator
-      pim_catalog_text: Tekst
-      pim_catalog_textarea: Pole tekstowe
-      pim_catalog_number: Liczba
-      pim_catalog_price_collection: Cena
-      pim_catalog_multiselect: Wielokrotny wybór
-      pim_catalog_simpleselect: Pojedynczy wybór
-      pim_catalog_file: Plik
-      pim_catalog_image: Obrazek
-      pim_catalog_boolean: "Tak/Nie"
-      pim_catalog_date: Data
-      pim_catalog_metric: Miara
-      pim_reference_data_simpleselect: Referencja pojedynczy wybór
-      pim_reference_data_multiselect: Referencja wielokrotny wybór
     attribute_option:
       code: Kod
       label: Etykieta
@@ -252,6 +234,27 @@ pim_enrich:
         product_count: Produkty
         created: Utworzono
         updated: Zaktualizowano
+    attribute:
+      scopable: Określaj zasięg
+      type:
+        pim_catalog_identifier: Identyfikator
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Pole tekstowe
+        pim_catalog_number: Liczba
+        pim_catalog_price_collection: Cena
+        pim_catalog_multiselect: Wielokrotny wybór
+        pim_catalog_simpleselect: Pojedynczy wybór
+        pim_catalog_file: Plik
+        pim_catalog_image: Obrazek
+        pim_catalog_boolean: "Tak/Nie"
+        pim_catalog_date: Data
+        pim_catalog_metric: Miara
+        pim_reference_data_simpleselect: Referencja pojedynczy wybór
+        pim_reference_data_multiselect: Referencja wielokrotny wybór
+      validation_rule:
+        email: E-mail
+        regexp: Wyrażenie regularne
+        url: URL
     attribute_group:
       info:
         update_successful: Grupa atrybutów została pomyślnie zaktualizowana
@@ -514,6 +517,44 @@ pim_enrich:
         history:
           title: Historia
       file_path: Ścieżka do pliku
+    attribute:
+      meta:
+        created: Utworzono
+        updated: Ostatnia aktualizacja
+      tab:
+        properties:
+          title: Właściwości
+          section:
+            common: Parametry ogólne
+          label:
+            allowed_extensions: Dozwolone rozszerzenia
+            available_locales: Dostępne ustawienia regionalne
+            code: Kod
+            date_max: Data końcowa
+            date_min: Data początkowa
+            default_metric_unit: Domyślna jednostka metryczna
+            group: Grupa atrybutów
+            max_characters: Maksymalna liczba znaków
+            max_file_size: Maksymalny rozmiar pliku (MB)
+            metric_family: Zestaw metryk
+            number_max: Maksymalna liczba
+            number_min: Minimalna liczba
+            type: Typ
+            unique: Unikatowa wartość
+            useable_as_grid_filter: Używane w tabeli
+            validation_regexp: Wyrażenie regularne
+            validation_rule: Reguła sprawdzania poprawności
+          default_label:
+            default_metric_unit: Wybierz jednostkę
+            group: Wybierz grupę atrybutów
+            metric_family: Wybierz rodzinę
+            reference_data_name: Wybierz typ danych referencyjnych
+        labels:
+          title: Tłumaczenia etykiety
+        choices:
+          title: Ustawienia
+        history:
+          title: Historia
     mass_edit:
       family:
         attributes:
