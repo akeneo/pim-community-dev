@@ -51,6 +51,11 @@ pimee_catalog_rule:
           success: Die Regeln wurden erfolgreich gelöscht.
           error: Beim Löschen der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Regeln
 confirmation:
   remove:
     rule: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden

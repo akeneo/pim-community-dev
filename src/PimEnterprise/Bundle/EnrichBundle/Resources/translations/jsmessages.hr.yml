@@ -16,6 +16,15 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: Popis imovine
+    attribute:
+      type:
+        pim_assets_collection: Popis imovine
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Samo za čitanje
 pimee_enrich:
   form:
     job_instance:
@@ -134,7 +143,8 @@ pimee_enrich:
         width: '% value%px širina'
         height: '% value%px visina'
 pim_menu:
-  item:
+  tab:
     asset: Imovine
+  item:
     asset_category: Kategorije imovine
     rule: Pravila

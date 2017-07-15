@@ -17,6 +17,15 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: Collection de ressources
+    attribute:
+      type:
+        pim_assets_collection: Collection de ressources
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Lecture seule
 pimee_enrich:
   form:
     job_instance:
@@ -151,10 +160,11 @@ pimee_enrich:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
 pim_menu:
-  item:
-    upload_asset: Télécharger les ressources
+  tab:
     asset: Ressources
+  item:
     asset_category: Catégories de ressources
     proposal: Propositions
     published_product: Produits publiés
     rule: Règles
+    upload_asset: Télécharger les ressources
