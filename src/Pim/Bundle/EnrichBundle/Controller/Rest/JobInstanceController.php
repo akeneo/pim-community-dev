@@ -510,6 +510,11 @@ class JobInstanceController
         $data = json_decode($request->getContent(), true);
         $jobInstance = $this->jobInstanceFactory->createJobInstance($type);
         $this->updater->update($jobInstance, $data);
+
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $jobParameters = $this->jobParamsFactory->create($job);
+        $jobInstance->setRawParameters($jobParameters->all());
+
         $violations = $this->validator->validate($jobInstance);
 
         $normalizedViolations = [];
