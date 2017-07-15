@@ -233,9 +233,6 @@ pim_enrich:
                     cancel: Cancel
             message:
                 created: Product successfully created
-        attribute:
-            scopable: Scopable
-            global: Global
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
