@@ -6,24 +6,24 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/channel/tab/properties/general/locales'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'AknFieldContainer',
   template: _.template(template),
   initialLocales: null,
   locales: null,
 
-            /**
-             * Configures this extension.
-             *
-             * @return {Promise}
-             */
+  /**
+   * Configures this extension.
+   *
+   * @return {Promise}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.setCurrentLocales.bind(this))
@@ -33,9 +33,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -59,39 +59,39 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Sets new locales on change.
-             *
-             * @param {Object} event
-             */
+  /**
+   * Sets new locales on change.
+   *
+   * @param {Object} event
+   */
   updateState: function (event) {
     var localesToSet = []
 
     _.each(event.val, function (code) {
       localesToSet.push(
-                        _.find(this.locales, function (locale) {
-                          return locale.code === code
-                        })
-                    )
+        _.find(this.locales, function (locale) {
+          return locale.code === code
+        })
+      )
     }.bind(this))
 
     this.setLocales(localesToSet)
   },
 
-            /**
-             * Sets specified locales into root model.
-             *
-             * @param {Array} locales
-             */
+  /**
+   * Sets specified locales into root model.
+   *
+   * @param {Array} locales
+   */
   setLocales: function (locales) {
     var data = this.getFormData()
     data.locales = locales
     this.setData(data)
   },
 
-            /**
-             * Sets current locales
-             */
+  /**
+   * Sets current locales
+   */
   setCurrentLocales: function () {
     var oldLocales = this.initialLocales
     var newLocales = this.getFormData().locales

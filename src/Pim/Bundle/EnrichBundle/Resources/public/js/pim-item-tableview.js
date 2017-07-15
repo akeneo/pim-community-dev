@@ -1,9 +1,6 @@
-import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 import __ from 'oro/translator'
-import Routing from 'routing'
-import mediator from 'oro/mediator'
 import LoadingMask from 'oro/loading-mask'
 import Dialog from 'pim/dialog'
 

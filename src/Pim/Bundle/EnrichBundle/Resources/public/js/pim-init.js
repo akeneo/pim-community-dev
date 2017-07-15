@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import _ from 'underscore'
-import Backbone from 'backbone'
 import mediator from 'oro/mediator'
 import messenger from 'oro/messenger'
 import Dialog from 'pim/dialog'
@@ -30,7 +29,7 @@ export default function () {
         saveformstate($(this).attr('id'), loadTab)
       })
     }
-                // Place code that we need to run on every page load here
+    // Place code that we need to run on every page load here
 
     $target.find('.remove-attribute').each(function () {
       var target = $(this).parent().find('.icons-container')
@@ -65,14 +64,14 @@ export default function () {
       loadTab(this)
     })
 
-                // Flash messages:
+    // Flash messages:
     if (window.flashMessages) {
       _.each(window.flashMessages, function (messages, type) {
         _.each(messages, function (message) {
           messenger.notify(
-                                type,
-                                message
-                            )
+            type,
+            message
+          )
         })
       })
     }
@@ -107,7 +106,7 @@ export default function () {
       }
     })
 
-                // DELETE request for delete buttons
+    // DELETE request for delete buttons
     $(document).on('click', '[data-dialog]', function () {
       var $el = $(this)
       var message = $el.data('message')
@@ -122,27 +121,33 @@ export default function () {
             'width': '100%',
             'height': '100%'
           }
-                        )
+        )
         loadingMask.show()
 
         $.ajax({
           url: $el.attr('data-url'),
           type: 'POST',
-          headers: { accept: 'application/json' },
-          data: { _method: $el.data('method') },
+          headers: {
+            accept: 'application/json'
+          },
+          data: {
+            _method: $el.data('method')
+          },
           success: function () {
             loadingMask.hide().$el.remove()
             var targetUrl = $el.attr('data-redirect-url')
-            router.redirect(targetUrl, {trigger: true})
+            router.redirect(targetUrl, {
+              trigger: true
+            })
             messenger.notify('success', $el.attr('data-success-message'))
           },
           error: function (xhr) {
             loadingMask.hide().$el.remove()
             messenger.notify(
-                                    'error',
-                                    (xhr.responseJSON && xhr.responseJSON.message)
-                                        ? xhr.responseJSON.message
-                                        : $el.attr('data-error-message'))
+              'error',
+              (xhr.responseJSON && xhr.responseJSON.message)
+                ? xhr.responseJSON.message
+                : $el.attr('data-error-message'))
           }
         })
       }
@@ -161,4 +166,5 @@ export default function () {
   mediator.on('route_complete pim:reinit', function () {
     pageInit()
   })
-};
+}
+;

@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
@@ -9,6 +8,7 @@ import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import template from 'pim/template/filter/attribute/select'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'select',
   template: _.template(template),
@@ -17,37 +17,39 @@ export default BaseFilter.extend({
     'change [name="filter-value"], [name="filter-operator"]': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.choicePromise = null
 
     return BaseFilter.prototype.initialize.apply(this, arguments)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-      _.defaults(data, {field: this.getCode() + '.code'})
+      _.defaults(data, {
+        field: this.getCode() + '.code'
+      })
     }.bind(this))
 
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() || _.isEmpty(this.getValue()))
+      (undefined === this.getValue() || _.isEmpty(this.getValue()))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function () {
     if (undefined === this.getOperator()) {
       this.setOperator(_.first(_.values(this.config.operators)))
@@ -63,9 +65,9 @@ export default BaseFilter.extend({
     })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function (templateContext) {
     this.$('.operator').select2({
       minimumResultsForSearch: -1
@@ -76,32 +78,34 @@ export default BaseFilter.extend({
     }
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   getTemplateContext: function () {
     return FetcherRegistry
-                .getFetcher('attribute')
-                .fetch(this.getCode())
-                .then(function (attribute) {
-                  return this.cleanInvalidValues(attribute, this.getValue()).then(function (cleanedValues) {
-                    if (!_.isEqual(this.getValue(), cleanedValues)) {
-                      this.setValue(cleanedValues, {silent: false})
-                    }
+      .getFetcher('attribute')
+      .fetch(this.getCode())
+      .then(function (attribute) {
+        return this.cleanInvalidValues(attribute, this.getValue()).then(function (cleanedValues) {
+          if (!_.isEqual(this.getValue(), cleanedValues)) {
+            this.setValue(cleanedValues, {
+              silent: false
+            })
+          }
 
-                    return {
-                      label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
-                      select2Options: this.getSelect2Options(attribute),
-                      removable: this.isRemovable(),
-                      editable: this.isEditable()
-                    }
-                  }.bind(this))
-                }.bind(this))
+          return {
+            label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+            select2Options: this.getSelect2Options(attribute),
+            removable: this.isRemovable(),
+            editable: this.isEditable()
+          }
+        }.bind(this))
+      }.bind(this))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   updateState: function () {
     var cleanedValues = []
     var operator = this.$('[name="filter-operator"]').val()
@@ -120,11 +124,11 @@ export default BaseFilter.extend({
     })
   },
 
-        /**
-         * Return the choice options or reference data to populate the select2.
-         *
-         * @returns {Object}
-         */
+  /**
+   * Return the choice options or reference data to populate the select2.
+   *
+   * @returns {Object}
+   */
   getSelect2Options: function (attribute) {
     var choiceUrl = this.getChoiceUrl(attribute)
 
@@ -148,7 +152,9 @@ export default BaseFilter.extend({
         this.getChoices(attribute).then(function (response) {
           var results = response.results
           var choices = _.map($(element).val().split(','), function (choice) {
-            return _.findWhere(results, {id: choice})
+            return _.findWhere(results, {
+              id: choice
+            })
           })
           callback(choices)
         })
@@ -157,14 +163,14 @@ export default BaseFilter.extend({
     }
   },
 
-        /**
-         * Return the select choice promise which, once resolved, return all possible choices
-         * for the given select attribute.
-         *
-         * @param {string} attribute
-         *
-         * @returns {Promise}
-         */
+  /**
+   * Return the select choice promise which, once resolved, return all possible choices
+   * for the given select attribute.
+   *
+   * @param {string} attribute
+   *
+   * @returns {Promise}
+   */
   getChoices: function (attribute) {
     var choiceUrl = this.getChoiceUrl(attribute)
 
@@ -175,35 +181,37 @@ export default BaseFilter.extend({
     return this.choicePromise
   },
 
-        /**
-         * Get the string Url to access all select choices related to the given attribute.
-         *
-         * @param {string} attribute
-         *
-         * @returns {string}
-         */
+  /**
+   * Get the string Url to access all select choices related to the given attribute.
+   *
+   * @param {string} attribute
+   *
+   * @returns {string}
+   */
   getChoiceUrl: function (attribute) {
     return Routing.generate(
-                this.config.url,
+      this.config.url,
       {
         class: this.config.entityClass,
         dataLocale: UserContext.get('uiLocale'),
         collectionId: attribute.id,
-        options: {type: 'code'},
+        options: {
+          type: 'code'
+        },
         referenceDataName: attribute.reference_data_name
       }
-            )
+    )
   },
 
-        /**
-         * Clean invalid values by removing possibly non-existent options coming from database.
-         * This method returns a promise which, once resolved, should return the attribute.
-         *
-         * @param {string} attribute
-         * @param {array} currentValues
-         *
-         * @returns {Promise}
-         */
+  /**
+   * Clean invalid values by removing possibly non-existent options coming from database.
+   * This method returns a promise which, once resolved, should return the attribute.
+   *
+   * @param {string} attribute
+   * @param {array} currentValues
+   *
+   * @returns {Promise}
+   */
   cleanInvalidValues: function (attribute, currentValues) {
     return this.getChoices(attribute).then(function (response) {
       var possibleValues = _.pluck(response.results, 'id')

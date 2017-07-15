@@ -18,15 +18,16 @@ import initSignin from 'pimuser/js/init-signin'
 import pageTitle from 'pim/page-title'
 import template from 'pim/template/app'
 import flashTemplate from 'pim/template/common/flash'
+
 export default BaseForm.extend({
   tagName: 'div',
   className: 'app',
   template: _.template(template),
   flashTemplate: _.template(flashTemplate),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     initLayout()
     initSignin()
@@ -34,25 +35,25 @@ export default BaseForm.extend({
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
-                    .then(function () {
-                      messenger.showQueuedMessages()
+      .then(function () {
+        messenger.showQueuedMessages()
 
-                      init()
+        init()
 
-                      pageTitle.set('Akeneo PIM')
+        pageTitle.set('Akeneo PIM')
 
-                      return BaseForm.prototype.configure.apply(this, arguments)
-                    }.bind(this))
+        return BaseForm.prototype.configure.apply(this, arguments)
+      }.bind(this))
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({}))
 

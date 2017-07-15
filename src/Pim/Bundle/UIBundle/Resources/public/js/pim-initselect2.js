@@ -23,7 +23,7 @@ export default {
     var self = this
 
     $target.find('input.select2:not(.select2-offscreen)').each(function () {
-      var options = self.initOptions(options)
+      options = self.initOptions(options)
 
       var $el = $(this)
       var value = _.map(_.compact($el.val().split(',')), $.trim)
@@ -36,7 +36,7 @@ export default {
     })
 
     $target.find('select.select2:not(.select2-offscreen)').each(function () {
-      var options = self.initOptions(options)
+      options = self.initOptions(options)
 
       var $el = $(this)
       var $empty = $el.children('[value=""]')
@@ -136,7 +136,9 @@ export default {
       return $.fn.select2.defaults.matcher(term, result.text)
     })
 
-    return _.extend({}, data, {results: matchingResults})
+    return _.extend({}, data, {
+      results: matchingResults
+    })
   },
   initOptions: function (options) {
     var defaultOptions = $.extend(true, {}, this.defaultOptions)

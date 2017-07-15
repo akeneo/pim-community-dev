@@ -2,10 +2,10 @@ import $ from 'jquery'
 import 'bootstrap'
 import 'jquery-ui'
 
-    // todo: remove this or move somewhere else
-    /**
-     * Fix for IE8 compatibility
-     */
+// todo: remove this or move somewhere else
+/**
+ * Fix for IE8 compatibility
+ */
 if (!Date.prototype.toISOString) {
   (function () {
     function pad (number) {
@@ -19,13 +19,13 @@ if (!Date.prototype.toISOString) {
 
     Date.prototype.toISOString = function () {
       return this.getUTCFullYear() +
-                    '-' + pad(this.getUTCMonth() + 1) +
-                    '-' + pad(this.getUTCDate()) +
-                    'T' + pad(this.getUTCHours()) +
-                    ':' + pad(this.getUTCMinutes()) +
-                    ':' + pad(this.getUTCSeconds()) +
-                    '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) +
-                    'Z'
+        '-' + pad(this.getUTCMonth() + 1) +
+        '-' + pad(this.getUTCDate()) +
+        'T' + pad(this.getUTCHours()) +
+        ':' + pad(this.getUTCMinutes()) +
+        ':' + pad(this.getUTCSeconds()) +
+        '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) +
+        'Z'
     }
   }())
 }
@@ -49,10 +49,10 @@ layout.init = function (container) {
     var popoverHandler = $(e.relatedTarget).closest('.popover')
     if (!popoverHandler.length) {
       popover.data('popover-timer',
-                    setTimeout(function () {
-                      popover.popover('hide')
-                      popover.data('popover-active', false)
-                    }, 500))
+        setTimeout(function () {
+          popover.popover('hide')
+          popover.data('popover-active', false)
+        }, 500))
     } else {
       popoverHandler.one('mouseout', function (evt) {
         handlePopoverMouseout(evt, popover)
@@ -60,26 +60,29 @@ layout.init = function (container) {
     }
   }
   $('form label [data-toggle="popover"]')
-            .popover({
-              animation: true,
-              delay: { show: 0, hide: 0 },
-              html: true,
-              trigger: 'manual'
-            })
-            .mouseover(function () {
-              var popoverEl = $(this)
-              clearTimeout(popoverEl.data('popover-timer'))
-              if (!popoverEl.data('popover-active')) {
-                popoverEl.data('popover-active', true)
-                $(this).popover('show')
-              }
-            })
-            .mouseout(function (e) {
-              var popover = $(this)
-              setTimeout(function () {
-                handlePopoverMouseout(e, popover)
-              }, 500)
-            })
+    .popover({
+      animation: true,
+      delay: {
+        show: 0,
+        hide: 0
+      },
+      html: true,
+      trigger: 'manual'
+    })
+    .mouseover(function () {
+      var popoverEl = $(this)
+      clearTimeout(popoverEl.data('popover-timer'))
+      if (!popoverEl.data('popover-active')) {
+        popoverEl.data('popover-active', true)
+        $(this).popover('show')
+      }
+    })
+    .mouseout(function (e) {
+      var popover = $(this)
+      setTimeout(function () {
+        handlePopoverMouseout(e, popover)
+      }, 500)
+    })
 
   setTimeout(function () {
     layout.scrollspyTop()

@@ -1,34 +1,34 @@
 import $ from 'jquery'
 import _ from 'underscore'
 
-        /**
-         * Main Application
-         *
-         * @export oro/app
-         * @name oro.app
-         */
+/**
+ * Main Application
+ *
+ * @export oro/app
+ * @name oro.app
+ */
 export default {
-            /** @type {boolean} */
+  /** @type {boolean} */
   debug: false,
 
-            /**
-             * Pack object to string
-             *
-             * Object {foo: 'x', 'bar': 'y'} will be converted to string "foo=x&bar=y".
-             *
-             * @param {Object} object
-             * @return {String}
-             */
+  /**
+   * Pack object to string
+   *
+   * Object {foo: 'x', 'bar': 'y'} will be converted to string "foo=x&bar=y".
+   *
+   * @param {Object} object
+   * @return {String}
+   */
   packToQueryString: function (object) {
     return $.param(object)
   },
 
-            /**
-             * Unpack string to object. Reverse from packToQueryString.
-             *
-             * @param {String} query
-             * @return {Object}
-             */
+  /**
+   * Unpack string to object. Reverse from packToQueryString.
+   *
+   * @param {String} query
+   * @return {Object}
+   */
   unpackFromQueryString: function (query) {
     var setValue = function (root, path, value) {
       if (path.length > 1) {
@@ -55,10 +55,10 @@ export default {
       var path = name.match(/(^[^\[]+)(\[.*\]$)?/)
       var first = path[1]
       if (path[2]) {
-                        // case of 'array[level1]' || 'array[level1][level2]'
+        // case of 'array[level1]' || 'array[level1][level2]'
         path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][')
       } else {
-                        // case of 'name'
+        // case of 'name'
         path = []
       }
       path.unshift(first)
@@ -69,13 +69,13 @@ export default {
     return data
   },
 
-            /**
-             * Decode URL encoded component
-             *
-             * @param {String} string
-             * @return {String}
-             * @protected
-             */
+  /**
+   * Decode URL encoded component
+   *
+   * @param {String} string
+   * @return {String}
+   * @protected
+   */
   _decodeComponent: function (string) {
     var result = string.replace(/\+/g, '%20')
     result = decodeURIComponent(result)
@@ -83,18 +83,18 @@ export default {
     return result
   },
 
-            /**
-             * Invert object keys.
-             *
-             * Example of usage:
-             *
-             * oro.app.invertKeys({foo: 'x', bar: 'y'}, {foo: 'f', bar: 'b'})
-             * will return {f: 'x', b: 'y'}
-             *
-             * @param {Object} object
-             * @param {Object} keys
-             * @return {Object}
-             */
+  /**
+   * Invert object keys.
+   *
+   * Example of usage:
+   *
+   * oro.app.invertKeys({foo: 'x', bar: 'y'}, {foo: 'f', bar: 'b'})
+   * will return {f: 'x', b: 'y'}
+   *
+   * @param {Object} object
+   * @param {Object} keys
+   * @return {Object}
+   */
   invertKeys: function (object, keys) {
     var result = _.extend({}, object)
     for (var key in keys) {
@@ -102,7 +102,6 @@ export default {
       var baseKey
       baseKey = key
       mirrorKey = keys[key]
-
       if (baseKey in result) {
         result[mirrorKey] = result[baseKey]
         delete result[baseKey]
@@ -112,13 +111,13 @@ export default {
     return result
   },
 
-            /**
-             * Loosely compare two values
-             *
-             * @param {*} value1
-             * @param {*} value2
-             * @return {Boolean} TRUE if values are equal, otherwise - FALSE
-             */
+  /**
+   * Loosely compare two values
+   *
+   * @param {*} value1
+   * @param {*} value2
+   * @return {Boolean} TRUE if values are equal, otherwise - FALSE
+   */
   isEqualsLoosely: function (value1, value2) {
     if (!_.isObject(value1)) {
       if (_.isNumber(value1) || _.isNumber(value2)) {
@@ -154,12 +153,12 @@ export default {
     }
   },
 
-            /**
-             * Deep clone a value
-             *
-             * @param {*} value
-             * @return {*}
-             */
+  /**
+   * Deep clone a value
+   *
+   * @param {*} value
+   * @return {*}
+   */
   deepClone: function (value) {
     return $.extend(true, {}, value)
   }

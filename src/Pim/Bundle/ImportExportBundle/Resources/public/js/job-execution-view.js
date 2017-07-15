@@ -54,10 +54,10 @@ var JobExecutionView = Backbone.View.extend({
     clearInterval(interval)
     interval = null
     this.$el.html(
-                    '<tr><td colspan="5"><span class="AknBadge AknBadge--important">' +
-                        options.xhr.statusText +
-                    '</span></td></tr>'
-                )
+      '<tr><td colspan="5"><span class="AknBadge AknBadge--important">' +
+      options.xhr.statusText +
+      '</span></td></tr>'
+    )
     loading = false
   },
 
@@ -80,16 +80,16 @@ var JobExecutionView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-                    this.template(
-                        _.extend(
-                          {
-                            showLabel: this.showLabel,
-                            hideLabel: this.hideLabel
-                          },
-                            this.model.toJSON()
-                        )
-                    )
-                )
+      this.template(
+        _.extend(
+          {
+            showLabel: this.showLabel,
+            hideLabel: this.hideLabel
+          },
+          this.model.toJSON()
+        )
+      )
+    )
 
     return this
   }
@@ -107,15 +107,15 @@ var JobExecutionStatusView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-                    this.template(
-                        _.extend(
-                          {
-                            statusLabel: this.statusLabel
-                          },
-                            this.model.toJSON()
-                        )
-                    )
-                )
+      this.template(
+        _.extend(
+          {
+            statusLabel: this.statusLabel
+          },
+          this.model.toJSON()
+        )
+      )
+    )
 
     return this
   }
@@ -143,16 +143,16 @@ var JobExecutionButtonsView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-                    this.template(
-                        _.extend(
-                          {
-                            downloadFileRoute: this.downloadFileRoute,
-                            executionId: this.executionId
-                          },
-                            this.model.toJSON()
-                        )
-                    )
-                )
+      this.template(
+        _.extend(
+          {
+            downloadFileRoute: this.downloadFileRoute,
+            executionId: this.executionId
+          },
+          this.model.toJSON()
+        )
+      )
+    )
 
     return this
   }
@@ -182,17 +182,17 @@ var JobExecutionLogButtonView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-                    this.template(
-                        _.extend(
-                          {
-                            downloadLogRoute: this.downloadLogRoute,
-                            executionId: this.executionId,
-                            downloadLabel: this.downloadLabel
-                          },
-                            this.model.toJSON()
-                        )
-                    )
-                )
+      this.template(
+        _.extend(
+          {
+            downloadLogRoute: this.downloadLogRoute,
+            executionId: this.executionId,
+            downloadLabel: this.downloadLabel
+          },
+          this.model.toJSON()
+        )
+      )
+    )
 
     return this
   }
@@ -213,10 +213,18 @@ export default {
 
     params.model = jobExecution
 
-    new JobExecutionView(_.extend(params, {el: params.jobExecutionSelector}))
-    new JobExecutionStatusView(_.extend(params, {el: params.jobExecutionStatusSelector}))
-    new JobExecutionButtonsView(_.extend(params, {el: params.jobExecutionButtonsSelector}))
-    new JobExecutionLogButtonView(_.extend(params, {el: params.jobExecutionLogButtonSelector}))
+    new JobExecutionView(_.extend(params, {
+      el: params.jobExecutionSelector
+    }))
+    new JobExecutionStatusView(_.extend(params, {
+      el: params.jobExecutionStatusSelector
+    }))
+    new JobExecutionButtonsView(_.extend(params, {
+      el: params.jobExecutionButtonsSelector
+    }))
+    new JobExecutionLogButtonView(_.extend(params, {
+      el: params.jobExecutionLogButtonSelector
+    }))
 
     var displayRefreshLink = function () {
       $(params.loadingImageSelector).hide()
@@ -229,7 +237,7 @@ export default {
       }
     }, 1000)
 
-                // Clear interval when changing page to prevent continuing to sync object on other pages
+    // Clear interval when changing page to prevent continuing to sync object on other pages
     Backbone.Router.prototype.on('route', function () {
       clearInterval(interval)
     })

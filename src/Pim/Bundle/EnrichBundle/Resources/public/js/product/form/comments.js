@@ -1,4 +1,3 @@
-
 /**
  * Comment panel extension
  *
@@ -17,6 +16,7 @@ import template from 'pim/template/product/comments'
 import Routing from 'routing'
 import messenger from 'oro/messenger'
 import Dialog from 'pim/dialog'
+
 export default BaseForm.extend({
   template: _.template(template),
 
@@ -32,18 +32,18 @@ export default BaseForm.extend({
     'click .comment-thread .cancel-comment, .comment-create .cancel-comment': 'cancelComment'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.comment = new Backbone.Model()
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.code,
@@ -53,9 +53,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
       return this
@@ -65,40 +65,40 @@ export default BaseForm.extend({
       this.comments = data
 
       this.$el.html(
-                        this.template({
-                          __: __,
-                          comments: this.comments,
-                          currentUser: UserContext.toJSON(),
-                          emptyLabel: __('comment.index.empty')
-                        })
-                    )
+        this.template({
+          __: __,
+          comments: this.comments,
+          currentUser: UserContext.toJSON(),
+          emptyLabel: __('comment.index.empty')
+        })
+      )
       this.delegateEvents()
     }.bind(this))
 
     return this
   },
 
-            /**
-             * Load the comments from database
-             *
-             * @return {Promise}
-             */
+  /**
+   * Load the comments from database
+   *
+   * @return {Promise}
+   */
   loadData: function () {
     return $.get(
-                    Routing.generate(
-                        'pim_enrich_product_comments_rest_get',
-                      {
-                        id: this.getFormData().meta.id
-                      }
-                    )
-                )
+      Routing.generate(
+        'pim_enrich_product_comments_rest_get',
+        {
+          id: this.getFormData().meta.id
+        }
+      )
+    )
   },
 
-            /**
-             * Display or hide the save/cancel buttons attached to the text area
-             *
-             * @param {Event} event
-             */
+  /**
+   * Display or hide the save/cancel buttons attached to the text area
+   *
+   * @param {Event} event
+   */
   toggleButtons: function (event) {
     var $element = $(event.currentTarget).parents('.comment-thread, .comment-create')
     if ($element.find('textarea').val()) {
@@ -110,11 +110,11 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Cancels the current written comment
-             *
-             * @param {Event} event
-             */
+  /**
+   * Cancels the current written comment
+   *
+   * @param {Event} event
+   */
   cancelComment: function (event) {
     var $element = $(event.currentTarget).parents('.comment-thread, .comment-create')
     $element.find('textarea').val('')
@@ -122,15 +122,19 @@ export default BaseForm.extend({
     $element.find('.AknButtonList').addClass('AknButtonList--hide')
   },
 
-            /**
-             * Saves the current comment to database
-             */
+  /**
+   * Saves the current comment to database
+   */
   saveComment: function () {
     $.ajax({
       type: 'POST',
-      url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getFormData().meta.id }),
+      url: Routing.generate('pim_enrich_product_comments_rest_post', {
+        id: this.getFormData().meta.id
+      }),
       contentType: 'application/json',
-      data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
+      data: JSON.stringify({
+        'body': this.$('.comment-create textarea').val()
+      })
     }).done(function () {
       this.render()
       messenger.notify('success', __('flash.comment.create.success'))
@@ -139,30 +143,36 @@ export default BaseForm.extend({
     })
   },
 
-            /**
-             * Shows a confirm dialog before removing the current comment
-             *
-             * @param {Event} event
-             */
+  /**
+   * Shows a confirm dialog before removing the current comment
+   *
+   * @param {Event} event
+   */
   removeComment: function (event) {
     Dialog.confirm(
-                    __('confirmation.remove.comment'),
-                    __('pim_enrich.confirmation.delete_item'),
-                    this.doRemove.bind(this, event)
-                )
+      __('confirmation.remove.comment'),
+      __('pim_enrich.confirmation.delete_item'),
+      this.doRemove.bind(this, event)
+    )
   },
 
-            /**
-             * Removes the comment from database
-             *
-             * @param {Event} event
-             */
+  /**
+   * Removes the comment from database
+   *
+   * @param {Event} event
+   */
   doRemove: function (event) {
     $.ajax({
-      url: Routing.generate('pim_comment_comment_delete', { id: event.currentTarget.dataset.commentId }),
+      url: Routing.generate('pim_comment_comment_delete', {
+        id: event.currentTarget.dataset.commentId
+      }),
       type: 'POST',
-      headers: { accept: 'application/json' },
-      data: { _method: 'DELETE' }
+      headers: {
+        accept: 'application/json'
+      },
+      data: {
+        _method: 'DELETE'
+      }
     }).done(function () {
       this.render()
       messenger.notify('success', __('flash.comment.delete.success'))
@@ -171,25 +181,27 @@ export default BaseForm.extend({
     })
   },
 
-            /**
-             * Save the current reply of a comment
-             *
-             * @param {Event} event
-             */
+  /**
+   * Save the current reply of a comment
+   *
+   * @param {Event} event
+   */
   saveReply: function (event) {
     var $thread = $(event.currentTarget).parents('.comment-thread')
 
     $.ajax({
       type: 'POST',
       url: Routing.generate(
-                        'pim_enrich_product_comment_reply_rest_post',
+        'pim_enrich_product_comment_reply_rest_post',
         {
           id: this.getFormData().meta.id,
           commentId: $thread.data('comment-id')
         }
-                    ),
+      ),
       contentType: 'application/json',
-      data: JSON.stringify({ 'body': $thread.find('textarea').val()})
+      data: JSON.stringify({
+        'body': $thread.find('textarea').val()
+      })
     }).done(function () {
       $thread.find('textarea').val('')
       this.render()

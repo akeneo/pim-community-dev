@@ -3,15 +3,15 @@ import _ from 'underscore'
 import DataCollector from 'pim/data-collector'
 
 export default {
-            /**
-             * @return {Promise}
-             */
+  /**
+   * @return {Promise}
+   */
   fetch: function (updateServerUrl) {
-    var storageEnabled = typeof Storage !== 'undefined' && sessionStorage
+    var storageEnabled = typeof Storage !== 'undefined' && window.sessionStorage
     var lastPatchKey = 'last-patch-available'
-    if (storageEnabled && sessionStorage.getItem(lastPatchKey) !== null) {
+    if (storageEnabled && window.sessionStorage.getItem(lastPatchKey) !== null) {
       var deferred = $.Deferred()
-      deferred.resolve(sessionStorage.getItem(lastPatchKey))
+      deferred.resolve(window.sessionStorage.getItem(lastPatchKey))
 
       return deferred.promise()
     } else {
@@ -29,7 +29,7 @@ export default {
         }).then(function (patchData) {
           var patch = patchData.last_patch.name
           var cleanedPatch = patch.replace(/^v/g, '')
-          sessionStorage.setItem(lastPatchKey, cleanedPatch)
+          window.sessionStorage.setItem(lastPatchKey, cleanedPatch)
 
           return cleanedPatch
         })

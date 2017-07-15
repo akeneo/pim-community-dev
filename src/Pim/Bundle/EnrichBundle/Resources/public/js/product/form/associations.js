@@ -1,4 +1,3 @@
-
 /**
  * Association tab extension
  *
@@ -10,12 +9,10 @@
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
-import Backbone from 'backbone'
 import BaseForm from 'pim/form'
 import formTemplate from 'pim/template/product/tab/associations'
 import panesTemplate from 'pim/template/product/tab/association-panes'
 import FetcherRegistry from 'pim/fetcher-registry'
-import AttributeManager from 'pim/attribute-manager'
 import UserContext from 'pim/user-context'
 import Routing from 'routing'
 import mediator from 'oro/mediator'
@@ -45,15 +42,16 @@ export default BaseForm.extend({
           var params = {
             product: this.getFormData().meta.id
           }
-          params[this.datagrids.products.paramName] =
-                                this.datagrids.products.getParamValue(associationType)
+          params[this.datagrids.products.paramName] = this.datagrids.products.getParamValue(associationType)
           params.dataLocale = UserContext.get('catalogLocale')
 
           return params
         }.bind(this),
         paramName: 'associationType',
         getParamValue: function (associationType) {
-          return _.findWhere(state.associationTypes, {code: associationType}).meta.id
+          return _.findWhere(state.associationTypes, {
+            code: associationType
+          }).meta.id
         },
         getModelIdentifier: function (model) {
           return model.get('identifier')
@@ -120,27 +118,29 @@ export default BaseForm.extend({
       state.associationTypes = associationTypes
 
       this.$el.html(
-                        this.template({
-                          product: this.getFormData(),
-                          locale: UserContext.get('catalogLocale'),
-                          associationTypes: associationTypes,
-                          currentAssociationTarget: this.getCurrentAssociationTarget(),
-                          currentAssociationTypeCode: this.getCurrentAssociationType(),
-                          currentAssociationType: _.findWhere(
-                                associationTypes,
-                                {code: this.getCurrentAssociationType()}
-                            ),
-                          label: __('pim_enrich.form.product.tab.associations.association_type_selector')
-                        })
-                    )
+        this.template({
+          product: this.getFormData(),
+          locale: UserContext.get('catalogLocale'),
+          associationTypes: associationTypes,
+          currentAssociationTarget: this.getCurrentAssociationTarget(),
+          currentAssociationTypeCode: this.getCurrentAssociationType(),
+          currentAssociationType: _.findWhere(
+            associationTypes,
+            {
+              code: this.getCurrentAssociationType()
+            }
+          ),
+          label: __('pim_enrich.form.product.tab.associations.association_type_selector')
+        })
+      )
       this.renderPanes()
 
       if (associationTypes.length) {
         var currentGrid = this.datagrids[this.getCurrentAssociationTarget()]
         this.renderGrid(
-                            currentGrid.name,
-                            currentGrid.getInitialParams(this.getCurrentAssociationType())
-                        )
+          currentGrid.name,
+          currentGrid.getInitialParams(this.getCurrentAssociationType())
+        )
         this.setListenerSelectors()
       }
 
@@ -154,13 +154,13 @@ export default BaseForm.extend({
       this.setAssociationCount(associationTypes)
       this.$('.tab-content > .association-type').remove()
       this.$('.tab-content').prepend(
-                        this.panesTemplate({
-                          locale: UserContext.get('catalogLocale'),
-                          associationTypes: associationTypes,
-                          currentAssociationType: this.getCurrentAssociationType(),
-                          currentAssociationTarget: this.getCurrentAssociationTarget()
-                        })
-                    )
+        this.panesTemplate({
+          locale: UserContext.get('catalogLocale'),
+          associationTypes: associationTypes,
+          currentAssociationType: this.getCurrentAssociationType(),
+          currentAssociationTarget: this.getCurrentAssociationTarget()
+        })
+      )
     }.bind(this))
   },
   postUpdate: function () {
@@ -171,30 +171,30 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * @param {string} associationType
-             */
+  /**
+   * @param {string} associationType
+   */
   setCurrentAssociationType: function (associationType) {
     sessionStorage.setItem('current_association_type', associationType)
   },
 
-            /**
-             * @returns {string}
-             */
+  /**
+   * @returns {string}
+   */
   getCurrentAssociationType: function () {
     return sessionStorage.getItem('current_association_type')
   },
 
-            /**
-             * @param {string} associationTarget
-             */
+  /**
+   * @param {string} associationTarget
+   */
   setCurrentAssociationTarget: function (associationTarget) {
     sessionStorage.setItem('current_association_target', associationTarget)
   },
 
-            /**
-             * @returns {string}
-             */
+  /**
+   * @returns {string}
+   */
   getCurrentAssociationTarget: function () {
     return sessionStorage.getItem('current_association_target') || 'products'
   },
@@ -207,7 +207,6 @@ export default BaseForm.extend({
 
     _.each(associationTypes, function (assocType) {
       var association = associations[assocType.code]
-
       assocType.productCount = association && association.products ? association.products.length : 0
       assocType.groupCount = association && association.groups ? association.groups.length : 0
     })
@@ -219,25 +218,25 @@ export default BaseForm.extend({
 
     this.$el.find('.current-association-type').html($(event.currentTarget).text())
     this.$el.find('.association-type-selector .AknDropdown-menuLink--active')
-                    .removeClass('AknDropdown-menuLink--active')
+      .removeClass('AknDropdown-menuLink--active')
     $(event.currentTarget).find('.AknDropdown-menuLink ').addClass('AknDropdown-menuLink--active')
 
     this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
-                    .removeClass('AknTitleContainer--hidden')
-                    .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
-                    .addClass('AknTitleContainer--hidden')
+      .removeClass('AknTitleContainer--hidden')
+      .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
+      .addClass('AknTitleContainer--hidden')
 
     this.renderPanes()
     this.updateListenerSelectors()
 
     var currentGrid = this.datagrids[this.getCurrentAssociationTarget()]
     mediator
-                    .trigger(
-                        'datagrid:setParam:' + currentGrid.name,
-                        currentGrid.paramName,
-                        currentGrid.getParamValue(associationType)
-                    )
-                    .trigger('datagrid:doRefresh:' + currentGrid.name)
+      .trigger(
+        'datagrid:setParam:' + currentGrid.name,
+        currentGrid.paramName,
+        currentGrid.getParamValue(associationType)
+    )
+      .trigger('datagrid:doRefresh:' + currentGrid.name)
   },
   changeAssociationTargets: function (event) {
     var associationTarget = event.currentTarget.dataset.associationTarget
@@ -249,18 +248,18 @@ export default BaseForm.extend({
     }.bind(this))
 
     $(event.currentTarget)
-                    .addClass('AknButton--hidden')
-                    .siblings('.target-button')
-                    .removeClass('AknButton--hidden')
+      .addClass('AknButton--hidden')
+      .siblings('.target-button')
+      .removeClass('AknButton--hidden')
 
     this.updateListenerSelectors()
 
     var currentGrid = this.datagrids[this.getCurrentAssociationTarget()]
     if (!this.isGridRendered(currentGrid)) {
       this.renderGrid(
-                        currentGrid.name,
-                        currentGrid.getInitialParams(this.getCurrentAssociationType())
-                    )
+        currentGrid.name,
+        currentGrid.getInitialParams(this.getCurrentAssociationType())
+      )
       this.setListenerSelectors()
     }
   },
@@ -279,30 +278,33 @@ export default BaseForm.extend({
 
     $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (response) {
       var metadata = response.metadata
-                    /* Next lines are related to PIM-6113 and need some comments.
-                     *
-                     * When you just saved a datagrid from the Product Edit Form, you will have an URL like
-                     * '/association-group-grid?...&associatedIds[]=1&associatedIds[]=2', in reference of the last
-                     * checked groups in the datagrid.
-                     *
-                     * The fact is that there is 2 places where these parameters are set: in the URL, and in the
-                     * datagrid state (state.parameters.associatedIds).
-                     *
-                     * If you do not drop the params of the URL (containing associatedIds array), you will have
-                     * a mix of 2 times the same variable, defined at 2 different places. This leads to a refreshed
-                     * datagrid with wrong checkboxes.
-                     *
-                     * To prevent this behavior, we removed the parameters passed in the URL before rendering the
-                     * grid, to only allow datagrid state parameters.
-                     */
+      /* Next lines are related to PIM-6113 and need some comments.
+       *
+       * When you just saved a datagrid from the Product Edit Form, you will have an URL like
+       * '/association-group-grid?...&associatedIds[]=1&associatedIds[]=2', in reference of the last
+       * checked groups in the datagrid.
+       *
+       * The fact is that there is 2 places where these parameters are set: in the URL, and in the
+       * datagrid state (state.parameters.associatedIds).
+       *
+       * If you do not drop the params of the URL (containing associatedIds array), you will have
+       * a mix of 2 times the same variable, defined at 2 different places. This leads to a refreshed
+       * datagrid with wrong checkboxes.
+       *
+       * To prevent this behavior, we removed the parameters passed in the URL before rendering the
+       * grid, to only allow datagrid state parameters.
+       */
       var queryParts = metadata.options.url.split('?')
       var url = queryParts[0]
       var queryString = decodeURIComponent(queryParts[1])
-                        .replace(/&?association-group-grid\[associatedIds\]\[\d+\]=\d+/g, '')
-                        .replace(/^&/, '')
+        .replace(/&?association-group-grid\[associatedIds\]\[\d+\]=\d+/g, '')
+        .replace(/^&/, '')
       metadata.options.url = url + '?' + queryString
 
-      this.$('#grid-' + gridName).data({ metadata: metadata, data: JSON.parse(response.data) })
+      this.$('#grid-' + gridName).data({
+        metadata: metadata,
+        data: JSON.parse(response.data)
+      })
 
       var gridModules = metadata.requireJSModules
       gridModules.push('pim/datagrid/state-listener')
@@ -335,17 +337,20 @@ export default BaseForm.extend({
       var removeFieldId = ['#', associationType, '-', gridType, '-removefield'].join('')
 
       if (selectedAssociations &&
-                        selectedAssociations[associationType] &&
-                        selectedAssociations[associationType][gridType]
-                    ) {
+        selectedAssociations[associationType] &&
+        selectedAssociations[associationType][gridType]
+      ) {
         $(appendFieldId).val(selectedAssociations[associationType][gridType].select.join(','))
         $(removeFieldId).val(selectedAssociations[associationType][gridType].unselect.join(','))
       }
 
       mediator.trigger(
-                        'column_form_listener:set_selectors:' + datagrid.name,
-                        { included: appendFieldId, excluded: removeFieldId }
-                    )
+        'column_form_listener:set_selectors:' + datagrid.name,
+        {
+          included: appendFieldId,
+          excluded: removeFieldId
+        }
+      )
     })
   },
   selectModel: function (model, datagrid) {
@@ -380,20 +385,23 @@ export default BaseForm.extend({
     return associations[assocType][assocTarget]
   },
 
-            /**
-             * Update the user session selection to be able to restore it if he switches tabs
-             *
-             * @param {string} action
-             * @param {Object} datagrid
-             * @param {string|int} id
-             */
+  /**
+   * Update the user session selection to be able to restore it if he switches tabs
+   *
+   * @param {string} action
+   * @param {Object} datagrid
+   * @param {string|int} id
+   */
   updateSelectedAssociations: function (action, datagrid, id) {
     var assocType = this.getCurrentAssociationType()
     var assocTarget = this.getDatagridTarget(datagrid)
     var selectedAssoc = state.selectedAssociations || {}
     selectedAssoc[assocType] = selectedAssoc[assocType] || {}
     if (!selectedAssoc[assocType][assocTarget]) {
-      selectedAssoc[assocType][assocTarget] = {'select': [], 'unselect': []}
+      selectedAssoc[assocType][assocTarget] = {
+        'select': [],
+        'unselect': []
+      }
     }
 
     var revertAction = action === 'select' ? 'unselect' : 'select'
@@ -404,8 +412,8 @@ export default BaseForm.extend({
     } else {
       selectedAssoc[assocType][assocTarget][action].push(id)
       selectedAssoc[assocType][assocTarget][action] = _.uniq(
-                        selectedAssoc[assocType][assocTarget][action]
-                    )
+        selectedAssoc[assocType][assocTarget][action]
+      )
     }
 
     state.selectedAssociations = selectedAssoc
@@ -413,41 +421,45 @@ export default BaseForm.extend({
     this.getRoot().trigger('pim_enrich:form:entity:update_state')
   },
 
-            /**
-             * Update the form data (product) associations
-             *
-             * @param {Array} currentAssociations
-             * @param {string} assocType
-             * @param {string} assocTarget
-             */
+  /**
+   * Update the form data (product) associations
+   *
+   * @param {Array} currentAssociations
+   * @param {string} assocType
+   * @param {string} assocTarget
+   */
   updateFormDataAssociations: function (currentAssociations, assocType, assocTarget) {
     var modelAssociations = this.getFormData().associations
     modelAssociations[assocType][assocTarget] = currentAssociations
     modelAssociations[assocType][assocTarget].sort()
 
-    this.setData({'associations': modelAssociations}, {silent: true})
+    this.setData({
+      'associations': modelAssociations
+    }, {
+      silent: true
+    })
   },
 
-            /**
-             * Return if the specified grid is already rendered
-             *
-             * @param {Object} grid
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Return if the specified grid is already rendered
+   *
+   * @param {Object} grid
+   *
+   * @returns {boolean}
+   */
   isGridRendered: function (grid) {
     return this.$('.grid-' + grid.name)
-                    .find('[data-type="datagrid"][data-rendered="true"]')
-                    .length > 0
+        .find('[data-type="datagrid"][data-rendered="true"]')
+        .length > 0
   },
 
-            /**
-             * Get the given datagrid target (products or groups)
-             *
-             * @param {Object} datagrid
-             *
-             * @returns {string}
-             */
+  /**
+   * Get the given datagrid target (products or groups)
+   *
+   * @param {Object} datagrid
+   *
+   * @returns {string}
+   */
   getDatagridTarget: function (datagrid) {
     var assocTarget = null
 
@@ -460,11 +472,11 @@ export default BaseForm.extend({
     return assocTarget
   },
 
-            /**
-             * Check if this extension is visible
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Check if this extension is visible
+   *
+   * @returns {boolean}
+   */
   isVisible: function () {
     return true
   }

@@ -6,31 +6,32 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
+
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/channel/tab/properties/general/currencies'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'AknFieldContainer',
   template: _.template(template),
 
-            /**
-             * Configures this extension.
-             *
-             * @return {Promise}
-             */
+  /**
+   * Configures this extension.
+   *
+   * @return {Promise}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -53,20 +54,20 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Sets new currencies on change.
-             *
-             * @param {Object} event
-             */
+  /**
+   * Sets new currencies on change.
+   *
+   * @param {Object} event
+   */
   updateState: function (event) {
     this.setCurrencies(event.val)
   },
 
-            /**
-             * Sets specified currencies into root model.
-             *
-             * @param {Array} codes
-             */
+  /**
+   * Sets specified currencies into root model.
+   *
+   * @param {Array} codes
+   */
   setCurrencies: function (codes) {
     if (codes === null) {
       codes = []

@@ -2,6 +2,8 @@ import $ from 'jquery'
 
 var formId
 var cb
+const sessionStorage = window.sessionStorage
+
 function saveFormState () {
   var $form = $('#' + formId)
   var activeTab = $form.find('#form-navbar').find('li.active').find('a').attr('href')
@@ -74,4 +76,5 @@ export default function (id, callback) {
   restoreFormState()
   $('#' + formId).on('shown', 'a[data-toggle="tab"]', saveFormState)
   $('#' + formId).on('tab.loaded', restoreFormState)
-};
+}
+;

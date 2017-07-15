@@ -10,15 +10,13 @@
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
-import Backbone from 'backbone'
 import BaseForm from 'pim/form'
 import template from 'pim/template/product/history'
-import Routing from 'routing'
-import mediator from 'oro/mediator'
 import FetcherRegistry from 'pim/fetcher-registry'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import 'bootstrap-modal'
+
 export default BaseForm.extend({
   template: _.template(template),
   className: 'panel-pane history-panel',
@@ -29,9 +27,9 @@ export default BaseForm.extend({
     'click .expanded .AknGrid-bodyCell': 'toggleVersion'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.code,
@@ -44,9 +42,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
       return this
@@ -54,35 +52,35 @@ export default BaseForm.extend({
 
     if (this.getFormData().meta) {
       this.getVersions()
-                        .then(function (versions) {
-                          this.$el.html(
-                                this.template({
-                                  versions: versions,
-                                  expanded: true,
-                                  hasAction: this.actions
-                                })
-                            )
+        .then(function (versions) {
+          this.$el.html(
+            this.template({
+              versions: versions,
+              expanded: true,
+              hasAction: this.actions
+            })
+          )
 
-                          this.renderExtensions()
+          this.renderExtensions()
 
-                          if (this.actions) {
-                            _.each(this.$el.find('td.actions'), function (element) {
-                              _.each(this.actions, function (action) {
-                                $(element).append(action.clone(true))
-                              })
-                            }.bind(this))
-                          }
+          if (this.actions) {
+            _.each(this.$el.find('td.actions'), function (element) {
+              _.each(this.actions, function (action) {
+                $(element).append(action.clone(true))
+              })
+            }.bind(this))
+          }
 
-                          this.delegateEvents()
-                        }.bind(this))
+          this.delegateEvents()
+        }.bind(this))
     }
 
     return this
   },
 
-            /**
-             * Update the history by fetching it from the backend
-             */
+  /**
+   * Update the history by fetching it from the backend
+   */
   update: function () {
     if (this.getFormData().meta) {
       FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id)
@@ -91,47 +89,51 @@ export default BaseForm.extend({
     this.render()
   },
 
-            /**
-             * Get history versions from the backend
-             *
-             * @return {Promise}
-             */
+  /**
+   * Get history versions from the backend
+   *
+   * @return {Promise}
+   */
   getVersions: function () {
     return FetcherRegistry.getFetcher('product-history').fetch(
-                    this.getFormData().meta.id,
-                    { entityId: this.getFormData().meta.id }
-                ).then(this.addAttributesLabelToVersions.bind(this))
+      this.getFormData().meta.id,
+      {
+        entityId: this.getFormData().meta.id
+      }
+    ).then(this.addAttributesLabelToVersions.bind(this))
   },
 
-            /**
-             * Add attributes label to all versions
-             *
-             * @param {Array} versions
-             */
+  /**
+   * Add attributes label to all versions
+   *
+   * @param {Array} versions
+   */
   addAttributesLabelToVersions: function (versions) {
     var codes = this.getAttributeCodesInVersions(versions)
 
     return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(codes)
-                    .then(function (attributes) {
-                      _.each(versions, function (version) {
-                        _.each(version.changeset, function (data, index) {
-                          var code = index.split('-')[0]
-                          var attribute = _.findWhere(attributes, { code: code })
-                          data.label = attribute ? this.getAttributeLabel(attribute, index) : index
-                        }.bind(this))
-                      }.bind(this))
+      .then(function (attributes) {
+        _.each(versions, function (version) {
+          _.each(version.changeset, function (data, index) {
+            var code = index.split('-')[0]
+            var attribute = _.findWhere(attributes, {
+              code: code
+            })
+            data.label = attribute ? this.getAttributeLabel(attribute, index) : index
+          }.bind(this))
+        }.bind(this))
 
-                      return versions
-                    }.bind(this))
+        return versions
+      }.bind(this))
   },
 
-            /**
-             * Return the list of unique attribute codes found in all versions
-             *
-             * @param {Array} versions
-             *
-             * @returns {Array}
-             */
+  /**
+   * Return the list of unique attribute codes found in all versions
+   *
+   * @param {Array} versions
+   *
+   * @returns {Array}
+   */
   getAttributeCodesInVersions: function (versions) {
     var codes = []
     _.each(versions, function (version) {
@@ -143,14 +145,14 @@ export default BaseForm.extend({
     return _.uniq(codes)
   },
 
-            /**
-             * Get attribute label
-             *
-             * @param {object} attribute
-             * @param {string} key
-             *
-             * @return {string}
-             */
+  /**
+   * Get attribute label
+   *
+   * @param {object} attribute
+   * @param {string} key
+   *
+   * @return {string}
+   */
   getAttributeLabel: function (attribute, key) {
     var uiLocale = UserContext.get('catalogLocale')
     var label = i18n.getLabel(attribute.labels, uiLocale, attribute.code)
@@ -175,20 +177,20 @@ export default BaseForm.extend({
     return label + info
   },
 
-            /**
-             * Add action to the history
-             *
-             * @param {Event} event
-             */
+  /**
+   * Add action to the history
+   *
+   * @param {Event} event
+   */
   addAction: function (event) {
     this.actions[event.code] = event.element
   },
 
-            /**
-             * Toggle history version line
-             *
-             * @param {Event} event
-             */
+  /**
+   * Toggle history version line
+   *
+   * @param {Event} event
+   */
   toggleVersion: function (event) {
     var $row = $(event.currentTarget).closest('.AknGrid-bodyRow')
     var $body = $row.closest('.AknGrid')
