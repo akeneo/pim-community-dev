@@ -75,7 +75,7 @@ define(
                             .then(function (attributeGroups) {
                                 return this.populateGroupProperties(attributes, attributeGroups);
                             }.bind(this));
-                    });
+                    }.bind(this));
             },
 
             /**
@@ -121,4 +121,3 @@ define(
         });
     }
 );
-
