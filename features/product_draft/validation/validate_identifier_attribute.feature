@@ -23,6 +23,7 @@ Feature: Validate identifier attribute of a draft
     Given I am on the "sku" attribute page
     And I change the "Max characters" to "10"
     And I save the attribute
+    Then I should not see the text "There are unsaved changes"
     When I am on the "foo" product page
     And I change the SKU to "sku-0000000"
     And I save the product
@@ -34,6 +35,7 @@ Feature: Validate identifier attribute of a draft
     And I change the "Validation rule" to "Regular expression"
     And I change the "Regular expression" to "/^sku-\d*$/"
     And I save the attribute
+    Then I should not see the text "There are unsaved changes"
     When I am on the "foo" product page
     And I change the SKU to "001"
     And I save the product
