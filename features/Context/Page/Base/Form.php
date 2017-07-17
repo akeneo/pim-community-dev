@@ -507,7 +507,7 @@ class Form extends Base
                 return false;
             }
 
-            return $container->find('css', '.select2, .select2-default');
+            return $container->find('css', '.select2-container');
         }, 'Impossible to find the select');
         $select2 = $this->decorate($select2, [Select2Decorator::class]);
         $selectChoices = $select2->getAvailableValues();

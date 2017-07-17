@@ -96,7 +96,8 @@ define(
                                     search: term,
                                     options: {
                                         limit: 20,
-                                        page: page
+                                        page: page,
+                                        catalogLocale: UserContext.get('catalogLocale')
                                     }
                                 };
                             }.bind(this),
