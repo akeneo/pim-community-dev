@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -47,20 +48,23 @@ class EntityWithValuesSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($product, array $options = [])
+    public function save($entity, array $options = [])
     {
-        $this->validateProduct($product);
+        $this->validateProduct($entity);
 
         $options['unitary'] = true;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($entity, $options));
 
-        $this->uniqueDataSynchronizer->synchronize($product);
+        // TODO REMOVE THAT IN PIM-6448-validation
+        if ($entity instanceof ProductInterface) {
+            $this->uniqueDataSynchronizer->synchronize($entity);
+        }
 
-        $this->objectManager->persist($product);
+        $this->objectManager->persist($entity);
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($entity, $options));
     }
 
     /**

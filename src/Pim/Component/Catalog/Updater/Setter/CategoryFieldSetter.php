@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -40,7 +41,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData($entity, $field, $data, array $options = [])
     {
-        if (!$entity instanceof EntityWithValuesInterface) {
+        if (!$entity instanceof CategoryAwareInterface) {
             throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
         }
 

@@ -2,23 +2,22 @@
 
 namespace Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Component\StorageUtils\Exception\ResourceNotFoundException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * Sets a property of a product
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityWithValuesPropertySetter implements PropertySetterInterface
+class PropertySetter implements PropertySetterInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
@@ -41,15 +40,8 @@ class EntityWithValuesPropertySetter implements PropertySetterInterface
     /**
      * {@inheritdoc}
      */
-    public function setData($entityWithValues, $field, $data, array $options = [])
+    public function setData($entity, $field, $data, array $options = [])
     {
-        if (!$entityWithValues instanceof EntityWithValuesInterface) {
-            throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($entityWithValues),
-                EntityWithValuesInterface::class
-            );
-        }
-
         $setter = $this->setterRegistry->getSetter($field);
         if (null === $setter) {
             throw UnknownPropertyException::unknownProperty($field);
@@ -57,9 +49,9 @@ class EntityWithValuesPropertySetter implements PropertySetterInterface
 
         if ($setter instanceof AttributeSetterInterface) {
             $attribute = $this->getAttribute($field);
-            $setter->setAttributeData($entityWithValues, $attribute, $data, $options);
+            $setter->setAttributeData($entity, $attribute, $data, $options);
         } else {
-            $setter->setFieldData($entityWithValues, $field, $data, $options);
+            $setter->setFieldData($entity, $field, $data, $options);
         }
 
         return $this;

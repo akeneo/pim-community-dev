@@ -27,7 +27,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.product_model.interface%'
+            - '@pim_catalog.synchronizer.product_unique_data'
 
     pim_catalog.synchronizer.product_unique_data:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'

@@ -39,13 +39,6 @@ class ProductModelIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->get('doctrine.orm.entity_manager')
-            ->detach($productModel);
-
-        /** @var ProductModelInterface $productModel */
-        $productModel = $this->get('pim_catalog.repository.product_model')
-            ->findOneByIdentifier('product_model_identifier');
-
         $this->assertNotNull(
             $productModel,
             'The product model with the identifier "product_model_identifier" does not exist'

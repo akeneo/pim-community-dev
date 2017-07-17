@@ -5,7 +5,6 @@
 - TIP-718: Update group types form
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
-- PIM-6448: PIM-6448: Product model CRUD API
 
 ## Technical improvements
 
@@ -16,6 +15,7 @@
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- PIM-6448: Product model CRUD API
 
 ## UI\UX Refactoring
 
