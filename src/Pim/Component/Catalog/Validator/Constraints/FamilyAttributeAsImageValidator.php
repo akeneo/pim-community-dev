@@ -23,7 +23,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($family, Constraint $constraint)
+    public function validate($family, Constraint $constraint): void
     {
         if (!$family instanceof FamilyInterface) {
             return;
@@ -60,7 +60,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function doesAttributeAsImageBelongToFamily(FamilyInterface $family)
+    protected function doesAttributeAsImageBelongToFamily(FamilyInterface $family): bool
     {
         return in_array($family->getAttributeAsImage()->getCode(), $family->getAttributeCodes());
     }
@@ -70,7 +70,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function isAttributeAsImageTypeValid(FamilyInterface $family)
+    protected function isAttributeAsImageTypeValid(FamilyInterface $family): bool
     {
         return AttributeTypes::IMAGE === $family->getAttributeAsImage()->getType();
     }
@@ -80,7 +80,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function isAttributeAsImageGlobal(FamilyInterface $family)
+    protected function isAttributeAsImageGlobal(FamilyInterface $family): bool
     {
         return !$family->getAttributeAsImage()->isScopable() && !$family->getAttributeAsImage()->isLocalizable();
     }

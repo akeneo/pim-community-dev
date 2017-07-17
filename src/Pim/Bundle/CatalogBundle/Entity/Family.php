@@ -245,7 +245,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributeAsImage(?AttributeInterface $attributeAsImage)
+    public function setAttributeAsImage(?AttributeInterface $attributeAsImage): FamilyInterface
     {
         $this->attributeAsImage = $attributeAsImage;
 
@@ -255,7 +255,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeAsImage()
+    public function getAttributeAsImage(): ?AttributeInterface
     {
         return $this->attributeAsImage;
     }

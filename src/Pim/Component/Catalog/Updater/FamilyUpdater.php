@@ -386,7 +386,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setAttributeAsImage(FamilyInterface $family, $data)
+    protected function setAttributeAsImage(FamilyInterface $family, $data): void
     {
         if (null === $data || '' === $data) {
             $family->setAttributeAsImage(null);

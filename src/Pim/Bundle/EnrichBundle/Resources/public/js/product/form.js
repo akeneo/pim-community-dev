@@ -210,7 +210,7 @@ define(
 
                 if (null === zone) {
                     throw new Error('Can not render extension "' + extension.code + '" in "' + this.code + '": ' +
-                        'zone "' + code + '" does not exist');
+                        'zone "' + extension.targetZone + '" does not exist');
                 }
 
                 zone.appendChild(extension.el);

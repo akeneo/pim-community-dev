@@ -101,12 +101,12 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
      *
      * @return FamilyInterface
      */
-    public function setAttributeAsImage(?AttributeInterface $attributeAsImage);
+    public function setAttributeAsImage(?AttributeInterface $attributeAsImage): FamilyInterface;
 
     /**
      * @return AttributeInterface
      */
-    public function getAttributeAsImage();
+    public function getAttributeAsImage(): ?AttributeInterface;
 
     /**
      * Add attribute requirement

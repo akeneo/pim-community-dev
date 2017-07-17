@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -50,7 +50,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
         $data['label'] = $product->getLabel($locale);
-        $data['image'] = $this->normalizeImage($product->getImage());
+        $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
         $data['completeness'] = $this->getCompleteness($product, $context);
 
         return $data;
@@ -135,20 +135,15 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     }
 
     /**
-     * @param FileInfoInterface|null $data
+     * @param ValueInterface $data
+     * @param string         $format
+     * @param array          $context
      *
-     * @return array
+     * @return array|null
      */
-    protected function normalizeImage(FileInfoInterface $data = null)
+    protected function normalizeImage(?ValueInterface $data, $format, $context = [])
     {
-        if (null === $data) {
-            return null;
-        }
-
-        return [
-            'filePath'         => $data->getKey(),
-            'originalFileName' => $data->getOriginalFilename()
-        ];
+        return $this->serializer->normalize($data, $format, $context)['data'];
     }
 
     /**

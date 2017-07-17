@@ -364,10 +364,7 @@ abstract class AbstractProduct implements ProductInterface
             if (null !== $attributeAsImage) {
                 $value = $this->getValue($attributeAsImage->getCode());
                 if (null !== $value) {
-                    $data = $value->getData();
-                    if (!empty($data)) {
-                        return $data;
-                    }
+                    return $value;
                 }
             }
         }

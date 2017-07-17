@@ -13,6 +13,8 @@ use Pim\Component\Catalog\Model\GroupTranslationInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -55,7 +57,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $values,
         Completeness $completeness,
         LocaleInterface $localeEN,
-        ChannelInterface $channelEcommerce
+        ChannelInterface $channelEcommerce,
+        ValueInterface $image
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -97,9 +100,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
-        $product->getImage()->willReturn([
-            'filePath'         => '/p/i/m/4/all.png',
-            'originalFileName' => 'all.png',
+        $product->getImage()->willReturn($image);
+        $serializer->normalize($image, Argument::any(), Argument::any())->willReturn([
+            'data' => [
+                'filePath'         => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png',
+            ]
         ]);
         $completeness->getLocale()->willReturn($localeEN);
         $completeness->getChannel()->willReturn($channelEcommerce);
@@ -146,7 +152,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $productValues,
         Completeness $completeness,
         LocaleInterface $localeEN,
-        ChannelInterface $channelEcommerce
+        ChannelInterface $channelEcommerce,
+        ValueInterface $image
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -188,9 +195,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
-        $product->getImage()->willReturn([
-            'filePath'         => '/p/i/m/4/all.png',
-            'originalFileName' => 'all.png',
+        $product->getImage()->willReturn($image);
+        $serializer->normalize($image, Argument::any(), Argument::any())->willReturn([
+            'data' => [
+                'filePath'         => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png'
+            ]
         ]);
         $completeness->getLocale()->willReturn($localeEN);
         $completeness->getChannel()->willReturn($channelEcommerce);

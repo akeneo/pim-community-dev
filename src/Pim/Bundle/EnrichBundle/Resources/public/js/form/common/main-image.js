@@ -27,8 +27,6 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
-                console.log('render');
-                debugger;
                 this.config = config.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -38,8 +36,6 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                console.log('render');
-                debugger;
                 this.$el.empty().append(this.template({
                     path: this.getPath()
                 }));
@@ -56,8 +52,6 @@ define(
                 if (undefined !== this.config.path) {
                     return this.config.path;
                 }
-                debugger;
-                console.log(this.getFormData());
 
                 var filePath = _.result(this.getFormData().meta.image, 'filePath', null);
 
