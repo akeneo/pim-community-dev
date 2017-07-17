@@ -18,10 +18,14 @@ app/file_storage/*
 app/bootstrap.php.cache
 app/phpunit.xml
 build/
+/docker/*
+!/docker/akeneo.conf
+!/docker/akeneo-behat.conf
 vendor
 composer.phar
 /cov
-bin
+/bin/*
+!/bin/merge-coverage
 behat.yml
 /phpspec.yml
 web/uploads/*
@@ -33,3 +37,4 @@ composer.lock
 .php_cs.cache
 node_modules/
 .grunt/
+docker-compose.yml
