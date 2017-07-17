@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -53,20 +54,32 @@ class FamilyVariantValidator extends ConstraintValidator
         }
 
         $this->validateAxesAttributes($familyVariant->getAxes());
-        $this->validateAttributes($familyVariant->getAttributes());
+        $this->validateAttributes($familyVariant);
         $this->validateNumberOfLevelAndAxis($familyVariant);
     }
 
     /**
      * Validate the attribute set attributes
      *
-     * @param Collection $attributes
+     * @param FamilyVariantInterface $familyVariant
      */
-    private function validateAttributes(Collection $attributes): void
+    private function validateAttributes(FamilyVariantInterface $familyVariant): void
     {
-        $attributeCodes = $attributes->map(function (AttributeInterface $attribute) {
+        $family = $familyVariant->getFamily();
+        $attributeCodes = $familyVariant->getAttributes()->map(function (AttributeInterface $attribute) {
             return $attribute->getCode();
         })->toArray();
+
+        foreach ($attributeCodes as $attributeCode) {
+            if (!$family->hasAttributeCode($attributeCode)) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_has_family_attribute');
+                $this->context->buildViolation($message, [
+                    '%attribute%' => $attributeCode,
+                    '%family%' => $family->getCode(),
+                    '%family_variant%' => $familyVariant->getCode(),
+                ])->addViolation();
+            }
+        }
 
         if (count($attributeCodes) !== count(array_unique($attributeCodes))) {
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_attributes_unique');

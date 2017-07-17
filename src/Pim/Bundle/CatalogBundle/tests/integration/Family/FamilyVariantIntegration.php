@@ -298,6 +298,45 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
+     * Validation: Family variant attributes must be present in the family the family variant is attached too
+     */
+    public function testTheAttributesAreInTheFamily()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color', 'size'],
+                    'attributes' => [
+                        'weather_conditions',
+                        'rating',
+                        'side_view',
+                        'top_view',
+                        'lace_color',
+                        'sku',
+                        'price',
+                        'heel_color',
+                    ],
+                    'level'=> 1,
+                ],
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            '"heel_color" attribute cannot be added to "family_variant" family variant, as it is not an attribute of the "boots" family',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
