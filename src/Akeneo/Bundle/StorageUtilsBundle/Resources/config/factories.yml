@@ -1,9 +1,2 @@
 parameters:
-    akeneo_storage_utils.factory.referenced_collection.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollectionFactory
-    akeneo_storage_utils.factory.simple.class:                Akeneo\Component\StorageUtils\Factory\SimpleFactory
-
-services:
-    akeneo_storage_utils.factory.referenced_collection:
-        class: '%akeneo_storage_utils.factory.referenced_collection.class%'
-        arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+    akeneo_storage_utils.factory.simple.class: Akeneo\Component\StorageUtils\Factory\SimpleFactory

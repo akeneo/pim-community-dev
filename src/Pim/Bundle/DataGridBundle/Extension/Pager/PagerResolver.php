@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**

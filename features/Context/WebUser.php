@@ -2,23 +2,19 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
-use Behat\Behat\Exception\BehaviorException;
+use Behat\ChainedStepsExtension\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Context\PimContext;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -30,12 +26,12 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebUser extends RawMinkContext
+class WebUser extends PimContext
 {
     use SpinCapableTrait;
     use ClosestTrait;
-    /* -------------------- Page-related methods -------------------- */
 
+    /* -------------------- Page-related methods -------------------- */
 
     /**
      * @param string $name
@@ -89,7 +85,6 @@ class WebUser extends RawMinkContext
     public function iChooseTheAttributeType($type)
     {
         $this->getCurrentPage()->selectAttributeType($type);
-        $this->wait();
     }
 
     /**
@@ -145,6 +140,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $tab
      *
+     * @Given /^I visit the "([^"]*)" column tab$/
+     */
+    public function iVisitTheColumnTab($tab)
+    {
+        return $this->getCurrentPage()->visitColumnTab($tab);
+    }
+
+    /**
+     * @param string $tab
+     *
      * @throws ExpectationException
      *
      * @Then /^I should be on the "([^"]*)" tab$/
@@ -162,6 +167,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $tabName
+     *
+     * @Then /^I should be on the "([^"]*)" column tab$/
+     */
+    public function iShouldBeOnTheColumnTab($tabName)
+    {
+        $this->spin(function () use ($tabName) {
+            $tab = $this->getCurrentPage()->getCurrentColumnTab($tabName);
+
+            return null !== $tab && $tabName === trim($tab->getText());
+        }, sprintf('Failed to check current column tab is "%s"', $tabName));
+    }
+
+    /**
      * @Then /^I should see the "([^"]*)" tab$/
      */
     public function iShouldSeeTheTab($tab)
@@ -170,6 +189,32 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param $not     string|null
+     * @param $tabName string
+     *
+     * @Then /^I should (?P<not>not )?see the "(?P<tabName>[^"]*)" column tab$/
+     */
+    public function iShouldSeeTheColumnTab($tabName, $not = null)
+    {
+        $this->spin(function () use ($not, $tabName) {
+            $found = false;
+            foreach ($this->getCurrentPage()->getColumnTabs() as $tab) {
+                if (trim($tab->getText()) === $tabName) {
+                    $found = true;
+                }
+            }
+
+            if (!$not) {
+                return $found;
+            } else {
+                return !$found;
+            }
+        }, sprintf('Expected to %ssee the "%s" column tab', $not, $tabName));
+    }
+
+    /**
+     * @param string $tab
+     *
      * @Then /^I should not see the "([^"]*)" tab$/
      */
     public function iShouldNotSeeTheTab($tab)
@@ -178,35 +223,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I open the history$/
+     * @param string $expectedCount
      *
-     * @throws ExpectationException
-     */
-    public function iOpenTheHistory()
-    {
-        $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
-        $this->getMainContext()->spin(function () {
-            $fullPanel = $this->getCurrentPage()->find(
-                'css',
-                '.AknTabContainer-contentThreeColumns.AknTabContainer-contentThreeColumns--fullPanel'
-            );
-
-            if ((null === $fullPanel) || !$fullPanel->isVisible()) {
-                $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
-                if (null !== $expandHistory && $expandHistory->isVisible()) {
-                    $expandHistory->click();
-                }
-
-                return false;
-            }
-
-            return true;
-        }, 'Cannot expand history');
-
-        $this->wait();
-    }
-
-    /**
      * @Then /^I should see (\d+) versions in the history$/
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
@@ -222,13 +240,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $group
+     * @param string      $group
+     * @param string|null $type
      *
-     * @Given /^I visit the "([^"]*)" group$/
+     * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
      */
-    public function iVisitTheGroup($group)
+    public function iVisitTheGroup($group, $type)
     {
-        $this->getCurrentPage()->visitGroup($group);
+        $this->getCurrentPage()->visitGroup($group, ucfirst($type));
+    }
+
+    /**
+     * @param string $type
+     *
+     * @Given /^I open the (group|association type|tree) selector$/
+     */
+    public function iOpenTheGroup($type)
+    {
+        $this->getCurrentPage()->openGroupSelector(ucfirst($type));
     }
 
     /**
@@ -251,9 +280,7 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
-        $tab = $this->spin(function () use ($tabName) {
-            return $this->getCurrentPage()->getTab($tabName);
-        }, sprintf('Tab "%s" not found', $tabName));
+        $tab = $this->getCurrentPage()->getTab($tabName);
 
         $this->spin(function () use ($tab, $expectedErrorsCount) {
             return $this->getTabErrorsCount($tab) === intval($expectedErrorsCount);
@@ -287,7 +314,15 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleShouldBeSelected($locale)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->hasSelectedLocale($locale);
+        $mainContextSelector = $this->getElementOnCurrentPage('Main context selector');
+
+        $this->spin(function () use ($locale, $mainContextSelector) {
+            return $mainContextSelector->getSelectedLocale() === $locale;
+        }, sprintf(
+            'Expected to have locale "%s", found "%s"',
+            $locale,
+            $mainContextSelector->getSelectedLocale()
+        ));
     }
 
     /**
@@ -297,7 +332,9 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheLocaleTo($locale)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->switchLocale($locale);
+        $mainSelector = $this->getElementOnCurrentPage('Main context selector');
+
+        $mainSelector->switchLocale($locale);
         $this->wait();
     }
 
@@ -308,7 +345,9 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheScopeTo($scope)
     {
-        $this->getCurrentPage()->getElement('Main context selector')->switchScope($scope);
+        $element = $this->getElementOnCurrentPage('Main context selector');
+
+        $element->switchScope($scope);
         $this->wait();
     }
 
@@ -391,8 +430,10 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeConfirmDialog()
     {
-        return $this->spin(function () {
-            return null === $this->getCurrentPage()->getElement('Dialog')->find('css', '.ok');
+        $dialog = $this->getElementOnCurrentPage('Dialog');
+
+        return $this->spin(function () use ($dialog) {
+            return null === $dialog->find('css', '.ok');
         }, 'Confirm dialog button is still visible');
     }
 
@@ -722,14 +763,15 @@ class WebUser extends RawMinkContext
 
     /**
      * @param string $not
+     * @param string $ordered
      * @param string $choices
      * @param string $label
      *
-     * @Then /^I should(?P<not> not)? see the choices? (?P<choices>.+) in (?P<label>.+)$/
+     * @Then /^I should(?P<not> not)? see the(?P<ordered> ordered)? choices? (?P<choices>.+) in (?P<label>.+)$/
      */
-    public function iShouldSeeTheChoicesInField($not, $choices, $label)
+    public function iShouldSeeTheChoicesInField($not, $choices, $label, $ordered = null)
     {
-        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not);
+        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not, $ordered !== null);
     }
 
     /**
@@ -871,36 +913,34 @@ class WebUser extends RawMinkContext
     /**
      * @Then /^I should see select choices of the "(.*)" in the following order:$/
      *
-     * @param string $field
-     * @param array  $items
+     * @param string       $fieldName
+     * @param PyStringNode $items
      */
     public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
     {
-        $searched = array_values(explode(',', implode(',', $items->getLines())));
+        $expectedChoices = array_values(explode(',', implode(',', $items->getStrings())));
 
-        $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+        $label = $this->spin(function () use ($fieldName) {
+            return $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+        }, sprintf('Cannot find field "%s"', $fieldName));
 
-        $valuesRoot = $this->getClosest($label, 'select2');
+        $this->spin(function () use ($label, $expectedChoices) {
+            $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
 
-        $foundChoices = $valuesRoot
-            ->findAll('css', '.field-input select option');
+            $foundChoices = $fieldContainer
+                ->findAll('css', '.AknFieldContainer-inputContainer select option');
 
-        $fieldsArray = [];
-        foreach ($foundChoices as $choice) {
-            $fieldsArray[] = trim($choice->getHtml());
-        }
+            $foundChoices = array_map(function ($choice) {
+                return trim($choice->getHtml());
+            }, $foundChoices);
 
-        $fieldsArray = array_values(array_filter($fieldsArray));
+            $foundChoices = array_values(array_filter($foundChoices));
 
-        if ($searched !== $fieldsArray) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Order of choices for field "%s" is not as expected, got: %s',
-                    $fieldName,
-                    implode(', ', $fieldsArray)
-                )
-            );
-        }
+            return $expectedChoices === $foundChoices;
+        }, sprintf(
+            'Order of choices for field "%s" is not as expected.',
+            $fieldName
+        ));
     }
 
     /**
@@ -920,18 +960,18 @@ class WebUser extends RawMinkContext
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? ([^"]*)(?: in group "([^"]*)")?$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
+    public function iShouldSeeAvailableAttributes($not, $attributes, $group = null)
     {
         $expecting = !$not;
 
         foreach ($this->listToArray($attributes) as $attribute) {
             $result = $this->getCurrentPage()
                 ->getAttributeAddSelect()
-                ->hasAvailableOptionGroupPair($attribute, $group);
+                ->hasAvailableOption($attribute, $group);
 
             if ($expecting !== $result) {
                 throw $this->createExpectationException(
@@ -983,7 +1023,7 @@ class WebUser extends RawMinkContext
     /**
      * @param string $groups
      *
-     * @Then /^I add attributes by group "([^"]*)"$/
+     * @Then /^I add attributes by groups? "([^"]*)"$/
      */
     public function iAddAttributesByGroup($groups)
     {
@@ -1129,7 +1169,7 @@ class WebUser extends RawMinkContext
      * @When /^I remove the "([^"]*)" attribute$/
      *
      * @throws ExpectationException
-     * @throws \Behat\Mink\Exception\ElementNotFoundException
+     * @throws ElementNotFoundException
      */
     public function iRemoveTheAttribute($field)
     {
@@ -1216,9 +1256,11 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeReorderHandles()
     {
-        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
-            throw $this->createExpectationException('No reorder handle found');
-        }
+        $this->spin(function () {
+            $count = $this->getCurrentPage()->countOrderableOptions();
+
+            return $count > 0;
+        }, 'Expected to see reorder handles.');
     }
 
     /**
@@ -1226,9 +1268,11 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeReorderHandles()
     {
-        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
-            throw $this->createExpectationException('Reorder handle was not expected');
-        }
+        $this->spin(function () {
+            $count = $this->getCurrentPage()->countOrderableOptions();
+
+            return $count <= 0;
+        }, 'Expected not to see reorder handles.');
     }
 
     /**
@@ -1292,7 +1336,9 @@ class WebUser extends RawMinkContext
 
         foreach ($table->getRowsHash() as $field => $value) {
             $this->spin(function () use ($field, $value, $element) {
-                $this->getCurrentPage()->fillField($field, $value, $element);
+                $currentPage = $this->getCurrentPage();
+
+                $currentPage->fillField($field, $value, $element);
 
                 return true;
             }, sprintf('Cannot fill the field %s', $field));
@@ -1427,7 +1473,6 @@ class WebUser extends RawMinkContext
 
                 $this->getCurrentPage()->addOption($code, $data);
 
-                $this->wait();
                 return true;
             }, sprintf('Unable to create the attribute option %s', $data['Code']));
         }
@@ -1450,22 +1495,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param TableNode $table
-     *
      * @When /^I add an empty attribute option$/
-     * @When /^I add the following attribute option:$/
      */
-    public function iAddAnOptionRow(TableNode $table = null)
+    public function iAddAnEmptyAttributeOption()
     {
         $this->getCurrentPage()->createOption();
-
-        if (null !== $table) {
-            $values = $table->getRowsHash();
-            $code = $values['Code'];
-            unset($values['Code']);
-
-            $this->getCurrentPage()->fillLastOption($code, $values);
-        }
     }
 
     /**
@@ -1473,7 +1507,7 @@ class WebUser extends RawMinkContext
      */
     public function iUpdateTheLastAttributeOption()
     {
-        $this->getCurrentPage()->saveLastOption();
+        $this->getCurrentPage()->saveNewOption();
     }
 
     /**
@@ -1639,21 +1673,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @When /^I save and back to the grid$/
-     */
-    public function iSaveAndBackToTheGrid()
-    {
-        $this->spin(function () {
-            $this
-                ->getCurrentPage()
-                ->getSaveAndBackButton()
-                ->click();
-
-            return true;
-        }, 'Cannot click on the back to the grid button');
-    }
-
-    /**
      * @param string $action
      *
      * @Given /^I (enable|disable) the product$/
@@ -1727,7 +1746,7 @@ class WebUser extends RawMinkContext
     public function productShouldBeDisabled(Product $product)
     {
         $this->spin(function () use ($product) {
-            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+            $this->getMainContext()->getEntityManager()->refresh($product);
 
             return !$product->isEnabled();
         }, 'Product was expected to be be disabled');
@@ -1743,7 +1762,7 @@ class WebUser extends RawMinkContext
     public function productShouldBeEnabled(Product $product)
     {
         $this->spin(function () use ($product) {
-            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+            $this->getMainContext()->getEntityManager()->refresh($product);
 
             return $product->isEnabled();
         }, 'Product was expected to be be enabled');
@@ -1872,6 +1891,10 @@ class WebUser extends RawMinkContext
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $code));
+
+        $this->wait();
+
+        $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     /**
@@ -2249,7 +2272,6 @@ class WebUser extends RawMinkContext
      *
      * @return array
      *
-     *
      * @Given /^I should see the following product comments:$/
      */
     public function iShouldSeeTheFollowingProductComments(TableNode $table)
@@ -2382,17 +2404,7 @@ class WebUser extends RawMinkContext
      */
     public function clearUOW()
     {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->clear();
-        }
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
+        $this->getMainContext()->getEntityManager()->clear();
     }
 
     /**
@@ -2522,7 +2534,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    protected function replacePlaceholders($value)
+    public function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }
@@ -2584,6 +2596,24 @@ class WebUser extends RawMinkContext
         } else {
             assertEquals((int) $expectedCount, count($items));
         }
+    }
+
+    /**
+     * @When /^I collapse the column$/
+     */
+    public function iCollapseTheColumn()
+    {
+        $this->spin(function () {
+            $collapseButtons = $this->getCurrentPage()->findAll('css', '.AknColumn-collapseButton');
+
+            foreach ($collapseButtons as $collapseButton) {
+                if ($collapseButton->isVisible()) {
+                    $collapseButton->click();
+                }
+            }
+
+            return null !== $this->getCurrentPage()->find('css', '.AknColumn--collapsed');
+        }, 'Could not collapse the column');
     }
 
     /**

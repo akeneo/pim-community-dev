@@ -13,22 +13,23 @@ define(
         'oro/translator',
         'pim/form',
         'pim/router',
-        'pim/template/menu/item'
+        'pim/template/menu/item',
+        'oro/mediator'
     ],
     function (
         _,
         __,
         BaseForm,
         router,
-        template
+        template,
+        mediator
     ) {
         return BaseForm.extend({
-            tagName: 'li',
-            className: 'AknMainMenu-item',
             template: _.template(template),
             events: {
-                'click .menu-link': 'redirect'
+                'click .navigation-item': 'redirect'
             },
+            active: false,
 
             /**
              * {@inheritdoc}
@@ -36,26 +37,80 @@ define(
             initialize: function (config) {
                 this.config = config.config;
 
+                mediator.on('pim_menu:highlight:item', this.highlight, this);
+                mediator.on('pim_menu:redirect:item', this.redirect, this);
+
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * On configure, this module triggers an event to register it to tabs.
+             *
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.trigger('pim_menu:column:register_navigation_item', {
+                    code: this.getRoute(),
+                    label: this.getLabel(),
+                    position: this.position
+                });
+
+                BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    title: __(this.config.title),
-                    hasChild: 0 < _.keys(this.extensions).length
+                this.$el.empty().append(this.template({
+                    title: this.getLabel(),
+                    active: this.active
                 }));
 
-                BaseForm.prototype.render.apply(this, arguments);
+                this.delegateEvents();
+
+                return BaseForm.prototype.render.apply(this, arguments);
             },
 
             /**
              * Redirect the user to the config destination
+             *
+             * @param {Event} event
              */
-            redirect: function () {
-                router.redirectToRoute(this.config.to);
+            redirect: function (event) {
+                if (!_.has(event, 'extension') || event.extension === this.code) {
+                    router.redirectToRoute(this.getRoute());
+                }
+            },
+
+            /**
+             * Returns the route of the tab.
+             *
+             * @returns {string|undefined}
+             */
+            getRoute: function () {
+                return this.config.to;
+            },
+
+            /**
+             * Returns the displayed label of the tab
+             *
+             * @returns {string}
+             */
+            getLabel: function () {
+                return __(this.config.title);
+            },
+
+            /**
+             * Highlight or un-highlight item
+             *
+             * @param {Event}  event
+             * @param {string} event.extension The extension code to highlight
+             */
+            highlight: function (event) {
+                this.active = (event.extension === this.code);
+
+                this.render();
             }
         });
     });

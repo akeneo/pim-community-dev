@@ -2,6 +2,20 @@ extensions:
     pim-job-instance-csv-base-export-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-csv-base-export-edit-mainImage:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-csv-base-export-edit
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-export-csv.svg
+
+    pim-job-instance-csv-base-export-edit-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-base-export-edit
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-exports
+
     pim-job-instance-csv-base-export-edit-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-job-instance-csv-base-export-edit
@@ -110,19 +124,16 @@ extensions:
         targetZone: meta
         position: 100
 
-    pim-job-instance-csv-base-export-edit-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-job-instance-csv-base-export-edit-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-job-instance-csv-base-export-edit
-        targetZone: back
-        aclResourceId: pim_importexport_export_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_export_profile_index
+        targetZone: buttons
+        position: 50
 
     pim-job-instance-csv-base-export-edit-delete:
         module: pim/job/export/edit/delete
-        parent: pim-job-instance-csv-base-export-edit
-        targetZone: buttons
+        parent: pim-job-instance-csv-base-export-edit-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_importexport_export_profile_remove
         position: 100
         config:

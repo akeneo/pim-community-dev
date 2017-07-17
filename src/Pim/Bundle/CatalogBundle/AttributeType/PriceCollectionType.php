@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Price attribute type
@@ -14,30 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class PriceCollectionType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'numberMin' => [
-                'name'      => 'numberMin',
-                'fieldType' => 'pim_number'
-            ],
-            'numberMax' => [
-                'name'      => 'numberMax',
-                'fieldType' => 'pim_number'
-            ],
-            'decimalsAllowed' => [
-                'name'      => 'decimalsAllowed',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'oro/mediator',
         'backbone',
         'pim/form',
@@ -28,6 +29,7 @@ define(
     function (
         $,
         _,
+        __,
         mediator,
         Backbone,
         BaseForm,
@@ -41,19 +43,31 @@ define(
         i18n,
         LoadingMask
     ) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             tagName: 'span',
-            className: 'AknTitleContainer-metaItem product-groups',
+
+            className: 'AknColumn-block product-groups',
+
             template: _.template(formTemplate),
+
             modalTemplate: _.template(modalTemplate),
+
             events: {
                 'click a[data-group]': 'displayModal'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -65,7 +79,7 @@ define(
                     if (groups.length) {
                         this.$el.html(
                             this.template({
-                                label: _.__('pim_enrich.entity.product.meta.groups.title'),
+                                label: __('pim_enrich.entity.product.meta.groups.title'),
                                 groups: groups
                             })
                         );
@@ -128,9 +142,9 @@ define(
                         loadingMask.remove();
                         this.groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
-                            okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
-                            cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
-                            title: _.__(
+                            okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
+                            cancelText: __('pim_enrich.entity.product.meta.groups.modal.close'),
+                            title: __(
                                 'pim_enrich.entity.product.meta.groups.modal.title',
                                 { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
                             ),
@@ -164,7 +178,5 @@ define(
                 }.bind(this));
             }
         });
-
-        return FormView;
     }
 );

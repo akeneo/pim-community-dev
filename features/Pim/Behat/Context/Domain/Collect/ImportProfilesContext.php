@@ -9,11 +9,14 @@ use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
+use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\Domain\ImportExportContext;
 use Pim\Behat\Context\PimContext;
 
 class ImportProfilesContext extends ImportExportContext
 {
+    use SpinCapableTrait;
+
     /**
      * @param string       $extension
      * @param PyStringNode $string
@@ -83,7 +86,7 @@ class ImportProfilesContext extends ImportExportContext
 
         array_unshift($rows, $columns);
 
-        $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
+        $this->theFollowingFileToImport('csv', new PyStringNode($rows, 0));
     }
 
     /**
@@ -93,11 +96,20 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function iUploadAndImportTheFile($operator, $file)
     {
+        $this->spin(function () {
+            return $this->getCurrentPage()->find(
+                'css',
+                '.AknTitleContainer-meta .AknButton--greyLight.switcher-action'
+            );
+        }, 'Cannot switch the import method')->click();
+
         $this->getMainContext()->getSubcontext('job')
             ->attachFileToField($this->replacePlaceholders($file), 'Drag and drop a file or click here');
+
         $this->getCurrentPage()
             ->getSession()
             ->executeScript('$(\'.AknMediaField-fileUploaderInput\').trigger(\'change\');');
+
         $this->getCurrentPage()->pressButton('Upload and import now');
         $this->getMainContext()->wait();
     }
@@ -109,7 +121,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $this->getNavigationContext()->openPage('Import show', ['code' => $job->getCode()]);
+        $this->getNavigationContext()->iAmOnThePage('Import show', ['code' => $job->getCode()]);
     }
 
     /**

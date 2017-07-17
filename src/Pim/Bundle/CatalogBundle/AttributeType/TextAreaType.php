@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Text area attribute type
@@ -14,23 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class TextAreaType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'maxCharacters' => [
-                'name'      => 'maxCharacters',
-                'fieldType' => 'text'
-            ],
-            'wysiwygEnabled' => [
-                'name'      => 'wysiwygEnabled',
-                'fieldType' => 'switch'
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

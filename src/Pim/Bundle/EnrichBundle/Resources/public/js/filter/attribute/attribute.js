@@ -117,10 +117,11 @@ define([
          * @param {Object} attribute
          */
         addContextDropdowns: function (attribute) {
-            var container = $('<span class="filter-context">');
+            var container = $('<span class="AknFieldContainer-contextContainer filter-context">');
 
             if (attribute.scopable) {
                 var scopeSwitcher = new ScopeSwitcher();
+                scopeSwitcher.setDisplayInline(true);
 
                 this.listenTo(
                     scopeSwitcher,
@@ -148,6 +149,7 @@ define([
 
             if (attribute.localizable) {
                 var localeSwitcher = new LocaleSwitcher();
+                localeSwitcher.setDisplayInline(true);
 
                 this.listenTo(
                     localeSwitcher,

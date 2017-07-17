@@ -2,7 +2,7 @@ parameters:
     pim_connector.array_converter.flat_to_standard.attribute_option.class:                        Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeOption
     pim_connector.array_converter.flat_to_standard.attribute.class:                               Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute
     pim_connector.array_converter.flat_to_standard.product.class:                                 Pim\Component\Connector\ArrayConverter\FlatToStandard\Product
-    pim_connector.array_converter.flat_to_standard.product_value.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue
+    pim_connector.array_converter.flat_to_standard.product_value.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\Value
     pim_connector.array_converter.flat_to_standard.product_delocalized.class:                     Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized
     pim_connector.array_converter.flat_to_standard.product_association.class:                     Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation
     pim_connector.array_converter.flat_to_standard.variant_group.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\VariantGroup
@@ -97,6 +97,7 @@ services:
                 - 'wysiwyg_enabled'
                 - 'decimals_allowed'
                 - 'negative_allowed'
+                - 'auto_option_sorting'
 
     pim_connector.array_converter.flat_to_standard.category:
         class: '%pim_connector.array_converter.flat_to_standard.category.class%'
@@ -223,6 +224,7 @@ services:
                 - 'wysiwyg_enabled'
                 - 'decimals_allowed'
                 - 'negative_allowed'
+                - 'auto_option_sorting'
 
     pim_connector.array_converter.standard_to_flat.attribute_group:
         class: '%pim_connector.array_converter.standard_to_flat.attribute_group.class%'
@@ -286,9 +288,9 @@ services:
     pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor:
         class: '%pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
             - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
 
     # product value converters

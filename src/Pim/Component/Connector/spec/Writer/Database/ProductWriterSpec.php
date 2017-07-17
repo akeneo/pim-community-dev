@@ -4,21 +4,21 @@ namespace spec\Pim\Component\Connector\Writer\Database;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        BulkObjectDetacherInterface $detacher,
+        CacheClearerInterface $cacheClearer,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($versionManager, $productSaver, $detacher);
+        $this->beConstructedWith($versionManager, $productSaver, $cacheClearer);
         $this->setStepExecution($stepExecution);
     }
 

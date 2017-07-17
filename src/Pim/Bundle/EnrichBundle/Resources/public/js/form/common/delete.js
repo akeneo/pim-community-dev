@@ -29,8 +29,11 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'button',
-            className: 'AknButton AknButton--important AknButton--withIcon AknTitleContainer-rightButton delete',
+
+            className: 'AknDropdown-menuLink delete',
+
             template: _.template(template),
+
             events: {
                 'click': 'delete'
             },
@@ -91,14 +94,14 @@ define(
 
                 this.remover.remove(this.getIdentifier())
                     .done(function () {
-                        messenger.notificationFlashMessage('success', __(this.config.trans.success));
+                        messenger.notify('success', __(this.config.trans.success));
                         router.redirectToRoute(this.config.redirect);
                     }.bind(this))
                     .fail(function (xhr) {
                         var message = xhr.responseJSON && xhr.responseJSON.message ?
                             xhr.responseJSON.message : __(config.trans.failed);
 
-                        messenger.notificationFlashMessage('error', message);
+                        messenger.notify('error', message);
                     }.bind(this))
                     .always(function () {
                         loadingMask.hide().$el.remove();

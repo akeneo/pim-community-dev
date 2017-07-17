@@ -37,14 +37,14 @@ Feature: Add products to a variant group
     And I save the variant group
     Then the row "sandal-white-37" should be checked
     When I am on the variant groups page
-    And I click on the "Delete" action of the row which contains "SANDAL"
+    And I click on the "Delete" action of the row which contains "Sandal"
     And I confirm the deletion
     Then I edit the "sandal-white-37" product
-    And I open the history
+    And I visit the "History" column tab
     And I should see history in panel:
-      | version | author                                                            | property | value           |
-      | 5       | Julia Stark - Julia@example.com                                   | groups   |                 |
-      | 4       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | Comment  | New comment     |
-      | 3       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 2       | John Doe - admin@example.com                                      | Color    | white           |
-      | 1       | John Doe - admin@example.com                                      | SKU      | sandal-white-37 |
+      | version | author                                        | property | value           |
+      | 5       | Julia Stark                                   | groups   |                 |
+      | 4       | Julia Stark (Comes from variant group SANDAL) | Comment  | New comment     |
+      | 3       | Julia Stark (Comes from variant group SANDAL) | groups   | SANDAL          |
+      | 2       | John Doe                                      | Color    | white           |
+      | 1       | John Doe                                      | SKU      | sandal-white-37 |

@@ -25,7 +25,7 @@ Feature: Quick export many products with localized attributes from datagrid
       | type    | message                                              |
       | success | L'export rapide CSV product quick export est terminé |
     When I go on the last executed job resume of "csv_product_quick_export"
-    Then I should see "TERMINÉ"
+    Then I should see the text "TERMINÉ"
     And the name of the exported file of "csv_product_quick_export" should be "products_export_en_US_mobile.csv"
     And exported file of "csv_product_quick_export" should contain:
     """
@@ -47,7 +47,7 @@ Feature: Quick export many products with localized attributes from datagrid
       | type    | message                                               |
       | success | L'export rapide XLSX product quick export est terminé |
     When I go on the last executed job resume of "xlsx_product_quick_export"
-    Then I should see "TERMINÉ"
+    Then I should see the text "TERMINÉ"
     And the name of the exported file of "xlsx_product_quick_export" should be "products_export_en_US_mobile.xlsx"
     And exported xlsx file of "xlsx_product_quick_export" should contain:
       | sku      | categories        | color | description-en_US-mobile | destocking_date | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rate_sale | rating | side_view | size | top_view | weather_conditions | weight | weight-unit |

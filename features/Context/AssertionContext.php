@@ -2,13 +2,14 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step\Then;
+use Behat\ChainedStepsExtension\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -18,7 +19,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssertionContext extends RawMinkContext
+class AssertionContext extends PimContext
 {
     use SpinCapableTrait;
 
@@ -328,7 +329,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
-        if ($this->getCurrentPage()->find('css', '.panel-container')) {
+        if ($this->getCurrentPage()->find('css', '.history-panel')) {
             $this->iShouldSeeHistoryInPanel($table);
 
             return;
@@ -421,7 +422,9 @@ class AssertionContext extends RawMinkContext
                 );
             }
             if (!$row->hasClass('expanded')) {
-                $row->find('css', '.version-expander')->click();
+                $this->spin(function () use ($row) {
+                    return $row->find('css', '.version-expander');
+                }, sprintf('Can not find the row version expander of %s', json_encode($data)))->click();
             }
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();
@@ -571,7 +574,7 @@ class AssertionContext extends RawMinkContext
     public function iShouldHaveNewNotification($count)
     {
         $this->spin(function () use ($count) {
-            $countContainer = $this->getCurrentPage()->find('css', '.AknBell-countContainer');
+            $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
             if (!$countContainer) {
                 return false;
@@ -597,7 +600,7 @@ class AssertionContext extends RawMinkContext
     public function iOpenTheNotificationPanel()
     {
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknHeader-rightMenus .notification');
+            return $this->getCurrentPage()->find('css', '.notification');
         }, 'Cannot find the link to the notification widget');
 
         if ($notificationWidget->hasClass('open')) {
@@ -605,7 +608,7 @@ class AssertionContext extends RawMinkContext
         }
 
         $this->spin(function () use ($notificationWidget) {
-            $toggle = $notificationWidget->find('css', '.dropdown-toggle');
+            $toggle = $notificationWidget->find('css', '.notification-link');
 
             if (null !== $toggle && $toggle->isVisible()) {
                 $toggle->click();
@@ -651,7 +654,7 @@ class AssertionContext extends RawMinkContext
         $this->iOpenTheNotificationPanel();
 
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknHeader-rightMenus .notification');
+            return $this->getCurrentPage()->find('css', '.notification');
         }, 'Cannot find the link to the notification widget');
 
         $icons = [
@@ -739,7 +742,11 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldNotSeeDefaultAvatar()
     {
-        $this->assertSession()->elementAttributeNotContains('css', '.AknTitleContainer-avatar', 'src', 'user-info.png');
+        $this->spin(function () {
+            $image = $this->getCurrentPage()->find('css', '.AknTitleContainer-image');
+
+            return null !== $image && false === strpos($image->getAttribute('src'), 'user-info.png');
+        }, 'Avatar image not found or not default one');
     }
 
     /**
@@ -765,7 +772,7 @@ class AssertionContext extends RawMinkContext
      *
      * @return string
      */
-    protected function replacePlaceholders($value)
+    public function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }

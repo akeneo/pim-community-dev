@@ -1,13 +1,13 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\ElasticSearch\IndexConfiguration;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PimCatalogMediaIntegration extends AbstractPimCatalogIntegration
+class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
 {
     public function testStartWithOperator()
     {

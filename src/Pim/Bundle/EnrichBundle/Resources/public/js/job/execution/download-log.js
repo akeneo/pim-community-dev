@@ -10,7 +10,6 @@ define(
     [
         'pim/form/common/download-file',
         'pim/security-context'
-
     ],
     function (
         DownloadFile,

@@ -2,11 +2,9 @@
 
 namespace Pim\Component\Catalog\Builder;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Product builder interface
@@ -15,7 +13,7 @@ use Pim\Component\Catalog\Model\ProductValueInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductBuilderInterface
+interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
 {
     /**
      * Create product with its identifier value,
@@ -39,7 +37,7 @@ interface ProductBuilderInterface
      * @param ChannelInterface[] $channels
      * @param LocaleInterface[]  $locales
      *
-     * @return ProductBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null);
 
@@ -48,34 +46,7 @@ interface ProductBuilderInterface
      *
      * @param ProductInterface $product
      *
-     * @return ProductBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     public function addMissingAssociations(ProductInterface $product);
-
-    /**
-     * Creates required value(s) to add the attribute to the product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     */
-    public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
-
-    /**
-     * Add or replace a product value.
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     * @param mixed              $data
-     *
-     * @return ProductValueInterface
-     */
-    public function addOrReplaceProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale,
-        $scope,
-        $data
-    );
 }

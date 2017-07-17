@@ -27,7 +27,7 @@ Feature: Import channels
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
-      code;label;currencies;locales;tree;conversion_units
+      code;label-en_US;currencies;locales;tree;conversion_units
       mobile;Mobile app;EUR,USD;en_US,fr_FR;2014_collection;
       """
     And the following job "csv_footwear_channel_import" configuration:
@@ -40,8 +40,8 @@ Feature: Import channels
     And I am on the "csv_footwear_channel_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_channel_export" job to finish
-    Then I should see "Read 2"
-    And I should see "Written 2"
+    Then I should see the text "Read 2"
+    And I should see the text "Written 2"
     And exported file of "csv_footwear_channel_export" should contain:
     """
     code;label-fr_FR;label-en_US;label-de_DE;conversion_units;currencies;locales;tree

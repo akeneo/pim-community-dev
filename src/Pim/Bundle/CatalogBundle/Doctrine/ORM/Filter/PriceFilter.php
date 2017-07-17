@@ -92,7 +92,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
-            $this->qb->getRootAlias() . '.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $condition
@@ -134,7 +134,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->innerJoin(
-            $this->qb->getRootAlias() . '.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $condition

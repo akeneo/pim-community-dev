@@ -14,24 +14,24 @@ Feature: Edit the family of a product
 
   Scenario: Successfully empty the product family
     Given I am on the "sneakers" product page
-    Then I should see the text "Family: Sneakers"
+    Then I should see the text "Family Sneakers"
     When I change the family of the product to ""
-    Then I should see the text "Family: None"
+    Then I should see the text "Family None"
     When I save the product
-    Then I should see the text "Family: None"
+    Then I should see the text "Family None"
 
   Scenario: Successfully change the product family
     Given I am on the "sneakers" product page
-    Then I should see the text "Family: Sneakers"
+    Then I should see the text "Family Sneakers"
     When I change the family of the product to "Boots"
-    Then I should see the text "Family: Boots"
+    Then I should see the text "Family Boots"
     When I save the product
-    Then I should see the text "Family: Boots"
+    Then I should see the text "Family Boots"
 
   Scenario: Successfully change the product family searching by label
     Given I am on the "sneakers" product page
-    Then I should see the text "Family: Sneakers"
+    Then I should see the text "Family Sneakers"
     When I change the family of the product to "LED TVs"
-    Then I should see the text "Family: LED TVs"
+    Then I should see the text "Family LED TVs"
     When I save the product
-    Then I should see the text "Family: LED TVs"
+    Then I should see the text "Family LED TVs"

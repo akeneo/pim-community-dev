@@ -27,6 +27,8 @@ Action performed.: 执行完成。
 Action is not performed.: 执行未完成。
 Please, select item to perform action.: 请选择条目，以进行处理。
 View per page: 查看每页
+"Yes": true
+"No": false
 oro.datagrid.entityHint: 实体
 oro.datagrid.noentities: 没有找到记录
 oro.datagrid.noresults: "未找到任何结果。请试着改变您的搜索条件。"

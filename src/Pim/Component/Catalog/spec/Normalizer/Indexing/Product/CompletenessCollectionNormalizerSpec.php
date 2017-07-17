@@ -3,11 +3,11 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CompletenessCollectionNormalizerSpec extends ObjectBehavior

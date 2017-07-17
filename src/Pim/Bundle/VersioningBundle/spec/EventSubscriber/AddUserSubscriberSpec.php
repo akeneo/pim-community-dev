@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AddUserSubscriberSpec extends ObjectBehavior

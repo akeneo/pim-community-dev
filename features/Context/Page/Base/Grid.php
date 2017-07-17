@@ -155,6 +155,12 @@ class Grid extends Index
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
+                'Search filter'         => [
+                    'css' => '.search-filter input',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Grid\Filter\SearchDecorator'
+                    ]
+                ],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
@@ -269,6 +275,10 @@ class Grid extends Index
      */
     public function findAction($element, $actionName)
     {
+        $this->spin(function () {
+            return !$this->isLoadingMaskVisible();
+        }, 'Loading mask is still visible');
+
         $rowElement = $this->getRow($element);
         $action     = $rowElement->find('css', sprintf('.AknButtonList-item[title="%s"]', $actionName));
 
@@ -310,9 +320,44 @@ class Grid extends Index
     public function filterBy($filterName, $operator, $value)
     {
         $filter = $this->getFilter($filterName);
-
         $filter->open();
         $filter->filter($operator, $value);
+    }
+
+    /**
+     * @param string $value
+     */
+    public function search($value)
+    {
+        $this->spin(function () use ($value) {
+            $input = $this->getElement('Search filter');
+            if (null !== $input) {
+                $input->search($value);
+
+                return true;
+            }
+        }, 'Unable to find the search filter');
+    }
+
+    /**
+     * @param string $filterName
+     */
+    public function openFilter($filterName)
+    {
+        $filter = $this->getFilter($filterName);
+        $filter->open();
+    }
+
+    /**
+     * Returns the displayed criteria of a filter
+     *
+     * @param $filterName
+     *
+     * @return string
+     */
+    public function getCriteria($filterName)
+    {
+        return $this->getFilter($filterName)->getCriteriaHint();
     }
 
     /**
@@ -672,8 +717,7 @@ class Grid extends Index
         }
 
         $this->spin(function () use ($manageFilters, $filterName) {
-            $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
-            if (null !== $loadingWrapper && $loadingWrapper->isVisible()) {
+            if ($this->isLoadingMaskVisible()) {
                 return false;
             }
 
@@ -713,13 +757,23 @@ class Grid extends Index
      */
     protected function clickFiltersList()
     {
-        $filterList = $this->spin(function () {
-            return $this
+        $this->spin(function () {
+            return !$this->isLoadingMaskVisible();
+        }, 'Loading mask is still visible');
+
+        $this->spin(function () {
+            $filterList = $this
                 ->getElement('Filters')
                 ->find('css', '#add-filter-button');
-        }, 'Impossible to find filter list');
 
-        $filterList->click();
+            if (null === $filterList) {
+                return false;
+            }
+
+            $filterList->click();
+
+            return true;
+        }, 'Impossible to click on the filter list');
     }
 
     /**
@@ -748,8 +802,7 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $this->spin(function () use ($value, $check) {
-            $loadingWrapper = $this->find('css', '#loading-wrapper');
-            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+            if ($this->isLoadingMaskVisible()) {
                 return false;
             }
 
@@ -957,7 +1010,17 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $this->clickOnDropdownSelector('All');
+        $selector = $this->getDropdownSelector();
+        $this->spin(function () use ($selector) {
+            $selector->find('css', '.AknSeveralActionsButton-mainAction')->click();
+            foreach ($this->findAll('css', '.select-row-cell input') as $input) {
+                if (!$input->isChecked()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, 'Can not select all entities on the grid');
     }
 
     /**
@@ -998,8 +1061,7 @@ class Grid extends Index
         $selector = $this->getDropdownSelector();
 
         $this->spin(function () use ($selector, $item) {
-            $loadingWrapper = $this->find('css', '#loading-wrapper');
-            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+            if ($this->isLoadingMaskVisible()) {
                 return false;
             }
 
@@ -1043,5 +1105,17 @@ class Grid extends Index
         }
 
         return $cleanValues;
+    }
+
+    /**
+     * Returns true if the loading mask is visible
+     *
+     * @return bool
+     */
+    protected function isLoadingMaskVisible()
+    {
+        $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
+
+        return (null !== $loadingWrapper && $loadingWrapper->isVisible());
     }
 }

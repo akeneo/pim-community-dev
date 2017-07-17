@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -25,8 +26,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AssociationTypeController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -47,7 +48,7 @@ class AssociationTypeController
     protected $assocTypeRepo;
 
     /**
-     * @param Request                            $request
+     * @param RequestStack                       $requestStack
      * @param RouterInterface                    $router
      * @param TranslatorInterface                $translator
      * @param AssociationRepositoryInterface     $assocRepository
@@ -57,7 +58,7 @@ class AssociationTypeController
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         TranslatorInterface $translator,
         AssociationRepositoryInterface $assocRepository,
@@ -66,7 +67,7 @@ class AssociationTypeController
         RemoverInterface $assocTypeRemover,
         AssociationTypeRepositoryInterface $assocTypeRepo
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->translator = $translator;
         $this->assocRepository = $assocRepository;
@@ -91,7 +92,12 @@ class AssociationTypeController
         $associationType = new AssociationType();
 
         if ($this->assocTypeHandler->process($associationType)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.association type.created'));
+            $this
+                ->requestStack
+                ->getCurrentRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.association type.created'));
 
             $response = [
                 'status' => 1,

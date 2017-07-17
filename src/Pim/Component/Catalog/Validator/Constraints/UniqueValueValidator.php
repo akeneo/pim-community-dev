@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Symfony\Component\Validator\Constraint;
@@ -41,38 +41,38 @@ class UniqueValueValidator extends ConstraintValidator
      * It means that we make this validator stateful which is a bad news, the good one is we ensure this validation
      * for any processes (other option was to mess the import as we did with previous implementation)
      *
-     * Due to constraint guesser, the constraint is applied on ProductValueInterface when applied
+     * Due to constraint guesser, the constraint is applied on ValueInterface when applied
      * directly through validator.
      *
      * The constraint guesser should be re-worked in a future version to avoid such behavior
      *
-     * @param ProductValueInterface $productValue
-     * @param Constraint            $constraint
+     * @param ValueInterface $value
+     * @param Constraint     $constraint
      *
      * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
-    public function validate($productValue, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
-        if (empty($productValue)) {
+        if (empty($value)) {
             return;
         }
 
-        if ($productValue instanceof ProductValueInterface && $productValue->getAttribute()->isUnique()) {
+        if ($value instanceof ValueInterface && $value->getAttribute()->isUnique()) {
             $root = $this->context->getRoot();
             // during the validation of variant groups, $root is not a product but a product value
             // we don't have to check if the value already exists in this case
             $valueAlreadyExists = $root instanceof ProductInterface ? $this->alreadyExists(
-                $productValue,
+                $value,
                 $root
             ) : false;
             $valueAlreadyProcessed = $root instanceof ProductInterface ? $this->hasAlreadyValidatedTheSameValue(
-                $productValue,
+                $value,
                 $root
             ) : false;
 
             if ($valueAlreadyExists || $valueAlreadyProcessed) {
-                $valueData = $productValue->__toString();
-                $attributeCode = $productValue->getAttribute()->getCode();
+                $valueData = $value->__toString();
+                $attributeCode = $value->getAttribute()->getCode();
                 if (null !== $valueData && '' !== $valueData) {
                     $this->context->buildViolation(
                         $constraint->message,
@@ -84,26 +84,26 @@ class UniqueValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param ProductValueInterface $productValue
-     * @param ProductInterface      $product
+     * @param ValueInterface   $value
+     * @param ProductInterface $product
      *
      * @return bool
      */
-    protected function alreadyExists(ProductValueInterface $productValue, ProductInterface $product)
+    protected function alreadyExists(ValueInterface $value, ProductInterface $product)
     {
-        return $this->repository->uniqueDataExistsInAnotherProduct($productValue, $product);
+        return $this->repository->uniqueDataExistsInAnotherProduct($value, $product);
     }
 
     /**
      * Checks if the same exact value has already been processed on a different product instance
      *
-     * @param ProductValueInterface $productValue
+     * @param ValueInterface   $value
      * @param ProductInterface $product
      *
      * @return bool
      */
-    protected function hasAlreadyValidatedTheSameValue(ProductValueInterface $productValue, ProductInterface $product)
+    protected function hasAlreadyValidatedTheSameValue(ValueInterface $value, ProductInterface $product)
     {
-        return false === $this->uniqueValuesSet->addValue($productValue, $product);
+        return false === $this->uniqueValuesSet->addValue($value, $product);
     }
 }

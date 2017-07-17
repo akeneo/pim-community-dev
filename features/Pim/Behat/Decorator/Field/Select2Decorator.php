@@ -83,7 +83,6 @@ class Select2Decorator extends ElementDecorator
         }
     }
 
-
     /**
      * Open the select2 dropdown.
      * - Simple select contains an arrow to open container

@@ -28,7 +28,7 @@ Feature: Edit a user
     And I save the user
     Then I should see the flash message "User saved"
     When I am on the products page
-    Then I should see the text "Products de"
+    Then I should see the text "Kollektion"
     And I should see the text "Drucken"
     And I should see the text "2015 Männer-Kollektion"
     And I should see the text "2015 Damenkollektion"

@@ -37,9 +37,9 @@ interface ProductUniqueDataInterface
     public function getRawData();
 
     /**
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      */
-    public function setProductValue(ProductValueInterface $value);
+    public function setProductValue(ValueInterface $value);
 
     /**
      * @param ProductUniqueDataInterface $uniqueValue

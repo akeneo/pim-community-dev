@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +32,7 @@ class ChangeStatusType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('toEnable', 'switch');
+        $builder->add('toEnable', SwitchType::class);
     }
 
     /**
@@ -49,7 +50,7 @@ class ChangeStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_mass_change_status';
     }

@@ -22,7 +22,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'click': 'launch'
+                'click .AknButton': 'launch'
             },
 
             /**
@@ -48,6 +48,8 @@ define(
                     }));
                 }.bind(this));
 
+                this.delegateEvents();
+
                 return this;
             },
 
@@ -60,7 +62,7 @@ define(
                         router.redirect(response.redirectUrl);
                     })
                     .fail(function () {
-                        messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
+                        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
                     });
             },
 

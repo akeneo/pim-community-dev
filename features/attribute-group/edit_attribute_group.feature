@@ -15,7 +15,7 @@ Feature: Edit an attribute group
     When I fill in the following information:
       | English (United States) | My sizes |
     And I press the "Save" button
-    Then I should see "My sizes"
+    Then I should see the text "My sizes"
 
   @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -30,16 +30,16 @@ Feature: Edit an attribute group
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
+  @skip-pef @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
   Scenario: Successfully display attribute groups in the right order
     Given the following CSV file to import:
       """
       code;attributes;sort_order
       Z;sole_fabric;100
-      Y;size;300
-      X;side_view;200
+      Y;length;300
+      X;weight;200
       """
     And the following job "csv_footwear_attribute_group_import" configuration:
       | filePath | %file to import% |
@@ -53,6 +53,5 @@ Feature: Edit an attribute group
       | family | Boots  |
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
-    When I add available attributes Sole fabric, Size, Side view
+    When I add available attributes Sole fabric, Length, Weight
     Then I should see the text "[Z] [X] [Y]"
-

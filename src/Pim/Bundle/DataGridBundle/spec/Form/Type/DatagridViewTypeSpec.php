@@ -3,6 +3,10 @@
 namespace spec\Pim\Bundle\DataGridBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -10,24 +14,24 @@ class DatagridViewTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\DataGridBundle\Entity\DatagridView');
+        $this->beConstructedWith(DatagridView::class);
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_datagrid_view');
+        $this->getBlockPrefix()->shouldReturn('pim_datagrid_view');
     }
 
     function it_has_view_and_edit_permission_fields(FormBuilderInterface $builder)
     {
-        $builder->add('label', 'text', ['required' => true])->willReturn($builder);
-        $builder->add('order', 'hidden')->willReturn($builder);
-        $builder->add('filters', 'hidden')->shouldBeCalled();
+        $builder->add('label', TextType::class, ['required' => true])->willReturn($builder);
+        $builder->add('order', HiddenType::class)->willReturn($builder);
+        $builder->add('filters', HiddenType::class)->shouldBeCalled();
 
         $this->buildForm($builder, []);
     }
@@ -37,7 +41,7 @@ class DatagridViewTypeSpec extends ObjectBehavior
         $this->setDefaultOptions($resolver, []);
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\DataGridBundle\Entity\DatagridView',
+                'data_class' => DatagridView::class,
             ]
         )->shouldHaveBeenCalled();
     }

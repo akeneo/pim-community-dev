@@ -11,6 +11,7 @@ use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -27,8 +28,8 @@ class GroupTypeController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var TranslatorInterface */
     protected $translator;
@@ -43,7 +44,7 @@ class GroupTypeController
     protected $groupTypeRemover;
 
     /**
-     * @param Request             $request
+     * @param RequestStack        $requestStack
      * @param RouterInterface     $router
      * @param TranslatorInterface $translator
      * @param HandlerInterface    $groupTypeHandler
@@ -51,14 +52,14 @@ class GroupTypeController
      * @param RemoverInterface    $groupTypeRemover
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         TranslatorInterface $translator,
         HandlerInterface $groupTypeHandler,
         Form $groupTypeForm,
         RemoverInterface $groupTypeRemover
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->translator = $translator;
         $this->groupTypeHandler = $groupTypeHandler;
@@ -81,7 +82,12 @@ class GroupTypeController
         $groupType = new GroupType();
 
         if ($this->groupTypeHandler->process($groupType)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group type.created'));
+            $this
+                ->requestStack
+                ->getCurrentRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.group type.created'));
 
             $url = $this->router->generate(
                 'pim_enrich_grouptype_edit',

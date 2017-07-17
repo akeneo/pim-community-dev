@@ -34,6 +34,11 @@ class DateIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveAReferenceDataName('pim_catalog_date');
     }
 
+    public function testDateShouldNotHaveAutoOptionSorting()
+    {
+        $this->assertDoesNotHaveAutoOptionSorting('pim_catalog_date');
+    }
+
     public function testDateShouldNotHaveMaxCharacters()
     {
         $this->assertDoesNotHaveMaxCharacters('pim_catalog_date');

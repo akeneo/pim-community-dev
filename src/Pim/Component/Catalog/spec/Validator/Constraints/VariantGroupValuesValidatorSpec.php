@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\VariantGroupValues;
 use Prophecy\Argument;
@@ -55,7 +55,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         ProductTemplateInterface $template,
         Constraint $constraint,
         AttributeInterface $axisAttribute,
-        ProductValueCollectionInterface $productValueCollection
+        ValueCollectionInterface $productValueCollection
     ) {
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
@@ -81,7 +81,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         VariantGroupValues $constraint,
         AttributeInterface $axisAttribute,
         ConstraintViolationBuilderInterface $violation,
-        ProductValueCollectionInterface $productValueCollection
+        ValueCollectionInterface $productValueCollection
     ) {
         $variantGroup->getType()->willReturn($type);
         $variantGroup->getCode()->willReturn('tshirt');
@@ -114,7 +114,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         ProductTemplateInterface $template,
         VariantGroupValues $constraint,
         ConstraintViolationBuilderInterface $violation,
-        ProductValueCollectionInterface $productValueCollection
+        ValueCollectionInterface $productValueCollection
     ) {
         $variantGroup->getType()->willReturn($type);
         $variantGroup->getCode()->willReturn('tshirt');

@@ -20,6 +20,6 @@ Feature: Delete a product group
 
   Scenario: Successfully delete a product group
     Given I edit the "MUG" product group
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should not see group "MUG"

@@ -8,10 +8,10 @@ Feature: List categories
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the categories page
-    Then I should see "2014 collection"
-    And I should see "Summer collection"
-    And I should see "Winter collection"
-    And I should see "Please select a category on the left or Create a new category"
+    Then I should see the text "2014 collection"
+    And I should see the text "Summer collection"
+    And I should see the text "Winter collection"
+    And I should see the text "Please select a category on the left or Create a new category"
 
   Scenario: Click on a category without the right permissions do nothing
     Given a "footwear" catalog configuration

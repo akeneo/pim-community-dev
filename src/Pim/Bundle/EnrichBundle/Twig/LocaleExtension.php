@@ -128,12 +128,4 @@ class LocaleExtension extends \Twig_Extension
             ]
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_locale_extension';
-    }
 }

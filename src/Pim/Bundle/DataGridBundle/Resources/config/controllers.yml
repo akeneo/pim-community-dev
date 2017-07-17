@@ -8,7 +8,6 @@ parameters:
 
 services:
     pim_datagrid.controller.datagrid:
-        scope: request
         class: '%pim_datagrid.controller.datagrid.class%'
         arguments:
             - '@templating'
@@ -16,17 +15,15 @@ services:
     pim_datagrid.controller.export:
         abstract: false
         class: '%pim_datagrid.controller.export.class%'
-        scope: request
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_serializer'
 
     pim_datagrid.controller.product_export:
         class: '%pim_datagrid.controller.product_export.class%'
-        scope: request
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
@@ -35,16 +32,14 @@ services:
             - '@oro_datagrid.datagrid.manager'
 
     pim_datagrid.controller.datagrid_view:
-        scope: request
         class: '%pim_datagrid.controller.datagrid_view.class%'
         arguments:
             - '@templating'
 
     pim_datagrid.controller.mass_action:
-        scope: request
         class: '%pim_datagrid.controller.mass_action.class%'
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
 
     pim_datagrid.controller.rest.datagrid_view:

@@ -67,6 +67,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMaxFileSize()->willReturn(null);
         $attribute->getMinimumInputLength()->willReturn(null);
         $attribute->getSortOrder()->willReturn(0);
+        $attribute->getProperty('auto_option_sorting')->willReturn(null);
 
         $this->normalize($attribute)->shouldReturn(
             [
@@ -96,6 +97,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'localizable'            => false,
                 'scopable'               => false,
                 'labels'                 => [],
+                'auto_option_sorting'    => null,
             ]
         );
     }
@@ -138,6 +140,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMaxFileSize()->willReturn(1024);
         $attribute->getMinimumInputLength()->willReturn(2);
         $attribute->getSortOrder()->willReturn(4);
+        $attribute->getProperty('auto_option_sorting')->willReturn(true);
 
         $dateTimeNormalizer->normalize($dateMin)->willReturn('2015-05-23T15:55:50+01:00');
         $dateTimeNormalizer->normalize($dateMax)->willReturn('2015-06-23T15:55:50+01:00');
@@ -170,6 +173,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'localizable'            => true,
                 'scopable'               => true,
                 'labels'                 => [],
+                'auto_option_sorting'    => true,
             ]
         );
     }

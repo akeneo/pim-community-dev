@@ -5,12 +5,11 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 use Doctrine\ORM\UnitOfWork;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Detacher, detaches an object from its ObjectManager
@@ -21,18 +20,18 @@ use Doctrine\ORM\UnitOfWork;
  */
 class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInterface
 {
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var array */
     protected $scheduledForCheck;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ObjectManager $objectManager
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ObjectManager $objectManager)
     {
-        $this->managerRegistry = $registry;
+        $this->objectManager = $objectManager;
         $this->scheduledForCheck = null;
     }
 
@@ -157,14 +156,14 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      */
     protected function getObjectManager($object)
     {
-        return $this->managerRegistry->getManagerForClass(ClassUtils::getClass($object));
+        return $this->objectManager;
     }
 
     /**
      * Do detach objects on DocumentManager
      *
-     * @param document $document
-     * @param array    $visited   Prevent infinite recursion
+     * @param mixed $document
+     * @param array $visited  Prevent infinite recursion
      */
     protected function doDetach($document, array &$visited)
     {
@@ -178,5 +177,14 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         $visited[$oid] = $document;
 
         $documentManager->detach($document);
+
+        if ($document instanceof ProductInterface) {
+            foreach ($document->getValues() as $value) {
+                if (null !== $value->getMedia()) {
+                    $mediaManager = $this->getObjectManager($value->getMedia());
+                    $mediaManager->detach($value->getMedia());
+                }
+            }
+        }
     }
 }

@@ -71,7 +71,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias() . '.values',
+                current($this->qb->getRootAliases()) . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -86,7 +86,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                     $this->qb->expr()->neq($backendField, $this->qb->expr()->literal(''))
                 );
                 $this->qb->innerJoin(
-                    $this->qb->getRootAlias() . '.values',
+                    current($this->qb->getRootAliases()) . '.values',
                     $joinAlias,
                     'WITH',
                     $condition
@@ -97,7 +97,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                     $this->prepareCondition($backendField, Operators::IS_NULL, null);
 
                 $this->qb->leftJoin(
-                    $this->qb->getRootAlias() . '.values',
+                    current($this->qb->getRootAliases()) . '.values',
                     $joinAlias,
                     'WITH',
                     $condition
@@ -106,7 +106,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             } else {
                 $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
                 $this->qb->innerJoin(
-                    $this->qb->getRootAlias() . '.values',
+                    current($this->qb->getRootAliases()) . '.values',
                     $joinAlias,
                     'WITH',
                     $condition

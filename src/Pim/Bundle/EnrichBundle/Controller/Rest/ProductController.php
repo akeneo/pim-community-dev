@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
-use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -78,6 +77,9 @@ class ProductController
     /** @var ConverterInterface */
     protected $productValueConverter;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -93,6 +95,7 @@ class ProductController
      * @param AttributeConverterInterface  $localizedConverter
      * @param ProductFilterInterface       $emptyValuesFilter
      * @param ConverterInterface           $productValueConverter
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -108,7 +111,8 @@ class ProductController
         ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter,
-        ConverterInterface $productValueConverter
+        ConverterInterface $productValueConverter,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -124,6 +128,7 @@ class ProductController
         $this->localizedConverter = $localizedConverter;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -180,11 +185,16 @@ class ProductController
             ));
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-        ];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse(['values' => $normalizedViolations], 400);
     }
 
     /**
@@ -232,11 +242,16 @@ class ProductController
             return new JsonResponse($normalizedProduct);
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-        ];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse(['values' => $normalizedViolations], 400);
     }
 
     /**

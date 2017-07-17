@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
     pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
     pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
@@ -16,8 +15,6 @@ parameters:
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
     pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
     pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
-    pim_enrich.form.type.attribute_property_available_locale.class: Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType
-    pim_enrich.form.type.attribute_property_options.class:          Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
     pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
@@ -37,17 +34,6 @@ parameters:
     pim_enrich.type.entity_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType
 
 services:
-    pim_enrich.form.type.attribute:
-        class: '%pim_enrich.form.type.attribute.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attribute }
-        arguments:
-            - '@pim_catalog.registry.attribute_type'
-            - '@pim_enrich.form.subscriber.attribute'
-            - '%pim_catalog.entity.attribute_translation.class%'
-            - '%pim_catalog.entity.attribute.class%'
-            - '%pim_catalog.entity.attribute_group.class%'
-
     pim_enrich.form.type.product_grid_filter_choice:
         class: '%pim_enrich.form.type.product_grid_filter_choice.class%'
         arguments:
@@ -178,17 +164,6 @@ services:
         class: '%pim_enrich.form.type.object_identifier.class%'
         tags:
             - { name: form.type, alias: pim_object_identifier }
-
-    # Attribute property types
-    pim_enrich.form.type.available_locales:
-        class: '%pim_enrich.form.type.attribute_property_available_locale.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_available_locales }
-
-    pim_enrich.form.type.options:
-        class: '%pim_enrich.form.type.attribute_property_options.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_options }
 
     # Mass edit form types
     pim_enrich.form.type.choose_action:

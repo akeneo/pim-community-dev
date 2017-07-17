@@ -22,10 +22,6 @@
     {% endblock breadcrumbs %}
 {% endif %}
 
-{% block back %}
-    {{ elements.backLink(path('oro_user_group_index')) }}
-{% endblock %}
-
 {% block navButtons %}
     {% if entityId and resource_granted('pim_user_group_remove') %}
         {{ UI.deleteButton({

@@ -13,9 +13,9 @@ use Prophecy\Argument;
 
 class VariantGroupUpdateGuesserSpec extends ObjectBehavior
 {
-    function let(SmartManagerRegistry $registry)
+    function let(GroupRepositoryInterface $repository)
     {
-        $this->beConstructedWith($registry, 'GroupInterface');
+        $this->beConstructedWith($repository, 'GroupInterface');
     }
 
     function it_is_initializable()
@@ -37,15 +37,13 @@ class VariantGroupUpdateGuesserSpec extends ObjectBehavior
     }
 
     function it_marks_a_variant_group_as_updated_when_its_attributes_are_removed_or_updated(
-        $registry,
+        $repository,
         EntityManager $em,
         ProductTemplateInterface $productTemplate,
-        GroupInterface $group,
-        GroupRepositoryInterface $groupRepo
+        GroupInterface $group
     ) {
         $productTemplate->getId()->willReturn(956);
-        $registry->getRepository(Argument::type('string'))->willReturn($groupRepo);
-        $groupRepo->getVariantGroupByProductTemplate($productTemplate)->willReturn($group);
+        $repository->getVariantGroupByProductTemplate($productTemplate)->willReturn($group);
 
         $this->guessUpdates($em, $productTemplate, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)
             ->shouldReturn([$group]);

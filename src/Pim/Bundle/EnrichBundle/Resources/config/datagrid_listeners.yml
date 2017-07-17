@@ -61,6 +61,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-variant-group-grid, method: buildBefore }
 
+    pim_enrich.event_listener.add_job_code_to_grid_listener:
+        class: '%pim_datagrid.event_listener.add_job_code_to_grid_listener.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-export-executions-grid, method: onBuildAfter }
+
     pim_enrich.event_listener.product_variant_group_grid_after_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
         arguments:

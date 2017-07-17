@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/SymfonyRequirements.php';
 
-use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * This class specifies all requirements and optional recommendations that are necessary to run the Oro Application.

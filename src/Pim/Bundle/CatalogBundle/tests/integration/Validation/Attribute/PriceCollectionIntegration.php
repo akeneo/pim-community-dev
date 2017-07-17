@@ -141,6 +141,28 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function testPriceCollectionShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_price',
+                'type'                => 'pim_catalog_price_collection',
+                'group'               => 'attributeGroupA',
+                'decimals_allowed'    => true,
+                'auto_option_sorting' => false,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
+    }
+
     public function testPriceCollectionShouldNotHaveMaxCharacters()
     {
         $attribute = $this->createAttribute();

@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
+use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 
 class CategoryFilterSpec extends ObjectBehavior

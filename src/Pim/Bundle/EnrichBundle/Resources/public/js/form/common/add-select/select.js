@@ -83,7 +83,7 @@ define(
                 this.config = $.extend(true, {}, this.defaultConfig, meta.config);
 
                 if (_.isNull(this.config.mainFetcher)) {
-                    throw new Error('Fetcher code MUST be provided in config');
+                    throw new Error('Fetcher code must be provided in config');
                 }
 
                 this.config.select2.placeholder = __(this.config.select2.placeholder);
@@ -231,7 +231,7 @@ define(
              *
              * @param {Object} item
              *
-             * @returns {Object}
+             * @return {Object}
              */
             onGetResult: function (item) {
                 var line = _.findWhere(this.itemViews, {itemCode: item.id});
@@ -265,12 +265,7 @@ define(
                     }
                     var searchParameters = this.getSelectSearchParameters(options.term, page);
 
-                    this.getItemsToExclude()
-                        .then(function (identifiersToExclude) {
-                            searchParameters.options.excluded_identifiers = identifiersToExclude;
-
-                            return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
-                        }.bind(this))
+                    this.fetchItems(searchParameters)
                         .then(function (items) {
                             var choices = this.prepareChoices(items);
 
@@ -283,6 +278,22 @@ define(
                             });
                         }.bind(this));
                 }.bind(this), 400);
+            },
+
+            /**
+             * Fetches items from the backend.
+             *
+             * @param {Object} searchParameters
+             *
+             * @return {Promise}
+             */
+            fetchItems: function (searchParameters) {
+                return this.getItemsToExclude()
+                    .then(function (identifiersToExclude) {
+                        searchParameters.options.excluded_identifiers = identifiersToExclude;
+
+                        return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                    }.bind(this));
             },
 
             /**

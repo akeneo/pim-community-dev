@@ -4,24 +4,217 @@
 
 - TIP-718: Update group types form
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
-- GITHUB-5949: Fix the deletion of a job instance (import/export) from the job edit page, cheers @BatsaxIV !
+- GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
 
 ## Technical improvements
 
 - TIP-711: Rework job execution reporting page with the new PEF architecture
-- TIP-724: Refactoring of the 'Settings/Association types' index screen using 'pim/common/grid'
+- TIP-724: Refactoring of the 'Settings\Association types' index screen using 'pim\common\grid'
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- TIP-732: Rework the attribute form using the PEF architecture
+
+## UI\UX Refactoring
+
+- PIM-6288: Update flash messages design
+- PIM-6289: Update JSTree design
+- PIM-6294: Update switch design
+- PIM-6374: Add columns for product navigation
+- PIM-6391: Update comments design
+- PIM-6403: Update panels design to use dropdown selectors
+- PIM-6404: Update buttons design
+- PIM-6409: Update all the title containers design
+- PIM-6290: Update the main navigation design
+- PIM-6397: Enable Search filter on all grids
+- PIM-6406: Update job profile show page to include last executions
+
+## Remove MongoDB product storage
+
+- Remove container parameter `pim_catalog_product_storage_driver`
+
+- Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Association.mongodb.yml`
+- Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Completeness.mongodb.yml`
+- Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Product.mongodb.yml`
+- Remove model `src/Pim/Bundle/VersioningBundle/Resources/config/model/doctrine/Version.mongodb.yml`
+
+- Remove constants `DOCTRINE_ORM` and `` from `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
+
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry`
+- Remove service `akeneo_storage_utils.doctrine.smart_manager_registry`
+
+- Remove repository `Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCategoryRepository`
+- Remove repository `Pim\Bundle\ApiBundle\Doctrine\MongoDBODM\Repository\ProductRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductCategoryRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductValueCounterRepository`
+- Remove repository `Pim\Bundle\CatalogBundle\spec\Doctrine\MongoDBODM\Repository\CompletenessRepositorySpec`
+- Remove repository `Pim\Bundle\CatalogBundle\spec\Doctrine\MongoDBODM\Repository\ProductRepositorySpec`
+- Remove repository `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository`
+
+- Remove event listener `Akeneo\Bundle\StorageUtilsBundle\EventListener\MongoDBODM\ResolveTargetEntityListener`
+- Remove event listener `Pim\Bundle\DataGridBundle\EventListener\MongoDB\ConfigureHistoryGridListener`
+- Remove event subscriber `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
+- Remove event subscriber `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EnsureIndexesSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\ProductRelatedEntityRemovalSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\RemoveOutdatedProductsFromAssociationsSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetNormalizedProductDataSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\TimestampableSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\UpdateNormalizedProductDataSubscriber`
+- Remove event subscriber `Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber`
+- Remove event subscriber `Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber`
+
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollectionFactory`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\CursorFactory`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\Cursor`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\MappingsOverrideConfigurator`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types\Entities`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types\Entity`
+- Remove class `Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory`
+- Remove class `Pim\Bundle\CatalogBundle\Command\CleanMongoDBCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Command\MongoDBIndexCreatorCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractAttributeFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractFieldFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateTimeFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeAsLabelUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\ChannelDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionCodeUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionValueUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQueryGeneratorInterface`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionCodeUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionDeletedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionValueUpdatedQueryGenerator`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\AssociationNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\DateTimeNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\GenericNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\MetricNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductPriceNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\ProductValueNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\AttributeOptionNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\CompletenessNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\DateTimeNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FamilyNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\FileNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\GroupNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\MetricNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductPriceNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData\ProductValueNormalizer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\AssociatedProductHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectIdHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\AssociationTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\DateTimeTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\GroupsTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ProductHydrator`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\OptionsTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer`
+- Remove class `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\ResolverPass`
+- Remove class `Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager`
+- Remove class `Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter`
+- Remove class `Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter`
+- Remove class `Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterProductDatasourceAdapter`
+- Remove class `Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer`
+- Remove class `Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter\ReferenceDataFilter`
+- Remove class `Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Sorter\ReferenceDataSorter`
+- Remove class `Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\Document\ReferenceDataNormalizer`
+- Remove class `Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\NormalizedData\ReferenceDataNormalizer`
+- Remove class `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\BulkVersionBuilder`
+- Remove class `Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver\BulkVersionSaver`
+- Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser`
+- Remove class `upgrades/UpgradeHelper.php`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
+
+- Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Pim\Bundle\CommentBundle\Controller\CommentController` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Pim\Bundle\VersioningBundle\UpdateGuesser\VariantGroupUpdateGuesser` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Pim\Component\Catalog\Repository\GroupRepositoryInterface` and to remove the `$groupClass` argument
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
+- Change the constructor of `Oro\Bundle\SecurityBundle\Acl\Extension\EntityClassResolver` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Symfony\Bridge\Doctrine\RegistryInterface\RegistryInterface`
+- Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\ConfigureSortersListener` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
+- Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
 
 ## BC breaks
 
 ### Classes
 
 - Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
+- PIM-6442: Rename `Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractProductValueDataNormalizer` to `Pim\Bundle\VersioningBundle\Normalizer\Flat\AbstractValueDataNormalizer`
+- PIM-6442: Rename `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer` to `Pim\Bundle\VersioningBundle\Normalizer\Flat\ValueNormalizer`
+- PIM-6442: Rename `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker` to `Pim\Component\Catalog\Completeness\Checker\ValueCompleteChecker`
+- PIM-6442: Rename `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface` to `Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory` to `Pim\Component\Catalog\Factory\Value\DateValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory` to `Pim\Component\Catalog\Factory\Value\MediaValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory` to `Pim\Component\Catalog\Factory\Value\MetricValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory` to `Pim\Component\Catalog\Factory\Value\OptionValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory` to `Pim\Component\Catalog\Factory\Value\OptionsValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory` to `Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface` to `Pim\Component\Catalog\Factory\Value\ValueFactoryInterface`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory` to `Pim\Component\Catalog\Factory\Value\ScalarValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueCollectionFactory` to `Pim\Component\Catalog\Factory\ProductValueCollectionFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\Factory\ProductValueFactory` to `Pim\Component\Catalog\Factory\ValueFactory`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\DateProductValue` to `Pim\Component\Catalog\Value\DateValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MediaProductValue` to `Pim\Component\Catalog\Value\MediaValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\MetricProductValue` to `Pim\Component\Catalog\Value\MetricValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionProductValue` to `Pim\Component\Catalog\Value\OptionValue`
+- PIM-6442: Rename `Pim\Component\Catalog\ProductValue\OptionsProductValue` to `Pim\Component\Catalog\Value\OptionsValue`
+- PIM-6442: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductValue` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\Value`
+- PIM-6442: Rename `Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter` to `Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter`
+- PIM-6442: Rename `Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter` to `Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter`
+- PIM-6442: Rename `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory` to `Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory`
+- PIM-6442: Rename `Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory` to `Pim\Component\ReferenceData\Factory\Value\ReferenceDataValueFactory`
+- PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue`
+- PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
+- PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 
 ### Constructors
 
+- Change the constructor of `Pim\Component\Catalog\Updater\AssociationTypeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
+- Change the constructor of `Pim\Component\Catalog\Updater\ChannelUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\ChannelController` to add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`,
+ `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`, `Symfony\Component\Validator\Validator\ValidatorInterface`,`Symfony\Component\Routing\RouterInterface`,
+  `Pim\Bundle\ApiBundle\Stream\StreamResourceResponse` and `Akeneo\Component\StorageUtils\Saver\SaverInterface` before last parameter
+- Change the constructor of `Pim\Component\Connector\Writer\Database\ProductWriter` to replace `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Component\StorageUtils\Cache\CacheClearerInterface`.
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeGroupUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to add `Oro\Bundle\SecurityBundle\SecurityFacade` and add an associative array
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Pim\Component\Api\Pagination\PaginatorInterface`
@@ -64,8 +257,25 @@
 - Change the constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor` to remove `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\ProductDatasource` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
-- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
-- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\ProductUpdater` to add a `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface` as the 3rd argument.
+- Change the constructor of `Pim\Component\Catalog\Converter\MetricConverter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\AbstractAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\AttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\AttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 
 ### Others
 
@@ -148,6 +358,63 @@
 - Remove all standard denormalizers classes `Pim\Component\Catalog\Denormalizer\Standard\*` and services `pim_catalog.denormalizer.standard.*`
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
+- Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
+- Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
+- Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
+- Remove methods `addAttributeToProduct` and `addOrReplaceProductValue` from `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+    These methods are now in `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` and have been renamed to `addAttribute` and `addOrReplaceValue`.
+    For both methods, the `Pim\Component\Catalog\Model\ProductInterface` has been replaced by `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
+- Remove methods `getRawValues`, `setRawValues`, `getValues`, `setValues`, `getValue`, `addValue`, `removeValue`, `getAttributes`, `hasAttribute` and `getUsedAttributeCodes` from `Pim\Component\Catalog\Model\ProductInterface`.
+    These methods are now in the `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
+- Change method `convert` of `Pim\Component\Catalog\Converter\MetricConverter` to use `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` instead of a `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+- Change method `addAttributeData` of `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `copyAttributeData` of `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface` to use 2 `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of 2 `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `removeAttributeData` of `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Change method `setAttributeData` of `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
+- Rename class `pim_catalog.factory.product_value_collection.class` to `pim_catalog.factory.value_collection.class`
+- Rename class `pim_catalog.factory.product_value.class` to `pim_catalog.factory.value.class`
+- Rename class `pim_catalog.factory.product_value.scalar.class` to `pim_catalog.factory.value.scalar.class`
+- Rename class `pim_catalog.factory.product_value.metric.class` to `pim_catalog.factory.value.metric.class`
+- Rename class `pim_catalog.factory.product_value.price_collection.class` to `pim_catalog.factory.value.price_collection.class`
+- Rename class `pim_catalog.factory.product_value.option.class` to `pim_catalog.factory.value.option.class`
+- Rename class `pim_catalog.factory.product_value.options.class` to `pim_catalog.factory.value.options.class`
+- Rename class `pim_catalog.factory.product_value.media.class` to `pim_catalog.factory.value.media.class`
+- Rename class `pim_catalog.factory.product_value.date.class` to `pim_catalog.factory.value.date.class`
+- Rename class `pim_serializer.normalizer.flat.product_value.class` to `pim_serializer.normalizer.flat.value.class`
+- Rename class `pim_catalog.entity.product_value.scalar.class` to `pim_catalog.entity.value.scalar.class`
+- Rename class `pim_catalog.entity.product_value.media.class` to `pim_catalog.entity.value.media.class`
+- Rename class `pim_catalog.entity.product_value.metric.class` to `pim_catalog.entity.value.metric.class`
+- Rename class `pim_catalog.entity.product_value.option.class` to `pim_catalog.entity.value.option.class`
+- Rename class `pim_catalog.entity.product_value.options.class` to `pim_catalog.entity.value.options.class`
+- Rename class `pim_catalog.entity.product_value.date.class` to `pim_catalog.entity.value.date.class`
+- Rename class `pim_catalog.entity.product_value.price_collection.class` to `pim_catalog.entity.value.price_collection.class`
+- Rename class `pim_enrich.converter.standard_to_enrich.product_value.class` to `pim_enrich.converter.standard_to_enrich.value.class`
+- Rename class `pim_enrich.converter.enrich_to_standard.product_value.class` to `pim_enrich.converter.enrich_to_standard.value.class`
+- Rename class `pim_reference_data.factory.product_value.reference_data.class` to `pim_reference_data.factory.value.reference_data.class`
+- Rename class `pim_reference_data.factory.product_value.reference_data_collection.class` to `pim_reference_data.factory.value.reference_data_collection.class`
+- Rename class `pim_reference_data.product_value.reference_data.class` to `pim_reference_data.value.reference_data.class`
+- Rename class `pim_reference_data.product_value.reference_data_collection.class` to `pim_reference_data.value.reference_data_collection.class`
+- Rename service `pim_catalog.factory.product_value` to `pim_catalog.factory.value`
+- Rename service `pim_catalog.factory.product_value_collection` to `pim_catalog.factory.value_collection`
+- Rename service `pim_catalog.factory.product_value.text` to `pim_catalog.factory.value.text`
+- Rename service `pim_catalog.factory.product_value.textarea` to `pim_catalog.factory.value.textarea`
+- Rename service `pim_catalog.factory.product_value.number` to `pim_catalog.factory.value.number`
+- Rename service `pim_catalog.factory.product_value.boolean` to `pim_catalog.factory.value.boolean`
+- Rename service `pim_catalog.factory.product_value.identifier` to `pim_catalog.factory.value.identifier`
+- Rename service `pim_catalog.factory.product_value.metric` to `pim_catalog.factory.value.metric`
+- Rename service `pim_catalog.factory.product_value.price_collection` to `pim_catalog.factory.value.price_collection`
+- Rename service `pim_catalog.factory.product_value.option` to `pim_catalog.factory.value.option`
+- Rename service `pim_catalog.factory.product_value.options` to `pim_catalog.factory.value.options`
+- Rename service `pim_catalog.factory.product_value.file` to `pim_catalog.factory.value.file`
+- Rename service `pim_catalog.factory.product_value.image` to `pim_catalog.factory.value.image`
+- Rename service `pim_catalog.factory.product_value.date` to `pim_catalog.factory.value.date`
+- Rename service `pim_catalog.model.product_value.interface` to `pim_catalog.model.value.interface`
+- Rename service `pim_versioning.serializer.normalizer.flat.product_value` to `pim_versioning.serializer.normalizer.flat.value`
+- Remove interface `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface`, attribute type classes must now implement directly `Pim\Component\Catalog\AttributeTypeInterface`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\AttributeController`
+- Remove service `pim_enrich.controller.attribute`
+- Remove several UI related classes for attributes: `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeType`
+- Remove services `pim_enrich.form.subscriber.attribute`, `pim_enrich.form.type.attribute`, `pim_enrich.form.type.available_locales`, `pim_enrich.form.type.options`, `pim_enrich.form.attribute`, `pim_enrich.form.handler.attribute`
 - Add subscriber to lock/unlock batch job commands thanks to @bOnepain
 
 ## Requirements

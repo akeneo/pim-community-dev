@@ -36,8 +36,8 @@ Feature: Reset product grid filters
     Then the grid should contain 2 elements
     When I reset the grid
     Then the grid should contain 6 elements
-    And I should see the text "Family: All"
-    And I should see the text "Groups: All"
+    And the criteria of "family" filter should be "All"
+    And the criteria of "groups" filter should be "All"
 
   Scenario: I successfully keep the scope I work on when I reset the defaut view
     When I filter by "scope" with operator "equals" and value "Mobile"
@@ -61,8 +61,8 @@ Feature: Reset product grid filters
     And I filter by "size" with operator "in list" and value "38"
     Then the grid should contain 2 elements
     When I reset the grid
-    Then I should see the text "Color: \"White\""
-    And I should see the text "Size: \"37\""
+    Then the criteria of "color" filter should be ""White""
+    And the criteria of "size" filter should be ""37""
     And the grid should contain 1 element
 
   Scenario: I successfully reset field filters of an existing view
@@ -78,8 +78,8 @@ Feature: Reset product grid filters
     And the grid should contain 0 element
     When I reset the grid
     Then the grid should contain 2 elements
-    And I should see the text "Family: \"Sandals\""
-    And I should see the text "Groups: \"Similar boots\""
+    And the criteria of "family" filter should be ""Sandals""
+    And the criteria of "groups" filter should be ""Similar boots""
 
   Scenario: I successfully keep the scope I work on when I reset an existing view
     When I filter by "scope" with operator "equals" and value "Mobile"

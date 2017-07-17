@@ -3,7 +3,6 @@
 namespace Pim\Behat\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Context for the attribute validation

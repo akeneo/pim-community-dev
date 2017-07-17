@@ -33,7 +33,6 @@ define(
         router
     ) {
         return BaseSave.extend({
-
             /**
              * Sets message labels for updates
              */
@@ -70,15 +69,15 @@ define(
              */
             showFlashMessage: function (message, labels) {
                 var flash = __(message, { 'fields': labels.join(', ') });
-                messenger.notificationFlashMessage('error', flash);
+                messenger.notify('error', flash);
             },
 
             /**
              * {@inheritdoc}
              */
             save: function () {
-                var entity = $.extend(true, {}, this.getFormData());
-                delete entity.meta;
+                var excludedProperties = _.union(this.config.excludedProperties, ['meta']);
+                var entity = _.omit(this.getFormData(), excludedProperties);
 
                 var notReadyFields = FieldManager.getNotReadyFields();
 
@@ -101,7 +100,11 @@ define(
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
 
                         if (this.config.redirectAfter) {
-                            router.redirectToRoute(this.config.redirectAfter, {identifier: entity.code});
+                            var params = {};
+                            var key = this.config.identifierParamName || 'identifier';
+                            params[key] = entity.code;
+
+                            router.redirectToRoute(this.config.redirectAfter, params);
                         }
                     }.bind(this))
                     .fail(this.fail.bind(this))

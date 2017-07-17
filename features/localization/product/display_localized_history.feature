@@ -29,7 +29,7 @@ Feature: Display the localized product history
     And I am on the products page
     And I click on the "boots" row
     And I wait to be on the "boots" product page
-    When I open the history
+    When I visit the "Historique" column tab
     Then there should be 1 update
     And I should see history:
       | version | property    | value     |
@@ -45,7 +45,7 @@ Feature: Display the localized product history
     And I am on the products page
     And I click on the "boots" row
     And I wait to be on the "boots" product page
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 1 update
     And I should see history:
       | version | property    | value   |

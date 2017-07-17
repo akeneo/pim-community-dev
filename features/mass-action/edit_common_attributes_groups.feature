@@ -25,8 +25,7 @@ Feature: Edit common attributes of many products at once
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Nom and Taille attributes
-    Then I should see "[info]"
-    And I should see "[sizes]"
-    And I should see "Nom"
+    Then I should see the text "[info]"
+    And I should see the text "Nom"
     When I visit the "[sizes]" group
-    Then I should see "Taille"
+    Then I should see the text "Taille"

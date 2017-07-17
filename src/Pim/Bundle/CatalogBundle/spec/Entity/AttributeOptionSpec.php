@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Prophecy\Argument;
 

@@ -3,9 +3,12 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType;
+use Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -25,22 +28,22 @@ class SelectFamilyTypeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType');
+        $this->shouldHaveType(SelectFamilyType::class);
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldHaveType('Symfony\Component\Form\AbstractType');
+        $this->shouldHaveType(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('select_family_type');
+        $this->getBlockPrefix()->shouldReturn('select_family_type');
     }
 
     function it_has_a_parent()
     {
-        $this->getParent()->shouldReturn('pim_async_select');
+        $this->getParent()->shouldReturn(AsyncSelectType::class);
     }
 
     function it_resets_the_view_transformer($builder)

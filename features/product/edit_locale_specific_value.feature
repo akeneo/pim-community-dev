@@ -16,7 +16,7 @@ Feature: Edit a locale specific value
     Given I am on the "tshirt" product page
     And I visit the "Internal" group
     And I switch the locale to "de_DE"
-    Then I should see "Zollsteuer"
+    Then I should see the text "Zollsteuer"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Don't display the custom tax on not available locale
@@ -32,6 +32,6 @@ Feature: Edit a locale specific value
     And I visit the "General" group
     Then I should see the text "This locale specific field is not available in this locale"
     And I switch the locale to "fr_FR"
-    Then I should see "Sous la loi Européenne"
+    Then I should see the text "Sous la loi Européenne"
     And I switch the locale to "de_DE"
-    Then I should see "Nach europäischem Recht"
+    Then I should see the text "Nach europäischem Recht"

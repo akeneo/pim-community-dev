@@ -14,9 +14,6 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
     - { resource: '@PimApiBundle/Resources/config/api.yml' }
 
-akeneo_storage_utils:
-    storage_driver: '%pim_catalog_product_storage_driver%'
-
 services:
     oro.cache.abstract:
         abstract:  true
@@ -27,9 +24,9 @@ services:
          tags:
              - { name: twig.extension }
     doctrine.dbal.default.wrapped_connection:
-        factory_service:      doctrine.dbal.session_connection
-        factory_method:       getWrappedConnection
-        class:                PDO
+        class: PDO
+        factory: 'doctrine.dbal.session_connection:getWrappedConnection'
+
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:

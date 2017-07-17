@@ -11,6 +11,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * Class persisting JobExecution and StepExecution states.
@@ -214,8 +215,9 @@ class DoctrineJobRepository implements JobRepositoryInterface
      * Pings the server, returns false if it's not available.
      * There is a ping() method in Doctrine\DBAL\Connection in the doctrine/dbal package
      * as of 2.5.0, but  we are currently on 2.4.x
-     * @return bool
      * @author Cristian Quiroz <cq@amp.co>
+     *
+     * @return bool
      */
     protected function pingConnection()
     {
@@ -226,6 +228,50 @@ class DoctrineJobRepository implements JobRepositoryInterface
             return true;
         } catch (DBALException $e) {
             return false;
+        }
+    }
+
+    /**
+     * To avoid memory leak, we insert the warnings directly in database without
+     * creating a Warning entity (as it is cascade persist from the JobExecution,
+     * there is no way to save them then detach them without huge BC break).
+     *
+     * Then we need to reinitialize the warnings persistent collection, so it is
+     * not systematically empty, resulting in an always successful notification
+     * at the end of the batch job.
+     *
+     * As the warnings are extra-lazy, in a persistent collection, this do not
+     * cause a new memory leak.
+     *
+     * @param StepExecution $stepExecution
+     * @param string        $reason
+     * @param array         $reasonParameters
+     * @param array         $item
+     *
+     * @todo Add interface on master (or find a proper way to do this as it is kind of a dirty hack).
+     */
+    public function insertWarning(
+        StepExecution $stepExecution,
+        $reason,
+        $reasonParameters = [],
+        $item = []
+    ) {
+        $sqlQuery = <<<SQL
+INSERT INTO akeneo_batch_warning (step_execution_id, reason, reason_parameters, item)
+VALUES (:step_execution_id, :reason, :reason_parameters, :item)
+SQL;
+
+        $connection = $this->jobManager->getConnection();
+
+        $statement = $connection->prepare($sqlQuery);
+        $statement->bindValue('step_execution_id', $stepExecution->getId());
+        $statement->bindValue('reason', $reason);
+        $statement->bindValue('reason_parameters', $reasonParameters, 'array');
+        $statement->bindValue('item', $item, 'array');
+        $statement->execute();
+
+        if ($stepExecution->getWarnings() instanceof PersistentCollection) {
+            $stepExecution->getWarnings()->setInitialized(false);
         }
     }
 }

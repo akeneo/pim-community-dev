@@ -145,6 +145,7 @@ pim_enrich:
     navigation:
         link:
             back_to_grid: Back to grid
+        other_actions: Other actions
     entity:
         save:
             label: Save
@@ -152,6 +153,8 @@ pim_enrich:
             update_failed: Update failed
             update_successful: Successfully updated
         product:
+            navigation: Product navigation
+            infos: Product infos
             title: product
             btn:
                 enable: Enable
@@ -162,13 +165,10 @@ pim_enrich:
                 compare_translate: Compare / Translate
                 delete: Delete
                 save: Save
-                save_and_back: Save and back to grid
             history:
                 version: Version
                 author: Author
                 logged_at: Logged at
-                more: More
-                less: Less
                 from: From
                 modified: Modified
                 property: Property
@@ -225,16 +225,13 @@ pim_enrich:
                     family: Choose a family
                     save: Save
                     cancel: Cancel
-        attribute:
-            scopable: Scopable
-            global: Global
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
                 deletion_failed: Association type could not be deleted.
                 update_successful: Association type successfully updated.
                 update_failed: The association type could not be updated.
-                field_not_ready: The association type cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -249,7 +246,7 @@ pim_enrich:
                 deletion_failed: Group type could not be deleted.
                 update_successful: Group type successfully updated.
                 update_failed: The group type could not be updated.
-                field_not_ready: The group type cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -267,7 +264,7 @@ pim_enrich:
                 update_failed: The channel could not be updated.
                 create_successful: Channel successfully created.
                 create_failed: The channel could not be created.
-                field_not_ready: The channel cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The channel cannot be saved right now. The following fields are not ready: {{ fields }}"
             meta:
                 created: Created
                 created_by: Created by
@@ -290,21 +287,6 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
-        attribute_label:
-            pim_catalog_identifier:           Identifier
-            pim_catalog_text:                 Text
-            pim_catalog_textarea:             Text Area
-            pim_catalog_number:               Number
-            pim_catalog_price_collection:     Price
-            pim_catalog_multiselect:          Multi select
-            pim_catalog_simpleselect:         Simple select
-            pim_catalog_file:                 File
-            pim_catalog_image:                Image
-            pim_catalog_boolean:              "Yes/No"
-            pim_catalog_date:                 Date
-            pim_catalog_metric:               Metric
-            pim_reference_data_simpleselect:  Reference data simple select
-            pim_reference_data_multiselect:   Reference data multi select
         attribute_option:
             code: Code
             label: Label
@@ -316,7 +298,7 @@ pim_enrich:
                 deletion_failed: The variant group could not be deleted.
                 update_successful: Variant group successfully updated.
                 update_failed: The variant group could not be updated.
-                field_not_ready: The variant group cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The variant group cannot be saved right now. The following fields are not ready: {{ fields }}"
                 already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
                 no_attributes: This variant group has no attributes yet
             btn:
@@ -334,7 +316,7 @@ pim_enrich:
                 deletion_failed: Group could not be deleted.
                 update_successful: Group successfully updated.
                 update_failed: The group could not be updated.
-                field_not_ready: The group cannot be saved right now. The following fields are not ready: {{ fields }}
+                field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
             btn:
                 save: Save
             meta:
@@ -348,6 +330,34 @@ pim_enrich:
             info:
                 update_failed: The job profile could not be updated.
                 update_successful: The job profile has been successfully updated.
+        attribute:
+            info:
+                deletion_successful: Attribute successfully deleted.
+                deletion_failed: The attribute could not be deleted.
+                update_successful: Attribute successfully updated.
+                update_failed: The attribute could not be updated.
+                create_successful: Attribute successfully created.
+                create_failed: The attribute could not be created.
+            scopable: Scopable
+            type:
+                pim_catalog_identifier:             Identifier
+                pim_catalog_text:                   Text
+                pim_catalog_textarea:               Text Area
+                pim_catalog_number:                 Number
+                pim_catalog_price_collection:       Price
+                pim_catalog_multiselect:            Multi select
+                pim_catalog_simpleselect:           Simple select
+                pim_catalog_file:                   File
+                pim_catalog_image:                  Image
+                pim_catalog_boolean:                "Yes/No"
+                pim_catalog_date:                   Date
+                pim_catalog_metric:                 Metric
+                pim_reference_data_simpleselect:    Reference data simple select
+                pim_reference_data_multiselect:     Reference data multi select
+            validation_rule:
+                email: E-mail
+                regexp: Regular expression
+                url: URL
         attribute_group:
             info:
                 update_failed: Attribute group could not be updated
@@ -379,6 +389,7 @@ pim_enrich:
                         show_products: Show products
                         show_groups: Show groups
                         number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                    association_type_selector: Association type
                 attributes:
                     title: Attributes
                     btn:
@@ -390,8 +401,10 @@ pim_enrich:
                         attributes_selected: "{{ itemsCount }} attribute(s) selected"
                         no_match: No matches found
                         load_more: Loading more results...
+                    attribute_group_selector: Attribute group
                 categories:
                     title: Categories
+                    catalog_selector: Catalog
             panel:
                 completeness:
                     title: Completeness
@@ -573,9 +586,12 @@ pim_enrich:
                 export.title: Export now
                 import.launch: Import now
                 import.upload: Upload and import now
+                import.upload_file: Upload a file
             meta:
                 job: Job
                 connector: Connector
+            subsection:
+                last_executions: Last executions
             tab:
                 content:
                     title: Content
@@ -633,6 +649,58 @@ pim_enrich:
                     real_time_versioning:
                         title: Real time history update
                         help: Means that the product history is automatically updated, can be switched off to improve performances
+                history:
+                    title: History
+            file_path: File path
+        attribute:
+            meta:
+                created: Created
+                created_by: by
+                updated: Last update
+                updated_by: by
+            tab:
+                properties:
+                    title: Properties
+                    section:
+                        common: General parameters
+                        type_specific: Type specific parameters
+                        validation: Validation parameters
+                    label:
+                        allowed_extensions: Allowed extensions
+                        auto_option_sorting: Sort automatically options by alphabetical order
+                        available_locales: Available locales
+                        code: Code
+                        date_max: Max date
+                        date_min: Min date
+                        decimals_allowed: Decimal values allowed
+                        default_metric_unit: Default metric unit
+                        group: Attribute group
+                        is_locale_specific: Locale specific
+                        localizable: Value per locale
+                        max_characters: Max characters
+                        max_file_size: Max file size (MB)
+                        metric_family: Metric family
+                        minimum_input_length: Minimum length for autocompletion
+                        negative_allowed: Negative values allowed
+                        number_max: Max number
+                        number_min: Min number
+                        reference_data_name: Reference data type
+                        scopable: Value per channel
+                        type: Type
+                        unique: Unique value
+                        useable_as_grid_filter: Usable in grid
+                        validation_regexp: Regular expression
+                        validation_rule: Validation rule
+                        wysiwyg_enabled: Rich text editor enabled
+                    default_label:
+                        default_metric_unit: Choose a unit
+                        group: Choose the attribute group
+                        metric_family: Choose a family
+                        reference_data_name: Choose the reference data type
+                labels:
+                    title: Label translations
+                choices:
+                    title: Options
                 history:
                     title: History
         mass_edit:
@@ -932,11 +1000,13 @@ job_tracker:
 
 pim_menu:
     tab:
-        collect: Collect
-        enrich: Enrich
+        dashboard: Dashboard
+        imports: Imports
+        products: Products
+        exports: Exports
         settings: Settings
         system: System
-        spread: Spread
+
     item:
         association_type: Association types
         attribute: Attributes
@@ -962,10 +1032,16 @@ pim_menu:
         info: System information
         job_tracker: Process tracker
 
-pim_header:
+    navigation:
+        system: System navigation
+        user: Users management navigation
+        settings: Settings navigation
+
     user:
         logout: Logout
         user_account: My Account
 
 pim_notification:
     mark_all_as_read: Mark all as read
+    no_notifications: No notifications
+    loading: Loading...

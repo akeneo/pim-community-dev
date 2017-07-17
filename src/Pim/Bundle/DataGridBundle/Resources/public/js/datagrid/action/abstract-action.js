@@ -226,7 +226,7 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
             var defaultMessage = data.successful ? this.messages.success : this.messages.error,
                 message = __(data.message) || defaultMessage;
             if (message) {
-                messenger.notificationFlashMessage(data.successful ? 'success' : 'error', message);
+                messenger.notify(data.successful ? 'success' : 'error', message);
             }
         },
 

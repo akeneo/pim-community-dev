@@ -44,7 +44,7 @@ Feature: Edit a channel
     Then the grid should contain 2 elements
     And I should see locales "en_US" and "br_FR"
     When I am on the "tablet" channel page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the locales page
     Then the grid should contain 1 element
@@ -62,7 +62,7 @@ Feature: Edit a channel
   Scenario: Successfully replace a channel locale by another one when there is only one channel
     Given I am logged in as "Peter"
     And I am on the channels page
-    And I click on the "Delete" action of the row which contains "tablet"
+    And I click on the "Delete" action of the row which contains "Tablet"
     And I confirm the deletion
     And I am on the "mobile" channel page
     When I change the "Locales" to "German (Germany)"

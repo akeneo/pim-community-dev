@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Text attribute type
@@ -14,40 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class TextType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'maxCharacters' => [
-                'name'      => 'maxCharacters',
-                'fieldType' => 'text'
-            ],
-            'validationRule' => [
-                'name'      => 'validationRule',
-                'fieldType' => 'choice',
-                'options'   => [
-                    'choices' => [
-                        null     => 'None',
-                        'email'  => 'E-mail',
-                        'url'    => 'URL',
-                        'regexp' => 'Regular expression'
-                    ],
-                    'select2' => true
-                ]
-            ],
-            'validationRegexp' => [
-                'name' => 'validationRegexp'
-            ]
-        ];
-
-        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
-        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
-
-        return $properties;
-    }
-
     /**
      * {@inheritdoc}
      */

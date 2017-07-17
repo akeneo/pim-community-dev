@@ -2,11 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 
 /**
  * Extracts attribute field information
@@ -21,13 +18,13 @@ class AttributeColumnInfoExtractor
     const FIELD_SEPARATOR = '-';
     const UNIT_SEPARATOR = ' ';
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var LocaleRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
     /** @var AssociationColumnsResolver */
@@ -40,15 +37,15 @@ class AttributeColumnInfoExtractor
     protected $excludedFieldNames;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param LocaleRepositoryInterface    $localeRepository
-     * @param AssociationColumnsResolver   $assoColumnResolver
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
+     * @param AssociationColumnsResolver            $assoColumnResolver
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository,
         AssociationColumnsResolver $assoColumnResolver = null
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -88,7 +85,6 @@ class AttributeColumnInfoExtractor
         if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
             $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
             $attributeCode = $explodedFieldName[0];
-            // TODO: We re-fetch attribute here but we did a findAll in another service (╯°□°)╯︵ ┻━┻
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null !== $attribute) {
@@ -143,26 +139,11 @@ class AttributeColumnInfoExtractor
      */
     protected function checkFieldNameTokens(AttributeInterface $attribute, $fieldName, array $explodedFieldName)
     {
-        // the expected number of tokens in a field may vary,
-        //  - with the current price import, the currency can be optionally present in the header,
-        //  - with the current metric import, a "-unit" field can be added in the header,
-        //
-        // To avoid BC break, we keep the support in this fix, a next minor version could contain only the
-        // support of currency code in the header and metric in a single field
         $isLocalizable = $attribute->isLocalizable();
         $isScopable = $attribute->isScopable();
         $isPrice = 'prices' === $attribute->getBackendType();
-        $isMetric = 'metric' === $attribute->getBackendType();
 
-        $expectedSize = 1;
-        $expectedSize = $isLocalizable ? $expectedSize + 1 : $expectedSize;
-        $expectedSize = $isScopable ? $expectedSize + 1 : $expectedSize;
-
-        if ($isMetric || $isPrice) {
-            $expectedSize = [$expectedSize, $expectedSize + 1];
-        } else {
-            $expectedSize = [$expectedSize];
-        }
+        $expectedSize = $this->calculateExpectedSize($attribute);
 
         $nbTokens = count($explodedFieldName);
         if (!in_array($nbTokens, $expectedSize)) {
@@ -185,6 +166,39 @@ class AttributeColumnInfoExtractor
         if ($isLocalizable) {
             $this->checkForLocaleSpecificValue($attribute, $explodedFieldName);
         }
+    }
+
+    /**
+     * Calculates the expected size of the field with the attribute and its properties locale, scope, etc.
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return int
+     */
+    protected function calculateExpectedSize(AttributeInterface $attribute)
+    {
+        // the expected number of tokens in a field may vary,
+        //  - with the current price import, the currency can be optionally present in the header,
+        //  - with the current metric import, a "-unit" field can be added in the header,
+        //
+        // To avoid BC break, we keep the support in this fix, a next minor version could contain only the
+        // support of currency code in the header and metric in a single field
+        $isLocalizable = $attribute->isLocalizable();
+        $isScopable = $attribute->isScopable();
+        $isPrice = 'prices' === $attribute->getBackendType();
+        $isMetric = 'metric' === $attribute->getBackendType();
+
+        $expectedSize = 1;
+        $expectedSize = $isLocalizable ? $expectedSize + 1 : $expectedSize;
+        $expectedSize = $isScopable ? $expectedSize + 1 : $expectedSize;
+
+        if ($isMetric || $isPrice) {
+            $expectedSize = [$expectedSize, $expectedSize + 1];
+        } else {
+            $expectedSize = [$expectedSize];
+        }
+
+        return $expectedSize;
     }
 
     /**

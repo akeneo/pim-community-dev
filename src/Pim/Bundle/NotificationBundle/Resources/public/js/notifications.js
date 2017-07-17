@@ -18,8 +18,8 @@ define(
                 loadingText:            null,
                 noNotificationsMessage: null,
                 markAsReadMessage:      null,
-                indicatorBaseClass:     'AknBell-count',
-                indicatorEmptyClass:    'AknBell-count--hidden',
+                indicatorBaseClass:     'AknNotificationMenu-count',
+                indicatorEmptyClass:    'AknNotificationMenu-count--hidden',
                 refreshInterval:        30000
             },
 
@@ -34,8 +34,8 @@ define(
             footerTemplate: _.template(notificationFooterTpl),
 
             events: {
-                'click a.dropdown-toggle':   'onOpen',
-                'click button.mark-as-read': 'markAllAsRead'
+                'click .notification-link': 'onOpen',
+                'click .mark-as-read': 'markAllAsRead'
             },
 
             markAllAsRead: function (e) {
@@ -58,7 +58,7 @@ define(
                 this.options = _.extend({}, this.options, opts);
                 this.collection = new NotificationList();
                 this.indicator  = new Indicator({
-                    el: this.$('.AknBell-countContainer'),
+                    el: this.$('.AknNotificationMenu-countContainer'),
                     value: 0,
                     className: this.options.indicatorBaseClass,
                     emptyClass: this.options.indicatorEmptyClass
@@ -128,7 +128,7 @@ define(
             render: function () {
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
-                this.indicator.setElement(this.$('.AknBell-countContainer'));
+                this.indicator.setElement(this.$('.AknNotificationMenu-countContainer'));
                 this.renderFooter();
             },
 

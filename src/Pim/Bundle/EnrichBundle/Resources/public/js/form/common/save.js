@@ -9,7 +9,6 @@
  */
 define(
     [
-        'jquery',
         'oro/translator',
         'pim/form',
         'oro/mediator',
@@ -17,7 +16,6 @@ define(
         'oro/messenger'
     ],
     function (
-        $,
         __,
         BaseForm,
         mediator,
@@ -83,7 +81,7 @@ define(
             postSave: function () {
                 this.getRoot().trigger('pim_enrich:form:entity:post_save');
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     this.updateSuccessMessage
                 );
@@ -97,7 +95,7 @@ define(
             fail: function (response) {
                 switch (response.status) {
                     case 400:
-                        mediator.trigger(
+                        this.getRoot().trigger(
                             'pim_enrich:form:entity:bad_request',
                             {'sentData': this.getFormData(), 'response': response.responseJSON}
                         );
@@ -112,7 +110,7 @@ define(
                     default:
                 }
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'error',
                     this.updateFailureMessage
                 );

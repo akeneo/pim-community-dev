@@ -14,7 +14,7 @@ class BooleanFilter extends ChoiceFilter
      */
     protected function getFormType()
     {
-        return BooleanFilterType::NAME;
+        return BooleanFilterType::class;
     }
 
     /**

@@ -3,16 +3,6 @@
 
 {% block main %}
     <div id="main">
-        {% block before_content %}
-            <div class="BreadcrumbContainer">
-                <div id="breadcrumb">
-                    {% block breadcrumb %}
-                        {% placeholder breadcrumb %}
-                    {% endblock breadcrumb %}
-                </div>
-                {% placeholder pin_button %}
-            </div>
-        {% endblock before_content %}
         <div class="hash-loading-mask"></div>
         <div id="container">
             {% block page_container %}

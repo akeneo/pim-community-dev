@@ -3,9 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {

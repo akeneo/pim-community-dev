@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 

@@ -57,12 +57,6 @@
         {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
     {% endset %}
 
-    {% set titleButtons %}
-        {% if (form.vars.value.id is null) and parentId %}
-            {{ elements.backLink(path(route ~ '_categorytree_edit', { id: parentId }), 'btn.to parent') }}
-        {% endif %}
-    {% endset %}
-
     {{ elements.page_header(title, buttons, null, null, null, titleButtons, elements.updated(form.vars.id)) }}
 
     <div class="AknTabContainer">

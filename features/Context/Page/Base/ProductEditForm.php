@@ -157,12 +157,15 @@ class ProductEditForm extends Form
             $field = $fieldContainer->find('css', 'div.field-input > textarea');
 
             if (!$field || !$field->isVisible()) {
-                $id = $fieldContainer->find('css', 'textarea')->getAttribute('id');
-                $this->getSession()->executeScript(
-                    sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
-                );
+                $textarea = $fieldContainer->find('css', 'textarea');
+                if (null !== $textarea) {
+                    $id = $textarea->getAttribute('id');
+                    $this->getSession()->executeScript(
+                        sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
+                    );
 
-                return true;
+                    return true;
+                }
             }
 
             $field->setValue($value);
@@ -663,6 +666,6 @@ class ProductEditForm extends Form
                 $field,
                 $field
             ));
-        }, sprintf('Spining to get remove link on product edit form for field "%s"', $field));
+        }, sprintf('Spinning to get remove link on product edit form for field "%s"', $field));
     }
 }

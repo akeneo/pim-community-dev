@@ -18,30 +18,29 @@ Feature: Update the product history
     And I change the Price to "20 USD"
     And I change the Price to "10 EUR"
     And I save the product
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
       | version | property  | value  |
       | 2       | Price EUR | €10.00 |
       | 2       | Price USD | $20.00 |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
     And I save the product
     And the history of the product "boots" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
       | version | property  | value  |
       | 3       | Price USD | $19.00 |
-    When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     And I remove the "Price" attribute
     And I confirm the deletion
     And I save the product
     And the history of the product "boots" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 4 updates
     And I should see history:
       | version | property  | value |
@@ -61,29 +60,27 @@ Feature: Update the product history
     And I add available attributes Length
     And I change the "Length" to "30"
     And I save the product
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
       | version | property    | value      |
       | 2       | Length      | 30         |
       | 2       | Length unit | Centimeter |
-    When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I change the "Length" to "35 Centimeter"
     And I save the product
     And the history of the product "boots" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
       | version | property | value |
       | 3       | Length   | 35    |
-    When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I remove the "Length" attribute
     And I confirm the deletion
     And I save the product
     And the history of the product "boots" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 4 updates
     And I should see history:
       | version | property    | value |
@@ -105,18 +102,17 @@ Feature: Update the product history
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the product
     And the history of the product "boots" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
       | version | property  | value           |
       | 2       | Side view | .*SNKRS_1R\.png |
-    When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Media" group
     And I remove the "Side view" file
     And I save the product
     And the history of the product "boots" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
       | version | property  | value |

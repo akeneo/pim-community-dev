@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Attribute group controller
@@ -57,7 +58,7 @@ class AttributeGroupController
     /** @var EntityRepository */
     protected $attributeRepository;
 
-    /** @var UpdaterInterface */
+    /** @var ObjectUpdaterInterface */
     protected $attributeUpdater;
 
     /** @var SaverInterface */
@@ -117,39 +118,18 @@ class AttributeGroupController
     /**
      * Search attribute group collection
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function searchAction(Request $request)
     {
-        $options = [];
-
-        if ($request->request->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
-        }
-
-        if ($request->request->has('attribute_groups')) {
-            $options['attribute_groups'] = explode(
-                ',',
-                $request->request->get('attribute_groups')
-            );
-        }
-
         $applyFilters = $request->request->getBoolean('apply_filters', true);
-
-        if (empty($options)) {
-            $options = $request->request->get(
-                'options',
-                [
-                    'limit' => SearchableRepositoryInterface::FETCH_LIMIT,
-                    'locale' => null,
-                ]
-            );
-        }
 
         $attributeGroups = $this->attributeGroupSearchableRepository
             ->findBySearch(
                 $request->request->get('search'),
-                $options
+                $this->parseOptions($request)
             );
 
         if ($applyFilters) {
@@ -209,7 +189,6 @@ class AttributeGroupController
 
     /**
      * @param Request $request
-     * @param string $identifier
      *
      * @return JsonResponse
      *
@@ -318,7 +297,7 @@ class AttributeGroupController
     /**
      * Remove action
      *
-     * @param $code
+     * @param string $identifier
      *
      * @return JsonResponse
      *
@@ -331,6 +310,41 @@ class AttributeGroupController
         $this->remover->remove($attributeGroup);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Array
+     */
+    protected function parseOptions(Request $request)
+    {
+        $options = $request->get('options', []);
+
+        if (!isset($options['limit'])) {
+            $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
+        }
+
+        if (0 > intval($options['limit'])) {
+            $options['limit'] = null;
+        }
+
+        if (!isset($options['locale'])) {
+            $options['locale'] = null;
+        }
+
+        if ($request->request->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+        }
+
+        if ($request->request->has('attribute_groups')) {
+            $options['attribute_groups'] = explode(
+                ',',
+                $request->request->get('attribute_groups')
+            );
+        }
+
+        return $options;
     }
 
     /**

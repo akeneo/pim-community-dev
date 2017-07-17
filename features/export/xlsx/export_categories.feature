@@ -130,8 +130,8 @@ Feature: Export categories in XLSX
     And I am on the "xlsx_footwear_category_export" export job page
     When I launch the export job
     And I wait for the "xlsx_footwear_category_export" job to finish
-    Then I should see "read 105"
-    Then I should see "written 105"
+    Then I should see the text "read 105"
+    Then I should see the text "written 105"
 
   Scenario: Successfully export categories into several files
     Given the following categories:
@@ -144,10 +144,9 @@ Feature: Export categories in XLSX
     When I am on the "xlsx_footwear_category_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_category_export" job to finish
-    And I press the "Download generated files" button
-    Then I should see the text "xlsx_footwear_category_export_1.xlsx"
-    And I should see the text "xlsx_footwear_category_export_2.xlsx"
-    And I should see the text "xlsx_footwear_category_export_3.xlsx"
+    Then I should see the secondary action "xlsx_footwear_category_export_1.xlsx"
+    And I should see the secondary action "xlsx_footwear_category_export_2.xlsx"
+    And I should see the secondary action "xlsx_footwear_category_export_3.xlsx"
     And exported xlsx file 1 of "xlsx_footwear_category_export" should contain:
       | code              | label-en_US       | parent            |
       | 2014_collection   | 2014 collection   |                   |

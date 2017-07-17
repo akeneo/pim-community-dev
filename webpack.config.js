@@ -3,15 +3,20 @@ const process = require('process')
 const rootDir = process.cwd()
 const webpack = require('webpack')
 const { resolve } = require('path')
-const { values } = require('lodash')
+const { values, mapKeys } = require('lodash')
 const { getModulePaths } = require('./frontend/requirejs-utils')
 const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
+const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
-console.log('Starting webpack from', rootDir)
+const babelPresets = ['es2015', 'es2016', 'es2017']
+if (isProd) babelPresets.push('babili')
+
+console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
 
 module.exports = {
     target: 'web',
@@ -25,7 +30,7 @@ module.exports = {
     devtool: 'cheap-source-map',
     resolve: {
         symlinks: false,
-        alias: aliases
+        alias: mapKeys(aliases, (path, key) => `${key}$`)
     },
     module: {
         rules: [
@@ -59,7 +64,7 @@ module.exports = {
             // Inject the module config (to replace module.config() from requirejs)
             {
                 test: /\.js$/,
-                exclude: /node_modules|spec/,
+                exclude: /\/node_modules\/|\/spec\//,
                 use: [
                     {
                         loader: resolve(__dirname, 'frontend/config-loader'),
@@ -132,11 +137,11 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: /(web\/bundles|frontend|spec)/,
-                exclude: /lib/,
+                exclude: /lib|node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['es2017'],
+                        presets: babelPresets,
                         // Cache speeds up the incremental builds
                         cacheDirectory: 'web/cache'
                     }
@@ -150,6 +155,9 @@ module.exports = {
         moduleExtensions: ['-loader']
     },
     plugins: [
+        // Clean up the dist folder and source maps before rebuild
+        new WebpackCleanupPlugin(),
+
         // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
 

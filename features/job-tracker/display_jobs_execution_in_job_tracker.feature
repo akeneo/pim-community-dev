@@ -17,7 +17,7 @@ Feature: Display jobs execution in job tracker
     When I am on the job tracker page
     Then I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Started at, Status and Warnings
+    And I should see the columns Job, Type, User, Started at, Status and Warnings
     And the grid should contain 1 element
     And I should see entity CSV footwear category export
 
@@ -29,7 +29,7 @@ Feature: Display jobs execution in job tracker
       | sneakers | sneakers |
       | sandals  | sandals  |
     When I am on the products page
-    Then I select rows boots, sandals and sneakers
+    Then I select rows Boots, Sandals and Sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
@@ -40,7 +40,7 @@ Feature: Display jobs execution in job tracker
     When I am on the job tracker page
     Then I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Started at, Status and Warnings
+    And I should see the columns Job, Type, User, Started at, Status and Warnings
     And the grid should contain 1 element
     And I should see entity Mass edit common product attributes
 
@@ -63,31 +63,10 @@ Feature: Display jobs execution in job tracker
     And I am on the job tracker page
     And I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Started at, Status and Warnings
+    And I should see the columns Job, Type, User, Started at, Status and Warnings
     And the grid should contain 1 element
     And I should see entity CSV footwear category import
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6140
-  Scenario: Successfully filter job executions with "equals to" filter
-    Given I am logged in as "Julia"
-    And I am on the exports page
-    And I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    And I logout
-    And I am logged in as "admin"
-    And I am on the "csv_footwear_category_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_category_export" job to finish
-    When I am on the job tracker page
-    Then I should be able to use the following filters:
-      | filter | operator    | value                       | result                                                    |
-      | job    | is equal to | CSV footwear product export | CSV footwear product export                               |
-      | user   | is equal to | Julia                       | CSV footwear product export                               |
-      | type   | is equal to | import                      |                                                           |
-      | type   | is equal to | export                      | CSV footwear product export, CSV footwear category export |
-
-  @skip-nav
   Scenario: Successfully deny to view progress when the user do not have export show access
     Given I am logged in as "admin"
     And I am on the "csv_footwear_product_export" export job page
@@ -95,7 +74,6 @@ Feature: Display jobs execution in job tracker
     And I wait for the "csv_footwear_product_export" job to finish
     And I am on the "Catalog manager" role page
     And I visit the "Permissions" tab
-    And I visit the "Export profiles" group
     And I revoke rights to resource Show an export profile
     And I save the role
     And I should not see the text "There are unsaved changes"

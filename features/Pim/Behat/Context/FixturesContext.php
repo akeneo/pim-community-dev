@@ -252,21 +252,13 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
-    }
-
-    /**
      * @param string $namespace
      *
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     protected function getRepository($namespace)
     {
-        return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
+        return $this->getMainContext()->getEntityManager()->getRepository($namespace);
     }
 
     /**
@@ -275,7 +267,7 @@ class FixturesContext extends PimContext
     public function refresh($object)
     {
         if (is_object($object)) {
-            $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+            $this->getMainContext()->getEntityManager()->refresh($object);
         }
     }
 }

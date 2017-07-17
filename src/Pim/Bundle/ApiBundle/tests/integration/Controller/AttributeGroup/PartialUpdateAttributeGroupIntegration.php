@@ -255,7 +255,7 @@ JSON;
     "message": "The code \"inconsistent_code2\" provided in the request body must match the code \"inconsistent_code1\" provided in the url."
 }
 JSON;
-        $client->request('PATCH', '/api/rest/v1/attributes/inconsistent_code1', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/attribute-groups/inconsistent_code1', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -322,7 +322,8 @@ JSON;
     "sort_order": 0,
     "localizable": false,
     "scopable": false,
-    "labels": {}
+    "labels": {},
+    "auto_option_sorting": null
 }
 JSON;
 

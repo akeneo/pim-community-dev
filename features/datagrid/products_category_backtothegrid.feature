@@ -25,7 +25,8 @@ Feature: Product category back to the grid
   Scenario: Successfully restore category filter with hashnav
     Given I filter by "category" with operator "" and value "winter_collection"
     And I click on the "black-sneakers" row
-    And I click back to grid
+    And I should be on the product "black-sneakers" edit page
+    And I am on the products page
     Then I should see product black-sneakers
     And I should not see products purple-sneakers and black-boots
 
@@ -40,18 +41,19 @@ Feature: Product category back to the grid
   Scenario: Successfully restore unclassified category filter with hashnav
     Given I filter by "category" with operator "unclassified" and value ""
     And I click on the "black-boots" row
-    And I click back to grid
+    And I should be on the product "black-boots" edit page
+    And I am on the products page
     Then I should see products black-boots
     And I should not see products purple-sneakers and black-sneakers
 
   @unstable
   Scenario: Successfully display the no results found message
     Given I filter by "sku" with operator "is equal to" and value "novalues"
-    Then I should see "No results found. Try to change your search criteria."
+    Then I should see the text "No results found. Try to change your search criteria."
 
   @jira https://akeneo.atlassian.net/browse/PIM-5638
   Scenario: Successfully apply category's filter on product grid without affecting other grids
     Given I filter by "category" with operator "" and value "winter_collection"
-    And I click on import profile
+    And I am on the imports page
     When I refresh the grid
     Then I should not see "Server error"

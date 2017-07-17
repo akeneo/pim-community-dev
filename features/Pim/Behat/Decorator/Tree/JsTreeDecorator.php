@@ -16,7 +16,7 @@ class JsTreeDecorator extends ElementDecorator
     /**
      * @param string $nodeName
      *
-     * @return NodeElement
+     * @return ElementDecorator
      */
     public function findNodeInTree($nodeName)
     {
@@ -25,6 +25,18 @@ class JsTreeDecorator extends ElementDecorator
         }, sprintf('Cannot find the node "%s"', $nodeName));
 
         return $this->decorate($node, ['Pim\Behat\Decorator\Tree\JsNodeDecorator']);
+    }
+
+    /**
+     * @return string
+     */
+    public function findOpenTree()
+    {
+        $tree = $this->spin(function () {
+            return $this->find('css', sprintf('.jstree-tree-toolbar .select2-choice .select2-chosen'));
+        }, 'Cannot find the open tree');
+
+        return $tree->getText();
     }
 
     /**

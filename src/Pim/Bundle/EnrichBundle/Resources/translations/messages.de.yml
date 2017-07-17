@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Sie können die folgenden Produkte nicht gruppieren, da sie bereits in einer Variantengruppe verwendet werden oder die Gruppenachse nicht besitzen.
       no_variant_group: Bis jetzt keine Variantengruppen vorhanden. Beginnen Sie mit dem Anlegen einer Variantengruppe.
       no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     set-attribute-requirements:
       label: Benötigte Attribute auswählen
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Upload per Drag & Drop oder hier klicken
   edit: Bearbeiten
   save: Speichern
-  save and back: Speichern und zurück zur Übersicht
   save and create: Speichern und neuen anlegen
   save and next: Speichern und weiter
   save and finish: Speichern und fertigstellen

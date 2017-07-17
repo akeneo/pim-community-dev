@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ChoiceFilterTypeTest extends AbstractTypeTestCase
 {
@@ -44,7 +45,7 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
         return [
             [
                 'defaultOptions' => [
-                    'field_type'       => 'choice',
+                    'field_type'       => ChoiceType::class,
                     'field_options'    => ['choices' => []],
                     'operator_choices' => [
                         ChoiceFilterType::TYPE_CONTAINS     => 'oro.filter.form.label_type_contains',

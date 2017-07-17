@@ -19,7 +19,7 @@ Feature: Save a product when a channel has been removed
 
   Scenario: Successfully delete a channel and continue to work with products which used the channel
     Given I am on the channels page
-    And I click on the "Delete" action of the row which contains "tablet"
+    And I click on the "Delete" action of the row which contains "Tablet"
     And I confirm the deletion
     Given I am on the "artichoke" product page
     And I fill in the following information:

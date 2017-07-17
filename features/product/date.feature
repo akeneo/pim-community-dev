@@ -37,7 +37,7 @@ Feature: Check that imported date is properly displayed
     And I fill in the following information:
         | SKU | nice_postit |
     And I press the "Save" button
-    When I open the history
+    When I visit the "History" column tab
     Then I should see history:
       | version | property | before | after       |
       | 2       | SKU      | postit | nice_postit |

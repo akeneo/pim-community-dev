@@ -53,5 +53,5 @@ Feature: Import group types
     When I am on the "csv_footwear_group_type_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_group_type_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "There can only be one variant group type in the application: Cross sell"
+    Then I should see the text "skipped 1"
+    And I should see the text "There can only be one variant group type in the application: Cross sell"

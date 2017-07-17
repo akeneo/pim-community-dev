@@ -28,7 +28,7 @@ class Show extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Export now button' => ['css' => '.AknTitleContainer-rightButtons .AknButton--apply'],
+                'Export now button' => ['css' => '.AknTitleContainer-meta .AknButton--apply'],
             ]
         );
     }

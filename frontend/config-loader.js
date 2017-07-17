@@ -1,8 +1,8 @@
 /* eslint-env es6 */
 const utils = require('loader-utils')
 const path = require('path')
-const hasModule = (content) => content.indexOf('module') >= 0
-const _ = require('lodash')
+const hasModule = (content) => content.indexOf('__moduleConfig') >= 0
+const { chain } = require('lodash')
 
 
 function formatModuleName(name) {
@@ -22,7 +22,10 @@ module.exports = function(content) {
     this.cacheable()
     if (!hasModule(content)) return content
 
-    const aliases = _.invert(this.options.resolve.alias)
+    const aliases = chain(this.options.resolve.alias)
+                    .invert()
+                    .mapValues(alias => alias.replace(/\$$/, ''))
+                    .value()
 
     let modulePath = this._module.rawRequest
     const moduleExt = path.extname(modulePath)

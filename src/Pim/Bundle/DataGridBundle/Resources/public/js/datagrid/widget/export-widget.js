@@ -14,13 +14,13 @@ define(
             run: function () {
                 $.get(this.action.getLinkWithParameters())
                     .done(function () {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'success',
                             _.__('pim.grid.mass_action.quick_export.launched')
                         );
                     })
                     .error(function (jqXHR) {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'error',
                             _.__(jqXHR.responseText)
                         );

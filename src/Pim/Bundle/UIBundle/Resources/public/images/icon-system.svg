@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-system" fill="#67768A">
+            <path d="M4,2 L5,2 L5,9 L4,9 L4,2 Z M4,16 L5,16 L5,22 L4,22 L4,16 Z M7,14 L2,14 L2,11 L7,11 L7,14 Z M6,12 L3,12 L3,13 L6,13 L6,12 Z M14.5,10 L9.5,10 L9.5,7 L14.5,7 L14.5,10 Z M13.5,8 L10.5,8 L10.5,9 L13.5,9 L13.5,8 Z M22,17 L17,17 L17,14 L22,14 L22,17 Z M21,15 L18,15 L18,16 L21,16 L21,15 Z M11.5,2 L12.5,2 L12.5,5 L11.5,5 L11.5,2 Z M11.5,13 L12.5,13 L12.5,22 L11.5,22 L11.5,13 Z M19,19 L20,19 L20,22 L19,22 L19,19 Z M19,2 L20,2 L20,12 L19,12 L19,2 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

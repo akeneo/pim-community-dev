@@ -2,8 +2,8 @@
 
 namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -15,10 +15,7 @@ class ProductIntegration extends TestCase
 {
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     public function testProduct()

@@ -7,12 +7,12 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterInterface;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 class ProductSpec extends ObjectBehavior

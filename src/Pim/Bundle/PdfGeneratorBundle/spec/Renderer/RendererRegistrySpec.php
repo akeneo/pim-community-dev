@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 class RendererRegistrySpec extends ObjectBehavior
 {

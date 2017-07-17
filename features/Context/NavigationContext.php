@@ -3,11 +3,9 @@
 namespace Context;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
@@ -37,7 +35,7 @@ class NavigationContext extends BaseNavigationContext
         }, 'Cannot find the last job execution');
         $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecution->getId()]);
 
-        $this->getSession()->visit($this->locatePath('#' . $url));
+        $this->getSession()->visit($url);
     }
 
     /**
@@ -94,7 +92,8 @@ class NavigationContext extends BaseNavigationContext
 
         $this->spin(function () use ($url) {
             $actualFullUrl = $this->getSession()->getCurrentUrl();
-            $result = (bool) strpos($actualFullUrl, $url);
+            $result = $actualFullUrl === $url;
+
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
 
             return true;
@@ -165,8 +164,17 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
-        $page   = 'AttributeGroup';
-        $this->openPage(sprintf('%s edit', $page), ['identifier' => $identifier]);
+        $this->openPage('AttributeGroup edit', ['identifier' => $identifier]);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" attribute page$/
+     */
+    public function iAmOnTheAttributeEditPage($identifier)
+    {
+        $this->openPage('Attribute edit', ['identifier' => $identifier]);
     }
 
     /**

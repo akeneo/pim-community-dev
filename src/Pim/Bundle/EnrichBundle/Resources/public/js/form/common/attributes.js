@@ -46,7 +46,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left object-attributes',
+            className: 'tabbable object-attributes',
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },
@@ -243,7 +243,7 @@ define(
                     });
 
                     this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group_code
+                        _.first(attributes).group
                     );
 
                     this.setData(formData);
@@ -286,7 +286,7 @@ define(
 
                                 this.render();
                             }.bind(this)).fail(function () {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     _.__(this.config.deletionFailed)
                                 );
@@ -306,7 +306,7 @@ define(
                     this.config.removeAttributeRoute,
                     {
                         code: this.getFormData().code,
-                        attributeId: attribute.id
+                        attributeId: attribute.meta.id
                     }
                 );
             },

@@ -17,9 +17,10 @@ Feature: Create an export
       | Label | Products export       |
       | Job   | Product export in CSV |
     And I press the "Save" button
-    Then I click back to grid
+    And I should not see the text "There are unsaved changes"
+    And I am on the exports page
     And the grid should contain 1 element
-    And I should see export profile PRODUCT_EXPORT
+    And I should see export profile Products export
 
   Scenario: Fail to create a job export without code
     Given I create a new export

@@ -28,8 +28,10 @@ class CompletenessContext extends PimContext
      */
     public function iClickOnTheMissingValueForLocaleAndChannel($attribute, $locale, $channel)
     {
-        $link = $this->spin(function () use ($attribute, $locale, $channel) {
-            return $this->getCurrentPage()->getElement('Completeness')->find(
+        $completenessElement = $this->getElementOnCurrentPage('Completeness');
+
+        $link = $this->spin(function () use ($attribute, $locale, $channel, $completenessElement) {
+            return $completenessElement->find(
                 'css',
                 sprintf(
                     '.missing-attributes [data-attribute="%s"][data-locale="%s"][data-channel="%s"]',
@@ -51,9 +53,10 @@ class CompletenessContext extends PimContext
      */
     public function theCurrentLocaleChannelLabelShouldBe($code, $locale, $label)
     {
-        $this->spin(function () use ($code, $locale, $label) {
-            $completeness = $this->getCurrentPage()->getElement('Completeness');
-            $data = $this->getCurrentPage()->getElement('Completeness')->getCompletenessData();
+        $completeness = $this->getElementOnCurrentPage('Completeness');
+
+        $this->spin(function () use ($code, $locale, $label, $completeness) {
+            $data = $completeness->getCompletenessData();
             $channelLabel = $data[$locale]['data'][$code]['label'];
 
             return $channelLabel === $label;
@@ -68,8 +71,10 @@ class CompletenessContext extends PimContext
      */
     public function iShouldSeeTheCompletenessInPositionNth($localeCode, $position)
     {
-        $this->spin(function () use ($localeCode, $position) {
-            $completenessData = $this->getCurrentPage()->getElement('Completeness')->getCompletenessData();
+        $completeness = $this->getElementOnCurrentPage('Completeness');
+
+        $this->spin(function () use ($localeCode, $position, $completeness) {
+            $completenessData = $completeness->getCompletenessData();
 
             return (int) $position === $completenessData[$localeCode]['position'];
         }, sprintf(
@@ -88,8 +93,10 @@ class CompletenessContext extends PimContext
     {
         $isOpened = ('opened' === $state);
 
-        $this->spin(function () use ($localeCode, $isOpened) {
-            $completenessData = $this->getCurrentPage()->getElement('Completeness')->getCompletenessData();
+        $completeness = $this->getElementOnCurrentPage('Completeness');
+
+        $this->spin(function () use ($localeCode, $isOpened, $completeness) {
+            $completenessData = $completeness->getCompletenessData();
 
             return $isOpened === $completenessData[$localeCode]['opened'];
         }, sprintf('Expected to see "%s" completeness %s. But it was not', $localeCode, $state));
@@ -106,10 +113,10 @@ class CompletenessContext extends PimContext
     {
         $table = $table->getHash();
 
-        $this->spin(function () use ($table) {
-            $completenessData = $this->convertStructuredToFlat(
-                $this->getCurrentPage()->getElement('Completeness')->getCompletenessData()
-            );
+        $completeness = $this->getElementOnCurrentPage('Completeness');
+
+        $this->spin(function () use ($table, $completeness) {
+            $completenessData = $this->convertStructuredToFlat($completeness->getCompletenessData());
 
             foreach ($table as $index => $expected) {
                 if (isset($expected['missing_values'])) {

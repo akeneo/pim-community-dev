@@ -1,16 +1,23 @@
-<li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
-<% _.each(elements, function (element) { %>
-    <li class="AknVerticalNavtab-item <%- current === element.code ? 'active' : '' %>" data-element="<%- element.code %>">
-        <a class="AknVerticalNavtab-link <%- current === element.code ? 'AknVerticalNavtab-link--active' : '' %>">
-            <span class="group-label"><%- i18n.getLabel(element.labels, locale, element.code) %></span>
-            <span class="badge-elements-container">
-                <span
-                    class="AknBadge AknBadge--round AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) ? 'AknBadge--hidden' : '' %>"
-                ></span>
-                <% _.each(badges[element.code], function(badge, type) { %>
-                    <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
-                <% }) %>
-            </span>
-        </a>
-    </li>
-<% }); %>
+<div class="AknActionButton" data-toggle="dropdown">
+    <%- label %>:
+    <span class="AknActionButton-strong">
+        <%- i18n.getLabel(currentElement.labels, locale, currentElement.code) %>
+    </span>
+    <span class="AknActionButton-caret AknCaret"></span>
+</div>
+<ul class="AknDropdown-menu AknDropdown-menu--right">
+    <li class="AknDropdown-menuTitle"><%- label %></li>
+    <% _.each(elements, function (element) { %>
+        <li class="<%- current === element.code ? 'active' : '' %>" data-element="<%- element.code %>">
+            <div class="AknDropdown-menuLink <%- current === element.code ? 'AknDropdown-menuLink--active' : '' %>">
+                <span class="label"><%- i18n.getLabel(element.labels, locale, element.code) %></span>
+                <span class="badge-elements-container">
+                    <span class="AknBadge AknBadge--round AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) ? 'AknBadge--hidden' : '' %>"></span>
+                    <% _.each(badges[element.code], function(badge, type) { %>
+                        <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
+                    <% }) %>
+                </span>
+            </div>
+        </li>
+    <% }); %>
+</ul>

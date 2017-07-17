@@ -194,7 +194,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "skipped product (no differences) 1"
+    And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully import products with attributes with full numeric codes
     Given the following CSV file to import:
@@ -315,13 +315,13 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     And I am on the "SKU-001" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I should see the completeness:
       | channel | locale | state   | missing_values                               | ratio |
       | mobile  | en_US  | warning | Color                                        | 80%   |
       | tablet  | en_US  | warning | Weather conditions, Rating, Side view, Color | 55%   |
     And I am on the "SKU-002" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I should see the completeness:
       | channel | locale | state   | missing_values                        | ratio |
       | mobile  | en_US  | success |                                       | 100%  |

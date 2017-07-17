@@ -141,13 +141,10 @@ pim_enrich:
         compare_translate: Vertaa / Käännä
         delete: Poista
         save: Tallenna
-        save_and_back: Tallenna ja takaisin ruudukkoon
       history:
         version: Versio
         author: Tekijä
         logged_at: Kirjautunut
-        more: Lisää
-        less: Vähemmän
         from: Lähettäjä
         modified: Muutettu
         property: Ominaisuus
@@ -207,10 +204,6 @@ pim_enrich:
       scopable: Scopable
       global: Globaali
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - kentät
       meta:
         created: Luotu
         created_by: Luoja
@@ -220,10 +213,6 @@ pim_enrich:
         save: Tallenna
       title: sidoksen tyyppi
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - kentät
       meta:
         created: Luotu
         created_by: Luoja
@@ -234,10 +223,6 @@ pim_enrich:
       title: ryhmän tyyppi
     channel:
       title: kanava
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - kentät
       meta:
         created: Luotu
         created_by: Luoja
@@ -280,9 +265,6 @@ pim_enrich:
         deletion_failed: Tuotevariaatioryhmää ei voitu poistaa.
         update_successful: Tuotevariaatioryhmä päivitetty onnistuneesti.
         update_failed: Tuotevariaatioryhmää ei voitu päivittää.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - kentät
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
         no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
       btn:
@@ -295,10 +277,6 @@ pim_enrich:
         updated_by: Päivittäjä
     group:
       title: Ryhmä
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - kentät
       btn:
         save: Tallenna
       meta:
@@ -345,6 +323,7 @@ pim_enrich:
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
+          attribute_group_selector: Attribuuttiryhmä
         categories:
           title: Kategoriat
       panel:
@@ -577,6 +556,7 @@ pim_enrich:
             help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
         history:
           title: Historia
+      file_path: Tiedostopolku
     mass_edit:
       family:
         attributes:
@@ -786,11 +766,10 @@ batch_jobs:
       label: Lisää tuotevariaatioryhmään
 pim_menu:
   tab:
-    collect: Kerää
-    enrich: Rikastuta
+    dashboard: Ohjauspaneeli
+    products: Tuotteet
     settings: Asetukset
     system: Järjestelmä
-    spread: Levitä
   item:
     association_type: Määritetyypit
     attribute: Attribuutit
@@ -815,9 +794,9 @@ pim_menu:
     user_role: Roolit
     info: Järjestelmätiedot
     job_tracker: Prosessiseurain
-pim_header:
   user:
     logout: Kirjaudu ulos
     user_account: Oma tili
 pim_notification:
   mark_all_as_read: Merkitse kaikki luetuiksi
+  loading: Ladataan...

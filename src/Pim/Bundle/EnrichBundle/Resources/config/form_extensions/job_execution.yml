@@ -2,18 +2,16 @@ extensions:
     pim-job-execution-form:
         module: pim/form/common/edit-form
 
-    pim-job-execution-form-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-job-execution-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-job-execution-form
-        targetZone: back
-        position: 80
-        config:
-            backUrl: pim_importexport_export_profile_index
+        targetZone: buttons
+        position: 50
 
     pim-job-execution-form-download-file:
         module: pim/job/execution/download-archives-buttons
-        parent: pim-job-execution-form
-        targetZone: buttons
+        parent: pim-job-execution-form-secondary-actions
+        targetZone: secondary-actions
         position: 70
         config:
             iconName: download-alt
@@ -24,8 +22,8 @@ extensions:
 
     pim-job-execution-form-download-log:
         module: pim/job/execution/download-log
-        parent: pim-job-execution-form
-        targetZone: buttons
+        parent: pim-job-execution-form-secondary-actions
+        targetZone: secondary-actions
         position: 90
         config:
             label: pim_enrich.form.job_execution.button.download_log.title

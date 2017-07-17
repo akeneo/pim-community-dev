@@ -29,8 +29,7 @@ class TreeContext extends PimContext
      */
     public function iExpandTheNode($node)
     {
-        $this->getCurrentPage()
-            ->getElement('Category tree')
+        $this->getElementOnCurrentPage('Category tree')
             ->expandNode($node);
     }
 
@@ -57,14 +56,17 @@ class TreeContext extends PimContext
      */
     public function iShouldSeeTheNodeUnderTheNode($not, $child, $parent)
     {
-        $categoryTree = $this->getCurrentPage()
-            ->getElement('Category tree');
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
 
-        $parentNode = $categoryTree->findNodeInTree($parent);
+        $parentNode = $this->spin(function () use ($parent, $categoryTree) {
+            $parentNode = $categoryTree->findNodeInTree($parent);
 
-        if (!$parentNode->isOpen()) {
-            $parentNode->open();
-        }
+            if (!$parentNode->isOpen()) {
+                $parentNode->open();
+            }
+
+            return $parentNode;
+        }, sprintf('Cannot find parent node "%s" of "%s"', $parent, $child));
 
         $childNode = $parentNode->find('css', sprintf('li[data-code="%s"]', $child));
 
@@ -77,6 +79,23 @@ class TreeContext extends PimContext
         if (null === $not && null === $childNode) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Expecting to see category "%s" under the category "%s", not found', $child, $parent)
+            );
+        }
+    }
+
+    /**
+     * @param string $tree
+     *
+     * @Then /^The tree "([^"]*)" should be open$/
+     */
+    public function theTreeShouldBeOpen($tree)
+    {
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
+        $openTree = $categoryTree->findOpenTree();
+
+        if ($openTree !== $tree) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf('Expecting to see tree "%s" open, found "%s".', $tree, $openTree)
             );
         }
     }
@@ -100,8 +119,7 @@ class TreeContext extends PimContext
      */
     public function iClickOnTheNode($right, $node)
     {
-        $node = $this->getCurrentPage()
-            ->getElement('Category tree')
+        $node = $this->getElementOnCurrentPage('Category tree')
             ->findNodeInTree($node);
 
         if ($right) {
@@ -117,7 +135,9 @@ class TreeContext extends PimContext
      */
     public function theNodeShouldBeChecked($code)
     {
-        $node = $this->getCurrentPage()->getElement('Category tree')->findNodeInTree($code);
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
+
+        $node = $categoryTree->findNodeInTree($code);
 
         assertNotNull($node);
         assertTrue($node->isSelected());
@@ -128,7 +148,9 @@ class TreeContext extends PimContext
      */
     public function theNodeShouldNotBeChecked($code)
     {
-        $node = $this->getCurrentPage()->getElement('Category tree')->findNodeInTree($code);
+        $categoryTree = $this->getElementOnCurrentPage('Category tree');
+
+        $node = $categoryTree->findNodeInTree($code);
 
         assertNotNull($node);
         assertFalse($node->isSelected());

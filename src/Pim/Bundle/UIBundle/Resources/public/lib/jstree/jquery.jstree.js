@@ -1903,7 +1903,7 @@
                 });
             }
             if ($.jstree._themes === false) {
-                $.jstree._themes = 'themes/';
+                $.jstree._themes = 'bundles/pimui/lib/jstree/themes/';
             }
         });
 	// include the themes plugin by default

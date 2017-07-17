@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Doctrine\DBAL\Exception\ConnectionException;
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
@@ -78,7 +78,7 @@ class DatabaseCommand extends ContainerAwareCommand
                 $connection->connect();
             }
             $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
-        } catch (\PDOException $e) {
+        } catch (ConnectionException $e) {
             $output->writeln('<error>Database does not exist yet</error>');
         }
 
@@ -225,16 +225,6 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->commandExecutor->runCommand('pim:versioning:refresh');
 
         return $this;
-    }
-
-    /**
-     * Get the storage driver
-     *
-     * @return string
-     */
-    protected function getStorageDriver()
-    {
-        return $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
     }
 
     /**

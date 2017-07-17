@@ -14,12 +14,12 @@ services:
     pim_ui.form.extension.help:
         class: Pim\Bundle\UIBundle\Form\Extension\FormTypeHelpExtension
         tags:
-            - { name: form.type_extension, alias: form }
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
     pim_ui.form.extension.select2:
         class: Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension
         tags:
-            - { name: form.type_extension, alias: form }
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
     pim_ui.form.type.switch:
         class: '%pim_ui.form.type.switch.class%'

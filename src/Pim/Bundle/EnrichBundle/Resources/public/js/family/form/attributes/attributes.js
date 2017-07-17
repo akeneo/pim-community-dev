@@ -46,7 +46,6 @@ define([
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
             channels: null,
-            attributeGroups: null,
             events: {
                 'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
@@ -94,7 +93,7 @@ define([
                 }
 
                 var data = this.getFormData();
-                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'));
+                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group'));
 
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
@@ -104,9 +103,7 @@ define([
                     )
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-                    var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                        return attribute.group_code;
-                    });
+                    var groupedAttributes = _.groupBy(data.attributes, 'group');
 
                     _.sortBy(groupedAttributes, function (attributes, group) {
                         return _.findWhere(attributeGroups, {code: group}).sort_order;
@@ -245,7 +242,7 @@ define([
                 var attributeToRemove = event.currentTarget.dataset.attribute;
 
                 if (attributeAsLabel === attributeToRemove) {
-                    Messanger.notificationFlashMessage(
+                    Messanger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
                     );
@@ -300,8 +297,7 @@ define([
                             options: {
                                 identifiers: event.codes,
                                 limit: event.codes.length
-                            },
-                            apply_filters: false
+                            }
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {

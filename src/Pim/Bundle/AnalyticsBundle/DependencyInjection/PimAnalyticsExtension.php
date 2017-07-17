@@ -29,22 +29,5 @@ class PimAnalyticsExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('data_collectors.yml');
         $loader->load('twig.yml');
-
-        $this->loadStorageDriverFiles($container);
-    }
-
-    /**
-     * Load the services dedicated to the storage driver
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function loadStorageDriverFiles(ContainerBuilder $container)
-    {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__.'/../Resources/config/'.$storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

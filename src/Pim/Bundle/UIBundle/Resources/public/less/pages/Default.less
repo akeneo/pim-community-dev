@@ -3,10 +3,13 @@
 .AknDefault {
   &-page {
     width: 100%;
+    height: 100%;
+    display: flex;
   }
 
-  &-topPage {
-    width: 100%;
+  &-container {
+    flex-grow: 1;
+    width: 1px;
   }
 
   &-progressContainer {
@@ -17,4 +20,38 @@
     text-align: center;
     line-height: 40px;
   }
+
+  &-flashContainer {
+    position: fixed;
+    z-index: 10;
+    bottom: @AknFlashMessagesPadding;
+    right: @AknFlashMessagesPadding;
+  }
+
+  &-flashList {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    z-index: 899;
+  }
+
+  &-contentWithColumn {
+    display: flex;
+    height: 100%;
+  }
+
+  &-mainContent {
+    padding: 40px;
+    overflow-x: auto;
+    flex-grow: 1;
+    height: 100%;
+  }
+}
+
+/* Temporary block */
+.view {
+  height: 100%;
+}
+.app {
+  height: 100%;
 }

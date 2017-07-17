@@ -40,7 +40,7 @@ Feature: Remove a category
     Then I should not see "Winter boots"
     When I edit the "caterpillar_2" product
     Then the category of "caterpillar_2" should be "2014_collection"
-    When I open the history
+    When I visit the "History" column tab
     Then I should see history:
       | version | property   | value           |
       | 2       | categories | 2014_collection |

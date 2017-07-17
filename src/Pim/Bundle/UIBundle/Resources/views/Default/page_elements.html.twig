@@ -7,10 +7,7 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
-        {% if icon %}
-            <i class="AknButton-icon icon-{{ icon }}"></i>
-          {% endif %}
+        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
           {{ title }}
         </a>
         {% if buttonId is defined %}
@@ -33,10 +30,7 @@
 {% macro submitBtn(text, icon, class = '') %}
 {% spaceless %}
     {% set text = text|default('btn.save')|trans|capitalize %}
-    <button type="submit" class="AknButton AknButton--apply AknButton--withIcon {{ class }}" title="{{ text }}">
-        {% if icon %}
-            <i class="AknButton-icon icon-{{ icon }}"></i>
-        {% endif %}
+    <button type="submit" class="AknButton AknButton--apply {{ class }}" title="{{ text }}">
         {{ text }}
     </button>
 {% endspaceless %}
@@ -59,15 +53,6 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro backLink(url, title) %}
-{% spaceless %}
-    {% set title = title|default('btn.to grid') %}
-    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="#{{ url }}">
-        <i class="icon-chevron-left"></i>
-    </a>
-{% endspaceless %}
-{% endmacro %}
-
 {% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}
@@ -78,8 +63,7 @@
 {% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '') %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="AknButton AknButton--withIcon AknButton--important {{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
-            <i class="AknButton-icon icon-trash"></i>
+        <a class="AknButton AknButton--important {{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
             {{ 'btn.delete'|trans|capitalize }}
         </a>
     {% endif %}
@@ -89,51 +73,42 @@
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="AknButton {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} AknButton--withIcon{% elseif icon %} icons-holder{% endif %} {{ icon }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
-        {% if icon %}<i class="AknButton-icon icon-{{ icon }}"></i>{% endif %}
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="AknButton {{ opts.class is defined ? opts.class|join(' ') }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {{ text|trans|capitalize }}
     </a>
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, titleButtons, meta, right, backButton, state) %}
+{# @note meta parameter is unused #}
+{% macro page_header(title, buttons, titleButtons, meta, right, backButton, state, image) %}
     <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-backContainer" data-drop-zone="back">
-            {% if backButton is not empty %}
-                {{ backButton }}
-            {% endif %}
-        </div>
-        <div class="AknTitleContainer-contentContainer">
-            <div class="AknTitleContainer-mainLine">
-                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
-                    <h2 class="AknTitleContainer-title">
-                        {% block title %}
-                            {{ title }}
-                        {% endblock title %}
-                    </h2>
-                    {% if titleButtons is not empty %}
-                        <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons">
-                            {{ titleButtons }}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
-                    {% block navButtons %}{% endblock navButtons %}
-                    {{ right }}
-                    {% if buttons is not empty %}
-                        <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons">
-                            {{ buttons }}
-                        </div>
-                    {% endif %}
-                </div>
+        <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image">{% block image %}{{ image }}{% endblock image %}</div>
+        <div class="AknTitleContainer-mainContainer">
+            <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+            <div class="AknTitleContainer-title" data-drop-zone="title">
+                {% block title %}
+                    {{ title }}
+                {% endblock title %}
             </div>
-            <div class="AknTitleContainer-metaLine">
-                <div class="AknTitleContainer-meta">
-                    {{ meta }}
-                </div>
-                <div class="AknTitleContainer-state">
-                    {{ state }}
-                </div>
+        </div>
+        <div class="AknTitleContainer-buttonsContainer">
+            <div class="AknTitleContainer-userMenu user-menu"></div>
+            <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+                {% block navButtons %}{% endblock navButtons %}
+                {{ right }}
+                {% if buttons is not empty %}
+                    <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons">
+                        {{ buttons }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons">
+                {% if titleButtons is not empty %}
+                    {{ titleButtons }}
+                {% endif %}
+            </div>
+            <div class="AknTitleContainer-state state" data-drop-zone="state">
+                {{ state }}
             </div>
         </div>
     </header>

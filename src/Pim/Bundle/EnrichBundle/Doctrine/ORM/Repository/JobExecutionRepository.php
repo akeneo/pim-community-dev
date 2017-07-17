@@ -46,9 +46,17 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb->innerJoin('e.jobInstance', 'j');
         $qb->leftJoin('e.stepExecutions', 's');
         $qb->leftJoin('s.warnings', 'w');
-        $qb->groupBy('e.id');
-
         $qb->andWhere('j.type = :jobType');
+
+        $qb
+            ->groupBy('e')
+            ->addGroupBy('e.id')
+            ->addGroupBy('status')
+            ->addGroupBy('statusLabel')
+            ->addGroupBy('date')
+            ->addGroupBy('jobCode')
+            ->addGroupBy('jobLabel')
+            ->addGroupBy('jobName');
 
         return $qb;
     }
@@ -83,6 +91,10 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
             ->leftJoin('e.stepExecutions', 's')
             ->leftJoin('s.warnings', 'w')
             ->groupBy('e.id')
+            ->addGroupBy('date')
+            ->addGroupBy('j.type')
+            ->addGroupBy('j.label')
+            ->addGroupBy('e.status')
             ->orderBy('e.startTime', 'DESC')
             ->setMaxResults(10);
 

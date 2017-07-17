@@ -31,6 +31,7 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
             'author'       => [
                 'username' => $comment->getAuthor()->getUsername(),
                 'fullName' => sprintf('%s %s', $comment->getAuthor()->getFirstName(), $comment->getAuthor()->getLastName()),
+                'avatar'   => $comment->getAuthor()->getImagePath(),
             ],
             'body'         => $comment->getBody(),
             'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'standard', $context),

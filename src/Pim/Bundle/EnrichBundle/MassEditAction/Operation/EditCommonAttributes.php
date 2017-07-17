@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -41,7 +42,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $productValidator;
 
     /** @var NormalizerInterface */
-    protected $internalNormalizer;
+    protected $constraintViolationNormalizer;
 
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
@@ -73,12 +74,11 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ObjectUpdaterInterface       $productUpdater
      * @param ValidatorInterface           $productValidator
-     * @param NormalizerInterface          $internalNormalizer
+     * @param NormalizerInterface          $constraintViolationNormalizer
      * @param AttributeConverterInterface  $localizedConverter
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param CollectionFilterInterface    $productValuesFilter
      * @param ConverterInterface           $productValueConverter
-     * @param string                       $tmpStorageDir
      * @param string                       $jobInstanceCode
      */
     public function __construct(
@@ -87,7 +87,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
-        NormalizerInterface $internalNormalizer,
+        NormalizerInterface $constraintViolationNormalizer,
         AttributeConverterInterface $localizedConverter,
         LocalizerRegistryInterface $localizerRegistry,
         CollectionFilterInterface $productValuesFilter,
@@ -101,7 +101,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->attributeRepository = $attributeRepository;
         $this->productUpdater = $productUpdater;
         $this->productValidator = $productValidator;
-        $this->internalNormalizer = $internalNormalizer;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->localizedConverter = $localizedConverter;
         $this->localizerRegistry = $localizerRegistry;
         $this->productValuesFilter = $productValuesFilter;
@@ -135,7 +135,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_edit_common_attributes';
+        return EditCommonAttributesType::class;
     }
 
     /**
@@ -235,14 +235,23 @@ class EditCommonAttributes extends AbstractMassEditOperation
 
         $violations->addAll($this->localizedConverter->getViolations());
 
-        $errors = ['values' => $this->internalNormalizer->normalize(
-            $violations,
-            'internal_api',
-            ['product' => $product]
-        )];
+        if (0 === $violations->count()) {
+            $this->errors = json_encode([]);
+
+            return true;
+        }
+
+        $errors = [];
+        foreach ($violations as $violation) {
+            $errors['values'][] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
         $this->errors = json_encode($errors);
 
-        return 0 === $violations->count();
+        return false;
     }
 
     /**

@@ -45,13 +45,6 @@ class DatabaseSchemaHandler
     {
         $this->drop();
         $this->create();
-
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM ===
-            $this->container->getParameter('pim_catalog_product_storage_driver')
-        ) {
-            $this->dropMongo();
-            $this->createMongo();
-        }
     }
 
     /**
@@ -76,26 +69,6 @@ class DatabaseSchemaHandler
     }
 
     /**
-     * Drop the MongoDB database schema.
-     *
-     * @throws \RuntimeException
-     */
-    private function dropMongo()
-    {
-        $input = new ArrayInput([
-            'command' => 'doctrine:mongodb:schema:drop',
-            '--env' => 'test',
-        ]);
-        $output = new BufferedOutput();
-
-        $exitCode = $this->cli->run($input, $output);
-
-        if (0 !== $exitCode) {
-            throw new \RuntimeException(sprintf('Impossible to drop the MongoDB database schema! "%s"', $output->fetch()));
-        }
-    }
-
-    /**
      * Create the database schema.
      *
      * @throws \RuntimeException
@@ -112,26 +85,6 @@ class DatabaseSchemaHandler
 
         if (0 !== $exitCode) {
             throw new \RuntimeException(sprintf('Impossible to create the database schema! "%s"', $output->fetch()));
-        }
-    }
-
-    /**
-     * Create the MongoDB database schema.
-     *
-     * @throws \RuntimeException
-     */
-    private function createMongo()
-    {
-        $input = new ArrayInput([
-            'command' => 'doctrine:mongodb:schema:create',
-            '--env' => 'test',
-        ]);
-        $output = new BufferedOutput();
-
-        $exitCode = $this->cli->run($input, $output);
-
-        if (0 !== $exitCode) {
-            throw new \RuntimeException(sprintf('Impossible to create the MongoDB database schema! "%s"', $output->fetch()));
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
@@ -41,7 +42,7 @@ class ChangeFamily extends AbstractMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_change_family';
+        return ChangeFamilyType::class;
     }
 
     /**

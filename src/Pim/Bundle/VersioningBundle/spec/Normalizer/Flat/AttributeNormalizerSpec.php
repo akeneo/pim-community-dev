@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer;
 use Prophecy\Argument;
 

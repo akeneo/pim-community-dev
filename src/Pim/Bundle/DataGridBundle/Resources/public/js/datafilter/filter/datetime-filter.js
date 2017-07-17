@@ -15,7 +15,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
          *
          * @property
          */
-        inputClass: 'datetime-visual-element',
+        inputClass: 'AknTextField',
 
         /**
          * Date widget options

@@ -87,7 +87,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $options['limit'] = (int) $options['limit'];
         }
         if (null !== $options['exclude_unique']) {
-            $options['exclude_unique'] = (bool) $options['exclude_unique'];
+            $options['exclude_unique'] = in_array($options['exclude_unique'], ['true', true], true);
         }
         if (null === $options['user_groups_ids']) {
             $options['user_groups_ids'] = [];
@@ -155,7 +155,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('groups', $options['attribute_groups']);
         }
 
-        $qb->orderBy('ag.code');
         $qb->orderBy('ag.sortOrder');
 
         $qb->groupBy('a.id');

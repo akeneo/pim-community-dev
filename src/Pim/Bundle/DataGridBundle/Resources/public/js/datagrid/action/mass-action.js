@@ -34,7 +34,7 @@ function(_, messenger, __, Modal, AbstractAction) {
         execute: function() {
             var selectionState = this.datagrid.getSelectionState();
             if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
-                messenger.notificationFlashMessage('warning', this.messages.empty_selection);
+                messenger.notify('warning', this.messages.empty_selection);
             } else {
                 AbstractAction.prototype.execute.call(this);
             }

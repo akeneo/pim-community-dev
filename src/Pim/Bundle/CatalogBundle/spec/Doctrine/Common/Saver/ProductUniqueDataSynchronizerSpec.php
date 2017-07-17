@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\CatalogBundle\Saver\Common;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
+use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 
 class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
@@ -29,8 +29,8 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $factory,
         ProductInterface $product,
         Collection $uniqueDataCollection,
-        ProductValueCollectionInterface $values,
-        ProductValueInterface $skuValue,
+        ValueCollectionInterface $values,
+        ValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
         ProductUniqueDataInterface $uniqueData
@@ -55,8 +55,8 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $factory,
         ProductInterface $product,
         Collection $uniqueDataCollection,
-        ProductValueCollectionInterface $values,
-        ProductValueInterface $skuValue,
+        ValueCollectionInterface $values,
+        ValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
         ProductUniqueDataInterface $uniqueData

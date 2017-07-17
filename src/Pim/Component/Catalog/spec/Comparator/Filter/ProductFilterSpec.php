@@ -3,10 +3,10 @@
 namespace spec\Pim\Component\Catalog\Comparator\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductFilterSpec extends ObjectBehavior

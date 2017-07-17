@@ -9,9 +9,10 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
@@ -27,13 +28,14 @@ use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -151,6 +153,7 @@ class FixturesContext extends BaseFixturesContext
         );
     }
 
+
     /**
      * @param string $status
      * @param string $sku
@@ -194,13 +197,15 @@ class FixturesContext extends BaseFixturesContext
      */
     public function generatedFamilies($familyNumber)
     {
-        $table = new TableNode();
-        $table->addRow(['code']);
+        $table = [['code']];
         for ($i = 1; $i <= $familyNumber; $i++) {
             $familyCode = sprintf('family_%d', $i);
-            $table->addRow([$familyCode]);
+            $table[] = [$familyCode];
         }
-        return $this->theFollowingFamilies($table);
+
+        $tableNode = new TableNode($table);
+
+        return $this->theFollowingFamilies($tableNode);
     }
 
     /**
@@ -320,7 +325,7 @@ class FixturesContext extends BaseFixturesContext
         $product = $this->getProduct($sku);
 
         foreach ($this->listToArray($attributeCodes) as $code) {
-            $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
+            $this->getProductBuilder()->addAttribute($product, $this->getAttribute($code));
         }
         $this->validate($product);
         $this->getProductSaver()->save($product);
@@ -969,7 +974,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
-            $actualCode = $value instanceof OptionProductValueInterface && $value->getData()
+            $actualCode = $value instanceof OptionValueInterface && $value->getData()
                 ? $value->getData()->getCode() : null;
             assertEquals($optionCode, $actualCode);
         }
@@ -1124,8 +1129,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeCategories($expectedTotal)
     {
-        $class      = $this->getContainer()->getParameter('pim_catalog.entity.category.class');
-        $repository = $this->getSmartRegistry()->getRepository($class);
+        $repository = $this->getCategoryRepository();
         $total      = count($repository->findAll());
 
         assertEquals($expectedTotal, $total);
@@ -1632,13 +1636,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $product->setUpdated(new \DateTime($expected));
 
-        $objectManager = null;
-        if ($this->isMongoDB()) {
-            $objectManager = $this->getDocumentManager();
-        } else {
-            $objectManager = $this->getEntityManager();
-        }
-
+        $objectManager = $this->getEntityManager();
         $objectManager->persist($product);
         $objectManager->flush();
     }
@@ -1697,7 +1695,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return ValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1775,10 +1773,6 @@ class FixturesContext extends BaseFixturesContext
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
-        /*
-         * When using ODM, one must persist and flush category without product
-         * before adding and persisting products inside it
-         */
         $products = $category->getProducts();
         $this->validate($category);
         $this->getContainer()->get('pim_catalog.saver.category')->save($category);
@@ -1971,6 +1965,14 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function getCategoryRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
      * @return MountManager
      */
     protected function getMountManager()
@@ -1979,7 +1981,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     protected function getProductBuilder()
     {
@@ -2053,14 +2055,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return boolean
-     */
-    protected function isMongoDB()
-    {
-        return 'doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver');
-    }
-
-    /**
      * Return doctrine manager instance
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
@@ -2068,14 +2062,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 
     /**

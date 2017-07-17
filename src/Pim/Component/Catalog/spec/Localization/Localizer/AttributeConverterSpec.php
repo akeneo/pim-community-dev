@@ -3,9 +3,9 @@
 namespace spec\Pim\Component\Catalog\Localization\Localizer;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 

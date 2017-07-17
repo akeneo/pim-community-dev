@@ -2,12 +2,16 @@
 
 .AknBreadcrumb {
   color: @AknDefaultFontColor;
-  font-size: @AknFontSizeSmall;
+  font-size: @AknFontSizeBig;
 
   &-item {
     display: inline;
 
-    &:not(:first-child):before {
+    &--routable {
+      cursor: pointer;
+    }
+
+    &:after {
       content: ' / ';
     }
   }
