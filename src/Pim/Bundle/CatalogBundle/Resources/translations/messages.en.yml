@@ -11,6 +11,7 @@ pim_catalog:
         family_variant_axes_number_of_axes: A variant attribute set cannot have more than 5 attributes
         family_variant_has_family_attribute: '"%attribute%" attribute cannot be added to "%family_variant%" family variant, as it is not an attribute of the "%family%" family'
         family_variant_level_do_not_exist: There is no variant attribute set for level "%level%"
+        family_variant_unique_attributes_in_last_level: Unique attribute "%attribute%" must be set at the product level
         product_identifier: These identifiers "%s" don't exist.
         0: An unexpected error occurred.
         100: Non-expected value

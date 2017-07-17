@@ -21,6 +21,14 @@ interface VariantAttributeSetInterface
      */
     public function getAttributes(): Collection;
 
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    public function hasAttribute(AttributeInterface $attribute): bool;
+
     /**
      * @param array $attributes
      */

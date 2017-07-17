@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -66,17 +66,30 @@ class FamilyVariantValidator extends ConstraintValidator
     private function validateAttributes(FamilyVariantInterface $familyVariant): void
     {
         $family = $familyVariant->getFamily();
-        $attributeCodes = $familyVariant->getAttributes()->map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        })->toArray();
+        $attributeCodes = [];
+        $lastLevelAttributeSet = $familyVariant->getVariantAttributeSet($familyVariant->getLevelCount());
 
-        foreach ($attributeCodes as $attributeCode) {
-            if (!$family->hasAttributeCode($attributeCode)) {
+        foreach ($familyVariant->getAttributes() as $attribute) {
+            $attributeCodes[] = $attribute->getCode();
+
+            if (!$family->hasAttribute($attribute)) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_has_family_attribute');
                 $this->context->buildViolation($message, [
-                    '%attribute%' => $attributeCode,
+                    '%attribute%' => $attribute->getCode(),
                     '%family%' => $family->getCode(),
                     '%family_variant%' => $familyVariant->getCode(),
+                ])->addViolation();
+            }
+
+            if ($attribute->isUnique() &&
+                null !== $lastLevelAttributeSet &&
+                !$lastLevelAttributeSet->hasAttribute($attribute)
+            ) {
+                $message = $this->translator->trans(
+                    'pim_catalog.constraint.family_variant_unique_attributes_in_last_level'
+                );
+                $this->context->buildViolation($message, [
+                    '%attribute%' => $attribute->getCode(),
                 ])->addViolation();
             }
         }
@@ -127,7 +140,7 @@ class FamilyVariantValidator extends ConstraintValidator
      */
     private function validateNumberOfLevelAndAxis(FamilyVariantInterface $familyVariant): void
     {
-        $numberOfLevel = $familyVariant->getLevel();
+        $numberOfLevel = $familyVariant->getLevelCount();
         $i = 0;
         while ($i !== $numberOfLevel) {
             $attributeSet = $familyVariant->getVariantAttributeSet($i + 1);

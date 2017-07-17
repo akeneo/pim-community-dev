@@ -321,7 +321,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 $nodeEntry = $vectorMap[$nodeId];
 
                 if (isset($nodeEntry['item'])) {
-                    //$nodesByLevel[$nodeEntry['item']->getLevel()][] = $nodeIds[$i];
+                    //$nodesByLevel[$nodeEntry['item']->getLevelCount()][] = $nodeIds[$i];
                 } else {
                     $tree =& $vectorMap[$nodeId][$childrenIndex];
                 }

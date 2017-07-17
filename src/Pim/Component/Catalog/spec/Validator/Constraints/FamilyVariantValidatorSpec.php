@@ -72,7 +72,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         $iterator->next()->shouldBeCalled();
 
         $familyVariant->getAxes()->willReturn($axes);
-        $familyVariant->getLevel()->willReturn(2);
+        $familyVariant->getLevelCount()->willReturn(2);
         $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet1);
         $variantAttributeSet1->getAxes()->willReturn($axes1);
         $axes1->count()->willReturn(1);
@@ -127,7 +127,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         $iterator->next()->shouldBeCalled();
 
         $familyVariant->getAxes()->willReturn($axes);
-        $familyVariant->getLevel()->willReturn(1);
+        $familyVariant->getLevelCount()->willReturn(1);
         $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet1);
         $variantAttributeSet1->getAxes()->willReturn($axes1);
         $axes1->count()->willReturn(1);
