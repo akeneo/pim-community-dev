@@ -51,7 +51,7 @@ class CommandLauncher
         return sprintf(
             '%s %s/console --env=%s %s',
             $this->getPhp(),
-            $this->rootDir,
+            sprintf('%s/../bin',$this->rootDir),
             $this->environment,
             $command
         );
