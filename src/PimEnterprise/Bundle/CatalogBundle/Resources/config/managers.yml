@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.manager.category.class: PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager
+    pimee_catalog.resolver.attribute_values.class: PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver
 
 services:
     pim_catalog.manager.category:
@@ -8,3 +9,13 @@ services:
             - '@pim_catalog.repository.category'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
+
+    pim_catalog.resolver.attribute_values_with_permissions:
+        class: '%pimee_catalog.resolver.attribute_values.class%'
+        decorates: pim_catalog.resolver.attribute_values
+        decoration_inner_name: pim_catalog.resolver.attribute_values_without_permission
+        arguments:
+            - '@pim_catalog.resolver.attribute_values_without_permission'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'

@@ -10,10 +10,10 @@ Feature: Import products with an assets collection
   Scenario: Successfully import a csv file of products with a collection of assets
     Given the following CSV file to import:
       """
-      sku;categories;enabled;family;gallery;groups;main_color;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;size
-      pant-1;summer_collection;1;pants;dog,tiger;;white;Hose;Pant;Pantalon;50.00;70.00;S
-      pant-2;summer_collection;0;pants;minivan;;white;Hose;Pant;Pantalon;50.00;70.00;S
-      pant-3;summer_collection;0;pants;;;white;Hose;Pant;Pantalon;50.00;70.00;S
+      sku;categories;enabled;family;gallery;groups;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;size
+      pant-1;summer_collection;1;pants;dog,tiger;;Hose;Pant;Pantalon;50.00;70.00;S
+      pant-2;summer_collection;0;pants;minivan;;Hose;Pant;Pantalon;50.00;70.00;S
+      pant-3;summer_collection;0;pants;;;Hose;Pant;Pantalon;50.00;70.00;S
       """
     And the following job "csv_clothing_product_import" configuration:
       | filePath          | %file to import% |
@@ -32,10 +32,10 @@ Feature: Import products with an assets collection
   Scenario: Skip products with unknown collection assets
     Given the following CSV file to import:
       """
-      sku;categories;enabled;family;gallery;groups;main_color;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;size
-      pant-1;summer_collection;1;pants;foo,tiger;;white;Hose;Pant;Pantalon;50.00;70.00;S
-      pant-2;summer_collection;0;pants;minivan;;white;Hose;Pant;Pantalon;50.00;70.00;S
-      pant-3;summer_collection;0;pants;bar;;white;Hose;Pant;Pantalon;50.00;70.00;S
+      sku;categories;enabled;family;gallery;groups;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;size
+      pant-1;summer_collection;1;pants;foo,tiger;;Hose;Pant;Pantalon;50.00;70.00;S
+      pant-2;summer_collection;0;pants;minivan;;Hose;Pant;Pantalon;50.00;70.00;S
+      pant-3;summer_collection;0;pants;bar;;Hose;Pant;Pantalon;50.00;70.00;S
       """
     And the following job "csv_clothing_product_import" configuration:
       | filePath          | %file to import% |
