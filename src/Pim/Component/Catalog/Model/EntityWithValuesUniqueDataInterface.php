@@ -14,7 +14,7 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductUniqueDataInterface
+interface EntityWithValuesUniqueDataInterface
 {
     /**
      * @return int
@@ -24,7 +24,7 @@ interface ProductUniqueDataInterface
     /**
      * @return ProductInterface
      */
-    public function getProduct();
+    public function getEntityWithValues();
 
     /**
      * @return AttributeInterface
@@ -39,12 +39,12 @@ interface ProductUniqueDataInterface
     /**
      * @param ValueInterface $value
      */
-    public function setProductValue(ValueInterface $value);
+    public function setValue(ValueInterface $value);
 
     /**
-     * @param ProductUniqueDataInterface $uniqueValue
+     * @param EntityWithValuesUniqueDataInterface $uniqueValue
      *
      * @return bool
      */
-    public function isEqual(ProductUniqueDataInterface $uniqueValue);
+    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue);
 }

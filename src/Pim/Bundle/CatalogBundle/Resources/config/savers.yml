@@ -5,7 +5,7 @@ parameters:
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.attribute.class:                     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver
-    pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
+    pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesUniqueDataSynchronizer
 
 services:
     pim_catalog.saver.group_type:

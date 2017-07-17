@@ -702,11 +702,11 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
-     * @param ProductUniqueDataInterface $uniqueData
+     * @param EntityWithValuesUniqueDataInterface $uniqueData
      *
      * @return ProductInterface
      */
-    public function addUniqueData(ProductUniqueDataInterface $uniqueData)
+    public function addUniqueData(EntityWithValuesUniqueDataInterface $uniqueData)
     {
         $this->uniqueData->add($uniqueData);
 

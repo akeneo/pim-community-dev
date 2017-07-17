@@ -7,13 +7,13 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
+abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUniqueDataInterface
 {
     /** @var int */
     protected $id;
 
     /** @var ProductInterface */
-    protected $product;
+    protected $entityWithValues;
 
     /** @var ValueInterface */
     protected $value;
@@ -25,13 +25,13 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     protected $rawData;
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface $entityWithValues
      * @param ValueInterface   $value
      */
-    public function __construct(ProductInterface $product, ValueInterface $value)
+    public function __construct(ProductInterface $entityWithValues, ValueInterface $value)
     {
-        $this->product = $product;
-        $this->setProductValue($value);
+        $this->entityWithValues = $entityWithValues;
+        $this->setValue($value);
     }
 
     /**
@@ -45,9 +45,9 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct()
+    public function getEntityWithValues()
     {
-        return $this->product;
+        return $this->entityWithValues;
     }
 
     /**
@@ -69,7 +69,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductValue(ValueInterface $value)
+    public function setValue(ValueInterface $value)
     {
         $this->value = $value;
         $this->attribute = $value->getAttribute();
@@ -79,7 +79,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ProductUniqueDataInterface $uniqueValue)
+    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue)
     {
         return $this->getAttribute() === $uniqueValue->getAttribute() &&
             $this->getRawData() === $uniqueValue->getRawData();

@@ -27,18 +27,18 @@ class EntityWithValuesSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var ProductUniqueDataSynchronizer */
+    /** @var EntityWithValuesUniqueDataSynchronizer */
     protected $uniqueDataSynchronizer;
 
     /**
-     * @param ObjectManager                 $objectManager
-     * @param EventDispatcherInterface      $eventDispatcher
-     * @param ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+     * @param ObjectManager                          $objectManager
+     * @param EventDispatcherInterface               $eventDispatcher
+     * @param EntityWithValuesUniqueDataSynchronizer $uniqueDataSynchronizer
      */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+        EntityWithValuesUniqueDataSynchronizer $uniqueDataSynchronizer
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;

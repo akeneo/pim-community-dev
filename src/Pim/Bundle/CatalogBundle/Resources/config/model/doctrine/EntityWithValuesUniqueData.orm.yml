@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\ProductUniqueData:
+Pim\Component\Catalog\Model\EntityWithValuesUniqueData:
     type: entity
     table: pim_catalog_product_unique_data
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -17,7 +17,7 @@ Pim\Component\Catalog\Model\ProductUniqueData:
                 - attribute_id
                 - raw_data
     manyToOne:
-        product:
+        entityWithValues:
             targetEntity: Pim\Component\Catalog\Model\ProductInterface
             joinColumns:
                 product_id:

@@ -4,23 +4,23 @@ namespace spec\Pim\Bundle\CatalogBundle\Saver\Common;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
-use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesUniqueDataSynchronizer;
+use Pim\Component\Catalog\Factory\EntityWithValuesUniqueDataFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 
-class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
+class EntityWithValuesUniqueDataSynchronizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductUniqueDataSynchronizer::class);
+        $this->shouldHaveType(EntityWithValuesUniqueDataSynchronizer::class);
     }
 
-    function let(ProductUniqueDataFactory $factory)
+    function let(EntityWithValuesUniqueDataFactory $factory)
     {
         $this->beConstructedWith($factory);
     }
@@ -33,7 +33,7 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         ValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
-        ProductUniqueDataInterface $uniqueData
+        EntityWithValuesUniqueDataInterface $uniqueData
     ) {
         $product->getUniqueData()->willReturn($uniqueDataCollection);
         $product->getValues()->willReturn($values);
@@ -59,7 +59,7 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         ValueInterface $skuValue,
         AttributeInterface $sku,
         \ArrayIterator $uniqueDataCollectionIterator,
-        ProductUniqueDataInterface $uniqueData
+        EntityWithValuesUniqueDataInterface $uniqueData
     ) {
         $product->getUniqueData()->willReturn($uniqueDataCollection);
         $product->getValues()->willReturn($values);
@@ -76,7 +76,7 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
 
         $factory->create(Argument::cetera())->shouldNotBeCalled($uniqueData);
         $product->addUniqueData($uniqueData)->shouldNotBeCalled();
-        $uniqueData->setProductValue($skuValue)->shouldBeCalled();
+        $uniqueData->setValue($skuValue)->shouldBeCalled();
 
         $this->synchronize($product);
     }

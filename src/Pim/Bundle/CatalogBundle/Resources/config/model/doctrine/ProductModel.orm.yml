@@ -65,6 +65,14 @@ Pim\Component\Catalog\Model\ProductModel:
             mappedBy: parent
             orderBy:
                 left: ASC
+        uniqueData:
+            targetEntity: Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface
+            mappedBy: entityWithValues
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
     manyToOne:
         parent:
             targetEntity: Pim\Component\Catalog\Model\ProductModelInterface

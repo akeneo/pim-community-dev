@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
+use Pim\Component\Catalog\Factory\EntityWithValuesUniqueDataFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface;
 
 /**
  * Synchronize the $uniqueData persistent collection of the product with the unique values of the product.
@@ -19,35 +19,35 @@ use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUniqueDataSynchronizer
+class EntityWithValuesUniqueDataSynchronizer
 {
-    /** @var ProductUniqueDataFactory */
+    /** @var EntityWithValuesUniqueDataFactory */
     protected $factory;
 
     /**
-     * @param ProductUniqueDataFactory $factory
+     * @param EntityWithValuesUniqueDataFactory $factory
      */
-    public function __construct(ProductUniqueDataFactory $factory)
+    public function __construct(EntityWithValuesUniqueDataFactory $factory)
     {
         $this->factory = $factory;
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $entityWithValues
      */
-    public function synchronize(ProductInterface $product)
+    public function synchronize(EntityWithValuesInterface $entityWithValues)
     {
-        $uniqueDataCollection = $product->getUniqueData();
+        $uniqueDataCollection = $entityWithValues->getUniqueData();
 
-        foreach ($product->getValues()->getUniqueValues() as $value) {
+        foreach ($entityWithValues->getValues()->getUniqueValues() as $value) {
             $attribute = $value->getAttribute();
 
             $uniqueData = $this->getUniqueDataFromCollection($uniqueDataCollection, $attribute);
             if (null !== $uniqueData) {
-                $uniqueData->setProductValue($value);
+                $uniqueData->setValue($value);
             } else {
-                $uniqueData = $this->factory->create($product, $value);
-                $product->addUniqueData($uniqueData);
+                $uniqueData = $this->factory->create($entityWithValues, $value);
+                $entityWithValues->addUniqueData($uniqueData);
             }
         }
     }
@@ -56,7 +56,7 @@ class ProductUniqueDataSynchronizer
      * @param Collection         $uniqueDataCollection
      * @param AttributeInterface $attribute
      *
-     * @return ProductUniqueDataInterface|null
+     * @return EntityWithValuesUniqueDataInterface|null
      */
     protected function getUniqueDataFromCollection(Collection $uniqueDataCollection, AttributeInterface $attribute)
     {

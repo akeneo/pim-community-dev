@@ -6,13 +6,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
+use Pim\Component\Catalog\Repository\EntityWithValuesUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -22,7 +20,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     const PROPERTY_PATH='children[values].children[unique_attribute].children[text].data';
 
     function let(
-        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        EntityWithValuesUniqueDataRepositoryInterface $uniqueDataRepository,
         UniqueValuesSet $uniqueValuesSet,
         ExecutionContextInterface $context,
         Form $form,

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
+use Pim\Component\Catalog\Repository\EntityWithValuesUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -18,17 +18,17 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueValueValidator extends ConstraintValidator
 {
-    /** @var ProductUniqueDataRepositoryInterface */
+    /** @var EntityWithValuesUniqueDataRepositoryInterface */
     protected $repository;
 
     /** @var UniqueValuesSet */
     protected $uniqueValuesSet;
 
     /**
-     * @param ProductUniqueDataRepositoryInterface $repository
-     * @param UniqueValuesSet                      $uniqueValueSet
+     * @param EntityWithValuesUniqueDataRepositoryInterface $repository
+     * @param UniqueValuesSet                               $uniqueValueSet
      */
-    public function __construct(ProductUniqueDataRepositoryInterface $repository, UniqueValuesSet $uniqueValueSet)
+    public function __construct(EntityWithValuesUniqueDataRepositoryInterface $repository, UniqueValuesSet $uniqueValueSet)
     {
         $this->repository = $repository;
         $this->uniqueValuesSet = $uniqueValueSet;

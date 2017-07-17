@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
@@ -13,27 +13,27 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUniqueDataFactory
+class EntityWithValuesUniqueDataFactory
 {
     /** @var string */
-    protected $productUniqueDataClass;
+    protected $entityWithValuesUniqueDataClass;
 
     /**
-     * @param string $productUniqueDataClass
+     * @param string $entityWithValuesUniqueDataClass
      */
-    public function __construct($productUniqueDataClass)
+    public function __construct($entityWithValuesUniqueDataClass)
     {
-        $this->productUniqueDataClass = $productUniqueDataClass;
+        $this->entityWithValuesUniqueDataClass = $entityWithValuesUniqueDataClass;
     }
 
     /**
      * @param ProductInterface $product
      * @param ValueInterface   $value
      *
-     * @return ProductUniqueDataInterface
+     * @return EntityWithValuesUniqueDataInterface
      */
     public function create(ProductInterface $product, ValueInterface $value)
     {
-        return new $this->productUniqueDataClass($product, $value);
+        return new $this->entityWithValuesUniqueDataClass($product, $value);
     }
 }

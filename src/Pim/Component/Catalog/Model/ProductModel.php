@@ -62,6 +62,9 @@ class ProductModel implements ProductModelInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
+    /** @var Collection */
+    protected $uniqueData;
+
     /**
      * Create an instance of ProductModel.
      */
@@ -71,6 +74,7 @@ class ProductModel implements ProductModelInterface
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->uniqueData = new ArrayCollection();
     }
 
     /**
@@ -443,5 +447,21 @@ class ProductModel implements ProductModelInterface
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
         $this->familyVariant = $familyVariant;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getUniqueData(): Collection
+    {
+        return $this->uniqueData;
+    }
+
+    /**
+     * @param EntityWithValuesUniqueDataInterface $uniqueData
+     */
+    public function addUniqueData(EntityWithValuesUniqueDataInterface $uniqueData): void
+    {
+        $this->uniqueData->add($uniqueData);
     }
 }

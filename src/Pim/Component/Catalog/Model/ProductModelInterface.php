@@ -183,4 +183,14 @@ interface ProductModelInterface extends
      * @param FamilyVariantInterface $familyVariant
      */
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
+
+    /**
+     * @return Collection
+     */
+    public function getUniqueData(): Collection;
+
+    /**
+     * @param EntityWithValuesUniqueDataInterface $uniqueData
+     */
+    public function addUniqueData(EntityWithValuesUniqueDataInterface $uniqueData): void;
 }
