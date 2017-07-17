@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Normalizer;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -49,6 +50,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
         $data['label'] = $product->getLabel($locale);
+        $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
         $data['completeness'] = $this->getCompleteness($product, $context);
 
         return $data;
@@ -130,6 +132,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     protected function getLabel($code, $value = null)
     {
         return '' === $value || null === $value ? sprintf('[%s]', $code) : $value;
+    }
+
+    /**
+     * @param ValueInterface $data
+     * @param string         $format
+     * @param array          $context
+     *
+     * @return array|null
+     */
+    protected function normalizeImage(?ValueInterface $data, $format, $context = [])
+    {
+        return $this->serializer->normalize($data, $format, $context)['data'];
     }
 
     /**

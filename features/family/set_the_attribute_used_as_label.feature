@@ -50,5 +50,5 @@ Feature: Set the attribute used as label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "brand" attribute
-    Then I should see the flash message "This attribute can not be removed because it is used as the label of the family"
     And I should see attributes "Brand" in group "Other"
+    And I should not see the text "There are unsaved changes."

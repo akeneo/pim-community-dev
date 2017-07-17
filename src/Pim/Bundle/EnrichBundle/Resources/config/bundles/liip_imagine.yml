@@ -23,5 +23,5 @@ liip_imagine:
             quality:          95
             format:           png
             filters:
-                thumbnail:    { size: [80, 120], mode: inset }
+                thumbnail:    { size: [120, 120], mode: inset }
                 strip:        ~

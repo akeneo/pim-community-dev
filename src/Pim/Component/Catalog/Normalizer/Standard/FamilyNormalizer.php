@@ -55,6 +55,8 @@ class FamilyNormalizer implements NormalizerInterface
             'attributes'             => $this->normalizeAttributes($family),
             'attribute_as_label'     => null !== $family->getAttributeAsLabel()
                 ? $family->getAttributeAsLabel()->getCode() : null,
+            'attribute_as_image'     => null !== $family->getAttributeAsImage()
+                ? $family->getAttributeAsImage()->getCode() : null,
             'attribute_requirements' => $this->normalizeRequirements($family),
             'labels'                 => $this->translationNormalizer->normalize($family, 'standard', $context),
         ];

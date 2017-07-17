@@ -38,6 +38,7 @@ class GetFamilyIntegration extends ApiTestCase
         "sku"
     ],
     "attribute_as_label": "sku",
+    "attribute_as_image": "an_image",
     "attribute_requirements": {
         "ecommerce" : [
             "a_date",

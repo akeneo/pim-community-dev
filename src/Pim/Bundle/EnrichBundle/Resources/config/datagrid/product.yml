@@ -9,6 +9,10 @@ datagrid:
             type:              pim_datasource_product
             entity:            '%pim_catalog.entity.product.class%'
         columns:
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: image
             label:
                 label:         Label
                 data_name:     label

@@ -21,6 +21,6 @@ Feature: Export attribute groups
     marketing;Marketing;price,rating,rate_sale;2
     sizes;Sizes;size;3
     colors;Colors;color,lace_color;4
-    media;Media;side_view,top_view;5
+    media;Media;side_view,top_view,rear_view;5
     other;Other;comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123;100
     """

@@ -206,7 +206,14 @@ define(
              * @param {Object} extension
              */
             renderExtension: function (extension) {
-                this.getZone(extension.targetZone).appendChild(extension.el);
+                var zone = this.getZone(extension.targetZone);
+
+                if (null === zone) {
+                    throw new Error('Can not render extension "' + extension.code + '" in "' + this.code + '": ' +
+                        'zone "' + extension.targetZone + '" does not exist');
+                }
+
+                zone.appendChild(extension.el);
 
                 extension.render();
             },
@@ -225,7 +232,7 @@ define(
             /**
              * Get the drop zone for the given code
              *
-             * @param {string} code
+             * @param {string|null} code
              *
              * @return {jQueryElement}
              */
@@ -235,7 +242,7 @@ define(
                 }
 
                 if (!this.zones[code]) {
-                    throw new Error('Zone "' + code + '" does not exist for view ' + this.code);
+                    return null;
                 }
 
                 return this.zones[code];
