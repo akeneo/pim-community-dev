@@ -2,6 +2,7 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Product;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -61,7 +62,6 @@ class ProductModelIntegration extends TestCase
         $productModel = $this->createProductModelObject(
             [
                 'identifier' => '',
-                'family_variant' => 'clothing_color_size',
             ]
         );
 
@@ -79,7 +79,6 @@ class ProductModelIntegration extends TestCase
         $productModel = $this->createProductModelObject(
             [
                 'identifier' => 'product_model_identifier',
-                'family_variant' => 'clothing_color_size',
             ]
         );
 
@@ -89,7 +88,6 @@ class ProductModelIntegration extends TestCase
         $productModel = $this->createProductModelObject(
             [
                 'identifier' => 'product_model_identifier',
-                'family_variant' => 'clothing_color_size',
             ]
         );
 
@@ -107,7 +105,10 @@ class ProductModelIntegration extends TestCase
      */
     public function testTheProductModelValidityDependingOnItsFamily()
     {
-        $productModel = $this->createProductModelObject(
+        $this->expectException(InvalidPropertyException::class);
+        $this->expectExceptionMessage('Property "family_variant" expects a valid family variant code. The family variant does not exist, "" given.');
+
+        $this->createProductModelObject(
             [
                 'identifier' => 'product_model_identifier',
                 'values' => [
@@ -123,47 +124,7 @@ class ProductModelIntegration extends TestCase
                 'categories' => ['tshirts'],
             ]
         );
-
-        $errors = $this->get('validator')->validate($productModel);
-
-        $this->assertEquals(
-            'The product model family variant must not be empty.', $errors->get(0)->getMessage()
-        );
-        $this->assertEquals('identifier', $errors->get(0)->getPropertyPath());
     }
-
-//    /**
-//     * Family variant validation: A product model must have the family attributes and its axes.
-//     */
-//    public function testTheProductModelValidityDependingOnItsFamily()
-//    {
-//        $productModel = $this->createProductModelObject(
-//            [
-//                'identifier' => 'product_model_identifier',
-//                'values' => [
-//                    'name' => [
-//                        [
-//                            'locale' => 'fr_FR',
-//                            'scope' => null,
-//                            'data' => 'T-shirt super beau',
-//                        ],
-//                    ],
-//                ],
-//                'categories' => ['tshirts'],
-//            ]
-//        );
-//
-//        $errors = $this->get('validator')->validate($productModel);
-//
-//        $this->assertEquals(
-//            'It misses the following attributes "%s" to the product model',
-//            $errors->get('TODO')->getMessage()
-//        );
-//        $this->assertEquals(
-//            'The value of following attributes "%s" must not be empty',
-//            $errors->get('TODO')->getMessage()
-//        );
-//    }
 
     /**
      * {@inheritdoc}
