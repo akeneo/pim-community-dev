@@ -41,7 +41,10 @@ define([
          * @return {Promise}
          */
         configure() {
-            return $.when(BaseForm.prototype.configure.apply(this, arguments));
+            return $.when(
+                this.fetchJobs(),
+                BaseForm.prototype.configure.apply(this, arguments)
+            );
         },
 
         /**
@@ -65,21 +68,29 @@ define([
             const url = Routing.generate('pim_enrich_job_instance_rest_jobs_get');
             const jobType = this.options.config.type;
 
-            return $.ajax({
+            const deferred = $.Deferred();
+
+            $.ajax({
                 url,
                 type: 'GET',
                 data: { jobType },
                 cache: true
-            }).done(jobs => {
+            }).done((jobs) => {
                 this.jobs = jobs;
-                this.renderJobs();
+                deferred.resolve();
             });
+
+            return deferred.promise();
         },
 
         /**
-         * Render the job data in the template
+         * Renders the form
+         *
+         * @return {Promise}
          */
-        renderJobs() {
+        render() {
+            if (!this.configured) return this;
+
             const errors = this.getRoot().validationErrors || [];
             const identifier = this.options.config.identifier || 'alias';
 
@@ -93,16 +104,6 @@ define([
 
             const selectedJobType = this.getFormData().alias;
             this.$('select').val(selectedJobType);
-        },
-
-        /**
-         * Renders the form
-         *
-         * @return {Promise}
-         */
-        render() {
-            if (!this.configured) return this;
-            this.fetchJobs().then(() => this.renderJobs())
             this.delegateEvents();
         }
     });
