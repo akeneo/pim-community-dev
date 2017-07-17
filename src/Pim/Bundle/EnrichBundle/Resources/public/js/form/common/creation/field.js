@@ -54,6 +54,7 @@ define([
         errors: errors.filter(error => {
           const id = this.identifier;
           const { path, attribute } = error;
+
           return id === path || id === attribute;
         }),
         value: this.getFormData()[this.identifier]
