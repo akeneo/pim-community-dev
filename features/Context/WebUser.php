@@ -1284,29 +1284,26 @@ class WebUser extends PimContext
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
-        $expectedAttributes = $this->listToArray($attributes);
-        $options            = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+        $this->spin(function () use ($attributes) {
+            $expectedAttributes = $this->listToArray($attributes);
+            $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
-        if (count($expectedAttributes) !== $actual = count($options)) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
-                    count($expectedAttributes),
-                    $actual,
-                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
-                )
-            );
-        }
+            if (count($expectedAttributes) !== $actual = count($options)) {
+                return false;
+            }
 
-        if ($expectedAttributes !== $options) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected to see eligible attributes as label %s, actually saw %s',
-                    print_r(\Doctrine\Common\Util\Debug::export($expectedAttributes, 2), true),
-                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
-                )
-            );
-        }
+            if ($expectedAttributes !== $options) {
+                return false;
+            }
+
+            return true;
+        }, sprintf(
+                'Expected to see eligible attributes as label %s, actually saw %s',
+                json_encode($this->listToArray($attributes)),
+                json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
+            )
+        );
+
     }
 
     /**
