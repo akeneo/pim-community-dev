@@ -77,7 +77,7 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         $this->assertProducts($productsFound, [
             'model-tshirt-red',
             'model-tshirt-unique-color',
-            'model-tshirt-unique-size-red',
+            'tshirt-unique-size-red',
             'running-shoes-s-red',
             'running-shoes-m-red',
             'running-shoes-l-red',
@@ -133,7 +133,7 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $this->assertProducts($productsFound, [
             'model-tshirt-blue',
-            'model-tshirt-unique-size-blue',
+            'tshirt-unique-size-blue',
             'running-shoes-s-blue',
             'running-shoes-m-blue',
             'running-shoes-l-blue',
@@ -225,11 +225,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['tshirt', 'tshirt-unique-size', 'hat', 'shoes'],
-                                        ],
-                                    ],
-                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
                                             'query' => [
@@ -251,11 +246,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['tshirt-unique-size'],
-                                        ],
-                                    ],
-                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
                                             'query' => [
@@ -276,11 +266,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['jacket'],
-                                        ],
-                                    ],
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
@@ -331,11 +316,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['tshirt', 'tshirt-unique-size', 'hat', 'shoes'],
-                                        ],
-                                    ],
-                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
                                             'query' => [
@@ -357,11 +337,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['tshirt-unique-size'],
-                                        ],
-                                    ],
-                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
                                             'query' => [
@@ -382,11 +357,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['jacket'],
-                                        ],
-                                    ],
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
@@ -443,11 +413,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['tshirt'],
-                                        ],
-                                    ],
-                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_2',
                                             'query' => [
@@ -471,11 +436,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['tshirt-unique-color', 'hat'],
-                                        ],
-                                    ],
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
@@ -506,11 +466,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['watch'],
-                                        ],
-                                    ],
-                                    [
                                         'query_string' => [
                                             'default_field' => 'values.description-text.<all_channels>.<all_locales>',
                                             'query'         => '*T-shirt*',
@@ -529,11 +484,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['tshirt-unique-size'],
-                                        ],
-                                    ],
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
@@ -558,11 +508,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['shoe'],
-                                        ],
-                                    ],
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
@@ -594,11 +539,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['jacket'],
-                                        ],
-                                    ],
-                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
                                             'query' => [
@@ -615,7 +555,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                                             ],
                                         ],
                                     ],
-
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
