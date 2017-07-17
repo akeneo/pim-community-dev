@@ -14,8 +14,11 @@ app/uploads/product/*
 app/file_storage/*
 app/bootstrap.php.cache
 build/
+/docker/*
+!/docker/akeneo.conf
+!/docker/akeneo-behat.conf
 vendor
-bin
+/bin
 behat.yml
 .phpspec/*.tpl
 composer.phar
@@ -23,3 +26,4 @@ composer.lock
 node_modules/
 phpspec.yml
 .grunt
+docker-compose.yml
