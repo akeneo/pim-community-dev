@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Component\Batch\Event;
 
 use Akeneo\Component\Batch\Model\JobInstance;
