@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/SymfonyRequirements.php';
+require_once __DIR__ . '/../var/SymfonyRequirements.php';
 
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Process\ProcessBuilder;
@@ -93,8 +93,8 @@ class OroRequirements extends SymfonyRequirements
 
         $directories = array(
             'web/bundles',
-            'app/cache',
-            'app/logs',
+            'var/cache',
+            'var/logs',
         );
         foreach ($directories as $directory) {
             $this->addOroRequirement(

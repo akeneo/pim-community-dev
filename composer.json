@@ -17,7 +17,8 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Test\\Integration\\": "tests/"
-        }
+        },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "autoload-dev": {
         "files": [
@@ -39,15 +40,15 @@
         "dompdf/dompdf" : "0.6.1",
         "elasticsearch/elasticsearch": "^5.1",
         "escapestudios/wsse-authentication-bundle": "2.2.2",
-        "friendsofsymfony/jsrouting-bundle": "1.5.4",
+        "friendsofsymfony/jsrouting-bundle": "1.6.0",
         "friendsofsymfony/oauth-server-bundle": "1.5.2",
         "friendsofsymfony/rest-bundle": "2.1.1",
         "gedmo/doctrine-extensions":"v2.4.26",
-        "incenteev/composer-parameter-handler": "2.1.1",
+        "incenteev/composer-parameter-handler": "2.1.2",
         "jms/serializer": "1.0.0",
-        "jms/serializer-bundle": "1.0.0",
-        "knplabs/knp-menu": "2.0.1",
-        "knplabs/knp-menu-bundle": "2.0.0",
+        "jms/serializer-bundle": "1.1.0",
+        "knplabs/knp-menu": "2.1.1",
+        "knplabs/knp-menu-bundle": "2.1.1",
         "kriswallsmith/assetic": "1.4.0",
         "leafo/lessphp": "0.5.0",
         "league/flysystem": "1.0.11",
@@ -55,15 +56,16 @@
         "liip/imagine-bundle": "1.3.1",
         "imagine/imagine": "0.6.2",
         "monolog/monolog": "1.22.0",
-        "ocramius/proxy-manager": "2.0.4",
+        "ocramius/proxy-manager": "2.1.1",
         "oneup/flysystem-bundle": "1.1.0",
-        "sensio/distribution-bundle": "4.0.38",
+        "sensio/distribution-bundle": "5.0.20",
         "sensio/framework-extra-bundle": "3.0.19",
-        "sensio/generator-bundle": "2.5.3",
+        "sensio/generator-bundle": "3.0.0",
         "symfony/assetic-bundle": "2.8.1",
         "symfony/monolog-bundle": "2.12.1",
         "symfony/swiftmailer-bundle": "2.4.2",
-        "symfony/symfony": "~2.8",
+        "symfony/security-acl": "3.0.0",
+        "symfony/symfony": "3.2.9",
         "twig/extensions": "1.2.0",
         "box/spout": "2.5.0"
     },
@@ -114,7 +116,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php app/console fos:js-routing:dump --target=web/js/routes.js"
+            "php bin/console fos:js-routing:dump --target=web/js/routes.js"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
@@ -123,12 +125,11 @@
             "@symfony-scripts"
         ]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
