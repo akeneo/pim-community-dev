@@ -43,9 +43,6 @@ class JobInstanceController
     /** @var NormalizerInterface */
     protected $jobInstanceNormalizer;
 
-    /** @var JobInstanceFactory */
-    protected $jobInstanceFactory;
-
     /** @var ObjectUpdaterInterface */
     protected $updater;
 
@@ -82,11 +79,13 @@ class JobInstanceController
     /** @var NormalizerInterface */
     protected $constraintViolationNormalizer;
 
+    /** @var JobInstanceFactory */
+    protected $jobInstanceFactory;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
      * @param NormalizerInterface                   $jobInstanceNormalizer
-     * @param JobInstanceFactory                    $jobInstanceFactory
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
      * @param RemoverInterface                      $remover
@@ -98,13 +97,13 @@ class JobInstanceController
      * @param RouterInterface                       $router
      * @param FormProviderInterface                 $formProvider
      * @param ObjectFilterInterface                 $objectFilter
-     * @param NormalizerInterface          $constraintViolationNormalizer
+     * @param NormalizerInterface                   $constraintViolationNormalizer
+     * @param JobInstanceFactory                    $jobInstanceFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         JobRegistry $jobRegistry,
         NormalizerInterface $jobInstanceNormalizer,
-        JobInstanceFactory $jobInstanceFactory,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RemoverInterface $remover,
@@ -116,12 +115,12 @@ class JobInstanceController
         RouterInterface $router,
         FormProviderInterface $formProvider,
         ObjectFilterInterface $objectFilter,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $constraintViolationNormalizer,
+        JobInstanceFactory $jobInstanceFactory
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
-        $this->jobInstanceFactory    = $jobInstanceFactory;
         $this->updater               = $updater;
         $this->saver                 = $saver;
         $this->remover               = $remover;
@@ -134,6 +133,7 @@ class JobInstanceController
         $this->formProvider          = $formProvider;
         $this->objectFilter          = $objectFilter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->jobInstanceFactory    = $jobInstanceFactory;
     }
 
     /**
@@ -532,12 +532,7 @@ class JobInstanceController
         $jobInstance = $this->jobInstanceFactory->createJobInstance($type);
         $this->updater->update($jobInstance, $data);
 
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-        $jobParameters = $this->jobParamsFactory->create($job);
-        $jobInstance->setRawParameters($jobParameters->all());
-
         $violations = $this->validator->validate($jobInstance);
-
         $normalizedViolations = [];
         foreach ($violations as $violation) {
             $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
@@ -551,6 +546,9 @@ class JobInstanceController
             return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $jobParameters = $this->jobParamsFactory->create($job);
+        $jobInstance->setRawParameters($jobParameters->all());
         $this->saver->save($jobInstance);
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));

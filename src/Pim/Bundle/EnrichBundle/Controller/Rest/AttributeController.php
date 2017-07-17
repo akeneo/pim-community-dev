@@ -354,6 +354,14 @@ class AttributeController
         $this->updater->update($attribute, $data);
     }
 
+    /**
+     * List attribute axes
+     * 
+     * @param Request $request
+     *
+     * @return JsonResponse
+     *
+     */
     public function listAxesAction(Request $request)
     {
         $locale = $request->get('locale');
