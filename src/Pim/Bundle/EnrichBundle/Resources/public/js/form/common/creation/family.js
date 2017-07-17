@@ -79,11 +79,7 @@ define([
          */
         parseResults(families) {
             const locale = UserContext.get('catalogLocale');
-
-            var data = {
-                more: 20 === Object.keys(families).length,
-                results: []
-            };
+            const data = { results: [] };
 
             for (const family in families) {
                 data.results.push({
@@ -147,8 +143,6 @@ define([
                         return {
                             search: term,
                             options: {
-                                limit: 20,
-                                page: page,
                                 locale: UserContext.get('catalogLocale')
                             }
                         };
