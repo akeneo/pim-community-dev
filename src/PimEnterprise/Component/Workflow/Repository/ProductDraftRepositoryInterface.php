@@ -90,7 +90,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     public function applySorter($qb, $field, $direction);
 
     /**
-     * Find one user product draft by its locale
+     * Find one user product draft
      *
      * @param ProductInterface $product
      * @param string           $username
