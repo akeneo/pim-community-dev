@@ -216,7 +216,7 @@ class JobInstanceFormType extends AbstractType
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false,
-                    'empty_value'  => $this->translator->trans('pim_import_export.list'),
+                    'placeholder'  => $this->translator->trans('pim_import_export.list'),
                     'empty_data'   => null,
                     'label'        => 'Job'
                 ]

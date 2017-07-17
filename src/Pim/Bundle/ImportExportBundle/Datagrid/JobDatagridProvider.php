@@ -91,6 +91,8 @@ class JobDatagridProvider
         }
         asort($choices);
 
+        $choices = array_flip($choices);
+
         return $choices;
     }
 

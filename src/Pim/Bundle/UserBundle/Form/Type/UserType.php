@@ -113,7 +113,9 @@ class UserType extends AbstractType
                     'multiple'       => true,
                     'expanded'       => true,
                     'required'       => !$this->isMyProfilePage,
-                    'read_only'      => $this->isMyProfilePage,
+                    'attr'           => [
+                        'read_only'  => $this->isMyProfilePage,
+                    ],
                     'disabled'       => $this->isMyProfilePage,
                 ]
             )
@@ -127,7 +129,9 @@ class UserType extends AbstractType
                     'multiple'       => true,
                     'expanded'       => true,
                     'required'       => false,
-                    'read_only'      => $this->isMyProfilePage,
+                    'attr'           => [
+                        'read_only'  => $this->isMyProfilePage,
+                    ],
                     'disabled'       => $this->isMyProfilePage
                 ]
             )

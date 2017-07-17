@@ -69,7 +69,7 @@ class UserSubscriber implements EventSubscriberInterface
                     'required'        => true,
                     'disabled'        => $this->isCurrentUser($entity),
                     'choices'         => ['Inactive', 'Active'],
-                    'empty_value'     => 'Please select',
+                    'placeholder'     => 'Please select',
                     'empty_data'      => '',
                     'auto_initialize' => false
                 ]

@@ -122,10 +122,14 @@ define(
             },
 
             _renderCriteria: function(el) {
+                const inKey = __('pim.grid.choice_filter.label_in_list');
+                const emptyKey = __('pim.grid.choice_filter.label_empty');
+                const notEmptyKey = __('pim.grid.choice_filter.label_not_empty');
+
                 this.operatorChoices = {
-                    'in':        __('pim.grid.choice_filter.label_in_list'),
-                    'empty':     __('pim.grid.choice_filter.label_empty'),
-                    'not empty': __('pim.grid.choice_filter.label_not_empty')
+                    [inKey]: 'in',
+                    [emptyKey]: 'empty',
+                    [notEmptyKey]: 'not empty'
                 };
 
                 $(el).append(

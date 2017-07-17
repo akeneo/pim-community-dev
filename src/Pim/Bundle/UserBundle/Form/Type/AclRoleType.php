@@ -20,7 +20,7 @@ class AclRoleType extends OroAclRoleType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->privilegeConfig as $fieldName => $config) {
+        foreach ($options['privilegeConfigOption'] as $fieldName => $config) {
             $builder->add(
                 $fieldName,
                 PrivilegeCollectionType::class,
