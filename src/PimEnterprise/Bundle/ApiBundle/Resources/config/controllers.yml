@@ -1,8 +1,29 @@
 parameters:
-    pimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController
-    pimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
+     pimee_api.controller.published.class: PimEnterprise\Bundle\ApiBundle\Controller\PublishedControllerpimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftControllerpimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
 
 services:
+    pim_api.controller.product:
+        class: '%pim_api.controller.product.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory'
+            - '@pim_serializer'
+            - '@pim_api.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_api.repository.attribute'
+            - '@pim_api.repository.product'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.remover.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@router'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_api.stream.product_partial_update_stream'
+            - '@pim_api.security.primary_key_encrypter'
+            - '%pim_api.configuration%'
+
     pimee_api.controller.product_draft:
         class: '%pimee_api.controller.product_draft.class%'
         arguments:

@@ -1,3 +1,6 @@
+product:
+    resource: '@PimEnterpriseApiBundle/Resources/config/routing/published_product.yml'
+
 product_draft:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/product_draft.yml'
     prefix: /rest/v1

@@ -1,0 +1,9 @@
+pim_api_published_product_list:
+    path: /published-products
+    defaults: { _controller: pimee_api.controller.publishedProduct:listAction, _format: json }
+    methods: [GET]
+
+pim_api_published_product_get:
+    path: /published-products/{code}
+    defaults: { _controller: pimee_api.controller.publishedProduct:getAction, _format: json }
+    methods: [GET]
