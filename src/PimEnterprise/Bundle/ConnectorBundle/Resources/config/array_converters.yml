@@ -12,6 +12,7 @@ services:
                 - 'wysiwyg_enabled'
                 - 'decimals_allowed'
                 - 'negative_allowed'
+                - 'auto_option_sorting'
                 - 'is_read_only'
 
     pim_connector.array_converter.standard_to_flat.attribute:
@@ -26,4 +27,5 @@ services:
                 - 'wysiwyg_enabled'
                 - 'decimals_allowed'
                 - 'negative_allowed'
+                - 'auto_option_sorting'
                 - 'is_read_only'

@@ -903,8 +903,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
         }
 
-        $registry = $this->getSmartRegistry()
-            ->getManagerForClass(sprintf('PimEnterprise\Bundle\SecurityBundle\Entity\%sAccess', $accessClass));
+        $registry = $this->getEntityManager();
         $registry->flush();
     }
 

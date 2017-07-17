@@ -5,9 +5,6 @@ services:
     pimee_product_asset.attribute_type.asset_collection:
         class: '%pimee_product_asset.attribute_type.asset_collection.class%'
         arguments:
-            - reference_data_options
-            - pim_assets_collection
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_reference_data.registry'
+            - 'reference_data_options'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_assets_collection }

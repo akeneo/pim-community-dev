@@ -15,7 +15,7 @@ services:
       PHP_XDEBUG_ENABLED: 0
       PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
       PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
-      XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx
+      XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
     user: docker
     volumes:
       - ./:/srv/pim

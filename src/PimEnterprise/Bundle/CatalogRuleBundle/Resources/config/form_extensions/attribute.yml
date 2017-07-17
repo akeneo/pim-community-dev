@@ -1,0 +1,16 @@
+extensions:
+    pim-attribute-edit-form-rules-tab:
+        module: pim/common/tab
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 125
+        config:
+            label: pimee_catalog_rule.form.attribute.tab.rules.title
+
+    pim-attribute-edit-form-rules-grid:
+        module: pimee/attribute-edit-form/rules/rules-grid
+        parent: pim-attribute-edit-form-rules-tab
+        targetZone: self
+        position: 100
+        config:
+            resourceName: '%pim_catalog.entity.attribute.class%'
