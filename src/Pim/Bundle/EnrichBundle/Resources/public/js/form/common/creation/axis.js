@@ -49,11 +49,21 @@ define([
             );
         },
 
+        /**
+         * Update the model with the array of axes
+         * @param  {Object} event jQuery event
+         */
         updateModel(event) {
             const axes = event.target.value.split(',');
             this.getFormModel().set('axes', axes);
         },
 
+        /**
+         * Format the axes by changing format and translating labels
+         * @param  {Array} axes             An array of fetched axes
+         * @param  {Boolean} useTranslation Flag to use translations
+         * @return {Array}                  An array of formatted axes
+         */
         formatAxes(axes, useTranslation) {
             const locale = UserContext.get('catalogLocale');
             const formatted = [];
@@ -83,11 +93,17 @@ define([
             return { results: this.formatAxes(axes) };
         },
 
+        /**
+         * Get axes using the fetcher. This method is called by the select2 instance
+         * @param  {HTMLElement}   element  The select2 element
+         * @param  {Function} callback
+         * @return {Promise}                Return the request as a promise
+         */
         fetchAxes(element, callback) {
             const axes = this.getFormData().axes;
             if (!axes) return;
 
-            FetcherRegistry.getFetcher('attribute')
+            return FetcherRegistry.getFetcher('attribute')
             .fetchByIdentifiers(axes)
             .then(fetchedAxes => callback(this.formatAxes(fetchedAxes, true)));
         },
@@ -107,9 +123,7 @@ define([
                 label: 'Axis',
                 required: __('pim_enrich.form.required'),
                 help: __('pim_enrich.form.variant_group.axis.help'),
-                errors: errors.filter(error => {
-                    return error.message.includes('axis');
-                })
+                errors: errors.filter(error => error.message.includes('axis'))
             }));
 
             this.delegateEvents();

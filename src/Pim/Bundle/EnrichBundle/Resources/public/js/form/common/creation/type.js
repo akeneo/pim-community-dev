@@ -40,12 +40,15 @@ define([
         },
 
         /**
-             * Configure the form
-             *
-             * @return {Promise}
-             */
+         * Configure the form
+         *
+         * @return {Promise}
+         */
         configure() {
-            return $.when(FetcherRegistry.initialize(), BaseForm.prototype.configure.apply(this, arguments));
+            return $.when(
+                FetcherRegistry.initialize(),
+                BaseForm.prototype.configure.apply(this, arguments)
+            );
         },
 
         /**
@@ -57,6 +60,11 @@ define([
             model.set('type', type);
         },
 
+        /**
+         * Fetch group types
+         * @param  {HTMLElement}   element  select2 element
+         * @param  {Function} callback
+         */
         fetchGroupTypes(element, callback) {
             const fetcher = FetcherRegistry.getFetcher('group-type');
             const modelType = this.getFormData().type;
@@ -71,11 +79,11 @@ define([
         },
 
         /**
-             * Parses each group type for the select display
-             *
-             * @param  {Array} types The search results
-             * @return {Object}
-             */
+         * Parses each group type for the select display
+         *
+         * @param  {Array} types The search results
+         * @return {Object}
+         */
         parseResults(types) {
             const resultLength = Object.keys(types).length;
             const locale = UserContext.get('catalogLocale');
@@ -99,10 +107,10 @@ define([
         },
 
         /**
-             * Renders the form
-             *
-             * @return {Promise}
-             */
+         * Renders the form
+         *
+         * @return {Promise}
+         */
         render() {
             if (!this.configured) return this;
 

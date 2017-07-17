@@ -80,7 +80,7 @@ class VariantGroupController
      * @param CollectionFilterInterface                 $variantGroupDataFilter
      * @param ConverterInterface                        $productValueConverter
      * @param GroupFactory                              $groupFactory
-     * @param NormalizerInterface          $constraintViolationNormalizer
+     * @param NormalizerInterface                       $constraintViolationNormalizer
      */
     public function __construct(
         GroupRepositoryInterface $repository,

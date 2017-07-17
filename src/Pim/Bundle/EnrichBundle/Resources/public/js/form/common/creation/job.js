@@ -36,10 +36,10 @@ define([
         },
 
         /**
-             * Configure the form
-             *
-             * @return {Promise}
-             */
+         * Configure the form
+         *
+         * @return {Promise}
+         */
         configure() {
             return $.when(BaseForm.prototype.configure.apply(this, arguments));
         },
@@ -57,6 +57,11 @@ define([
             });
         },
 
+        /**
+         * Fetch the jobs
+         * @TODO - check if there's a job fetcher
+         * @return {Promise} Ajax request for jobs
+         */
         fetchJobs() {
             const url = Routing.generate('pim_enrich_job_instance_rest_jobs_get');
             const jobType = this.options.config.type;
@@ -72,6 +77,9 @@ define([
             });
         },
 
+        /**
+         * Render the job data in the template
+         */
         renderJobs() {
             const errors = this.getRoot().validationErrors || [];
             const identifier = this.options.config.identifier || 'alias';
@@ -89,10 +97,10 @@ define([
         },
 
         /**
-             * Renders the form
-             *
-             * @return {Promise}
-             */
+         * Renders the form
+         *
+         * @return {Promise}
+         */
         render() {
             if (!this.configured) return this;
 

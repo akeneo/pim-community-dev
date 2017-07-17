@@ -37,6 +37,7 @@ define([
     return BaseForm.extend({
         template: _.template(template),
         validationErrors: {},
+        defaultIdentifier: 'family',
         events: {
             'change input': 'updateModel'
         },
@@ -46,16 +47,16 @@ define([
          */
         initialize: function (config) {
             this.config = config.config;
-            this.identifier = this.config.identifier || 'family';
+            this.identifier = this.config.identifier || this.defaultIdentifier;
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**
-             * Configure the form
-             *
-             * @return {Promise}
-             */
+         * Configure the form
+         *
+         * @return {Promise}
+         */
         configure() {
             return $.when(
                 FetcherRegistry.initialize(),
@@ -64,12 +65,18 @@ define([
         },
 
         /**
-             * Model update callback
-             */
+         * Update the model with the family value
+         * @param  {Object} event jQuery event
+         */
         updateModel(event) {
             this.getFormModel().set('family', event.target.value);
         },
 
+        /**
+         * Parses the family results and translates the labels
+         * @param  {Array} families An array of family entities
+         * @return {Array}          The formatted array of families
+         */
         parseResults(families) {
             const locale = UserContext.get('catalogLocale');
 
@@ -88,6 +95,11 @@ define([
             return data;
         },
 
+        /**
+         * Use the family fetcher to get the families
+         * @param  {HTMLElement}   element  The select2 element
+         * @param  {Function} callback
+         */
         fetchFamilies(element, callback) {
             const locale = UserContext.get('catalogLocale');
             const formData = this.getFormData().family;
@@ -106,10 +118,10 @@ define([
         },
 
         /**
-             * Renders the form
-             *
-             * @return {Promise}
-             */
+         * Renders the form
+         *
+         * @return {Promise}
+         */
         render() {
             if (!this.configured) return this;
 

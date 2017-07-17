@@ -74,6 +74,11 @@ define(
                 return deferred.promise();
             },
 
+            /**
+             * Confirm the modal and redirect to route after save
+             * @param  {Object} modal    The backbone view for the modal
+             * @param  {Promise} deferred Promise to resolve
+             */
             confirmModal(modal, deferred) {
                 this.save().done(entity => {
                     modal.close();
@@ -97,7 +102,9 @@ define(
                 });
             },
 
-            // Remove this when create attribute PR is merged
+            /**
+             * @TODO - remove
+             */
             normalize(errors) {
                 const values = errors.values || [];
 
