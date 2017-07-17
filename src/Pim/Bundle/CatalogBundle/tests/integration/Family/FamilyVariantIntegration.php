@@ -7,7 +7,6 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
 class FamilyVariantIntegration extends TestCase
@@ -446,6 +445,41 @@ class FamilyVariantIntegration extends TestCase
 
         $errors = $this->get('validator')->validate($familyVariant);
         $this->assertEquals(0, $errors->count());
+    }
+
+    /**
+     * Validation: Attributes must be defined as axes in the same variant attribute set
+     */
+    public function testAxesDefinedAsAttributeInLevel()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['size', 'weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['sku', 'price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Attribute "size" must be set as attribute in the same variant attribute set it was set as axis',
+            $errors->get(0)->getMessage()
+        );
     }
 
     /**

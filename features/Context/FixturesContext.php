@@ -501,14 +501,13 @@ class FixturesContext extends BaseFixturesContext
                     if (null === $variantAttributeSet) {
                         assertEmpty($value);
                     } else {
-                        $variantAttributes = array_map(
+                        $variantAttributeCodes = $variantAttributeSet->getAttributes()->map(
                             function (AttributeInterface $attribute) {
                                 return $attribute->getCode();
-                            },
-                            $variantAttributeSet->getAttributes()->toArray()
+                            }
                         );
 
-                        $this->assertArrayEquals(explode(',', $value), $variantAttributes);
+                        $this->assertArrayEquals(explode(',', $value), $variantAttributeCodes->toArray());
                     }
                 } elseif (preg_match('/^variant-axes_(?P<level>.*)$/', $key, $matches)) {
                     $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
@@ -516,14 +515,13 @@ class FixturesContext extends BaseFixturesContext
                     if (null === $variantAttributeSet) {
                         assertEmpty($value);
                     } else {
-                        $variantAxes= array_map(
+                        $variantAxeCodes= $variantAttributeSet->getAxes()->map(
                             function (AttributeInterface $attribute) {
                                 return $attribute->getCode();
-                            },
-                            $variantAttributeSet->getAxes()->toArray()
+                            }
                         );
 
-                        $this->assertArrayEquals(explode(',', $value), $variantAxes);
+                        $this->assertArrayEquals(explode(',', $value), $variantAxeCodes->toArray());
                     }
                 } else {
                     throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
