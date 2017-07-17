@@ -41,7 +41,7 @@ Akeneo\Component\Batch\Model\JobInstance:
         type:
             type: string
             length: 255
-            column: `type`
+            column: type
     oneToMany:
         jobExecutions:
             targetEntity: Akeneo\Component\Batch\Model\JobExecution
