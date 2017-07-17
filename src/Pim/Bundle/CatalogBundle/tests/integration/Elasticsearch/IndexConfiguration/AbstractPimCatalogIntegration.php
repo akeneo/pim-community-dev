@@ -103,6 +103,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
         $identifiers = [];
         $types = self::DOCUMENT_TYPE . ',' . join(',', $types);
 
+        $query['size'] = 100;
         $response = $this->esClient->search($types, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
@@ -123,6 +124,6 @@ abstract class AbstractPimCatalogIntegration extends TestCase
         sort($actualProductIdentifiers);
         sort($expectedProductIdentifiers);
 
-        $this->assertSame($actualProductIdentifiers, $expectedProductIdentifiers);
+        $this->assertSame($expectedProductIdentifiers, $actualProductIdentifiers);
     }
 }

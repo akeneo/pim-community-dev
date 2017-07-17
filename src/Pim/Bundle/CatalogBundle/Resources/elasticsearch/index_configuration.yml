@@ -22,6 +22,8 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
+            type:
+                type: 'keyword'
         dynamic_templates:
             -
                 family:
@@ -201,6 +203,8 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
+            type:
+                type: 'keyword'
         dynamic_templates:
             -
                 family:
@@ -381,6 +385,8 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
+            type:
+                type: 'keyword'
         dynamic_templates:
             -
                 family:

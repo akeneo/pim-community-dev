@@ -761,7 +761,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             // Tshirt unique size model
             [
-                'identifier'    => 'model-tshirt-unique-size-blue',
+                'identifier'    => 'tshirt-unique-size-blue',
                 'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
@@ -782,7 +782,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
 
             [
-                'identifier'    => 'model-tshirt-unique-size-red',
+                'identifier'    => 'tshirt-unique-size-red',
                 'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
@@ -803,7 +803,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
 
             [
-                'identifier'    => 'model-tshirt-unique-size-yellow',
+                'identifier'    => 'tshirt-unique-size-yellow',
                 'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
