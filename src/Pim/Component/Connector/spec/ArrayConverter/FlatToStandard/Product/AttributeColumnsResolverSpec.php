@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -13,7 +13,7 @@ class AttributeColumnsResolverSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         CurrencyRepositoryInterface $currencyRepository,
-        AttributeValuesResolver $valuesResolver
+        AttributeValuesResolverInterface $valuesResolver
     ) {
         $this->beConstructedWith($attributeRepository, $currencyRepository, $valuesResolver);
     }

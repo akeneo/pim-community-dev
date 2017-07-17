@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\BatchBundle\Launcher;
+namespace Pim\Bundle\ConnectorBundle\Launcher;
 
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
@@ -13,11 +14,13 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
+ * Job launcher authenticated with a username.
+ *
+ * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleJobLauncher implements JobLauncherInterface
+class AuthenticatedJobLauncher implements JobLauncherInterface
 {
     /** @var JobRepositoryInterface */
     protected $jobRepository;
@@ -38,8 +41,6 @@ class SimpleJobLauncher implements JobLauncherInterface
     protected $logDir;
 
     /**
-     * Constructor
-     *
      * @param JobRepositoryInterface $jobRepository
      * @param JobParametersFactory   $jobParametersFactory
      * @param JobRegistry            $jobRegistry
@@ -80,13 +81,14 @@ class SimpleJobLauncher implements JobLauncherInterface
 
         $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
         $cmd = sprintf(
-            '%s %s%sconsole akeneo:batch:job --env=%s %s %s %s %s >> %s%sbatch_execute.log 2>&1',
+            '%s %s%sconsole pim:batch:job --env=%s %s %s %s %s %s >> %s%sbatch_execute.log 2>&1',
             $pathFinder->find(),
             sprintf('%s%s..%sbin', $this->rootDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
             $this->environment,
             $emailParameter,
             escapeshellarg($jobInstance->getCode()),
+            escapeshellarg($user->getUsername()),
             $executionId,
             !empty($configuration) ? sprintf('--config=%s', escapeshellarg($encodedConfiguration)) : '',
             $this->logDir,
