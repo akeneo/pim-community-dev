@@ -59,7 +59,6 @@ define([
 
         /**
          * Fetch the jobs
-         * @TODO - check if there's a job fetcher
          * @return {Promise} Ajax request for jobs
          */
         fetchJobs() {
@@ -103,14 +102,7 @@ define([
          */
         render() {
             if (!this.configured) return this;
-
-            /* @TODO - fix this */
-            if (!this.jobs) {
-                this.fetchJobs();
-            } else {
-                this.renderJobs();
-            }
-
+            this.fetchJobs().then(() => this.renderJobs())
             this.delegateEvents();
         }
     });
