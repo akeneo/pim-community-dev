@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Component\Batch\Event\BatchCommandEvent;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
@@ -9,7 +10,6 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Event\BatchCommandEvent;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
