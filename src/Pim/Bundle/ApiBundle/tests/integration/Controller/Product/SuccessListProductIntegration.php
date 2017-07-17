@@ -137,7 +137,7 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $nextId = urlencode($this->getEncryptedId('scopable'));
+        $nextId = rawurlencode($this->getEncryptedId('scopable'));
 
         $client->request('GET', 'api/rest/v1/products?with_count=true&limit=3');
         $expected = <<<JSON
@@ -171,9 +171,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable'              => urlencode($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'scopable'                 => urlencode($this->getEncryptedId('scopable')),
+            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'scopable'                 => rawurlencode($this->getEncryptedId('scopable')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/products?search_before=%s&limit=2', $ids['localizable_and_scopable']));
@@ -207,8 +207,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'product_china'            => urlencode($this->getEncryptedId('product_china')),
-            'product_without_category' => urlencode($this->getEncryptedId('product_without_category'))
+            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
+            'product_without_category' => rawurlencode($this->getEncryptedId('product_without_category'))
         ];
 
         $client->request('GET', 'api/rest/v1/products?search_before=&limit=2');
@@ -983,9 +983,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'product_china'            => urlencode($this->getEncryptedId('product_china')),
-            'product_without_category' => urlencode($this->getEncryptedId('product_without_category')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
+            'product_without_category' => rawurlencode($this->getEncryptedId('product_without_category')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/products?attributes=a_text&search_after=%s&limit=2&with_count=false', $ids['localizable_and_scopable']));
@@ -1042,7 +1042,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $id = urlencode($this->getEncryptedId('product_without_category'));
+        $id = rawurlencode($this->getEncryptedId('product_without_category'));
 
         $client->request('GET', sprintf('api/rest/v1/products?search_after=%s&with_count=true', $id));
         $expected = <<<JSON
@@ -1069,7 +1069,7 @@ JSON;
 
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links"       : {
@@ -1126,7 +1126,7 @@ JSON;
 
         $search = '{"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -1149,7 +1149,7 @@ JSON;
 
         $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -1172,8 +1172,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'product_china'            => urlencode($this->getEncryptedId('product_china')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/products?limit=4&search_after=%s', $ids['localizable_and_scopable']));
@@ -1206,9 +1206,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $id = [
-            'simple'                   => urlencode($this->getEncryptedId('simple')),
-            'localizable'              => urlencode($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
+            'simple'                   => rawurlencode($this->getEncryptedId('simple')),
+            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=3&search_after=%s', $id['simple']));
@@ -1239,8 +1239,8 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $scopableEncryptedId = urlencode($this->getEncryptedId('scopable'));
-        $localizableAndScopableEncryptedId = urlencode($this->getEncryptedId('localizable_and_scopable'));
+        $scopableEncryptedId = rawurlencode($this->getEncryptedId('scopable'));
+        $localizableAndScopableEncryptedId = rawurlencode($this->getEncryptedId('localizable_and_scopable'));
 
         $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
         $expected = <<<JSON
