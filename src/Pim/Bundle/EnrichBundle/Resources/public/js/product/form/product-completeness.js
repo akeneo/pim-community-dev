@@ -55,7 +55,12 @@ define(
                     return null;
                 }
 
-                return completeness.channels[UserContext.get('catalogScope')].completeness.ratio;
+                completeness = completeness.channels[UserContext.get('catalogScope')];
+                if (undefined === completeness) {
+                    return null;
+                }
+
+                return parseInt(completeness.completeness.ratio);
             },
 
             /**
