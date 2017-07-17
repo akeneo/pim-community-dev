@@ -198,7 +198,6 @@ class JobInstanceFormType extends AbstractType
      *
      * @return JobInstanceFormType
      */
-
     protected function addJobNameField(FormBuilderInterface $builder)
     {
         $choices = [];

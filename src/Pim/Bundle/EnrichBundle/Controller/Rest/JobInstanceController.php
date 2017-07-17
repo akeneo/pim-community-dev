@@ -411,7 +411,6 @@ class JobInstanceController
      * @throws NotFoundHttpException
      *
      */
-
     public function getJobNamesAction(Request $request)
     {
         $jobType = $request->query->get('jobType');
@@ -495,17 +494,39 @@ class JobInstanceController
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
     }
 
+    /**
+     * Create an import profile
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function createImportAction(Request $request)
     {
         return $this->createAction($request, 'import');
     }
 
+    /**
+     * Create an export profile
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function createExportAction(Request $request)
     {
         return $this->createAction($request, 'export');
     }
 
-    protected function createAction(Request $request, $type)
+    /**
+     * Create a job profile with a given type
+     *
+     * @param Request $request
+     * @param string  $type
+     *
+     * @return JsonResponse
+     */
+    protected function createAction(Request $request, string $type)
     {
         $data = json_decode($request->getContent(), true);
         $jobInstance = $this->jobInstanceFactory->createJobInstance($type);

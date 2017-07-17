@@ -17,7 +17,7 @@ Feature: Family creation
     And I press the "Save" button
     Then I should be redirected to the "CAR" family page
     And I should see the text "Family successfully created"
-    And I should see "[CAR]"
+    And I should see the text "[CAR]"
 
   Scenario: Fail to create a family with an empty or invalid code
     Given I press the "Save" button

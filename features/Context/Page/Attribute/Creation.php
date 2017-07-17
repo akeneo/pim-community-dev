@@ -260,7 +260,7 @@ class Creation extends Form
      *
      * @return NodeElement
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->spin(function () use ($text) {
             return $this->find(

@@ -104,6 +104,7 @@ define([
         render() {
             if (!this.configured) return this;
 
+            /* @TODO - fix this */
             if (!this.jobs) {
                 this.fetchJobs();
             } else {

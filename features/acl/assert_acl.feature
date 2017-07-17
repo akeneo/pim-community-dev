@@ -26,7 +26,7 @@ Feature: Define user rights
     When I revoke rights to resource <permission>
     And I save the role
     And I am on the <page> page
-    And I should not be able to access the <forbiddenPage> page
+    Then I should not be able to access the <forbiddenPage> page
 
     Examples:
       | permission                 | page              | forbiddenPage            |
