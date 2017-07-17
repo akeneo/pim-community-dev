@@ -59,7 +59,6 @@ class WebUser extends PimContext
         }, sprintf('Cannot create a new %s', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
-        $this->wait();
     }
 
     /**
@@ -1324,10 +1323,10 @@ class WebUser extends PimContext
      */
     public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
-        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
-        if ($popin && !$element) {
+        $element = null;
+        if ($popin) {
             $element = $this->spin(function () {
-                return $this->getCurrentPage()->find('css', '.modal');
+                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
             }, 'Modal not found.');
         }
 
