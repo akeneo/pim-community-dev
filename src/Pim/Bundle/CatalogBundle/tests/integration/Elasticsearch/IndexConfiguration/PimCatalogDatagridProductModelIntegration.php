@@ -19,7 +19,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
     public function testSearchTshirtInDescription()
     {
-        $this->markTestIncomplete('Ask delphine about where description attribute is.');
         $query = [
             'query' => [
                 'bool' => [
@@ -37,10 +36,20 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
-        $this->assertProducts($productsFound, ['model-tshirt-red', 'model-tshirt-unique']);
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-tshirt',
+                'model-tshirt-unique-color',
+                'model-tshirt-unique-size',
+            ]
+        );
     }
 
     public function testSearchColorRed()
@@ -59,7 +68,10 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts($productsFound, [
@@ -88,7 +100,10 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts($productsFound, ['model-tshirt-grey', 'model-hat']);
@@ -110,7 +125,10 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts($productsFound, [
@@ -139,7 +157,10 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts(
@@ -172,7 +193,10 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts(
@@ -195,20 +219,89 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         $query = [
             'query' => [
                 'bool' => [
-                    'filter' => [
+                    'minimum_should_match' => 1,
+                    'should'               => [
                         [
-                            'has_parent' => [
-                                'type'  => 'pim_catalog_product_model_parent_1',
-                                'query' => [
-                                    'terms' => [
-                                        'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt', 'tshirt-unique-size', 'hat', 'shoes'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'terms' => [
+                                                    'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => ['s'],
+                                        ],
                                     ],
                                 ],
                             ],
                         ],
                         [
-                            'terms' => [
-                                'values.size-option.<all_channels>.<all_locales>' => ['s'],
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt-unique-size'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'terms' => [
+                                                    'values.size-option.<all_channels>.<all_locales>' => ['s'],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['jacket'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'terms' => [
+                                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => ['s'],
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -218,7 +311,10 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts($productsFound, ['tshirt-grey-s']);
@@ -229,20 +325,89 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         $query = [
             'query' => [
                 'bool' => [
-                    'filter' => [
+                    'minimum_should_match' => 1,
+                    'should'               => [
                         [
-                            'has_parent' => [
-                                'type'  => 'pim_catalog_product_model_parent_1',
-                                'query' => [
-                                    'terms' => [
-                                        'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt', 'tshirt-unique-size', 'hat', 'shoes'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'terms' => [
+                                                    'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                                        ],
                                     ],
                                 ],
                             ],
                         ],
                         [
-                            'terms' => [
-                                'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt-unique-size'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'terms' => [
+                                                    'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['jacket'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'terms' => [
+                                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => ['m'],
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -252,12 +417,307 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
     }
 
+    /**
+     * Search for a model parent 1 in its values and the value of his parent.
+     *
+     * @group todo
+     */
+    public function testSearchColorGreyAndDescriptionTshirt()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'minimum_should_match' => 1,
+                    'should'               => [
+                        // Color in level 1 - Description in level 2
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_2',
+                                            'query' => [
+                                                'query_string' => [
+                                                    'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                                    'query'         => '*T-shirt*',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color and description in level 1
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt-unique-color', 'hat'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'query_string' => [
+                                                    'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                                    'query'         => '*T-shirt*',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'terms' => [
+                                                    'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color and Description in level product
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['watch'],
+                                        ],
+                                    ],
+                                    [
+                                        'query_string' => [
+                                            'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                            'query'         => '*T-shirt*',
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color in level product and description in level 1
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt-unique-size'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'query_string' => [
+                                                    'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                                    'query'         => '*T-shirt*',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color in level product and description in level 2
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['shoe'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'query_string' => [
+                                                            'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                                            'query'         => '*T-shirt*',
+                                                        ],
+
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color and description in level 2
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['jacket'],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'query_string' => [
+                                                            'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                                            'query'         => '*T-shirt*',
+                                                        ],
+
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'terms' => [
+                                                            'values.color-option.<all_channels>.<all_locales>' => ['grey'],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts($productsFound, ['model-tshirt-grey']);
+    }
+
+    public function testSearchMaterialCotton()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.material-option.<all_channels>.<all_locales>' => ['cotton'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-tshirt-grey',
+                'model-tshirt-red',
+                'model-tshirt-unique-color',
+                'model-tshirt-unique-size',
+            ]
+        );
+    }
+
+    public function testSearchMaterialLeather()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'terms' => [
+                            'values.material-option.<all_channels>.<all_locales>' => ['leather'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-running-shoes',
+                'model-biker-jacket-leather',
+            ]
+        );
+    }
+
+    /**
+     * Is not part of any use case but a proof of concept regarding the query of an attribute which is hold by the
+     * model_parent_2 (grand father).
+     */
     public function testSearchSizeMAndGrandParentColorWhite()
     {
         $query = [
@@ -291,91 +751,12 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
         $productsFound = $this->getSearchQueryResults(
             $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
         );
 
         $this->assertProducts($productsFound, ['biker-jacket-polyester-m', 'biker-jacket-leather-m']);
     }
-
-    public function testSearchColorGreyAndDescriptionTshirt()
-    {
-        $this->markTestIncomplete('Not done');
-        $query = [
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                    ],
-                ],
-            ],
-        ];
-
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
-        );
-
-        $this->assertProducts($productsFound, ['model-tshirt-grey']);
-    }
-
-    /** @group todo */
-    public function testSearchMaterialCotton()
-    {
-        $query = [
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                        'terms' => [
-                            'values.material-option.<all_channels>.<all_locales>' => ['cotton'],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_0', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1']
-        );
-
-        $this->assertProducts(
-            $productsFound,
-            [
-                'model-tshirt-grey',
-                'model-tshirt-red',
-                'model-tshirt-unique-color',
-                'model-tshirt-unique-size',
-            ]
-        );
-    }
-
-    public function testSearchMaterialLeather()
-    {
-        $query = [
-            'query' => [
-                'bool' => [
-                    'filter' => [
-                        'terms' => [
-                            'values.material-option.<all_channels>.<all_locales>' => ['leather'],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1', AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2']
-        );
-
-        $this->assertProducts(
-            $productsFound,
-            [
-                'model-running-shoes',
-                'model-biker-jacket-leather',
-            ]
-        );
-    }
-
-    // Do more complex use cases
-    // - Where color == grey and name == tshirt (Search on a model and one property of his parent)
 }

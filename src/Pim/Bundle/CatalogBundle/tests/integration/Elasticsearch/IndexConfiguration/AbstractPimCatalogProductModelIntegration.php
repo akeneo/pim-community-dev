@@ -19,13 +19,20 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
         $productModels = [
             // simple tshirt
             [
-                'identifier' => 'model-tshirt',
-                'type'       => 'PimCatalogProductModel',
-                'level'      => 2,
-                'family'     => [
+                'identifier'  => 'model-tshirt',
+                'type' => 'PimCatalogProductModel',
+                'level'       => 2,
+                'family'      => [
                     'code'   => 'tshirt',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
+                    ],
+                ],
+                'values'      => [
+                    'description-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided',
+                        ],
                     ],
                 ],
             ],
@@ -33,7 +40,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Tshirt model level-1 (varying on color)
             [
                 'identifier'    => 'model-tshirt-grey',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt',
                 'root_ancestor' => 'model-tshirt',
                 'level'         => 1,
@@ -63,7 +70,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'model-tshirt-blue',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt',
                 'root_ancestor' => 'model-tshirt',
                 'level'         => 1,
@@ -93,7 +100,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'model-tshirt-red',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt',
                 'root_ancestor' => 'model-tshirt',
                 'level'         => 1,
@@ -125,28 +132,33 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Tshirt unique color model
             [
                 'identifier'    => 'model-tshirt-unique-color',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt-unique-color',
                 'root_ancestor' => 'model-tshirt-unique-color',
                 'level'         => 1,
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-color',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'image-media'     => [
+                    'description-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif',
+                        ],
+                    ],
+                    'image-media'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-rockstar.jpg',
                         ],
                     ],
-                    'color-option'    => [
+                    'color-option'     => [
                         '<all_channels>' => [
                             '<all_locales>' => 'red',
                         ],
                     ],
-                    'material-option' => [
+                    'material-option'  => [
                         '<all_channels>' => [
                             '<all_locales>' => 'cotton',
                         ],
@@ -157,23 +169,28 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Hats model
             [
                 'identifier'    => 'model-hat',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'parent'        => 'model-hat',
                 'root_ancestor' => 'model-hat',
                 'level'         => 1,
                 'family'        => [
-                    'code'   => 'hats',
+                    'code'   => 'hat',
                     'labels' => [
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
                 'values'        => [
-                    'color-option'    => [
+                    'description-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'Braided hat',
+                        ],
+                    ],
+                    'color-option'     => [
                         '<all_channels>' => [
                             '<all_locales>' => 'grey',
                         ],
                     ],
-                    'material-option' => [
+                    'material-option'  => [
                         '<all_channels>' => [
                             '<all_locales>' => 'wool',
                         ],
@@ -184,28 +201,33 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Tshirt unique size model
             [
                 'identifier'    => 'model-tshirt-unique-size',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
                 'level'         => 1,
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-size',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'image-media'     => [
+                    'description-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'T-shirt unique size',
+                        ],
+                    ],
+                    'image-media'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-unique-size.jpg',
                         ],
                     ],
-                    'size-option'     => [
+                    'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'u',
                         ],
                     ],
-                    'material-option' => [
+                    'material-option'  => [
                         '<all_channels>' => [
                             '<all_locales>' => 'cotton',
                         ],
@@ -215,16 +237,16 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             // Running shoes
             [
-                'identifier' => 'model-running-shoes',
-                'type'       => 'PimCatalogProductModel',
-                'level'      => 2,
-                'family'     => [
+                'identifier'  => 'model-running-shoes',
+                'type' => 'PimCatalogProductModel',
+                'level'       => 2,
+                'family'      => [
                     'code'   => 'shoe',
                     'labels' => [
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
-                'values'     => [
+                'values'      => [
                     'material-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'leather',
@@ -235,7 +257,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-running-shoes-s',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'level'         => 1,
                 'parent'        => 'model-running-shoes',
                 'root_ancestor' => 'model-running-shoes',
@@ -256,7 +278,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-running-shoes-m',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'level'         => 1,
                 'parent'        => 'model-running-shoes',
                 'root_ancestor' => 'model-running-shoes',
@@ -277,7 +299,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-running-shoes-l',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'level'         => 1,
                 'parent'        => 'model-running-shoes',
                 'root_ancestor' => 'model-running-shoes',
@@ -298,16 +320,16 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             // Biker jacket
             [
-                'identifier' => 'model-biker-jacket',
-                'type'       => 'PimCatalogProductModel',
-                'level'      => 2,
-                'family'     => [
+                'identifier'  => 'model-biker-jacket',
+                'type' => 'PimCatalogProductModel',
+                'level'       => 2,
+                'family'      => [
                     'code'   => 'jacket',
                     'labels' => [
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
-                'values'     => [
+                'values'      => [
                     'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'white',
@@ -318,7 +340,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-biker-jacket-leather',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'level'         => 1,
                 'parent'        => 'model-biker-jacket',
                 'root_ancestor' => 'model-biker-jacket',
@@ -339,7 +361,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-biker-jacket-polyester',
-                'type'          => 'PimCatalogProductModel',
+                'type'   => 'PimCatalogProductModel',
                 'level'         => 1,
                 'parent'        => 'model-biker-jacket',
                 'root_ancestor' => 'model-biker-jacket',
@@ -364,7 +386,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // tshirt variants (level 2: varying on color and size)
             [
                 'identifier'    => 'tshirt-grey-s',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-grey',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -374,12 +396,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided grey S',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -388,7 +405,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-grey-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-grey',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -398,12 +415,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided grey m',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -412,7 +424,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-grey-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-grey',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -422,12 +434,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided grey L',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -436,7 +443,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-grey-xl',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-grey',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -446,12 +453,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided grey XL',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
@@ -461,7 +463,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'tshirt-blue-s',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-blue',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -471,12 +473,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided blue S',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -485,7 +482,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-blue-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-blue',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -495,12 +492,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided blue M',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -509,7 +501,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-blue-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-blue',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -519,12 +511,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided blue L',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -533,7 +520,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-blue-xl',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-blue',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -543,12 +530,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided blue XL',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
@@ -558,7 +540,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'tshirt-red-s',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-red',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -568,12 +550,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided red S',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -582,7 +559,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-red-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-red',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -592,12 +569,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided red M',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -606,7 +578,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-red-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-red',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -616,12 +588,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided red L',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -630,7 +597,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-red-xl',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-red',
                 'root_ancestor' => 'model-tshirt',
                 'family'        => [
@@ -640,12 +607,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Cotton t-shirt with a round neck Divided red XL',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
@@ -656,22 +618,17 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // T-shirt: size
             [
                 'identifier'    => 'tshirt-unique-color-s',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-color',
                 'root_ancestor' => 'model-tshirt-unique-color',
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-color',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt unique size',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
                         ],
@@ -680,22 +637,17 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-unique-color-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-color',
                 'root_ancestor' => 'model-tshirt-unique-color',
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-color',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif M',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -704,22 +656,17 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-unique-color-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-color',
                 'root_ancestor' => 'model-tshirt-unique-color',
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-color',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif L',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -728,22 +675,17 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'tshirt-unique-color-xl',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-color',
                 'root_ancestor' => 'model-tshirt-unique-color',
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-color',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt with a Kurt Cobain print motif XL',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'xl',
                         ],
@@ -754,7 +696,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Watch
             [
                 'identifier'    => 'watch',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'watch',
                 'root_ancestor' => 'watch',
                 'family'        => [
@@ -780,22 +722,17 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Hats variants (varying on size)
             [
                 'identifier'    => 'hat-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-hat',
                 'root_ancestor' => 'model-hat',
                 'family'        => [
-                    'code'   => 'hats',
+                    'code'   => 'hat',
                     'labels' => [
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Braided hat M',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
                         ],
@@ -804,22 +741,17 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'hat-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-hat',
                 'root_ancestor' => 'model-hat',
                 'family'        => [
-                    'code'   => 'hats',
+                    'code'   => 'hat',
                     'labels' => [
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'Braided hat L',
-                        ],
-                    ],
-                    'size-option'      => [
+                    'size-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
                         ],
@@ -830,23 +762,18 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Tshirt unique size model
             [
                 'identifier'    => 'model-tshirt-unique-size-blue',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
                 'level'         => 0,
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-size',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt unique size blue',
-                        ],
-                    ],
-                    'color-option'     => [
+                    'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'blue',
                         ],
@@ -856,23 +783,18 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-tshirt-unique-size-red',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
                 'level'         => 0,
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-size',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt unique size red',
-                        ],
-                    ],
-                    'color-option'     => [
+                    'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'red',
                         ],
@@ -882,23 +804,18 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'model-tshirt-unique-size-yellow',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-tshirt-unique-size',
                 'root_ancestor' => 'model-tshirt-unique-size',
                 'level'         => 0,
                 'family'        => [
-                    'code'   => 'tshirt',
+                    'code'   => 'tshirt-unique-size',
                     'labels' => [
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'T-shirt unique size yellow',
-                        ],
-                    ],
-                    'color-option'     => [
+                    'color-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'yellow',
                         ],
@@ -909,7 +826,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Running shoes
             [
                 'identifier'    => 'running-shoes-s-white',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-s',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -929,7 +846,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-s-blue',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-s',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -949,7 +866,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-s-red',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-s',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -969,7 +886,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-m-white',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-m',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -989,7 +906,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-m-blue',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-m',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -1009,7 +926,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-m-red',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-m',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -1029,7 +946,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-l-white',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-l',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -1049,7 +966,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-l-blue',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-l',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -1069,7 +986,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'running-shoes-l-red',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-running-shoes-l',
                 'root_ancestor' => 'model-running-shoes',
                 'family'        => [
@@ -1090,7 +1007,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Biker
             [
                 'identifier'    => 'biker-jacket-leather-s',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-leather',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1100,11 +1017,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'biker jacket polyester s',
-                        ],
-                    ],
                     'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
@@ -1114,7 +1026,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'biker-jacket-leather-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-leather',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1124,11 +1036,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'biker jacket polyester m',
-                        ],
-                    ],
                     'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
@@ -1138,7 +1045,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'biker-jacket-leather-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-leather',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1148,11 +1055,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'biker jacket polyester l',
-                        ],
-                    ],
                     'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
@@ -1163,7 +1065,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'    => 'biker-jacket-polyester-s',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-polyester',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1173,11 +1075,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'biker jacket polyester s',
-                        ],
-                    ],
                     'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 's',
@@ -1187,7 +1084,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'biker-jacket-polyester-m',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-polyester',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1197,11 +1094,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'biker jacket polyester m',
-                        ],
-                    ],
                     'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'm',
@@ -1211,7 +1103,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'    => 'biker-jacket-polyester-l',
-                'type'          => 'PimCatalogProduct',
+                'type'   => 'PimCatalogProduct',
                 'parent'        => 'model-biker-jacket-polyester',
                 'root_ancestor' => 'model-biker-jacket',
                 'family'        => [
@@ -1221,11 +1113,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                 ],
                 'values'        => [
-                    'description-text' => [
-                        '<all_channels>' => [
-                            '<all_locales>' => 'biker jacket polyester l',
-                        ],
-                    ],
                     'size-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'l',
