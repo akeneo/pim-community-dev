@@ -68,9 +68,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            if (in_array($code, $this->supportedFields)) {
-                $this->propertySetter->setData($productModel, $code, $value);
-            } elseif ('values' === $code) {
+            if ('values' === $code) {
                 $this->valuesUpdater->update($productModel, $value, $options);
             } elseif ('identifier' === $code) {
                 $productModel->setIdentifier($value);
@@ -86,6 +84,8 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 }
 
                 $productModel->setFamilyVariant($familyVariant);
+            } elseif (in_array($code, $this->supportedFields)) {
+                $this->propertySetter->setData($productModel, $code, $value);
             } elseif (!in_array($code, $this->ignoredFields)) {
                 throw UnknownPropertyException::unknownProperty($code);
             }
