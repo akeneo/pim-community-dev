@@ -33,7 +33,10 @@ $cDeps = array_merge($cBusinessDeps, $cUtilsDeps);
 
 $cAkeneoRules = [
     new Rule('Akeneo\Component\Analytics', $cDeps, RuleInterface::TYPE_ONLY),
-    new Rule('Akeneo\Component\Batch', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule('Akeneo\Component\Batch', array_merge($cDeps, [
+        'Symfony\Component\Console'
+    ]),
+    RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Component\Buffer', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule(
         'Akeneo\Component\Classification',
