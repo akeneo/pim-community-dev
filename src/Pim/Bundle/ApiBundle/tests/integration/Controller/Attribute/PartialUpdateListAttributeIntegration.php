@@ -58,7 +58,8 @@ JSON;
                 'sort_order'             => 0,
                 'localizable'            => false,
                 'scopable'               => false,
-                'labels'                 => []
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
             ],
             'picture' => [
                 'code'                   => 'picture',
@@ -86,7 +87,8 @@ JSON;
                 'sort_order'             => 0,
                 'localizable'            => false,
                 'scopable'               => false,
-                'labels'                 => []
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
             ]
         ];
 

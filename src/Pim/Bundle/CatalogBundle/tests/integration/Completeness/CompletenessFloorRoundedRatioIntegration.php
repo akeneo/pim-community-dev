@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
 use Pim\Component\Catalog\AttributeTypes;
 
-class CompletenessFloorRoundedRatioIntegration extends AbstractCompletenessIntegration
+class CompletenessFloorRoundedRatioIntegration extends AbstractCompletenessTestCase
 {
     public function testFloorRoundedRatio()
     {

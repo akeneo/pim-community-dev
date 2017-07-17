@@ -9,8 +9,8 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -79,7 +79,7 @@ class HookContext extends PimContext
      */
     public function closeConnection()
     {
-        foreach ($this->getSmartRegistry()->getConnections() as $connection) {
+        foreach ($this->getDoctrine()->getConnections() as $connection) {
             $connection->close();
         }
     }
@@ -190,14 +190,12 @@ class HookContext extends PimContext
     public function collectErrors()
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            try {
-                $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-                $result = $this->getSession()->evaluateScript($script);
-                if ($result) {
-                    $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
-                }
-            } catch (\Exception $e) {
-                echo "Unable to retrieve js error\n";
+            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+            $result = $this->getSession()->evaluateScript($script);
+            if ($result) {
+                $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+
+                throw new JSErrorEncounteredException("Encountered a JS error: '{$result}'");
             }
         }
     }
@@ -244,7 +242,7 @@ class HookContext extends PimContext
      */
     public function clearUOW()
     {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+        foreach ($this->getDoctrine()->getEntityManagers() as $manager) {
             $manager->clear();
         }
     }
@@ -295,11 +293,11 @@ class HookContext extends PimContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     * @return RegistryInterface
      */
-    private function getSmartRegistry()
+    private function getDoctrine()
     {
-        return $this->getService('akeneo_storage_utils.doctrine.smart_manager_registry');
+        return $this->getService('doctrine');
     }
 
     /**

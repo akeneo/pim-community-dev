@@ -121,7 +121,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $this->getNavigationContext()->openPage('Import show', ['code' => $job->getCode()]);
+        $this->getNavigationContext()->iAmOnThePage('Import show', ['code' => $job->getCode()]);
     }
 
     /**

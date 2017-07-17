@@ -11,10 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Purge the completeness of the products family by family:
- *  - for products stored with ORM: rows from the table "pim_catalog_completeness" will be deleted
- *  - for products stored with MongoDB: will drop the keys "completenesses" and
- *    "normalizedData.completenesses" from the product's documents
+ * Purge the completeness of the products family by family: rows from the table "pim_catalog_completeness" will be deleted
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

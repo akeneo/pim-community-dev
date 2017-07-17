@@ -44,7 +44,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.onExtensions('tab:register',  this.registerTab.bind(this));
+                this.onExtensions('tab:register', this.registerTab.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 return BaseForm.prototype.configure.apply(this, arguments);

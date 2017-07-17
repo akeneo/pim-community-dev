@@ -15,10 +15,7 @@ class ProductIntegration extends TestCase
 {
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     public function testProduct()

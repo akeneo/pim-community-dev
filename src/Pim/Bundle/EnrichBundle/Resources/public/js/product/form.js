@@ -235,7 +235,7 @@ define(
                 }
 
                 if (!this.zones[code]) {
-                    throw new Error('Zone "' + code + '" does not exist');
+                    throw new Error('Zone "' + code + '" does not exist for view ' + this.code);
                 }
 
                 return this.zones[code];
@@ -282,7 +282,7 @@ define(
              *                [ {'mediator:event:name': 'this:event:name'}, {...} ]
              */
             forwardMediatorEvents: function (events) {
-                _.map(events, function (localEvent, mediatorEvent) {
+                _.each(events, function (localEvent, mediatorEvent) {
                     this.listenTo(mediator, mediatorEvent, function (data) {
                         this.trigger(localEvent, data);
                     });

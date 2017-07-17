@@ -67,13 +67,20 @@ extensions:
         config:
             entity: pim_enrich.entity.family.title
 
-    pim-family-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-family-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-family-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
             label: 'pim_enrich.form.family.tab.properties.title'
+
+    pim-family-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-family-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-family-edit-form-properties-general:
         module: pim/family-edit-form/properties/general
@@ -102,11 +109,22 @@ extensions:
             label: 'pim_enrich.form.family.tab.properties.attribute_as_label'
             fieldBaseId: 'pim_enrich_family_form_label_'
 
-    pim-family-edit-form-properties-translation:
-        module: pim/family-edit-form/properties/general/translation
+    pim-family-edit-form-properties-translation-section:
+        module: pim/common/simple-view
         parent: pim-family-edit-form-properties
         targetZone: accordion
-        position: 140
+        position: 120
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.family.tab.properties.label_translations
+                dropZone: content
+
+    pim-family-edit-form-properties-translation:
+        module: pim/family-edit-form/properties/general/translation
+        parent: pim-family-edit-form-properties-translation-section
+        targetZone: content
+        position: 100
         config:
             label: 'pim_enrich.form.family.tab.properties.label_translations'
             fieldBaseId: 'pim_enrich_family_form_label_'

@@ -22,8 +22,6 @@ services:
         class: '%pim_catalog.attribute_type.identifier.class%'
         arguments:
             - 'text'
-            - 'Symfony\Component\Form\Extension\Core\Type\TextType'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_identifier, entity: '%pim_catalog.entity.product.class%' }
 
@@ -31,8 +29,6 @@ services:
         class: '%pim_catalog.attribute_type.text.class%'
         arguments:
             - 'text'
-            - 'Symfony\Component\Form\Extension\Core\Type\TextType'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_text, entity: '%pim_catalog.entity.product.class%' }
 
@@ -40,8 +36,6 @@ services:
         class: '%pim_catalog.attribute_type.textarea.class%'
         arguments:
             - 'textarea'
-            - 'Symfony\Component\Form\Extension\Core\Type\TextAreaType'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_textarea, entity: '%pim_catalog.entity.product.class%' }
 
@@ -49,8 +43,6 @@ services:
         class: '%pim_catalog.attribute_type.multiselect.class%'
         arguments:
             - 'options'
-            - '%pim_ui.form.type.ajax_entity.class%'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_multiselect, entity: '%pim_catalog.entity.product.class%' }
 
@@ -58,8 +50,6 @@ services:
         class: '%pim_catalog.attribute_type.simpleselect.class%'
         arguments:
             - 'option'
-            - '%pim_ui.form.type.ajax_entity.class%'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_simpleselect, entity: '%pim_catalog.entity.product.class%' }
 
@@ -67,9 +57,6 @@ services:
         class: '%pim_catalog.attribute_type.price_collection.class%'
         arguments:
             - 'prices'
-            - 'Pim\Bundle\EnrichBundle\Form\Type\PriceCollectionType'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_catalog.repository.currency'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_price_collection, entity: '%pim_catalog.entity.product.class%' }
 
@@ -77,8 +64,6 @@ services:
         class: '%pim_catalog.attribute_type.number.class%'
         arguments:
             - 'decimal'
-            - '%pim_ui.form.type.number.class%'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_number, entity: '%pim_catalog.entity.product.class%' }
 
@@ -86,8 +71,6 @@ services:
         class: '%pim_catalog.attribute_type.boolean.class%'
         arguments:
             - 'boolean'
-            - '%pim_ui.form.type.switch.class%'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_boolean, entity: '%pim_catalog.entity.product.class%' }
 
@@ -95,8 +78,6 @@ services:
         class: '%pim_catalog.attribute_type.date.class%'
         arguments:
             - 'date'
-            - '%pim_ui.form.type.date.class%'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_date, entity: '%pim_catalog.entity.product.class%' }
 
@@ -104,8 +85,6 @@ services:
         class: '%pim_catalog.attribute_type.file.class%'
         arguments:
             - 'media'
-            - '%pim_enrich.form.type.media.class%'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_file, entity: '%pim_catalog.entity.product.class%' }
 
@@ -113,8 +92,6 @@ services:
         class: '%pim_catalog.attribute_type.image.class%'
         arguments:
             - 'media'
-            - 'Pim\Bundle\EnrichBundle\Form\Type\ImageType'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_image, entity: '%pim_catalog.entity.product.class%' }
 
@@ -122,7 +99,5 @@ services:
         class: '%pim_catalog.attribute_type.metric.class%'
         arguments:
             - 'metric'
-            - 'Pim\Bundle\EnrichBundle\Form\Type\MetricType'
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: '%pim_catalog.entity.product.class%' }
