@@ -42,4 +42,5 @@ Feature: Export attributes
     pim_catalog_number;rate_sale;"Rate of sale";marketing;;0;1;;;;;;;0;;;;;;1;;;;;0;0;0;0;0
     pim_catalog_metric;weight;Weight;info;;0;1;;;Weight;GRAM;;;0;;;;;;1;;;;;0;0;0;0;0
     pim_catalog_text;123;"Attribute 123";other;;0;1;;;;;;;255;;;;;;;;;;;0;0;0;0;0
+    pim_catalog_image;rear_view;"Rear view";media;0;0;gif,png,jpeg,jpg;;;;;;0;;;;;;;;;;1.00;0;0;0;0;0
     """

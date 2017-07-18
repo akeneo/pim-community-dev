@@ -25,7 +25,7 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     public function validate($family, Constraint $constraint)
     {
-        if (!($family instanceof FamilyInterface)) {
+        if (!$family instanceof FamilyInterface) {
             return;
         }
 

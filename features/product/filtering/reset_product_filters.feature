@@ -19,6 +19,7 @@ Feature: Reset product grid filters
 
   Scenario: I successfully reset attribute filters on the defaut view
     When I show the filter "color"
+    And I hide the filter "family"
     And I filter by "color" with operator "in list" and value "White"
     Then the grid should contain 3 elements
     When I show the filter "size"
@@ -49,6 +50,7 @@ Feature: Reset product grid filters
 
   Scenario: I successfully reset attribute filters of an existing view
     When I show the filter "color"
+    And I hide the filter "family"
     And I filter by "color" with operator "in list" and value "White"
     Then the grid should contain 3 elements
     When I show the filter "size"
@@ -57,6 +59,8 @@ Feature: Reset product grid filters
       | new-view-label | White 37 |
     Then I should see the text "White 37"
     And the grid should contain 1 element
+    And I hide the filter "family"
+    And I hide the filter "completeness"
     When I filter by "color" with operator "in list" and value "White, Red"
     And I filter by "size" with operator "in list" and value "38"
     Then the grid should contain 2 elements

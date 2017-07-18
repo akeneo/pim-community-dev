@@ -61,6 +61,7 @@ class FamilyController
     protected $propertiesFields = [
         'code',
         'attribute_as_label',
+        'attribute_as_image',
         'labels',
     ];
 

@@ -11,24 +11,29 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyAttributeAsLabel extends Constraint
+class FamilyAttributeAsImage extends Constraint
 {
     /** @var string */
-    public $messageAttribute = 'Property "attribute_as_label" must belong to the family';
+    public $messageAttribute = 'Property "attribute_as_image" must belong to the family';
 
     /** @var string */
-    public $messageAttributeType = 'Property "attribute_as_label" only supports "pim_catalog_text" and '.
-        '"pim_catalog_identifier" attribute types for the family';
+    public $messageAttributeType = 'Property "attribute_as_image" only supports "pim_catalog_image" '.
+        'attribute type for the family';
 
     /** @var string */
-    public $propertyPath = 'attribute_as_label';
+    public $messageAttributeGlobal = 'Property "attribute_as_image" must not be scopable nor localizable '.
+        'for this family';
+
+
+    /** @var string */
+    public $propertyPath = 'attribute_as_image';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pim_family_attribute_as_label_validator';
+        return 'pim_family_attribute_as_image_validator';
     }
 
     /**

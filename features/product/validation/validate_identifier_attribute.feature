@@ -24,6 +24,7 @@ Feature: Validate identifier attribute of a product
     Given I am on the "sku" attribute page
     And I change the "Max characters" to "10"
     And I save the attribute
+    And I should not see the text "There as unsaved changes"
     When I am on the "foo" product page
     And I change the SKU to "sku-0000000"
     And I save the product
