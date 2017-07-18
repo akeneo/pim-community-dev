@@ -56,10 +56,7 @@ class EntityWithValuesSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($entity, $options));
 
-        // TODO REMOVE THAT IN PIM-6448-validation
-        if ($entity instanceof ProductInterface) {
-            $this->uniqueDataSynchronizer->synchronize($entity);
-        }
+        $this->uniqueDataSynchronizer->synchronize($entity);
 
         $this->objectManager->persist($entity);
         $this->objectManager->flush();

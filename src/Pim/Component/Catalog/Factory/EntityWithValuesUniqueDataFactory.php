@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
@@ -27,12 +27,12 @@ class EntityWithValuesUniqueDataFactory
     }
 
     /**
-     * @param ProductInterface $product
-     * @param ValueInterface   $value
+     * @param EntityWithValuesInterface $product
+     * @param ValueInterface            $value
      *
      * @return EntityWithValuesUniqueDataInterface
      */
-    public function create(ProductInterface $product, ValueInterface $value)
+    public function create(EntityWithValuesInterface $product, ValueInterface $value)
     {
         return new $this->entityWithValuesUniqueDataClass($product, $value);
     }
