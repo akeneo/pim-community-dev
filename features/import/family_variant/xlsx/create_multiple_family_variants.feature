@@ -12,13 +12,13 @@ Feature: Create variants of family through XLSX import
   Scenario: I successfully create and use a XLSX family variant import
     Given I create a new import
     When I fill in the following information in the popin:
-      | Code  | family_variant_import        |
-      | Label | Family variant import        |
-      | Job   | Family variant import in XLSX |
+      | Code  | family_variant_import      |
+      | Label | XLSX family variant import |
+      | Job   | XLSX family variant import |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I am on the imports page
-    And I click on the "Family variant import" row
+    And I click on the "XLSX family variant import" row
     And I upload and import the file "family_variant.xlsx"
     And I wait for the "family_variant_import" job to finish
     Then there should be the following family variants:
