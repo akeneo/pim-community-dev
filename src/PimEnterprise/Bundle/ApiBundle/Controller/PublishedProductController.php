@@ -12,34 +12,28 @@
 namespace PimEnterprise\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Api\Security\PrimaryKeyEncrypter;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
+use PimEnterprise\Component\Api\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -47,7 +41,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PublishedProductController
 {
     /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
+    protected $publishedPqbFactory;
 
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -61,8 +55,8 @@ class PublishedProductController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    /** @var PublishedProductRepositoryInterface */
+    protected $publishedProductRepository;
 
     /** @var PaginatorInterface */
     protected $searchAfterPaginator;
@@ -70,94 +64,52 @@ class PublishedProductController
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
-    /** @var  ValidatorInterface */
-    protected $productValidator;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var ProductFilterInterface */
-    protected $emptyValuesFilter;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
     /** @var  PrimaryKeyEncrypter */
     protected $primaryKeyEncrypter;
 
     /** @var array */
     protected $apiConfiguration;
 
+    /** @var QueryParametersCheckerInterface */
+    protected $queryParametersChecker;
+
     /**
-     * @param ProductQueryBuilderFactoryInterface   $pqbFactory
+     * @param ProductQueryBuilderFactoryInterface   $publishedPqbFactory
+     * @param QueryParametersCheckerInterface       $queryParametersChecker
      * @param NormalizerInterface                   $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param AttributeRepositoryInterface          $attributeRepository
-     * @param ProductRepositoryInterface            $productRepository
+     * @param PublishedProductRepositoryInterface   $publishedProductRepository
      * @param PaginatorInterface                    $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
-     * @param ValidatorInterface                    $productValidator
-     * @param ProductBuilderInterface               $productBuilder
-     * @param RemoverInterface                      $remover
-     * @param ObjectUpdaterInterface                $updater
-     * @param SaverInterface                        $saver
-     * @param RouterInterface                       $router
-     * @param ProductFilterInterface                $emptyValuesFilter
-     * @param StreamResourceResponse                $partialUpdateStreamResource
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param array                                 $apiConfiguration
      */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ProductQueryBuilderFactoryInterface $publishedPqbFactory,
+        QueryParametersCheckerInterface $queryParametersChecker,
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductRepositoryInterface $productRepository,
+        PublishedProductRepositoryInterface $publishedProductRepository,
         PaginatorInterface $searchAfterPaginator,
         ParameterValidatorInterface $parameterValidator,
-        ValidatorInterface $productValidator,
-        ProductBuilderInterface $productBuilder,
-        RemoverInterface $remover,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        RouterInterface $router,
-        ProductFilterInterface $emptyValuesFilter,
-        StreamResourceResponse $partialUpdateStreamResource,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         array $apiConfiguration
     ) {
-        $this->pqbFactory = $pqbFactory;
+        $this->publishedPqbFactory = $publishedPqbFactory;
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->productRepository = $productRepository;
+        $this->publishedProductRepository = $publishedProductRepository;
         $this->searchAfterPaginator = $searchAfterPaginator;
         $this->parameterValidator = $parameterValidator;
-        $this->productValidator = $productValidator;
-        $this->productBuilder = $productBuilder;
-        $this->remover = $remover;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->router = $router;
-        $this->emptyValuesFilter = $emptyValuesFilter;
-        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->apiConfiguration = $apiConfiguration;
+        $this->queryParametersChecker = $queryParametersChecker;
     }
 
     /**
@@ -197,7 +149,7 @@ class PublishedProductController
         $queryParameters = array_merge([
             'limit' => $this->apiConfiguration['pagination']['limit_by_default']
         ], $request->query->all());
-        $pqbOptions = ['limit' => (int)$queryParameters['limit']];
+        $pqbOptions = ['limit' => (int) $queryParameters['limit']];
 
         $searchParameter = null;
         if (isset($queryParameters['search_after'])) {
@@ -212,7 +164,7 @@ class PublishedProductController
             $pqbOptions['search_after'] = [$searchParameterDecrypted];
         }
 
-        $pqb = $this->pqbFactory->create($pqbOptions);
+        $pqb = $this->publishedPqbFactory->create($pqbOptions);
 
         try {
             $this->setPQBFilters($pqb, $request, $channel);
@@ -240,7 +192,7 @@ class PublishedProductController
      */
     public function getAction($code)
     {
-        $product = $this->productRepository->findOneByIdentifier($code);
+        $product = $this->publishedProductRepository->findOneByIdentifier($code);
         if (null === $product) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
         }
@@ -249,8 +201,6 @@ class PublishedProductController
 
         return new JsonResponse($productApi);
     }
-
-
 
     /**
      * @param Request               $request
@@ -268,42 +218,20 @@ class PublishedProductController
         }
 
         if ($request->query->has('locales')) {
-            $this->checkLocalesParameters($request->query->get('locales'), $channel);
+            $locales = explode(',', $request->query->get('locales'));
+            $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
 
             $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
         }
 
         if ($request->query->has('attributes')) {
-            $this->checkAttributesParameters($request->query->get('attributes'));
+            $attributes = explode(',', $request->query->get('attributes'));
+            $this->queryParametersChecker->checkAttributesParameters($attributes);
 
             $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
         }
 
         return $normalizerOptions;
-    }
-
-    /**
-     * Throw an exception if the code provided in the url and the identifier provided in the request body
-     * are not equals when creating a product with a PATCH method.
-     *
-     * The identifier in the request body is optional when we create a resource with PATCH.
-     *
-     * @param string $code code provided in the url
-     * @param array  $data body of the request already decoded
-     *
-     * @throws UnprocessableEntityHttpException
-     */
-    protected function validateCodeConsistency($code, array $data)
-    {
-        if (array_key_exists('identifier', $data) && $code !== $data['identifier']) {
-            throw new UnprocessableEntityHttpException(
-                sprintf(
-                    'The identifier "%s" provided in the request body must match the identifier "%s" provided in the url.',
-                    $data['identifier'],
-                    $code
-                )
-            );
-        }
     }
 
     /**
@@ -336,33 +264,116 @@ class PublishedProductController
         $direction = isset($queryParameters['search_before']) ? Directions::DESCENDING : Directions::ASCENDING;
         $pqb->addSorter('id', $direction);
 
-        $productCursor = $pqb->execute();
-        $products = [];
-        foreach ($productCursor as $product) {
-            $products[] = $product;
+        $publishedProductCursor = $pqb->execute();
+        $publishedProducts = [];
+        foreach ($publishedProductCursor as $publishedProduct) {
+            $publishedProducts[] = $publishedProduct;
         }
 
         if (isset($queryParameters['search_before'])) {
-            $products = array_reverse($products);
+            $publishedProducts = array_reverse($publishedProducts);
         }
 
         $parameters = [
             'query_parameters'    => $queryParameters,
-            'list_route_name'     => 'pim_api_product_list',
-            'item_route_name'     => 'pim_api_product_get',
+            'list_route_name'     => 'pimee_api_published_product_list',
+            'item_route_name'     => 'pimee_api_published_product_get',
             'item_identifier_key' => 'identifier',
         ];
 
         $parameters['search_after']['self'] = $searchParameter;
-        $parameters['search_after']['next'] = !empty($products) ? $this->primaryKeyEncrypter->encrypt(end($products)->getId()) : '';
-        $parameters['search_after']['previous'] = !empty($products) ? $this->primaryKeyEncrypter->encrypt(reset($products)->getId()) : '';
+        $parameters['search_after']['next'] = !empty($publishedProducts) ? $this->primaryKeyEncrypter->encrypt(end($publishedProducts)->getId()) : '';
+        $parameters['search_after']['previous'] = !empty($publishedProducts) ? $this->primaryKeyEncrypter->encrypt(reset($publishedProducts)->getId()) : '';
 
         $count = isset($queryParameters['with_count']) && 'true' === $queryParameters['with_count'] ?
-            $productCursor->count() : null;
-        $products = $this->normalizer->normalize($products, 'external_api', $normalizerOptions);
+            $publishedProductCursor->count() : null;
+        $publishedProducts = $this->normalizer->normalize($publishedProducts, 'external_api', $normalizerOptions);
 
-        $paginatedProducts = $this->searchAfterPaginator->paginate($products, $parameters, $count);
+        $paginatedPublishedProducts = $this->searchAfterPaginator->paginate($publishedProducts, $parameters, $count);
 
-        return $paginatedProducts;
+        return $paginatedPublishedProducts;
+    }
+
+    /**
+     * Set the PQB filters.
+     * If a scope is requested, add a filter to return only products linked to its category tree
+     *
+     * @param ProductQueryBuilderInterface $pqb
+     * @param Request                      $request
+     * @param ChannelInterface|null        $channel
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function setPQBFilters(
+        ProductQueryBuilderInterface $pqb,
+        Request $request,
+        ChannelInterface $channel = null
+    ) {
+        $search = [];
+
+        if ($request->query->has('search')) {
+            $search = json_decode($request->query->get('search'), true);
+            if (null === $search) {
+                throw new UnprocessableEntityHttpException('Search query parameter should be valid JSON.');
+            }
+
+            if (!is_array($search)) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf('Search query parameter has to be an array, "%s" given.', gettype($search))
+                );
+            }
+
+            if (isset($search['categories'])) {
+                $this->queryParametersChecker->checkCategoriesParameters($search['categories']);
+            }
+        }
+
+        if (null !== $channel && !isset($search['categories'])) {
+            $search['categories'] = [
+                [
+                    'operator' => Operators::IN_CHILDREN_LIST,
+                    'value'    => [$channel->getCategory()->getCode()]
+                ]
+            ];
+        }
+
+        foreach ($search as $propertyCode => $filters) {
+            if (!is_array($filters) || !isset($filters[0])) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf(
+                        'Structure of filter "%s" should respect this structure: %s',
+                        $propertyCode,
+                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $propertyCode)
+                    )
+                );
+            }
+
+            foreach ($filters as $filter) {
+                if (!isset($filter['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator is missing for the property "%s".', $propertyCode)
+                    );
+                }
+
+                if (!is_string($filter['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator has to be a string, "%s" given.', gettype($filter['operator']))
+                    );
+                }
+
+                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
+                $locales = explode(',', $context['locale']);
+                $this->queryParametersChecker->checkLocalesParameters($locales);
+                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
+
+                if (isset($filter['locales'])) {
+                    $context['locales'] = $filter['locales'];
+                }
+
+                $value = isset($filter['value']) ? $filter['value'] : null;
+
+                $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
+            }
+        }
     }
 }
