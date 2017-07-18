@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 /**
  * Integration tests to verify a product is well loaded from database with its product values.
  */
-class LoadProductValuesSubscriberIntegration extends TestCase
+class LoadEntityWithValuesSubscriberIntegration extends TestCase
 {
     public function testLoadValuesForProductWithAllAttributes()
     {

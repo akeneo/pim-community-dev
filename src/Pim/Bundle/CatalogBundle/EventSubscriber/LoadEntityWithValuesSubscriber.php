@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Pim\Component\Catalog\Factory\ValueCollectionFactory;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * TODO: cf. http://symfony.com/doc/current/bundles/DoctrineBundle/entity-listeners.html
  * TODO: cf. http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#entity-listeners
  */
-class LoadProductValuesSubscriber implements EventSubscriber
+class LoadEntityWithValuesSubscriber implements EventSubscriber
 {
     /** @var ContainerInterface */
     protected $container;
@@ -63,15 +63,15 @@ class LoadProductValuesSubscriber implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $event)
     {
-        $product = $event->getObject();
-        if (!$product instanceof ProductInterface) {
+        $object = $event->getObject();
+        if (!$object instanceof EntityWithValuesInterface) {
             return;
         }
 
-        $rawValues = $product->getRawValues();
+        $rawValues = $object->getRawValues();
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
-        $product->setValues($values);
+        $object->setValues($values);
     }
 
     /**

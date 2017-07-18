@@ -15,6 +15,7 @@
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- PIM-6448: Product model CRUD API
 
 ## UI\UX Refactoring
 
@@ -207,6 +208,7 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue`
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
+- PIM-6448: Rename `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver`
 
 ### Constructors
 

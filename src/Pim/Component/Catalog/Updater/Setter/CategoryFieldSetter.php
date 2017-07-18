@@ -2,11 +2,13 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Sets the category field
@@ -37,8 +39,12 @@ class CategoryFieldSetter extends AbstractFieldSetter
      *
      * Expected data input format : ["category_code"]
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function setFieldData($entity, $field, $data, array $options = [])
     {
+        if (!$entity instanceof CategoryAwareInterface) {
+            throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
+        }
+
         $this->checkData($field, $data);
 
         $categories = [];
@@ -57,13 +63,13 @@ class CategoryFieldSetter extends AbstractFieldSetter
             $categories[] = $category;
         }
 
-        $oldCategories = $product->getCategories();
+        $oldCategories = $entity->getCategories();
         foreach ($oldCategories as $category) {
-            $product->removeCategory($category);
+            $entity->removeCategory($category);
         }
 
         foreach ($categories as $category) {
-            $product->addCategory($category);
+            $entity->addCategory($category);
         }
     }
 

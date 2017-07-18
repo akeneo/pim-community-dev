@@ -1,0 +1,18 @@
+Pim\Component\Catalog\Model\ProductModel:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [identifier]
+            message: The same identifier is already set on another product model
+    properties:
+        identifier:
+            - NotBlank: ~
+            - Regex:
+                pattern: '/^[^,;]+$/'
+                message: 'regex.comma_or_semicolon.message'
+            - Length:
+                max: 255
+    # Needed ?
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true

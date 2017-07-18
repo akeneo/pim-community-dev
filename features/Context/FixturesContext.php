@@ -18,7 +18,7 @@ use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -2035,7 +2035,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductSaver
+     * @return EntityWithValuesSaver
      */
     protected function getProductSaver()
     {

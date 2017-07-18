@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\ProductValidation;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Validation;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -28,7 +28,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $product2 = $this->createProduct('just_an_empty_product');
         $violations = $this->validateProduct($product2);
 
-        $this->assertCount(1, $violations);
+        $this->assertCount(2, $violations);
         $this->assertSame($violations->get(0)->getMessage(), 'The same identifier is already set on another product');
     }
 
@@ -99,7 +99,7 @@ class ProductIdentifierValidationIntegration extends TestCase
 
         $wrongProduct = $this->createProduct('');
         $violations = $this->validateProduct($wrongProduct);
-        $this->assertCount(1, $violations);
+        $this->assertCount(2, $violations);
         $this->assertSame(
             $violations->get(0)->getMessage(),
             'This value should not be blank.'
@@ -111,10 +111,7 @@ class ProductIdentifierValidationIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            true
-        );
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 
     /**

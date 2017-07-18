@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.model.product.interface:                Pim\Component\Catalog\Model\ProductInterface
+    pim_catalog.model.product_model.interface:          Pim\Component\Catalog\Model\ProductModelInterface
     pim_catalog.model.value.interface:                  Pim\Component\Catalog\Model\ValueInterface
     pim_catalog.model.association.interface:            Pim\Component\Catalog\Model\AssociationInterface
     pim_catalog.model.completeness.interface:           Pim\Component\Catalog\Model\CompletenessInterface

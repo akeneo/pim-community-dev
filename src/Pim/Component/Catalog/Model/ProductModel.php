@@ -89,14 +89,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setIdentifier(ValueInterface $identifier): ProductModelInterface
+    public function setIdentifier(string $identifier): void
     {
-        $this->identifier = $identifier->getData();
-
-        $this->values->removeByAttribute($identifier->getAttribute());
-        $this->values->add($identifier);
-
-        return $this;
+        $this->identifier = $identifier;
     }
 
     /**
@@ -138,7 +133,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue($attributeCode, $localeCode = null, $scopeCode = null): ValueInterface
+    public function getValue($attributeCode, $localeCode = null, $scopeCode = null): ?ValueInterface
     {
         return $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
     }

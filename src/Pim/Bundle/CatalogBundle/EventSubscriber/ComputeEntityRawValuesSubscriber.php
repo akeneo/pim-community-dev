@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
+class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -53,12 +53,12 @@ class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
      */
     public function computeRawValues(GenericEvent $event)
     {
-        $product = $event->getSubject();
-        if (!$product instanceof ProductInterface) {
+        $subject = $event->getSubject();
+        if (!$subject instanceof EntityWithValuesInterface) {
             return;
         }
 
-        $rawValues = $this->normalizer->normalize($product->getValues(), 'storage');
-        $product->setRawValues($rawValues);
+        $rawValues = $this->normalizer->normalize($subject->getValues(), 'storage');
+        $subject->setRawValues($rawValues);
     }
 }

@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
 use Prophecy\Argument;
 
-class ProductPropertySetterSpec extends ObjectBehavior
+class PropertySetterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -27,7 +27,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\ProductPropertySetter');
+        $this->shouldHaveType('Pim\Component\Catalog\Updater\PropertySetter');
     }
 
     function it_sets_a_data_to_a_product_attribute(
@@ -68,19 +68,6 @@ class ProductPropertySetterSpec extends ObjectBehavior
             UnknownPropertyException::unknownProperty('unknown_field')
         )->during(
             'setData', [$product, 'unknown_field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce']]
-        );
-    }
-
-    function it_throws_an_exception_when_trying_to_set_anything_else_than_a_product()
-    {
-        $this->shouldThrow(
-            InvalidObjectException::objectExpected(
-                'stdClass',
-                'Pim\Component\Catalog\Model\ProductInterface'
-            )
-        )->during(
-            'setData',
-            [new \stdClass(), 'category', []]
         );
     }
 }

@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
+use Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber;
 use Pim\Component\Catalog\Factory\ValueCollectionFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadProductValuesSubscriberSpec extends ObjectBehavior
+class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
 {
     function let(
         ContainerInterface $container,
@@ -24,7 +24,7 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(LoadProductValuesSubscriber::class);
+        $this->shouldHaveType(LoadEntityWithValuesSubscriber::class);
     }
 
     function it_subscribes_to_the_postLoad_event()
