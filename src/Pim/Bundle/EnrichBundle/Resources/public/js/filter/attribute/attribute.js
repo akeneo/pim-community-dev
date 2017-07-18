@@ -126,11 +126,13 @@ define([
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 this.listenTo(
-                    scopeSwitcher,
+                    this.getRoot(),
                     'pim_enrich:form:scope_switcher:change',
                     function (scopeEvent) {
-                        this.setScope(scopeEvent.scopeCode, {silent: true});
-                        this.trigger('pim_enrich:form:entity:post_update');
+                        if ('base_product' === scopeEvent.context) {
+                            this.setScope(scopeEvent.scopeCode, {silent: true});
+                            this.trigger('pim_enrich:form:entity:post_update');
+                        }
                     }.bind(this)
                 );
 

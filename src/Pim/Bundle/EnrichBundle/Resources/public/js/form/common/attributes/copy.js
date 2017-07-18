@@ -66,11 +66,14 @@ define(
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (eventScope) {
+                    if ('copy_product' === eventScope.context) {
+                        this.setScope(eventScope.scopeCode);
+                    }
+                }.bind(this));
 
                 this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-                    this.setScope(event.scopeCode);
-                }.bind(this));
+
                 this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
                     this.setLocale(event.localeCode);
                 }.bind(this));

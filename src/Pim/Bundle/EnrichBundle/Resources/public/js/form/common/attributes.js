@@ -78,7 +78,11 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (scopeEvent) {
+                    if ('base_product' === scopeEvent.context) {
+                        this.setScope(scopeEvent.scopeCode);
+                    }
+                }.bind(this));
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
@@ -88,9 +92,7 @@ define(
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
                 this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-                    this.setScope(event.scopeCode);
-                }.bind(this));
+
                 this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
                     this.setLocale(event.localeCode);
                 }.bind(this));

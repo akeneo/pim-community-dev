@@ -24,6 +24,16 @@ define(
                 'click li a': 'changeScope'
             },
             displayInline: false,
+            config: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -32,8 +42,11 @@ define(
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
                     .then(function (channels) {
-                        var params = { scopeCode: channels[0].code };
-                        this.trigger('pim_enrich:form:scope_switcher:pre_render', params);
+                        var params = {
+                            scopeCode: channels[0].code,
+                            context: this.config.context
+                        };
+                        this.getRoot().trigger('pim_enrich:form:scope_switcher:pre_render', params);
 
                         var scope = _.findWhere(channels, { code: params.scopeCode });
 
@@ -64,8 +77,9 @@ define(
              * @param {Event} event
              */
             changeScope: function (event) {
-                this.trigger('pim_enrich:form:scope_switcher:change', {
-                    scopeCode: event.currentTarget.dataset.scope
+                this.getRoot().trigger('pim_enrich:form:scope_switcher:change', {
+                    scopeCode: event.currentTarget.dataset.scope,
+                    context: this.config.context
                 });
 
                 this.render();
