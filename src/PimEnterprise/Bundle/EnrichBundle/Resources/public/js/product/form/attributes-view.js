@@ -50,6 +50,7 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
+                
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (scopeEvent) {
                     if ('base_product' === scopeEvent.context) {
@@ -57,14 +58,15 @@ define(
                     }
                 }.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.setLocale(localeEvent.localeCode);
+                    }
+                }.bind(this));
 
                 FieldManager.clearFields();
 
                 this.onExtensions('group:change', this.render.bind(this));
-
-                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-                    this.setLocale(event.localeCode);
-                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
