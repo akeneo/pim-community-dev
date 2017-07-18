@@ -121,7 +121,7 @@ define([
                 multiple: true,
                 initSelection: this.fetchAxes.bind(this),
                 ajax: {
-                    url: Routing.generate('pim_enrich_attribute_rest_axes_index'),
+                    url: Routing.generate('pim_enrich_attribute_axes_index'),
                     results: this.parseResults.bind(this),
                     quietMillis: 250,
                     cache: true,
