@@ -112,7 +112,6 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
 
                 foreach ($value as $attributeSetData) {
                     if (!isset($attributeSetData['axes']) ||
-                        !isset($attributeSetData['attributes']) ||
                         !isset($attributeSetData['level'])
                     ) {
                         continue;
@@ -122,7 +121,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                     }
 
-                    if (!is_array($attributeSetData['attributes'])) {
+                    if (isset($attributeSetData['attributes']) && !is_array($attributeSetData['attributes'])) {
                         throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                     }
 
@@ -132,8 +131,10 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
 
                     $attributeSet = $this->attributeSetFactory->create();
                     $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
-                    $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
                     $attributeSet->setLevel($attributeSetData['level']);
+                    if (isset($attributeSetData['attributes'])) {
+                        $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
+                    }
 
                     $familyVariant->addVariantAttributeSet($attributeSet);
                 }
