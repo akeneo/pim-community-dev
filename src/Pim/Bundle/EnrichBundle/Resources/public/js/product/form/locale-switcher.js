@@ -75,8 +75,9 @@ define(
              * @param {Object} event
              */
             changeLocale: function (event) {
-                this.trigger('pim_enrich:form:locale_switcher:change', {
-                    localeCode: event.currentTarget.dataset.locale
+                this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
+                    localeCode: event.currentTarget.dataset.locale,
+                    context: this.config.context
                 });
 
                 this.render();

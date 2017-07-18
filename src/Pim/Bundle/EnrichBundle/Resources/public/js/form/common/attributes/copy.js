@@ -72,9 +72,10 @@ define(
                     }
                 }.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-
-                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-                    this.setLocale(event.localeCode);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (eventLocale) {
+                    if ('copy_product' === eventLocale.context) {
+                        this.setLocale(eventLocale.localeCode);
+                    }
                 }.bind(this));
 
                 return this.getScopeLabel(this.scope).then(function (scopeLabel) {

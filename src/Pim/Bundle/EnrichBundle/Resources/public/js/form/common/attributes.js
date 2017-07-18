@@ -84,6 +84,11 @@ define(
                     }
                 }.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.setLocale(localeEvent.localeCode);
+                    }
+                }.bind(this));
 
                 FieldManager.clearFields();
 
@@ -93,10 +98,6 @@ define(
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
-
-                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-                    this.setLocale(event.localeCode);
-                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
