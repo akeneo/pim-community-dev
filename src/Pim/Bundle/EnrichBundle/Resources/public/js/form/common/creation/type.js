@@ -73,7 +73,6 @@ define([
          * @return {Object}
          */
         parseResults(types) {
-            const resultLength = Object.keys(types).length;
             const locale = UserContext.get('catalogLocale');
 
             const data = { results: [] };
@@ -117,7 +116,7 @@ define([
                     results: this.parseResults.bind(this),
                     quietMillis: 250,
                     cache: true,
-                    data(search, page) {
+                    data(search) {
                         return {
                             search,
                             options: {

@@ -127,7 +127,7 @@ define([
                     results: this.parseResults.bind(this),
                     quietMillis: 250,
                     cache: true,
-                    data(term, page) {
+                    data(term) {
                         return {
                             search: term,
                             options: {

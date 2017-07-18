@@ -105,7 +105,7 @@ define(
             /**
              * Normalize the path property for validation errors
              * @param  {Array} errors
-             * @return {Array}        
+             * @return {Array}
              */
             normalize(errors) {
                 const values = errors.values || [];
