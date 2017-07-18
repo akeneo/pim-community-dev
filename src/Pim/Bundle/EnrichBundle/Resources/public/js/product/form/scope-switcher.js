@@ -56,7 +56,7 @@ define(
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
                     .then(function (channels) {
-                        var params = {
+                        const params = {
                             scopeCode: channels[0].code,
                             context: this.config.context
                         };

@@ -40,7 +40,7 @@ define(
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
-                        var params = {
+                        const params = {
                             localeCode: _.first(locales).code,
                             context: this.config.context
                         };
