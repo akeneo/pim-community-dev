@@ -1,6 +1,6 @@
 Pim\Component\Catalog\Model\EntityWithValuesUniqueData:
     type: entity
-    table: pim_catalog_product_unique_data
+    table: pim_catalog_entity_with_values_unique_data
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:

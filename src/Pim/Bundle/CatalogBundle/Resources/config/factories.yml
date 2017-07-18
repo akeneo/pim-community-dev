@@ -129,7 +129,7 @@ services:
     pim_catalog.factory.entity_with_value_unique_data:
         class: '%pim_catalog.factory.entity_with_value_unique_data.class%'
         arguments:
-            - '%pim_catalog.entity.product_unique_data.class%'
+            - '%pim_catalog.entity.entity_with_values_unique_data.class%'
 
     pim_catalog.factory.value_collection:
         class: '%pim_catalog.factory.value_collection.class%'
