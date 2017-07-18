@@ -71,8 +71,7 @@ define(
                         this.setScope(eventScope.scopeCode);
                     }
                 }.bind(this));
-
-                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
 
                 this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
                     this.setLocale(event.localeCode);
@@ -203,13 +202,17 @@ define(
             /**
              * Initialize  the locale if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} eventLocale
+             * @param {String} eventLocale.context
+             * @param {String} eventLocale.localeCode
              */
-            initLocale: function (event) {
-                if (undefined === this.getLocale()) {
-                    this.setLocale(event.localeCode);
-                } else {
-                    event.localeCode = this.getLocale();
+            initLocale: function (eventLocale) {
+                if ('copy_product' === eventLocale.context) {
+                    if (undefined === this.getLocale()) {
+                        this.setLocale(eventLocale.localeCode);
+                    } else {
+                        eventLocale.localeCode = this.getLocale();
+                    }
                 }
             },
 

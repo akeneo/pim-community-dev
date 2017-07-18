@@ -40,8 +40,11 @@ define(
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
-                        var params = { localeCode: _.first(locales).code };
-                        this.trigger('pim_enrich:form:locale_switcher:pre_render', params);
+                        var params = {
+                            localeCode: _.first(locales).code,
+                            context: this.config.context
+                        };
+                        this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
                         this.$el.html(
                             this.template({

@@ -83,6 +83,8 @@ define(
                         this.setScope(scopeEvent.scopeCode);
                     }
                 }.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
@@ -91,7 +93,6 @@ define(
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
 
                 this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
                     this.setLocale(event.localeCode);
@@ -350,13 +351,17 @@ define(
             /**
              * Initialize  the locale if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} eventLocale
+             * @param {String} eventLocale.context
+             * @param {String} eventLocale.localeCode
              */
-            initLocale: function (event) {
-                if (undefined === this.getLocale()) {
-                    this.setLocale(event.localeCode, {silent: true});
-                } else {
-                    event.localeCode = this.getLocale();
+            initLocale: function (eventLocale) {
+                if ('base_product' === eventLocale.context) {
+                    if (undefined === this.getLocale()) {
+                        this.setLocale(eventLocale.localeCode, {silent: true});
+                    } else {
+                        eventLocale.localeCode = this.getLocale();
+                    }
                 }
             },
 
