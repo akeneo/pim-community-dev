@@ -203,7 +203,7 @@ class JobInstanceFormType extends AbstractType
         $choices = [];
         foreach ($this->jobRegistry->allByTypeGroupByConnector($this->jobType) as $connector => $jobs) {
             foreach ($jobs as $key => $job) {
-                $choices[$connector][$key] = $this->jobLabelProvider->getJobLabel($job->getName());
+                $choices[$connector][$this->jobLabelProvider->getJobLabel($job->getName())] = $key;
             }
         }
 
