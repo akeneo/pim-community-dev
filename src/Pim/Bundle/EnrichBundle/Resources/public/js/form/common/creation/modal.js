@@ -103,16 +103,14 @@ define(
             },
 
             /**
-             * @TODO - remove
+             * Normalize the path property for validation errors
+             * @param  {Array} errors
+             * @return {Array}        
              */
             normalize(errors) {
                 const values = errors.values || [];
 
                 return values.map(error => {
-                    if (error.attribute === 'sku') {
-                        error.attribute = 'identifier';
-                    }
-
                     if (!error.path) {
                         error.path = error.attribute;
                     }

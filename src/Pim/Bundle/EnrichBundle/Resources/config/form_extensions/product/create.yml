@@ -9,12 +9,11 @@ extensions:
            postUrl: pim_enrich_product_rest_create
 
     pim-product-create-sku:
-        module: pim/form/common/creation/field
+        module: pim/product-edit-form/creation/identifier
         parent: pim-product-create-modal
         position: 10
         config:
             identifier: identifier
-            label: SKU
 
     pim-product-create-family:
         module: pim/form/common/creation/family

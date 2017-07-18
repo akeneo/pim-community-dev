@@ -76,10 +76,7 @@ define([
             const resultLength = Object.keys(types).length;
             const locale = UserContext.get('catalogLocale');
 
-            const data = {
-                more: 20 === resultLength,
-                results: []
-            };
+            const data = { results: [] };
 
             _.reject(types, {
                 is_variant: !this.options.config.include_variant
@@ -125,7 +122,6 @@ define([
                             search,
                             options: {
                                 limit: 20,
-                                page,
                                 locale
                             }
                         };
