@@ -56,7 +56,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                             '<all_locales>' => 'grey',
                         ],
                     ],
-                    'main_picture-media' => [
+                    'image-media' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-grey.jpg',
                         ],
@@ -86,12 +86,12 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                             '<all_locales>' => 'blue',
                         ],
                     ],
-                    'main_picture-media' => [
+                    'image-media' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-blue.jpg',
                         ],
                     ],
-                    'material-blue'      => [
+                    'material-option'      => [
                         '<all_channels>' => [
                             '<all_locales>' => 'polyester',
                         ],
@@ -116,7 +116,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                             '<all_locales>' => 'red',
                         ],
                     ],
-                    'main_picture-media' => [
+                    'image-media' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'tshirt-red.jpg',
                         ],
