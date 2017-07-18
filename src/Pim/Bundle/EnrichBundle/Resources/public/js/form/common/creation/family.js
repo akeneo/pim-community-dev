@@ -53,18 +53,6 @@ define([
         },
 
         /**
-         * Configure the form
-         *
-         * @return {Promise}
-         */
-        configure() {
-            return $.when(
-                FetcherRegistry.initialize(),
-                BaseForm.prototype.configure.apply(this, arguments)
-            );
-        },
-
-        /**
          * Update the model with the family value
          * @param  {Object} event jQuery event
          */

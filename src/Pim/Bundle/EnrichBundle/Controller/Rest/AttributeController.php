@@ -356,16 +356,16 @@ class AttributeController
 
     /**
      * List attribute axes
-     * 
+     *
      * @param Request $request
      *
      * @return JsonResponse
-     *
      */
     public function listAxesAction(Request $request)
     {
         $locale = $request->get('locale');
         $attributeAxes = $this->attributeRepository->getAxesQuery($locale)->getArrayResult();
+
         return new JsonResponse($attributeAxes);
     }
 }

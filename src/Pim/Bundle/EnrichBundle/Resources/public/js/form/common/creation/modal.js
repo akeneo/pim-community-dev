@@ -110,14 +110,14 @@ define(
 
                 return values.map(error => {
                     if (error.attribute === 'sku') {
-                        error.attribute = 'identifier'
+                        error.attribute = 'identifier';
                     }
 
                     if (!error.path) {
                         error.path = error.attribute;
                     }
 
-                    return error
+                    return error;
                 })
             },
 
@@ -132,7 +132,7 @@ define(
                 const loadingMask = new LoadingMask();
                 this.$el.empty().append(loadingMask.render().$el.show());
 
-                let data = this.getFormData();
+                const data = this.getFormData();
 
                 return $.ajax({
                     url: Routing.generate(this.config.postUrl),

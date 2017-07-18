@@ -17,7 +17,7 @@ define([
     'oro/translator',
     'pim/fetcher-registry',
     'pim/initselect2',
-    'pim/template/form/creation/axis'
+    'pim/template/variant-group/form/axis'
 ], function (
     $,
     _,
@@ -35,18 +35,6 @@ define([
         template: _.template(template),
         events: {
             'change input': 'updateModel'
-        },
-
-        /**
-         * Configure the form
-         *
-         * @return {Promise}
-         */
-        configure() {
-            return $.when(
-                FetcherRegistry.initialize(),
-                BaseForm.prototype.configure.apply(this, arguments)
-            );
         },
 
         /**

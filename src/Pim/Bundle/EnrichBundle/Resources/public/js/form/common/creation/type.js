@@ -40,18 +40,6 @@ define([
         },
 
         /**
-         * Configure the form
-         *
-         * @return {Promise}
-         */
-        configure() {
-            return $.when(
-                FetcherRegistry.initialize(),
-                BaseForm.prototype.configure.apply(this, arguments)
-            );
-        },
-
-        /**
          * Model update callback
          */
         updateModel() {

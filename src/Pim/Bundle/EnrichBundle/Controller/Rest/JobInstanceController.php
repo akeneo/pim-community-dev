@@ -409,7 +409,6 @@ class JobInstanceController
      * Get an array of job names
      *
      * @throws NotFoundHttpException
-     *
      */
     public function getJobNamesAction(Request $request)
     {

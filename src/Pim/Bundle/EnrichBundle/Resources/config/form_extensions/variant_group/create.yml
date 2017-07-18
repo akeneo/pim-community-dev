@@ -27,7 +27,7 @@ extensions:
             editable: true
 
     pim-variant-group-create-axis:
-        module: pim/form/common/creation/axis
+        module: pim/variant-group-edit-form/form/axis
         parent: pim-variant-group-create-modal
         position: 30
         config:

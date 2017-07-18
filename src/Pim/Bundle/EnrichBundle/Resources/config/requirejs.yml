@@ -771,6 +771,7 @@ config:
         pim/variant-group-edit-form/no-attribute:           pimenrich/js/variant-group/form/no-attribute
         pim/variant-group-edit-form/properties/general:     pimenrich/js/variant-group/form/properties/general
         pim/variant-group-edit-form/add-select/attribute:   pimenrich/js/variant-group/form/attributes/add-select/attribute/select
+        pim/variant-group-edit-form/form/axis:              pimenrich/js/variant-group/form/axis
 
         # Group
         pim/group-edit-form/products:               pimenrich/js/group/form/products
@@ -852,7 +853,6 @@ config:
         pim/form/common/creation/family:                     pimenrich/js/form/common/creation/family
         pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
         pim/form/common/creation/type:                       pimenrich/js/form/common/creation/type
-        pim/form/common/creation/axis:                       pimenrich/js/form/common/creation/axis
         pim/form/common/creation/job:                        pimenrich/js/form/common/creation/job
 
         pim/menu/menu:                                       pimenrich/js/menu/menu
@@ -934,7 +934,6 @@ config:
         pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
         pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
         pim/template/form/creation/type:                          pimenrich/templates/form/creation/type.html
-        pim/template/form/creation/axis:                          pimenrich/templates/form/creation/axis.html
         pim/template/form/creation/job:                           pimenrich/templates/form/creation/job.html
         pim/template/form/column:                                 pimenrich/templates/form/column.html
         pim/template/form/column-navigation:                      pimenrich/templates/form/column-navigation.html
@@ -1014,6 +1013,7 @@ config:
 
         pim/template/variant-group/tab/properties/general:   pimenrich/templates/variant-group/tab/properties/general.html
         pim/template/variant-group/form/no-attribute:        pimenrich/templates/variant-group/form/no-attribute.html
+        pim/template/variant-group/form/axis:                pimenrich/templates/variant-group/form/axis.html
 
         pim/template/group/tab/properties/general:           pimenrich/templates/group/tab/properties/general.html
         pim/template/group/meta/product-count:               pimenrich/templates/group/meta/product-count.html
