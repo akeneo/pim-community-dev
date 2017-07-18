@@ -18,7 +18,7 @@ Feature: Export attribute groups
       | marketing | 2           | price,rating,rate_sale                                                                                       | Marketing           |
       | sizes     | 3           | size                                                                                                         | Sizes               |
       | colors    | 4           | color,lace_color                                                                                             | Colors              |
-      | media     | 5           | side_view,top_view                                                                                           | Media               |
+      | media     | 5           | side_view,top_view,rear_view                                                                                 | Media               |
       | other     | 100         | comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123 | Other               |
 
   Scenario: Successfully export attribute groups in xlsx without headers:
@@ -35,5 +35,5 @@ Feature: Export attribute groups
       | marketing | 2   | price,rating,rate_sale                                                                                       | Marketing           |
       | sizes     | 3   | size                                                                                                         | Sizes               |
       | colors    | 4   | color,lace_color                                                                                             | Colors              |
-      | media     | 5   | side_view,top_view                                                                                           | Media               |
+      | media     | 5   | side_view,top_view,rear_view                                                                                 | Media               |
       | other     | 100 | comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123 | Other               |

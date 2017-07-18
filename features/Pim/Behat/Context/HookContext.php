@@ -12,6 +12,7 @@ use Context\FeatureContext;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use WebDriver\Exception\UnexpectedAlertOpen;
 
 /**
  * Class HookContext
@@ -191,7 +192,14 @@ class HookContext extends PimContext
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-            $result = $this->getSession()->evaluateScript($script);
+
+            // This check won't work with steps provoking an alert to open, in this case skip it.
+            try {
+                $result = $this->getSession()->evaluateScript($script);
+            } catch (UnexpectedAlertOpen $e) {
+                return;
+            }
+
             if ($result) {
                 $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
 

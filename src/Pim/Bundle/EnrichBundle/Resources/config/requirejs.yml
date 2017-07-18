@@ -637,6 +637,7 @@ config:
         pim/family-edit-form/save:                                          pimenrich/js/family/form/save
         pim/family-edit-form/properties/general/code:                       pimenrich/js/family/form/properties/general/code
         pim/family-edit-form/properties/general/attribute-as-label:         pimenrich/js/family/form/properties/general/attribute-as-label
+        pim/family-edit-form/properties/general/attribute-as-image:         pimenrich/js/family/form/properties/general/attribute-as-image
         pim/family-edit-form/properties/general/translation:                pimenrich/js/family/form/properties/general/translation
         pim/family-edit-form/attributes/toolbar/add-select/attribute-group: pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select
         pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select
@@ -957,6 +958,7 @@ config:
         pim/template/family/tab/attributes/attributes:       pimenrich/templates/family/tab/attributes/attributes.html
         pim/template/family/tab/general/attribute-as-label:  pimenrich/templates/family/tab/general/attribute-as-label.html
         pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
+        pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
 
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html

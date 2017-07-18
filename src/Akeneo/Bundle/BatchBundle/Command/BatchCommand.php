@@ -2,6 +2,8 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Component\Batch\Event\BatchCommandEvent;
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
@@ -60,6 +62,12 @@ class BatchCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Don\'t display logs'
+            )
+            ->addOption(
+                'no-lock',
+                null,
+                InputOption::VALUE_NONE,
+                'Don\'t lock command (if command is lockable)'
             );
     }
 
@@ -82,6 +90,12 @@ class BatchCommand extends ContainerAwareCommand
             ->getJobManager()
             ->getRepository($jobInstanceClass)
             ->findOneByCode($code);
+
+        $event = new BatchCommandEvent($this, $input, $output, $jobInstance);
+        $this->getContainer()->get('event_dispatcher')->dispatch(EventInterface::BATCH_COMMAND_START, $event);
+        if (false === $event->commandShouldRun()) {
+            return self::EXIT_ERROR_CODE;
+        }
 
         if (!$jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
@@ -161,6 +175,7 @@ class BatchCommand extends ContainerAwareCommand
         $job->getJobRepository()->updateJobExecution($jobExecution);
 
         $verbose = $input->getOption('verbose');
+        $exitCode = null;
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $nbWarnings = 0;
             /** @var StepExecution $stepExecution */
@@ -182,7 +197,7 @@ class BatchCommand extends ContainerAwareCommand
                     )
                 );
 
-                return self::EXIT_SUCCESS_CODE;
+                $exitCode = self::EXIT_SUCCESS_CODE;
             } else {
                 $output->writeln(
                     sprintf(
@@ -193,7 +208,7 @@ class BatchCommand extends ContainerAwareCommand
                     )
                 );
 
-                return self::EXIT_WARNING_CODE;
+                $exitCode = self::EXIT_WARNING_CODE;
             }
         } else {
             $output->writeln(
@@ -207,8 +222,12 @@ class BatchCommand extends ContainerAwareCommand
                 $this->writeExceptions($output, $stepExecution->getFailureExceptions(), $verbose);
             }
 
-            return self::EXIT_ERROR_CODE;
+            $exitCode = self::EXIT_ERROR_CODE;
         }
+
+        $this->getContainer()->get('event_dispatcher')->dispatch(EventInterface::BATCH_COMMAND_TERMINATE, $event);
+
+        return $exitCode;
     }
 
     /**

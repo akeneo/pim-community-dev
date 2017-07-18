@@ -59,7 +59,6 @@ Feature: Edit an import
     And I should see the text "Allow file upload"
     And the "Allow file upload" field should contain ""
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_import" import job edit page
     When I fill in the following information:

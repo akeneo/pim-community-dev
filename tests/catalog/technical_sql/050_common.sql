@@ -177,7 +177,7 @@ INSERT INTO `pim_catalog_channel_locale` VALUES (209,21058),(210,21039),(210,210
 
 /*!40000 ALTER TABLE `pim_catalog_family` DISABLE KEYS */;
 DELETE FROM `pim_catalog_family`;
-INSERT INTO `pim_catalog_family` VALUES (466,2523,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50');
+INSERT INTO `pim_catalog_family` VALUES (466,2523,NULL,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50');
 /*!40000 ALTER TABLE `pim_catalog_family` ENABLE KEYS */;
 
 
