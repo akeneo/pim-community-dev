@@ -25,5 +25,5 @@ interface EntityWithValuesUniqueDataRepositoryInterface extends ObjectRepository
      *
      * @return bool
      */
-    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product);
+    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product): bool;
 }

@@ -32,8 +32,10 @@ class EntityWithValuesUniqueDataFactory
      *
      * @return EntityWithValuesUniqueDataInterface
      */
-    public function create(EntityWithValuesInterface $product, ValueInterface $value)
-    {
+    public function create(
+        EntityWithValuesInterface $product,
+        ValueInterface $value
+    ): EntityWithValuesUniqueDataInterface {
         return new $this->entityWithValuesUniqueDataClass($product, $value);
     }
 }

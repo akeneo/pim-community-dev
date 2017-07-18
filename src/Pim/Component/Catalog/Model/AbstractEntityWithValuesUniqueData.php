@@ -37,7 +37,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -45,7 +45,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /**
      * {@inheritdoc}
      */
-    public function getEntityWithValues()
+    public function getEntityWithValues(): EntityWithValuesInterface
     {
         return $this->entityWithValues;
     }
@@ -53,7 +53,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /**
      * {@inheritdoc}
      */
-    public function getAttribute()
+    public function getAttribute(): AttributeInterface
     {
         return $this->attribute;
     }
@@ -61,7 +61,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /**
      * {@inheritdoc}
      */
-    public function getRawData()
+    public function getRawData(): string
     {
         return $this->rawData;
     }
@@ -69,7 +69,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /**
      * {@inheritdoc}
      */
-    public function setValue(ValueInterface $value)
+    public function setValue(ValueInterface $value): void
     {
         $this->value = $value;
         $this->attribute = $value->getAttribute();
@@ -79,7 +79,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /**
      * {@inheritdoc}
      */
-    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue)
+    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue): bool
     {
         return $this->getAttribute() === $uniqueValue->getAttribute() &&
             $this->getRawData() === $uniqueValue->getRawData();

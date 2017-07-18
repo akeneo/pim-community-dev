@@ -19,32 +19,32 @@ interface EntityWithValuesUniqueDataInterface
     /**
      * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
-     * @return ProductInterface
+     * @return EntityWithValuesInterface
      */
-    public function getEntityWithValues();
+    public function getEntityWithValues(): EntityWithValuesInterface;
 
     /**
      * @return AttributeInterface
      */
-    public function getAttribute();
+    public function getAttribute(): AttributeInterface;
 
     /**
      * @return string
      */
-    public function getRawData();
+    public function getRawData(): string;
 
     /**
      * @param ValueInterface $value
      */
-    public function setValue(ValueInterface $value);
+    public function setValue(ValueInterface $value): void;
 
     /**
      * @param EntityWithValuesUniqueDataInterface $uniqueValue
      *
      * @return bool
      */
-    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue);
+    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue): bool;
 }
