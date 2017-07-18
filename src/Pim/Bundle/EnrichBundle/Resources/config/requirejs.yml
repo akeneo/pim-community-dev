@@ -668,6 +668,7 @@ config:
 
         # Product
         pim/product-edit-form/product-label:               pimenrich/js/product/form/product-label
+        pim/product-edit-form/product-completeness:        pimenrich/js/product/form/product-completeness
         pim/product-edit-form/attributes/validation:       pimenrich/js/product/form/attributes/validation
         pim/product-edit-form/attributes/validation-error: pimenrich/js/product/form/attributes/validation-error
         pim/product-edit-form/attributes/variant-group:    pimenrich/js/product/form/attributes/variant-group
@@ -689,7 +690,7 @@ config:
         pim/product-edit-form/meta/created:                pimenrich/js/product/form/meta/created
         pim/product-edit-form/meta/updated:                pimenrich/js/product/form/meta/updated
         pim/product-edit-form/meta/groups:                 pimenrich/js/product/form/meta/groups
-        pim/product-edit-form/status-switcher:             pimenrich/js/product/form/status-switcher
+        pim/product-edit-form/meta/status-switcher:        pimenrich/js/product/form/meta/status-switcher
         pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
 
@@ -964,8 +965,8 @@ config:
         pim/template/product/comments:                       pimenrich/templates/product/comments.html
         pim/template/product/locale-switcher:                pimenrich/templates/product/locale-switcher.html
         pim/template/product/sequential-edit:                pimenrich/templates/product/sequential-edit.html
-        pim/template/product/status-switcher:                pimenrich/templates/product/status-switcher.html
         pim/template/product/download-pdf:                   pimenrich/templates/product/download-pdf.html
+        pim/template/product/meta/status-switcher:           pimenrich/templates/product/meta/status-switcher.html
         pim/template/product/meta/family:                    pimenrich/templates/product/meta/family.html
         pim/template/product/meta/change-family-modal:       pimenrich/templates/product/meta/change-family-modal.html
         pim/template/product/meta/groups:                    pimenrich/templates/product/meta/groups.html
@@ -987,6 +988,7 @@ config:
         pim/template/product-create-popin:                   pimenrich/templates/product/create-popin.html
         pim/template/product-create-error:                   pimenrich/templates/product/create-error.html
         pim/template/product/add-select/attribute/line:      pimenrich/templates/product/form/add-select/attribute/line.html
+        pim/template/product/form/product-completeness:      pimenrich/templates/product/form/product-completeness.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html
         pim/template/attribute-option/index:                 pimenrich/templates/attribute-option/index.html

@@ -187,7 +187,7 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $this->assertColumnContainsValue($code, $data['column'], $data['value']);
 
                 return true;
-            }, sprintf('Expecting column "%" to contain "%s" on row %s', $data['column'], $data['value'], $code));
+            }, sprintf('Expecting column "%s" to contain "%s" on row %s', $data['column'], $data['value'], $code));
         }
     }
 
@@ -252,14 +252,14 @@ class DataGridContext extends PimContext implements PageObjectAware
         $expectation = explode(',', $expectation);
         $expectation = array_map(
             function ($row) {
-                return trim($row);
+                return strtolower(trim($row));
             },
             $expectation
         );
         $actual = explode(',', $actual);
         $actual = array_map(
             function ($row) {
-                return trim($row);
+                return strtolower(trim($row));
             },
             $actual
         );
@@ -401,6 +401,12 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iHideTheFilter($filterName)
     {
+        $loadingMask = $this->getCurrentPage()->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
+
         $this->getDatagrid()->hideFilter($filterName);
     }
 

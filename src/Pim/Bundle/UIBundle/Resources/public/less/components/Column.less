@@ -8,6 +8,7 @@
   @littleWidth: 40px;
   @transition: ease-in-out;
   @scrollbarWidth: 16px;
+  @paddingBetweenBlocks: 36px;
 
   flex-basis: @width;
   width: @width;
@@ -54,12 +55,13 @@
 
   &-innerBottom:not(:empty) {
     border-top: 1px solid @AknBorderColor;
+    padding-top: @padding;
   }
 
   &-block:not(:empty) {
     display: flex;
     flex-direction: column;
-    margin: 36px 0 0 0;
+    margin: (@paddingBetweenBlocks - @padding) 0 @padding 0;
   }
 
   &-title,
