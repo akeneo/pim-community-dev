@@ -78,7 +78,7 @@ class Edit extends ProductEditForm
                     ]
                 ],
                 'Main context selector' => [
-                    'css'        => '.tab-container .attribute-edit-actions .context-selectors',
+                    'css'        => '.AknTitleContainer-context',
                     'decorators' => [
                         ContextSwitcherDecorator::class
                     ]
