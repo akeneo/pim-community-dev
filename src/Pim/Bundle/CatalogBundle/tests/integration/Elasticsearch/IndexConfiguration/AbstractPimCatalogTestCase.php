@@ -98,13 +98,12 @@ abstract class AbstractPimCatalogTestCase extends TestCase
      *
      * @return array
      */
-    protected function getSearchQueryResults(array $query, array $types = [])
+    protected function getSearchQueryResults(array $query, array $types)
     {
         $identifiers = [];
-        $types = self::DOCUMENT_TYPE . ',' . join(',', $types);
 
         $query['size'] = 100;
-        $response = $this->esClient->search($types, $query);
+        $response = $this->esClient->search(join(',', $types), $query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];

@@ -1,5 +1,5 @@
 mappings:
-    pim_catalog_product_model_parent_2:
+    pim_catalog_product_model_root:
         properties:
             # "completeness" property is handled by the "completeness" dynamic template
             categories:
@@ -176,11 +176,7 @@ mappings:
                     match_mapping_type: 'boolean'
                     mapping:
                         type: 'boolean'
-    pim_catalog_product_model_parent_1:
-        _parent:
-            type: 'pim_catalog_product_model_parent_2'
-        _routing:
-            required: true
+    pim_catalog_product_model_sub:
         properties:
             # "completeness" property is handled by the "completeness" dynamic template
             categories:
@@ -359,10 +355,6 @@ mappings:
                         type: 'boolean'
 
     pim_catalog_product:
-        _parent:
-            type: 'pim_catalog_product_model_parent_1'
-        _routing:
-            required: true
         properties:
             # "completeness" property is handled by the "completeness" dynamic template
             categories:
