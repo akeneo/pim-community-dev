@@ -117,6 +117,7 @@ extensions:
         position: 100
         config:
             context: base_product
+            localeContext: base_product
 
     pimee-product-view-locale-switcher:
         module: pim/product-edit-form/locale-switcher
