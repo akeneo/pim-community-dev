@@ -15,7 +15,8 @@ define([
     'pim/user-context',
     'pim/i18n',
     'oro/translator',
-    'pim/template/form/creation/job'
+    'pim/template/form/creation/job',
+    'pim/base-fetcher'
 ], function(
         $,
         _,
@@ -25,7 +26,8 @@ define([
         UserContext,
         i18n,
         __,
-        template
+        template,
+        BaseFetcher
     ) {
 
     return BaseForm.extend({
@@ -41,10 +43,15 @@ define([
          * @return {Promise}
          */
         configure() {
-            return $.when(
-                this.fetchJobs(),
+            const jobType = this.options.config.type;
+            const fetcher = new BaseFetcher({
+                urls: { list: this.options.config.url }
+            });
+
+            return fetcher.search({ jobType }).then((jobs) => {
+                this.jobs = jobs;
                 BaseForm.prototype.configure.apply(this, arguments)
-            );
+            })
         },
 
         /**
@@ -58,29 +65,6 @@ define([
                 'alias':  option.val(),
                 'connector': optionParent.attr('label')
             });
-        },
-
-        /**
-         * Fetch the jobs
-         * @return {Promise} Ajax request for jobs
-         */
-        fetchJobs() {
-            const url = Routing.generate('pim_enrich_job_instance_rest_jobs_get');
-            const jobType = this.options.config.type;
-
-            const deferred = $.Deferred();
-
-            $.ajax({
-                url,
-                type: 'GET',
-                data: { jobType },
-                cache: true
-            }).done((jobs) => {
-                this.jobs = jobs;
-                deferred.resolve();
-            });
-
-            return deferred.promise();
         },
 
         /**
@@ -98,12 +82,11 @@ define([
                 label: __(this.options.config.label),
                 jobs: this.jobs,
                 required: __('pim_enrich.form.required'),
+                selectedJobType: this.getFormData().alias,
                 errors: errors.filter(error => error.path === identifier),
                 __
             }));
 
-            const selectedJobType = this.getFormData().alias;
-            this.$('select').val(selectedJobType);
             this.delegateEvents();
         }
     });

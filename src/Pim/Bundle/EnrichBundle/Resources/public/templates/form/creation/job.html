@@ -10,7 +10,7 @@
             <% for (var job in jobs) { %>
                 <optgroup label="<%- job %>">
                     <% for (var name in jobs[job]) { %>
-                        <option value="<%- name %>"><%- __(`batch_jobs.${name}.label`) %></option>
+                        <option <%- (name === selectedJobType ? "selected": "") %> value="<%- name %>"><%- __(`batch_jobs.${name}.label`) %></option>
                     <% } %>
                 </optgroup>
             <% } %>
