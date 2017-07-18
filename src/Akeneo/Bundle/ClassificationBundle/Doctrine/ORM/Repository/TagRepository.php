@@ -44,7 +44,7 @@ class TagRepository extends SearchableRepository implements TagRepositoryInterfa
         $codes = [];
 
         foreach ($queryBuilder->getQuery()->getArrayResult() as $result) {
-            $codes[$result['id']] = $result['code'];
+            $codes[$result['code']] = $result['id'];
         }
 
         return $codes;

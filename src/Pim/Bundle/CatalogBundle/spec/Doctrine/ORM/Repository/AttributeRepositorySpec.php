@@ -82,9 +82,9 @@ class AttributeRepositorySpec extends ObjectBehavior
         ]);
 
         $this->findAvailableAxes('en_US')->shouldReturn([
-            11 => 'a',
-            12 => 'b',
-            10 => 's',
+            'a' => 11,
+            'b' => 12,
+            's' => 10,
         ]);
     }
 }

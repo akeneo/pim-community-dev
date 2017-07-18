@@ -49,8 +49,8 @@ class FilterType extends AbstractType
             $emptyChoice = $options['field_options']['attr']['empty_choice'];
         }
         if ($emptyChoice) {
-            $emptyChoice = [$this->translator->trans('oro.filter.form.label_type_empty') => self::TYPE_EMPTY ];
-            $notEmptyChoice = [$this->translator->trans('oro.filter.form.label_type_not_empty') => self::TYPE_NOT_EMPTY];
+            $emptyChoice = [self::TYPE_EMPTY => $this->translator->trans('oro.filter.form.label_type_empty')];
+            $notEmptyChoice = [self::TYPE_NOT_EMPTY => $this->translator->trans('oro.filter.form.label_type_not_empty')];
             if (isset($options['field_options']['choices'])) {
                 $options['field_options']['choices'] += $emptyChoice;
                 $options['field_options']['choices'] += $notEmptyChoice;

@@ -143,9 +143,9 @@ define(
                 const notEmptyKey = _.__('pim.grid.choice_filter.label_not_empty');
 
                 this.operatorChoices = {
-                    [inKey]: 'in',
-                    [emptyKey]: 'empty',
-                    [notEmptyKey]: 'not empty'
+                    'in': inKey,
+                    'empty': emptyKey,
+                    'not empty': notEmptyKey
                 };
 
                 $(el).append(

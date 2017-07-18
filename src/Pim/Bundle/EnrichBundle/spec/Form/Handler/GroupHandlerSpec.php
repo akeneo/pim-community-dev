@@ -46,7 +46,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $group->getType()->willReturn($groupType);
         $groupType->isVariant()->willReturn(false);
 
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
 
         $saver->save($group, ['copy_values_to_products' => true])->shouldBeCalled();
@@ -71,7 +71,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $group->getProductTemplate()->willReturn(null);
         $groupType->isVariant()->willReturn(true);
 
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
 
         $saver->save(
@@ -96,7 +96,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
 
         $group->getProducts()->willReturn([$product]);
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
 
         $form->isValid()->willReturn(false);
         $groupType->isVariant()->willReturn(false);
@@ -109,7 +109,6 @@ class GroupHandlerSpec extends ObjectBehavior
     function it_doesnt_save_a_group_when_request_is_not_posted(
         $form,
         $requestStack,
-        $saver,
         Request $request,
         GroupInterface $group
     ) {

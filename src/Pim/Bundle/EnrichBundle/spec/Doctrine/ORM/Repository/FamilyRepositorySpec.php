@@ -53,8 +53,8 @@ class FamilyRepositorySpec extends ObjectBehavior
         ]);
 
         $this->findTranslatedLabels(['locale_code' => 'en_US'])->shouldReturn([
-            10 => 'family en',
-            11 => '[family_other_code]',
+            'family en' => 10,
+            '[family_other_code]' => 11,
         ]);
     }
 }

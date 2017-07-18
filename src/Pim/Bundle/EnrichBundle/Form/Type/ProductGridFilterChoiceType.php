@@ -98,7 +98,7 @@ class ProductGridFilterChoiceType extends AbstractType
         $formattedSystemFilters = [];
         foreach ($systemFilters as $code => $systemFilter) {
             if (!in_array($code, $this->excludedFilters)) {
-                $formattedSystemFilters['System'][$code] = $systemFilter['label'];
+                $formattedSystemFilters['System'][$systemFilter['label']] = $code;
             }
         }
 

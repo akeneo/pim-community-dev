@@ -64,8 +64,8 @@ class AttributeRepositorySpec extends ObjectBehavior
             'locale_code' => 'en_US',
             'excluded_attribute_ids' => [10],
         ])->shouldReturn([
-            'group fr' => [10 => 'attribute fr'],
-            '[group_other_code]' => [11 => '[group_attribute_code]'],
+            'group fr' => ['attribute fr' => 10],
+            '[group_other_code]' => ['[group_attribute_code]' => 11],
         ]);
     }
 }
