@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
@@ -57,9 +58,6 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -102,11 +100,14 @@ class ProductController
     /** @var array */
     protected $apiConfiguration;
 
+    /** @var QueryParametersCheckerInterface */
+    protected $queryParametersChecker;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param NormalizerInterface                   $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
+     * @param QueryParametersCheckerInterface       $queryParametersChecker
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param ProductRepositoryInterface            $productRepository
      * @param PaginatorInterface                    $searchAfterPaginator
@@ -126,7 +127,7 @@ class ProductController
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
+        QueryParametersCheckerInterface $queryParametersChecker,
         AttributeRepositoryInterface $attributeRepository,
         ProductRepositoryInterface $productRepository,
         PaginatorInterface $searchAfterPaginator,
@@ -145,7 +146,7 @@ class ProductController
         $this->pqbFactory = $pqbFactory;
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
+        $this->queryParametersChecker = $queryParametersChecker;
         $this->attributeRepository = $attributeRepository;
         $this->productRepository = $productRepository;
         $this->searchAfterPaginator = $searchAfterPaginator;
@@ -488,6 +489,10 @@ class ProductController
                     sprintf('Search query parameter has to be an array, "%s" given.', gettype($search))
                 );
             }
+
+            if (isset($search['categories'])) {
+                $this->queryParametersChecker->checkCategoriesParameters($search['categories']);
+            }
         }
 
         if (null !== $channel && !isset($search['categories'])) {
@@ -523,7 +528,14 @@ class ProductController
                     );
                 }
 
-                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
+                $searchLocale = $request->query->get('search_locale');
+                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocale;
+
+                if (null !== $context['locale']) {
+                    $locales = explode(',', $context['locale']);
+                    $this->queryParametersChecker->checkLocalesParameters($locales);
+                }
+
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
                 if (isset($filter['locales'])) {
@@ -553,77 +565,20 @@ class ProductController
         }
 
         if ($request->query->has('locales')) {
-            $this->checkLocalesParameters($request->query->get('locales'), $channel);
+            $locales = explode(',', $request->query->get('locales'));
+            $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
 
             $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
         }
 
         if ($request->query->has('attributes')) {
-            $this->checkAttributesParameters($request->query->get('attributes'));
+            $attributes = explode(',', $request->query->get('attributes'));
+            $this->queryParametersChecker->checkAttributesParameters($attributes);
 
             $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
         }
 
         return $normalizerOptions;
-    }
-
-    /**
-     * Checks $localeCodes if they exist.
-     * Throws an exception if one of them does not exist or, if there is a $channel, one of them does not belong to it.
-     *
-     * @param string                $localeCodes
-     * @param ChannelInterface|null $channel
-     *
-     * @throws UnprocessableEntityHttpException
-     */
-    protected function checkLocalesParameters($localeCodes, ChannelInterface $channel = null)
-    {
-        $locales = explode(',', $localeCodes);
-
-        $errors = [];
-        foreach ($locales as $locale) {
-            if (null === $this->localeRepository->findOneByIdentifier($locale)) {
-                $errors[] = $locale;
-            }
-        }
-
-        if (!empty($errors)) {
-            $plural = count($errors) > 1 ? 'Locales "%s" do not exist.' : 'Locale "%s" does not exist.';
-            throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
-        }
-
-        if (null !== $channel) {
-            if ($diff = array_diff($locales, $channel->getLocaleCodes())) {
-                $plural = sprintf(count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', implode(', ', $diff));
-                throw new UnprocessableEntityHttpException(
-                    sprintf('%s not activated for the scope "%s".', $plural, $channel->getCode())
-                );
-            }
-        }
-    }
-
-    /**
-     * Checks $attributes if they exist. Thrown an exception if one of them does not exist.
-     *
-     * @param string $attributes
-     *
-     * @throws UnprocessableEntityHttpException
-     */
-    protected function checkAttributesParameters($attributes)
-    {
-        $attributeCodes = explode(',', $attributes);
-
-        $errors = [];
-        foreach ($attributeCodes as $attributeCode) {
-            if (null === $this->attributeRepository->findOneByIdentifier($attributeCode)) {
-                $errors[] = $attributeCode;
-            }
-        }
-
-        if (!empty($errors)) {
-            $plural = count($errors) > 1 ? 'Attributes "%s" do not exist.' : 'Attribute "%s" does not exist.';
-            throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
-        }
     }
 
     /**

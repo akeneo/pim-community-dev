@@ -278,6 +278,8 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer`
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository`
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
 
 ### Methods
 
