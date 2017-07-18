@@ -13,7 +13,7 @@ parameters:
     pim_catalog.repository.group_type.class:            Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository
     pim_catalog.repository.product_template.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductTemplateRepository
-    pim_catalog.repository.product_unique_data.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithValuesUniqueDataRepository
+    pim_catalog.repository.entity_with_value_unique_data.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithValuesUniqueDataRepository
     pim_catalog.repository.association.class:           Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
     pim_catalog.repository.product.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
     pim_catalog.repository.product_model.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository
@@ -121,8 +121,8 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pim_catalog.repository.product_unique_data:
-        class: '%pim_catalog.repository.product_unique_data.class%'
+    pim_catalog.repository.entity_with_value_unique_data:
+        class: '%pim_catalog.repository.entity_with_value_unique_data.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.product_unique_data.class%']
         tags:

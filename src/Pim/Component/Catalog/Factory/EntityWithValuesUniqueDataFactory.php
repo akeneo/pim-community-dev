@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
- * Creates and configures a product unique data.
+ * Creates and configures a unique data.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

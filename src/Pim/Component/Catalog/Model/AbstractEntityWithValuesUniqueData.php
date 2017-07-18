@@ -12,7 +12,7 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     /** @var int */
     protected $id;
 
-    /** @var ProductInterface */
+    /** @var EntityWithValuesInterface */
     protected $entityWithValues;
 
     /** @var ValueInterface */
@@ -25,10 +25,10 @@ abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUni
     protected $rawData;
 
     /**
-     * @param ProductInterface $entityWithValues
-     * @param ValueInterface   $value
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param ValueInterface            $value
      */
-    public function __construct(ProductInterface $entityWithValues, ValueInterface $value)
+    public function __construct(EntityWithValuesInterface $entityWithValues, ValueInterface $value)
     {
         $this->entityWithValues = $entityWithValues;
         $this->setValue($value);

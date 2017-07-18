@@ -60,7 +60,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($releaseDate);
         $value->__toString()->willReturn('2015-16-03');
 
-        $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(true);
+        $uniqueDataRepository->uniqueDataExistsInAnotherEntity($value, $product)->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
@@ -75,7 +75,8 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         $context,
-        $uniqueValuesSet
+        $uniqueValuesSet,
+        $uniqueDataRepository
     ) {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
@@ -85,6 +86,8 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->__toString()->willReturn('2015-16-03');
 
         $uniqueValuesSet->addValue($value, $product)->willReturn(false);
+
+        $uniqueDataRepository->uniqueDataExistsInAnotherEntity($value, $product)->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
@@ -99,7 +102,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $uniqueValuesSet
     ) {
         $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
-        $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
+        $uniqueDataRepository->uniqueDataExistsInAnotherEntity(Argument::cetera())->shouldNotBeCalled();
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -114,7 +117,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $uniqueValuesSet
     ) {
         $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
-        $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
+        $uniqueDataRepository->uniqueDataExistsInAnotherEntity(Argument::cetera())->shouldNotBeCalled();
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -134,7 +137,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($releaseDate);
 
         $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
-        $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
+        $uniqueDataRepository->uniqueDataExistsInAnotherEntity(Argument::cetera())->shouldNotBeCalled();
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -158,7 +161,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->__toString()->willReturn('2015-16-03');
 
         $uniqueValuesSet->addValue($value, $product)->willReturn(true);
-        $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(false);
+        $uniqueDataRepository->uniqueDataExistsInAnotherEntity($value, $product)->willReturn(false);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 

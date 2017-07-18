@@ -63,15 +63,15 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $event)
     {
-        $object = $event->getObject();
-        if (!$object instanceof EntityWithValuesInterface) {
+        $entity = $event->getObject();
+        if (!$entity instanceof EntityWithValuesInterface) {
             return;
         }
 
-        $rawValues = $object->getRawValues();
+        $rawValues = $entity->getRawValues();
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
-        $object->setValues($values);
+        $entity->setValues($values);
     }
 
     /**

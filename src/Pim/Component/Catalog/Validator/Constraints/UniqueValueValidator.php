@@ -91,7 +91,7 @@ class UniqueValueValidator extends ConstraintValidator
      */
     protected function alreadyExists(ValueInterface $value, ProductInterface $product)
     {
-        return $this->repository->uniqueDataExistsInAnotherProduct($value, $product);
+        return $this->repository->uniqueDataExistsInAnotherEntity($value, $product);
     }
 
     /**
