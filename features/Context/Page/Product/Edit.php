@@ -114,7 +114,9 @@ class Edit extends ProductEditForm
     {
         $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
         $link = $this->spin(function () use ($dropdown, $localeCode) {
-            $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
+            if (!$dropdown->hasClass('open')) {
+                $dropdown->click();
+            }
 
             return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
         }, 'Can not click on the locale dropdown button');

@@ -26,8 +26,8 @@ class ProductEditForm extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown'                => ['css' => '.attribute-edit-actions .locale-switcher'],
-                'Channel dropdown'                => ['css' => '.attribute-edit-actions .scope-switcher'],
+                'Locales dropdown'                => ['css' => '.AknTitleContainer .locale-switcher'],
+                'Channel dropdown'                => ['css' => '.AknTitleContainer .scope-switcher'],
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
