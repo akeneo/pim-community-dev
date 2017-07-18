@@ -72,14 +72,12 @@ class FixturesLoader
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
-        // TODO: this should change according to the storage
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
 
         if (file_exists($dumpFile)) {
             $this->dropDatabase();
             $this->createDatabase();
             $this->restoreDatabase($dumpFile);
-            $this->createUserSystem();
             $this->clearAclCache();
             $this->createUserSystem();
 
@@ -380,27 +378,5 @@ class FixturesLoader
     {
         $aclCache = $this->container->get('security.acl.cache');
         $aclCache->clearCache();
-    }
-
-    /**
-     * Create a token with a user system with all access
-     */
-    private function createUserSystem()
-    {
-        $user = $this->container->get('pim_user.factory.user')->create();
-        $user->setUsername('system');
-        $groups = $this->container->get('pim_user.repository.group')->findAll();
-
-        foreach ($groups as $group) {
-            $user->addGroup($group);
-        }
-
-        $roles = $this->container->get('pim_user.repository.role')->findAll();
-        foreach ($roles as $role) {
-            $user->addRole($role);
-        }
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->container->get('security.token_storage')->setToken($token);
     }
 }
