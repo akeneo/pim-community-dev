@@ -50,11 +50,11 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 FieldManager.clearFields();
 
                 this.onExtensions('group:change', this.render.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
                 this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
                 this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
                     this.setScope(event.scopeCode);
@@ -141,16 +141,28 @@ define(
              * @param {Object} event
              */
             initScope: function (event) {
-                if (undefined === this.getScope()) {
-                    this.setScope(event.scopeCode, {silent: true});
-                } else {
-                    event.scopeCode = this.getScope();
+                if ('base_product' === event.context) {
+                    if (undefined === this.getScope()) {
+                        this.setScope(event.scopeCode, {silent: true});
+                    } else {
+                        event.scopeCode = this.getScope();
+                    }
                 }
             },
 
+            /**
+             * Set the new catalog scope
+             *
+             * @param scope
+             * @param options
+             */
             setScope: function (scope, options) {
                 UserContext.set('catalogScope', scope, options);
             },
+
+            /**
+             * Get the current catalog scope
+             */
             getScope: function () {
                 return UserContext.get('catalogScope');
             },
