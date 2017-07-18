@@ -77,6 +77,7 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 FieldManager.clearFields();
 
@@ -86,7 +87,6 @@ define(
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
                 this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
                 this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
                     this.setScope(event.scopeCode);
@@ -314,13 +314,17 @@ define(
             /**
              * Initialize  the scope if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} scopeEvent
+             * @param {string} scopeEvent.context
+             * @param {string} scopeEvent.scopeCode
              */
-            initScope: function (event) {
-                if (undefined === this.getScope()) {
-                    this.setScope(event.scopeCode, {silent: true});
-                } else {
-                    event.scopeCode = this.getScope();
+            initScope: function (scopeEvent) {
+                if ('base_product' === scopeEvent.context) {
+                    if (undefined === this.getScope()) {
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                    } else {
+                        scopeEvent.scopeCode = this.getScope();
+                    }
                 }
             },
 

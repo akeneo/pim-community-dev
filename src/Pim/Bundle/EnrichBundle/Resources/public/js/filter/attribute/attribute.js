@@ -123,17 +123,7 @@ define([
                 var scopeSwitcher = new ScopeSwitcher();
                 scopeSwitcher.setDisplayInline(true);
 
-                this.listenTo(
-                    scopeSwitcher,
-                    'pim_enrich:form:scope_switcher:pre_render',
-                    function (scopeEvent) {
-                        if (this.getScope()) {
-                            scopeEvent.scopeCode = this.getScope();
-                        } else {
-                            this.setScope(scopeEvent.scopeCode, {silent: true});
-                        }
-                    }.bind(this)
-                );
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 this.listenTo(
                     scopeSwitcher,
@@ -235,6 +225,23 @@ define([
                         container
                     );
                 }.bind(this));
+        },
+
+        /**
+         * Initialize the scope
+         *
+         * @param {Object} scopeEvent
+         * @param {string} scopeEvent.context
+         * @param {string} scopeEvent.scopeCode
+         */
+        initScope: function (scopeEvent) {
+            if ('base_product' === scopeEvent.context) {
+                if (this.getScope()) {
+                    scopeEvent.scopeCode = this.getScope();
+                } else {
+                    this.setScope(scopeEvent.scopeCode, {silent: true});
+                }
+            }
         }
     });
 });

@@ -212,12 +212,16 @@ extensions:
         parent: pim-product-edit-form-attributes
         targetZone: context-selectors
         position: 100
+        config:
+            context: base_product
 
     pim-product-edit-form-attribute-locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: pim-product-edit-form-attributes
         targetZone: context-selectors
         position: 110
+        config:
+            context: base_product
 
     pim-product-edit-form-validation:
         module: pim/product-edit-form/attributes/validation
@@ -274,12 +278,16 @@ extensions:
         parent: pim-product-edit-form-copy
         targetZone: context-selectors
         position: 100
+        config:
+            context: copy_product
 
     pim-product-edit-form-copy-locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: pim-product-edit-form-copy
         targetZone: context-selectors
         position: 110
+        config:
+            context: copy_product
 
 attribute_fields:
     akeneo-switch-field:           pim/boolean-field
