@@ -38,6 +38,20 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        UserContext.set('catalogLocale', localeEvent.localeCode);
+                        this.render();
+                    }
+                }.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()

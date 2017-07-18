@@ -123,6 +123,12 @@ define(
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
 
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render();
+                    }
+                }.bind(this));
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
