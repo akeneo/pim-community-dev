@@ -33,6 +33,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
                 ],
                 'a_metric_without_decimal_negative' => [
                     ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
+                ],
+                'a_multi_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
                 ]
             ]
         ]);
@@ -131,6 +134,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
             { "data": "DE ecommerce", "locale": "de_DE", "scope": "ecommerce" },
             { "data": "EN ecommerce", "locale": "en_US", "scope": "ecommerce" },
             { "data": "FR ecommerce", "locale": "fr_FR", "scope": "ecommerce" }
+        ],
+        "a_multi_select": [
+            {"locale":null,"scope":null,"data":["optionA","optionB"]}
         ],
         "a_number_float": [
             { "data": "12.05", "locale": null, "scope": null }

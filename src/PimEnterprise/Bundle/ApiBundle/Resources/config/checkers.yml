@@ -1,0 +1,15 @@
+parameters:
+    pimee_api.checker.query_parameters.class: PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker
+
+services:
+    pimee_api.checker.query_parameters:
+        class: '%pimee_api.checker.query_parameters.class%'
+        decorates: pim_api.checker.query_parameters
+        decoration_inner_name: pim_api.checker.query_parameters.community
+        arguments:
+            - '@pim_api.checker.query_parameters.community'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.category'
+        public: false

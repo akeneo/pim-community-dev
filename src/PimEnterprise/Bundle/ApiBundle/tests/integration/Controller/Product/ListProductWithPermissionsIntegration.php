@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
  * |          |          Categories           |             Locales               |                  Attribute groups                   |
