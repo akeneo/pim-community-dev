@@ -209,16 +209,16 @@ extensions:
 
     pim-product-edit-form-attribute-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: pim-product-edit-form-attributes
-        targetZone: context-selectors
+        parent: pim-product-edit-form
+        targetZone: context
         position: 100
         config:
             context: base_product
 
     pim-product-edit-form-attribute-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: pim-product-edit-form-attributes
-        targetZone: context-selectors
+        parent: pim-product-edit-form
+        targetZone: context
         position: 110
         config:
             context: base_product
