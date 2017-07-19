@@ -886,7 +886,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         );
     }
 
-    /** @group todo */
     public function testSearchNotColorGreyAndNotSizeS()
     {
         $query = [
@@ -1096,11 +1095,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
-                                        'terms' => [
-                                            'family.code' => ['tshirt-unique-size'],
-                                        ],
-                                    ],
-                                    [
                                         'term' => [
                                             'values.color-option.<all_channels>.<all_locales>' => 'red',
                                         ],
@@ -1123,11 +1117,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['shoe'],
-                                        ],
-                                    ],
                                     [
                                         'term' => [
                                             'values.color-option.<all_channels>.<all_locales>' => 'red',
@@ -1156,11 +1145,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['jacket'],
-                                        ],
-                                    ],
                                     [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
@@ -1194,11 +1178,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
-                                    [
-                                        'terms' => [
-                                            'family.code' => ['watch', 'hat', 'tshirt', 'tshirt-unique-color'],
-                                        ],
-                                    ],
                                     [
                                         'term' => [
                                             'values.color-option.<all_channels>.<all_locales>' => 'red',
