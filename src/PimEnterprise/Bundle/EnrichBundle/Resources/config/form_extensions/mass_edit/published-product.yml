@@ -2,11 +2,12 @@ extensions:
     pim-mass-published-product-edit:
         module: pim/mass-edit-form/form
         config:
-            backRoute: pim_enrich_published_product_index
+            backRoute: pimee_workflow_published_product_index
             selectLabel: pim_enrich.mass_edit.product.step.select.label
             chooseLabel: pim_enrich.mass_edit.product.step.choose.label
             configureLabel: pim_enrich.mass_edit.product.step.configure.label
             confirmLabel: pim_enrich.mass_edit.product.step.confirm.label
+            launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             title: pim_enrich.mass_edit.product.title
 
     pim-mass-published-product-edit-choose:
@@ -20,9 +21,11 @@ extensions:
     pim-mass-published-product-edit-configure-unpublish:
         module: pimee/mass-edit-form/product/publish
         parent: pim-mass-published-product-edit
+        aclResourceId: pimee_workflow_published_product_index
         position: 110
         config:
-            label: pim_enrich.mass_edit.product.operation.unpublish.label
-            description: pim_enrich.mass_edit.product.operation.unpublish.description
+            label: pimee_enrich.mass_edit.product.operation.unpublish.label
+            description: pimee_enrich.mass_edit.product.operation.unpublish.description
             code: unpublish
             jobInstanceCode: unpublish_product
+            warning: pimee_enrich.mass_edit.product.operation.unpublish.warning

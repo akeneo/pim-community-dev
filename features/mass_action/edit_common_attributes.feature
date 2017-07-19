@@ -32,7 +32,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     And I go on the last executed job resume of "edit_common_attributes"
-    And I should see the text "Clean temporary files"
+    And I should see the text "Clean files for common attributes"
     And I edit the "highheels" product
     And I visit the "Marketing" group
     Then I should see the text "2 stars"

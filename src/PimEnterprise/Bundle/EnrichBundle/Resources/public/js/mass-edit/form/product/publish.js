@@ -11,8 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/mass-edit-form/product/operation',
-        'pimee/template/mass-edit/product/publish',
-        'bootstrap.bootstrapswitch'
+        'pimee/template/mass-edit/product/publish'
     ],
     function (
         _,

@@ -46,23 +46,7 @@ class OroToPimGridFilterAdapter extends BaseAdapter
         } elseif (in_array($parameters['gridName'], [self::APPROVE_GRID_NAME, self::RULE_GRID_NAME])) {
             return ['values' => $this->massActionDispatcher->dispatch($parameters)];
         } else {
-            $items = $this->massActionDispatcher->dispatch($parameters);
-
-            foreach ($items as &$object) {
-                if (is_array($object)) {
-                    $object = $object[0];
-                }
-            }
-
-            $itemIds = [];
-
-            foreach ($items as $item) {
-                $itemIds[] = $item->getId();
-            }
-
-            $filters = [
-                ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
-            ];
+            $filters = $this->adaptDefaultGrid($parameters);
         }
 
         return $filters;
