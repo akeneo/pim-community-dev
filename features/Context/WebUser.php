@@ -2111,13 +2111,31 @@ class WebUser extends PimContext
     }
 
     /**
-     * TODO This step should be renamed to "I confirm mass edit"
-     *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
     {
         $this->iMoveToTheConfirmPage();
+        sleep(2);
+    }
+
+    /**
+     * @Given /^I click on the cancel button of the mass edit$/
+     */
+    public function iCancelTheMassEdit()
+    {
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->cancel();
+        sleep(2);
+    }
+
+    /**
+     * @Given /^I move on to the choose step$/
+     */
+    public function iMoveOnToTheChooseStep()
+    {
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->select();
         sleep(2);
     }
 
@@ -2138,9 +2156,6 @@ class WebUser extends PimContext
     public function iMoveToTheConfirmPage()
     {
         $this->scrollContainerTo(900);
-        $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.next');
-        }, 'Could not find next button');
         $this->getCurrentPage()->configure();
     }
 

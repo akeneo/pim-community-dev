@@ -53,6 +53,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I confirm mass edit
     And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots"
+    And I am on the dashboard page
     And I should have 1 new notification
     And I should see notification:
       | type    | message                                                                  |
@@ -75,6 +76,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I confirm mass edit
     And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots"
+    And I am on the dashboard page
     And I should have 1 new notification
     And I should see notification:
       | type    | message                                                                  |

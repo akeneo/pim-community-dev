@@ -21,6 +21,7 @@ extensions:
     pim-mass-product-edit-configure-change-status:
         module: pim/mass-edit-form/product/change-status
         parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_product_change_state
         position: 110
         config:
             label: pim_enrich.mass_edit.product.operation.change_status.label
@@ -32,6 +33,7 @@ extensions:
         module: pim/mass-edit-form/product/edit-common-attributes
         parent: pim-mass-product-edit
         position: 120
+        aclResourceId: pim_enrich_product_edit_attributes
         config:
             label: pim_enrich.mass_edit.product.operation.edit_common.label
             description: pim_enrich.mass_edit.product.operation.edit_common.description
@@ -42,6 +44,7 @@ extensions:
         module: pim/mass-edit-form/product/change-family
         parent: pim-mass-product-edit
         position: 130
+        aclResourceId: pim_enrich_product_change_family
         config:
             label: pim_enrich.mass_edit.product.operation.change_family.label
             description: pim_enrich.mass_edit.product.operation.change_family.description
@@ -52,6 +55,7 @@ extensions:
         module: pim/mass-edit-form/product/add-to-group
         parent: pim-mass-product-edit
         position: 140
+        aclResourceId: pim_enrich_product_add_to_groups
         config:
             label: pim_enrich.mass_edit.product.operation.add_to_group.label
             description: pim_enrich.mass_edit.product.operation.add_to_group.description
@@ -62,6 +66,7 @@ extensions:
         module: pim/mass-edit-form/product/add-to-variant-group
         parent: pim-mass-product-edit
         position: 150
+        aclResourceId: pim_enrich_product_add_to_variant_group
         config:
             label: pim_enrich.mass_edit.product.operation.add_to_variant_group.label
             description: pim_enrich.mass_edit.product.operation.add_to_variant_group.description
@@ -71,6 +76,7 @@ extensions:
     pim-mass-product-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_product_categories_view
         position: 160
         config:
             label: pim_enrich.mass_edit.product.operation.add_to_category.label
@@ -84,6 +90,7 @@ extensions:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-product-edit
         position: 170
+        aclResourceId: pim_enrich_product_categories_view
         config:
             label: pim_enrich.mass_edit.product.operation.move_to_category.label
             description: pim_enrich.mass_edit.product.operation.move_to_category.description
@@ -96,6 +103,7 @@ extensions:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-product-edit
         position: 180
+        aclResourceId: pim_enrich_product_categories_view
         config:
             label: pim_enrich.mass_edit.product.operation.remove_from_category.label
             description: pim_enrich.mass_edit.product.operation.remove_from_category.description

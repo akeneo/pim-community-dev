@@ -16,6 +16,9 @@ define(
             template: _.template(attributeTemplate),
             readOnly: false,
 
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', function (readOnly) {
@@ -29,8 +32,7 @@ define(
              * {@inheritDoc}
              */
             addFieldExtension: function (event) {
-                var attribute = event.field.attribute;
-                if (!this.isAttributeEditable(attribute)) {
+                if (!this.isAttributeEditable()) {
                     event.field.setEditable(false);
                 }
             },
@@ -38,11 +40,9 @@ define(
             /**
              * Is the current attribute editable ?
              *
-             * @param {object} attribute
-             *
              * @return {Boolean}
              */
-            isAttributeEditable: function (attribute) {
+            isAttributeEditable: function () {
                 return !this.readOnly;
             }
         });

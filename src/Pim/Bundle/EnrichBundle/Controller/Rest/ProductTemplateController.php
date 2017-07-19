@@ -99,7 +99,6 @@ class ProductTemplateController
 
         $violations = $this->removeIdentifierViolations($violations);
 
-
         $normalizedViolations = [];
         foreach ($violations as $violation) {
             $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(

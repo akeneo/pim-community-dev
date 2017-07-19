@@ -41,7 +41,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         ProductTemplateInterface $productTemplate,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
+        $configuration = ['filters' => [], 'actions' => [['field' => 'variant_group', 'value' => 'variant_group_code']]];
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
@@ -73,7 +73,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         ProductTemplateInterface $productTemplate,
         JobParameters $jobParameters
     ) {
-        $configuration = ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']];
+        $configuration = ['filters' => [], 'actions' => [['field' => 'variant_group', 'value' => 'variant_group_code']]];
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);

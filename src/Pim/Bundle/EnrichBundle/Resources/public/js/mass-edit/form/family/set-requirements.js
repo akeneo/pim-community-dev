@@ -33,6 +33,9 @@ define(
             template: _.template(template),
             formPromise: null,
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (null === this.getValue()) {
                     this.setValue([]);
@@ -51,7 +54,6 @@ define(
 
                         return form;
                     }.bind(this));
-                } else {
                 }
 
                 this.formPromise.then(function (form) {
@@ -63,6 +65,11 @@ define(
                 return this;
             },
 
+            /**
+             * Update the mass edit model each time a requirement is changed
+             *
+             * @param {object} data
+             */
             updateModel: function (data) {
                 FetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
                     var attributeRequirements = [];
@@ -86,6 +93,11 @@ define(
 
             },
 
+            /**
+             * Update the general model
+             *
+             * @param {Object} values
+             */
             setValue: function (values) {
                 var data = this.getFormData();
 
@@ -94,6 +106,11 @@ define(
                 this.setData(data);
             },
 
+            /**
+             * Get the value of the model
+             *
+             * @return {object}
+             */
             getValue: function () {
                 return this.getFormData().actions;
             }

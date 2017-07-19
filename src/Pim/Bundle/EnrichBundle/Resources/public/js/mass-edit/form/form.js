@@ -9,18 +9,22 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/router',
+        'routing',
         'oro/messenger',
         'pim/form/common/edit-form',
         'oro/loading-mask',
         'pim/template/mass-edit/form'
     ],
     function (
+        $,
         _,
         __,
         router,
+        Routing,
         messenger,
         BaseForm,
         LoadingMask,
@@ -33,12 +37,18 @@ define(
                 'click .wizard-action': 'applyAction'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             initialize: function (meta) {
                 this.config = _.extend({}, meta.config);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var step = this.currentStep === 'choose' ?
                     this.getChooseExtension() :
@@ -59,7 +69,7 @@ define(
                     selectLabel: __(this.config.selectLabel),
                     chooseLabel: __(this.config.chooseLabel),
                     configureLabel: __(this.config.configureLabel),
-                    confirmLabel: __(this.config.confirmLabel),
+                    confirmLabel: __(this.config.confirmLabel)
                 }));
 
                 this.$('.step').empty().append(step.render().$el);
@@ -67,6 +77,11 @@ define(
                 this.delegateEvents();
             },
 
+            /**
+             * Provide the list of operations available
+             *
+             * @return {array}
+             */
             getOperations: function () {
                 return _.chain(this.extensions)
                     .filter(function (extension) {
@@ -79,12 +94,22 @@ define(
                     }).value();
             },
 
+            /**
+             * Get the chose extension
+             *
+             * @return {object}
+             */
             getChooseExtension: function () {
                 return _.filter(this.extensions, function (extension) {
                     return extension.targetZone === 'choose';
                 })[0];
             },
 
+            /**
+             * The the porvided extension as the current one
+             *
+             * @param {object} operation
+             */
             setCurrentOperation: function (operation) {
                 var data = this.getFormData();
 
@@ -96,16 +121,33 @@ define(
                 this.render();
             },
 
+            /**
+             * Provide the current oparation
+             *
+             * @return {string}
+             */
             getCurrentOperation: function () {
                 return this.getFormData().operation;
             },
 
+            /**
+             * Get the operation module corresponding to the given parameter
+             *
+             * @param {string} operationCode
+             *
+             * @return {object}
+             */
             getOperationExtension: function (operationCode) {
                 return _.find(this.extensions, (extension) => {
                     return extension.options.config.label !== undefined && extension.getCode() === operationCode;
                 });
             },
 
+            /**
+             * Apply the action triggered by a dom event
+             *
+             * @param {Event} event
+             */
             applyAction: function (event) {
                 switch (event.target.dataset.actionTarget) {
                     case 'grid':
@@ -156,7 +198,12 @@ define(
 
                             messenger.notify(
                                 'success',
-                                __(this.config.launchedLabel, {operation: this.getOperationExtension(this.getCurrentOperation()).getLabel()})
+                                __(
+                                    this.config.launchedLabel,
+                                    {
+                                        operation: this.getOperationExtension(this.getCurrentOperation()).getLabel()
+                                    }
+                                )
                             );
                         })
                         .always(() => {

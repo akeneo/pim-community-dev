@@ -4,8 +4,9 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperation;
+use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,19 +28,25 @@ class MassEditController
     /** @var OperationJobLauncher */
     protected $operationJobLauncher;
 
+    /** @var ConverterInterface */
+    protected $operationConverter;
+
     /**
      * @param MassActionParametersParser  $parameterParser
      * @param GridFilterAdapterInterface  $filterAdapter
      * @param OperationJobLauncher        $operationJobLauncher
+     * @param ConverterInterface          $operationConverter
      */
     public function __construct(
         MassActionParametersParser $parameterParser,
         GridFilterAdapterInterface $filterAdapter,
-        OperationJobLauncher $operationJobLauncher
+        OperationJobLauncher $operationJobLauncher,
+        ConverterInterface $operationConverter
     ) {
         $this->parameterParser      = $parameterParser;
         $this->filterAdapter        = $filterAdapter;
         $this->operationJobLauncher = $operationJobLauncher;
+        $this->operationConverter   = $operationConverter;
     }
 
     /**
@@ -64,6 +71,7 @@ class MassEditController
     {
         $data = json_decode($request->getContent(), true);
 
+        $data = $this->operationConverter->convert($data);
         $operation = new MassEditOperation($data['jobInstanceCode'], $data['filters'], $data['actions']);
         $this->operationJobLauncher->launch($operation);
 

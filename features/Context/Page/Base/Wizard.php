@@ -24,11 +24,45 @@ class Wizard extends Form
             $this->elements,
             [
                 'Available attributes form' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'],
-                'Choose'                    => ['css' => '.AknButtonList.choose .AknButton--apply'],
-                'Configure'                 => ['css' => '.AknButtonList.configure .AknButton--apply'],
-                'Confirm'                   => ['css' => '.AknButtonList.confirm .AknButton--apply'],
+                'Cancel'                    => ['css' => '.AknButton[data-action-target="grid"]'],
+                'Choose'                    => ['css' => '.AknButton[data-action-target="choose"]'],
+                'Configure'                 => ['css' => '.AknButton[data-action-target="configure"]'],
+                'Confirm'                   => ['css' => '.AknButton[data-action-target="confirm"]'],
+                'Validate'                  => ['css' => '.AknButton[data-action-target="validate"]'],
             ]
         );
+    }
+
+    /**
+     * Go to the grid
+     *
+     * @return string
+     */
+    public function cancel()
+    {
+        $this->spin(function () {
+            $this->getElement('Cancel')->click();
+
+            return true;
+        }, 'Cannot got to the grid');
+
+        return $this->currentStep;
+    }
+
+    /**
+     * Go to the choose step
+     *
+     * @return string
+     */
+    public function select()
+    {
+        $this->spin(function () {
+            $this->getElement('Choose')->click();
+
+            return true;
+        }, 'Cannot got to the choose step');
+
+        return $this->currentStep;
     }
 
     /**
@@ -39,7 +73,7 @@ class Wizard extends Form
     public function choose()
     {
         $this->spin(function () {
-            $this->getElement('Choose')->click();
+            $this->getElement('Configure')->click();
 
             return true;
         }, 'Cannot got to the configuration step');
@@ -55,7 +89,7 @@ class Wizard extends Form
     public function configure()
     {
         $this->spin(function () {
-            $this->getElement('Configure')->click();
+            $this->getElement('Confirm')->click();
 
             return true;
         }, 'Cannot got to the confirm step');
@@ -71,7 +105,7 @@ class Wizard extends Form
     public function confirm()
     {
         $this->spin(function () {
-            $this->getElement('Confirm')->click();
+            $this->getElement('Validate')->click();
 
             return true;
         }, 'Cannot confirm the wizard');

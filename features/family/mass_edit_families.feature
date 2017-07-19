@@ -48,7 +48,7 @@ Feature: Mass Edit Families
     And I am on the families page
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    And I press the "Cancel" button
+    And I click on the cancel button of the mass edit
     Then I should be on the families page
 
   Scenario: Successfully mass edit more than 10 families
@@ -131,5 +131,5 @@ Feature: Mass Edit Families
     And I choose the "Set attribute requirements" operation
     And I display the Name attribute
     And I switch the attribute "name" requirement in channel "mobile"
-    And I move to the confirm page
-    Then The available attributes button should be disabled
+    And I move on to the next step
+    Then I should not see the text "Add Attribute"

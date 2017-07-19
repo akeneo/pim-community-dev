@@ -19,7 +19,7 @@ Feature: Apply a mass action on all entities
     And I select all entities
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
-    And I press the "Back" button
+    And I move on to the choose step
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "Same product"
@@ -75,7 +75,7 @@ Feature: Apply a mass action on all entities
     And I unselect row mega_boots
     When I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation
-    And I press the "Back" button
+    And I move on to the choose step
     And I choose the "Change status (enable / disable)" operation
     And I disable the products
     And I wait for the "update_product_value" job to finish

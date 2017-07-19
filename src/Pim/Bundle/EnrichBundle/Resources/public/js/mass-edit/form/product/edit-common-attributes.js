@@ -8,6 +8,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'routing',
@@ -16,9 +17,10 @@ define(
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/i18n',
-        'pim/template/mass-edit/product/edit-common-attributes',
+        'pim/template/mass-edit/product/edit-common-attributes'
     ],
     function (
+        $,
         _,
         __,
         Routing,
@@ -34,17 +36,31 @@ define(
             errors: null,
             formPromise: null,
             channel: null,
+            locales: [],
 
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
-                return FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')).then((channel) => {
+                return $.when(
+                    FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')),
+                    FetcherRegistry.getFetcher('locale').fetchActivated()
+                ).then((channel, locales) => {
                     this.channel = channel;
+                    this.locales = locales;
                 });
             },
 
+            /**
+             * {@inheritdoc}
+             */
             reset: function () {
                 this.setValue({});
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 var product = {
                     meta: {},
@@ -79,22 +95,33 @@ define(
                 return this;
             },
 
+            /**
+             * Update the mass edit model
+             *
+             * @param {Event} event
+             */
             updateModel: function (event) {
                 this.setValue(event.values);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             getDescription: function () {
                 return __(
                     this.config.description,
                     {
-                        locale: this.channel.locales.find((locale) => {
-                            return locale.code === UserContext.get('catalogLocale');
-                        }).label,
+                        locale: _.findWhere(this.locales, {code: UserContext.get('catalogLocale')}).label,
                         scope: i18n.getLabel(this.channel.labels, UserContext.get('catalogLocale'), this.channel.code)
                     }
                 );
             },
 
+            /**
+             * Update the model after dom event triggered
+             *
+             * @param {string} group
+             */
             setValue: function (values) {
                 var data = this.getFormData();
 
@@ -108,12 +135,22 @@ define(
                 this.setData(data);
             },
 
+            /**
+             * Get current value from mass edit model
+             *
+             * @return {string}
+             */
             getValue: function () {
                 var action = _.first(this.getFormData().actions);
 
                 return action ? action.normalized_values : null;
             },
 
+            /**
+             * Validate the model before confirmation
+             *
+             * @return {Promise}
+             */
             validate: function () {
                 return $.ajax({
                     method: 'POST',

@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/template/mass-edit/choose',
+        'pim/template/mass-edit/choose'
     ],
     function (
         _,
@@ -27,12 +27,18 @@ define(
                 'change .operation': 'updateOperation'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             initialize: function (meta) {
                 this.config = _.extend({}, meta.config);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.html(this.template({
                     operations: this.getParent().getOperations(),
@@ -45,10 +51,18 @@ define(
                 return this;
             },
 
+            /**
+             * Update the mass edit model
+             *
+             * @param {Event} event
+             */
             updateOperation: function (event) {
                 this.getParent().setCurrentOperation(event.target.value)
             },
 
+            /**
+             * {@inheritdoc}
+             */
             getLabel: function () {
                 return __(
                     this.config.title,
@@ -56,6 +70,9 @@ define(
                 );
             },
 
+            /**
+             * {@inheritdoc}
+             */
             getDescription: function () {
                 return '';
             }

@@ -40,6 +40,9 @@ define(
                 'change #hidden-tree-input': 'updateModel'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             reset: function () {
                 this.setValue([]);
 
@@ -48,6 +51,9 @@ define(
                 this.selectedCategories = [];
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (null === this.treePromise) {
                     FetcherRegistry.getFetcher('category').clear();
@@ -81,11 +87,21 @@ define(
                 return this;
             },
 
+            /**
+             * Update the mass edit model
+             *
+             * @param {Event} event
+             */
             updateModel: function (event) {
                 this.selectedCategories = event.target.value.split(',');
                 this.setValue(_.map(this.selectedCategories, this.getCategoryCode.bind(this)));
             },
 
+            /**
+             * Update the model after dom event triggered
+             *
+             * @param {string} group
+             */
             setValue: function (categories) {
                 var data = this.getFormData();
 
@@ -97,12 +113,22 @@ define(
                 this.setData(data);
             },
 
+            /**
+             * Get current value from mass edit model
+             *
+             * @return {string}
+             */
             getValue: function () {
-                var action = _.findWhere(this.getFormData().actions, {field: 'categories'})
+                var action = _.findWhere(this.getFormData().actions, {field: 'categories'});
 
                 return action ? action.value : null;
             },
 
+            /**
+             * Change the current tree
+             *
+             * @param {Event} event
+             */
             changeTree: function (event) {
                 this.currentTree = event.currentTarget.dataset.tree;
 
@@ -133,7 +159,7 @@ define(
                 }
 
                 return this.categoryCache[id].code;
-            },
+            }
         });
     }
 );

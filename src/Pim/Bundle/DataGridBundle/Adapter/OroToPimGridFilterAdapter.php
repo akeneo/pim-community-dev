@@ -37,25 +37,37 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
         if (in_array($parameters['gridName'], [self::PRODUCT_GRID_NAME])) {
             $filters = $this->massActionDispatcher->getRawFilters($parameters);
         } else {
-            $items = $this->massActionDispatcher->dispatch($parameters);
-
-            foreach ($items as &$object) {
-                if (is_array($object)) {
-                    $object = $object[0];
-                }
-            }
-
-            $itemIds = [];
-
-            foreach ($items as $item) {
-                $itemIds[] = $item->getId();
-            }
-
-            $filters = [
-                ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
-            ];
+            $filters = $this->adaptDefaultGrid($parameters);
         }
 
         return $filters;
+    }
+
+    /**
+     * Adapt filters for the default grids
+     *
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function adaptDefaultGrid(array $parameters): array
+    {
+        $items = $this->massActionDispatcher->dispatch($parameters);
+
+        foreach ($items as &$object) {
+            if (is_array($object)) {
+                $object = $object[0];
+            }
+        }
+
+        $itemIds = [];
+
+        foreach ($items as $item) {
+            $itemIds[] = $item->getId();
+        }
+
+        return [
+            ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
+        ];
     }
 }

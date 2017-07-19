@@ -75,6 +75,7 @@ class MassActionDispatcher
     public function dispatch(array $parameters)
     {
         $parameters = $this->prepareMassActionParameters($parameters);
+
         $datagrid = $parameters['datagrid'];
         $massAction = $parameters['massAction'];
 
@@ -138,7 +139,7 @@ class MassActionDispatcher
     /**
      * Dispatch datagrid mass action
      *
-     * @param Request $request
+     * @param array $parameters
      *
      * @throws \LogicException
      *

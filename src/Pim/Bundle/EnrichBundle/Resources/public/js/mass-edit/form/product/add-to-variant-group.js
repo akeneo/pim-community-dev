@@ -32,10 +32,16 @@ define(
                 'change .groups': 'updateModel'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             reset: function () {
                 this.setValue(null);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 FetcherRegistry.getFetcher('variant-group').fetchAll().then(function (groups) {
                     this.$el.html(this.template({
@@ -43,7 +49,8 @@ define(
                         groups: groups,
                         i18n: i18n,
                         readOnly: this.readOnly,
-                        locale: UserContext.get('uiLocale')
+                        locale: UserContext.get('uiLocale'),
+                        label: __('pim_enrich.mass_edit.product.operation.add_to_variant_group.field')
                     }));
 
                     this.$('.groups').select2();
@@ -52,10 +59,22 @@ define(
                 return this;
             },
 
+            /**
+             * Update the mass edit model
+             *
+             * @param {Event} event
+             */
             updateModel: function (event) {
-                this.setValue(event.target.value);
+                const value = event.target.value !== '' ? event.target.value : null;
+
+                this.setValue(value);
             },
 
+            /**
+             * Update the model after dom event triggered
+             *
+             * @param {string} group
+             */
             setValue: function (group) {
                 var data = this.getFormData();
 
@@ -67,6 +86,11 @@ define(
                 this.setData(data);
             },
 
+            /**
+             * Get current value from mass edit model
+             *
+             * @return {string}
+             */
             getValue: function () {
                 var action = _.findWhere(this.getFormData().actions, {field: 'variant_group'})
 

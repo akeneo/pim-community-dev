@@ -312,7 +312,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move to the confirm page
-    Then The available attributes button should be disabled
+    Then I should not see the text "Add Attribute"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6271
   Scenario: Successfully keep mass edit form fields disabled after switching groups

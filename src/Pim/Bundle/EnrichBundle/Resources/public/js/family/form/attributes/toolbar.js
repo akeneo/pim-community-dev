@@ -36,7 +36,7 @@ define([
             /**
              * {@inheritdoc}
              */
-            configure: function (config) {
+            configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', function (readOnly) {
                     this.readOnly = readOnly;
 
