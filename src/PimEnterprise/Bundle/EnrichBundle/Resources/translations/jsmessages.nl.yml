@@ -89,8 +89,9 @@ pimee_enrich:
     resolution:
       title: Resolutie
 pim_menu:
-  item:
+  tab:
     asset: Kenmerken
+  item:
     asset_category: Kenmerk categorieën
     proposal: Voorstellen
     published_product: Gepubliceerde producten

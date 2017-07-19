@@ -17,6 +17,15 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: 资源集合
+    attribute:
+      type:
+        pim_assets_collection: 资源集合
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: 只读
 pimee_enrich:
   form:
     job_instance:
@@ -147,8 +156,9 @@ pimee_enrich:
         width: '%value%px 宽度'
         height: '%value%px 高度'
 pim_menu:
-  item:
+  tab:
     asset: 资产
+  item:
     asset_category: 资产分类
     proposal: 提案
     published_product: 已发布的产品

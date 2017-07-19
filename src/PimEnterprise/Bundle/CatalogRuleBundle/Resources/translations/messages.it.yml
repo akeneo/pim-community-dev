@@ -29,7 +29,7 @@ pimee_catalog_rule:
     label: Se %field% %operator% %value%
     operators:
       "STARTS WITH": inizia con
-      "ENDS WITH": conclude con
+      "ENDS WITH": finisce per
       "CONTAINS": contiene
       "DOES NOT CONTAIN": non contiene
       "EMPTY": è vuoto
@@ -98,6 +98,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: Prodotti interessati dalle regole
     perform.label: Conta i prodotti interessati
+    execute_rules.label: Esecuzione regole
   csv_product_import_with_rules:
     label: Importazione prodotti in formato CSV con regole
     execute_rules.label: Esecuzione regole

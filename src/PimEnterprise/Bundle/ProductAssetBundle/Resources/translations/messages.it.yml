@@ -115,7 +115,7 @@ pimee_product_asset:
   asset:
     title: Asset
   mass_upload:
-    menu: Caricamento di asset
+    menu: Carica asset
     new: Verrà creato un nuovo asset
     add_files: aggiungi file
     start: Inizia il caricamento
@@ -149,8 +149,8 @@ pimee_product_asset:
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: Spostare gli asset nelle categorie
-      description: Gli asset saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso
+      label: Sposta gli asset nelle categorie
+      description: Gli asset saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso
       success_flash: L'asset/gli asset è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     add-tags-to-assets:
@@ -186,8 +186,8 @@ batch_jobs:
     validation.label: Validazione file
     import_asset.label: Importazione in Yaml della configurazione del canale asset
   yml_asset_channel_configuration_export:
-    label: Esportazione in Yaml della configurazione del canale asset
-    export.label: Esportazione in Yaml della configurazione del canale asset
+    label: Configurazione dell'esportazione in Yaml degli asset
+    export.label: Configurazione dell'esportazione in Yaml degli asset
   csv_asset_import:
     label: Importazione asset in CSV
     validation.label: Validazione file
@@ -237,7 +237,7 @@ batch_jobs:
     label: Esportazione categorie asset in XLSX
     export.label: Esportazione categorie asset in XLSX
   classify_assets:
-    perform.label: Spostare gli asset nelle categorie
+    perform.label: Sposta gli asset nelle categorie
   add_tags_to_assets:
     perform.label: Aggiungi tag agli asset
 pim_analytics:

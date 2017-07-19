@@ -50,6 +50,11 @@ pimee_catalog_rule:
           success: Ha eliminado las reglas.
           error: Ha ocurrido un error durante la eliminación de las reglas.
           empty_selection: Ninguna regla seleccionada.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Reglas
 confirmation:
   remove:
     rule: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción'

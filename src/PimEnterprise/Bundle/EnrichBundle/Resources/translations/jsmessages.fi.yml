@@ -17,6 +17,9 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: Resurssien keruu
+    attribute:
+      type:
+        pim_assets_collection: Resurssien keruu
 pimee_enrich:
   form:
     job_instance:
@@ -147,8 +150,9 @@ pimee_enrich:
         width: '%value%px leveys'
         height: '%value%px korkeus'
 pim_menu:
-  item:
+  tab:
     asset: Resurssit
+  item:
     asset_category: Resurssikategoriat
     proposal: Ehdotukset
     published_product: Julkaistut tuotteet

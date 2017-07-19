@@ -50,6 +50,11 @@ pimee_catalog_rule:
           success: 成功删除规则
           error: 在删除规则时发生了错误
           empty_selection: 没有选中的规则
+  form:
+    attribute:
+      tab:
+        rules:
+          title: 规则
 confirmation:
   remove:
     rule: 是否确实要删除此规则？不能撤消此操作！
