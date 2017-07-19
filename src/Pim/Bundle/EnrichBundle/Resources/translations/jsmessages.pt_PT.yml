@@ -189,9 +189,6 @@ pim_enrich:
           family: Escolha uma família
           save: Guardar
           cancel: Cancelar
-    attribute:
-      scopable: Com âmbito definível
-      global: Global
     association_type:
       meta:
         created: Criado
@@ -220,21 +217,6 @@ pim_enrich:
         updated: Atualizado
       btn:
         save: Guardar
-    attribute_label:
-      pim_catalog_identifier: Identificador
-      pim_catalog_text: Texto
-      pim_catalog_textarea: Área de Texto
-      pim_catalog_number: Número
-      pim_catalog_price_collection: Preço
-      pim_catalog_multiselect: Seleção múltipla
-      pim_catalog_simpleselect: Seleção simples
-      pim_catalog_file: Ficheiro
-      pim_catalog_image: Imagem
-      pim_catalog_boolean: "Sim/Não"
-      pim_catalog_date: Data
-      pim_catalog_metric: Métrica
-      pim_reference_data_simpleselect: Selecione os dados de referência simples
-      pim_reference_data_multiselect: Referência de dados multi selecionáveis
     attribute_option:
       code: Código
       label: Rótulo
@@ -256,6 +238,27 @@ pim_enrich:
         product_count: Produtos
         created: Criado
         updated: Atualizado
+    attribute:
+      scopable: Com âmbito definível
+      type:
+        pim_catalog_identifier: Identificador
+        pim_catalog_text: Texto
+        pim_catalog_textarea: Área de Texto
+        pim_catalog_number: Número
+        pim_catalog_price_collection: Preço
+        pim_catalog_multiselect: Seleção múltipla
+        pim_catalog_simpleselect: Seleção simples
+        pim_catalog_file: Ficheiro
+        pim_catalog_image: Imagem
+        pim_catalog_boolean: "Sim/Não"
+        pim_catalog_date: Data
+        pim_catalog_metric: Métrica
+        pim_reference_data_simpleselect: Selecione os dados de referência simples
+        pim_reference_data_multiselect: Referência de dados multi selecionáveis
+      validation_rule:
+        email: E-mail
+        regexp: Expressões regulares
+        url: URL
     attribute_group:
       info:
         update_successful: Grupo de atributos atualizado com sucesso
@@ -525,6 +528,46 @@ pim_enrich:
         history:
           title: Histórico
       file_path: Caminho do ficheiro
+    attribute:
+      meta:
+        created: Criado
+        updated: Última atualização
+      tab:
+        properties:
+          title: Propriedades
+          section:
+            common: Parâmetros gerais
+            validation: Parâmetros de validação
+          label:
+            allowed_extensions: Extensões permitidas
+            available_locales: Linguagens disponíveis
+            code: Código
+            date_max: Data máxima
+            date_min: Data mínima
+            default_metric_unit: Unidade métrica padrão
+            group: Grupo de atributos
+            is_locale_specific: Específicas de uma linguagem
+            max_characters: Máximo de carateres
+            max_file_size: Tamanho máximo do ficheiro (MB)
+            metric_family: Família métrica
+            number_max: Número máximo
+            number_min: Número mínimo
+            type: Tipo
+            unique: Valor único
+            useable_as_grid_filter: Utilizável em grelha
+            validation_regexp: Expressões regulares
+            validation_rule: Regra de validação
+          default_label:
+            default_metric_unit: Escolha uma unidade
+            group: Escolha o grupo de atributos
+            metric_family: Escolha uma família
+            reference_data_name: Escolha o tipo de dados de referência
+        labels:
+          title: Traduções de rótulo
+        choices:
+          title: Opções
+        history:
+          title: Histórico
     mass_edit:
       family:
         attributes:

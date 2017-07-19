@@ -200,9 +200,6 @@ pim_enrich:
           family: 选择一个品类
           save: 保存
           cancel: 取消
-    attribute:
-      scopable: 范围允许
-      global: 全局
     association_type:
       meta:
         created: 已创建
@@ -239,21 +236,6 @@ pim_enrich:
         updated_by: 更新者：
       btn:
         save: 保存
-    attribute_label:
-      pim_catalog_identifier: 标识
-      pim_catalog_text: 文本
-      pim_catalog_textarea: 文本区域
-      pim_catalog_number: 数量
-      pim_catalog_price_collection: 价格
-      pim_catalog_multiselect: 多选
-      pim_catalog_simpleselect: 单选
-      pim_catalog_file: 文件
-      pim_catalog_image: 图片
-      pim_catalog_boolean: "确定/取消"
-      pim_catalog_date: 日期
-      pim_catalog_metric: 公制
-      pim_reference_data_simpleselect: 参考数据简单选择
-      pim_reference_data_multiselect: 参考数据多项选择
     attribute_option:
       code: 代码
       label: 标签
@@ -285,6 +267,27 @@ pim_enrich:
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
+    attribute:
+      scopable: 范围允许
+      type:
+        pim_catalog_identifier: 标识
+        pim_catalog_text: 文本
+        pim_catalog_textarea: 文本区域
+        pim_catalog_number: 数量
+        pim_catalog_price_collection: 价格
+        pim_catalog_multiselect: 多选
+        pim_catalog_simpleselect: 单选
+        pim_catalog_file: 文件
+        pim_catalog_image: 图片
+        pim_catalog_boolean: "确定/取消"
+        pim_catalog_date: 日期
+        pim_catalog_metric: 公制
+        pim_reference_data_simpleselect: 参考数据简单选择
+        pim_reference_data_multiselect: 参考数据多项选择
+      validation_rule:
+        email: 电子邮件
+        regexp: 正则表达式
+        url: 链接地址
     attribute_group:
       info:
         update_successful: 属性组已更新
@@ -541,6 +544,46 @@ pim_enrich:
         history:
           title: 历史
       file_path: 文件路径
+    attribute:
+      meta:
+        created: 已创建
+        updated: 上次更新
+      tab:
+        properties:
+          title: 属性
+          section:
+            common: 一般参数
+            validation: 验证参数
+          label:
+            allowed_extensions: 允许的扩展
+            available_locales: 可用区域
+            code: 代码
+            date_max: 最大日期
+            date_min: 最小日期
+            default_metric_unit: 默认度量单位
+            group: 属性组
+            is_locale_specific: 特定的区域
+            max_characters: 最大字符数
+            max_file_size: 最大文件大小 (MB)
+            metric_family: 度量族
+            number_max: 最大编号
+            number_min: 最小编号
+            type: 类型
+            unique: 唯一性值
+            useable_as_grid_filter: 在表格中可用
+            validation_regexp: 正则表达式
+            validation_rule: 验证规则
+          default_label:
+            default_metric_unit: 选择一个单位
+            group: 选择属性组
+            metric_family: 选择一个品类
+            reference_data_name: 选择引用的数据类型
+        labels:
+          title: 标签翻译
+        choices:
+          title: 选项
+        history:
+          title: 历史
     mass_edit:
       family:
         attributes:
