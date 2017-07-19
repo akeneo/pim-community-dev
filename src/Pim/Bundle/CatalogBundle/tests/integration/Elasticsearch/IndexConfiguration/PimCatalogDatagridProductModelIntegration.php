@@ -886,4 +886,163 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
             ]
         );
     }
+
+    public function testSearchMaterialCottonAndColorRed()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'should' => [
+                        // Color level product & material level parent 1
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'term' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => 'red',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.material-option.<all_channels>.<all_locales>' => 'cotton',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color level product & material level parent 2
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'term' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => 'red',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'term' => [
+                                                            'values.material-option.<all_channels>.<all_locales>' => 'cotton',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Color parent 2 & material level parent 1
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'term' => [
+                                                            'values.color-option.<all_channels>.<all_locales>' => 'red',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.material-option.<all_channels>.<all_locales>' => 'cotton',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Material and color at the same level parent _1
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.color-option.<all_channels>.<all_locales>' => 'red',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.material-option.<all_channels>.<all_locales>' => 'cotton',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Material and color at the same level product
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'term' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => 'red',
+                                        ],
+                                    ],
+                                    [
+                                        'term' => [
+                                            'values.material-option.<all_channels>.<all_locales>' => 'cotton',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'tshirt-red',
+                'tshirt-unique-color',
+                'tshirt-unique-size-red',
+            ]
+        );
+    }
 }
