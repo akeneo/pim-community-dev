@@ -1,0 +1,47 @@
+# cf https://github.com/blog/2392-introducing-code-owners
+
+*       @momoss
+
+# all common, reviewable by every core mate
+# !src/Acme/**
+# !src/Behat/**
+# !src/Oro/**
+# !features/**
+#!tests/**
+# !upgrades/**
+# !./*
+
+# our infra libraries
+# src/Akeneo/** @akeneo/core-libraries
+
+# our core context
+# src/Pim/Bundle/CatalogBundle/** @akeneo/core-catalog
+# src/Pim/Component/Catalog/**    @akeneo/core-catalog
+# src/Pim/Bundle/ReferenceDataBundle/** @akeneo/core-catalog
+# src/Pim/Component/ReferenceData/**    @akeneo/core-catalog
+# src/Pim/Bundle/VersionningBundle/** @akeneo/core-catalog
+
+# connector & api context
+# src/Pim/Bundle/ApiBundle/** @akeneo/core-web-api
+# src/Pim/Component/Api/** @akeneo/core-web-api
+# src/Pim/Bundle/ConnectorBundle/** @akeneo/core-import-export
+# src/Pim/Component/Connector/** @akeneo/core-import-export
+
+# our ui adapter
+# src/Pim/Component/Enrich/**           @akeneo/core-ui
+# src/Pim/Bundle/CommentBundle/**       @akeneo/core-ui
+# src/Pim/Bundle/DashboardBundle/**     @akeneo/core-ui
+# src/Pim/Bundle/DataGridBundle/**      @akeneo/core-ui
+# src/Pim/Bundle/EnrichBundle/**        @akeneo/core-ui
+# src/Pim/Bundle/FilterBundle/**        @akeneo/core-ui
+# src/Pim/Bundle/ImportExportBundle/**  @akeneo/core-ui
+# src/Pim/Bundle/NavigationBundle/**    @akeneo/core-ui
+# src/Pim/Bundle/NotificationBundle/**  @akeneo/core-ui
+# src/Pim/Bundle/PdfGeneratorBundle/**  @akeneo/core-ui
+# src/Pim/Bundle/UIBundle/**            @akeneo/core-ui
+# frontend/**                           @akeneo/core-ui
+# web/**                                @akeneo/core-ui
+
+# docker packaging
+# docker/**                            @akeneo/core-docker
+# docker-compose.yml.dist              @akeneo/core-docker
