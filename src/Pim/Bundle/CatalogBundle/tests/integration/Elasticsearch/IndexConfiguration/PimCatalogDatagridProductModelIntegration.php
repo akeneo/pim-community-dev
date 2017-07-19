@@ -398,8 +398,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
     /**
      * Search for a model parent 1 in its values and the value of his parent.
-     *
-     * @group todo
      */
     public function testSearchColorGreyAndDescriptionTshirt()
     {
@@ -697,5 +695,195 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         );
 
         $this->assertProducts($productsFound, ['biker-jacket-polyester-m', 'biker-jacket-leather-m']);
+    }
+
+    public function testSearchNotColorGrey()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        'term' => [
+                            'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                        ],
+                    ],
+                    'filter'   => [
+                        'exists' => [
+                            'field' => 'values.color-option.<all_channels>.<all_locales>',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-tshirt-blue',
+                'model-tshirt-red',
+                'model-tshirt-unique-color',
+                'watch',
+                'tshirt-unique-size-blue',
+                'tshirt-unique-size-red',
+                'tshirt-unique-size-yellow',
+                'running-shoes-s-white',
+                'running-shoes-s-blue',
+                'running-shoes-s-red',
+                'running-shoes-m-white',
+                'running-shoes-m-blue',
+                'running-shoes-m-red',
+                'running-shoes-l-white',
+                'running-shoes-l-blue',
+                'running-shoes-l-red',
+                'model-biker-jacket',
+            ]
+        );
+    }
+
+    /** @group todo */
+    public function testSearchNotColorGreyAndSizeS()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'should' => [
+                        // Color level product & Size level parent 1
+                        [
+                            'bool' => [
+                                'must_not' => [
+                                    'term' => [
+                                        'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                                    ],
+                                ],
+                                'filter'   => [
+                                    [
+                                        'exists' => [
+                                            'field' => 'values.color-option.<all_channels>.<all_locales>',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.size-option.<all_channels>.<all_locales>' => 's',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Size level product & Color level parent 1
+                        [
+                            'bool' => [
+                                'must_not' => [
+                                    'has_parent' => [
+                                        'type'  => 'pim_catalog_product_model_parent_1',
+                                        'query' => [
+                                            'term' => [
+                                                'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'filter'   => [
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'exists' => [
+                                                    'field' => 'values.color-option.<all_channels>.<all_locales>',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'term' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => 's',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                        // Size product level & color model parent 2
+                        [
+                            'bool' => [
+                                'must_not' => [
+                                    'has_parent' => [
+                                        'type'  => 'pim_catalog_product_model_parent_1',
+                                        'query' => [
+                                            'has_parent' => [
+                                                'type'  => 'pim_catalog_product_model_parent_2',
+                                                'query' => [
+                                                    'term' => [
+                                                        'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'filter'   => [
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'exists' => [
+                                                            'field' => 'values.color-option.<all_channels>.<all_locales>',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'term' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => 's',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'tshirt-blue-s',
+                'tshirt-red-s',
+                'tshirt-unique-color-s',
+                'running-shoes-s-white',
+                'running-shoes-s-blue',
+                'running-shoes-s-red',
+                'biker-jacket-leather-s',
+                'biker-jacket-polyester-s',
+            ]
+        );
     }
 }
