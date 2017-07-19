@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -67,7 +68,7 @@ class AddVariantGroupAxesSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         $form->add(
             'axisAttributes',
-            'entity',
+            EntityType::class,
             array_merge($options, $extraOptions)
         );
     }
