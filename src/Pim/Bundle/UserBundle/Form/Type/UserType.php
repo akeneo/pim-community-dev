@@ -106,33 +106,33 @@ class UserType extends AbstractType
                 'rolesCollection',
                 EntityType::class,
                 [
-                    'label'          => 'Roles',
-                    'class'          => 'OroUserBundle:Role',
-                    'property'       => 'label',
-                    'query_builder'  => $this->roleRepository->getAllButAnonymousQB(),
-                    'multiple'       => true,
-                    'expanded'       => true,
-                    'required'       => !$this->isMyProfilePage,
-                    'attr'           => [
-                        'read_only'  => $this->isMyProfilePage,
+                    'label'         => 'Roles',
+                    'class'         => 'OroUserBundle:Role',
+                    'choice_label'  => 'label',
+                    'query_builder' => $this->roleRepository->getAllButAnonymousQB(),
+                    'multiple'      => true,
+                    'expanded'      => true,
+                    'required'      => !$this->isMyProfilePage,
+                    'attr'          => [
+                        'read_only' => $this->isMyProfilePage,
                     ],
-                    'disabled'       => $this->isMyProfilePage,
+                    'disabled'      => $this->isMyProfilePage,
                 ]
             )
             ->add(
                 'groups',
                 EntityType::class,
                 [
-                    'class'          => 'OroUserBundle:Group',
-                    'property'       => 'name',
-                    'query_builder'  => $this->groupRepository->getAllButDefaultQB(),
-                    'multiple'       => true,
-                    'expanded'       => true,
-                    'required'       => false,
-                    'attr'           => [
-                        'read_only'  => $this->isMyProfilePage,
+                    'class'         => 'OroUserBundle:Group',
+                    'choice_label'  => 'name',
+                    'query_builder' => $this->groupRepository->getAllButDefaultQB(),
+                    'multiple'      => true,
+                    'expanded'      => true,
+                    'required'      => false,
+                    'attr'          => [
+                        'read_only' => $this->isMyProfilePage,
                     ],
-                    'disabled'       => $this->isMyProfilePage
+                    'disabled'      => $this->isMyProfilePage,
                 ]
             )
             ->add(
