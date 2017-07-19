@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -10,6 +11,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
 /**
@@ -129,23 +131,26 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
                     }
 
-                    $attributeSet = $this->attributeSetFactory->create();
+                    if (null === $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'])) {
+                        $attributeSet = $this->attributeSetFactory->create();
+                        $attributeSet->setLevel($attributeSetData['level']);
+
+                        $familyVariant->addVariantAttributeSet($attributeSet);
+                    }
+
                     $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
-                    $attributeSet->setLevel($attributeSetData['level']);
                     if (isset($attributeSetData['attributes'])) {
                         $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
                     }
-
-                    $familyVariant->addVariantAttributeSet($attributeSet);
                 }
                 break;
         }
     }
 
     /**
-     * @param array $attributeCodes
+     * @param string[] $attributeCodes
      *
-     * @return array
+     * @return AttributeInterface[]
      */
     private function getAttributes(array $attributeCodes): array
     {

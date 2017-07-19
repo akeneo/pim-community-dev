@@ -191,6 +191,22 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following family variants:$/
+     */
+    public function theFollowingFamilyVariants(TableNode $table)
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family_variant');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family_variant');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.family_variant');
+
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
      * Generates a given number of families.
      *
      * @param int $familyNumber
@@ -511,9 +527,9 @@ class FixturesContext extends BaseFixturesContext
                             function (AttributeInterface $attribute) {
                                 return $attribute->getCode();
                             }
-                        );
+                        )->toArray();
 
-                        $this->assertArrayEquals(explode(',', $value), $variantAttributeCodes->toArray());
+                        $this->assertArrayEquals(explode(',', $value), $variantAttributeCodes);
                     }
                 } elseif (preg_match('/^variant-axes_(?P<level>.*)$/', $key, $matches)) {
                     $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
@@ -525,9 +541,9 @@ class FixturesContext extends BaseFixturesContext
                             function (AttributeInterface $attribute) {
                                 return $attribute->getCode();
                             }
-                        );
+                        )->toArray();
 
-                        $this->assertArrayEquals(explode(',', $value), $variantAxeCodes->toArray());
+                        $this->assertArrayEquals(explode(',', $value), $variantAxeCodes);
                     }
                 } else {
                     throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));

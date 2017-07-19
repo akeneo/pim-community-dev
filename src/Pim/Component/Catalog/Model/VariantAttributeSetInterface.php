@@ -30,7 +30,7 @@ interface VariantAttributeSetInterface
     public function hasAttribute(AttributeInterface $attribute): bool;
 
     /**
-     * @param array $attributes
+     * @param AttributeInterface[] $attributes
      */
     public function setAttributes(array $attributes): void;
 
@@ -40,7 +40,7 @@ interface VariantAttributeSetInterface
     public function getAxes(): Collection;
 
     /**
-     * @param array $axes
+     * @param AttributeInterface[] $axes
      */
     public function setAxes(array $axes): void;
 
