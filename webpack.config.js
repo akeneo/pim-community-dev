@@ -150,6 +150,10 @@ module.exports = {
         ]
     },
 
+    watchOptions: {
+        ignored: /node_modules|app|app\/cache|vendor/
+    },
+
     // Support old loader declarations
     resolveLoader: {
         moduleExtensions: ['-loader']
@@ -174,6 +178,7 @@ module.exports = {
         new webpack.WatchIgnorePlugin([
             resolve(rootDir, './node_modules'),
             resolve(rootDir, './app'),
+            resolve(rootDir, './app/cache'),
             resolve(rootDir, './vendor')
         ]),
 

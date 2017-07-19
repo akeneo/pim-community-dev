@@ -63,6 +63,11 @@ extensions:
         targetZone: title
         position: 100
 
+    pim-product-edit-form-product-completeness:
+        module: pim/product-edit-form/product-completeness
+        parent: pim-product-edit-form
+        targetZone: meta
+
     pim-product-edit-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-product-edit-form
@@ -82,13 +87,6 @@ extensions:
                 success: pim_enrich.entity.product.info.deletion_successful
                 fail: pim_enrich.entity.product.info.deletion_failed
             redirect: pim_enrich_product_index
-
-    pim-product-edit-form-status-switcher:
-        module: pim/product-edit-form/status-switcher
-        parent: pim-product-edit-form
-        targetZone: title-buttons
-        aclResourceId: pim_enrich_product_change_state
-        position: 110
 
     pim-product-edit-form-download-pdf:
         module: pim/product-edit-form/download-pdf
@@ -121,12 +119,19 @@ extensions:
         module: pim/product-edit-form/meta/family
         parent: pim-product-edit-form-meta
         targetZone: meta
+        position: 70
+
+    pim-product-edit-form-status-switcher:
+        module: pim/product-edit-form/meta/status-switcher
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        aclResourceId: pim_enrich_product_change_state
         position: 80
 
     pim-product-edit-form-change-family:
         module: pim/product-edit-form/meta/change-family
         parent: pim-product-edit-form-family
-        targetZone: self
+        targetZone: buttons
         aclResourceId: pim_enrich_product_change_family
         position: 100
 

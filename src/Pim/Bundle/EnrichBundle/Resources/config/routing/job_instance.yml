@@ -3,6 +3,16 @@ pim_enrich_job_instance_rest_import_get:
     defaults: { _controller: pim_enrich.controller.rest.job_instance:getImportAction }
     methods: [GET]
 
+pim_enrich_job_instance_rest_import_create:
+    path: /rest/import
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:createImportAction }
+    methods: [POST]
+
+pim_enrich_job_instance_rest_export_create:
+    path: /rest/export
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:createExportAction }
+    methods: [POST]
+
 pim_enrich_job_instance_rest_import_put:
     path: /rest/import/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.job_instance:putImportAction }
@@ -37,3 +47,8 @@ pim_enrich_job_instance_rest_export_launch:
     path: /rest/export/{code}/launch
     defaults: { _controller: pim_enrich.controller.rest.job_instance:launchExportAction }
     methods: [POST, GET]
+
+pim_enrich_job_instance_rest_jobs_get:
+    path: /rest/jobs
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:getJobNamesAction }
+    methods: [GET]

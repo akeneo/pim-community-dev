@@ -427,6 +427,7 @@ pim_enrich:
         "no": "Ne"
         "yes": "Da"
     variant_group:
+      axis.help: 'Osi definiraju atribute nad kojima treba razlikovati proizvode grupe. Osi su atributi s opcijama koje nisu lokalizirane niti u djelokrugu. Ne mogu se mijenjati nakon kreiranja varijante grupe.'
       tab:
         properties:
           title: Svojstva

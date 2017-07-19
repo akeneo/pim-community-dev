@@ -36,6 +36,7 @@ Feature: Validate identifier attribute of a product
     And I change the "Validation rule" to "Regular expression"
     And I change the "Regular expression" to "/^sku-\d*$/"
     And I save the attribute
+    And I should not see the text "There are unsaved changes"
     When I am on the "foo" product page
     And I change the SKU to "001"
     And I save the product

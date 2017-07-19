@@ -152,14 +152,18 @@ pim_enrich:
         info:
             update_failed: Update failed
             update_successful: Successfully updated
+        create_popin:
+             code: Code
+             label: Label
+             labels:
+                 save: Save
+                 cancel: Cancel
         product:
             navigation: Product navigation
             infos: Product infos
             title: product
             btn:
-                enable: Enable
                 enabled: Enabled
-                disable: Disable
                 disabled: Disabled
                 download_pdf: PDF
                 compare_translate: Compare / Translate
@@ -200,6 +204,7 @@ pim_enrich:
                         group_label: Label
                         more_products: '{{ count }} more products...'
                         close: Close
+                status: Status
             copy:
                 select: Select
                 all: All
@@ -225,6 +230,9 @@ pim_enrich:
                     family: Choose a family
                     save: Save
                     cancel: Cancel
+            message:
+                created: Product successfully created
+            completeness: Complete
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -240,6 +248,10 @@ pim_enrich:
             btn:
                 save: Save
             title: association type
+            create_popin:
+                title: Create a new association type
+            message:
+                created: Association type successfully created
         group_type:
             info:
                 deletion_successful: Group type successfully deleted.
@@ -255,6 +267,10 @@ pim_enrich:
             btn:
                 save: Save
             title: group type
+            create_popin:
+                title: Create a new group type
+            message:
+                created: Group type successfully created
         channel:
             title: channel
             info:
@@ -288,6 +304,10 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+            create_popin:
+                title: Create a new family
+            message:
+                created: Family successfully created
         attribute_option:
             code: Code
             label: Label
@@ -310,6 +330,10 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+            create_popin:
+                title: Create a new variant group
+            message:
+                created: Variant group successfully created
         group:
             title: Group
             info:
@@ -326,6 +350,10 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
+            create_popin:
+                title: Create a new group
+            message:
+                created: Group successfully created
         job_instance:
             title: job profile
             info:
@@ -507,6 +535,7 @@ pim_enrich:
                 "no": "No"
                 "yes": "Yes"
         variant_group:
+            axis.help: Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group
             tab:
                 properties:
                     title: Properties
@@ -866,6 +895,11 @@ pim_enrich:
         import_profiles:
             title:      Import profile overview
             create_btn: Create import profile
+            list:       Select a job
+            create_popin:
+                title: Create a new import profile
+            message:
+                created: Import profile successfully created
         import_history:
             title:      Import reports
         variant_group:
@@ -877,6 +911,10 @@ pim_enrich:
         export_profiles:
             title:      Export profile overview
             create_btn: Create export profile
+            create_popin:
+                title: Create a new export profile
+            message:
+                created: Export profile successfully created
         export_history:
             title:      Export reports
         family:
@@ -992,6 +1030,190 @@ batch_jobs:
         label: Add to variant group
         perform:
             label: Add to variant group
+    csv_product_export:
+        label: Product export in CSV
+        export.label: Product export
+    csv_category_export:
+        label: Category export in CSV
+        export.label: Category export
+    csv_attribute_export:
+        label: Attribute export in CSV
+        export.label: Attribute export
+    csv_attribute_option_export:
+        label: Attribute option export in CSV
+        export.label: Attribute option export
+    csv_association_type_export:
+        label: Association type export in CSV
+        export.label: Association type export
+    csv_group_export:
+        label: Group export in CSV
+        export.label: Group export
+    csv_variant_group_export:
+        label: Variant group export in CSV
+        export.label: Variant group export
+    csv_family_export:
+        label: Family export in CSV
+        export.label: Family export
+    csv_product_import:
+        label: Product import in CSV
+        validation.label: File validation
+        import.label: Product import
+        import_associations.label: Association import
+    csv_category_import:
+        label: Category import in CSV
+        validation.label: File validation
+        import.label: Category import
+    csv_attribute_import:
+        label: Attribute import in CSV
+        validation.label: File validation
+        import.label: Attribute import
+    csv_attribute_option_import:
+        label: Attribute option import in CSV
+        validation.label: File validation
+        import.label: Attribute option import
+    csv_association_type_import:
+        label: Association type import in CSV
+        validation.label: File validation
+        import.label: Association type import
+    csv_family_import:
+        label: Family import in CSV
+        validation.label: File validation
+        import.label: Family import
+    csv_group_import:
+        label: Group import in CSV
+        validation.label: File validation
+        import.label: Group import
+    csv_variant_group_import:
+        label: Variant group import in CSV
+        validation.label: File validation
+        import.label: Variant group import
+    csv_channel_export:
+        label: Channel export in CSV
+        export.label: Channel export
+    csv_locale_export:
+        label: Locale export in CSV
+        export.label: Locale export
+    csv_attribute_group_export:
+        label: Attribute group export in CSV
+        export.label: Attribute group export
+    csv_currency_export:
+        label: Currency export in CSV
+        export.label: Currency export
+    csv_group_type_export:
+        label: Group type export in CSV
+        export.label: Group type export
+    csv_channel_import:
+        label: Channel import in CSV
+        validation.label: File validation
+        import.label: Channel import
+    csv_locale_import:
+        label: Locale import in CSV
+        validation.label: File validation
+        import.label: Locale import
+    csv_attribute_group_import:
+        label: Attribute group import in CSV
+        validation.label: File validation
+        import.label: Attribute group import
+    csv_currency_import:
+        label: Currency import in CSV
+        validation.label: File validation
+        import.label: Currency import
+    csv_group_type_import:
+        label: Group type import in CSV
+        validation.label: File validation
+        import.label: Group type import
+    xlsx_category_import:
+        label: Category import in XLSX
+        validation.label: File validation
+        import.label: Category import
+    xlsx_association_type_import:
+        label: Association type import in XLSX
+        validation.label: File validation
+        import.label: Association type import
+    xlsx_attribute_import:
+        label: Attribute import in XLSX
+        validation.label: File validation
+        import.label: Attribute import
+    xlsx_attribute_option_import:
+        label: Attribute option import in XLSX
+        validation.label: File validation
+        import.label: Attribute option import
+    xlsx_family_import:
+        label: Family import in XLSX
+        validation.label: File validation
+        import.label: Family import
+    xlsx_product_export:
+        label: Product export in XLSX
+        export.label: Product export
+    xlsx_product_import:
+        label: Product import in XLSX
+        validation.label: File validation
+        import.label: Product import
+        import_associations.label: Association import
+    xlsx_group_export:
+        label: Group export in XLSX
+        export.label: Group export
+    xlsx_variant_group_export:
+        label: Variant group export in XLSX
+        export.label: Variant group export
+    xlsx_group_import:
+        label: Group import in XLSX
+        validation.label: File validation
+        import.label: Group import
+    xlsx_variant_group_import:
+        label: Variant group import in XLSX
+        validation.label: File validation
+        import.label: Variant Group import
+    xlsx_family_export:
+        label: Family export in XLSX
+        export.label: Family export
+    xlsx_category_export:
+        label: Category export in XLSX
+        export.label: Category export
+    xlsx_attribute_export:
+        label: Attribute export in XLSX
+        export.label: Attribute export in XLSX
+    xlsx_attribute_option_export:
+        label: Attribute option export in XLSX
+        export.label: Attribute option export in XLSX
+    xlsx_association_type_export:
+        label: Association type export in XLSX
+        export.label: Association type export in XLSX
+    xlsx_channel_export:
+        label: Channel export in XLSX
+        export.label: Channel export
+    xlsx_locale_export:
+        label: Locale export in XLSX
+        export.label: Locale export
+    xlsx_attribute_group_export:
+        label: Attribute group export in XLSX
+        export.label: Attribute group export
+    xlsx_currency_export:
+        label: Currency export in XLSX
+        export.label: Currency export
+    xlsx_group_type_export:
+        label: Group type export in XLSX
+        export.label: Group type export
+    xlsx_channel_import:
+        label: Channel import in XLSX
+        validation.label: File validation
+        import.label: Channel import
+    xlsx_locale_import:
+        label: Locale import in XLSX
+        validation.label: File validation
+        import.label: Locale import
+    xlsx_attribute_group_import:
+        label: Attribute group import in XLSX
+        validation.label: File validation
+        import.label: Attribute group import
+    xlsx_currency_import:
+        label: Currency import in XLSX
+        validation.label: File validation
+        import.label: Currency import
+    xlsx_group_type_import:
+        label: Group type import in XLSX
+        validation.label: File validation
+        import.label: Group type import
 
 job_tracker:
     download_archive:

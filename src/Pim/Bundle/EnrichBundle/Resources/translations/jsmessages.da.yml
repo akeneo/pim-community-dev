@@ -469,6 +469,7 @@ pim_enrich:
         "no": "Nej"
         "yes": "Ja"
     variant_group:
+      axis.help: 'Akse er attributter, der definerer varianter af gruppen variant. Akse er attributter med optioner, ikke oversættelige og ikke postobjektet. Det kan ikke ændres efter oprettelsen af gruppen variant.'
       tab:
         properties:
           title: Egenskaber

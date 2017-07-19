@@ -1302,7 +1302,6 @@ class WebUser extends PimContext
                 json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
             )
         );
-
     }
 
     /**

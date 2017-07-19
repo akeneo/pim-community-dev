@@ -449,6 +449,7 @@ pim_enrich:
         "no": "No"
         "yes": "SÍ"
     variant_group:
+      axis.help: 'Los ejes definen los atributos sobre los cuales el producto debería variar dentro del grupo. Los ejes son atributos con opciones, no localizables y sin ámbito. No puede cambiarse después de la creación del grupo variantes.'
       tab:
         properties:
           title: Propiedades
