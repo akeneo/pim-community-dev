@@ -9,7 +9,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
@@ -63,7 +62,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         if (!$productModel instanceof ProductModelInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($productModel),
-                ProductInterface::class
+                ProductModelInterface::class
             );
         }
 
