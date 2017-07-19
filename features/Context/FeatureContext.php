@@ -51,9 +51,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /** @var int */
     protected static $timeout;
 
-    /** @var string */
-    protected static $userTimezone;
-
     /**
      * Register contexts
      *
@@ -374,22 +371,5 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     protected function setTimeout($parameters)
     {
         static::$timeout = $parameters['timeout'];
-    }
-
-    /**
-     * @BeforeSuite
-     */
-    public static function prepareBefore()
-    {
-        static::$userTimezone = date_default_timezone_get();
-        date_default_timezone_set('Europe/Paris');
-    }
-
-    /**
-     * @AfterSuite
-     */
-    public static function prepareAfter()
-    {
-        date_default_timezone_set(static::$userTimezone);
     }
 }
