@@ -44,12 +44,7 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
                         form.trigger('pim_enrich:form:can-leave', event);
                     });
 
-                    form.setData({
-                        code: '',
-                        labels: {},
-                        type: type,
-                        available_locales: []
-                    });
+                    form.setData(this.getNewAttribute(type));
 
                     form.setElement(this.$el).render();
                 }.bind(this));
@@ -75,6 +70,20 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
             }
 
             return paramsList[paramsList.indexOf(paramName) + 1];
+        },
+
+        /**
+         * @param {String} type
+         *
+         * @return {Object}
+         */
+        getNewAttribute: function (type) {
+            return {
+                code: '',
+                labels: {},
+                type: type,
+                available_locales: []
+            };
         }
     });
 });
