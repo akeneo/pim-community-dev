@@ -8,7 +8,7 @@
  */
 define(
     [
-        'pim/product-edit-form/status-switcher'
+        'pim/product-edit-form/meta/status-switcher'
     ],
     function (
         StatusSwitcher
@@ -18,6 +18,8 @@ define(
                 if (!this.getRoot().getFormData().meta.is_owner) {
                     return this.remove();
                 }
+
+                this.delegateEvents();
 
                 return StatusSwitcher.prototype.render.apply(this, arguments);
             }
