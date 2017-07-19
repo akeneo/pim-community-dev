@@ -280,9 +280,9 @@ interface ProductInterface extends
     public function getUniqueData();
 
     /**
-     * @param ProductUniqueDataInterface $uniqueData
+     * @param EntityWithValuesUniqueDataInterface $uniqueData
      *
      * @return ProductInterface
      */
-    public function addUniqueData(ProductUniqueDataInterface $uniqueData);
+    public function addUniqueData(EntityWithValuesUniqueDataInterface $uniqueData);
 }

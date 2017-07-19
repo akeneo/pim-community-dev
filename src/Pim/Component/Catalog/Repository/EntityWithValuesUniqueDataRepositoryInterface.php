@@ -7,14 +7,14 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
- * Product unique data repository. Please see {@see Pim\Component\Catalog\Model\ProductUniqueDataInterface}
+ * Product unique data repository. Please see {@see Pim\Component\Catalog\Model\EntityWithValuesUniqueDataInterface}
  * for more information.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductUniqueDataRepositoryInterface extends ObjectRepository
+interface EntityWithValuesUniqueDataRepositoryInterface extends ObjectRepository
 {
     /**
      * Returns true if a unique ProductValue with the provided data already exists in another product,
@@ -25,5 +25,5 @@ interface ProductUniqueDataRepositoryInterface extends ObjectRepository
      *
      * @return bool
      */
-    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product);
+    public function uniqueDataExistsInAnotherEntity(ValueInterface $value, ProductInterface $product): bool;
 }

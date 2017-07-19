@@ -7,13 +7,13 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
+abstract class AbstractEntityWithValuesUniqueData implements EntityWithValuesUniqueDataInterface
 {
     /** @var int */
     protected $id;
 
-    /** @var ProductInterface */
-    protected $product;
+    /** @var EntityWithValuesInterface */
+    protected $entityWithValues;
 
     /** @var ValueInterface */
     protected $value;
@@ -25,19 +25,19 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     protected $rawData;
 
     /**
-     * @param ProductInterface $product
-     * @param ValueInterface   $value
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param ValueInterface            $value
      */
-    public function __construct(ProductInterface $product, ValueInterface $value)
+    public function __construct(EntityWithValuesInterface $entityWithValues, ValueInterface $value)
     {
-        $this->product = $product;
-        $this->setProductValue($value);
+        $this->entityWithValues = $entityWithValues;
+        $this->setValue($value);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -45,15 +45,15 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct()
+    public function getEntityWithValues(): EntityWithValuesInterface
     {
-        return $this->product;
+        return $this->entityWithValues;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttribute()
+    public function getAttribute(): AttributeInterface
     {
         return $this->attribute;
     }
@@ -61,7 +61,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getRawData()
+    public function getRawData(): string
     {
         return $this->rawData;
     }
@@ -69,7 +69,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductValue(ValueInterface $value)
+    public function setValue(ValueInterface $value): void
     {
         $this->value = $value;
         $this->attribute = $value->getAttribute();
@@ -79,7 +79,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ProductUniqueDataInterface $uniqueValue)
+    public function isEqual(EntityWithValuesUniqueDataInterface $uniqueValue): bool
     {
         return $this->getAttribute() === $uniqueValue->getAttribute() &&
             $this->getRawData() === $uniqueValue->getRawData();

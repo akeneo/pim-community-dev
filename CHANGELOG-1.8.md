@@ -292,7 +292,7 @@
 - Remove useless methods `buildByChannelAndCompleteness`, `setAttributeRepository` and `getObjectManager`  of `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove useless methods `findWithGroups` and `getNonIdentifierAttributes` of `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Remove OroNotificationBundle
-- Extract and rename method `valueExists` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface` into `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface`::`uniqueDataExistsInAnotherProduct`.
+- Extract and rename method `valueExists` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface` into `Pim\Component\Catalog\Repository\EntityWithValuesUniqueDataRepositoryInterface`::`uniqueDataExistsInAnotherEntity`.
 - Remove methods `searchAfterOffset`, `searchAfterIdentifier` and `count` of `Pim\Component\Api\Repository\ProductRepositoryInterface`
 - Extract methods `schedule*` of `Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface` into a `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface`. Methods `schedule`, `scheduleForFamily` and `scheduleForChannelAndLocale` have been renamed respectively `removeForProduct`, `removeForFamily` and `removeForChannelAndLocale`.
 - Remove method `findOneById` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface`.
@@ -352,7 +352,7 @@
 - Add method `findCodesByIdentifiers` in `Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface`
 - Remove class `Pim\Bundle\DataGridBundle\EventListener\AddParametersToVariantProductGridListener`
 - Remove methods `createVariantGroupDatagridQueryBuilder` and `createGroupDatagridQueryBuilder` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository`
-- Extract and rename method `valueExists` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface` into `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface`::`uniqueDataExistsInAnotherProduct`.
+- Extract and rename method `valueExists` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface` into `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface`::`uniqueDataExistsInAnotherEntity`.
 - Remove class `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator`
 - Remove services `pim_datagrid.datasource.result_record.hydrator.product` and `pim_datagrid.datasource.result_record.hydrator.associated_product`
     and parameters `pim_datagrid.datasource.result_record.hydrator.product.class` and `pim_datagrid.datasource.result_record.hydrator.associated_product.class`

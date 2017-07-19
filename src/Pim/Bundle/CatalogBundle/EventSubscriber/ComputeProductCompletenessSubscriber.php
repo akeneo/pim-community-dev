@@ -39,7 +39,7 @@ class ComputeProductCompletenessSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      */
-    public function computeProductCompleteness(GenericEvent $event)
+    public function computeProductCompleteness(GenericEvent $event): void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {

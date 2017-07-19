@@ -1,11 +1,11 @@
 parameters:
     pim_catalog.saver.base.class:                          Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
-    pim_catalog.saver.entity_with_value.class:             Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver
+    pim_catalog.saver.entity_with_values.class:            Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver
     pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.attribute.class:                     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver
-    pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
+    pim_catalog.synchronizer.entity_with_values_unique_data.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesUniqueDataSynchronizer
 
 services:
     pim_catalog.saver.group_type:
@@ -16,23 +16,23 @@ services:
             - '%pim_catalog.model.group_type.interface%'
 
     pim_catalog.saver.product:
-        class: '%pim_catalog.saver.entity_with_value.class%'
+        class: '%pim_catalog.saver.entity_with_values.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_catalog.synchronizer.product_unique_data'
+            - '@pim_catalog.synchronizer.entity_with_values_unique_data'
 
     pim_catalog.saver.product_model:
-        class: '%pim_catalog.saver.entity_with_value.class%'
+        class: '%pim_catalog.saver.entity_with_values.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_catalog.synchronizer.product_unique_data'
+            - '@pim_catalog.synchronizer.entity_with_values_unique_data'
 
-    pim_catalog.synchronizer.product_unique_data:
-        class: '%pim_catalog.synchronizer.product_unique_data.class%'
+    pim_catalog.synchronizer.entity_with_values_unique_data:
+        class: '%pim_catalog.synchronizer.entity_with_values_unique_data.class%'
         arguments:
-            - '@pim_catalog.factory.product_unique_data'
+            - '@pim_catalog.factory.entity_with_value_unique_data'
 
     pim_catalog.saver.group:
         class: '%pim_catalog.saver.group.class%'

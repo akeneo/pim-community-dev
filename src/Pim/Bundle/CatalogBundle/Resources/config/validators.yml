@@ -111,7 +111,7 @@ services:
     pim_catalog.validator.constraint.unique_value:
         class: '%pim_catalog.validator.constraint.unique_value.class%'
         arguments:
-            - '@pim_catalog.repository.product_unique_data'
+            - '@pim_catalog.repository.entity_with_value_unique_data'
             - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
