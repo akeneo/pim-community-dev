@@ -115,6 +115,8 @@ extensions:
         parent: pimee-product-view-attributes
         targetZone: context-selectors
         position: 100
+        config:
+            context: base_product
 
     pimee-product-view-locale-switcher:
         module: pim/product-edit-form/locale-switcher
