@@ -32,3 +32,4 @@ extensions:
             fieldName: allowed_extensions
             choices: '%pim_catalog_file_allowed_extensions%'
             isMultiple: true
+            defaultValue: []
