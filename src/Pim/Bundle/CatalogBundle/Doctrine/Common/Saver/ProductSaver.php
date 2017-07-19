@@ -116,7 +116,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Pim\Component\Catalog\Model\ProductInterface, "%s" provided',
+                    'Expects a %s, "%s" provided',
+                    ProductInterface::class,
                     ClassUtils::getClass($product)
                 )
             );
