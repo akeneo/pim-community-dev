@@ -748,7 +748,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         );
     }
 
-    /** @group todo */
     public function testSearchNotColorGreyAndSizeS()
     {
         $query = [
@@ -887,6 +886,205 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         );
     }
 
+    /** @group todo */
+    public function testSearchNotColorGreyAndNotSizeS()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'should' => [
+
+                        // Color level product & Size level parent 1
+                        [
+                            'bool' => [
+                                'must_not' => [
+                                    [
+                                        'term' => [
+                                            'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.size-option.<all_channels>.<all_locales>' => 's',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'filter'   => [
+                                    [
+                                        'exists' => [
+                                            'field' => 'values.color-option.<all_channels>.<all_locales>',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'exists' => [
+                                                    'field' => 'values.size-option.<all_channels>.<all_locales>',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt-unique-size', 'shoe']
+                                        ]
+                                    ]
+                                ],
+                            ],
+                        ],
+
+                        // Size level product & Color level parent 1
+                        [
+                            'bool' => [
+                                'must_not' => [
+                                    [
+                                        'term' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => 's',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'term' => [
+                                                    'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'filter'   => [
+                                    [
+                                        'exists' => [
+                                            'field' => 'values.size-option.<all_channels>.<all_locales>',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'exists' => [
+                                                    'field' => 'values.color-option.<all_channels>.<all_locales>',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt', 'tshirt-unique-color', 'hat']
+                                        ]
+                                    ]
+                                ],
+                            ],
+                        ],
+
+                        // Size product level & color model parent 2
+                        [
+                            'bool' => [
+                                'must_not' => [
+                                    [
+                                        'term' => [
+                                            'values.size-option.<all_channels>.<all_locales>' => 's',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'term' => [
+                                                            'values.color-option.<all_channels>.<all_locales>' => 'grey',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'filter'   => [
+                                    [
+                                        'exists' => [
+                                            'field' => 'values.size-option.<all_channels>.<all_locales>',
+                                        ],
+                                    ],
+                                    [
+                                        'has_parent' => [
+                                            'type'  => 'pim_catalog_product_model_parent_1',
+                                            'query' => [
+                                                'has_parent' => [
+                                                    'type'  => 'pim_catalog_product_model_parent_2',
+                                                    'query' => [
+                                                        'exists' => [
+                                                            'field' => 'values.color-option.<all_channels>.<all_locales>',
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['jacket']
+                                        ]
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_1',
+                AbstractPimCatalogProductModelIntegration::PRODUCT_MODEL_DOCUMENT_TYPE . '_2',
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'tshirt-blue-m',
+                'tshirt-blue-l',
+                'tshirt-blue-xl',
+
+                'tshirt-red-m',
+                'tshirt-red-l',
+                'tshirt-red-xl',
+
+                'tshirt-unique-color-m',
+                'tshirt-unique-color-l',
+                'tshirt-unique-color-xl',
+
+                'tshirt-unique-size-blue',
+                'tshirt-unique-size-red',
+                'tshirt-unique-size-yellow',
+
+                'running-shoes-m-white',
+                'running-shoes-m-blue',
+                'running-shoes-m-red',
+                'running-shoes-l-white',
+                'running-shoes-l-blue',
+                'running-shoes-l-red',
+
+                'biker-jacket-leather-m',
+                'biker-jacket-leather-l',
+                'biker-jacket-polyester-m',
+                'biker-jacket-polyester-l',
+            ]
+        );
+    }
+
     public function testSearchMaterialCottonAndColorRed()
     {
         $query = [
@@ -897,6 +1095,11 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['tshirt-unique-size'],
+                                        ],
+                                    ],
                                     [
                                         'term' => [
                                             'values.color-option.<all_channels>.<all_locales>' => 'red',
@@ -920,6 +1123,11 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'bool' => [
                                 'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['shoe'],
+                                        ],
+                                    ],
                                     [
                                         'term' => [
                                             'values.color-option.<all_channels>.<all_locales>' => 'red',
@@ -949,6 +1157,11 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'bool' => [
                                 'filter' => [
                                     [
+                                        'terms' => [
+                                            'family.code' => ['jacket'],
+                                        ],
+                                    ],
+                                    [
                                         'has_parent' => [
                                             'type'  => 'pim_catalog_product_model_parent_1',
                                             'query' => [
@@ -977,38 +1190,15 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             ],
                         ],
 
-                        // Material and color at the same level parent _1
-                        [
-                            'bool' => [
-                                'filter' => [
-                                    [
-                                        'has_parent' => [
-                                            'type'  => 'pim_catalog_product_model_parent_1',
-                                            'query' => [
-                                                'term' => [
-                                                    'values.color-option.<all_channels>.<all_locales>' => 'red',
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                    [
-                                        'has_parent' => [
-                                            'type'  => 'pim_catalog_product_model_parent_1',
-                                            'query' => [
-                                                'term' => [
-                                                    'values.material-option.<all_channels>.<all_locales>' => 'cotton',
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-
                         // Material and color at the same level product
                         [
                             'bool' => [
                                 'filter' => [
+                                    [
+                                        'terms' => [
+                                            'family.code' => ['watch', 'hat', 'tshirt', 'tshirt-unique-color'],
+                                        ],
+                                    ],
                                     [
                                         'term' => [
                                             'values.color-option.<all_channels>.<all_locales>' => 'red',
@@ -1039,8 +1229,8 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         $this->assertProducts(
             $productsFound,
             [
-                'tshirt-red',
-                'tshirt-unique-color',
+                'model-tshirt-red',
+                'model-tshirt-unique-color',
                 'tshirt-unique-size-red',
             ]
         );
