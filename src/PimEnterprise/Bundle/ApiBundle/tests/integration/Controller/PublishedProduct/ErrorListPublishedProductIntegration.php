@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
 
-use Akeneo\Test\Integration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -160,7 +159,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         );
         $this->assert(
             $client,
-            'Attribute "a_localizable_image" expects an existing and activated locale, "not_found" given.'
+            'Locale "not_found" does not exist.'
         );
 
         $client->request(
@@ -169,7 +168,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         );
         $this->assert(
             $client,
-            'Attribute "a_localizable_image" expects an existing and activated locale, "not_found" given.'
+            'Locale "not_found" does not exist.'
         );
     }
 
@@ -178,7 +177,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/published-products?search_locale=ar_TN&search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_localizable_image" expects an existing and activated locale, "ar_TN" given.');
+        $this->assert($client, 'Locale "ar_TN" does not exist.');
     }
 
     public function testSearchWithNotFoundScope()
@@ -197,7 +196,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/published-products?search={"categories":[{"operator":"IN","value":["not_found"]}]}');
-        $this->assert($client, 'Object "category" with code "not_found" does not exist');
+        $this->assert($client, 'Category "not_found" does not exist.');
     }
 
     public function testSearchIsNotAnArray()
@@ -229,13 +228,5 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $this->assertCount(2, $content);
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
         $this->assertSame($message, $content['message']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

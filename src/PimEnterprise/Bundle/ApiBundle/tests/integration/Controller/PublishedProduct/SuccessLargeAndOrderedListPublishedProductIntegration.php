@@ -27,7 +27,8 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
         }
 
         foreach ($identifiers as $identifier) {
-            $product = $this->createPublishedProduct($identifier, []);
+            $product = $this->createProduct($identifier, []);
+            $this->publishProduct($product);
             $this->products[$product->getId()] = $product;
         }
         // the API will return products sorted alphabetical by MySQL ID, and that's what we expect

@@ -10,9 +10,10 @@ class GetPublishedProductIntegration extends AbstractPublishedProductTestCase
 {
     public function testGetACompletePublishedProduct()
     {
-        $client = $this->createAuthenticatedClient();
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $this->publishProduct('product_viewable_by_everybody_1');
 
-        $client->request('GET', 'api/rest/v1/published-products/foo');
+        $client->request('GET', 'api/rest/v1/published-products/product_viewable_by_everybody_1');
 
         $standardProduct = [
             'identifier'    => 'foo',
@@ -229,14 +230,6 @@ class GetPublishedProductIntegration extends AbstractPublishedProductTestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
         $this->assertSame('Product "not_found" does not exist.', $content['message']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     /**

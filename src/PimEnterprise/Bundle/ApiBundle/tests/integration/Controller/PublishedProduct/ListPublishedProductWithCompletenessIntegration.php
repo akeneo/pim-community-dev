@@ -2,13 +2,12 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
 
-use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
 class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedProductTestCase
 {
     /** @var Collection */
-    private $publishedProducts;
+    private $products;
 
     /**
      * {@inheritdoc}
@@ -18,7 +17,7 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         parent::setUp();
 
         // product complete, whatever the scope
-        $this->createPublishedProduct('product_complete', [
+        $product1 = $this->createProduct('product_complete', [
             'family'     => 'familyA2',
             'categories' => ['categoryA', 'categoryB', 'master'],
             'values'     => [
@@ -32,7 +31,7 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         ]);
 
         // product complete only on en_US-tablet & en-US-ecommerce
-        $this->createPublishedProduct('product_complete_en_locale', [
+        $product2 = $this->createProduct('product_complete_en_locale', [
             'family'     => 'familyA1',
             'categories' => ['categoryA', 'master', 'master_china'],
             'values'     => [
@@ -49,7 +48,7 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         ]);
 
         // product incomplete
-        $this->createPublishedProduct('product_incomplete', [
+        $product3 = $this->createProduct('product_incomplete', [
             'family'     => 'familyA',
             'categories' => ['categoryA', 'master', 'master_china'],
             'values'     => [
@@ -60,11 +59,15 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->publishProduct($product1);
+        $this->publishProduct($product2);
+        $this->publishProduct($product3);
+
     }
 
     public function testPaginationWithCompletenessFilter()
     {
-        $client = $this->createAuthenticatedClient();
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $encryptedId = urlencode($this->getEncryptedId('product_complete_en_locale'));
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
@@ -154,15 +157,6 @@ JSON;
 
         $this->assertListResponse($client->getResponse(), $expected);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
-    }
-
 
     /**
      * @param string $productIdentifier

@@ -18,7 +18,7 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         parent::setUp();
 
         // no locale, no scope, 1 category
-        $this->createPublishedProduct('simple', [
+        $this->publishProduct('simple', [
             'categories' => ['master'],
             'values'     => [
                 'a_metric' => [
@@ -31,7 +31,7 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         ]);
 
         // localizable, categorized in 1 tree (master)
-        $this->createPublishedProduct('localizable', [
+        $this->publishProduct('localizable', [
             'categories' => ['categoryB'],
             'values'     => [
                 'a_localizable_image' => [
@@ -43,7 +43,7 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         ]);
 
         // scopable, categorized in 1 tree (master)
-        $this->createPublishedProduct('scopable', [
+        $this->publishProduct('scopable', [
             'categories' => ['categoryA1', 'categoryA2'],
             'values'     => [
                 'a_scopable_price' => [
@@ -70,7 +70,7 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         ]);
 
         // localizable & scopable, categorized in 2 trees (master and master_china)
-        $this->createPublishedProduct('localizable_and_scopable', [
+        $this->publishProduct('localizable_and_scopable', [
             'categories' => ['categoryA', 'master_china'],
             'values'     => [
                 'a_localized_and_scopable_text_area' => [
@@ -83,11 +83,11 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
             ]
         ]);
 
-        $this->createPublishedProduct('product_china', [
+        $this->publishProduct('product_china', [
             'categories' => ['master_china']
         ]);
 
-        $this->createPublishedProduct('product_without_category', [
+        $this->publishProduct('product_without_category', [
             'values' => [
                 'a_yes_no' => [
                     ['data' => true, 'locale' => null, 'scope' => null]
