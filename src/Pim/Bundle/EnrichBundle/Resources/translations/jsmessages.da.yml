@@ -131,6 +131,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: tilbage til liste
+    other_actions: andre handlinger
   entity:
     save:
       label: Gem
@@ -138,6 +139,8 @@ pim_enrich:
       update_failed: Opdateringen fejlede
       update_successful: Opdatering lykkedes
     product:
+      navigation: Produkt navigation
+      infos: Produkt info
       title: produkt
       btn:
         enable: Aktivér
@@ -217,6 +220,7 @@ pim_enrich:
         deletion_failed: Sammenhængs type kunne ikke slettes.
         update_successful: Sammenhængstype opdateret
         update_failed: Sammenhængs type kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -231,6 +235,7 @@ pim_enrich:
         deletion_failed: Gruppetypen kunne ikke slettes.
         update_successful: Gruppetypen opdateret
         update_failed: Gruppetypen kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -248,6 +253,7 @@ pim_enrich:
         update_failed: Kanalen kunne ikke opdateres.
         create_successful: Kanal oprettet.
         create_failed: Kanalen kunne ikke opdateres.
+        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -296,6 +302,7 @@ pim_enrich:
         deletion_failed: Variantgruppen kunne ikke slettes.
         update_successful: Variantgruppe opdateret
         update_failed: Variantgruppen kunne ikke opdateres.
+        field_not_ready: 'Variant gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
         no_attributes: Denne variant gruppe har ingen attributter endnu
       btn:
@@ -313,6 +320,7 @@ pim_enrich:
         deletion_failed: Gruppen kunne ikke slettes.
         update_successful: Gruppe opdateret
         update_failed: Gruppen kunne ikke opdateres.
+        field_not_ready: 'Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       btn:
         save: Gem
       meta:
@@ -357,6 +365,7 @@ pim_enrich:
             show_products: Vis produkter
             show_groups: Vis grupper
             number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
+          association_type_selector: Sammenhængstyper
         attributes:
           title: Egenskaber
           btn:
@@ -371,6 +380,7 @@ pim_enrich:
           attribute_group_selector: Attributgruppe
         categories:
           title: Kategorier
+          catalog_selector: Katalog
       panel:
         completeness:
           title: Fuldstændighed
@@ -552,9 +562,12 @@ pim_enrich:
         export.title: Eksporter nu
         import.launch: Importer nu
         import.upload: Indlæs og importer nu
+        import.upload_file: Overfør en fil
       meta:
         job: Job
         connector: Connector
+      subsection:
+        last_executions: Sidste kørsel
       tab:
         content:
           title: Indhold
@@ -905,7 +918,9 @@ job_tracker:
 pim_menu:
   tab:
     dashboard: Kontrolpanel
+    imports: Import
     products: Produkter
+    exports: Exports
     settings: Indstillinger
     system: System
   item:
@@ -932,9 +947,14 @@ pim_menu:
     user_role: Roller
     info: Systemoplysninger
     job_tracker: Process overvågning
+  navigation:
+    system: System navigation
+    user: Brugere håndtering navigation
+    settings: Indstillinger for navigation
   user:
     logout: Log ud
     user_account: Min konto
 pim_notification:
   mark_all_as_read: Markér alle som læst
+  no_notifications: Ingen notifikation
   loading: Indlæser...

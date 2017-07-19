@@ -131,6 +131,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: Retour à la grille
+    other_actions: Autres actions
   entity:
     save:
       label: Enregistrer
@@ -138,6 +139,8 @@ pim_enrich:
       update_failed: Échec de la mise à jour
       update_successful: Mise à jour effectuée avec succès
     product:
+      navigation: Navigation produit
+      infos: Infos produit
       title: produit
       btn:
         enable: Activer
@@ -217,6 +220,7 @@ pim_enrich:
         deletion_failed: Le type d’association n’a pas pu être supprimé.
         update_successful: Le type d'association a été mis à jour avec succès.
         update_failed: Le type d’association n’a pas pu être modifié.
+        field_not_ready: 'Le type d''association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       meta:
         created: Créé
         created_by: Créé par
@@ -231,6 +235,7 @@ pim_enrich:
         deletion_failed: Le type de groupe n'a pas pu être supprimé.
         update_successful: Le type de groupe a bien été mis à jour.
         update_failed: Le type de groupe n'a pas pu être mis à jour.
+        field_not_ready: 'Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       meta:
         created: Créé
         created_by: Créé par
@@ -248,6 +253,7 @@ pim_enrich:
         update_failed: Le canal n'a pas pu être mis à jour.
         create_successful: Canal créé avec succès.
         create_failed: Le canal ne peut pas être créé.
+        field_not_ready: 'Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       meta:
         created: Créé
         created_by: Créé par
@@ -281,6 +287,7 @@ pim_enrich:
         deletion_failed: Le groupe de variantes n'a pas pu être supprimé.
         update_successful: Le groupe de variantes a bien été mis à jour.
         update_failed: Le groupe de variantes n'a pas pu être mis à jour.
+        field_not_ready: 'Le groupe de variantes ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
         already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
         no_attributes: Ce groupe de variantes n'a pas encore d'attributs
       btn:
@@ -298,6 +305,7 @@ pim_enrich:
         deletion_failed: Le groupe n'a pas pu être supprimé.
         update_successful: Groupe mis à jour avec succès.
         update_failed: Le groupe n'a pas pu être mis à jour.
+        field_not_ready: 'Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       btn:
         save: Enregistrer
       meta:
@@ -363,6 +371,7 @@ pim_enrich:
             show_products: Afficher les produits
             show_groups: Afficher les groupes
             number_of_associations: "{{ productCount }} produits et {{ groupCount }} groupes"
+          association_type_selector: Type d'association
         attributes:
           title: Attributs
           btn:
@@ -377,6 +386,7 @@ pim_enrich:
           attribute_group_selector: Groupe d'attributs
         categories:
           title: Catégories
+          catalog_selector: Catalogue
       panel:
         completeness:
           title: Complétude
@@ -558,9 +568,12 @@ pim_enrich:
         export.title: Exporter maintenant
         import.launch: Importer maintenant
         import.upload: Télécharger et importer maintenant
+        import.upload_file: Déposer un fichier
       meta:
         job: Tâche
         connector: Connecteur
+      subsection:
+        last_executions: Dernières exécutions
       tab:
         content:
           title: Contenu
@@ -962,7 +975,9 @@ job_tracker:
 pim_menu:
   tab:
     dashboard: Tableau de bord
+    imports: Imports
     products: Produits
+    exports: Exports
     settings: Paramètres
     system: Système
   item:
@@ -989,9 +1004,14 @@ pim_menu:
     user_role: Rôles
     info: Informations système
     job_tracker: Traqueur de processus
+  navigation:
+    system: Navigation système
+    user: Navigation utilisateurs
+    settings: Navigation paramètres
   user:
     logout: Déconnexion
     user_account: Mon compte
 pim_notification:
   mark_all_as_read: Marquer tout comme lu
+  no_notifications: Pas de notification
   loading: Chargement en cours...
