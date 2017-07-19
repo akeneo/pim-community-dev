@@ -10,3 +10,8 @@ pim_enrich_attribute_edit:
     path: /{code}/edit
     requirements:
         code: '[a-zA-Z0-9_]+'
+
+pim_enrich_attribute_axes_index:
+    path: /axes
+    defaults: { _controller: pim_enrich.controller.rest.attribute:listAxesAction }
+    methods: [GET]

@@ -388,6 +388,7 @@ pim_enrich:
         "no": "Nie"
         "yes": "Tak"
     variant_group:
+      axis.help: 'Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.'
       tab:
         properties:
           title: Właściwości

@@ -422,6 +422,7 @@ pim_enrich:
         "no": "Ei"
         "yes": "Kyllä"
     variant_group:
+      axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
       tab:
         properties:
           title: Ominaisuudet

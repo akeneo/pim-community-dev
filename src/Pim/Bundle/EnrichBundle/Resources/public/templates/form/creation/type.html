@@ -1,0 +1,10 @@
+<div class="AknFieldContainer" data-code="type">
+    <div class="AknFieldContainer-header">
+        <label for="type" class="AknFieldContainer-label control-label required">
+            <%- label %> <em><%- required %></em>
+        </label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input type="hidden" name="type" id="type" class="select-field" value="<%- type %>" <%- isEditable ? 'disabled' : '' %> data-placeholder="<%- label %>" />
+    </div>
+</div>

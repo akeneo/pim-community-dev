@@ -164,12 +164,15 @@ class ProductController
      */
     public function createAction(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
+
         $product = $this->productBuilder->createProduct(
-            $request->request->get('identifier'),
-            $request->request->get('family', null)
+            $data['identifier'] ?? null,
+            $data['family'] ?? null
         );
 
         $violations = $this->validator->validate($product);
+
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 

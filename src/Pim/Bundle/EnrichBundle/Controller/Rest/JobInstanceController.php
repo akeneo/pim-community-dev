@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
@@ -75,6 +76,12 @@ class JobInstanceController
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
+    /** @var JobInstanceFactory */
+    protected $jobInstanceFactory;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -90,6 +97,8 @@ class JobInstanceController
      * @param RouterInterface                       $router
      * @param FormProviderInterface                 $formProvider
      * @param ObjectFilterInterface                 $objectFilter
+     * @param NormalizerInterface                   $constraintViolationNormalizer
+     * @param JobInstanceFactory                    $jobInstanceFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -105,7 +114,9 @@ class JobInstanceController
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
         FormProviderInterface $formProvider,
-        ObjectFilterInterface $objectFilter
+        ObjectFilterInterface $objectFilter,
+        NormalizerInterface $constraintViolationNormalizer,
+        JobInstanceFactory $jobInstanceFactory
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -121,6 +132,8 @@ class JobInstanceController
         $this->router                = $router;
         $this->formProvider          = $formProvider;
         $this->objectFilter          = $objectFilter;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->jobInstanceFactory    = $jobInstanceFactory;
     }
 
     /**
@@ -393,6 +406,24 @@ class JobInstanceController
     }
 
     /**
+     * Get an array of job names
+     *
+     * @throws NotFoundHttpException
+     */
+    public function getJobNamesAction(Request $request)
+    {
+        $jobType = $request->query->get('jobType');
+        $choices = [];
+        foreach ($this->jobRegistry->allByTypeGroupByConnector($jobType) as $connector => $jobs) {
+            foreach ($jobs as $key => $job) {
+                $choices[$connector][$key] = $job->getName();
+            }
+        }
+
+        return new JsonResponse($choices);
+    }
+
+    /**
      * Aggregate validation errors
      *
      * @param JobInstance $jobInstance
@@ -460,5 +491,65 @@ class JobInstanceController
 
         return $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+    }
+
+    /**
+     * Create an import profile
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createImportAction(Request $request)
+    {
+        return $this->createAction($request, 'import');
+    }
+
+    /**
+     * Create an export profile
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createExportAction(Request $request)
+    {
+        return $this->createAction($request, 'export');
+    }
+
+    /**
+     * Create a job profile with a given type
+     *
+     * @param Request $request
+     * @param string  $type
+     *
+     * @return JsonResponse
+     */
+    protected function createAction(Request $request, string $type)
+    {
+        $data = json_decode($request->getContent(), true);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance($type);
+        $this->updater->update($jobInstance, $data);
+
+        $violations = $this->validator->validate($jobInstance);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['jobInstance' => $jobInstance]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $jobParameters = $this->jobParamsFactory->create($job);
+        $jobInstance->setRawParameters($jobParameters->all());
+        $this->saver->save($jobInstance);
+
+        return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }
 }

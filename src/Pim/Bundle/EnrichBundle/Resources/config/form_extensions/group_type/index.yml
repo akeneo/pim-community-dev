@@ -29,4 +29,4 @@ extensions:
         config:
            iconName:  plus
            title:     pim_enrich.index.grouptype.create_btn
-           url:       pim_enrich_grouptype_create
+           modalForm: pim-group-type-create-modal
