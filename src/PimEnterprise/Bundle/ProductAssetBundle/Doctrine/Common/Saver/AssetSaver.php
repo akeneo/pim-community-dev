@@ -34,8 +34,8 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-        /** @var CompletenessRemoverInterface */
-        protected $completenessRemover;
+    /** @var CompletenessRemoverInterface */
+    protected $completenessRemover;
 
     /**
      * @param ObjectManager                  $objectManager
