@@ -51,6 +51,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /** @var int */
     protected static $timeout;
 
+    /** @var string */
+    protected static $userTimezone;
+
     /**
      * Register contexts
      *
@@ -372,9 +375,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         static::$timeout = $parameters['timeout'];
     }
-
-    /** @var string */
-    protected static $userTimezone;
 
     /**
      * @BeforeSuite
