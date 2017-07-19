@@ -7,6 +7,7 @@ extensions:
             chooseLabel: pim_enrich.mass_edit.common.step.choose.label
             configureLabel: pim_enrich.mass_edit.common.step.configure.label
             confirmLabel: pim_enrich.mass_edit.common.step.confirm.label
+            launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             title: pim_enrich.mass_edit.common.title
 
     pim-mass-family-edit-choose:

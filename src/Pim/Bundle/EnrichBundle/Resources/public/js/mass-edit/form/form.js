@@ -14,6 +14,7 @@ define(
         'pim/router',
         'oro/messenger',
         'pim/form/common/edit-form',
+        'oro/loading-mask',
         'pim/template/mass-edit/form'
     ],
     function (
@@ -22,8 +23,8 @@ define(
         router,
         messenger,
         BaseForm,
-        template,
-        chooseTemplate
+        LoadingMask,
+        template
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -100,9 +101,9 @@ define(
             },
 
             getOperationExtension: function (operationCode) {
-                return _.find(this.extensions, function (extension) {
+                return _.find(this.extensions, (extension) => {
                     return extension.options.config.label !== undefined && extension.getCode() === operationCode;
-                }.bind(this));
+                });
             },
 
             applyAction: function (event) {
@@ -128,28 +129,39 @@ define(
                     case 'confirm':
                         var operationView = this.getOperationExtension(this.getCurrentOperation());
 
-                        operationView.validate().then(function (isValid) {
+                        var loadingMask = new LoadingMask();
+                        loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+                        operationView.validate().then((isValid) => {
                             if (isValid) {
                                 operationView.setReadOnly(true);
                                 this.currentStep = 'confirm';
                                 this.render();
                             }
-                        }.bind(this));
+                        })
+                        .always(() => {
+                            loadingMask.hide().$el.remove();
+                        });
                         break;
                     case 'validate':
+                        var loadingMask = new LoadingMask();
+                        loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+
                         $.ajax({
                             method: 'POST',
                             contentType: 'application/json',
                             url: Routing.generate('pim_enrich_mass_edit_rest_launch'),
                             data: JSON.stringify(this.getFormData())
-                        }).then(function () {
+                        }).then(() => {
                             router.redirectToRoute(this.config.backRoute);
 
                             messenger.notify(
                                 'success',
-                                __('TODO')
+                                __(this.config.launchedLabel, {operation: this.getOperationExtension(this.getCurrentOperation()).getLabel()})
                             );
-                        }.bind(this));
+                        })
+                        .always(() => {
+                            loadingMask.hide().$el.remove();
+                        });
 
                         break;
                 }

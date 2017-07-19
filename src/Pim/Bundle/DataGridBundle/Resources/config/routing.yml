@@ -11,5 +11,5 @@ datagrid_view:
     prefix: /datagrid_view
 
 pim_datagrid_mass_action:
-    path: /{gridName}/massAction/{actionName}
+    path: /datagrid/{gridName}/massAction/{actionName}
     defaults: { _controller: pim_datagrid.controller.mass_action:massActionAction }

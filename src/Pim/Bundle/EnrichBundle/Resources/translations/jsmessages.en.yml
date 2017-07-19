@@ -966,6 +966,8 @@ pim_enrich:
                     label: Configure
                 confirm:
                     label: Confirm
+                launched:
+                    label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
             operation:
                 change_status:
                     label: Change status (enable / disable)

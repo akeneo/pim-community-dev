@@ -67,14 +67,14 @@ class ProductTemplateController
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $constraintViolationNormalizer
     ) {
-        $this->productBuilder        = $productBuilder;
-        $this->userContext            = $userContext;
-        $this->productValueConverter = $productValueConverter;
-        $this->localizedConverter    = $localizedConverter;
-        $this->productUpdater        = $productUpdater;
-        $this->productValidator      = $productValidator;
-        $this->attributeRepository   = $attributeRepository;
-        $this->constraintViolationNormalizer    = $constraintViolationNormalizer;
+        $this->productBuilder                = $productBuilder;
+        $this->userContext                   = $userContext;
+        $this->productValueConverter         = $productValueConverter;
+        $this->localizedConverter            = $localizedConverter;
+        $this->productUpdater                = $productUpdater;
+        $this->productValidator              = $productValidator;
+        $this->attributeRepository           = $attributeRepository;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
