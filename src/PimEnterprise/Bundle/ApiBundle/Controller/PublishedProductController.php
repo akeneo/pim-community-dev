@@ -362,8 +362,12 @@ class PublishedProductController
                 }
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
-                $locales = explode(',', $context['locale']);
-                $this->queryParametersChecker->checkLocalesParameters($locales);
+
+                if (null !== $context['locale']) {
+                    $locales = explode(',', $context['locale']);
+                    $this->queryParametersChecker->checkLocalesParameters($locales);
+                }
+
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
                 if (isset($filter['locales'])) {

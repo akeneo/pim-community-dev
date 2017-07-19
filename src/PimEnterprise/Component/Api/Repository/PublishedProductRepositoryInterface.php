@@ -11,13 +11,19 @@
 
 namespace PimEnterprise\Component\Api\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-
 /**
  * Repository interface for published product resources
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface PublishedProductRepositoryInterface extends IdentifiableObjectRepositoryInterface
+interface PublishedProductRepositoryInterface
 {
+    /**
+     * Find an object by its identifier
+     *
+     * @param string $identifier
+     *
+     * @return mixed
+     */
+    public function findOneByIdentifier($identifier);
 }
