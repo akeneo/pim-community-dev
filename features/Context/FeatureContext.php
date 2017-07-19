@@ -181,21 +181,21 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         return new ExpectationException($message, $this->getSession());
     }
 
-   /**
-    * Add an error message
-    *
-    * @param string $message
-    */
+    /**
+     * Add an error message
+     *
+     * @param string $message
+     */
     public function addErrorMessage($message)
     {
         self::$errorMessages[] = $message;
     }
 
-   /**
-    * Get error messages
-    *
-    * @return array $messages
-    */
+    /**
+     * Get error messages
+     *
+     * @return array $messages
+     */
     public static function getErrorMessages()
     {
         return self::$errorMessages;
@@ -371,5 +371,25 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     protected function setTimeout($parameters)
     {
         static::$timeout = $parameters['timeout'];
+    }
+
+    /** @var string */
+    protected static $userTimezone;
+
+    /**
+     * @BeforeSuite
+     */
+    public static function prepareBefore()
+    {
+        static::$userTimezone = date_default_timezone_get();
+        date_default_timezone_set('Europe/Paris');
+    }
+
+    /**
+     * @AfterSuite
+     */
+    public static function prepareAfter()
+    {
+        date_default_timezone_set(static::$userTimezone);
     }
 }
