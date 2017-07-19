@@ -49,6 +49,14 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     /**
      * {@inheritdoc}
      */
+    public function hasAttribute(AttributeInterface $attribute): bool
+    {
+        return $this->attributes->contains($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setAttributes(array $attributes): void
     {
         $this->attributes = new ArrayCollection($attributes);

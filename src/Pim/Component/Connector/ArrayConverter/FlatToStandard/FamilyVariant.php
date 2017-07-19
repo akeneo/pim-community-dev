@@ -67,11 +67,9 @@ class FamilyVariant implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsPresence($item, ['family']);
         $this->fieldChecker->checkFieldsPresence($item, ['variant-axes_1']);
-        $this->fieldChecker->checkFieldsPresence($item, ['variant-attributes_1']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['family']);
         $this->fieldChecker->checkFieldsFilling($item, ['variant-axes_1']);
-        $this->fieldChecker->checkFieldsFilling($item, ['variant-attributes_1']);
 
         $convertedItem = ['labels' => [], 'variant_attribute_sets' => []];
         foreach ($item as $field => $data) {

@@ -52,3 +52,18 @@ Feature: Create variants of family through XLSX import
     Then there should be the following family variants:
       | code                | family   | label-de_DE                   | label-en_US                | label-fr_FR                     | variant-axes_1 | variant-attributes_1                     |
       | clothing_color_size | clothing | Kleidung nach Farbe und Größe | Clothing by color and size | Vêtements par couleur et taille | color,size     | name,image_1,variation_image,composition |
+
+  Scenario: I successfully import a variant by color and size with one level of variation for the family clothing with minimal data
+    Given the following XLSX file to import:
+      """
+      code;family;variant-axes_1
+      clothing_color_size;clothing;color,size
+      """
+    And the following job "xlsx_catalog_modeling_family_variant_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_catalog_modeling_family_variant_import" import job page
+    And I launch the import job
+    And I wait for the "xlsx_catalog_modeling_family_variant_import" job to finish
+    Then there should be the following family variants:
+      | code                | family   | variant-axes_1 |
+      | clothing_color_size | clothing | color,size     |

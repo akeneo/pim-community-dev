@@ -3,13 +3,14 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Validator\Constraints\FamilyVariant;
-use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -43,41 +44,63 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
 
     function it_validates_family_variant_axes(
         FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
         FamilyVariant $constraint,
         ArrayCollection $axes,
         ArrayCollection $attributes,
+        ArrayCollection $attributes1,
+        ArrayCollection $attributes2,
         VariantAttributeSetInterface $variantAttributeSet1,
         VariantAttributeSetInterface $variantAttributeSet2,
         ArrayCollection $axes1,
         ArrayCollection $axes2,
         AttributeInterface $color,
         AttributeInterface $size,
-        \Iterator $iterator
+        \Iterator $axisIterator,
+        \Iterator $attributeIterator
     ) {
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
         $color->isLocaleSpecific()->willReturn(false);
+        $color->isUnique()->willReturn(false);
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
         $size->isLocaleSpecific()->willReturn(false);
+        $size->isUnique()->willReturn(false);
 
-        $axes->getIterator()->willReturn($iterator);
-        $iterator->valid()->willReturn(true, true, false);
-        $iterator->current()->willReturn($color, $size);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->next()->shouldBeCalled();
+        $axes->getIterator()->willReturn($axisIterator);
+        $axisIterator->valid()->willReturn(true, true, false);
+        $axisIterator->current()->willReturn($color, $size);
+        $axisIterator->rewind()->shouldBeCalled();
+        $axisIterator->next()->shouldBeCalled();
 
+        $attributes->getIterator()->willReturn($attributeIterator);
+        $attributeIterator->valid()->willReturn(true, true, false);
+        $attributeIterator->current()->willReturn($color, $size);
+        $attributeIterator->rewind()->shouldBeCalled();
+        $attributeIterator->next()->shouldBeCalled();
+
+        $family->getCode()->willReturn('family');
+        $family->hasAttribute(Argument::any())->willReturn(true);
+        $familyVariant->getFamily()->willReturn($family);
+        $familyVariant->getCode()->willReturn('family_variant');
         $familyVariant->getAxes()->willReturn($axes);
-        $familyVariant->getLevel()->willReturn(2);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
         $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet1);
         $variantAttributeSet1->getAxes()->willReturn($axes1);
+        $variantAttributeSet1->getAttributes()->willReturn($attributes1);
+        $attributes1->contains(Argument::any())->shouldBeCalled();
+        $axes1->contains(Argument::any())->shouldBeCalled();
         $axes1->count()->willReturn(1);
         $familyVariant->getVariantAttributeSet(2)->willReturn($variantAttributeSet2);
         $variantAttributeSet2->getAxes()->willReturn($axes2);
+        $variantAttributeSet2->getAttributes()->willReturn($attributes2);
+        $attributes2->contains(Argument::any())->shouldBeCalled();
+        $axes2->contains(Argument::any())->shouldBeCalled();
         $axes2->count()->willReturn(1);
 
         $familyVariant->getAttributes()->willReturn($attributes);
@@ -90,6 +113,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
     function it_add_violations_when_axes_are_invalid(
         $translator,
         FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
         FamilyVariant $constraint,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
@@ -99,7 +123,8 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $size,
         AttributeInterface $weatherCondition,
-        \Iterator $iterator,
+        \Iterator $axisIterator,
+        \Iterator $attributeIterator,
         ArrayCollection $attributes
     ) {
         $this->initialize($context);
@@ -109,27 +134,42 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(false);
         $color->isLocaleSpecific()->willReturn(false);
+        $color->isUnique()->willReturn(false);
         $size->getCode()->willReturn('size');
         $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(true);
         $size->isLocaleSpecific()->willReturn(false);
+        $size->isUnique()->willReturn(false);
         $weatherCondition->getCode()->willReturn('weather_conditions');
         $weatherCondition->getType()->willReturn(AttributeTypes::BACKEND_TYPE_DATE);
         $weatherCondition->isLocalizable()->willReturn(false);
         $weatherCondition->isScopable()->willReturn(false);
         $weatherCondition->isLocaleSpecific()->willReturn(true);
 
-        $axes->getIterator()->willReturn($iterator);
-        $iterator->valid()->willReturn(true, true, true, false);
-        $iterator->current()->willReturn($color, $size, $weatherCondition);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->next()->shouldBeCalled();
+        $axes->getIterator()->willReturn($axisIterator);
+        $axisIterator->valid()->willReturn(true, true, true, false);
+        $axisIterator->current()->willReturn($color, $size, $weatherCondition);
+        $axisIterator->rewind()->shouldBeCalled();
+        $axisIterator->next()->shouldBeCalled();
 
+        $attributes->getIterator()->willReturn($attributeIterator);
+        $attributeIterator->valid()->willReturn(true, true, false);
+        $attributeIterator->current()->willReturn($color, $size);
+        $attributeIterator->rewind()->shouldBeCalled();
+        $attributeIterator->next()->shouldBeCalled();
+
+        $family->getCode()->willReturn('family');
+        $family->hasAttribute(Argument::any())->willReturn(true);
+        $familyVariant->getFamily()->willReturn($family);
+        $familyVariant->getCode()->willReturn('family_variant');
         $familyVariant->getAxes()->willReturn($axes);
-        $familyVariant->getLevel()->willReturn(1);
+        $familyVariant->getNumberOfLevel()->willReturn(1);
         $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet1);
         $variantAttributeSet1->getAxes()->willReturn($axes1);
+        $variantAttributeSet1->getAttributes()->willReturn($attributes);
+        $attributes->contains(Argument::any())->shouldBeCalled();
+        $axes1->contains(Argument::any())->shouldBeCalled();
         $axes1->count()->willReturn(1);
 
         $familyVariant->getAttributes()->willReturn($attributes);

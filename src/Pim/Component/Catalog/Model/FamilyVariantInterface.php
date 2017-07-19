@@ -69,5 +69,5 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @return int
      */
-    public function getLevel(): int;
+    public function getNumberOfLevel(): int;
 }

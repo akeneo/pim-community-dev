@@ -157,7 +157,7 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel(): int
+    public function getNumberOfLevel(): int
     {
         return $this->variantAttributeSets->count();
     }

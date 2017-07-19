@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -52,21 +50,46 @@ class FamilyVariantValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FamilyVariant::class);
         }
 
-        $this->validateAxesAttributes($familyVariant->getAxes());
-        $this->validateAttributes($familyVariant->getAttributes());
-        $this->validateNumberOfAxis($familyVariant);
+        $this->validateAxesAttributes($familyVariant);
+        $this->validateAttributes($familyVariant);
+        $this->validateNumberOfLevelAndAxis($familyVariant);
     }
 
     /**
      * Validate the attribute set attributes
      *
-     * @param Collection $attributes
+     * @param FamilyVariantInterface $familyVariant
      */
-    private function validateAttributes(Collection $attributes): void
+    private function validateAttributes(FamilyVariantInterface $familyVariant): void
     {
-        $attributeCodes = $attributes->map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        })->toArray();
+        $family = $familyVariant->getFamily();
+        $attributeCodes = [];
+        $lastLevelAttributeSet = $familyVariant->getVariantAttributeSet($familyVariant->getNumberOfLevel());
+
+        foreach ($familyVariant->getAttributes() as $attribute) {
+            $attributeCodes[] = $attribute->getCode();
+
+            if (!$family->hasAttribute($attribute)) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_has_family_attribute');
+                $this->context->buildViolation($message, [
+                    '%attribute%' => $attribute->getCode(),
+                    '%family%' => $family->getCode(),
+                    '%family_variant%' => $familyVariant->getCode(),
+                ])->addViolation();
+            }
+
+            if ($attribute->isUnique() &&
+                null !== $lastLevelAttributeSet &&
+                !$lastLevelAttributeSet->hasAttribute($attribute)
+            ) {
+                $message = $this->translator->trans(
+                    'pim_catalog.constraint.family_variant_unique_attributes_in_last_level'
+                );
+                $this->context->buildViolation($message, [
+                    '%attribute%' => $attribute->getCode(),
+                ])->addViolation();
+            }
+        }
 
         if (count($attributeCodes) !== count(array_unique($attributeCodes))) {
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_attributes_unique');
@@ -79,10 +102,12 @@ class FamilyVariantValidator extends ConstraintValidator
     /**
      * Validate the attribute set axis
      *
-     * @param Collection $axes
+     * @param FamilyVariantInterface $familyVariant
      */
-    private function validateAxesAttributes(Collection $axes): void
+    private function validateAxesAttributes(FamilyVariantInterface $familyVariant): void
     {
+        $axes = $familyVariant->getAxes();
+
         $axisCodes = [];
         foreach ($axes as $axis) {
             $axisCodes[] = $axis->getCode();
@@ -99,6 +124,19 @@ class FamilyVariantValidator extends ConstraintValidator
                     '%axis%' => $axis->getCode(),
                 ])->addViolation();
             }
+
+            for ($level = 1; $level <= $familyVariant->getNumberOfLevel(); $level++) {
+                $variantAttributeSet = $familyVariant->getVariantAttributeSet($level);
+                if (null !== $variantAttributeSet &&
+                    !$variantAttributeSet->getAxes()->contains($axis) &&
+                    $variantAttributeSet->getAttributes()->contains($axis)
+                ) {
+                    $message = $this->translator->trans('pim_catalog.constraint.family_variant_axis_level');
+                    $this->context->buildViolation($message, [
+                        '%axis%' => $axis->getCode(),
+                    ])->addViolation();
+                }
+            }
         }
 
         if (count($axisCodes) !== count(array_unique($axisCodes))) {
@@ -112,9 +150,9 @@ class FamilyVariantValidator extends ConstraintValidator
     /**
      * @param FamilyVariantInterface $familyVariant
      */
-    private function validateNumberOfAxis(FamilyVariantInterface $familyVariant): void
+    private function validateNumberOfLevelAndAxis(FamilyVariantInterface $familyVariant): void
     {
-        $numberOfLevel = $familyVariant->getLevel();
+        $numberOfLevel = $familyVariant->getNumberOfLevel();
         $i = 0;
         while ($i !== $numberOfLevel) {
             $attributeSet = $familyVariant->getVariantAttributeSet($i + 1);

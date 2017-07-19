@@ -5,6 +5,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
@@ -260,7 +261,7 @@ class FamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Validation: Available attributes for axis are metric, simple select and reference data simple select
+     * Validation: Available axes must have parents
      */
     public function testTheNumberOfAttributeSetLevel()
     {
@@ -293,6 +294,190 @@ class FamilyVariantIntegration extends TestCase
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
             'There is no variant attribute set for level "1"',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Validation: Family variant attributes must be present in the family the family variant is attached too
+     */
+    public function testTheAttributesAreInTheFamily()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color', 'size'],
+                    'attributes' => [
+                        'weather_conditions',
+                        'rating',
+                        'side_view',
+                        'top_view',
+                        'lace_color',
+                        'sku',
+                        'price',
+                        'heel_color',
+                    ],
+                    'level'=> 1,
+                ],
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            '"heel_color" attribute cannot be added to "family_variant" family variant, as it is not an attribute of the "boots" family',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Validation: Attribute with unique value must be set on the product level
+     */
+    public function testUniqueAttributesAreAtProductLevel()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->addAttributeToFamily('unique_attribute', 'boots');
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => [
+                        'unique_attribute',
+                        'weather_conditions',
+                        'rating',
+                        'side_view',
+                        'top_view',
+                        'lace_color',
+                    ],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['sku', 'price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Unique attribute "unique_attribute" must be set at the product level',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Validation: Attribute of identifier type must be set on the product level
+     */
+    public function testIdentifierAttributesAreAtProductLevel()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['sku', 'weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Unique attribute "sku" must be set at the product level',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Validation: Unique or identifier attributes are automatically set on the product level
+     */
+    public function testUniqueAttributesAreAutomaticallyAtProductLevel()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->addAttributeToFamily('unique_attribute', 'boots');
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(0, $errors->count());
+    }
+
+    /**
+     * Validation: Attributes must be defined as axes in the same variant attribute set
+     */
+    public function testAxesDefinedAsAttributeInLevel()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['size', 'weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['sku', 'price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Attribute "size" must be set as attribute in the same variant attribute set it was set as axis',
             $errors->get(0)->getMessage()
         );
     }
@@ -353,5 +538,22 @@ class FamilyVariantIntegration extends TestCase
         })->toArray();
 
         return array_values($codes);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $familyCode
+     */
+    private function addAttributeToFamily(string $attributeCode, string $familyCode): void
+    {
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
+        $attribute = $this->get('pim_catalog.factory.attribute')->createAttribute(AttributeTypes::TEXT);
+
+        $attribute->setCode($attributeCode);
+        $attribute->setUnique(true);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        $family->addAttribute($attribute);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 }
