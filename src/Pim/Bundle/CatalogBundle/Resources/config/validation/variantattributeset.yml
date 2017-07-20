@@ -1,0 +1,5 @@
+Pim\Component\Catalog\Model\VariantAttributeSet:
+    constraints:
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+            properties:
+                - axes

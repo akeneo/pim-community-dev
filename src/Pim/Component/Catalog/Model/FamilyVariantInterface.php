@@ -44,6 +44,11 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @return Collection
      */
+    public function getVariantAttributeSets(): Collection;
+
+    /**
+     * @return Collection
+     */
     public function getAttributes(): Collection;
 
     /**

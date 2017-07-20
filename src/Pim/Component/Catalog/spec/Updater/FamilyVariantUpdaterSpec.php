@@ -3,12 +3,14 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
@@ -54,7 +56,9 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $description,
         AttributeInterface $sku,
-        AttributeInterface $other
+        AttributeInterface $other,
+        Collection $axes1,
+        Collection $axes2
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
@@ -81,11 +85,17 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
         $attributeSet1->setLevel(1)->shouldBeCalled();
+        $attributeSet1->getAxes()->willReturn($axes1);
+        $axes1->isEmpty()->willReturn(true);
+        $axes1->map(Argument::any())->shouldNotBeCalled();
 
         $familyVariant->addVariantAttributeSet($attributeSet2)->shouldBeCalled();
         $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
         $attributeSet2->setLevel(2)->shouldBeCalled();
+        $attributeSet2->getAxes()->willReturn($axes2);
+        $axes2->isEmpty()->willReturn(true);
+        $axes2->map(Argument::any())->shouldNotBeCalled();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',
@@ -117,13 +127,16 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         FamilyInterface $family,
         VariantAttributeSetInterface $attributeSet1,
         VariantAttributeSetInterface $attributeSet2,
-        VariantAttributeSetInterface $commonAttributeSet,
         AttributeInterface $name,
         AttributeInterface $size,
         AttributeInterface $color,
         AttributeInterface $description,
         AttributeInterface $sku,
-        AttributeInterface $other
+        AttributeInterface $other,
+        Collection $axes1,
+        Collection $axes2,
+        Collection $axisCodes1,
+        Collection $axisCodes2
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
@@ -145,16 +158,26 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSet(2)->willReturn($attributeSet2);
         $updater->update($familyVariant, ['en_US' => 'My tshirt'])->shouldBeCalled();
 
-        $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
+        $attributeSetFactory->create()->shouldNotBeCalled();
 
-        $familyVariant->addVariantAttributeSet(Argument::any())->shouldNotBeCalled();
+        $axes1->isEmpty()->willReturn(false);
+        $axes1->map(Argument::any())->willReturn($axisCodes1);
+        $axisCodes1->toArray()->willReturn(['color']);
+
         $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
         $attributeSet1->setLevel(Argument::any())->shouldNotBeCalled();
+        $attributeSet1->getAxes()->willReturn($axes1);
+
+        $attributeSet2->getAxes()->willReturn($axes2);
+        $axes2->isEmpty()->willReturn(false);
+        $axes2->map(Argument::any())->willReturn($axisCodes2);
+        $axisCodes2->toArray()->willReturn(['size', 'other']);
 
         $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
         $attributeSet2->setLevel(Argument::any())->shouldNotBeCalled();
+        $familyVariant->addVariantAttributeSet(Argument::any())->shouldNotBeCalled();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',

@@ -9,7 +9,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
-class FamilyVariantIntegration extends TestCase
+class CreateFamilyVariantIntegration extends TestCase
 {
     /**
      * Basic test that checks the family variant creation
