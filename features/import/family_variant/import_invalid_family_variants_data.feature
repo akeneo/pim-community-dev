@@ -21,7 +21,7 @@ Feature: Create valid variants of family through CSV import
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
-    Then there should be 2 family variants
+    Then there should be 5 family variants
     And I should see the text "Status: Completed"
     And I should see the text "skipped 1"
     And I should see the text "Field \"family\" must be filled"
@@ -44,7 +44,7 @@ Feature: Create valid variants of family through CSV import
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
-    Then there should be 2 family variants
+    Then there should be 5 family variants
     And I should see the text "Status: Completed"
     And I should see the text "skipped 1"
     And I should see the text "Unique attribute \"sku\" must be set at the product level"

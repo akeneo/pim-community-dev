@@ -19,7 +19,7 @@ Feature: Validate imported files of family variant
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
-    Then there should be 0 family variants
+    Then there should be 3 family variants
     And I should see the text "Status: Failed"
     And I should see the text "Field \"code\" is expected, provided fields are \"family, label-en_US, variant-axes_1, variant-attributes_1\""
 
@@ -34,7 +34,7 @@ Feature: Validate imported files of family variant
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
-    Then there should be 0 family variants
+    Then there should be 3 family variants
     And I should see the text "Status: Failed"
     And I should see the text "Field \"family\" is expected, provided fields are \"code, label-en_US, variant-axes_1, variant-attributes_1\""
 
@@ -49,6 +49,6 @@ Feature: Validate imported files of family variant
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
-    Then there should be 0 family variants
+    Then there should be 3 family variants
     And I should see the text "Status: Failed"
     And I should see the text "Field \"variant-axes_1\" is expected, provided fields are \"code, family, label-en_US, variant-attributes_1\""
