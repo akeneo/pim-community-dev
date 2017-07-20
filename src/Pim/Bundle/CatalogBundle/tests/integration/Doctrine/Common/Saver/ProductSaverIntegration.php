@@ -25,10 +25,10 @@ class ProductSaverIntegration extends TestCase
         $rawValues = json_decode($jsonRawValues, true);
         NormalizedProductCleaner::cleanOnlyValues($rawValues);
 
-        $storageValues = $this->getStorageValuesWithAllAttributes();
-        NormalizedProductCleaner::cleanOnlyValues($storageValues);
+        $expectedRawValues = $this->getStorageValuesWithAllAttributes();
+        NormalizedProductCleaner::cleanOnlyValues($expectedRawValues);
 
-        $this->assertEquals($storageValues, $rawValues);
+        $this->assertSame($expectedRawValues, $rawValues);
     }
 
     /**
@@ -36,10 +36,7 @@ class ProductSaverIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     /**
@@ -299,7 +296,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => -20,
                         'unit'      => 'CELSIUS',
-                        'base_data' => '253.15',
+                        'base_data' => '253.150000000000',
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
@@ -310,7 +307,7 @@ class ProductSaverIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => '-20.5000',
                         'unit'      => 'CELSIUS',
-                        'base_data' => '252.65',
+                        'base_data' => '252.650000000000',
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
@@ -420,6 +417,11 @@ class ProductSaverIntegration extends TestCase
                     'en_US' => 'a text area for tablets in English',
                     'fr_FR' => 'une zone de texte pour les tablettes en français',
 
+                ],
+            ],
+            'sku' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'just-a-product-with-all-possible-values',
                 ],
             ],
         ];

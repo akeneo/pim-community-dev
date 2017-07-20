@@ -84,7 +84,6 @@ define([
                     event.currentTarget.id.replace(this.config.fieldBaseId, ''),
                     event.currentTarget.value
                 );
-
             },
 
             /**

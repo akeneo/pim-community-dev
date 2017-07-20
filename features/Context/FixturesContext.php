@@ -460,6 +460,12 @@ class FixturesContext extends BaseFixturesContext
                     $this->assertArrayEquals(explode(',', $value), $family->getAttributeCodes());
                 } elseif ('attribute_as_label' === $key) {
                     assertEquals($value, $family->getAttributeAsLabel()->getCode());
+                } elseif ('attribute_as_image' === $key) {
+                    if ('' === $value) {
+                        assertNull($family->getAttributeAsImage());
+                    } else {
+                        assertEquals($value, $family->getAttributeAsImage()->getCode());
+                    }
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $family->getTranslation($matches['locale'])->getLabel());
                 } elseif (preg_match('/^requirements-(?P<channel>.*)$/', $key, $matches)) {

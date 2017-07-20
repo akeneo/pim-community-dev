@@ -198,9 +198,6 @@ pim_enrich:
           family: Kies een familie
           save: Opslaan
           cancel: Annuleren
-    attribute:
-      scopable: Bereik instelbaar
-      global: Globaal
     association_type:
       info:
         deletion_successful: Associatietype succesvol verwijderd.
@@ -251,19 +248,6 @@ pim_enrich:
         updated_by: Bijgewerkt door
       btn:
         save: Opslaan
-    attribute_label:
-      pim_catalog_identifier: Id
-      pim_catalog_text: Tekst
-      pim_catalog_textarea: Tekstblok
-      pim_catalog_number: Nummer
-      pim_catalog_price_collection: Prijs
-      pim_catalog_multiselect: Meervoudige selectie
-      pim_catalog_simpleselect: Enkelvoudige selectie
-      pim_catalog_file: Bestand
-      pim_catalog_image: Afbeelding
-      pim_catalog_boolean: "Ja/Nee"
-      pim_catalog_date: Datum
-      pim_catalog_metric: Meeteenheid
     attribute_option:
       code: Code
       label: Label
@@ -303,6 +287,25 @@ pim_enrich:
     job_instance:
       info:
         update_failed: Het jobprofiel kon niet worden bijgewerkt.
+    attribute:
+      scopable: Bereik instelbaar
+      type:
+        pim_catalog_identifier: Id
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Tekstblok
+        pim_catalog_number: Nummer
+        pim_catalog_price_collection: Prijs
+        pim_catalog_multiselect: Meervoudige selectie
+        pim_catalog_simpleselect: Enkelvoudige selectie
+        pim_catalog_file: Bestand
+        pim_catalog_image: Afbeelding
+        pim_catalog_boolean: "Ja/Nee"
+        pim_catalog_date: Datum
+        pim_catalog_metric: Meeteenheid
+      validation_rule:
+        email: E-mail
+        regexp: Reguliere expressie
+        url: URL
     attribute_group:
       info:
         update_successful: Attribuutgroep succesvol bijgewerkt
@@ -566,6 +569,43 @@ pim_enrich:
         history:
           title: Geschiedenis
       file_path: Bestandspad
+    attribute:
+      meta:
+        created: Aangemaakt
+        updated: Laatst bijgewerkt
+      tab:
+        properties:
+          title: Eigenschappen
+          section:
+            common: Algemene parameters
+          label:
+            allowed_extensions: Toegestane extensies
+            available_locales: Beschikbare lokalisaties
+            code: Code
+            date_max: Tot datum
+            date_min: Vanaf datum
+            default_metric_unit: Standaard meeteenheid
+            group: Attribuutgroep
+            is_locale_specific: Lokalisatiespecifiek
+            max_characters: Max tekens
+            max_file_size: Max bestandsgrootte (MB)
+            metric_family: Meeteenhedenfamilie
+            number_max: Max aantal
+            number_min: Min aantal
+            type: Type
+            unique: Unieke waarde
+            validation_regexp: Reguliere expressie
+            validation_rule: Validatieregel
+          default_label:
+            default_metric_unit: Kies een eenheid
+            group: Kies een attribuutgroep
+            metric_family: Kies een familie
+        labels:
+          title: Labelvertalingen
+        choices:
+          title: Opties
+        history:
+          title: Geschiedenis
     mass_edit:
       family:
         attributes:

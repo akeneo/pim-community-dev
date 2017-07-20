@@ -10,6 +10,7 @@ parameters:
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
     pim_enrich.provider.form.job_instance.class:   Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
+    pim_enrich.provider.form.attribute.class:      Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
 
 services:
@@ -135,7 +136,7 @@ services:
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
     pim_enrich.provider.structure_version.variant_group:
-        class: %pim_enrich.provider.structure_version.class%
+        class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:
@@ -149,4 +150,12 @@ services:
         arguments:
             - '@pim_versioning.repository.version'
         calls:
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_enrich.provider.structure_version.attribute:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@pim_versioning.repository.version'
+        calls:
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
             - [addResource, ['%pim_catalog.entity.locale.class%']]

@@ -30,6 +30,9 @@ class ProductIdentifierValidationIntegration extends TestCase
 
         $this->assertCount(2, $violations);
         $this->assertSame($violations->get(0)->getMessage(), 'The same identifier is already set on another product');
+        $this->assertSame($violations->get(1)->getMessage(), 'The value just_an_empty_product is already set on another product for the unique attribute sku');
+        $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
+        $this->assertSame($violations->get(1)->getPropertyPath(), 'values[sku-<all_channels>-<all_locales>]');
     }
 
     public function testForbiddenIdentifierCharactersValidation()
@@ -100,10 +103,10 @@ class ProductIdentifierValidationIntegration extends TestCase
         $wrongProduct = $this->createProduct('');
         $violations = $this->validateProduct($wrongProduct);
         $this->assertCount(2, $violations);
-        $this->assertSame(
-            $violations->get(0)->getMessage(),
-            'This value should not be blank.'
-        );
+        $this->assertSame($violations->get(0)->getMessage(), 'This value should not be blank.');
+        $this->assertSame($violations->get(1)->getMessage(), 'This value should not be blank.');
+        $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
+        $this->assertSame($violations->get(1)->getPropertyPath(), 'values[sku-<all_channels>-<all_locales>].data');
     }
 
     /**

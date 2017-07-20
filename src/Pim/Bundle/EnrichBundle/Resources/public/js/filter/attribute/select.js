@@ -201,7 +201,7 @@ define([
                 {
                     class: this.config.entityClass,
                     dataLocale: UserContext.get('uiLocale'),
-                    collectionId: attribute.id,
+                    collectionId: attribute.meta.id,
                     options: {type: 'code'},
                     referenceDataName: attribute.reference_data_name
                 }

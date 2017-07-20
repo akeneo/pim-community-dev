@@ -25,7 +25,7 @@ define(['backbone'], function (Backbone) {
         },
 
         /**
-         * Return if wether or not the user can leave the page
+         * Return if whether or not the user can leave the page
          *
          * @return {boolean}
          */

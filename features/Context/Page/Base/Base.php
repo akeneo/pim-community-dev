@@ -370,7 +370,7 @@ class Base extends Page
      *
      * @return null|Element
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
     }

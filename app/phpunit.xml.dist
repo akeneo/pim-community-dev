@@ -29,59 +29,7 @@
 
         <!-- Complete suite for PIM integration tests -->
         <testsuite name="PIM_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Akeneo/Bundle/*Bundle/tests/integration</directory>
+            <file></file>
         </testsuite>
-
-        <!-- Set of small suites for PIM integration tests -->
-        <testsuite name="Akeneo_Integration_Test">
-            <directory suffix="Integration.php">../src/Akeneo/Bundle/*/tests/integration</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Base_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Component/Api/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/EventSubscriber</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Security</directory>
-            <file>../src/Pim/Bundle/ApiBundle/tests/integration/Controller/RootEndpointIntegration.php</file>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Bundle_Controllers_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Channel</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Locale</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Media</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Currency</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Token</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/AssociationType</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Bundle_Controllers_Catalog_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Attribute</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/AttributeGroup</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/AttributeOption</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Category</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Family</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Bundle_Controller_Product_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Product</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Catalog_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Validation</directory>
-            <directory suffix="Integration.php">../src/Pim/Component/Catalog/tests/integration</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Catalog_Completeness_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Completeness</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Catalog_PQB_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Elasticsearch</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ReferenceDataBundle/tests/integration/PQB</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/EnrichBundle/Tests/integration/PQB</directory>
-        </testsuite>
-
     </testsuites>
 </phpunit>

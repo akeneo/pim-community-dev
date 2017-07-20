@@ -202,9 +202,6 @@ pim_enrich:
           family: Elija una familia
           save: Guardar
           cancel: Cancelar
-    attribute:
-      scopable: Scopable
-      global: Global
     association_type:
       info:
         deletion_successful: Tipo de asociación eliminado correctamente.
@@ -256,21 +253,6 @@ pim_enrich:
         updated_by: Actualizado por
       btn:
         save: Guardar
-    attribute_label:
-      pim_catalog_identifier: Identificador
-      pim_catalog_text: Texto
-      pim_catalog_textarea: Área de Texto
-      pim_catalog_number: Número
-      pim_catalog_price_collection: Precio
-      pim_catalog_multiselect: Selección multiple
-      pim_catalog_simpleselect: Selección simple
-      pim_catalog_file: Archivo
-      pim_catalog_image: Imagen
-      pim_catalog_boolean: "Si/No"
-      pim_catalog_date: Fecha
-      pim_catalog_metric: Métrica
-      pim_reference_data_simpleselect: Selección simple de datos de referencia
-      pim_reference_data_multiselect: Selección múltiple de datos de referencia
     attribute_option:
       code: Código
       label: Etiqueta
@@ -312,6 +294,27 @@ pim_enrich:
       info:
         update_failed: No se ha podido actualizar el perfil de trabajo.
         update_successful: El perfil de trabajo ha sido actualizado exitosamente.
+    attribute:
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: Identificador
+        pim_catalog_text: Texto
+        pim_catalog_textarea: Área de Texto
+        pim_catalog_number: Número
+        pim_catalog_price_collection: Precio
+        pim_catalog_multiselect: Selección multiple
+        pim_catalog_simpleselect: Selección simple
+        pim_catalog_file: Archivo
+        pim_catalog_image: Imagen
+        pim_catalog_boolean: "Si/No"
+        pim_catalog_date: Fecha
+        pim_catalog_metric: Métrica
+        pim_reference_data_simpleselect: Selección simple de datos de referencia
+        pim_reference_data_multiselect: Selección múltiple de datos de referencia
+      validation_rule:
+        email: Correo electrónico
+        regexp: Expresión regular
+        url: URL
     attribute_group:
       info:
         update_successful: Grupo de atributos actualizado correctamente
@@ -449,6 +452,7 @@ pim_enrich:
         "no": "No"
         "yes": "SÍ"
     variant_group:
+      axis.help: 'Los ejes definen los atributos sobre los cuales el producto debería variar dentro del grupo. Los ejes son atributos con opciones, no localizables y sin ámbito. No puede cambiarse después de la creación del grupo variantes.'
       tab:
         properties:
           title: Propiedades
@@ -591,6 +595,48 @@ pim_enrich:
         history:
           title: Histórico
       file_path: Camino del fichero
+    attribute:
+      meta:
+        created: Creado
+        updated: Última actualización
+      tab:
+        properties:
+          title: Propiedades
+          section:
+            common: Parámetros generales
+            validation: Parámetros de validación
+          label:
+            allowed_extensions: Extensiones permitidas
+            available_locales: Locales disponibles
+            code: Código
+            date_max: Fecha máx
+            date_min: Fecha min
+            default_metric_unit: Unidad métrica predeterminada
+            group: Grupo de atributos
+            is_locale_specific: Local específico
+            localizable: Valor por local
+            max_characters: Caracteres Max
+            max_file_size: Tamaño máximo de archivo (MB)
+            metric_family: Familia métrica
+            number_max: Número máx
+            number_min: Número min
+            scopable: Valor por canal
+            type: Tipo
+            unique: Valor único
+            useable_as_grid_filter: Se puede usar en la grilla
+            validation_regexp: Expresión regular
+            validation_rule: Regla de validación
+          default_label:
+            default_metric_unit: Elegir una unidad
+            group: Elija el grupo de atributos
+            metric_family: Elija una familia
+            reference_data_name: Seleccione el tipo de información de referencia
+        labels:
+          title: Traducciones de etiqueta
+        choices:
+          title: Opciones
+        history:
+          title: Histórico
     mass_edit:
       family:
         attributes:

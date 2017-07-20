@@ -14,8 +14,7 @@ define([
     'pim/fetcher-registry',
     'pim/common/property',
     'pim/template/form/tab/section',
-    'oro/loading-mask',
-    'jquery.select2'
+    'oro/loading-mask'
     ],
     function (
         _,
@@ -43,17 +42,10 @@ define([
             /**
              * {@inheritdoc}
              */
-            configure: function () {
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render: function () {
                 this.$el.html(this.template({
-                    sectionTitle: __(this.config.label),
+                    __: __,
+                    sectionTitle: this.config.label,
                     dropZone: this.config.dropZone
                 }));
 

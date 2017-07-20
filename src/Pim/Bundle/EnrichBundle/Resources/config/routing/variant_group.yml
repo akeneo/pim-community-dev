@@ -1,10 +1,6 @@
 pim_enrich_variant_group_index:
     path: /
 
-pim_enrich_variant_group_create:
-    path: /create
-    defaults: { _controller: pim_enrich.controller.variant_group:createAction }
-
 pim_enrich_variant_group_edit:
     path: /{code}/edit
     defaults: { _controller: pim_enrich.controller.variant_group:editAction }
@@ -44,3 +40,8 @@ pim_enrich_variant_group_rest_remove:
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [DELETE]
+
+pim_enrich_variant_group_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:createAction }
+    methods: [POST]

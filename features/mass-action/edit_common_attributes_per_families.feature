@@ -46,13 +46,14 @@ Feature: Edit common attributes of many products at once
     And I add available attributes Name and Weather conditions
     And I change the "Weather condition" to "Cold, Wet"
     And I change the "Name" to "Product"
+    And I should see the text "Product"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "boots" should have the following values:
       | name-en_US         | Product       |
       | weather_conditions | [cold], [wet] |
     And the product "highheels" should have the following values:
-      | name-en_US | Product  |
+      | name-en_US | Product |
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family

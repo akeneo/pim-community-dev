@@ -124,6 +124,29 @@ class NumberIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function testNumberShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_number',
+                'type'                => 'pim_catalog_number',
+                'group'               => 'attributeGroupA',
+                'decimals_allowed'    => true,
+                'negative_allowed'    => false,
+                'auto_option_sorting' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
+    }
+
     public function testNumberShouldNotHaveMaxCharacters()
     {
         $attribute = $this->createAttribute();

@@ -378,6 +378,24 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getImage()
+    {
+        if ($this->family) {
+            $attributeAsImage = $this->family->getAttributeAsImage();
+            if (null !== $attributeAsImage) {
+                $value = $this->getValue($attributeAsImage->getCode());
+                if (null !== $value) {
+                    return $value;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLabel($locale = null)
     {
         if ($this->family) {

@@ -15,27 +15,27 @@ Feature: Display available field options
     Then I should see the <fields> fields
 
     Examples:
-      | type       | fields                                                                                            |
-      | Identifier | Max characters, Validation rule                                                                   |
-      | Date       | Min date, Max date                                                                                |
-      | File       | Max file size (MB), Allowed extensions                                                            |
-      | Image      | Max file size (MB), Allowed extensions                                                            |
-      | Metric     | Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit |
-      | Price      | Min number, Max number, Allow decimals                                                            |
-      | Number     | Min number, Max number, Allow decimals, Allow negative values                                     |
-      | Text Area  | Max characters, WYSIWYG enabled                                                                   |
-      | Text       | Max characters, Validation rule                                                                   |
+      | type       | fields                                                                                 |
+      | Identifier | Max characters, Validation rule                                                        |
+      | Date       | Min date, Max date                                                                     |
+      | File       | Max file size (MB), Allowed extensions                                                 |
+      | Image      | Max file size (MB), Allowed extensions                                                 |
+      | Metric     | Min number, Max number, Decimal values allowed, Negative values allowed, Metric family |
+      | Price      | Min number, Max number, Decimal values allowed                                         |
+      | Number     | Min number, Max number, Decimal values allowed, Negative values allowed                |
+      | Text Area  | Max characters, Rich text editor enabled                                               |
+      | Text       | Max characters, Validation rule                                                        |
 
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
     And I fill in the following information:
       | Code            | new_attribute |
       | Attribute group | Other         |
-    And I visit the "Values" tab
     And I save the attribute
+    And I visit the "Options" tab
     Then I should see the <fields> fields
 
     Examples:
-      | type          | fields                   |
-      | Multi select  | Automatic option sorting |
-      | Simple select | Automatic option sorting |
+      | type          | fields                                           |
+      | Multi select  | Sort automatically options by alphabetical order |
+      | Simple select | Sort automatically options by alphabetical order |

@@ -727,12 +727,14 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
           "labels" => array:1 [
             "en_US" => "My family"
           ]
-          "attributes" => array:3 [
+          "attributes" => array:4 [
             0 => "a_number_float"
             1 => "a_price"
             2 => "sku"
+            3 => "image"
           ]
           "attribute_as_label" => "sku"
+          "attribute_as_image" => "image"
           "attribute_requirements" => array:1 [
             "ecommerce" => array:2 [
               0 => "a_price"
@@ -741,13 +743,14 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
           ]
         ]
         
-| type                   | data structure | data example                                                             | notes                                                                                                   |
-| ---------------------- | -------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| code                   | string         | `"my_family"`                                                            | it's the identifier of the family                                                                       |
-| labels                 | string[]       | `["en_US" => "My family"]`                                               | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| attributes             | string[]       | `[0 => "sku"]`                                                           | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
-| attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface*                 |
-| attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| type                   | data structure | data example                                                             | notes                                                                                                              |
+| ---------------------- | -------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| code                   | string         | `"my_family"`                                                            | it's the identifier of the family                                                                                  |
+| labels                 | string[]       | `["en_US" => "My family"]`                                               | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                   |
+| attributes             | string[]       | `[0 => "sku"]`                                                           | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
+| attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as label              |
+| attribute_as_image     | string         | `"image"`                                                                | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as image. Can be null |
+| attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
 
 
 ### Group

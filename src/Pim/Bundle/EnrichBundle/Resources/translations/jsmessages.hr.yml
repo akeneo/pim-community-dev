@@ -200,9 +200,6 @@ pim_enrich:
           family: Odaberi obitelj
           save: Spremi
           cancel: Poništi
-    attribute:
-      scopable: Moguće je odrediti djelokrug
-      global: Globalno
     association_type:
       meta:
         created: Kreirano
@@ -239,21 +236,6 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
-    attribute_label:
-      pim_catalog_identifier: Identifikator
-      pim_catalog_text: Tekst
-      pim_catalog_textarea: Područje teksta
-      pim_catalog_number: Broj
-      pim_catalog_price_collection: Cijena
-      pim_catalog_multiselect: Višestruki odabir
-      pim_catalog_simpleselect: Jednostavan odabir
-      pim_catalog_file: Datoteka
-      pim_catalog_image: Slika
-      pim_catalog_boolean: "Da/Ne"
-      pim_catalog_date: Datum
-      pim_catalog_metric: Metrika
-      pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
-      pim_reference_data_multiselect: Referentni podaci višestrukog odabira
     attribute_option:
       code: Kod
       label: Oznaka
@@ -290,6 +272,27 @@ pim_enrich:
         created_by: Kreirao korisnik
         updated: Ažurirano
         updated_by: Ažurirao korisnik
+    attribute:
+      scopable: Moguće je odrediti djelokrug
+      type:
+        pim_catalog_identifier: Identifikator
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Područje teksta
+        pim_catalog_number: Broj
+        pim_catalog_price_collection: Cijena
+        pim_catalog_multiselect: Višestruki odabir
+        pim_catalog_simpleselect: Jednostavan odabir
+        pim_catalog_file: Datoteka
+        pim_catalog_image: Slika
+        pim_catalog_boolean: "Da/Ne"
+        pim_catalog_date: Datum
+        pim_catalog_metric: Metrika
+        pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
+        pim_reference_data_multiselect: Referentni podaci višestrukog odabira
+      validation_rule:
+        email: Adresa e-pošte
+        regexp: Regularni izraz
+        url: URL
     attribute_group:
       info:
         update_successful: Atribut grupe je uspješno ažuriran
@@ -427,6 +430,7 @@ pim_enrich:
         "no": "Ne"
         "yes": "Da"
     variant_group:
+      axis.help: 'Osi definiraju atribute nad kojima treba razlikovati proizvode grupe. Osi su atributi s opcijama koje nisu lokalizirane niti u djelokrugu. Ne mogu se mijenjati nakon kreiranja varijante grupe.'
       tab:
         properties:
           title: Svojstva
@@ -562,6 +566,46 @@ pim_enrich:
         history:
           title: Povijest
       file_path: Put datoteke
+    attribute:
+      meta:
+        created: Kreirano
+        updated: Posljednje Ažuriranje
+      tab:
+        properties:
+          title: Svojstva
+          section:
+            common: Opći parametri
+            validation: Provjera valjanosti parametara
+          label:
+            allowed_extensions: Dopuštene ekstenzije
+            available_locales: Dostupni lokalni parametri
+            code: Kod
+            date_max: Max datum
+            date_min: Min datum
+            default_metric_unit: Zadane metričke jedinice
+            group: Grupa atributa
+            is_locale_specific: Specifične regionalne postavke
+            max_characters: Max znakova
+            max_file_size: Max veličina datoteke (MB)
+            metric_family: Metrička obitelj
+            number_max: Max broj
+            number_min: Min broj
+            type: Tip
+            unique: Jedinstvena vrijednost
+            useable_as_grid_filter: Može se koristiti u prikazu
+            validation_regexp: Regularni izraz
+            validation_rule: Pravilo provjere valjanosti
+          default_label:
+            default_metric_unit: Odaberi jedinicu
+            group: Odaberi grupu atributa
+            metric_family: Odaberi obitelj
+            reference_data_name: Odaberi tip reference podataka
+        labels:
+          title: Prijevodi oznaka
+        choices:
+          title: Opcije
+        history:
+          title: Povijest
     mass_edit:
       family:
         attributes:
