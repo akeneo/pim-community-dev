@@ -208,7 +208,6 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue`
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
-- PIM-6448: Rename `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver`
 
 ### Constructors
 
