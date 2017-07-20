@@ -254,3 +254,5 @@ batch_jobs:
 pim_analytics:
     info_type:
         nb_assets: Number of assets
+
+pim_assets_collection: Assets collection
