@@ -31,7 +31,7 @@ class ProductModelIntegration extends TestCase
                         ],
                     ],
                 ],
-                'family_variant' => 'clothing_color_size',
+                'family_variant' => 'variant_clothing_color_and_size',
                 'categories' => ['tshirts'],
             ]
         );
