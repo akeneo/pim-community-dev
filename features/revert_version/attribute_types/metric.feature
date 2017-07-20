@@ -39,7 +39,7 @@ Feature: Revert product attributes to a previous version
       | SKU             | marcel |
       | Choose a family | Tees   |
     And I press the "Save" button in the popin
-
+    And I should not see the text "There are unsaved changes"
     And I am on the "marcel" product page
     And I add available attributes Length
     And I visit the "Sizes" group
@@ -49,7 +49,6 @@ Feature: Revert product attributes to a previous version
     And the history of the product "marcel" has been built
     And I open the history
     Then I should see 2 versions in the history
-
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
       | length |  |
