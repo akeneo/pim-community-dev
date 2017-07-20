@@ -454,6 +454,9 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                         [
                             'terms' => ['owned_attributes' => ['color']],
                         ],
+                        [
+                            'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                        ]
                     ],
                 ],
             ],
@@ -492,7 +495,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
 
     public function testRedCotton()
     {
-
         $query = [
             'query' => [
                 'bool' => [
@@ -524,6 +526,118 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                 'model-tshirt-red',
                 'model-tshirt-unique-color',
                 'tshirt-unique-size-red',
+            ]
+        );
+    }
+
+    public function testNotGreyAndS()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                        ],
+                        [
+                            'terms' => ['owned_attributes' => ['color', 'size']],
+                        ],
+                        [
+                            'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'tshirt-blue-s',
+                'tshirt-red-s',
+                'tshirt-unique-color-s',
+                'running-shoes-s-white',
+                'running-shoes-s-blue',
+                'running-shoes-s-red',
+                'biker-jacket-leather-s',
+                'biker-jacket-polyester-s',
+            ]
+        );
+    }
+
+    /** @group todo */
+    public function testNotGreyAndNotS()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                        ],
+                        [
+                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'terms' => ['owned_attributes' => ['color', 'size']],
+                        ],
+                        [
+                            'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                        ],
+                        [
+                            'exists' => ['field' => 'values.size-option.<all_channels>.<all_locales>'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'tshirt-blue-m',
+                'tshirt-blue-l',
+                'tshirt-blue-xl',
+                'tshirt-red-m',
+                'tshirt-red-l',
+                'tshirt-red-xl',
+                'tshirt-unique-color-m',
+                'tshirt-unique-color-l',
+                'tshirt-unique-color-xl',
+                'tshirt-unique-size-blue',
+                'tshirt-unique-size-red',
+                'tshirt-unique-size-yellow',
+                'running-shoes-m-white',
+                'running-shoes-m-blue',
+                'running-shoes-m-red',
+                'running-shoes-l-white',
+                'running-shoes-l-blue',
+                'running-shoes-l-red',
+                'biker-jacket-leather-m',
+                'biker-jacket-leather-l',
+                'biker-jacket-polyester-m',
+                'biker-jacket-polyester-l',
             ]
         );
     }
