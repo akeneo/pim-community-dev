@@ -24,6 +24,13 @@ function (
     template
 ) {
     return BaseField.extend({
+        events: {
+            'change input': function (event) {
+                this.errors = [];
+                this.updateModel(this.getFieldValue(event.target));
+                this.getRoot().render();
+            }
+        },
         template: _.template(template),
         modelDateFormat: 'yyyy-MM-dd',
 

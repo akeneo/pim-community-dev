@@ -19,6 +19,15 @@ function (
 ) {
     return BaseField.extend({
         template: _.template(template),
+        events: {
+            'keyup input': function (event) {
+                this.errors = [];
+                this.updateModel(this.getFieldValue(event.target));
+                // Text fields don't trigger form render because there is no case of dependency with other fields.
+                // Also, the fact the form is rendered when the focus is lost causes issues with other events triggering
+                // (e.g. click on another field or on a button).
+            }
+        },
 
         /**
          * {@inheritdoc}
