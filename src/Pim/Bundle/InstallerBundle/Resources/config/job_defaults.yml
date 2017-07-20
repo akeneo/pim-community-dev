@@ -16,6 +16,7 @@ services:
                 - 'fixtures_attribute_csv'
                 - 'fixtures_attribute_options_csv'
                 - 'fixtures_family_csv'
+                - 'fixtures_family_variant_csv'
                 - 'fixtures_user_csv'
                 - 'fixtures_user_role_csv'
                 - 'fixtures_user_group_csv'
