@@ -584,7 +584,7 @@ pim_enrich:
                     table:
                         name: Name
                         type: Type
-                        scope: Scope
+                        scopable: Scopable
                         localizable: Localizable
                 history.title: History
         common:
