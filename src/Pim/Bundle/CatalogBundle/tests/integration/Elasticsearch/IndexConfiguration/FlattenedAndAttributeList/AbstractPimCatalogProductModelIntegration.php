@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\Flattened;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\FlattenedAndAttributeList;
 
 use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogIntegration;
 
@@ -31,6 +31,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['description'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -52,6 +53,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['description', 'color', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -88,6 +90,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
+                'owned_attributes' => ['description', 'color', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -119,6 +122,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['description', 'size', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -130,6 +134,11 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                             '<all_locales>' => 'u',
                         ],
                     ],
+                    'material-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'cotton',
+                        ],
+                    ]
                 ],
             ],
 
@@ -145,12 +154,18 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['description', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'such beautiful shoes',
                         ],
                     ],
+                    'material-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'leather',
+                        ],
+                    ]
                 ],
             ],
 
@@ -166,6 +181,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['description', 'color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -194,6 +210,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['color', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -228,6 +245,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['color', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -262,6 +280,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['color', 'material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -296,6 +315,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -321,6 +341,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -346,6 +367,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -371,6 +393,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -400,6 +423,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['material'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -432,6 +456,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -470,6 +495,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -508,6 +534,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -546,6 +573,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -585,6 +613,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -623,6 +652,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -661,6 +691,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -699,6 +730,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -738,6 +770,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -776,6 +809,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -814,6 +848,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -852,6 +887,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -892,6 +928,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -930,6 +967,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -968,6 +1006,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1006,6 +1045,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1046,6 +1086,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La montre unique',
                     ],
                 ],
+                'owned_attributes' => ['description', 'color'],
                 'values'     => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1071,6 +1112,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1104,6 +1146,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'Famille des chapeaux',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1140,6 +1183,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1180,6 +1224,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1220,6 +1265,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1260,6 +1306,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1294,6 +1341,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1328,6 +1376,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1362,6 +1411,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1396,6 +1446,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1430,6 +1481,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1464,6 +1516,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1498,6 +1551,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1532,7 +1586,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
-                'attributes' => ['color'],
+                'owned_attributes' => ['color'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1568,6 +1622,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1586,7 +1641,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                     ],
                     'size-option'      => [
                         '<all_channels>' => [
-                            '<all_locales>' => 'm',
+                            '<all_locales>' => 's',
                         ],
                     ],
                 ],
@@ -1601,6 +1656,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1634,6 +1690,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1668,6 +1725,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1701,6 +1759,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1734,6 +1793,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des chaussures de courses',
                     ],
                 ],
+                'owned_attributes' => ['size'],
                 'values'         => [
                     'description-text' => [
                         '<all_channels>' => [
@@ -1759,8 +1819,8 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
         ];
 
-        $this->indexThings($rootProductModels, self::PRODUCT_MODEL_DOCUMENT_TYPE . '_root');
-        $this->indexThings($subProductModels, self::PRODUCT_MODEL_DOCUMENT_TYPE . '_sub');
+        $this->indexThings($rootProductModels, self::DOCUMENT_TYPE);
+        $this->indexThings($subProductModels, self::DOCUMENT_TYPE);
         $this->indexThings($productVariants, self::DOCUMENT_TYPE);
     }
 
