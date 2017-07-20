@@ -53,4 +53,36 @@ class ScalarComparatorSpec extends ObjectBehavior
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
+
+    function it_returns_value_when_value_is_array()
+    {
+        $changes = ['data' => ['scalar'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_value_when_value_is_integer()
+    {
+        $changes = ['data' => 2, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_value_when_value_is_float()
+    {
+        $changes = ['data' => 2.44, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_null_value_when_values_are_null()
+    {
+        $changes = null;
+        $originals = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn(null);
+    }
 }
