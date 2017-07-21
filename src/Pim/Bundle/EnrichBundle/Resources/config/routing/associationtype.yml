@@ -1,15 +1,16 @@
 pim_enrich_associationtype_index:
     path: ''
 
-pim_enrich_associationtype_create:
-    path: /create
-    defaults: { _controller: pim_enrich.controller.association_type:createAction }
-
 pim_enrich_associationtype_edit:
     path: /{code}/edit
     defaults: { _controller: pim_enrich.controller.association_type:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
+
+pim_enrich_associationtype_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.association_type:createAction }
+    methods: [POST]
 
 pim_enrich_associationtype_rest_index:
     path: /rest

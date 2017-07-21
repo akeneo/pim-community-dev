@@ -139,7 +139,6 @@ class AttributeGroupController
             );
         }
 
-
         $normalizedAttributeGroups = [];
 
         foreach ($attributeGroups as $attributeGroup) {

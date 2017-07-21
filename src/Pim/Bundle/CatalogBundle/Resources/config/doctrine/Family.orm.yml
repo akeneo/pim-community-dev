@@ -62,3 +62,9 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 label_attribute_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
+        attributeAsImage:
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            joinColumns:
+                image_attribute_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'

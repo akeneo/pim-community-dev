@@ -2,7 +2,7 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Elasticsearch\IndexConfiguration;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogIntegration;
+use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
 
 /**
  * This integration tests checks that given an index configuration and some products indexed
@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
+class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 {
     public function testStartWithOperator()
     {

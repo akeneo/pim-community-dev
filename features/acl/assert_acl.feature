@@ -19,7 +19,25 @@ Feature: Define user rights
     And I should not be able to access the channels page
     But I should be able to access the attributes page
 
-  Scenario Outline: Successfully hide entity creation, deletion buttons and page access when user doesn't have the rights
+  Scenario Outline: Test page access when user doesn't have the rights
+    Given I am logged in as "Peter"
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource <permission>
+    And I save the role
+    And I am on the <page> page
+    Then I should not be able to access the <forbiddenPage> page
+
+    Examples:
+      | permission                 | page              | forbiddenPage            |
+      | Create an association type | association types | AssociationType creation |
+      | Create a channel           | channels          | channel creation         |
+      | Create a group             | product groups    | ProductGroup creation    |
+      | Create a variant group     | variant groups    | VariantGroup creation    |
+      | Create a group type        | group types       | GroupType creation       |
+      | Create an attribute        | attributes        | Attribute creation       |
+
+  Scenario Outline: Successfully hide entity creation, deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
@@ -28,17 +46,16 @@ Feature: Define user rights
     And I should not see the text "There are unsaved changes."
     And I am on the <page> page
     Then I should not see the text "<button>"
-    And I should not be able to access the <forbiddenPage> page
 
     Examples:
-      | permission                 | page              | button                  | forbiddenPage            |
-      | Create an association type | association types | Create association type | AssociationType creation |
-      | Create a channel           | channels          | Create channel          | channel creation         |
-      | Create a family            | families          | Create family           | Family creation          |
-      | Create a group             | product groups    | Create group            | ProductGroup creation    |
-      | Create a variant group     | variant groups    | Create variant group    | VariantGroup creation    |
-      | Create a group type        | group types       | Create group type       | GroupType creation       |
-      | Create an attribute        | attributes        | Create attribute        | Attribute creation       |
+      | permission                 | page              | button                  |
+      | Create an association type | association types | Create association type |
+      | Create a channel           | channels          | Create channel          |
+      | Create a family            | families          | Create family           |
+      | Create a group             | product groups    | Create group            |
+      | Create a variant group     | variant groups    | Create variant group    |
+      | Create a group type        | group types       | Create group type       |
+      | Create an attribute        | attributes        | Create attribute        |
 
   Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"

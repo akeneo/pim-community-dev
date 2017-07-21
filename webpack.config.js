@@ -64,7 +64,7 @@ module.exports = {
             // Inject the module config (to replace module.config() from requirejs)
             {
                 test: /\.js$/,
-                exclude: /node_modules|spec/,
+                exclude: /\/node_modules\/|\/spec\//,
                 use: [
                     {
                         loader: resolve(__dirname, 'frontend/config-loader'),
@@ -150,6 +150,10 @@ module.exports = {
         ]
     },
 
+    watchOptions: {
+        ignored: /node_modules|app|app\/cache|vendor/
+    },
+
     // Support old loader declarations
     resolveLoader: {
         moduleExtensions: ['-loader']
@@ -174,6 +178,7 @@ module.exports = {
         new webpack.WatchIgnorePlugin([
             resolve(rootDir, './node_modules'),
             resolve(rootDir, './app'),
+            resolve(rootDir, './app/cache'),
             resolve(rootDir, './vendor')
         ]),
 

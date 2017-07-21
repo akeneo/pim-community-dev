@@ -3,6 +3,7 @@
 ## Functional improvements
 
 - TIP-718: Update group types form
+- PIM-6291: Adds attribute used as the main picture in the UI for each family (attribute_as_image)
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
 
@@ -13,6 +14,8 @@
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
+- TIP-730: Reworking of the creation popin for basic entities
+- TIP-732: Rework the attribute form using the PEF architecture
 
 ## UI\UX Refactoring
 
@@ -222,6 +225,10 @@
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `kernel.logs_dir`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Twig\AttributeExtension` to remove `pim_enrich.attribute_icons`
+- Remove OroNotificationBundle
+- Remove createAction from `Pim\Bundle\EnrichBundle/Controller/AssociationTypeController.php`
+- Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+- Remove `Pim\Bundle\EnrichBundle\Controller\VariantGroupController.php`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`, `Symfony\Component\Validator\ValidatorInterface`, `Akeneo\Component\StorageUtils\Saver\SaverInterface`, `Akeneo\Component\StorageUtils\Remover\RemoverInterface`, `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and remove `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
 - Change the constructor of `Pim\Bundle\ApiBundle\EventSubscriber\CheckHeadersRequestSubscriber` to add `Pim\Bundle\ApiBundle\Negotiator\ContentTypeNegotiator`
@@ -273,6 +280,13 @@
 - Change the constructor of `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
 - Change the constructor of `Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
 - Change the constructor of `Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover` to replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer`
+
+### Methods
+
+- Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
 
 ### Others
 
@@ -297,7 +311,7 @@
 - Change the method `isComplete` of `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface` to make `Pim\Component\Catalog\Model\ChannelInterface` and `Pim\Component\Catalog\Model\LocaleInterface` mandatory.
 - Change the method `supportsValue` of `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface` to add `Pim\Component\Catalog\Model\ChannelInterface` and `Pim\Component\Catalog\Model\LocaleInterface`.
 - Remove class `Pim\Component\Catalog\Completeness\Checker\EmptyChecker`
-- Remove classes `Pim\Bundle\VersioningBundle\Denormalizer\Flat\AbstractEntityDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\AssociationDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\CategoryDenormalizer`, 
+- Remove classes `Pim\Bundle\VersioningBundle\Denormalizer\Flat\AbstractEntityDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\AssociationDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\CategoryDenormalizer`,
     `Pim\Bundle\VersioningBundle\Denormalizer\Flat\FamilyDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\GroupDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\AssociationDenormalizer`,
     `Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValueDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValuesDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer`,
     `Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer`, `Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer`
@@ -314,7 +328,7 @@
 - Add method `setValues` and `setIdentifier` to `Pim\Component\Catalog\Model\ProductInterface`
 - Remove method `setNormalizedData` from `Pim\Component\Catalog\Model\ProductInterface`
 - Change method `fetchAll` of `Pim\Component\Connector\Processor\BulkMediaFetcher` to use a `Pim\Component\Catalog\Model\ProductValueCollectionInterface` instead of an `Doctrine\Common\Collections\ArrayCollection`
-- Remove method `markIndexedValuesOutdated` from `Pim\Component\Catalog\Model\ProductInterface` and `Pim\Component\Catalog\Model\AbstractProduct` 
+- Remove method `markIndexedValuesOutdated` from `Pim\Component\Catalog\Model\ProductInterface` and `Pim\Component\Catalog\Model\AbstractProduct`
 - Remove classes `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\MetricBaseValuesSubscriber` and `Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber`
 - Remove service `pim_catalog.event_subscriber.metric_base_values`
 - Remove method `setId`, `getId`, `setValue`, `getValue`, `setBaseUnit`, `setUnit`, `setBaseData`, `setData` and `setFamily` from `Pim\Component\Catalog\Model\MetricInterface`
@@ -355,11 +369,16 @@
 - Remove all standard denormalizers classes `Pim\Component\Catalog\Denormalizer\Standard\*` and services `pim_catalog.denormalizer.standard.*`
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
+- Remove OroNotificationBundle
+- Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+
+### Methods
+
 - Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
 - Remove the `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository`
 - Rename `BackendType::TEXT = 'text'` to `BackendType::TEXTEAREA = 'textarea'` and `BackendType::VARCHAR = 'varchar'` to `BackendType::TEXT = 'text'` from `Pim\Component\Catalog\AttributeTypes`
-- Remove methods `addAttributeToProduct` and `addOrReplaceProductValue` from `Pim\Component\Catalog\Builder\ProductBuilderInterface`. 
-    These methods are now in `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` and have been renamed to `addAttribute` and `addOrReplaceValue`. 
+- Remove methods `addAttributeToProduct` and `addOrReplaceProductValue` from `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+    These methods are now in `Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface` and have been renamed to `addAttribute` and `addOrReplaceValue`.
     For both methods, the `Pim\Component\Catalog\Model\ProductInterface` has been replaced by `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
 - Remove methods `getRawValues`, `setRawValues`, `getValues`, `setValues`, `getValue`, `addValue`, `removeValue`, `getAttributes`, `hasAttribute` and `getUsedAttributeCodes` from `Pim\Component\Catalog\Model\ProductInterface`.
     These methods are now in the `Pim\Component\Catalog\Model\EntityWithValuesInterface`.
@@ -367,7 +386,7 @@
 - Change method `addAttributeData` of `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
 - Change method `copyAttributeData` of `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface` to use 2 `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of 2 `Pim\Component\Catalog\Model\ProductInterface`.
 - Change method `removeAttributeData` of `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
-- Change method `setAttributeData` of `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`. 
+- Change method `setAttributeData` of `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to use a `Pim\Component\Catalog\Model\EntityWithValuesInterface` instead of a `Pim\Component\Catalog\Model\ProductInterface`.
 - Rename class `pim_catalog.factory.product_value_collection.class` to `pim_catalog.factory.value_collection.class`
 - Rename class `pim_catalog.factory.product_value.class` to `pim_catalog.factory.value.class`
 - Rename class `pim_catalog.factory.product_value.scalar.class` to `pim_catalog.factory.value.scalar.class`
@@ -407,6 +426,12 @@
 - Rename service `pim_catalog.factory.product_value.date` to `pim_catalog.factory.value.date`
 - Rename service `pim_catalog.model.product_value.interface` to `pim_catalog.model.value.interface`
 - Rename service `pim_versioning.serializer.normalizer.flat.product_value` to `pim_versioning.serializer.normalizer.flat.value`
+- Remove interface `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface`, attribute type classes must now implement directly `Pim\Component\Catalog\AttributeTypeInterface`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\AttributeController`
+- Remove service `pim_enrich.controller.attribute`
+- Remove several UI related classes for attributes: `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeType`
+- Remove services `pim_enrich.form.subscriber.attribute`, `pim_enrich.form.type.attribute`, `pim_enrich.form.type.available_locales`, `pim_enrich.form.type.options`, `pim_enrich.form.attribute`, `pim_enrich.form.handler.attribute`
+- Add subscriber to lock/unlock batch job commands thanks to @bOnepain
 
 ## Requirements
 
@@ -415,3 +440,4 @@
 ## Bug Fixes
 
 - GITHUB-6101: Fix Summernote (WYSIWYG) style
+- GITHUB-6337: Write invalid items process fails when it encounters a Date field in xlsx files thanks to @pablollorens!

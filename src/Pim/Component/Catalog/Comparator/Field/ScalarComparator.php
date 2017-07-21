@@ -37,6 +37,10 @@ class ScalarComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
+        if (is_array($data)) {
+            return $data;
+        }
+
         if ((string) $originals === (string) $data) {
             return null;
         }

@@ -11,7 +11,7 @@ namespace Pim\Bundle\EnrichBundle\Provider\Form;
  */
 class FormChainedProvider implements FormProviderInterface
 {
-    /** @var array */
+    /** @var FormProviderInterface[] */
     protected $providers = [];
 
     /**
@@ -25,7 +25,7 @@ class FormChainedProvider implements FormProviderInterface
             }
         }
 
-        throw new \RuntimeException('No compatible Form provider found.');
+        throw new NoCompatibleFormProviderFoundException();
     }
 
     /**

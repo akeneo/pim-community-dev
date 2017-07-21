@@ -32,7 +32,7 @@ define([
         i18n,
         FetcherRegistry,
         Dialog,
-        Messanger,
+        Messenger,
         LoadingMask
     ) {
         return BaseForm.extend({
@@ -46,7 +46,6 @@ define([
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
             channels: null,
-            attributeGroups: null,
             events: {
                 'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
@@ -94,7 +93,7 @@ define([
                 }
 
                 var data = this.getFormData();
-                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'));
+                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group'));
 
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
@@ -104,9 +103,7 @@ define([
                     )
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-                    var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                        return attribute.group_code;
-                    });
+                    var groupedAttributes = _.groupBy(data.attributes, 'group');
 
                     _.sortBy(groupedAttributes, function (attributes, group) {
                         return _.findWhere(attributeGroups, {code: group}).sort_order;
@@ -237,6 +234,7 @@ define([
             onRemoveAttribute: function (event) {
                 event.preventDefault();
                 var attributeAsLabel = this.getFormData().attribute_as_label;
+                var attributeAsImage = this.getFormData().attribute_as_image;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
                     return false;
@@ -245,9 +243,16 @@ define([
                 var attributeToRemove = event.currentTarget.dataset.attribute;
 
                 if (attributeAsLabel === attributeToRemove) {
-                    Messanger.notify(
+                    Messenger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
+                    );
+
+                    return false;
+                } else if (attributeAsImage === attributeToRemove) {
+                    Messenger.notify(
+                        'error',
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_image')
                     );
 
                     return false;
@@ -300,8 +305,7 @@ define([
                             options: {
                                 identifiers: event.codes,
                                 limit: event.codes.length
-                            },
-                            apply_filters: false
+                            }
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {

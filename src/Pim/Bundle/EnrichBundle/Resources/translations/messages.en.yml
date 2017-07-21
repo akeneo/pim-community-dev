@@ -454,7 +454,6 @@ flash:
         updated: Currency successfully updated
         error.linked_to_channel: You cannot disable a currency linked to a channel.
     family:
-        created:                       Family successfully created
         updated:                       Family successfully updated
         removed:                       Family successfully removed
         identifier not removable:      Identifier attribute can not be removed from a family
@@ -473,7 +472,6 @@ flash:
         enabled:                  Product has been enabled
         disabled:                 Product has been disabled
     group:
-        created: Group successfully created
         updated: Group successfully updated
         removed: Group successfully removed
     variant group:
@@ -838,9 +836,7 @@ pane.accordion:
 # Popin titles
 popin.create:
     association_type.title: Create a new association type
-    family.title: Create a new family
     group.title: Create a new group
-    group_type.title: Create a new group type
     product.title: Create a new product
     variant_group.title: Create a new variant group
     option.title: Create a new option

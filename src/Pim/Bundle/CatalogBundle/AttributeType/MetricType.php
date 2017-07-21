@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\UIBundle\Form\Type\NumberType as FormNumberType;
-use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Metric attribute type
@@ -16,51 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class MetricType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'numberMin' => [
-                'name'      => 'numberMin',
-                'fieldType' => FormNumberType::class
-            ],
-            'numberMax' => [
-                'name'      => 'numberMax',
-                'fieldType' => FormNumberType::class
-            ],
-            'decimalsAllowed' => [
-                'name'      => 'decimalsAllowed',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
-                ]
-            ],
-            'negativeAllowed' => [
-                'name'      => 'negativeAllowed',
-                'fieldType' => SwitchType::class,
-                'options'   => [
-                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
-                ]
-            ],
-            'metricFamily' => [
-                'name'    => 'metricFamily',
-                'options' => [
-                    'required'  => true,
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                ]
-            ],
-            'defaultMetricUnit' => [
-                'name'    => 'defaultMetricUnit',
-                'options' => [
-                    'required' => true
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

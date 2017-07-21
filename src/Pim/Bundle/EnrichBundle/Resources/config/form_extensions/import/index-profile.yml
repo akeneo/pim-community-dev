@@ -30,4 +30,4 @@ extensions:
         config:
            iconName:  plus
            title:     pim_enrich.index.import_profiles.create_btn
-           url:       pim_importexport_import_profile_create
+           modalForm: pim-import-profile-create-modal
