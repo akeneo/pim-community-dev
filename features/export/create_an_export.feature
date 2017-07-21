@@ -21,7 +21,8 @@ Feature: Create an export
     And I am on the exports page
     And the grid should contain 1 element
     And I should see export profile Products export
-
+  
+  @skip
   Scenario: Fail to create a job export without code
     Given I create a new export
     When I fill in the following information in the popin:
