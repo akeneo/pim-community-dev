@@ -75,8 +75,12 @@
                 <tr class="AknGrid-bodyRow error">
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
                         <div class="AknMessageBox AknMessageBox--error">
-                            <span class="AknMessageBox-title title"><%- failure.label.toUpperCase() %></span>
-                            <%- failure %>
+                            <% if (failure.label) { %>
+                                <span class="AknMessageBox-title title"><%- failure.label.toUpperCase() %></span>
+                                <%- failure %>
+                            <% } else { %>
+                                <%- failure.toUpperCase() %>
+                            <% } %>
                         </div>
                     </td>
                 </tr>
