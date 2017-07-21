@@ -17,10 +17,12 @@ pim_api:
       edit: Opret og Opdater familier
       list: Liste over familier
     channel:
+      edit: Opret og Opdater familier
       list: Liste over kanaler
     locale.list: Liste over landestandarder
     currency.list: Liste over valutaer
     association_type:
+      edit: Opret og Opdater association typer
       list: List sammenhængstyper
   acl_group:
     overall_access: Samlede Web API-adgang

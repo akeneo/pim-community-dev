@@ -1425,6 +1425,69 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductPartialUpdateWithInvalidFieldData()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "product_family",
+        "family": ["familyA"]
+    }
+JSON;
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "family" expects a string as data, "array" given. Check the standard format documentation.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testProductPartialUpdateWithInvalidAttributeData()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "big_boot",
+        "family": "familyA",
+        "values": {
+            "a_text":[{
+                "locale": null,
+                "scope": null,
+                "data": ["an_array"]
+            }]
+        }
+    }
+JSON;
+        $client->request('PATCH', 'api/rest/v1/products/big_boot', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "a_text" expects a scalar as data, "array" given. Check the standard format documentation.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     /**
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created

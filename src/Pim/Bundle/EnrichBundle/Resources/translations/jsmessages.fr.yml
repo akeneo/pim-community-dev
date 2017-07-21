@@ -131,6 +131,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: Retour à la grille
+    other_actions: Autres actions
   entity:
     save:
       label: Enregistrer
@@ -138,6 +139,8 @@ pim_enrich:
       update_failed: Échec de la mise à jour
       update_successful: Mise à jour effectuée avec succès
     product:
+      navigation: Navigation produit
+      infos: Infos produit
       title: produit
       btn:
         enable: Activer
@@ -208,15 +211,13 @@ pim_enrich:
           family: Choisir une famille
           save: Enregistrer
           cancel: Annuler
-    attribute:
-      scopable: Décliné par canal
-      global: Général
     association_type:
       info:
         deletion_successful: Le type d'association a été créé avec succès.
         deletion_failed: Le type d’association n’a pas pu être supprimé.
         update_successful: Le type d'association a été mis à jour avec succès.
         update_failed: Le type d’association n’a pas pu être modifié.
+        field_not_ready: 'Le type d''association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       meta:
         created: Créé
         created_by: Créé par
@@ -231,6 +232,7 @@ pim_enrich:
         deletion_failed: Le type de groupe n'a pas pu être supprimé.
         update_successful: Le type de groupe a bien été mis à jour.
         update_failed: Le type de groupe n'a pas pu être mis à jour.
+        field_not_ready: 'Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       meta:
         created: Créé
         created_by: Créé par
@@ -248,6 +250,7 @@ pim_enrich:
         update_failed: Le canal n'a pas pu être mis à jour.
         create_successful: Canal créé avec succès.
         create_failed: Le canal ne peut pas être créé.
+        field_not_ready: 'Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       meta:
         created: Créé
         created_by: Créé par
@@ -281,6 +284,7 @@ pim_enrich:
         deletion_failed: Le groupe de variantes n'a pas pu être supprimé.
         update_successful: Le groupe de variantes a bien été mis à jour.
         update_failed: Le groupe de variantes n'a pas pu être mis à jour.
+        field_not_ready: 'Le groupe de variantes ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
         already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
         no_attributes: Ce groupe de variantes n'a pas encore d'attributs
       btn:
@@ -298,6 +302,7 @@ pim_enrich:
         deletion_failed: Le groupe n'a pas pu être supprimé.
         update_successful: Groupe mis à jour avec succès.
         update_failed: Le groupe n'a pas pu être mis à jour.
+        field_not_ready: 'Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       btn:
         save: Enregistrer
       meta:
@@ -311,12 +316,8 @@ pim_enrich:
       info:
         update_failed: Le profil n'a pas pu être mis à jour.
         update_successful: Le profil a été mis à jour avec succès.
-    attribute_group:
-      info:
-        update_failed: Le groupe d'attributs n'a pas pu être mis à jour.
-        update_successful: Groupe d'attributs mis à jour avec succès
     attribute:
-      scopable: Scopable
+      scopable: Décliné par canal
       type:
         pim_catalog_identifier: Identifiant
         pim_catalog_text: Texte
@@ -336,6 +337,10 @@ pim_enrich:
         email: E-mail
         regexp: Expression régulière
         url: URL
+    attribute_group:
+      info:
+        update_failed: Le groupe d'attributs n'a pas pu être mis à jour.
+        update_successful: Groupe d'attributs mis à jour avec succès
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
@@ -363,6 +368,7 @@ pim_enrich:
             show_products: Afficher les produits
             show_groups: Afficher les groupes
             number_of_associations: "{{ productCount }} produits et {{ groupCount }} groupes"
+          association_type_selector: Type d'association
         attributes:
           title: Attributs
           btn:
@@ -377,6 +383,7 @@ pim_enrich:
           attribute_group_selector: Groupe d'attributs
         categories:
           title: Catégories
+          catalog_selector: Catalogue
       panel:
         completeness:
           title: Complétude
@@ -558,9 +565,12 @@ pim_enrich:
         export.title: Exporter maintenant
         import.launch: Importer maintenant
         import.upload: Télécharger et importer maintenant
+        import.upload_file: Déposer un fichier
       meta:
         job: Tâche
         connector: Connecteur
+      subsection:
+        last_executions: Dernières exécutions
       tab:
         content:
           title: Contenu
@@ -623,55 +633,46 @@ pim_enrich:
       file_path: Chemin du fichier
     attribute:
       meta:
-        created: Created
-        created_by: by
-        updated: Last update
-        updated_by: by
+        created: Créé
+        updated: Dernière mise à jour
       tab:
         properties:
           title: Propriétés
           section:
             common: Paramètres généraux
-            type_specific: Paramètres spécifiques
             validation: Paramètres de validation
           label:
             allowed_extensions: Extensions autorisées
-            auto_option_sorting: Trier automatiquement les options par ordre alphabétique
             available_locales: Locales disponibles
             code: Code
             date_max: Date maxi
             date_min: Date mini
-            decimals_allowed: Autoriser les nombres décimaux
             default_metric_unit: Unité de mesure par défaut
             group: Groupe d'attributs
             is_locale_specific: Spécifique à une locale
             localizable: Valeur par locale
             max_characters: Nombre maximum de caractères
-            max_file_size: Taille de fichier maximale (Mo)
+            max_file_size: Taille de fichier maximale (MB)
             metric_family: Type de mesure
-            minimum_input_length: Longueur minimum avant autocomplétion
-            negative_allowed: Autoriser les valeurs négatives
             number_max: Nombre max
             number_min: Nombre min
-            reference_data_name: Type de données référentielles
             scopable: Valeur par canal
-            type: Type d'attribut
+            type: Type
             unique: Valeur unique
             useable_as_grid_filter: Utilisable sur la grille
             validation_regexp: Expression régulière
             validation_rule: Règle de validation
-            wysiwyg_enabled: Editeur texte riche activé
           default_label:
-            default_metric_unit: Choisissez une unité
-            group: Choisissez un groupe d'attributs
-            metric_family: Choisissez une famille
-            reference_data_name: Choisissez un type de données référentielles
+            default_metric_unit: Choisir une unité
+            group: Choisir le groupe d'attributs
+            metric_family: Choisir une famille
+            reference_data_name: Choisir un type de données référentielles
         labels:
-            title: Labels
+          title: Traduction des libellés
         choices:
-            title: Options
+          title: Options
         history:
-            title: Historique
+          title: Historique
     mass_edit:
       family:
         attributes:
@@ -962,7 +963,9 @@ job_tracker:
 pim_menu:
   tab:
     dashboard: Tableau de bord
+    imports: Imports
     products: Produits
+    exports: Exports
     settings: Paramètres
     system: Système
   item:
@@ -989,9 +992,14 @@ pim_menu:
     user_role: Rôles
     info: Informations système
     job_tracker: Traqueur de processus
+  navigation:
+    system: Navigation système
+    user: Navigation utilisateurs
+    settings: Navigation paramètres
   user:
     logout: Déconnexion
     user_account: Mon compte
 pim_notification:
   mark_all_as_read: Marquer tout comme lu
+  no_notifications: Pas de notification
   loading: Chargement en cours...

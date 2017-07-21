@@ -17,10 +17,12 @@ pim_api:
       edit: Créer et mettre à jour les familles
       list: Liste des familles
     channel:
+      edit: Créer et mettre à jour les canaux
       list: Liste des canaux
     locale.list: Liste des locales
     currency.list: Liste des devises
     association_type:
+      edit: Créer et mettre à jour les types d'association
       list: Liste des types d'association
   acl_group:
     overall_access: Accès API Web général
