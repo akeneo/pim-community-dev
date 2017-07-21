@@ -6,13 +6,18 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  * Search use cases of products and models in a "smart datagrid way".
  * It returns either products or models depending on where is information is stored.
  *
- * Search among n attributes:
- *      - if at east one of the attributes is located at the product level for all family variants
- *          => need to search only at the product level
- *      - if all attributes are located at the root model level
- *          => need to search only at the root model level
+ * The search is performed independently from the family variants.
  *
- * We should not forget to look for products that don't have a family variant.
+ * The search takes advantage of the following properties to elaborate concise but powerful requests:
+ * - Each document (e.g: products, product variants or models) has all the properties of it's associated parent model
+ *   and grand parent models.
+ * - Each documents has an 'owned_attributes' property which is a list of the attribute codes that belong to the
+ *   document (following the family variant settings and levels definition).
+ * TODO: Rename property type to 'product_type' ? Does the real products need to have this type ? In the dataset the
+ *       products and product variants does not have the same property (for the default display of the datagrid). is tha
+ *       wise ?
+ * - Each document has a property 'type' which gives an hint about the level of the family variant the document
+ *   belongs to.
  *
  * @author    Samir Boulil <samir.boulil@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -20,16 +25,47 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  */
 class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProductModelIntegration
 {
+    /**
+     * Default display is: search for the root product models and products".
+     */
     public function testDefaultDisplay()
     {
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        $query = [
+            'query' => [
+                'bool' => [
+                   'filter' => [
+                       'terms' => [
+                           'type' => ['PimCatalogRootProductModel', 'PimCatalogProduct'],
+                       ],
+                   ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults(
+            $query,
+            [
+                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
+            ]
+        );
+
+        $this->assertProducts(
+            $productsFound,
+            [
+                'model-tshirt',
+                'model-tshirt-unique-color',
+                'watch',
+                'model-hat',
+                'model-tshirt-unique-size',
+                'model-running-shoes',
+                'model-biker-jacket',
+            ]
+        );
     }
 
     public function testSearchTshirtInDescription()
     {
         $query = [
-            // description is only in common attributes, so it's easy
-            // we just have to look for the value into 1 single index
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -301,9 +337,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
     }
 
-    /**
-     * Search for a model parent 1 in its values and the value of his parent.
-     */
     public function testSearchColorGreyAndDescriptionTshirt()
     {
         $query = [
@@ -404,11 +437,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         );
     }
 
-    /**
-     * Is not part of any use case but a proof of concept regarding the query of an attribute which is hold by the
-     * model_parent_sub (grand father).
-     *
-     */
     public function testSearchSizeMAndGrandParentColorWhite()
     {
         $query = [
@@ -450,13 +478,13 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
                         ],
                     ],
-                    'filter' => [
+                    'filter'   => [
                         [
                             'terms' => ['owned_attributes' => ['color']],
                         ],
                         [
                             'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -540,7 +568,7 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
                         ],
                     ],
-                    'filter' => [
+                    'filter'   => [
                         [
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
@@ -577,7 +605,6 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
         );
     }
 
-    /** @group todo */
     public function testNotGreyAndNotS()
     {
         $query = [
@@ -591,7 +618,7 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
                     ],
-                    'filter' => [
+                    'filter'   => [
                         [
                             'terms' => ['owned_attributes' => ['color', 'size']],
                         ],
