@@ -22,7 +22,7 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
-            type:
+            product_type:
                 type: 'keyword'
             owned_attributes:
                 type: 'keyword'

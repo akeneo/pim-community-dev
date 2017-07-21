@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\FlattenedAndAttributeList;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
  * Search use cases of products and models in a "smart datagrid way".
@@ -9,21 +9,21 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  * The search is performed independently from the family variants.
  *
  * The search takes advantage of the following properties to elaborate concise but powerful requests:
+ *
  * - Each document (e.g: products, product variants or models) has all the properties of it's associated parent model
  *   and grand parent models.
+ *
  * - Each documents has an 'owned_attributes' property which is a list of the attribute codes that belong to the
  *   document (following the family variant settings and levels definition).
- * TODO: Rename property type to 'product_type' ? Does the real products need to have this type ? In the dataset the
- *       products and product variants does not have the same property (for the default display of the datagrid). is tha
- *       wise ?
- * - Each document has a property 'type' which gives an hint about the level of the family variant the document
+ *
+ * - Each document has a property 'product_type' which gives an hint about the level in the family variant the document
  *   belongs to.
  *
  * @author    Samir Boulil <samir.boulil@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProductModelIntegration
+class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelIntegration
 {
     /**
      * Default display is: search for the root product models and products".
@@ -35,7 +35,7 @@ class PimCatalogDatagridProductModelIntegration extends AbstractPimCatalogProduc
                 'bool' => [
                    'filter' => [
                        'terms' => [
-                           'type' => ['PimCatalogRootProductModel', 'PimCatalogProduct'],
+                           'product_type' => ['PimCatalogRootProductModel', 'PimCatalogProduct'],
                        ],
                    ],
                 ],

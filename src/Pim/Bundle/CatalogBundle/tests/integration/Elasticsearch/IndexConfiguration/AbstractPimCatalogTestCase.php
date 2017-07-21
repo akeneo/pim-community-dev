@@ -17,7 +17,6 @@ use Akeneo\Test\Integration\TestCase;
 abstract class AbstractPimCatalogTestCase extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
-    const PRODUCT_MODEL_DOCUMENT_TYPE = 'pim_catalog_product_model_parent_';
 
     /**
      * {@inheritdoc}
