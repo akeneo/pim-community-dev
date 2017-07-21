@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,16 +24,24 @@ class FamilyVariantValidator extends ConstraintValidator
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     /** @var array */
     private $availableTypes;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param array               $availableTypes
+     * @param TranslatorInterface    $translator
+     * @param EntityManagerInterface $entityManager
+     * @param array                  $availableTypes
      */
-    public function __construct(TranslatorInterface $translator, array $availableTypes)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        EntityManagerInterface $entityManager,
+        array $availableTypes
+    ) {
         $this->translator = $translator;
+        $this->entityManager = $entityManager;
         $this->availableTypes = $availableTypes;
     }
 
@@ -152,6 +162,15 @@ class FamilyVariantValidator extends ConstraintValidator
      */
     private function validateNumberOfLevelAndAxis(FamilyVariantInterface $familyVariant): void
     {
+        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($familyVariant);
+        if (isset($originalData['variantAttributeSets']) &&
+            $originalData['variantAttributeSets'] instanceof PersistentCollection &&
+            $originalData['variantAttributeSets']->isDirty()
+        ) {
+            $message = $this->translator->trans('pim_catalog.constraint.family_variant_level_number_immutable');
+            $this->context->buildViolation($message)->addViolation();
+        }
+
         $numberOfLevel = $familyVariant->getNumberOfLevel();
         $i = 0;
         while ($i !== $numberOfLevel) {

@@ -59,7 +59,7 @@ Feature: Create valid variants of family through CSV import
       """
       code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
       variant_clothing_color_and_size;clothing;Kleidung nach Farbe und Größe;Clothing by color and size;Vêtements par couleur et taille;color;size,weight;color,name,image_1,variation_image,composition;size,EAN,sku,weight
-      variant_shoes_size;shoes;Schuhe nach Größe;Shoes by size;Chaussures par taille;eu_shoes_size;;weight;
+      variant_shoes_size;shoes;Schuhe nach Größe;Shoes by size;Chaussures par taille;eu_shoes_size;supplier;weight;EAN,name,notice,price,sku
       variant_clothing_color_size;clothing;Kleidung nach Farbe/Größe;Clothing by color/size;Vêtements par couleur/taille;color,size;;name,image_1,variation_image,composition;
       """
     And the following job "csv_catalog_modeling_family_variant_import" configuration:
@@ -69,11 +69,13 @@ Feature: Create valid variants of family through CSV import
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
     Then there should be 3 family variants
     And I should see the text "Status: Completed"
-    And I should see the text "skipped 1"
-    And I should see the text "processed 2"
+    And I should see the text "skipped 2"
+    And I should see the text "processed 1"
     And I should see the text "axes: This property cannot be changed."
+    And I should see the text "The number of level of an existing family variant cannot be changed"
     And the invalid data file of "csv_catalog_modeling_family_variant_import" should contain:
       """
       code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
       variant_clothing_color_and_size;clothing;Kleidung nach Farbe und Größe;Clothing by color and size;Vêtements par couleur et taille;color;size,weight;color,name,image_1,variation_image,composition;size,EAN,sku,weight
+      variant_shoes_size;shoes;Schuhe nach Größe;Shoes by size;Chaussures par taille;eu_shoes_size;supplier;weight;EAN,name,notice,price,sku
       """

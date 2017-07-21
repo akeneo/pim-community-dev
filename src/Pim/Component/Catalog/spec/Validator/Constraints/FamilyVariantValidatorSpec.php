@@ -3,6 +3,8 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -22,9 +24,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class FamilyVariantValidatorSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator)
+    function let(TranslatorInterface $translator, EntityManagerInterface $entityManager)
     {
-        $this->beConstructedWith($translator, [
+        $this->beConstructedWith($translator, $entityManager, [
             AttributeTypes::METRIC,
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::BOOLEAN,
@@ -43,6 +45,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
     }
 
     function it_validates_family_variant_axes(
+        $entityManager,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         FamilyVariant $constraint,
@@ -57,8 +60,12 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $size,
         \Iterator $axisIterator,
-        \Iterator $attributeIterator
+        \Iterator $attributeIterator,
+        UnitOfWork $unitOfWork
     ) {
+        $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+        $unitOfWork->getOriginalEntityData($familyVariant)->shouldBeCalled();
+
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $color->isLocalizable()->willReturn(false);
@@ -112,6 +119,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
 
     function it_add_violations_when_axes_are_invalid(
         $translator,
+        $entityManager,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         FamilyVariant $constraint,
@@ -125,9 +133,13 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         AttributeInterface $weatherCondition,
         \Iterator $axisIterator,
         \Iterator $attributeIterator,
-        ArrayCollection $attributes
+        ArrayCollection $attributes,
+        UnitOfWork $unitOfWork
     ) {
         $this->initialize($context);
+
+        $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+        $unitOfWork->getOriginalEntityData($familyVariant)->shouldBeCalled();
 
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);

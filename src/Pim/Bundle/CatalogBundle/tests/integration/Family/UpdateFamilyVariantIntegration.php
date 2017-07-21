@@ -96,13 +96,43 @@ class UpdateFamilyVariantIntegration extends TestCase
                     'axes' => ['weight', 'brand'],
                     'attributes' => ['EAN', 'collection', 'color', 'description', 'erp_name'],
                     'level'=> 1,
-                ]
+                ],
             ],
         ]);
 
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(1, $errors->count());
         $this->assertEquals('This property cannot be changed.', $errors->get(0)->getMessage());
+    }
+
+    /**
+     * Validation: The number of level of the family variant cannot be changes
+     */
+    public function testTheFamilyVariantLevelNumberImmutability()
+    {
+        $familyVariant = $this->getFamilyVariant('variant_shoes_size');
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['eu_shoes_size'],
+                    'attributes' => ['brand', 'collection', 'color', 'description', 'erp_name', 'image_1'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['supplier'],
+                    'attributes' => ['EAN', 'name', 'notice', 'price', 'sku',],
+                    'level'=> 2,
+                ],
+            ],
+        ]);
+
+        $errors = $this->validateFamilyVariant($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'The number of level of an existing family variant cannot be changed',
+            $errors->get(0)->getMessage()
+        );
     }
 
     /**
