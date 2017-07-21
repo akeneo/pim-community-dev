@@ -1815,8 +1815,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
         ];
 
-        $this->indexProducts($rootProductModels);
-        $this->indexProducts($subProductModels);
-        $this->indexProducts($productVariants);
+        $this->indexProducts(array_merge($rootProductModels, $subProductModels, $productVariants));
     }
 }

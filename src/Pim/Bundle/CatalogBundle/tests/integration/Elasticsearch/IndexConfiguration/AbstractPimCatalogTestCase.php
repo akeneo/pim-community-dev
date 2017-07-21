@@ -68,6 +68,8 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     protected function getSearchQueryResults(array $query)
     {
         $identifiers = [];
+
+        $query['size'] = 100;
         $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
@@ -88,6 +90,6 @@ abstract class AbstractPimCatalogTestCase extends TestCase
         sort($actualProductIdentifiers);
         sort($expectedProductIdentifiers);
 
-        $this->assertSame($expectedProductIdentifiers, $actualProductIdentifiers);
+        $this->assertSame($actualProductIdentifiers, $expectedProductIdentifiers);
     }
 }

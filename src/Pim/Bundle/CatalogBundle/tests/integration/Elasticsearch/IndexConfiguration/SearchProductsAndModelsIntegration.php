@@ -83,12 +83,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -117,12 +112,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -154,12 +144,8 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
+
         $this->assertProducts($productsFound, ['model-tshirt-grey', 'model-hat']);
     }
 
@@ -180,12 +166,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -217,12 +198,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -255,12 +231,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -297,12 +268,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts($productsFound, ['tshirt-grey-s']);
     }
@@ -327,12 +293,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
     }
@@ -360,12 +321,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts($productsFound, ['model-tshirt-grey']);
     }
@@ -387,12 +343,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -422,12 +373,8 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
+
         $this->assertProducts(
             $productsFound,
             [
@@ -457,12 +404,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts($productsFound,
             ['running-shoes-m-white', 'biker-jacket-polyester-m', 'biker-jacket-leather-m']);
@@ -490,12 +432,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -541,12 +478,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -583,12 +515,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
@@ -633,12 +560,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertProducts(
             $productsFound,
