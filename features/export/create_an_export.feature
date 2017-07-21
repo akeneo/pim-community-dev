@@ -29,6 +29,7 @@ Feature: Create an export
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 
+  @skip
   Scenario: Fail to create a job export without job
     Given I create a new export
     When I fill in the following information in the popin:
@@ -36,4 +37,3 @@ Feature: Create an export
       | Label | Products export |
     And I press the "Save" button
     Then I should see validation error "Failed to create an export with an unknown job definition"
-
