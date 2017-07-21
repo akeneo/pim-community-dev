@@ -34,7 +34,7 @@ define([
          * {@inherit}
          */
         initialize: function (config) {
-            if (config.config) {
+            if (undefined !== config) {
                 this.config = config.config;
             }
 
@@ -123,10 +123,10 @@ define([
                 var scopeSwitcher = new ScopeSwitcher();
                 scopeSwitcher.setDisplayInline(true);
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.listenTo(scopeSwitcher, 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 this.listenTo(
-                    this.getRoot(),
+                    scopeSwitcher,
                     'pim_enrich:form:scope_switcher:change',
                     function (scopeEvent) {
                         if ('base_product' === scopeEvent.context) {
@@ -143,10 +143,10 @@ define([
                 var localeSwitcher = new LocaleSwitcher();
                 localeSwitcher.setDisplayInline(true);
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(localeSwitcher, 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
 
                 this.listenTo(
-                    this.getRoot(),
+                    localeSwitcher,
                     'pim_enrich:form:locale_switcher:change',
                     function (localeEvent) {
                         if ('base_product' === localeEvent.context) {
@@ -229,12 +229,10 @@ define([
          * @param {string} scopeEvent.scopeCode
          */
         initScope: function (scopeEvent) {
-            if ('base_product' === scopeEvent.context) {
-                if (this.getScope()) {
-                    scopeEvent.scopeCode = this.getScope();
-                } else {
-                    this.setScope(scopeEvent.scopeCode, {silent: true});
-                }
+            if (this.getScope()) {
+                scopeEvent.scopeCode = this.getScope();
+            } else {
+                this.setScope(scopeEvent.scopeCode, {silent: true});
             }
         },
 
@@ -246,12 +244,10 @@ define([
          * @param {string} localeEvent.localeCode
          */
         initLocale: function (localeEvent) {
-            if ('base_product' === localeEvent.context) {
-                if (this.getLocale()) {
-                    localeEvent.localeCode = this.getLocale();
-                } else {
-                    this.setLocale(localeEvent.localeCode, {silent: true});
-                }
+            if (this.getLocale()) {
+                localeEvent.localeCode = this.getLocale();
+            } else {
+                this.setLocale(localeEvent.localeCode, {silent: true});
             }
         }
     });
