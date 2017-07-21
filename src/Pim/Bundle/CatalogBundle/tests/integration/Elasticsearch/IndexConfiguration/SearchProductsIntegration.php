@@ -3,13 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
- * Search use cases of products and models in a "smart datagrid way".
- * It returns either products or models depending on where is information is stored.
+ * Search use cases of products only (no product models should be returned).
  *
  * The search is performed independently from the family variants.
  *
  * The search takes advantage of the following properties to elaborate concise but powerful requests that retrieves
  * only products and product variants.
+ *
  * - Each document (e.g: products, product variants or models) has all the properties of it's associated parent model
  *   and grand parent models.
  *

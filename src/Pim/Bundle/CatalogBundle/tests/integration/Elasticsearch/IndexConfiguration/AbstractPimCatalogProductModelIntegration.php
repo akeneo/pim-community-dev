@@ -2,14 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogIntegration;
-
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCatalogIntegration
+abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCatalogTestCase
 {
     /**
      * {@inheritdoc}
@@ -1817,29 +1815,8 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
         ];
 
-        $this->indexThings($rootProductModels, self::DOCUMENT_TYPE);
-        $this->indexThings($subProductModels, self::DOCUMENT_TYPE);
-        $this->indexThings($productVariants, self::DOCUMENT_TYPE);
-    }
-
-    /**
-     * Indexes the given list of products
-     *
-     * @param array $things
-     * @param       $indexType
-     */
-    protected function indexThings(array $things, $indexType)
-    {
-        foreach ($things as $thing) {
-            $this->esClient->index(
-                $indexType,
-                $thing['identifier'],
-                $thing,
-                null,
-                null
-            );
-        }
-
-        $this->esClient->refreshIndex();
+        $this->indexProducts($rootProductModels);
+        $this->indexProducts($subProductModels);
+        $this->indexProducts($productVariants);
     }
 }

@@ -52,38 +52,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     protected function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(
-                self::DOCUMENT_TYPE,
-                $product['identifier'],
-                $product,
-                $product['parent'],
-                $product['root_ancestor']
-            );
-        }
-
-        $this->esClient->refreshIndex();
-    }
-
-    protected function indexProductModels(array $productModels)
-    {
-        foreach ($productModels as $productModel) {
-            $parent = null;
-            $rootAncestor = null;
-
-            if (isset($productModel['parent'])) {
-                $parent = $productModel['parent'];
-            }
-            if (isset($productModel['root_ancestor'])) {
-                $rootAncestor = $productModel['root_ancestor'];
-            }
-
-            $this->esClient->index(
-                self::PRODUCT_MODEL_DOCUMENT_TYPE . $productModel['level'],
-                $productModel['identifier'],
-                $productModel,
-                $parent,
-                $rootAncestor
-            );
+            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
         }
 
         $this->esClient->refreshIndex();
@@ -93,16 +62,13 @@ abstract class AbstractPimCatalogTestCase extends TestCase
      * Executes the given query and returns the list of skus found.
      *
      * @param array $query
-     * @param array $types
      *
      * @return array
      */
-    protected function getSearchQueryResults(array $query, array $types)
+    protected function getSearchQueryResults(array $query)
     {
         $identifiers = [];
-
-        $query['size'] = 100;
-        $response = $this->esClient->search(join(',', $types), $query);
+        $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];
