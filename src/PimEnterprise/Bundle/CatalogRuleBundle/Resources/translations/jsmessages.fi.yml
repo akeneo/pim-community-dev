@@ -29,3 +29,8 @@ pimee_catalog_rule:
         delete:
           confirm_ok: OK
           confirm_title: Poista vahvistus
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Säännöt

@@ -17,6 +17,15 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: Aktive samling
+    attribute:
+      type:
+        pim_assets_collection: Aktive samling
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Skrivebeskyttet
 pimee_enrich:
   form:
     job_instance:
@@ -151,10 +160,11 @@ pimee_enrich:
         width: '%value%px bredde'
         height: '%value%px højde'
 pim_menu:
-  item:
-    upload_asset: Indlæs aktiver
+  tab:
     asset: Aktiver
+  item:
     asset_category: Aktiver kategorier
     proposal: Forslag
     published_product: Offentliggjorte produkter
     rule: Regler
+    upload_asset: Indlæs aktiver

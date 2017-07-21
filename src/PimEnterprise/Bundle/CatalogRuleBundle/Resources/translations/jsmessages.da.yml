@@ -51,6 +51,11 @@ pimee_catalog_rule:
           success: Reglerne er slettet.
           error: Der opstod en fejl under udførelse af reglerne.
           empty_selection: Ingen regler valgt.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Regler
 confirmation:
   remove:
     rule: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen

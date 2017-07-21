@@ -50,6 +50,11 @@ pimee_catalog_rule:
           success: Uspješno ste izbrisali pravila.
           error: Došlo je do pogreške tijekom brisanja pravila.
           empty_selection: Nije odabrano niti jedno pravilo.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Pravila
 confirmation:
   remove:
     rule: Jeste li sigurni da želite izbrisati ovo pravilo? Nije moguće poništiti ovu akciju

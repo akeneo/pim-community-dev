@@ -50,6 +50,11 @@ pimee_catalog_rule:
           success: Вы успешно удалили правила.
           error: Произошла ошибка при удалении правил.
           empty_selection: Правила не выбраны.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Правила
 confirmation:
   remove:
     rule: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно

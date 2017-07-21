@@ -50,6 +50,11 @@ pimee_catalog_rule:
           success: Heu suprimit les regles correctament.
           error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Regles
 confirmation:
   remove:
     rule: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
