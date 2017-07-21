@@ -440,3 +440,4 @@
 ## Bug Fixes
 
 - GITHUB-6101: Fix Summernote (WYSIWYG) style
+- GITHUB-6337: Write invalid items process fails when it encounters a Date field in xlsx files thanks to @pablollorens!
