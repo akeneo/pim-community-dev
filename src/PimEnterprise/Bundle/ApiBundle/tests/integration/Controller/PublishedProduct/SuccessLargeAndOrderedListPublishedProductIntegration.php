@@ -2,8 +2,7 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
 
-use Akeneo\Test\Integration\Configuration;
-use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 
 /**
  * We want to test the API is capable of returning an ordered list of 100 items.
@@ -11,8 +10,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPublishedProductTestCase
 {
-    /** @var ProductInterface[] */
-    private $products;
+    /** @var PublishedProductInterface[] */
+    private $publishedProducts;
 
     /**
      * {@inheritdoc}
@@ -28,25 +27,27 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
 
         foreach ($identifiers as $identifier) {
             $product = $this->createProduct($identifier, []);
-            $this->publishProduct($product);
-            $this->products[$product->getId()] = $product;
+            $publishedProduct = $this->publishProduct($product);
+
+            $this->publishedProducts[$publishedProduct->getId()] = $publishedProduct;
         }
         // the API will return products sorted alphabetical by MySQL ID, and that's what we expect
         // for instance, if we have 100 products
         // 1, 10, 100, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21...
-        ksort($this->products, SORT_STRING);
+        ksort($this->publishedProducts, SORT_STRING);
     }
 
-    public function testPaginationAllProducts()
+    public function testPaginationAllPublishedProducts()
     {
-        $standardizedProducts = [];
-        foreach ($this->products as $product) {
-            $standardizedProducts[] = $this->getStandardizedProduct($product->getIdentifier());
+        $standardizedPublishedProducts = [];
+        foreach ($this->publishedProducts as $publishedProduct) {
+            $standardizedPublishedProducts[] = $this->getStandardizedPublishedProduct($publishedProduct->getIdentifier());
         }
-        $standardizedProducts = implode(',', $standardizedProducts);
-        $lastEncryptedId = urlencode($this->getEncryptedId(end($this->products)));
+        $standardizedPublishedProducts = implode(',', $standardizedPublishedProducts);
+        $lastEncryptedId = urlencode($this->getEncryptedId(end($this->publishedProducts)->getIdentifier()));
 
         $client = $this->createAuthenticatedClient();
+
         $client->request('GET', 'api/rest/v1/published-products?limit=100');
         $expected = <<<JSON
 {
@@ -58,7 +59,7 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
     "current_page" : null,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts}
+            {$standardizedPublishedProducts}
 		]
     }
 }
@@ -68,19 +69,11 @@ JSON;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
-    }
-
-    /**
      * @param string $identifier
      *
      * @return string
      */
-    private function getStandardizedProduct($identifier)
+    private function getStandardizedPublishedProduct($identifier)
     {
         $standardized = <<<JSON
 
@@ -107,18 +100,6 @@ JSON;
     }
 
     /**
-     * @param ProductInterface $product
-     *
-     * @return string
-     */
-    private function getEncryptedId(ProductInterface $product)
-    {
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-
-        return $encrypter->encrypt($product->getId());
-    }
-
-    /**
      * We want to test the API is capable of returning a list of 100 items.
      * (Twice the page of the cursor).
      *
@@ -126,7 +107,7 @@ JSON;
      */
     private function getListSize()
     {
-        $cursorPageSize = (int)$this->getParameter('pim_catalog.factory.product_cursor.page_size');
+        $cursorPageSize = (int) $this->getParameter('pim_catalog.factory.product_cursor.page_size');
 
         return $cursorPageSize * 2;
     }

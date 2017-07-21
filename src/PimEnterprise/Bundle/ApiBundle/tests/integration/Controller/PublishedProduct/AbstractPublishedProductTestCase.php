@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedP
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -19,6 +20,8 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     protected function publishProduct(ProductInterface $product)
     {
         $published = $this->get('pimee_workflow.manager.published_product')->publish($product);
+
+        $this->get('akeneo_elasticsearch.client')->refreshIndex();
 
         return $published;
     }
@@ -161,5 +164,24 @@ JSON;
 JSON;
 
         return $standardizedPublishedProducts;
+    }
+
+    /**
+     * @param string $productIdentifier
+     *
+     * @return string
+     */
+    protected function getEncryptedId($productIdentifier)
+    {
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+
+        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
+        $productRepository = $this->get('pimee_api.repository.published_product');
+
+        $product = $productRepository->findOneByIdentifier($productIdentifier);
+
+        return $encrypter->encrypt($product->getId());
     }
 }

@@ -178,9 +178,9 @@ class PublishedProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $paginatedProducts = $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions, $searchParameter);
+        $paginatedPublishedProducts = $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions, $searchParameter);
 
-        return new JsonResponse($paginatedProducts);
+        return new JsonResponse($paginatedPublishedProducts);
     }
 
     /**
@@ -372,6 +372,12 @@ class PublishedProductController
 
                 if (isset($filter['locales'])) {
                     $context['locales'] = $filter['locales'];
+                    $localeCodes = $context['locales'];
+                    if (!is_array($localeCodes)) {
+                        $localeCodes = [$context['locales']];
+                    }
+
+                    $this->queryParametersChecker->checkLocalesParameters($localeCodes);
                 }
 
                 $value = isset($filter['value']) ? $filter['value'] : null;
