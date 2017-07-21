@@ -127,7 +127,8 @@ Feature: Products datagrid projects
     And the grid should contain 2 elements
     And I should see the text "My TShirts Project"
     But I should not see the text "My TShirts Project *"
-
+  
+  @skip
   Scenario: A project is not seen as modified if only items per page or current page change
     Given the following products:
       | sku                    | family | categories | name-en_US                  |
