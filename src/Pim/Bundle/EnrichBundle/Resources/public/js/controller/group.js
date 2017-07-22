@@ -14,41 +14,45 @@ export default BaseController.extend({
     this.config = __moduleConfig
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   renderRoute: function (route) {
-    return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code, {cached: false})
-                    .then(function (group) {
-                      if (!this.active) {
-                        return
-                      }
+    return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code, {
+      cached: false
+    })
+      .then(function (group) {
+        if (!this.active) {
+          return
+        }
 
-                      var label = _.escape(
-                            i18n.getLabel(
-                                group.labels,
-                                UserContext.get('catalogLocale'),
-                                group.code
-                            )
-                        )
+        var label = _.escape(
+          i18n.getLabel(
+            group.labels,
+            UserContext.get('catalogLocale'),
+            group.code
+          )
+        )
 
-                      PageTitle.set({'group.label': label })
+        PageTitle.set({
+          'group.label': label
+        })
 
-                      FormBuilder.build(group.meta.form)
-                            .then(function (form) {
-                              this.on('pim:controller:can-leave', function (event) {
-                                form.trigger('pim_enrich:form:can-leave', event)
-                              })
-                              form.setData(group)
-                              form.trigger('pim_enrich:form:entity:post_fetch', group)
-                              form.setElement(this.$el).render()
-                            }.bind(this))
-                    }.bind(this))
-                .fail(function (response) {
-                  var message = response.responseJSON ? response.responseJSON.message : __('error.common')
+        FormBuilder.build(group.meta.form)
+          .then(function (form) {
+            this.on('pim:controller:can-leave', function (event) {
+              form.trigger('pim_enrich:form:can-leave', event)
+            })
+            form.setData(group)
+            form.trigger('pim_enrich:form:entity:post_fetch', group)
+            form.setElement(this.$el).render()
+          }.bind(this))
+      }.bind(this))
+      .fail(function (response) {
+        var message = response.responseJSON ? response.responseJSON.message : __('error.common')
 
-                  var errorView = new Error(message, response.status)
-                  errorView.setElement(this.$el).render()
-                })
+        var errorView = new Error(message, response.status)
+        errorView.setElement(this.$el).render()
+      })
   }
 })

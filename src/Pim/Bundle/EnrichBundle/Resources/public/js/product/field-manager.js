@@ -26,7 +26,6 @@ var getFieldForAttribute = function (attribute) {
 
   ConfigProvider.getAttributeFields().done(function (attributeFields) {
     var fieldModule = attributeFields[attribute.field_type]
-
     if (!fieldModule) {
       throw new Error('No field defined for attribute type "' + attribute.field_type + '"')
     }

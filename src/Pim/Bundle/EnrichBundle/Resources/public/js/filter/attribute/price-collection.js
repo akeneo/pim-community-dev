@@ -15,9 +15,9 @@ export default BaseFilter.extend({
     'change [name="filter-data"], [name="filter-operator"], select.currency': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
       _.defaults(data, {
@@ -33,19 +33,19 @@ export default BaseFilter.extend({
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() ||
-                undefined === this.getValue().amount ||
-                this.getValue().amount === '')
+      (undefined === this.getValue() ||
+      undefined === this.getValue().amount ||
+      this.getValue().amount === '')
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function (templateContext) {
     return this.template(_.extend({}, templateContext, {
       __: __,
@@ -56,30 +56,32 @@ export default BaseFilter.extend({
     }))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function () {
-    this.$('.operator, .currency').select2({minimumResultsForSearch: -1})
+    this.$('.operator, .currency').select2({
+      minimumResultsForSearch: -1
+    })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   getTemplateContext: function () {
     return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('currency').fetchAll()
-            ).then(function (templateContext, currencies) {
-              return _.extend({}, templateContext, {
-                currencies: currencies
-              })
-            })
+      BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+      FetcherRegistry.getFetcher('currency').fetchAll()
+    ).then(function (templateContext, currencies) {
+      return _.extend({}, templateContext, {
+        currencies: currencies
+      })
+    })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   updateState: function () {
     var value = {
       amount: this.$('[name="filter-data"]').val(),

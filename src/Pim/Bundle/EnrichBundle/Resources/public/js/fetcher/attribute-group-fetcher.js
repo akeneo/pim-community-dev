@@ -11,23 +11,23 @@ import _ from 'underscore'
 import BaseFetcher from 'pim/base-fetcher'
 import Routing from 'routing'
 export default BaseFetcher.extend({
-        /**
-         * Overrides base method, to send query using POST instead GET,
-         * because the request URI can be too long.
-         * TODO Should be deleted to set it back to GET.
-         * SEE attribute fetcher
-         *
-         * {@inheritdoc}
-         */
+  /**
+   * Overrides base method, to send query using POST instead GET,
+   * because the request URI can be too long.
+   * TODO Should be deleted to set it back to GET.
+   * SEE attribute fetcher
+   *
+   * {@inheritdoc}
+   */
   getJSON: function (url, parameters) {
     return $.post(Routing.generate(url), parameters, null, 'json')
   },
 
-        /**
-         * Overrides bas method to remove the limit and fetch all the attribute groups.
-         *
-         * {@inheritdoc}
-         */
+  /**
+   * Overrides bas method to remove the limit and fetch all the attribute groups.
+   *
+   * {@inheritdoc}
+   */
   fetchAll: function () {
     if (!this.entityListPromise) {
       if (!_.has(this.options.urls, 'list')) {
@@ -35,12 +35,12 @@ export default BaseFetcher.extend({
       }
 
       this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list, {
-                      options: {
-                        limit: -1
-                      }
-                    })
-                ).then(_.identity).promise()
+        Routing.generate(this.options.urls.list, {
+          options: {
+            limit: -1
+          }
+        })
+      ).then(_.identity).promise()
     }
 
     return this.entityListPromise

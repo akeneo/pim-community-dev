@@ -20,22 +20,22 @@ export default BaseForm.extend({
   className: 'AknFieldContainer',
   template: _.template(template),
 
-            /**
-             * Initializes configuration.
-             *
-             * @param {Object} config
-             */
+  /**
+   * Initializes configuration.
+   *
+   * @param {Object} config
+   */
   initialize: function (config) {
     this.config = config.config
 
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * Renders scopes dropdown.
-             *
-             * @return {Object}
-             */
+  /**
+   * Renders scopes dropdown.
+   *
+   * @return {Object}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -47,18 +47,20 @@ export default BaseForm.extend({
       }
 
       this.$el.html(
-                        this.template({
-                          isEditable: this.isEditable(),
-                          __: __,
-                          channels: this.setChannelLabels(channels),
-                          scope: this.getScope(),
-                          errors: this.getParent().getValidationErrorsForField('scope')
-                        })
-                    )
+        this.template({
+          isEditable: this.isEditable(),
+          __: __,
+          channels: this.setChannelLabels(channels),
+          scope: this.getScope(),
+          errors: this.getParent().getValidationErrorsForField('scope')
+        })
+      )
 
       this.$('.select2')
-                        .select2({minimumResultsForSearch: -1})
-                        .on('change', this.updateState.bind(this))
+        .select2({
+          minimumResultsForSearch: -1
+        })
+        .on('change', this.updateState.bind(this))
 
       this.$('[data-toggle="tooltip"]').tooltip()
 
@@ -68,13 +70,13 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Sets fallback labels for channels without a translation
-             *
-             * @param {Array} channels
-             *
-             * @return {Array}
-             */
+  /**
+   * Sets fallback labels for channels without a translation
+   *
+   * @param {Array} channels
+   *
+   * @return {Array}
+   */
   setChannelLabels: function (channels) {
     var locale = UserContext.get('uiLocale')
 
@@ -85,31 +87,31 @@ export default BaseForm.extend({
     })
   },
 
-            /**
-             * Returns whether this filter is editable.
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Returns whether this filter is editable.
+   *
+   * @returns {boolean}
+   */
   isEditable: function () {
     return undefined !== this.config.readOnly
-                    ? !this.config.readOnly
-                    : true
+      ? !this.config.readOnly
+      : true
   },
 
-            /**
-             * Sets new scope on field change.
-             *
-             * @param {Object} event
-             */
+  /**
+   * Sets new scope on field change.
+   *
+   * @param {Object} event
+   */
   updateState: function (event) {
     this.setScope(event.target.value)
   },
 
-            /**
-             * Sets specified scope into root model.
-             *
-             * @param {String} code
-             */
+  /**
+   * Sets specified scope into root model.
+   *
+   * @param {String} code
+   */
   setScope: function (code) {
     var data = this.getFilters()
     var before = data.structure.scope
@@ -122,11 +124,11 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Gets scope from root model.
-             *
-             * @returns {String}
-             */
+  /**
+   * Gets scope from root model.
+   *
+   * @returns {String}
+   */
   getScope: function () {
     var structure = this.getFilters().structure
 
@@ -137,11 +139,11 @@ export default BaseForm.extend({
     return _.isUndefined(structure.scope) ? null : structure.scope
   },
 
-            /**
-             * Get filters
-             *
-             * @return {object}
-             */
+  /**
+   * Get filters
+   *
+   * @return {object}
+   */
   getFilters: function () {
     return this.getFormData().configuration.filters
   }

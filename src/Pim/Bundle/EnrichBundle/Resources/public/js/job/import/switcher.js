@@ -19,9 +19,9 @@ export default BaseForm.extend({
   },
   currentActionCode: null,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.actions = []
 
@@ -30,9 +30,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (_.isEmpty(this.actions)) {
       return
@@ -50,35 +50,37 @@ export default BaseForm.extend({
     return BaseForm.prototype.render.apply(this, arguments)
   },
 
-            /**
-             * Registers a new main action
-             *
-             * @param {Object} action
-             * @param {String} action.label The label to display in this switcher
-             * @param {String} action.code  The extension code to display on click
-             */
+  /**
+   * Registers a new main action
+   *
+   * @param {Object} action
+   * @param {String} action.label The label to display in this switcher
+   * @param {String} action.code  The extension code to display on click
+   */
   registerAction: function (action) {
     this.actions.push(action)
     this.render()
   },
 
-            /**
-             * Switches a new action to display
-             *
-             * @param {Event} event
-             */
+  /**
+   * Switches a new action to display
+   *
+   * @param {Event} event
+   */
   switch: function (event) {
     this.setCurrentActionCode(event.target.dataset.code)
     this.render()
   },
 
-            /**
-             * Sets the new displayed action
-             *
-             * @param {String} code The code of the current extension
-             */
+  /**
+   * Sets the new displayed action
+   *
+   * @param {String} code The code of the current extension
+   */
   setCurrentActionCode: function (code) {
     this.currentActionCode = code
-    this.getRoot().trigger('switcher:switch', { code: code })
+    this.getRoot().trigger('switcher:switch', {
+      code: code
+    })
   }
 })

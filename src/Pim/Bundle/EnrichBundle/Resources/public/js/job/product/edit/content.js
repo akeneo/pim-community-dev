@@ -14,18 +14,18 @@ import BaseForm from 'pim/form'
 export default BaseForm.extend({
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.config.tabCode ? this.config.tabCode : this.code,
@@ -36,17 +36,17 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
     }
 
     this.$el.html(
-                    this.template({})
-                )
+      this.template({})
+    )
 
     this.renderExtensions()
   }

@@ -16,9 +16,9 @@ export default BaseFilter.extend({
     'change [name="filter-value"]': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
@@ -58,15 +58,15 @@ export default BaseFilter.extend({
         var families = this.getValue()
         if (families !== null) {
           fetcherRegistry.getFetcher('family')
-                            .fetchByIdentifiers(families)
-                            .then(function (families) {
-                              callback(_.map(families, function (family) {
-                                return {
-                                  id: family.code,
-                                  text: i18n.getLabel(family.labels, userContext.get('uiLocale'), family.code)
-                                }
-                              }))
-                            })
+            .fetchByIdentifiers(families)
+            .then(function (families) {
+              callback(_.map(families, function (family) {
+                return {
+                  id: family.code,
+                  text: i18n.getLabel(family.labels, userContext.get('uiLocale'), family.code)
+                }
+              }))
+            })
         }
       }.bind(this)
     }
@@ -74,20 +74,23 @@ export default BaseFilter.extend({
     return BaseFilter.prototype.initialize.apply(this, arguments)
   },
 
-        /**
-         * {@inherit}
-         */
+  /**
+   * {@inherit}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-      _.defaults(data, {field: this.getCode(), operator: '='})
+      _.defaults(data, {
+        field: this.getCode(),
+        operator: '='
+      })
     }.bind(this))
 
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function () {
     return this.template({
       isEditable: this.isEditable(),
@@ -98,23 +101,23 @@ export default BaseFilter.extend({
     })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function () {
     this.$('[name="filter-value"]').select2(this.selectOptions)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return _.isEmpty(this.getValue())
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   updateState: function () {
     var value = this.$('[name="filter-value"]').val()
 
@@ -122,8 +125,8 @@ export default BaseFilter.extend({
       field: this.getField(),
       operator: 'IN',
       value: value === ''
-                    ? []
-                    : value.split(',')
+        ? []
+        : value.split(',')
     })
   }
 })

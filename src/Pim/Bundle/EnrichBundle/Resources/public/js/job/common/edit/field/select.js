@@ -16,20 +16,20 @@ export default BaseField.extend({
     'change select': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     BaseField.prototype.render.apply(this, arguments)
 
     this.$('.select2').select2()
   },
 
-        /**
-         * Get the field dom value
-         *
-         * @return {string}
-         */
+  /**
+   * Get the field dom value
+   *
+   * @return {string}
+   */
   getFieldValue: function () {
     return this.$('select').val()
   }

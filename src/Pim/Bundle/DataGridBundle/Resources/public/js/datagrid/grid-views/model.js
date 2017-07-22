@@ -1,52 +1,52 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
-        
 
-        export default Backbone.Model.extend({
-            /** @property */
-            idAttribute: 'name',
 
-            /** @property */
-            defaults: {
-                filters: [],
-                sorters: []
-            },
+export default Backbone.Model.extend({
+  /** @property */
+  idAttribute: 'name',
 
-            /** @property */
-            directions: {
-                "ASC": "-1",
-                "DESC": "1"
-            },
+  /** @property */
+  defaults: {
+    filters: [],
+    sorters: []
+  },
 
-            /**
-             * Initializer.
-             *
-             * @param {Object} data
-             * @param {String} data.name required
-             * @param {Array}  data.sorters
-             * @param {Array}  data.filters
-             */
-            initialize: function (data) {
-                if (!data.name) {
-                    throw new TypeError("'name' is required");
-                }
+  /** @property */
+  directions: {
+    "ASC": "-1",
+    "DESC": "1"
+  },
 
-                _.each(data.sorters, _.bind(function (direction, key) {
-                    data.sorters[key] = this.directions[direction];
-                }, this));
-            },
+  /**
+   * Initializer.
+   *
+   * @param {Object} data
+   * @param {String} data.name required
+   * @param {Array}  data.sorters
+   * @param {Array}  data.filters
+   */
+  initialize: function(data) {
+    if (!data.name) {
+      throw new TypeError("'name' is required");
+    }
 
-            /**
-             * Convert model to format needed for applying greed state
-             *
-             * @returns {}
-             */
-            toGridState: function () {
-                return {
-                    filters:  this.get('filters'),
-                    sorters:  this.get('sorters'),
-                    gridView: this.get('name')
-                };
-            }
-        });
-    
+    _.each(data.sorters, _.bind(function(direction, key) {
+      data.sorters[key] = this.directions[direction];
+    }, this));
+  },
+
+  /**
+   * Convert model to format needed for applying greed state
+   *
+   * @returns {}
+   */
+  toGridState: function() {
+    return {
+      filters: this.get('filters'),
+      sorters: this.get('sorters'),
+      gridView: this.get('name')
+    };
+  }
+});
+

@@ -4,224 +4,224 @@ import _ from 'underscore';
 import Backbone from 'backbone';
 import buttonTemplate from 'pim/template/datagrid/action-launcher-button';
 import listItemTemplate from 'pim/template/datagrid/action-launcher-list-item';
-    
 
-    /**
-     * Action launcher implemented as simple link. Click on link triggers action run
-     *
-     * Events:
-     * click: Fired when launcher was clicked
-     *
-     * @export  oro/datagrid/action-launcher
-     * @class   oro.datagrid.ActionLauncher
-     * @extends Backbone.View
-     */
-    export default Backbone.View.extend({
-        /** @property */
-        enabled: true,
 
-        /** @property {String} */
-        tagName: 'a',
+/**
+ * Action launcher implemented as simple link. Click on link triggers action run
+ *
+ * Events:
+ * click: Fired when launcher was clicked
+ *
+ * @export  oro/datagrid/action-launcher
+ * @class   oro.datagrid.ActionLauncher
+ * @extends Backbone.View
+ */
+export default Backbone.View.extend({
+  /** @property */
+  enabled: true,
 
-        /** @property {Boolean} */
-        onClickReturnValue: true,
+  /** @property {String} */
+  tagName: 'a',
 
-        /** @property {oro.datagrid.AbstractAction} */
-        action: undefined,
+  /** @property {Boolean} */
+  onClickReturnValue: true,
 
-        /** @property {String} */
-        label: undefined,
+  /** @property {oro.datagrid.AbstractAction} */
+  action: undefined,
 
-        /** @property {String} */
-        icon: undefined,
+  /** @property {String} */
+  label: undefined,
 
-        /** @property {String} */
-        iconClassName: undefined,
+  /** @property {String} */
+  icon: undefined,
 
-        /** @property {String} */
-        className: undefined,
+  /** @property {String} */
+  iconClassName: undefined,
 
-        /** @property {String} */
-        link: 'javascript:void(0);',
+  /** @property {String} */
+  className: undefined,
 
-        /** @property {String} */
-        runAction: true,
+  /** @property {String} */
+  link: 'javascript:void(0);',
 
-        /** @property {String} */
-        group: undefined,
+  /** @property {String} */
+  runAction: true,
 
-        /** @property {function(Object, ?Object=): String} */
-        buttonTemplate: _.template(buttonTemplate),
+  /** @property {String} */
+  group: undefined,
 
-        /** @property {function(Object, ?Object=): String} */
-        listItemTemplate: _.template(listItemTemplate),
+  /** @property {function(Object, ?Object=): String} */
+  buttonTemplate: _.template(buttonTemplate),
 
-        /** @property */
-        events: {
-            'click': 'onClick'
-        },
+  /** @property {function(Object, ?Object=): String} */
+  listItemTemplate: _.template(listItemTemplate),
 
-        /**
-         * Initialize
-         *
-         * @param {Object} options
-         * @param {oro.datagrid.AbstractAction} options.action
-         * @param {function(Object, ?Object=): string} [options.template]
-         * @param {String} [options.label]
-         * @param {String} [options.icon]
-         * @param {String} [options.link]
-         * @param {Boolean} [options.runAction]
-         * @param {Boolean} [options.onClickReturnValue]
-         * @throws {TypeError} If mandatory option is undefined
-         */
-        initialize: function(options) {
-            options = options || {};
-            if (!options.action) {
-                throw new TypeError("'action' is required");
-            }
+  /** @property */
+  events: {
+    'click': 'onClick'
+  },
 
-            if (options.template) {
-                this.template = options.template;
-            }
+  /**
+   * Initialize
+   *
+   * @param {Object} options
+   * @param {oro.datagrid.AbstractAction} options.action
+   * @param {function(Object, ?Object=): string} [options.template]
+   * @param {String} [options.label]
+   * @param {String} [options.icon]
+   * @param {String} [options.link]
+   * @param {Boolean} [options.runAction]
+   * @param {Boolean} [options.onClickReturnValue]
+   * @throws {TypeError} If mandatory option is undefined
+   */
+  initialize: function(options) {
+    options = options || {};
+    if (!options.action) {
+      throw new TypeError("'action' is required");
+    }
 
-            if (options.label) {
-                this.label = options.label;
-            }
+    if (options.template) {
+      this.template = options.template;
+    }
 
-            if (options.icon) {
-                this.icon = options.icon;
-            }
+    if (options.label) {
+      this.label = options.label;
+    }
 
-            if (options.link) {
-                this.link = options.link;
-            }
+    if (options.icon) {
+      this.icon = options.icon;
+    }
 
-            if (options.iconClassName) {
-                this.iconClassName = options.iconClassName;
-            }
+    if (options.link) {
+      this.link = options.link;
+    }
 
-            if (options.className) {
-                this.className = options.className;
-            }
+    if (options.iconClassName) {
+      this.iconClassName = options.iconClassName;
+    }
 
-            if (_.has(options, 'runAction')) {
-                this.runAction = options.runAction;
-            }
+    if (options.className) {
+      this.className = options.className;
+    }
 
-            if (_.has(options, 'group')) {
-                this.group = options.group;
-            }
+    if (_.has(options, 'runAction')) {
+      this.runAction = options.runAction;
+    }
 
-            if (_.has(options, 'onClickReturnValue')) {
-                this.onClickReturnValue = options.onClickReturnValue;
-            }
+    if (_.has(options, 'group')) {
+      this.group = options.group;
+    }
 
-            this.action = options.action;
-            Backbone.View.prototype.initialize.apply(this, arguments);
-        },
+    if (_.has(options, 'onClickReturnValue')) {
+      this.onClickReturnValue = options.onClickReturnValue;
+    }
 
-        /**
-         * Render the launcher as a simple button
-         *
-         * @return {*}
-         */
-        render: function () {
-            this.$el.empty();
+    this.action = options.action;
+    Backbone.View.prototype.initialize.apply(this, arguments);
+  },
 
-            var $el = $(this.buttonTemplate({
-                label: _.__(this.label || this.action.label),
-                icon: this.icon,
-                className: this.className ? this.className : '',
-                iconClassName: this.iconClassName,
-                link: this.link,
-                action: this.action,
-                attributes: this.attributes,
-                enabled: this.enabled,
-                tagName: this.tagName
-            }));
+  /**
+   * Render the launcher as a simple button
+   *
+   * @return {*}
+   */
+  render: function() {
+    this.$el.empty();
 
-            this.setElement($el);
+    var $el = $(this.buttonTemplate({
+      label: _.__(this.label || this.action.label),
+      icon: this.icon,
+      className: this.className ? this.className : '',
+      iconClassName: this.iconClassName,
+      link: this.link,
+      action: this.action,
+      attributes: this.attributes,
+      enabled: this.enabled,
+      tagName: this.tagName
+    }));
 
-            return this;
-        },
+    this.setElement($el);
 
-        /**
-         * Render the launcher as a list item
-         *
-         * @return {*}
-         */
-        renderAsListItem: function () {
-            this.$el.empty();
+    return this;
+  },
 
-            var $el = $(this.listItemTemplate({
-                label: _.__(this.label || this.action.label),
-                className: 'AknDropdown-menuLink' + (this.className ? ' ' + this.className : ''),
-                link: this.link,
-                action: this.action,
-                attributes: this.attributes,
-                enabled: this.enabled,
-                tagName: this.tagName
-            }));
+  /**
+   * Render the launcher as a list item
+   *
+   * @return {*}
+   */
+  renderAsListItem: function() {
+    this.$el.empty();
 
-            this.setElement($el);
+    var $el = $(this.listItemTemplate({
+      label: _.__(this.label || this.action.label),
+      className: 'AknDropdown-menuLink' + (this.className ? ' ' + this.className : ''),
+      link: this.link,
+      action: this.action,
+      attributes: this.attributes,
+      enabled: this.enabled,
+      tagName: this.tagName
+    }));
 
-            return this;
-        },
+    this.setElement($el);
 
-        /**
-         * Handle launcher click
-         *
-         * @protected
-         * @return {Boolean}
-         */
-        onClick: function() {
-            if (!this.enabled) {
-                return this.onClickReturnValue;
-            }
-            this.trigger('click', this);
-            if (this.runAction) {
-                this.action.run();
+    return this;
+  },
 
-                this.$el.closest('.btn-group').removeClass('open');
+  /**
+   * Handle launcher click
+   *
+   * @protected
+   * @return {Boolean}
+   */
+  onClick: function() {
+    if (!this.enabled) {
+      return this.onClickReturnValue;
+    }
+    this.trigger('click', this);
+    if (this.runAction) {
+      this.action.run();
 
-                // skip launcher functionality, if action was executed
-                return false;
-            }
+      this.$el.closest('.btn-group').removeClass('open');
 
-            return this.onClickReturnValue;
-        },
+      // skip launcher functionality, if action was executed
+      return false;
+    }
 
-        /**
-         * Disable
-         *
-         * @return {*}
-         */
-        disable: function() {
-            this.enabled = false;
-            this.$el.addClass('disabled');
+    return this.onClickReturnValue;
+  },
 
-            return this;
-        },
+  /**
+   * Disable
+   *
+   * @return {*}
+   */
+  disable: function() {
+    this.enabled = false;
+    this.$el.addClass('disabled');
 
-        /**
-         * Enable
-         *
-         * @return {*}
-         */
-        enable: function() {
-            this.enabled = true;
-            this.$el.removeClass('disabled');
+    return this;
+  },
 
-            return this;
-        },
+  /**
+   * Enable
+   *
+   * @return {*}
+   */
+  enable: function() {
+    this.enabled = true;
+    this.$el.removeClass('disabled');
 
-        /**
-         * Return the action group
-         *
-         * @return {String}
-         */
-        getGroup: function () {
-            return this.group;
-        }
-    });
+    return this;
+  },
+
+  /**
+   * Return the action group
+   *
+   * @return {String}
+   */
+  getGroup: function() {
+    return this.group;
+  }
+});
 

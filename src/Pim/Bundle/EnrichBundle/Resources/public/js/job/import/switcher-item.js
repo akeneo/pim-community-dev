@@ -13,18 +13,18 @@ import BaseForm from 'pim/form'
 export default BaseForm.extend({
   visible: false,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'switcher:switch', this.switch)
 
@@ -36,9 +36,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty()
 
@@ -49,12 +49,12 @@ export default BaseForm.extend({
     this.delegateEvents()
   },
 
-            /**
-             * This will enable or disable the current item.
-             *
-             * @param {Object} event
-             * @param {String} event.code The code of the current switcher item
-             */
+  /**
+   * This will enable or disable the current item.
+   *
+   * @param {Object} event
+   * @param {String} event.code The code of the current switcher item
+   */
   switch: function (event) {
     this.visible = event.code === this.code
 

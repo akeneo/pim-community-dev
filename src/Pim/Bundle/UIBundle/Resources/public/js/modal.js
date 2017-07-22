@@ -2,16 +2,16 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import 'bootstrap-modal'
 
-    /**
-     * Implementation of Bootstrap Modal
-     * Oro extension of Bootstrap Modal wrapper for use with Backbone.
-     *
-     * @export  oro/modal
-     * @class   oro.Modal
-     * @extends Backbone.BootstrapModal
-     */
+/**
+ * Implementation of Bootstrap Modal
+ * Oro extension of Bootstrap Modal wrapper for use with Backbone.
+ *
+ * @export  oro/modal
+ * @class   oro.Modal
+ * @extends Backbone.BootstrapModal
+ */
 export default Backbone.BootstrapModal.extend({
-        /** @property {String} */
+  /** @property {String} */
   className: 'modal oro-modal-danger',
 
   open: function () {

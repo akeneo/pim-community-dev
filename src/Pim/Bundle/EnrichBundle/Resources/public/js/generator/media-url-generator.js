@@ -3,14 +3,14 @@ import $ from 'jquery'
 import _ from 'underscore'
 import Routing from 'routing'
 export default {
-            /**
-             * Get the show media URL
-             *
-             * @param string filePath
-             * @param string filter
-             *
-             * @return {string}
-             */
+  /**
+   * Get the show media URL
+   *
+   * @param string filePath
+   * @param string filter
+   *
+   * @return {string}
+   */
   getMediaShowUrl: function (filePath, filter) {
     var filename = encodeURIComponent(filePath)
 
@@ -20,13 +20,13 @@ export default {
     })
   },
 
-            /**
-             * Get the download media URL
-             *
-             * @param string filePath
-             *
-             * @return {string}
-             */
+  /**
+   * Get the download media URL
+   *
+   * @param string filePath
+   *
+   * @return {string}
+   */
   getMediaDownloadUrl: function (filePath) {
     var filename = encodeURIComponent(filePath)
 

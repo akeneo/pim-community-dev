@@ -24,20 +24,20 @@ export default BaseForm.extend({
   },
   currentKey: 'current_column_tab',
 
-            /**
-             * @param {string} meta.config.title Translation key of the block title
-             *
-             * {@inheritdoc}
-             */
+  /**
+   * @param {string} meta.config.title Translation key of the block title
+   *
+   * {@inheritdoc}
+   */
   initialize: function (meta) {
     this.config = meta.config
 
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.tabs = []
 
@@ -49,24 +49,24 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el
-                    .empty()
-                    .html(this.template({
-                      tabs: this.getTabs(),
-                      currentTab: this.getCurrentTabOrDefault(),
-                      title: __(this.config.title)
-                    }))
+      .empty()
+      .html(this.template({
+        tabs: this.getTabs(),
+        currentTab: this.getCurrentTabOrDefault(),
+        title: __(this.config.title)
+      }))
   },
 
-            /**
-             * Registers a new tab
-             *
-             * @param event
-             */
+  /**
+   * Registers a new tab
+   *
+   * @param event
+   */
   registerTab: function (event) {
     var tab = {
       code: event.code,
@@ -79,39 +79,41 @@ export default BaseForm.extend({
     this.render()
   },
 
-            /**
-             * Displays another tab
-             *
-             * @param event
-             */
+  /**
+   * Displays another tab
+   *
+   * @param event
+   */
   selectTab: function (event) {
     this.getRoot().trigger('column-tab:select-tab', event)
     this.setCurrentTab(event.currentTarget.dataset.tab)
     this.render()
   },
 
-            /**
-             * Set the current tab
-             *
-             * @param {string} tabCode
-             */
+  /**
+   * Set the current tab
+   *
+   * @param {string} tabCode
+   */
   setCurrentTab: function (tabCode) {
     this.currentTab = tabCode
   },
 
-            /**
-             * Returns the current tab.
-             * If there is no selected tab, returns the first available tab.
-             */
+  /**
+   * Returns the current tab.
+   * If there is no selected tab, returns the first available tab.
+   */
   getCurrentTabOrDefault: function () {
-    var result = _.findWhere(this.getTabs(), {code: this.currentTab})
+    var result = _.findWhere(this.getTabs(), {
+      code: this.currentTab
+    })
 
     return (undefined !== result) ? result.code : _.first(_.pluck(this.tabs, 'code'))
   },
 
-            /**
-             * Returns the list of visible tabs
-             */
+  /**
+   * Returns the list of visible tabs
+   */
   getTabs: function () {
     return _.filter(this.tabs, function (tab) {
       return !_.isFunction(tab.isVisible) || tab.isVisible()

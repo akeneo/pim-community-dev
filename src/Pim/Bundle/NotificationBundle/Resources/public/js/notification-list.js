@@ -41,7 +41,9 @@ var NotificationView = Backbone.View.extend({
 
   remove: function () {
     this.model.destroy({
-      url: Routing.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
+      url: Routing.generate('pim_notification_notification_remove', {
+        id: this.model.get('id')
+      }),
       wait: false,
       _method: 'DELETE'
     })
@@ -69,7 +71,9 @@ var NotificationView = Backbone.View.extend({
     this.model.set('viewed', true)
     $.ajax({
       type: 'POST',
-      url: Routing.generate('pim_notification_notification_mark_viewed', {id: this.model.id}),
+      url: Routing.generate('pim_notification_notification_mark_viewed', {
+        id: this.model.id
+      }),
       async: true
     })
   },
@@ -82,20 +86,20 @@ var NotificationView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-                    this.template({
-                      viewed: this.model.get('viewed'),
-                      message: this.model.get('message'),
-                      url: this.model.get('url'),
-                      icon: this.getIcon(this.model.get('type')),
-                      type: this.model.get('type'),
-                      createdAt: this.model.get('createdAt'),
-                      actionType: this.camelize(this.model.get('actionType')),
-                      buttonLabel: this.model.get('buttonLabel'),
-                      actionTypeMessage: this.model.get('actionTypeMessage'),
-                      showReportButton: this.model.get('showReportButton'),
-                      comment: this.model.get('comment')
-                    }
-                ))
+      this.template({
+        viewed: this.model.get('viewed'),
+        message: this.model.get('message'),
+        url: this.model.get('url'),
+        icon: this.getIcon(this.model.get('type')),
+        type: this.model.get('type'),
+        createdAt: this.model.get('createdAt'),
+        actionType: this.camelize(this.model.get('actionType')),
+        buttonLabel: this.model.get('buttonLabel'),
+        actionTypeMessage: this.model.get('actionTypeMessage'),
+        showReportButton: this.model.get('showReportButton'),
+        comment: this.model.get('comment')
+      }
+      ))
 
     return this
   },
@@ -113,10 +117,10 @@ var NotificationView = Backbone.View.extend({
 
   camelize: function (str) {
     return str.toLowerCase()
-                    .replace(/_(.)/g, function ($firstLetter) {
-                      return $firstLetter.toUpperCase()
-                    })
-                    .replace(/_/g, '')
+      .replace(/_(.)/g, function ($firstLetter) {
+        return $firstLetter.toUpperCase()
+      })
+      .replace(/_/g, '')
   }
 })
 
@@ -156,14 +160,14 @@ var NotificationListView = Backbone.View.extend({
     this.collection.trigger('loading:start')
 
     $.getJSON(Routing.generate('pim_notification_notification_list') + '?skip=' + this.collection.length)
-                    .then(_.bind(function (data) {
-                      this.collection.add(data.notifications)
-                      this.collection.hasMore = data.notifications.length >= 10
+      .then(_.bind(function (data) {
+        this.collection.add(data.notifications)
+        this.collection.hasMore = data.notifications.length >= 10
 
-                      this.collection.trigger('load:unreadCount', data.unreadCount)
-                      this.collection.loading = false
-                      this.collection.trigger('loading:finish')
-                    }, this))
+        this.collection.trigger('load:unreadCount', data.unreadCount)
+        this.collection.loading = false
+        this.collection.trigger('loading:finish')
+      }, this))
   },
 
   render: function () {
@@ -185,7 +189,10 @@ var NotificationListView = Backbone.View.extend({
 
 export default function (opts) {
   var notificationList = new NotificationList()
-  var options = _.extend({}, { el: null, collection: notificationList }, opts)
+  var options = _.extend({}, {
+    el: null,
+    collection: notificationList
+  }, opts)
   var notificationListView = new NotificationListView(options)
 
   notificationList.setElement = function (element) {
@@ -198,4 +205,5 @@ export default function (opts) {
   }
 
   return notificationList
-};
+}
+;

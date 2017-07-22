@@ -13,16 +13,16 @@ export default BaseFilter.extend({
     'change [name="filter-value"]': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return _.isEmpty(this.getValue())
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function () {
     return this.template({
       __: __,
@@ -32,21 +32,21 @@ export default BaseFilter.extend({
     })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   getTemplateContext: function () {
     return BaseFilter.prototype.getTemplateContext.apply(this, arguments)
-                .then(function (templateContext) {
-                  return _.extend({}, templateContext, {
-                    removable: false
-                  })
-                })
+      .then(function (templateContext) {
+        return _.extend({}, templateContext, {
+          removable: false
+        })
+      })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   updateState: function () {
     var value = this.$('[name="filter-value"]').val().split(/[\s,]+/)
     var cleanedValues = _.reject(value, function (val) {

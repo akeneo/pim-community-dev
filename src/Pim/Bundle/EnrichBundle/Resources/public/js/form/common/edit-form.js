@@ -20,9 +20,9 @@ import messenger from 'oro/messenger'
 export default BaseForm.extend({
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     mediator.clear('pim_enrich:form')
     Backbone.Router.prototype.once('route', this.unbindEvents)
@@ -40,9 +40,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -60,27 +60,27 @@ export default BaseForm.extend({
     this.getRoot().trigger('pim_enrich:form:render:after')
   },
 
-            /**
-             * Clear the mediator
-             */
+  /**
+   * Clear the mediator
+   */
   unbindEvents: function () {
     mediator.clear('pim_enrich:form')
   },
 
-            /**
-             * Clear the cached information
-             */
+  /**
+   * Clear the cached information
+   */
   clearCache: function () {
     FetcherRegistry.clearAll()
     FieldManager.clearFields()
     this.render()
   },
 
-            /**
-             * Display validation error as flash message
-             *
-             * @param {Event} event
-             */
+  /**
+   * Display validation error as flash message
+   *
+   * @param {Event} event
+   */
   displayError: function (event) {
     _.each(event.response, function (error) {
       if (error.global) {

@@ -2,17 +2,17 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import Modal from 'oro/modal'
 
-    /**
-     * Delete confirmation dialog
-     *
-     * @export  oro/delete-confirmation
-     * @class   oro.DeleteConfirmation
-     * @extends oro.Modal
-     */
+/**
+ * Delete confirmation dialog
+ *
+ * @export  oro/delete-confirmation
+ * @class   oro.DeleteConfirmation
+ * @extends oro.Modal
+ */
 export default Modal.extend({
-        /**
-         * @param {Object} options
-         */
+  /**
+   * @param {Object} options
+   */
   initialize: function (options) {
     options = _.extend({
       title: __('Delete Confirmation'),

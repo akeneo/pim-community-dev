@@ -15,9 +15,9 @@ export default BaseForm.extend({
   template: _.template(template),
   className: 'AknAttributeActions-help no-attribute',
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render)
     this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter)
@@ -25,9 +25,9 @@ export default BaseForm.extend({
     BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     var variantGroup = this.getFormData()
     this.$el.empty()
@@ -41,11 +41,11 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Add filter on field to make it readonly.
-             *
-             * @param {object} event
-             */
+  /**
+   * Add filter on field to make it readonly.
+   *
+   * @param {object} event
+   */
   addFieldFilter: function (event) {
     event.filters.push($.Deferred().resolve(function () {
       return []

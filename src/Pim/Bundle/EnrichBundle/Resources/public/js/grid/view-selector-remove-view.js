@@ -24,14 +24,14 @@ export default BaseForm.extend({
     'click .remove': 'promptDeletion'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (this.getRoot().currentViewType !== 'view' ||
-                    this.getRoot().currentView.id === 0 ||
-                    UserContext.get('meta').id !== this.getRoot().currentView.owner_id
-                ) {
+      this.getRoot().currentView.id === 0 ||
+      UserContext.get('meta').id !== this.getRoot().currentView.owner_id
+    ) {
       this.$el.html('')
 
       return this
@@ -46,33 +46,33 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Prompt the datagrid view deletion modal.
-             */
+  /**
+   * Prompt the datagrid view deletion modal.
+   */
   promptDeletion: function (event) {
     event.stopPropagation()
 
     Dialog.confirm(
-                    __('grid.view_selector.confirmation.remove'),
-                    __('grid.view_selector.confirmation.delete'),
-                    function () {
-                      this.removeView(this.getRoot().currentView)
-                    }.bind(this)
-                )
+      __('grid.view_selector.confirmation.remove'),
+      __('grid.view_selector.confirmation.delete'),
+      function () {
+        this.removeView(this.getRoot().currentView)
+      }.bind(this)
+    )
   },
 
-            /**
-             * Remove the current Datagrid View and triggers an event to the parent.
-             *
-             * @param {Object} view
-             */
+  /**
+   * Remove the current Datagrid View and triggers an event to the parent.
+   *
+   * @param {Object} view
+   */
   removeView: function (view) {
     DatagridViewRemover.remove(view)
-                    .done(function () {
-                      this.getRoot().trigger('grid:view-selector:view-removed')
-                    }.bind(this))
-                    .fail(function (response) {
-                      messenger.notify('error', response.responseJSON)
-                    })
+      .done(function () {
+        this.getRoot().trigger('grid:view-selector:view-removed')
+      }.bind(this))
+      .fail(function (response) {
+        messenger.notify('error', response.responseJSON)
+      })
   }
 })

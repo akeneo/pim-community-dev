@@ -15,40 +15,40 @@ export default BaseFilter.extend({
     'change [name="filter-data"], [name="filter-operator"], select.unit': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     return $.when(
-                FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
-                BaseFilter.prototype.configure.apply(this, arguments)
-            ).then(function (attribute) {
-              this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-                _.defaults(data, {
-                  field: this.getCode(),
-                  operator: _.first(_.values(this.config.operators)),
-                  value: {
-                    amount: '',
-                    unit: attribute.default_metric_unit
-                  }
-                })
-              }.bind(this))
-            }.bind(this))
+      FetcherRegistry.getFetcher('attribute').fetch(this.getCode()),
+      BaseFilter.prototype.configure.apply(this, arguments)
+    ).then(function (attribute) {
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
+        _.defaults(data, {
+          field: this.getCode(),
+          operator: _.first(_.values(this.config.operators)),
+          value: {
+            amount: '',
+            unit: attribute.default_metric_unit
+          }
+        })
+      }.bind(this))
+    }.bind(this))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return !_.contains(['EMPTY', 'NOT EMPTY'], this.getOperator()) &&
-                (undefined === this.getValue() ||
-                undefined === this.getValue().amount ||
-                this.getValue().amount === '')
+      (undefined === this.getValue() ||
+      undefined === this.getValue().amount ||
+      this.getValue().amount === '')
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function (templateContext) {
     return this.template(_.extend({}, templateContext, {
       __: __,
@@ -59,30 +59,32 @@ export default BaseFilter.extend({
     }))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function () {
-    this.$('.operator, .unit').select2({minimumResultsForSearch: -1})
+    this.$('.operator, .unit').select2({
+      minimumResultsForSearch: -1
+    })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   getTemplateContext: function () {
     return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('measure').fetchAll()
-            ).then(function (templateContext, measures) {
-              return _.extend({}, templateContext, {
-                units: measures[templateContext.attribute.metric_family]
-              })
-            })
+      BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+      FetcherRegistry.getFetcher('measure').fetchAll()
+    ).then(function (templateContext, measures) {
+      return _.extend({}, templateContext, {
+        units: measures[templateContext.attribute.metric_family]
+      })
+    })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   updateState: function () {
     var value = {
       amount: this.$('[name="filter-data"]').val(),

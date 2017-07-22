@@ -1,30 +1,30 @@
 /* global define */
 import _ from 'underscore';
 import Backgrid from 'backgrid';
-    
 
-    /**
-     * Cell formatter with fixed fromRaw method
-     *
-     * @export  oro/datagrid/cell-formatter
-     * @class   oro.datagrid.CellFormatter
-     * @extends Backgrid.CellFormatter
-     */
-    var CellFormatter = function () {};
 
-    CellFormatter.prototype = new Backgrid.CellFormatter();
+/**
+ * Cell formatter with fixed fromRaw method
+ *
+ * @export  oro/datagrid/cell-formatter
+ * @class   oro.datagrid.CellFormatter
+ * @extends Backgrid.CellFormatter
+ */
+var CellFormatter = function() {};
 
-    _.extend(CellFormatter.prototype, {
-        /**
-         * @inheritDoc
-         */
-        fromRaw: function (rawData) {
-            if (rawData == null) {
-                return '';
-            }
-            return Backgrid.CellFormatter.prototype.fromRaw.apply(this, arguments);
-        }
-    });
+CellFormatter.prototype = new Backgrid.CellFormatter();
 
-    export default CellFormatter;
+_.extend(CellFormatter.prototype, {
+  /**
+   * @inheritDoc
+   */
+  fromRaw: function(rawData) {
+    if (rawData == null) {
+      return '';
+    }
+    return Backgrid.CellFormatter.prototype.fromRaw.apply(this, arguments);
+  }
+});
+
+export default CellFormatter;
 

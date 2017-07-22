@@ -27,22 +27,22 @@ export default BaseForm.extend({
     'click .save': 'saveView'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'grid:view-selector:state-changed', this.onDatagridStateChange)
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (this.getRoot().currentViewType !== 'view' ||
-                    UserContext.get('meta').id !== this.getRoot().currentView.owner_id
-                ) {
+      UserContext.get('meta').id !== this.getRoot().currentView.owner_id
+    ) {
       this.$el.html('')
 
       return
@@ -56,11 +56,11 @@ export default BaseForm.extend({
     this.$('[data-toggle="tooltip"]').tooltip()
   },
 
-            /**
-             * Method called on datagrid state change (when columns or filters are modified)
-             *
-             * @param {Object} datagridState
-             */
+  /**
+   * Method called on datagrid state change (when columns or filters are modified)
+   *
+   * @param {Object} datagridState
+   */
   onDatagridStateChange: function (datagridState) {
     var initialView = this.getRoot().initialView
     var initialViewExists = initialView !== null && initialView.id !== 0
@@ -74,10 +74,10 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Save the current Datagrid view in database and triggers an event to the parent
-             * to select it.
-             */
+  /**
+   * Save the current Datagrid view in database and triggers an event to the parent
+   * to select it.
+   */
   saveView: function () {
     var gridState = DatagridState.get(this.getRoot().gridAlias, ['filters', 'columns'])
 
@@ -86,13 +86,13 @@ export default BaseForm.extend({
     currentView.columns = gridState.columns
 
     DatagridViewSaver.save(currentView, this.getRoot().gridAlias)
-                    .done(function (response) {
-                      this.getRoot().trigger('grid:view-selector:view-saved', response.id)
-                    }.bind(this))
-                    .fail(function (response) {
-                      _.each(response.responseJSON, function (error) {
-                        messenger.notify('error', error)
-                      })
-                    })
+      .done(function (response) {
+        this.getRoot().trigger('grid:view-selector:view-saved', response.id)
+      }.bind(this))
+      .fail(function (response) {
+        _.each(response.responseJSON, function (error) {
+          messenger.notify('error', error)
+        })
+      })
   }
 })

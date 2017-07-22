@@ -92,14 +92,14 @@ var EditableItemView = Backbone.View.extend({
     if (!this.model.id || this.dirty) {
       if (this.dirty) {
         Dialog.confirm(
-                            __('confirm.attribute_option.cancel_edition_on_new_option_text'),
-                            __('confirm.attribute_option.cancel_edition_on_new_option_title'),
-                            function () {
-                              this.showReadableItem(this)
-                              if (!this.model.id) {
-                                this.deleteItem()
-                              }
-                            }.bind(this))
+          __('confirm.attribute_option.cancel_edition_on_new_option_text'),
+          __('confirm.attribute_option.cancel_edition_on_new_option_title'),
+          function () {
+            this.showReadableItem(this)
+            if (!this.model.id) {
+              this.deleteItem()
+            }
+          }.bind(this))
       } else {
         if (!this.model.id) {
           this.deleteItem()
@@ -115,12 +115,16 @@ var EditableItemView = Backbone.View.extend({
     var itemCode = this.el.firstChild.innerText
 
     Dialog.confirm(
-                    __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
-                    __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
-                    function () {
-                      this.parent.deleteItem(this)
-                    }.bind(this)
-                )
+      __('pim_enrich.item.delete.confirm.content', {
+        'itemName': itemCode
+      }),
+      __('pim_enrich.item.delete.confirm.title', {
+        'itemName': itemCode
+      }),
+      function () {
+        this.parent.deleteItem(this)
+      }.bind(this)
+    )
   },
   updateItem: function () {
     this.inLoading(true)
@@ -128,7 +132,7 @@ var EditableItemView = Backbone.View.extend({
     var editedModel = this.loadModelFromView()
 
     editedModel.save(
-                    {},
+      {},
       {
         url: this.model.url(),
         success: function () {
@@ -142,7 +146,7 @@ var EditableItemView = Backbone.View.extend({
         }.bind(this),
         error: this.showValidationErrors.bind(this)
       }
-                )
+    )
   },
   showValidationErrors: function (data, xhr) {
     this.inLoading(false)
@@ -151,15 +155,15 @@ var EditableItemView = Backbone.View.extend({
 
     if (response.code) {
       this.$el.find('.validation-tooltip')
-                        .attr('data-original-title', response.code)
-                        .removeClass('AknIconButton--hide')
-                        .tooltip('destroy')
-                        .tooltip('show')
+        .attr('data-original-title', response.code)
+        .removeClass('AknIconButton--hide')
+        .tooltip('destroy')
+        .tooltip('show')
     } else {
       Dialog.alert(
-                        __('alert.attribute_option.error_occured_during_submission'),
-                        __('error.saving.attribute_option')
-                    )
+        __('alert.attribute_option.error_occured_during_submission'),
+        __('error.saving.attribute_option')
+      )
     }
   },
   cancelSubmit: function (e) {
@@ -182,8 +186,8 @@ var EditableItemView = Backbone.View.extend({
         locale: locale,
         value: input.value,
         id: this.model.get('optionValues')[locale]
-                            ? this.model.get('optionValues')[locale].id
-                            : null
+          ? this.model.get('optionValues')[locale].id
+          : null
       }
     }.bind(this))
 
@@ -211,34 +215,34 @@ var ItemCollectionView = Backbone.View.extend({
   tagName: 'table',
   className: 'AknGrid AknGrid--unclickable table attribute-option-view',
   template: _.template(
-                '<!-- Pim/Bundle/EnrichBundle/Resources/public/js/pim-attributeoptionview.js -->' +
-                '<colgroup>' +
-                    '<col class="code" span="1"></col>' +
-                    '<col class="fields" span="<%= locales.length %>"></col>' +
-                    '<col class="action" span="1"></col>' +
-                '</colgroup>' +
-                '<thead>' +
-                    '<tr>' +
-                        '<th class="AknGrid-headerCell"><%= code_label %></th>' +
-                        '<% _.each(locales, function (locale) { %>' +
-                        '<th class="AknGrid-headerCell">' +
-                            '<%= locale %>' +
-                        '</th>' +
-                        '<% }); %>' +
-                        '<th class="AknGrid-headerCell AknGrid-headerCell--right">Action</th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody></tbody>' +
-                '<tfoot>' +
-                    '<tr class="AknGrid-bodyRow">' +
-                        '<td class="AknGrid-bodyCell AknGrid-bodyCell--right" colspan="<%= 2 + locales.length %>">' +
-                            '<span class="AknButton AknButton--grey AknButton--small option-add">' +
-                                '<%= add_option_label %>' +
-                            '</span>' +
-                        '</td>' +
-                    '</tr>' +
-                '</tfoot>'
-            ),
+    '<!-- Pim/Bundle/EnrichBundle/Resources/public/js/pim-attributeoptionview.js -->' +
+    '<colgroup>' +
+    '<col class="code" span="1"></col>' +
+    '<col class="fields" span="<%= locales.length %>"></col>' +
+    '<col class="action" span="1"></col>' +
+    '</colgroup>' +
+    '<thead>' +
+    '<tr>' +
+    '<th class="AknGrid-headerCell"><%= code_label %></th>' +
+    '<% _.each(locales, function (locale) { %>' +
+    '<th class="AknGrid-headerCell">' +
+    '<%= locale %>' +
+    '</th>' +
+    '<% }); %>' +
+    '<th class="AknGrid-headerCell AknGrid-headerCell--right">Action</th>' +
+    '</tr>' +
+    '</thead>' +
+    '<tbody></tbody>' +
+    '<tfoot>' +
+    '<tr class="AknGrid-bodyRow">' +
+    '<td class="AknGrid-bodyCell AknGrid-bodyCell--right" colspan="<%= 2 + locales.length %>">' +
+    '<span class="AknButton AknButton--grey AknButton--small option-add">' +
+    '<%= add_option_label %>' +
+    '</span>' +
+    '</td>' +
+    '</tr>' +
+    '</tfoot>'
+  ),
   events: {
     'click .option-add': 'addItem'
   },
@@ -252,7 +256,9 @@ var ItemCollectionView = Backbone.View.extend({
   rendered: false,
   initialize: function (options) {
     this.$target = options.$target
-    this.collection = new ItemCollection({url: options.updateUrl})
+    this.collection = new ItemCollection({
+      url: options.updateUrl
+    })
     this.locales = options.locales
     this.updateUrl = options.updateUrl
     this.sortingUrl = options.sortingUrl
@@ -276,7 +282,9 @@ var ItemCollectionView = Backbone.View.extend({
     _.each(_.sortBy(this.collection.models, function (attributeOptionItem) {
       return this.sortable ? 0 : attributeOptionItem.attributes.code
     }.bind(this)), function (attributeOptionItem) {
-      this.addItem({item: attributeOptionItem})
+      this.addItem({
+        item: attributeOptionItem
+      })
     }.bind(this))
 
     if (this.collection.length === 0) {
@@ -318,17 +326,17 @@ var ItemCollectionView = Backbone.View.extend({
     this.itemViews = []
     this.inLoading(true)
     this.collection
-                    .fetch({
-                      success: function () {
-                        this.inLoading(false)
-                        this.render()
-                      }.bind(this)
-                    })
+      .fetch({
+        success: function () {
+          this.inLoading(false)
+          this.render()
+        }.bind(this)
+      })
   },
   addItem: function (opts) {
     var options = opts || {}
 
-                // If no item model provided we create one
+    // If no item model provided we create one
     var itemToAdd
     if (!options.item) {
       itemToAdd = new AttributeOptionItem()
@@ -350,7 +358,7 @@ var ItemCollectionView = Backbone.View.extend({
       parent: this
     })
 
-                // If the item is new the view is changed to edit mode
+    // If the item is new the view is changed to edit mode
     if (!item.id) {
       if (!this.requestRowEdition(itemView)) {
         return
@@ -474,13 +482,17 @@ export default function ($element) {
     {
       $target: $element,
       updateUrl: Routing.generate(
-                    'pim_enrich_attributeoption_index',
-                    {attributeId: $element.data('attribute-id')}
-                ),
+        'pim_enrich_attributeoption_index',
+        {
+          attributeId: $element.data('attribute-id')
+        }
+      ),
       sortingUrl: Routing.generate(
-                    'pim_enrich_attributeoption_update_sorting',
-                    {attributeId: $element.data('attribute-id')}
-                ),
+        'pim_enrich_attributeoption_update_sorting',
+        {
+          attributeId: $element.data('attribute-id')
+        }
+      ),
       locales: $element.data('locales'),
       sortable: $element.data('sortable')
     })
@@ -490,4 +502,5 @@ export default function ($element) {
     itemCollectionView.updateSortableStatus(!autoSorting)
     itemCollectionView.render()
   })
-};
+}
+;

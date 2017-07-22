@@ -35,18 +35,18 @@ export default BaseForm.extend({
     'click a[data-group]': 'displayModal'
   },
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -56,7 +56,10 @@ export default BaseForm.extend({
       groups = this.prepareGroupsForTemplate(groups)
 
       if (groups.length) {
-        this.$el.html(this.template({label: __('pim_enrich.entity.product.meta.groups.title'), groups: groups}))
+        this.$el.html(this.template({
+          label: __('pim_enrich.entity.product.meta.groups.title'),
+          groups: groups
+        }))
       } else {
         this.$el.html('')
       }
@@ -65,13 +68,13 @@ export default BaseForm.extend({
     return this
   },
 
-    /**
-     * Prepare groups for being displayed in the template
-     *
-     * @param {Array} groups
-     *
-     * @returns {Array}
-     */
+  /**
+   * Prepare groups for being displayed in the template
+   *
+   * @param {Array} groups
+   *
+   * @returns {Array}
+   */
   prepareGroupsForTemplate: function (groups) {
     var locale = UserContext.get('catalogLocale')
 
@@ -84,67 +87,71 @@ export default BaseForm.extend({
     })
   },
 
-    /**
-     * Get the product list for the given group
-     *
-     * @param {integer} groupCode
-     *
-     * @returns {Array}
-     */
+  /**
+   * Get the product list for the given group
+   *
+   * @param {integer} groupCode
+   *
+   * @returns {Array}
+   */
   getProductList: function (groupCode) {
     return $.getJSON(Routing.generate('pim_enrich_group_rest_list_products', {
       identifier: groupCode
     })).then(_.identity)
   },
 
-    /**
-     * Show the modal which displays infos about produt groups
-     *
-     * @param {Object} event
-     */
+  /**
+   * Show the modal which displays infos about produt groups
+   *
+   * @param {Object} event
+   */
   displayModal: function (event) {
     var loadingMask = new LoadingMask()
     loadingMask.render().$el.appendTo(this.getRoot().$el).show()
 
     GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
-      var group = _.findWhere(groups, {code: event.currentTarget.dataset.group})
+      var group = _.findWhere(groups, {
+        code: event.currentTarget.dataset.group
+      })
 
       $.when(this.getProductList(group.code), FetcherRegistry.getFetcher('attribute')
-            .getIdentifierAttribute()).done(function (productList, identifierAttribute) {
-              loadingMask.remove()
-              this.groupModal = new Backbone.BootstrapModal({
-                allowCancel: true,
-                okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
-                cancelText: __('pim_enrich.entity.product.meta.groups.modal.close'),
-                title: __('pim_enrich.entity.product.meta.groups.modal.title', {
-                  group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code)
-                }),
-                content: this.modalTemplate({
-                  products: productList.products,
-                  productCount: productList.productCount,
-                  identifier: identifierAttribute,
-                  locale: UserContext.get('catalogLocale')
-                })
-              })
+        .getIdentifierAttribute()).done(function (productList, identifierAttribute) {
+          loadingMask.remove()
+          this.groupModal = new Backbone.BootstrapModal({
+            allowCancel: true,
+            okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
+            cancelText: __('pim_enrich.entity.product.meta.groups.modal.close'),
+            title: __('pim_enrich.entity.product.meta.groups.modal.title', {
+              group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code)
+            }),
+            content: this.modalTemplate({
+              products: productList.products,
+              productCount: productList.productCount,
+              identifier: identifierAttribute,
+              locale: UserContext.get('catalogLocale')
+            })
+          })
 
-              this.groupModal.on('ok', function visitGroup () {
-                this.groupModal.close()
-                var route = group.type === 'VARIANT'
-                        ? 'pim_enrich_variant_group_edit'
-                        : 'pim_enrich_group_edit'
-                var parameters = {
-                  code: group.code
-                }
+          this.groupModal.on('ok', function visitGroup () {
+            this.groupModal.close()
+            var route = group.type === 'VARIANT'
+            ? 'pim_enrich_variant_group_edit'
+            : 'pim_enrich_group_edit'
+            var parameters = {
+              code: group.code
+            }
 
-                router.redirectToRoute(route, parameters)
-              }.bind(this))
-              this.groupModal.open()
+            router.redirectToRoute(route, parameters)
+          }.bind(this))
+          this.groupModal.open()
 
-              this.groupModal.$el.on('click', 'a[data-product-id]', function visitProduct (event) {
-                this.groupModal.close()
-                router.redirectToRoute('pim_enrich_product_edit', {id: event.currentTarget.dataset.productId})
-              }.bind(this))
-            }.bind(this))
+          this.groupModal.$el.on('click', 'a[data-product-id]', function visitProduct (event) {
+            this.groupModal.close()
+            router.redirectToRoute('pim_enrich_product_edit', {
+              id: event.currentTarget.dataset.productId
+            })
+          }.bind(this))
+        }.bind(this))
     }.bind(this))
   }
 })

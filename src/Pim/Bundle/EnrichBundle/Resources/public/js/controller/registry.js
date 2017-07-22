@@ -6,13 +6,13 @@ var controllers = config.controllers || {}
 var defaultController = config.defaultController
 
 export default {
-            /**
-             * Get the controller for the given name
-             *
-             * @param {String} name
-             *
-             * @return {Promise}
-             */
+  /**
+   * Get the controller for the given name
+   *
+   * @param {String} name
+   *
+   * @return {Promise}
+   */
   get: function (name) {
     var deferred = $.Deferred()
     var controller = controllers[name] || defaultController

@@ -16,16 +16,16 @@ export default Backbone.View.extend({
   checked: false,
   item: null,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.item = this.options.item
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       item: this.item,
@@ -35,11 +35,11 @@ export default Backbone.View.extend({
     return this
   },
 
-            /**
-             * Update the checkbox status then render the view
-             *
-             * @param {bool} checked
-             */
+  /**
+   * Update the checkbox status then render the view
+   *
+   * @param {bool} checked
+   */
   setCheckedCheckbox: function (checked) {
     this.checked = checked
 

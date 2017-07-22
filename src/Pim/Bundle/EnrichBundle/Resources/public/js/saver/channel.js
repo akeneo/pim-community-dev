@@ -12,20 +12,22 @@ import Routing from 'routing'
 import mediator from 'oro/mediator'
 import $ from 'jquery'
 export default _.extend({}, BaseSaver, {
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getUrl: function (code) {
     if (code === null) {
       return Routing.generate(__moduleConfig.postUrl)
     }
 
-    return Routing.generate(__moduleConfig.putUrl, {code: code})
+    return Routing.generate(__moduleConfig.putUrl, {
+      code: code
+    })
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   save: function (code, data, method) {
     var queryData = data
     var locales = []

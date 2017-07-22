@@ -10,16 +10,16 @@
 import _ from 'underscore'
 import AddAttributeSelect from 'pim/product/add-select/attribute'
 export default AddAttributeSelect.extend({
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getItemsToExclude: function () {
     return AddAttributeSelect.prototype.getItemsToExclude.apply(this, arguments)
-        .then(function (excludedAttributes) {
-          return _.union(
-                excludedAttributes,
-                this.getFormData().axes
-            )
-        }.bind(this))
+      .then(function (excludedAttributes) {
+        return _.union(
+          excludedAttributes,
+          this.getFormData().axes
+        )
+      }.bind(this))
   }
 })

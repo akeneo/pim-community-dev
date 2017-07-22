@@ -20,8 +20,8 @@ var init = function (id) {
 
     if (filename) {
       var title = filename.length > maxFilenameLength
-                        ? filename.substring(0, maxFilenameLength - 3) + '...'
-                        : filename
+        ? filename.substring(0, maxFilenameLength - 3) + '...'
+        : filename
       $filename.html(title)
       $zone.removeClass('empty')
       $preview.removeClass('empty').attr('title', filename)
@@ -51,7 +51,7 @@ var init = function (id) {
     $el.removeAttr('disabled')
   })
 
-            // Initialize slimbox
+  // Initialize slimbox
   if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
     $el.parent().find('a[rel^="slimbox"]').slimbox({
       overlayOpacity: 0.3

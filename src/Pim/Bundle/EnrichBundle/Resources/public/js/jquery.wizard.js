@@ -1,8 +1,8 @@
 /* global jQuery */
-(function ($) {
+(function($) {
   'use strict'
 
-  $.fn.wizard = function (options) {
+  $.fn.wizard = function(options) {
     var opts = $.extend({}, $.fn.wizard.defaults, options)
     var $steps = $(this).find('li')
     var currentStep = opts.currentStep
@@ -11,14 +11,14 @@
       $(this).addClass('wizard')
     }
 
-    $steps.each(function () {
+    $steps.each(function() {
       $('div', this)
-                .remove('.progress-start')
-                .remove('.progress-end')
-                .remove('.dot')
+        .remove('.progress-start')
+        .remove('.progress-end')
+        .remove('.dot')
       $(this)
-                .append('<div class="progress-start"></div>')
-                .append('<div class="progress-end"></div>')
+        .append('<div class="progress-start"></div>')
+        .append('<div class="progress-end"></div>')
     })
 
     $steps.first().find('.progress-start').hide()

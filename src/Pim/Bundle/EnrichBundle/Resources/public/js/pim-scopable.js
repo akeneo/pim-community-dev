@@ -9,34 +9,34 @@ import 'bootstrap'
 import 'bootstrap.bootstrapswitch'
 import 'jquery.select2'
 
-        /**
-         * Allow expanding/collapsing scopable fields
-         *
-         * @author    Filips Alpe <filips@akeneo.com>
-         * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-         * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-         */
+/**
+ * Allow expanding/collapsing scopable fields
+ *
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 var ScopableField = Backbone.View.extend({
   field: null,
   rendered: false,
   isMetric: false,
 
   template: _.template(
-                '<%= field.hiddenInput %>' +
-                '<div class="control-group">' +
-                    '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
-                        '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>">' +
-                            '<%= field.scope[0].toUpperCase() %>' +
-                        '</label>' +
-                        '<div class="scopable-input">' +
-                            '<%= field.input %>' +
-                            '<div class="icons-container">' +
-                                '<%= field.icons %>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>'
-            ),
+    '<%= field.hiddenInput %>' +
+    '<div class="control-group">' +
+    '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
+    '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>">' +
+    '<%= field.scope[0].toUpperCase() %>' +
+    '</label>' +
+    '<div class="scopable-input">' +
+    '<%= field.input %>' +
+    '<div class="icons-container">' +
+    '<%= field.icons %>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>'
+  ),
 
   initialize: function () {
     var field = {}
@@ -99,11 +99,11 @@ var ScopableField = Backbone.View.extend({
       this.rendered = true
       this.$el.empty()
       this.$el.append(
-                        this.template({
-                          field: this.field,
-                          isMetric: this.isMetric
-                        })
-                    )
+        this.template({
+          field: this.field,
+          isMetric: this.isMetric
+        })
+      )
 
       this.$el.find('[data-toggle="tooltip"]').tooltip()
       this.$el.find('.switch').bootstrapSwitch()
@@ -126,8 +126,8 @@ export default Backbone.View.extend({
   skipUIInit: false,
 
   template: _.template(
-                '<%= label %>'
-            ),
+    '<%= label %>'
+  ),
 
   initialize: function (opts) {
     var options = opts || {}
@@ -179,13 +179,15 @@ export default Backbone.View.extend({
       this.rendered = true
       this.$el.empty().addClass('control-group')
       this.$el.append(
-                        this.template({
-                          label: this.label
-                        })
-                    )
+        this.template({
+          label: this.label
+        })
+      )
 
       if (this.fieldViews.length > 1) {
-        var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon })
+        var $toggleIcon = $('<i>', {
+          'class': 'field-toggle ' + this.collapseIcon
+        })
         this.$el.find('label').removeAttr('for').prepend($toggleIcon)
       }
 
@@ -207,7 +209,9 @@ export default Backbone.View.extend({
   },
 
   _addField: function ($field) {
-    this.fieldViews.push(new ScopableField({ el: $field }))
+    this.fieldViews.push(new ScopableField({
+      el: $field
+    }))
 
     return this
   },

@@ -108,10 +108,10 @@ export default Backbone.View.extend({
   refresh: function () {
     this.refreshLocked = true
     $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
-                    .then(_.bind(function (count) {
-                      this.refreshLocked = false
-                      this.collection.trigger('load:unreadCount', count, true)
-                    }, this))
+      .then(_.bind(function (count) {
+        this.refreshLocked = false
+        this.collection.trigger('load:unreadCount', count, true)
+      }, this))
   },
 
   onOpen: function () {
@@ -131,13 +131,13 @@ export default Backbone.View.extend({
     this.$('p').remove()
 
     this.$('ul').append(
-                    this.footerTemplate({
-                      options: this.options,
-                      loading: this.collection.loading,
-                      hasNotifications: this.collection.length > 0,
-                      hasMore: this.collection.hasMore,
-                      hasUnread: this.indicator.get('value') > 0
-                    })
-                )
+      this.footerTemplate({
+        options: this.options,
+        loading: this.collection.loading,
+        hasNotifications: this.collection.length > 0,
+        hasMore: this.collection.hasMore,
+        hasUnread: this.indicator.get('value') > 0
+      })
+    )
   }
 })

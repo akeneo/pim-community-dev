@@ -10,9 +10,9 @@ import _ from 'underscore'
 import $ from 'jquery'
 import BaseForm from 'pim/form'
 export default BaseForm.extend({
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render)
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
@@ -20,9 +20,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     var data = this.getFormData()
     data.attributes = _.pluck(data.attributes, 'code')

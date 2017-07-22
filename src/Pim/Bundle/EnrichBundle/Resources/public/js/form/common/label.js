@@ -14,9 +14,9 @@ export default BaseForm.extend({
   tagName: 'h1',
   className: 'AknTitleContainer-title',
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     UserContext.off('change:catalogLocale', this.render)
     this.listenTo(UserContext, 'change:catalogLocale', this.render)
@@ -25,29 +25,29 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.text(
-                    this.getLabel()
-                )
+      this.getLabel()
+    )
 
     return this
   },
 
-            /**
-             * Provide the object label
-             *
-             * @return {String}
-             */
+  /**
+   * Provide the object label
+   *
+   * @return {String}
+   */
   getLabel: function () {
     var data = this.getFormData()
 
     return i18n.getLabel(
-                    data.labels,
-                    UserContext.get('catalogLocale'),
-                    data.code
-                )
+      data.labels,
+      UserContext.get('catalogLocale'),
+      data.code
+    )
   }
 })

@@ -11,20 +11,20 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import BaseForm from 'pim/form'
 export default BaseForm.extend({
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * Sets filters in readonly mode.
-         *
-         * @param {Object} event
-         */
+  /**
+   * Sets filters in readonly mode.
+   *
+   * @param {Object} event
+   */
   addFilterExtension: function (event) {
     event.filter.setEditable(false)
   }

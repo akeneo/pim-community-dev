@@ -37,56 +37,61 @@ export default Backbone.View.extend({
   valid: true,
   locked: false,
 
-            /**
-             * Initialize this field
-             *
-             * @param {Object} attribute
-             *
-             * @returns {Object}
-             */
+  /**
+   * Initialize this field
+   *
+   * @param {Object} attribute
+   *
+   * @returns {Object}
+   */
   initialize: function (attribute) {
     this.attribute = attribute
-    this.model = new FieldModel({values: []})
+    this.model = new FieldModel({
+      values: []
+    })
     this.elements = {}
     this.context = {}
 
     return this
   },
 
-            /**
-             * Render this field
-             *
-             * @returns {Object}
-             */
+  /**
+   * Render this field
+   *
+   * @returns {Object}
+   */
   render: function () {
     this.setEditable(!this.locked)
     this.setValid(true)
     this.elements = {}
     var promises = []
-    mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises})
+    mediator.trigger('pim_enrich:form:field:extension:add', {
+      'field': this,
+      'promises': promises
+    })
 
     $.when.apply($, promises)
-                    .then(this.getTemplateContext.bind(this))
-                    .then(function (templateContext) {
-                      this.$el.html(this.template(templateContext))
-                      this.$('.original-field .field-input').append(this.renderInput(templateContext))
+      .then(this.getTemplateContext.bind(this))
+      .then(function (templateContext) {
+        this.$el.html(this.template(templateContext))
+        this.$('.original-field .field-input').append(this.renderInput(templateContext))
 
-                      this.renderElements()
-                      this.postRender()
-                      this.delegateEvents()
-                    }.bind(this))
+        this.renderElements()
+        this.postRender()
+        this.delegateEvents()
+      }.bind(this))
 
     return this
   },
 
-            /**
-             * Render elements of this field in different available positions
-             */
+  /**
+   * Render elements of this field in different available positions
+   */
   renderElements: function () {
     _.each(this.elements, function (elements, position) {
       var $container = position === 'field-input'
-                        ? this.$('.original-field .field-input')
-                        : this.$('.' + position + '-elements-container')
+        ? this.$('.original-field .field-input')
+        : this.$('.' + position + '-elements-container')
 
       $container.empty()
 
@@ -100,45 +105,45 @@ export default Backbone.View.extend({
     }.bind(this))
   },
 
-            /**
-             * Render the input inside the field area
-             *
-             * @throws {Error} if this method is not implemented
-             */
+  /**
+   * Render the input inside the field area
+   *
+   * @throws {Error} if this method is not implemented
+   */
   renderInput: function () {
     throw new Error('You should implement your field template')
   },
 
-            /**
-             * Is called after rendering the input
-             */
+  /**
+   * Is called after rendering the input
+   */
   postRender: function () {},
 
-            /**
-             * Render this input in copy mode
-             *
-             * @param {Object} value
-             *
-             * @returns {Promise}
-             */
+  /**
+   * Render this input in copy mode
+   *
+   * @param {Object} value
+   *
+   * @returns {Promise}
+   */
   renderCopyInput: function (value) {
     return this.getTemplateContext()
-                    .then(function (context) {
-                      var copyContext = $.extend(true, {}, context)
-                      copyContext.value = value
-                      copyContext.context.locale = value.locale
-                      copyContext.context.scope = value.scope
-                      copyContext.editMode = 'view'
+      .then(function (context) {
+        var copyContext = $.extend(true, {}, context)
+        copyContext.value = value
+        copyContext.context.locale = value.locale
+        copyContext.context.scope = value.scope
+        copyContext.editMode = 'view'
 
-                      return this.renderInput(copyContext)
-                    }.bind(this))
+        return this.renderInput(copyContext)
+      }.bind(this))
   },
 
-            /**
-             * Get the template context
-             *
-             * @returns {Promise}
-             */
+  /**
+   * Get the template context
+   *
+   * @returns {Promise}
+   */
   getTemplateContext: function () {
     var deferred = $.Deferred()
 
@@ -157,18 +162,18 @@ export default Backbone.View.extend({
     return deferred.promise()
   },
 
-            /**
-             * Update the model linked to this field
-             */
+  /**
+   * Update the model linked to this field
+   */
   updateModel: function () {
     this.valid = true
   },
 
-            /**
-             * Set values to the model linked to this field
-             *
-             * @param {Array} values
-             */
+  /**
+   * Set values to the model linked to this field
+   *
+   * @param {Array} values
+   */
   setValues: function (values) {
     if (_.isUndefined(values) || values.length === 0) {
       console.error('Value array is empty')
@@ -177,22 +182,22 @@ export default Backbone.View.extend({
     this.model.set('values', values)
   },
 
-            /**
-             * Set the context of this field
-             *
-             * @param {Object} context
-             */
+  /**
+   * Set the context of this field
+   *
+   * @param {Object} context
+   */
   setContext: function (context) {
     this.context = context
   },
 
-            /**
-             * Add an element to this field block
-             *
-             * @param {string} position 'footer', 'label' or 'comparison'
-             * @param {string} code
-             * @param {Object} element
-             */
+  /**
+   * Add an element to this field block
+   *
+   * @param {string} position 'footer', 'label' or 'comparison'
+   * @param {string} code
+   * @param {Object} element
+   */
   addElement: function (position, code, element) {
     if (!this.elements[position]) {
       this.elements[position] = {}
@@ -200,93 +205,93 @@ export default Backbone.View.extend({
     this.elements[position][code] = element
   },
 
-            /**
-             * Remove an element of this field block, with the given position & code
-             *
-             * @param {string} position
-             * @param {string} code
-             */
+  /**
+   * Remove an element of this field block, with the given position & code
+   *
+   * @param {string} position
+   * @param {string} code
+   */
   removeElement: function (position, code) {
     if (this.elements[position] && this.elements[position][code]) {
       delete this.elements[position][code]
     }
   },
 
-            /**
-             * Set as valid
-             *
-             * @param {boolean} valid
-             */
+  /**
+   * Set as valid
+   *
+   * @param {boolean} valid
+   */
   setValid: function (valid) {
     this.valid = valid
   },
 
-            /**
-             * Return whether is valid
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Return whether is valid
+   *
+   * @returns {boolean}
+   */
   isValid: function () {
     return this.valid
   },
 
-            /**
-             * Set the focus on the input of this field
-             */
+  /**
+   * Set the focus on the input of this field
+   */
   setFocus: function () {
     this.$('input:first').focus()
   },
 
-            /**
-             * Set this field as editable
-             *
-             * @param {boolean} editable
-             */
+  /**
+   * Set this field as editable
+   *
+   * @param {boolean} editable
+   */
   setEditable: function (editable) {
     this.editable = editable
   },
 
-            /**
-             * Set this field as locked
-             *
-             * @param {boolean} locked
-             */
+  /**
+   * Set this field as locked
+   *
+   * @param {boolean} locked
+   */
   setLocked: function (locked) {
     this.locked = locked
   },
 
-            /**
-             * Return whether this field is editable
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Return whether this field is editable
+   *
+   * @returns {boolean}
+   */
   isEditable: function () {
     return this.editable
   },
 
-            /**
-             * Set this field as ready
-             *
-             * @param {boolean} ready
-             */
+  /**
+   * Set this field as ready
+   *
+   * @param {boolean} ready
+   */
   setReady: function (ready) {
     this.ready = ready
   },
 
-            /**
-             * Return whether this field is ready
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Return whether this field is ready
+   *
+   * @returns {boolean}
+   */
   isReady: function () {
     return this.ready
   },
 
-            /**
-             * Get the current edit mode (can be 'edit' or 'view')
-             *
-             * @returns {string}
-             */
+  /**
+   * Get the current edit mode (can be 'edit' or 'view')
+   *
+   * @returns {string}
+   */
   getEditMode: function () {
     if (this.editable) {
       return 'edit'
@@ -295,35 +300,35 @@ export default Backbone.View.extend({
     }
   },
 
-            /**
-             * Return whether this field can be seen
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Return whether this field can be seen
+   *
+   * @returns {boolean}
+   */
   canBeSeen: function () {
     return true
   },
 
-            /**
-             * Get current model value for this field, in this format:
-             * {locale: 'en_US', scope: null, data: 'stuff'}
-             *
-             * @returns {Object}
-             */
+  /**
+   * Get current model value for this field, in this format:
+   * {locale: 'en_US', scope: null, data: 'stuff'}
+   *
+   * @returns {Object}
+   */
   getCurrentValue: function () {
     return AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    this.context.locale,
-                    this.context.scope
-                )
+      this.model.get('values'),
+      this.attribute,
+      this.context.locale,
+      this.context.scope
+    )
   },
 
-            /**
-             * Set current model value for this field
-             *
-             * @param {*} value
-             */
+  /**
+   * Set current model value for this field
+   *
+   * @param {*} value
+   */
   setCurrentValue: function (value) {
     var productValue = this.getCurrentValue()
 
@@ -331,14 +336,14 @@ export default Backbone.View.extend({
     mediator.trigger('pim_enrich:form:entity:update_state')
   },
 
-            /**
-             * Get the label of this field (default is code surrounded by brackets)
-             *
-             * @returns {string}
-             */
+  /**
+   * Get the label of this field (default is code surrounded by brackets)
+   *
+   * @returns {string}
+   */
   getLabel: function () {
     return this.attribute.labels[this.context.uiLocale]
-                    ? this.attribute.labels[this.context.uiLocale]
-                    : '[' + this.attribute.code + ']'
+      ? this.attribute.labels[this.context.uiLocale]
+      : '[' + this.attribute.code + ']'
   }
 })

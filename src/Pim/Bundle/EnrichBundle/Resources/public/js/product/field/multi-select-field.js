@@ -27,9 +27,9 @@ export default Field.extend({
     'click .add-attribute-option': 'createOption'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getTemplateContext: function () {
     return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
       var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit')
@@ -39,9 +39,9 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * Create a new option for this multi select field
-             */
+  /**
+   * Create a new option for this multi select field
+   */
   createOption: function () {
     if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
       return
@@ -58,16 +58,16 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function (context) {
     return this.fieldTemplate(context)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function () {
     this.$('[data-toggle="tooltip"]').tooltip()
     this.getChoiceUrl().then(function (choiceUrl) {
@@ -105,11 +105,11 @@ export default Field.extend({
         },
         initSelection: function (element, callback) {
           var identifiers = AttributeManager.getValue(
-                                this.model.attributes.values,
-                                this.attribute,
-                                UserContext.get('catalogLocale'),
-                                UserContext.get('catalogScope')
-                            ).data
+            this.model.attributes.values,
+            this.attribute,
+            UserContext.get('catalogLocale'),
+            UserContext.get('catalogScope')
+          ).data
 
           if (this.choicePromise === null || this.promiseIdentifiers !== identifiers) {
             this.choicePromise = $.get(choiceUrl, {
@@ -126,12 +126,16 @@ export default Field.extend({
             }
 
             var choices = _.map($(element).val().split(','), function (choice) {
-              var option = _.findWhere(results, {code: choice})
+              var option = _.findWhere(results, {
+                code: choice
+              })
               if (option) {
                 return this.convertBackendItem(option)
               }
 
-              return _.findWhere(results, {id: choice})
+              return _.findWhere(results, {
+                id: choice
+              })
             }.bind(this))
             callback(_.compact(choices))
           }.bind(this))
@@ -143,25 +147,25 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * Get the URL to retrieve the choice list for this select field
-             *
-             * @returns {Promise}
-             */
+  /**
+   * Get the URL to retrieve the choice list for this select field
+   *
+   * @returns {Promise}
+   */
   getChoiceUrl: function () {
     return $.Deferred().resolve(
-                    Routing.generate(
-                        'pim_enrich_attributeoption_get',
-                      {
-                        identifier: this.attribute.code
-                      }
-                    )
-                ).promise()
+      Routing.generate(
+        'pim_enrich_attributeoption_get',
+        {
+          identifier: this.attribute.code
+        }
+      )
+    ).promise()
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   updateModel: function () {
     var data = this.$('.field-input:first input.select-field').val().split(',')
     if (data.length === 1 && data[0] === '') {
@@ -173,13 +177,13 @@ export default Field.extend({
     this.setCurrentValue(data)
   },
 
-            /**
-             * Convert the item returned from the backend to fit select2 needs
-             *
-             * @param {object} item
-             *
-             * @return {object}
-             */
+  /**
+   * Convert the item returned from the backend to fit select2 needs
+   *
+   * @param {object} item
+   *
+   * @return {object}
+   */
   convertBackendItem: function (item) {
     return {
       id: item.code,

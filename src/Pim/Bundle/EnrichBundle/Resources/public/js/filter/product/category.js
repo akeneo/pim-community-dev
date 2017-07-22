@@ -21,23 +21,27 @@ export default BaseFilter.extend({
     'click button': 'openSelector'
   },
 
-        /**
-         * {@inherit}
-         */
+  /**
+   * {@inherit}
+   */
   configure: function () {
     this.listenTo(this, 'channel:update:after', this.channelUpdated.bind(this))
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-      _.defaults(data, {field: this.getCode(), operator: 'IN CHILDREN', value: []})
+      _.defaults(data, {
+        field: this.getCode(),
+        operator: 'IN CHILDREN',
+        value: []
+      })
     }.bind(this))
 
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * Returns rendered input.
-         *
-         * @return {String}
-         */
+  /**
+   * Returns rendered input.
+   *
+   * @return {String}
+   */
   renderInput: function () {
     var categoryCount = this.getOperator() === 'IN CHILDREN' ? 0 : this.getValue().length
 
@@ -46,17 +50,19 @@ export default BaseFilter.extend({
       titleEdit: __('pim_connector.export.categories.selector.title'),
       labelEdit: __('pim_connector.export.categories.selector.edit'),
       labelInfo: __(
-                    'pim_connector.export.categories.selector.label',
-                    {count: categoryCount},
-                    categoryCount
-                ),
+        'pim_connector.export.categories.selector.label',
+        {
+          count: categoryCount
+        },
+        categoryCount
+      ),
       value: this.getValue()
     })
   },
 
-        /**
-         * Resets selection after channel has been modified then re-renders the view.
-         */
+  /**
+   * Resets selection after channel has been modified then re-renders the view.
+   */
   channelUpdated: function () {
     this.getCurrentChannel().then(function (channel) {
       this.setDefaultValues(channel)
@@ -64,25 +70,25 @@ export default BaseFilter.extend({
     }.bind(this))
   },
 
-        /**
-         * {@inherit}
-         */
+  /**
+   * {@inherit}
+   */
   getTemplateContext: function () {
     return $.when(
-                BaseFilter.prototype.getTemplateContext.apply(this, arguments),
-                this.getCurrentChannel()
-            ).then(function (templateContext, channel) {
-              if (this.getOperator() === 'IN CHILDREN') {
-                this.setDefaultValues(channel)
-              }
+      BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+      this.getCurrentChannel()
+    ).then(function (templateContext, channel) {
+      if (this.getOperator() === 'IN CHILDREN') {
+        this.setDefaultValues(channel)
+      }
 
-              return templateContext
-            }.bind(this))
+      return templateContext
+    }.bind(this))
   },
 
-        /**
-         * Open the selector popin
-         */
+  /**
+   * Open the selector popin
+   */
   openSelector: function () {
     var modal = new TreeModal({
       title: __('pim_connector.export.categories.selector.modal.title'),
@@ -129,28 +135,28 @@ export default BaseFilter.extend({
     }.bind(this))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return false
   },
 
-        /**
-         * Get the current selected channel
-         *
-         * @return {Promise}
-         */
+  /**
+   * Get the current selected channel
+   *
+   * @return {Promise}
+   */
   getCurrentChannel: function () {
     return fetcherRegistry.getFetcher('channel')
-                .fetch(this.getParentForm().getFilters().structure.scope)
+      .fetch(this.getParentForm().getFilters().structure.scope)
   },
 
-        /**
-         * Set the default values for the filter
-         *
-         * @param {object} channel
-         */
+  /**
+   * Set the default values for the filter
+   *
+   * @param {object} channel
+   */
   setDefaultValues: function (channel) {
     if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category_tree])) {
       return

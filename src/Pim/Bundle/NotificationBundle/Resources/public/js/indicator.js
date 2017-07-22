@@ -14,8 +14,8 @@ var IndicatorView = Backbone.View.extend({
   model: Indicator,
 
   template: _.template(
-                '<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'
-            ),
+    '<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'
+  ),
 
   initialize: function () {
     this.listenTo(this.model, 'change', this.render)
@@ -34,7 +34,10 @@ export default function (opts) {
   var el = opts.el || null
   delete opts.el
   var indicator = new Indicator(opts)
-  var indicatorView = new IndicatorView({el: el, model: indicator})
+  var indicatorView = new IndicatorView({
+    el: el,
+    model: indicator
+  })
   indicator.setElement = function () {
     indicatorView.setElement.apply(indicatorView, arguments)
 
@@ -42,4 +45,5 @@ export default function (opts) {
   }
 
   return indicator
-};
+}
+;

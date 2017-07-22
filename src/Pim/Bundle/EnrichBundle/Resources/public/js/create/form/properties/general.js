@@ -24,38 +24,38 @@ export default BaseForm.extend({
     'change input.code': 'updateCode'
   },
 
-            /**
-             * @param {Object} meta
-             */
+  /**
+   * @param {Object} meta
+   */
   initialize: function (meta) {
     this.config = meta.config
 
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:entity:bad_request',
-                    this.setValidationErrors.bind(this)
-                )
+      this.getRoot(),
+      'pim_enrich:form:entity:bad_request',
+      this.setValidationErrors.bind(this)
+    )
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this))
 
     this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:entity:pre_save',
-                    this.resetValidationErrors.bind(this)
-                )
+      this.getRoot(),
+      'pim_enrich:form:entity:pre_save',
+      this.resetValidationErrors.bind(this)
+    )
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -75,11 +75,11 @@ export default BaseForm.extend({
     this.renderExtensions()
   },
 
-            /**
-             * Updates state of code property on event.
-             *
-             * @param {Object} event
-             */
+  /**
+   * Updates state of code property on event.
+   *
+   * @param {Object} event
+   */
   updateCode: function (event) {
     var data = this.getFormData()
     data.code = event.target.value
@@ -87,27 +87,27 @@ export default BaseForm.extend({
     this.setData(data)
   },
 
-            /**
-             * Get the validation errors for the given field
-             *
-             * @param {string} field
-             *
-             * @return {mixed}
-             */
+  /**
+   * Get the validation errors for the given field
+   *
+   * @param {string} field
+   *
+   * @return {mixed}
+   */
   getValidationErrorsForField: function (field) {
     return propertyAccessor
-                    .accessProperty(
-                        this.errors,
-                        field,
-                        []
-                    )
+      .accessProperty(
+        this.errors,
+        field,
+        []
+    )
   },
 
-            /**
-             * Sets errors
-             *
-             * @param {Object} errors
-             */
+  /**
+   * Sets errors
+   *
+   * @param {Object} errors
+   */
   setValidationErrors: function (errors) {
     this.errors = errors.response
   },

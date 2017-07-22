@@ -8,7 +8,9 @@ describe('Base fetcher', function () {
     list: 'list_route'
   }
 
-  var fetcher = new BaseFetcher({ urls: urls })
+  var fetcher = new BaseFetcher({
+    urls: urls
+  })
 
   it('provides a method to list all entities', function () {
     expect(fetcher.fetchAll).toBeDefined()

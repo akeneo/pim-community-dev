@@ -22,7 +22,10 @@ export default Backbone.View.extend({
     this.parent = parent
   },
   render: function () {
-    this.$el.html(this.template({errors: this.errors, i18n: i18n}))
+    this.$el.html(this.template({
+      errors: this.errors,
+      i18n: i18n
+    }))
     this.delegateEvents()
 
     return this

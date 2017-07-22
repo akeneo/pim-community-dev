@@ -1,36 +1,36 @@
 /* global define */
 import _ from 'underscore';
 import Backgrid from 'backgrid';
-        
 
-        /**
-         * Integer column cell.
-         *
-         * @export  oro/datagrid/integer-cell
-         * @class   oro.datagrid.NumberCell
-         * @extends Backgrid.NumberCell
-         */
-        export default Backgrid.NumberCell.extend({
-            /** @property {String} */
-            style: 'decimal',
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                this.decimals = 0;
+/**
+ * Integer column cell.
+ *
+ * @export  oro/datagrid/integer-cell
+ * @class   oro.datagrid.NumberCell
+ * @extends Backgrid.NumberCell
+ */
+export default Backgrid.NumberCell.extend({
+  /** @property {String} */
+  style: 'decimal',
 
-                Backgrid.NumberCell.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function() {
+    this.decimals = 0;
 
-            /**
-             * @inheritDoc
-             */
-            enterEditMode: function (e) {
-                if (this.column.get("editable")) {
-                    e.stopPropagation();
-                }
-                return Backgrid.NumberCell.prototype.enterEditMode.apply(this, arguments);
-            }
-        });
-    
+    Backgrid.NumberCell.prototype.initialize.apply(this, arguments);
+  },
+
+  /**
+   * @inheritDoc
+   */
+  enterEditMode: function(e) {
+    if (this.column.get("editable")) {
+      e.stopPropagation();
+    }
+    return Backgrid.NumberCell.prototype.enterEditMode.apply(this, arguments);
+  }
+});
+

@@ -18,8 +18,8 @@ export default function ($form) {
   var formUpdated = function (e) {
     var $target = $(e.target)
     if ($target.parents('div.filter-box').length ||
-                    $target.parents('ul.icons-holder').length ||
-                    $target.hasClass('exclude')) {
+      $target.parents('ul.icons-holder').length ||
+      $target.hasClass('exclude')) {
       return
     }
     self.updated = true
@@ -69,4 +69,5 @@ export default function ($form) {
     $('a[href^="/"]:not(".no-hash")').off('click', linkClicked)
     $(window).off('beforeunload')
   })
-};
+}
+;

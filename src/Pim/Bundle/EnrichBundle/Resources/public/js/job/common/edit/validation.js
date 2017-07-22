@@ -10,9 +10,9 @@ export default BaseForm.extend({
   template: _.template(template),
   errors: [],
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this))
@@ -26,30 +26,30 @@ export default BaseForm.extend({
     this.getRoot().trigger('pim_enrich:form:entity:validation_error', event)
   },
 
-        /**
-         * Adds the extension to filters.
-         * If there is an error for the current filter, we add an element to it.
-         *
-         * @param {Object} event
-         */
+  /**
+   * Adds the extension to filters.
+   * If there is an error for the current filter, we add an element to it.
+   *
+   * @param {Object} event
+   */
   addFilterExtension: function (event) {
     var filter = event.filter
 
     if (propertyAccessor
-                .accessProperty(this.errors, 'configuration.filters.data' + filter.getField()) !== null
-            ) {
+        .accessProperty(this.errors, 'configuration.filters.data' + filter.getField()) !== null
+    ) {
       var content = $(this.template({
         errors: propertyAccessor.accessProperty(
-                        this.errors,
-                        'configuration.filters.data' + filter.getField()
-                    )
+          this.errors,
+          'configuration.filters.data' + filter.getField()
+        )
       }))
 
       event.filter.addElement(
-                    'below-input',
-                    'validation',
-                    content
-                )
+        'below-input',
+        'validation',
+        content
+      )
     }
   }
 })

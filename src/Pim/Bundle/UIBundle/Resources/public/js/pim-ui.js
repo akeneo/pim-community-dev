@@ -5,19 +5,19 @@ import 'bootstrap'
 import 'bootstrap.bootstrapswitch'
 
 export default function ($target) {
-            // Apply Select2
+  // Apply Select2
   initSelect2.init($target)
 
-            // Apply bootstrapSwitch
+  // Apply bootstrapSwitch
   $target.find('.switch:not(.has-switch)').bootstrapSwitch()
 
-            // Initialize tooltip
+  // Initialize tooltip
   $target.find('[data-toggle="tooltip"]').tooltip()
 
-            // Initialize popover
+  // Initialize popover
   $target.find('[data-toggle="popover"]').popover()
 
-            // Activate a form tab
+  // Activate a form tab
   $target.find('li.tab.active a').each(function () {
     var paneId = $(this).attr('href')
     $(paneId).addClass('active')
@@ -28,4 +28,5 @@ export default function ($target) {
       wysiwyg.init($(this))
     }
   })
-};
+}
+;

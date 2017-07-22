@@ -49,12 +49,14 @@ export default BaseForm.extend({
     this.onExtensions('add-attribute:add', this.addAttributes.bind(this))
 
     return FetcherRegistry.getFetcher('attribute')
-                    .search({attribute_groups: 'other'})
-                    .then(function (attributes) {
-                      this.otherAttributes = _.pluck(attributes, 'code')
-                    }.bind(this)).then(function () {
-                      return BaseForm.prototype.configure.apply(this, arguments)
-                    }.bind(this))
+      .search({
+        attribute_groups: 'other'
+      })
+      .then(function (attributes) {
+        this.otherAttributes = _.pluck(attributes, 'code')
+      }.bind(this)).then(function () {
+        return BaseForm.prototype.configure.apply(this, arguments)
+      }.bind(this))
   },
 
   /**
@@ -62,50 +64,54 @@ export default BaseForm.extend({
    */
   render: function () {
     FetcherRegistry.getFetcher('attribute')
-    .fetchByIdentifiers(this.getFormData().attributes, {rights: 0})
-    .then(function (attributes) {
-      attributes = _.map(attributes, function (attribute) {
-            // This update the sort order if the attribute is new on the collection
-        var sortOrder = this.getFormData().attributes_sort_order[attribute.code]
-                ? this.getFormData().attributes_sort_order[attribute.code]
-                : _.keys(this.getFormData().attributes_sort_order) + 1
-
-        return _.extend(
-                {},
-                attribute,
-                {sort_order: sortOrder}
-            )
-      }.bind(this))
-      attributes = _.sortBy(attributes, 'sort_order')
-
-      this.$el.empty().append(this.template({
-        attributes: attributes,
-        i18n: i18n,
-        UserContext: UserContext,
-        __: __,
-        hasRightToRemove: this.hasRightToRemove()
-      }))
-
-      this.$('.attribute-list').sortable({
-        handle: '.handle',
-        containment: 'parent',
-        tolerance: 'pointer',
-        update: this.updateAttributeOrders.bind(this),
-        helper: function (e, tr) {
-          var $originals = tr.children()
-          var $helper = tr.clone()
-          $helper.children().each(function (index) {
-            $(this).width($originals.eq(index).width())
-          })
-
-          return $helper
-        }
+      .fetchByIdentifiers(this.getFormData().attributes, {
+        rights: 0
       })
+      .then(function (attributes) {
+        attributes = _.map(attributes, function (attribute) {
+          // This update the sort order if the attribute is new on the collection
+          var sortOrder = this.getFormData().attributes_sort_order[attribute.code]
+            ? this.getFormData().attributes_sort_order[attribute.code]
+            : _.keys(this.getFormData().attributes_sort_order) + 1
 
-      this.delegateEvents()
+          return _.extend(
+            {},
+            attribute,
+            {
+              sort_order: sortOrder
+            }
+          )
+        }.bind(this))
+        attributes = _.sortBy(attributes, 'sort_order')
 
-      BaseForm.prototype.render.apply(this, arguments)
-    }.bind(this))
+        this.$el.empty().append(this.template({
+          attributes: attributes,
+          i18n: i18n,
+          UserContext: UserContext,
+          __: __,
+          hasRightToRemove: this.hasRightToRemove()
+        }))
+
+        this.$('.attribute-list').sortable({
+          handle: '.handle',
+          containment: 'parent',
+          tolerance: 'pointer',
+          update: this.updateAttributeOrders.bind(this),
+          helper: function (e, tr) {
+            var $originals = tr.children()
+            var $helper = tr.clone()
+            $helper.children().each(function (index) {
+              $(this).width($originals.eq(index).width())
+            })
+
+            return $helper
+          }
+        })
+
+        this.delegateEvents()
+
+        BaseForm.prototype.render.apply(this, arguments)
+      }.bind(this))
 
     return this
   },
@@ -156,12 +162,14 @@ export default BaseForm.extend({
     var code = event.currentTarget.dataset.attributeCode
 
     Dialog.confirm(
-          __(this.config.confirmation.message, {attribute: code}),
-          __(this.config.confirmation.title),
-          function () {
-            this.removeAttribute(code)
-          }.bind(this)
-      )
+      __(this.config.confirmation.message, {
+        attribute: code
+      }),
+      __(this.config.confirmation.title),
+      function () {
+        this.removeAttribute(code)
+      }.bind(this)
+    )
   },
 
   /**
@@ -198,7 +206,7 @@ export default BaseForm.extend({
     var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code
 
     return currentAttributeGroupIsNotOther &&
-                    SecurityContext.isGranted(this.config.removeAttributeACL)
+      SecurityContext.isGranted(this.config.removeAttributeACL)
   },
 
   /**
@@ -210,6 +218,6 @@ export default BaseForm.extend({
     var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code
 
     return currentAttributeGroupIsNotOther &&
-                    SecurityContext.isGranted(this.config.addAttributeACL)
+      SecurityContext.isGranted(this.config.addAttributeACL)
   }
 })

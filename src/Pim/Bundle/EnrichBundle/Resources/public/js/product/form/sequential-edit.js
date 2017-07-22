@@ -33,27 +33,26 @@ export default BaseForm.extend({
     FetcherRegistry.clear('sequential-edit')
 
     return $.when(
-                    FetcherRegistry.getFetcher('sequential-edit')
-                        .fetchAll()
-                        .then(
-                            function (sequentialEdit) {
-                              this.model.set(sequentialEdit)
-                            }.bind(this)
-                        ),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                )
+      FetcherRegistry.getFetcher('sequential-edit')
+        .fetchAll()
+        .then(
+          function (sequentialEdit) {
+            this.model.set(sequentialEdit)
+          }.bind(this)
+      ),
+      BaseForm.prototype.configure.apply(this, arguments)
+    )
   },
   addSaveButton: function () {
     var objectSet = this.model.get('objectSet')
     var currentIndex = objectSet.indexOf(this.getFormData().meta.id)
     var nextObject = objectSet[currentIndex + 1]
-
     this.trigger('save-buttons:register-button', {
       className: 'save-and-continue',
       priority: 250,
       label: _.__(
-                        'pim_enrich.form.product.sequential_edit.btn.save_and_' + (nextObject ? 'next' : 'finish')
-                    ),
+        'pim_enrich.form.product.sequential_edit.btn.save_and_' + (nextObject ? 'next' : 'finish')
+      ),
       events: {
         'click .save-and-continue': this.saveAndContinue.bind(this)
       }
@@ -81,7 +80,6 @@ export default BaseForm.extend({
     var index = objectSet.indexOf(currentObject)
     var previous = objectSet[index - 1]
     var next = objectSet[index + 1]
-
     var previousObject = null
     var nextObject = null
 
@@ -128,7 +126,9 @@ export default BaseForm.extend({
     }
   },
   saveAndContinue: function () {
-    this.parent.getExtension('save').save({ silent: true }).done(function () {
+    this.parent.getExtension('save').save({
+      silent: true
+    }).done(function () {
       var objectSet = this.model.get('objectSet')
       var currentIndex = objectSet.indexOf(this.getFormData().meta.id)
       var nextObject = objectSet[currentIndex + 1]
@@ -148,9 +148,11 @@ export default BaseForm.extend({
   },
   goToProduct: function (id) {
     router.redirectToRoute(
-                    'pim_enrich_product_edit',
-                    { id: id }
-                )
+      'pim_enrich_product_edit',
+      {
+        id: id
+      }
+    )
   },
   finish: function () {
     router.redirectToRoute('pim_enrich_product_index')

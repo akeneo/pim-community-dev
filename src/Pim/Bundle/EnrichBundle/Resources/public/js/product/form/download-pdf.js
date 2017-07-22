@@ -19,9 +19,9 @@ export default BaseForm.extend({
 
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     UserContext.off('change:catalogLocale change:catalogScope', this.render)
     this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render)
@@ -29,9 +29,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.getFormData().meta) {
       return
@@ -39,13 +39,13 @@ export default BaseForm.extend({
 
     this.$el.html(this.template())
     this.$el.attr('href', Routing.generate(
-                    'pim_pdf_generator_download_product_pdf',
+      'pim_pdf_generator_download_product_pdf',
       {
         id: this.getFormData().meta.id,
         dataLocale: UserContext.get('catalogLocale'),
         dataScope: UserContext.get('catalogScope')
       }
-                ))
+    ))
 
     return this
   }

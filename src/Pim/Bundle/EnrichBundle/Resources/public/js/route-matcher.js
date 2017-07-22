@@ -33,9 +33,9 @@ var matchUrl = function (url) {
     var matching = true
 
     if (route.requirements._method &&
-                route.requirements._method.indexOf('GET') === -1 &&
-                route.requirements._method.indexOf('POST') === -1
-            ) {
+      route.requirements._method.indexOf('GET') === -1 &&
+      route.requirements._method.indexOf('POST') === -1
+    ) {
       continue
     }
 
@@ -49,7 +49,6 @@ var matchUrl = function (url) {
           var separator = escape(token[1])
           var varPattern = token[2].replace('++', '+')
           var varName = token[3]
-
           if (undefined === route.defaults[token[3]]) {
             pattern = separator + '(' + varPattern + ')' + pattern
           } else {

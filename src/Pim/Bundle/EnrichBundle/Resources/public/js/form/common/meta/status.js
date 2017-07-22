@@ -17,9 +17,9 @@ export default BaseForm.extend({
   className: 'AknTitleContainer-metaItem',
   template: _.template(formTemplate),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (meta) {
     this.config = meta.config
     this.label = __(this.config.label)
@@ -28,22 +28,22 @@ export default BaseForm.extend({
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     var status = this.getFormData()
     var value = this.config.valuePath
-                    ? propertyAccessor.accessProperty(status, this.config.valuePath) : ''
+      ? propertyAccessor.accessProperty(status, this.config.valuePath) : ''
 
     this.$el.html(this.template({
       label: this.label,

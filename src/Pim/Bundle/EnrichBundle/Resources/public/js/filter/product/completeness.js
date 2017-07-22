@@ -12,30 +12,34 @@ export default BaseFilter.extend({
     'change [name="filter-operator"]': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.on('locales:update:after', this.updateState.bind(this))
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-      _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100})
+      _.defaults(data, {
+        field: this.getCode(),
+        operator: _.first(this.config.operators),
+        value: 100
+      })
     }.bind(this))
 
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * Returns rendered input.
-         *
-         * @return {String}
-         */
+  /**
+   * Returns rendered input.
+   *
+   * @return {String}
+   */
   renderInput: function () {
     return this.template({
       isEditable: this.isEditable(),
@@ -46,29 +50,33 @@ export default BaseFilter.extend({
     })
   },
 
-        /**
-         * Initializes select2 after rendering.
-         */
+  /**
+   * Initializes select2 after rendering.
+   */
   postRender: function () {
-    this.$('[name="filter-operator"]').select2({minimumResultsForSearch: -1})
+    this.$('[name="filter-operator"]').select2({
+      minimumResultsForSearch: -1
+    })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return false
   },
 
-        /**
-         * Updates operator and value on fields change.
-         */
+  /**
+   * Updates operator and value on fields change.
+   */
   updateState: function () {
     this.setData({
       field: this.getField(),
       operator: this.$('[name="filter-operator"]').val(),
       value: 100,
-      context: {'locales': this.getParentForm().getFilters().structure.locales}
+      context: {
+        'locales': this.getParentForm().getFilters().structure.locales
+      }
     })
   }
 })

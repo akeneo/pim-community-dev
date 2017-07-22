@@ -18,9 +18,9 @@ export default BaseForm.extend({
   datagridViewType: null,
   currentViewId: null,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       view: this.datagridView,
@@ -32,13 +32,13 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Set the view of this module.
-             *
-             * @param {Object}  view
-             * @param {String}  viewType
-             * @param {int}     currentViewId
-             */
+  /**
+   * Set the view of this module.
+   *
+   * @param {Object}  view
+   * @param {String}  viewType
+   * @param {int}     currentViewId
+   */
   setView: function (view, viewType, currentViewId) {
     this.datagridView = view
     this.datagridViewType = viewType

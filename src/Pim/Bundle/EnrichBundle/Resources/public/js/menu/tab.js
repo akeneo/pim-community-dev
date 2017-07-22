@@ -21,9 +21,9 @@ export default BaseForm.extend({
   active: false,
   items: [],
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
     this.items = []
@@ -34,18 +34,18 @@ export default BaseForm.extend({
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_menu:register_item', this.registerItem)
 
     BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty().append(this.template({
       active: this.active,
@@ -56,28 +56,28 @@ export default BaseForm.extend({
     return BaseForm.prototype.render.apply(this, arguments)
   },
 
-            /**
-             * Redirect the user to the config destination
-             *
-             * @param {Event} event
-             */
+  /**
+   * Redirect the user to the config destination
+   *
+   * @param {Event} event
+   */
   redirect: function (event) {
     if ((!_.has(event, 'extension') || event.extension === this.code) && undefined !== this.getRoute()) {
       router.redirectToRoute(this.getRoute())
     }
   },
 
-            /**
-             * Returns the route of the tab.
-             *
-             * There is 2 cases here:
-             * - The configuration contains a `to` element, so we did a simple redirect to this route.
-             * - There is no configuration, so we need to get the first available element of the associated column.
-             *   For this, we simply register all the items of the column, sort them by priority then take the first
-             *   one.
-             *
-             * @returns {string|undefined}
-             */
+  /**
+   * Returns the route of the tab.
+   *
+   * There is 2 cases here:
+   * - The configuration contains a `to` element, so we did a simple redirect to this route.
+   * - There is no configuration, so we need to get the first available element of the associated column.
+   *   For this, we simply register all the items of the column, sort them by priority then take the first
+   *   one.
+   *
+   * @returns {string|undefined}
+   */
   getRoute: function () {
     if (undefined !== this.config.to) {
       return this.config.to
@@ -86,34 +86,34 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Returns the displayed label of the tab
-             *
-             * @returns {string}
-             */
+  /**
+   * Returns the displayed label of the tab
+   *
+   * @returns {string}
+   */
   getLabel: function () {
     return __(this.config.title)
   },
 
-            /**
-             * Highlight or un-highlight tab
-             *
-             * @param {Event} event
-             * @param {string} event.extension The extension code to highlight
-             */
+  /**
+   * Highlight or un-highlight tab
+   *
+   * @param {Event} event
+   * @param {string} event.extension The extension code to highlight
+   */
   highlight: function (event) {
     this.active = (event.extension === this.code)
 
     this.render()
   },
 
-            /**
-             * Registers a new item attached to this tab.
-             *
-             * @param {Event}  event
-             * @param {string} event.route
-             * @param {number} event.position
-             */
+  /**
+   * Registers a new item attached to this tab.
+   *
+   * @param {Event}  event
+   * @param {string} event.route
+   * @param {number} event.position
+   */
   registerItem: function (event) {
     if (event.target === this.code) {
       this.items.push(event)

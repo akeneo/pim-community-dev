@@ -12,20 +12,20 @@ import __ from 'oro/translator'
 import Redirect from 'pim/common/redirect'
 import Routing from 'routing'
 export default Redirect.extend({
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     Redirect.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * Get the route to redirect to
-             *
-             * @return {string}
-             */
+  /**
+   * Get the route to redirect to
+   *
+   * @return {string}
+   */
   getUrl: function () {
     var code = this.getFormData().jobInstance.code
     var type = this.getFormData().jobInstance.type
@@ -36,11 +36,11 @@ export default Redirect.extend({
     })
   },
 
-            /**
-             * Only visible when the type of jobInstance is import or export
-             *
-             * @returns {*|{then, fail, end}}
-             */
+  /**
+   * Only visible when the type of jobInstance is import or export
+   *
+   * @returns {*|{then, fail, end}}
+   */
   isVisible: function () {
     var type = this.getFormData().jobInstance.type
 

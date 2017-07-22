@@ -16,20 +16,20 @@ export default BaseField.extend({
     'change input': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     BaseField.prototype.render.apply(this, arguments)
 
     this.$('.switch').bootstrapSwitch()
   },
 
-        /**
-         * Get the field dom value
-         *
-         * @return {string}
-         */
+  /**
+   * Get the field dom value
+   *
+   * @return {string}
+   */
   getFieldValue: function () {
     return this.$('input[type="checkbox"]').prop('checked')
   }

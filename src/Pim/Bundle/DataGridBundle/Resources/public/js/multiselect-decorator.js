@@ -4,191 +4,191 @@ import _ from 'underscore';
 import mediator from 'oro/mediator';
 import 'jquery.multiselect';
 import 'jquery.multiselect.filter';
-    
 
-    /**
-     * Multiselect decorator class.
-     * Wraps multiselect widget and provides design modifications
-     *
-     * @export oro/multiselect-decorator
-     * @class  oro.MultiselectDecorator
-     */
-    var MultiselectDecorator = function(options) {
-        this.initialize(options);
-    };
 
-    MultiselectDecorator.prototype = {
-        /**
-         * Multiselect widget element container
-         *
-         * @property {Object}
-         */
-        element: null,
+/**
+ * Multiselect decorator class.
+ * Wraps multiselect widget and provides design modifications
+ *
+ * @export oro/multiselect-decorator
+ * @class  oro.MultiselectDecorator
+ */
+var MultiselectDecorator = function(options) {
+  this.initialize(options);
+};
 
-        /**
-         * Default multiselect widget parameters
-         *
-         * @property {Object}
-         */
-        parameters: {
-            height: 'auto'
-        },
+MultiselectDecorator.prototype = {
+  /**
+   * Multiselect widget element container
+   *
+   * @property {Object}
+   */
+  element: null,
 
-        /**
-         * @property {Boolean}
-         */
-        contextSearch: true,
+  /**
+   * Default multiselect widget parameters
+   *
+   * @property {Object}
+   */
+  parameters: {
+    height: 'auto'
+  },
 
-        /**
-         * Minimum width of this multiselect
-         *
-         * @property {int}
-         */
-        minimumWidth: null,
+  /**
+   * @property {Boolean}
+   */
+  contextSearch: true,
 
-        /**
-         * Initialize all required properties
-         */
-        initialize: function(options) {
-            if (!options.element) {
-                throw new Error('Select element must be defined');
-            }
-            this.element = options.element;
+  /**
+   * Minimum width of this multiselect
+   *
+   * @property {int}
+   */
+  minimumWidth: null,
 
-            if (options.parameters) {
-                _.extend(this.parameters, options.parameters);
-            }
+  /**
+   * Initialize all required properties
+   */
+  initialize: function(options) {
+    if (!options.element) {
+      throw new Error('Select element must be defined');
+    }
+    this.element = options.element;
 
-            if (_.has(options, 'contextSearch')) {
-                this.contextSearch = options.contextSearch;
-            }
+    if (options.parameters) {
+      _.extend(this.parameters, options.parameters);
+    }
 
-            // initialize multiselect widget
-            this.multiselect(this.parameters);
+    if (_.has(options, 'contextSearch')) {
+      this.contextSearch = options.contextSearch;
+    }
 
-            // initialize multiselect filter
-            if (this.contextSearch) {
-                this.multiselectfilter({
-                    label: '',
-                    placeholder: '',
-                    autoReset: true
-                });
-            }
+    // initialize multiselect widget
+    this.multiselect(this.parameters);
 
-            // destroy DOM garbage after change page via hash-navigation
-            mediator.once('hash_navigation_request:start', function() {
-                if (this.element.closest('body').length) {
-                    this.multiselect('destroy');
-                    this.element.hide();
-                }
-            }, this);
-        },
+    // initialize multiselect filter
+    if (this.contextSearch) {
+      this.multiselectfilter({
+        label: '',
+        placeholder: '',
+        autoReset: true
+      });
+    }
 
-        /**
-         * Set design for view
-         *
-         * @param {Backbone.View} view
-         */
-        setViewDesign: function(view) {
-            view.$('.ui-multiselect').removeClass('ui-widget').removeClass('ui-state-default');
-            view.$('.ui-multiselect span.ui-icon').remove();
-        },
+    // destroy DOM garbage after change page via hash-navigation
+    mediator.once('hash_navigation_request:start', function() {
+      if (this.element.closest('body').length) {
+        this.multiselect('destroy');
+        this.element.hide();
+      }
+    }, this);
+  },
 
-        /**
-         * Fix dropdown design
-         *
-         * @protected
-         */
-        _setDropdownDesign: function() {
-            var widget = this.getWidget();
-            widget.addClass('dropdown-menu');
-            widget.addClass('AknDropdown-menu');
-            widget.removeClass('ui-widget-content');
-            widget.removeClass('ui-widget');
-            widget.find('.ui-widget-header').removeClass('ui-widget-header');
-            widget.find('.ui-multiselect-filter').removeClass('ui-multiselect-filter');
-            widget.find('ul li label').removeClass('ui-corner-all');
-        },
+  /**
+   * Set design for view
+   *
+   * @param {Backbone.View} view
+   */
+  setViewDesign: function(view) {
+    view.$('.ui-multiselect').removeClass('ui-widget').removeClass('ui-state-default');
+    view.$('.ui-multiselect span.ui-icon').remove();
+  },
 
-        /**
-         * Action performed on dropdown open
-         */
-        onOpenDropdown: function() {
-            this._setDropdownDesign();
-            this.getWidget().find('input[type="search"]').focus();
-            $('body').trigger('click');
-        },
+  /**
+   * Fix dropdown design
+   *
+   * @protected
+   */
+  _setDropdownDesign: function() {
+    var widget = this.getWidget();
+    widget.addClass('dropdown-menu');
+    widget.addClass('AknDropdown-menu');
+    widget.removeClass('ui-widget-content');
+    widget.removeClass('ui-widget');
+    widget.find('.ui-widget-header').removeClass('ui-widget-header');
+    widget.find('.ui-multiselect-filter').removeClass('ui-multiselect-filter');
+    widget.find('ul li label').removeClass('ui-corner-all');
+  },
 
-        /**
-         * Get minimum width of dropdown menu
-         *
-         * @return {Number}
-         */
-        getMinimumDropdownWidth: function() {
-            if (_.isNull(this.minimumWidth)) {
-                var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
-                var margin = 26;
+  /**
+   * Action performed on dropdown open
+   */
+  onOpenDropdown: function() {
+    this._setDropdownDesign();
+    this.getWidget().find('input[type="search"]').focus();
+    $('body').trigger('click');
+  },
 
-                var longestElement = _.max(elements, function (element) {
-                    var htmlContent = $(element).find('span:first').html();
-                    var length = htmlContent ? htmlContent.length : 0;
+  /**
+   * Get minimum width of dropdown menu
+   *
+   * @return {Number}
+   */
+  getMinimumDropdownWidth: function() {
+    if (_.isNull(this.minimumWidth)) {
+      var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
+      var margin = 26;
 
-                    return length;
-                });
+      var longestElement = _.max(elements, function(element) {
+        var htmlContent = $(element).find('span:first').html();
+        var length = htmlContent ? htmlContent.length : 0;
 
-                this.minimumWidth = $(longestElement).find('span:first').width() + margin;
-            }
+        return length;
+      });
 
-            return this.minimumWidth;
-        },
+      this.minimumWidth = $(longestElement).find('span:first').width() + margin;
+    }
 
-        /**
-         * Get multiselect widget
-         *
-         * @return {Object}
-         */
-        getWidget: function() {
-            try {
-                return this.multiselect('widget');
-            } catch (error) {
-                return $('.ui-multiselect-menu.pimmultiselect');
-            }
-        },
+    return this.minimumWidth;
+  },
 
-        /**
-         * Proxy for multiselect method
-         *
-         * @param functionName
-         * @return {Object}
-         */
-        multiselect: function(functionName) {
-            return this.element.multiselect(functionName);
-        },
+  /**
+   * Get multiselect widget
+   *
+   * @return {Object}
+   */
+  getWidget: function() {
+    try {
+      return this.multiselect('widget');
+    } catch (error) {
+      return $('.ui-multiselect-menu.pimmultiselect');
+    }
+  },
 
-        /**
-         * Proxy for multiselectfilter method
-         *
-         * @param functionName
-         * @return {Object}
-         */
-        multiselectfilter: function(functionName) {
-            return this.element.multiselectfilter(functionName);
-        },
+  /**
+   * Proxy for multiselect method
+   *
+   * @param functionName
+   * @return {Object}
+   */
+  multiselect: function(functionName) {
+    return this.element.multiselect(functionName);
+  },
 
-        /**
-         *  Set dropdown position according to button element
-         *
-         * @param {Object} button
-         */
-        updateDropdownPosition: function(button) {
-            var position = button.offset();
+  /**
+   * Proxy for multiselectfilter method
+   *
+   * @param functionName
+   * @return {Object}
+   */
+  multiselectfilter: function(functionName) {
+    return this.element.multiselectfilter(functionName);
+  },
 
-            this.getWidget().css({
-                top: position.top + button.outerHeight(),
-                right: position.right
-            });
-        }
-    };
+  /**
+   *  Set dropdown position according to button element
+   *
+   * @param {Object} button
+   */
+  updateDropdownPosition: function(button) {
+    var position = button.offset();
 
-    export default MultiselectDecorator;
+    this.getWidget().css({
+      top: position.top + button.outerHeight(),
+      right: position.right
+    });
+  }
+};
+
+export default MultiselectDecorator;
 

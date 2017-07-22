@@ -18,9 +18,9 @@ export default BaseForm.extend({
 
   template: _.template(formTemplate),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (meta) {
     this.config = meta.config
 
@@ -30,9 +30,9 @@ export default BaseForm.extend({
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     var product = this.getFormData()
     var html = ''

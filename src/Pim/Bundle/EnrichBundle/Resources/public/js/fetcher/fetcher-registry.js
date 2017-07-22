@@ -7,9 +7,9 @@ export default {
   fetchers: {},
   initializePromise: null,
 
-        /**
-         * @return Promise
-         */
+  /**
+   * @return Promise
+   */
   initialize: function () {
     if (this.initializePromise === null) {
       var fetcherList = __moduleConfig.fetchers
@@ -18,7 +18,9 @@ export default {
       var fetchers = {}
 
       _.each(fetcherList, function (config, name) {
-        config = _.isString(config) ? { module: config } : config
+        config = _.isString(config) ? {
+          module: config
+        } : config
         config.options = config.options || { }
         fetchers[name] = config
       })
@@ -39,32 +41,32 @@ export default {
     return this.initializePromise
   },
 
-        /**
-         * Get the related fetcher for the given collection name
-         *
-         * @param {String} entityType
-         *
-         * @return Fetcher
-         */
+  /**
+   * Get the related fetcher for the given collection name
+   *
+   * @param {String} entityType
+   *
+   * @return Fetcher
+   */
   getFetcher: function (entityType) {
     var fetcher = (this.fetchers[entityType] || this.fetchers.default)
 
     return fetcher.loadedModule
   },
 
-        /**
-         * Clear the fetcher cache for the given collection name
-         *
-         * @param {String}         entityType
-         * @param {String|integer} entity
-         */
+  /**
+   * Clear the fetcher cache for the given collection name
+   *
+   * @param {String}         entityType
+   * @param {String|integer} entity
+   */
   clear: function (entityType, entity) {
     return this.getFetcher(entityType).clear(entity)
   },
 
-        /**
-         * Clear all fetchers cache
-         */
+  /**
+   * Clear all fetchers cache
+   */
   clearAll: function () {
     _.each(this.fetchers, function (fetcher) {
       fetcher.loadedModule.clear()

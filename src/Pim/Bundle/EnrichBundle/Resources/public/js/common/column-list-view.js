@@ -12,7 +12,9 @@ var Column = Backbone.Model.extend({
   }
 })
 
-var ColumnList = Backbone.Collection.extend({ model: Column })
+var ColumnList = Backbone.Collection.extend({
+  model: Column
+})
 
 export default Backbone.View.extend({
   collection: ColumnList,
@@ -64,14 +66,19 @@ export default Backbone.View.extend({
     var $item = $(e.currentTarget).parent()
     $item.appendTo(this.$('#column-list'))
 
-    var model = _.first(this.collection.where({code: $item.data('value')}))
+    var model = _.first(this.collection.where({
+      code: $item.data('value')
+    }))
     model.set('displayed', false)
 
     this.validateSubmission()
   },
 
   reset: function () {
-    _.each(this.collection.where({displayed: true, removable: true}), function (model) {
+    _.each(this.collection.where({
+      displayed: true,
+      removable: true
+    }), function (model) {
       model.set('displayed', false)
       this.$('#column-selection li[data-value="' + model.get('code') + '"]').appendTo(this.$('#column-list'))
     }.bind(this))
@@ -79,16 +86,26 @@ export default Backbone.View.extend({
   },
 
   render: function () {
-    var systemColumn = this.collection.where({group: __('system_filter_group')})
+    var systemColumn = this.collection.where({
+      group: __('system_filter_group')
+    })
 
     var groups = systemColumn.length !== 0
-                ? [{ position: 0, name: _.__('system_filter_group'), itemCount: 0 }]
-                : []
+      ? [{
+        position: 0,
+        name: _.__('system_filter_group'),
+        itemCount: 0
+      }]
+      : []
 
     _.each(this.collection.toJSON(), function (column) {
-      if (_.isEmpty(_.where(groups, {name: column.group}))) {
+      if (_.isEmpty(_.where(groups, {
+        name: column.group
+      }))) {
         var position = parseInt(column.groupOrder, 10)
-        if (!_.isNumber(position) || !_.isEmpty(_.where(groups, {position: position}))) {
+        if (!_.isNumber(position) || !_.isEmpty(_.where(groups, {
+          position: position
+        }))) {
           position = _.max(groups, function (group) {
             return group.position
           }) + 1
@@ -100,7 +117,9 @@ export default Backbone.View.extend({
           itemCount: 1
         })
       } else {
-        _.first(_.where(groups, {name: column.group})).itemCount += 1
+        _.first(_.where(groups, {
+          name: column.group
+        })).itemCount += 1
       }
     })
 
@@ -109,11 +128,11 @@ export default Backbone.View.extend({
     })
 
     this.$el.html(
-                this.template({
-                  groups: groups,
-                  columns: this.collection.toJSON()
-                })
-            )
+      this.template({
+        groups: groups,
+        columns: this.collection.toJSON()
+      })
+    )
 
     this.$('#column-list, #column-selection').sortable({
       connectWith: '.connected-sortable',
@@ -122,7 +141,9 @@ export default Backbone.View.extend({
       cursor: 'move',
       cancel: 'div.alert',
       receive: function (event, ui) {
-        var model = _.first(this.collection.where({code: ui.item.data('value')}))
+        var model = _.first(this.collection.where({
+          code: ui.item.data('value')
+        }))
         model.set('displayed', ui.sender.is('#column-list') && model.get('removable'))
 
         if (!model.get('removable')) {
@@ -139,20 +160,22 @@ export default Backbone.View.extend({
   },
 
   validateSubmission: function () {
-    if (this.collection.where({displayed: true}).length) {
+    if (this.collection.where({
+      displayed: true
+    }).length) {
       this.$('.alert').hide()
       this.$('.AknMessageBox--error').addClass('AknMessageBox--hide')
       this.$el.closest('.modal')
-                    .find('.btn.ok:not(.btn-primary)')
-                    .addClass('btn-primary')
-                    .attr('disabled', false)
+        .find('.btn.ok:not(.btn-primary)')
+        .addClass('btn-primary')
+        .attr('disabled', false)
     } else {
       this.$('.alert').show()
       this.$('.AknMessageBox--error').removeClass('AknMessageBox--hide')
       this.$el.closest('.modal')
-                    .find('.btn.ok.btn-primary')
-                    .removeClass('btn-primary')
-                    .attr('disabled', true)
+        .find('.btn.ok.btn-primary')
+        .removeClass('btn-primary')
+        .attr('disabled', true)
     }
   },
 

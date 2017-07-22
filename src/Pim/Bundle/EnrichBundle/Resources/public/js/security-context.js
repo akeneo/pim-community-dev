@@ -10,6 +10,8 @@ var SecurityContext = Backbone.Model.extend({
 
 var instance = new SecurityContext()
 
-instance.fetch({async: false})
+instance.fetch({
+  async: false
+})
 
 export default instance

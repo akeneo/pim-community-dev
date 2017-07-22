@@ -14,9 +14,9 @@ export default Backbone.View.extend({
   className: 'AknTabContainer-content--fullWidth',
   urlParams: {},
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (alias, options) {
     this.alias = alias
     this.selection = options.selection || []
@@ -27,11 +27,11 @@ export default Backbone.View.extend({
 
     var selectionIdentifier = options.selectionIdentifier || 'id'
 
-                /*
-                 * Removing to be sure that this property will not be used in URLs generated to load the data
-                 * The selection is never used back side to load the data and it can generate an URL too long.
-                 * The rightful usages of the selection are done with the property "this.selection"
-                 */
+    /*
+     * Removing to be sure that this property will not be used in URLs generated to load the data
+     * The selection is never used back side to load the data and it can generate an URL too long.
+     * The rightful usages of the selection are done with the property "this.selection"
+     */
     delete this.options.selection
 
     mediator.on('datagrid:selectModel:' + this.alias, function (model) {
@@ -43,9 +43,9 @@ export default Backbone.View.extend({
     }.bind(this))
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({}))
 
@@ -54,12 +54,12 @@ export default Backbone.View.extend({
     return this
   },
 
-            /**
-             * Render the given grid
-             *
-             * @param {String} alias
-             * @param {Object} params
-             */
+  /**
+   * Render the given grid
+   *
+   * @param {String} alias
+   * @param {Object} params
+   */
   renderGrid: function (alias, params) {
     this.urlParams = $.extend(true, {}, params)
     this.urlParams.alias = alias
@@ -76,8 +76,8 @@ export default Backbone.View.extend({
     this.applyFilters(state.filters, alias)
     this.applyColumns(state.columns, alias)
 
-                // TODO Manage columns for product form (when refactoring product form index)
-                // TODO Manage category filter (when refactoring category index)
+    // TODO Manage columns for product form (when refactoring product form index)
+    // TODO Manage category filter (when refactoring category index)
 
     $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
       this.$el.find('.grid-drop').data({
@@ -95,48 +95,48 @@ export default Backbone.View.extend({
     }.bind(this))
   },
 
-            /**
-             * Get the current grid selection
-             *
-             * @return {Array}
-             */
+  /**
+   * Get the current grid selection
+   *
+   * @return {Array}
+   */
   getSelection: function () {
     return this.selection
   },
 
-            /**
-             * Add an element to the selection
-             *
-             * @param {Object} element
-             */
+  /**
+   * Add an element to the selection
+   *
+   * @param {Object} element
+   */
   addElement: function (element) {
     this.selection = _.union(this.selection, [element])
     this.trigger('grid:selection:updated', this.selection)
   },
 
-            /**
-             * Remove an element to the selection
-             *
-             * @param {Object} element
-             */
+  /**
+   * Remove an element to the selection
+   *
+   * @param {Object} element
+   */
   removeElement: function (element) {
     this.selection = _.without(this.selection, element)
     this.trigger('grid:selection:updated', this.selection)
   },
 
-            /**
-             * Ask for a refresh of the grid (aware that we should not call the mediator for that but we don't have
-             * the choice for now)
-             */
+  /**
+   * Ask for a refresh of the grid (aware that we should not call the mediator for that but we don't have
+   * the choice for now)
+   */
   refresh: function () {
     mediator.trigger('datagrid:doRefresh:' + this.alias)
   },
 
-            /**
-             * Apply the view to the DatagridState
-             * @param viewId
-             * @param alias
-             */
+  /**
+   * Apply the view to the DatagridState
+   * @param viewId
+   * @param alias
+   */
   applyView: function (viewId, alias) {
     if (!viewId) {
       return
@@ -149,11 +149,11 @@ export default Backbone.View.extend({
     })
   },
 
-            /**
-             * Apply the filters to the DatagridState
-             * @param rawFilters
-             * @param alias
-             */
+  /**
+   * Apply the filters to the DatagridState
+   * @param rawFilters
+   * @param alias
+   */
   applyFilters: function (rawFilters, alias) {
     if (!rawFilters) {
       return
@@ -174,10 +174,9 @@ export default Backbone.View.extend({
     collection.processFiltersParams(this.urlParams, filters, alias + '[_filter]')
 
     for (var column in filters.sorters) {
-      this.urlParams[alias + '[_sort_by][' + column + ']'] =
-                        parseInt(filters.sorters[column]) === 1
-                            ? 'DESC'
-                            : 'ASC'
+      this.urlParams[alias + '[_sort_by][' + column + ']'] = parseInt(filters.sorters[column]) === 1
+        ? 'DESC'
+        : 'ASC'
     }
 
     if (undefined !== filters.pageSize) {
@@ -193,11 +192,11 @@ export default Backbone.View.extend({
     })
   },
 
-            /**
-             * Apply the columns to the DatagridState
-             * @param columns
-             * @param alias
-             */
+  /**
+   * Apply the columns to the DatagridState
+   * @param columns
+   * @param alias
+   */
   applyColumns: function (columns, alias) {
     if (!columns) {
       return

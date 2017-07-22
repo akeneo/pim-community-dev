@@ -7,10 +7,10 @@
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-(function ($) {
+(function($) {
   'use strict'
 
-  function getState (key) {
+  function getState(key) {
     if (typeof Storage !== 'undefined') {
       return sessionStorage[key] || null
     }
@@ -18,15 +18,15 @@
     return null
   }
 
-  function saveState (key, value) {
+  function saveState(key, value) {
     if (typeof Storage !== 'undefined') {
       sessionStorage[key] = value
     }
   }
 
-  function getAvailableHeight ($element) {
+  function getAvailableHeight($element) {
     var height = $(window).height() - $element.offset().top
-        // @todo: remove in production environment
+    // @todo: remove in production environment
     if ($('.sf-toolbar').length) {
       height -= $('.sf-toolbar').height() + 1
     }
@@ -34,7 +34,7 @@
     return height
   }
 
-  function collapse ($element, opts) {
+  function collapse($element, opts) {
     var $switchInputLabel = $('label[for="nested_switch_input"]')
 
     $('>.sidebar', $element).width(0)
@@ -49,7 +49,7 @@
     saveState(opts.stateStorageKey, 0)
   }
 
-  function expand ($element, opts) {
+  function expand($element, opts) {
     var $switchInputLabel = $('label[for="nested_switch_input"]')
 
     $('>.sidebar', $element).width(parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth)
@@ -64,12 +64,12 @@
     saveState(opts.stateStorageKey, 1)
   }
 
-  function adjustHeight ($element) {
+  function adjustHeight($element) {
     var height = getAvailableHeight($element)
     $element.outerHeight(height)
   }
 
-  function adjustWidth ($element, opts) {
+  function adjustWidth($element, opts) {
     var contentWidth = $(window).width()
     if ($('>.separator', $element).hasClass('collapsed')) {
       contentWidth -= opts.collapsedSeparatorWidth
@@ -79,7 +79,7 @@
     $('>.content', $element).width(contentWidth)
   }
 
-  function prepare ($element, opts) {
+  function prepare($element, opts) {
     $('body').css('overflow', 'hidden')
 
     var $sidebar = $element.children().first()
@@ -88,9 +88,14 @@
 
     $element.addClass('sidebarized').css('position', 'absolute')
 
-    $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar-content', 'height': '100%' }))
-                           .parent().css('overflow', 'auto')
-    $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar' })).parent().width(sidebarWidth)
+    $sidebar = $sidebar.wrap($('<div>', {
+      'class': 'sidebar-content',
+      'height': '100%'
+    }))
+      .parent().css('overflow', 'auto')
+    $sidebar = $sidebar.wrap($('<div>', {
+      'class': 'sidebar'
+    })).parent().width(sidebarWidth)
 
     $content.addClass('content').css({
       'margin-left': '0',
@@ -111,7 +116,7 @@
       css: opts.separatorCss
     }).css('cursor', opts.resizeCursor).css(opts.unselectableCss).width(opts.separatorWidth - 2 + 'px')
 
-    $separator.insertAfter($sidebar).on('dblclick', function () {
+    $separator.insertAfter($sidebar).on('dblclick', function() {
       if ($(this).hasClass('collapsed')) {
         expand($element, opts)
       } else {
@@ -123,31 +128,36 @@
     $content.css(opts.childrenCss)
     $separator.css(opts.childrenCss)
 
-    $('<i>', { 'class': opts.collapseIcon, css: opts.iconCss }).on('click', function () {
+    $('<i>', {
+      'class': opts.collapseIcon,
+      css: opts.iconCss
+    }).on('click', function() {
       collapse($element, opts)
     }).appendTo($controls)
 
-    $('<i>', { css: opts.iconCss }).on('click', function () {
+    $('<i>', {
+      css: opts.iconCss
+    }).on('click', function() {
       expand($element, opts)
     }).appendTo($separator).hide()
 
     $('<b>').addClass(opts.dragIcon).css(opts.dragIconCss).appendTo($separator)
 
-    opts.buttons.map(function (button) {
+    opts.buttons.map(function(button) {
       $(button).children('.dropdown-toggle').css(opts.buttonsCss)
       $(button).css(opts.buttonsCss).appendTo($controls)
     })
 
-    $element.find('.sidebar-list li').on('click', function () {
+    $element.find('.sidebar-list li').on('click', function() {
       $(this).siblings().removeClass('active')
       $(this).addClass('active')
     })
   }
 
-  $.fn.sidebarize = function (options) {
+  $.fn.sidebarize = function(options) {
     var opts = $.extend({}, $.fn.sidebarize.defaults, options)
 
-    return this.each(function () {
+    return this.each(function() {
       var $element = $(this)
 
       if ($element.hasClass('sidebarized')) {
@@ -159,7 +169,7 @@
 
       prepare($element, opts)
 
-      function doSplit (e) {
+      function doSplit(e) {
         var windowWidth = $(window).width()
         var maxWidth = opts.maxSidebarWidth || windowWidth - opts.separatorWidth
         var position = e.pageX
@@ -170,14 +180,14 @@
         $('>.content', $element).width(windowWidth - position - opts.separatorWidth)
       }
 
-      function endSplit () {
+      function endSplit() {
         $(document).off('mousemove', doSplit).off('mouseup', endSplit)
 
         $element.children().css(opts.selectableCss)
         saveState(opts.widthStorageKey, parseInt($('>.sidebar', $element).width(), 10))
       }
 
-      function startSplit () {
+      function startSplit() {
         if ($('>.separator', $element).hasClass('collapsed')) {
           return
         }
@@ -192,11 +202,11 @@
         collapse($element, opts)
       }
 
-      $(window).on('resize', function () {
+      $(window).on('resize', function() {
         adjustHeight($element)
         adjustWidth($element, opts)
       })
-      $(document).ajaxSuccess(function () {
+      $(document).ajaxSuccess(function() {
         adjustHeight($element)
         adjustWidth($element, opts)
       })

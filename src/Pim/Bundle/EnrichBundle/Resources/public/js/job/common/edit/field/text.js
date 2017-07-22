@@ -15,11 +15,11 @@ export default BaseField.extend({
     'change input': 'updateState'
   },
 
-        /**
-         * Get the field dom value
-         *
-         * @return {string}
-         */
+  /**
+   * Get the field dom value
+   *
+   * @return {string}
+   */
   getFieldValue: function () {
     return this.$('input').val()
   }

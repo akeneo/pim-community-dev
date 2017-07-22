@@ -15,9 +15,9 @@ export default BaseForm.extend({
   template: _.template(template),
   code: 'oro_config_loading_message',
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.code,
@@ -27,9 +27,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       'loading_message_enabled': this.getFormData().pim_ui___loading_message_enabled.value,
@@ -43,22 +43,22 @@ export default BaseForm.extend({
     return BaseForm.prototype.render.apply(this, arguments)
   },
 
-            /**
-             * Update model after value change
-             *
-             * @param {Event} event
-             */
+  /**
+   * Update model after value change
+   *
+   * @param {Event} event
+   */
   updateBoolean: function (event) {
     var data = this.getFormData()
     data.pim_ui___loading_message_enabled.value = $(event.target).prop('checked') ? '1' : '0'
     this.setData(data)
   },
 
-            /**
-             * Update model after value change
-             *
-             * @param {Event} event
-             */
+  /**
+   * Update model after value change
+   *
+   * @param {Event} event
+   */
   updateText: function (event) {
     var data = this.getFormData()
     data.pim_ui___loading_messages.value = $(event.target).val()

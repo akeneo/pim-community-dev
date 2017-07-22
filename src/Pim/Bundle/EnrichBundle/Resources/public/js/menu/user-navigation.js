@@ -24,18 +24,18 @@ export default BaseForm.extend({
     'click .user-account': 'userAccount'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       firstName: UserContext.get('firstName'),
@@ -57,16 +57,16 @@ export default BaseForm.extend({
     return BaseForm.prototype.render.apply(this, arguments)
   },
 
-            /**
-             * Redirect user to logout
-             */
+  /**
+   * Redirect user to logout
+   */
   logout: function () {
     router.redirectToRoute('oro_user_security_logout')
   },
 
-            /**
-             * Redirect user it's account details
-             */
+  /**
+   * Redirect user it's account details
+   */
   userAccount: function () {
     router.redirectToRoute('oro_user_profile_view')
   }

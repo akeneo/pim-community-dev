@@ -23,20 +23,20 @@ export default BaseForm.extend({
     'click button': 'openSelector'
   },
 
-            /**
-             * Initializes configuration.
-             *
-             * @param {Object} config
-             */
+  /**
+   * Initializes configuration.
+   *
+   * @param {Object} config
+   */
   initialize: function (config) {
     this.config = config.config
 
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -45,19 +45,21 @@ export default BaseForm.extend({
     var attributes = this.getFilters().structure.attributes || []
 
     this.$el.html(
-                    this.template({
-                      __: __,
-                      isEditable: this.isEditable(),
-                      titleEdit: __('pim_enrich.export.product.filter.attributes.title'),
-                      labelEdit: __('pim_enrich.export.product.filter.attributes.edit'),
-                      labelInfo: __(
-                            'pim_enrich.export.product.filter.attributes.label',
-                            {count: attributes.length},
-                            attributes.length
-                        ),
-                      errors: this.getParent().getValidationErrorsForField('attributes')
-                    })
-                )
+      this.template({
+        __: __,
+        isEditable: this.isEditable(),
+        titleEdit: __('pim_enrich.export.product.filter.attributes.title'),
+        labelEdit: __('pim_enrich.export.product.filter.attributes.edit'),
+        labelInfo: __(
+          'pim_enrich.export.product.filter.attributes.label',
+          {
+            count: attributes.length
+          },
+          attributes.length
+        ),
+        errors: this.getParent().getValidationErrorsForField('attributes')
+      })
+    )
 
     this.delegateEvents()
 
@@ -65,15 +67,15 @@ export default BaseForm.extend({
     this.renderExtensions()
   },
 
-            /**
-             * Returns whether this filter is editable.
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Returns whether this filter is editable.
+   *
+   * @returns {boolean}
+   */
   isEditable: function () {
     return undefined !== this.config.readOnly
-                    ? !this.config.readOnly
-                    : true
+      ? !this.config.readOnly
+      : true
   },
 
   openSelector: function (e) {
@@ -117,11 +119,11 @@ export default BaseForm.extend({
     }.bind(this))
   },
 
-            /**
-             * Get filters
-             *
-             * @return {object}
-             */
+  /**
+   * Get filters
+   *
+   * @return {object}
+   */
   getFilters: function () {
     return this.getFormData().configuration.filters
   }

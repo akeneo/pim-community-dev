@@ -16,9 +16,9 @@ export default BaseForm.extend({
   className: 'tabsection',
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       model: this.getFormData(),

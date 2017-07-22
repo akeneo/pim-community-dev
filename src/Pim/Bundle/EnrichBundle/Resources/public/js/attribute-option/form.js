@@ -29,12 +29,12 @@ export default BaseForm.extend({
     }
 
     this.$el.html(
-                    this.template({
-                      locale: UserContext.get('catalogLocale'),
-                      i18n: i18n,
-                      option: this.getFormData()
-                    })
-                )
+      this.template({
+        locale: UserContext.get('catalogLocale'),
+        i18n: i18n,
+        option: this.getFormData()
+      })
+    )
 
     return this.renderExtensions()
   }

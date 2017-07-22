@@ -3,14 +3,14 @@ import Backbone from 'backbone'
 export default Backbone.View.extend({
   active: false,
 
-        /**
-         * Render the route given in parameter
-         *
-         * @param {String} route
-         * @param {String} path
-         *
-         * @return {Promise}
-         */
+  /**
+   * Render the route given in parameter
+   *
+   * @param {String} route
+   * @param {String} path
+   *
+   * @return {Promise}
+   */
   renderRoute: function () {
     throw new Error('Method renderRoute is abstract and must be implemented!')
   },
@@ -23,13 +23,15 @@ export default Backbone.View.extend({
     this.active = active
   },
 
-        /**
-         * Return if whether or not the user can leave the page
-         *
-         * @return {boolean}
-         */
+  /**
+   * Return if whether or not the user can leave the page
+   *
+   * @return {boolean}
+   */
   canLeave: function () {
-    var event = {canLeave: true}
+    var event = {
+      canLeave: true
+    }
     this.trigger('pim:controller:can-leave', event)
 
     return event.canLeave

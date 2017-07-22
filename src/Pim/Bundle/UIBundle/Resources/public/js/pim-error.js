@@ -11,10 +11,10 @@ var defaults = {
   forbidden_access: 'You don\'t have the permission to open this page'
 }
 
-    /**
-     * @export oro/error
-     * @name oro.error
-     */
+/**
+ * @export oro/error
+ * @name oro.error
+ */
 var error = {
   dispatch: function (model, xhr, options) {
     var self = error.dispatch
@@ -23,7 +23,7 @@ var error = {
 }
 var sync = Backbone.sync
 
-    // Override default Backbone.sync
+// Override default Backbone.sync
 Backbone.sync = function (method, model, options) {
   options = options || {}
   if (!_.has(options, 'error')) {
@@ -34,13 +34,13 @@ Backbone.sync = function (method, model, options) {
 }
 
 _.extend(error.dispatch, {
-        /**
-         * Error dispatch
-         *
-         * @param {Object} model
-         * @param {Object} xhr
-         * @param {Object} options
-         */
+  /**
+   * Error dispatch
+   *
+   * @param {Object} model
+   * @param {Object} xhr
+   * @param {Object} options
+   */
   init: function (model, xhr, options) {
     if (xhr.status === 401) {
       this._processRedirect()
@@ -52,12 +52,12 @@ _.extend(error.dispatch, {
     }
   },
 
-        /**
-         * Shows modal window
-         * @param {Object} xhr
-         * @param {Object} options
-         * @private
-         */
+  /**
+   * Shows modal window
+   * @param {Object} xhr
+   * @param {Object} options
+   * @private
+   */
   _processModal: function (xhr, options) {
     var modal
     var message = options.message
@@ -74,10 +74,10 @@ _.extend(error.dispatch, {
     modal.open()
   },
 
-        /**
-         * Redirects to login
-         * @private
-         */
+  /**
+   * Redirects to login
+   * @private
+   */
   _processRedirect: function () {
     document.location.href = routing.generate('oro_user_security_login')
   }

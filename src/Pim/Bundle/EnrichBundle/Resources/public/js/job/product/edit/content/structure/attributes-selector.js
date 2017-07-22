@@ -34,82 +34,84 @@ export default Backbone.View.extend({
   initialize: function () {
     this.listenTo(this, 'selected:update:after', function (selected) {
       this.$('.empty-message')
-                        .addClass(selected.length === 0 ? '' : 'AknMessageBox--hide')
-                        .removeClass(selected.length === 0 ? 'AknMessageBox--hide' : '')
+        .addClass(selected.length === 0 ? '' : 'AknMessageBox--hide')
+        .removeClass(selected.length === 0 ? 'AknMessageBox--hide' : '')
     })
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     $.when(
-                    fetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                    fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(this.getSelected())
-                ).then(function (attributeGroups, selectedAttributes) {
-                  var scrollPositions = {}
-                  _.each(this.$('[data-scroll-container]'), function (element) {
-                    scrollPositions[element.dataset.scrollContainer] = element.scrollTop
-                  })
-                  this.attributeListPage = 1
-                  this.isFetching = false
+      fetcherRegistry.getFetcher('attribute-group').fetchAll(),
+      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(this.getSelected())
+    ).then(function (attributeGroups, selectedAttributes) {
+      var scrollPositions = {}
+      _.each(this.$('[data-scroll-container]'), function (element) {
+        scrollPositions[element.dataset.scrollContainer] = element.scrollTop
+      })
+      this.attributeListPage = 1
+      this.isFetching = false
 
-                  var attributeCount
-                  if (this.currentGroup === null) {
-                    attributeCount = _.reduce(attributeGroups, function (count, attributeGroup) {
-                      return count + attributeGroup.attributes.length
-                    }, 0)
-                  } else {
-                    attributeCount = _.findWhere(attributeGroups, {code: this.currentGroup}).attributes.length
-                  }
+      var attributeCount
+      if (this.currentGroup === null) {
+        attributeCount = _.reduce(attributeGroups, function (count, attributeGroup) {
+          return count + attributeGroup.attributes.length
+        }, 0)
+      } else {
+        attributeCount = _.findWhere(attributeGroups, {
+          code: this.currentGroup
+        }).attributes.length
+      }
 
-                  this.$el.empty().append(this.template({
-                    __: __,
-                    i18n: i18n,
-                    userContext: userContext,
-                    attributeGroups: attributeGroups,
-                    attributeCount: attributeCount,
-                    currentGroup: this.currentGroup,
-                    selectedAttributes: selectedAttributes
-                  }))
+      this.$el.empty().append(this.template({
+        __: __,
+        i18n: i18n,
+        userContext: userContext,
+        attributeGroups: attributeGroups,
+        attributeCount: attributeCount,
+        currentGroup: this.currentGroup,
+        selectedAttributes: selectedAttributes
+      }))
 
-                  this.initializeSortable()
+      this.initializeSortable()
 
-                  this.updateAttributeList().then(function () {
-                    _.each(scrollPositions, function (scrollPosition, key) {
-                      this.$('[data-scroll-container="' + key + '"]').scrollTop(scrollPosition)
-                    }.bind(this))
-                  }.bind(this))
+      this.updateAttributeList().then(function () {
+        _.each(scrollPositions, function (scrollPosition, key) {
+          this.$('[data-scroll-container="' + key + '"]').scrollTop(scrollPosition)
+        }.bind(this))
+      }.bind(this))
 
-                  this.$('.attributes div').on('scroll', this.updateAttributeList.bind(this))
-                }.bind(this))
+      this.$('.attributes div').on('scroll', this.updateAttributeList.bind(this))
+    }.bind(this))
   },
 
-            /**
-             * Set currently selected attributes
-             *
-             * @param {array} selected
-             */
+  /**
+   * Set currently selected attributes
+   *
+   * @param {array} selected
+   */
   setSelected: function (selected) {
     this.selected = selected
 
     this.trigger('selected:update:after', this.selected)
   },
 
-            /**
-             * Get currently selected attributes
-             *
-             * @return {array}
-             */
+  /**
+   * Get currently selected attributes
+   *
+   * @return {array}
+   */
   getSelected: function () {
     return this.selected
   },
 
-            /**
-             * Change the current attribute group
-             *
-             * @param {event} event
-             */
+  /**
+   * Change the current attribute group
+   *
+   * @param {event} event
+   */
   changeAttributeGroup: function (event) {
     var newGroup = event.currentTarget.dataset.attributeGroupCode
     newGroup = newGroup !== '' ? newGroup : null
@@ -120,9 +122,9 @@ export default Backbone.View.extend({
     this.render()
   },
 
-            /**
-             * Called each time the user type a letter on the search field
-             */
+  /**
+   * Called each time the user type a letter on the search field
+   */
   updateSearch: function () {
     this.search = this.$('.search-field').val()
     this.attributeListPage = 1
@@ -131,9 +133,9 @@ export default Backbone.View.extend({
     this.updateAttributeList()
   },
 
-            /**
-             * Clear the selected attributes
-             */
+  /**
+   * Clear the selected attributes
+   */
   clear: function () {
     this.setSelected([])
     this.search = ''
@@ -141,16 +143,16 @@ export default Backbone.View.extend({
     this.render()
   },
 
-            /**
-             * Called on each render, each, search event and each scroll event
-             */
+  /**
+   * Called on each render, each, search event and each scroll event
+   */
   updateAttributeList: function () {
     var attributeContainer = this.$('.attributes > .AknColumnConfigurator-listContainer')
     var attributeList = attributeContainer.children('.AknVerticalList')
 
     var needFetching = (
-                    attributeList.height() - attributeContainer.scrollTop() - 2 * attributeContainer.height()
-                ) < 0
+      attributeList.height() - attributeContainer.scrollTop() - 2 * attributeContainer.height()
+      ) < 0
 
     if (needFetching && !this.isFetching) {
       this.curentFetchId++
@@ -171,34 +173,34 @@ export default Backbone.View.extend({
       this.isFetching = true
 
       return fetcherRegistry
-                        .getFetcher('attribute')
-                        .search(searchOptions)
-                        .then(function (attributes) {
-                          attributes = _.filter(attributes, function (attribute) {
-                            return attribute.type !== 'pim_catalog_identifier'
-                          })
+        .getFetcher('attribute')
+        .search(searchOptions)
+        .then(function (attributes) {
+          attributes = _.filter(attributes, function (attribute) {
+            return attribute.type !== 'pim_catalog_identifier'
+          })
 
-                          if (fetchId !== this.curentFetchId) {
-                            return
-                          }
-                          attributeList.append(this.attributeListTemplate({
-                            attributes: attributes,
-                            i18n: i18n,
-                            userContext: userContext
-                          })
-                            )
+          if (fetchId !== this.curentFetchId) {
+            return
+          }
+          attributeList.append(this.attributeListTemplate({
+            attributes: attributes,
+            i18n: i18n,
+            userContext: userContext
+          })
+          )
 
-                          if (attributes.length !== 0) {
-                            this.attributeListPage++
-                            this.isFetching = false
-                          }
-                        }.bind(this))
+          if (attributes.length !== 0) {
+            this.attributeListPage++
+            this.isFetching = false
+          }
+        }.bind(this))
     }
   },
 
-            /**
-             * Called to initialize the dropzones
-             */
+  /**
+   * Called to initialize the dropzones
+   */
   initializeSortable: function () {
     this.$('.attributes ul, .selected-attributes ul').sortable({
       connectWith: '.attributes ul, .selected-attributes ul',
@@ -213,11 +215,11 @@ export default Backbone.View.extend({
     }).disableSelection()
   },
 
-            /**
-             * Remove the clicked row from the selected attributes
-             *
-             * @param {event} event
-             */
+  /**
+   * Remove the clicked row from the selected attributes
+   *
+   * @param {event} event
+   */
   removeAttribute: function (event) {
     var element = $(event.currentTarget).parents('li')
     var selectedAttributes = this.getSelected()

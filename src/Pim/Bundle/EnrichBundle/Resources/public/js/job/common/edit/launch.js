@@ -21,18 +21,18 @@ export default BaseForm.extend({
     'click .AknButton': 'launch'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.isVisible().then(function (isVisible) {
       if (!isVisible) {
@@ -49,39 +49,39 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Launch the job
-             */
+  /**
+   * Launch the job
+   */
   launch: function () {
     $.post(this.getUrl())
-                    .then(function (response) {
-                      router.redirect(response.redirectUrl)
-                    })
-                    .fail(function () {
-                      messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
-                    })
+      .then(function (response) {
+        router.redirect(response.redirectUrl)
+      })
+      .fail(function () {
+        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
+      })
   },
 
-            /**
-             * Get the route to launch the job
-             *
-             * @return {string}
-             */
+  /**
+   * Get the route to launch the job
+   *
+   * @return {string}
+   */
   getUrl: function () {
     var params = {}
     params[this.config.identifier.name] = propertyAccessor.accessProperty(
-                    this.getFormData(),
-                    this.config.identifier.path
-                )
+      this.getFormData(),
+      this.config.identifier.path
+    )
 
     return Routing.generate(this.config.route, params)
   },
 
-            /**
-             * Should this extension render
-             *
-             * @return {Promise}
-             */
+  /**
+   * Should this extension render
+   *
+   * @return {Promise}
+   */
   isVisible: function () {
     return $.Deferred().resolve(true).promise()
   }

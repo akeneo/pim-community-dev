@@ -5,24 +5,24 @@ import __ from 'oro/translator'
 import router from 'pim/router'
 import 'bootstrap-modal'
 
-        /**
-         * Dialog class purposes an easier way to call ModalDialog components
-         *
-         * @author    Romain Monceau <romain@akeneo.com>
-         * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-         * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-         *
-         * @uses Backbone.BootstrapModal
-         *
-         * Example:
-         *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
-         */
+/**
+ * Dialog class purposes an easier way to call ModalDialog components
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @uses Backbone.BootstrapModal
+ *
+ * Example:
+ *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
+ */
 export default {
-            /**
-             * Open a modal dialog without cancel button
-             * @param string content
-             * @param string title
-             */
+  /**
+   * Open a modal dialog without cancel button
+   * @param string content
+   * @param string title
+   */
   alert: function (content, title) {
     if (!_.isUndefined(Backbone.BootstrapModal)) {
       var alert = new Backbone.BootstrapModal({
@@ -37,13 +37,13 @@ export default {
     }
   },
 
-            /**
-             * Open a modal dialog with cancel button and specific redirection when
-             * @param string content
-             * @param string title
-             * @param string okText
-             * @param string location
-             */
+  /**
+   * Open a modal dialog with cancel button and specific redirection when
+   * @param string content
+   * @param string title
+   * @param string okText
+   * @param string location
+   */
   redirect: function (content, title, okText, location) {
     if (!_.isUndefined(Backbone.BootstrapModal)) {
       var redirectModal = new Backbone.BootstrapModal({
@@ -68,13 +68,13 @@ export default {
     }
   },
 
-            /**
-             * Open a confirm modal dialog to validate the action made by user
-             * If user validate its action, a js callback function is called
-             * @param string content
-             * @param string title
-             * @param function callback
-             */
+  /**
+   * Open a confirm modal dialog to validate the action made by user
+   * If user validate its action, a js callback function is called
+   * @param string content
+   * @param string title
+   * @param function callback
+   */
   confirm: function (content, title, callback) {
     var deferred = $.Deferred()
 

@@ -2,13 +2,13 @@
 import $ from 'jquery'
 import mediator from 'oro/mediator'
 export default {
-            /**
-             * Remove an entity
-             *
-             * @param {String} code
-             *
-             * @return {Promise}
-             */
+  /**
+   * Remove an entity
+   *
+   * @param {String} code
+   *
+   * @return {Promise}
+   */
   remove: function (code) {
     return $.ajax({
       type: 'DELETE',
@@ -20,11 +20,11 @@ export default {
     })
   },
 
-            /**
-             * Get the entity url
-             *
-             * @return {String}
-             */
+  /**
+   * Get the entity url
+   *
+   * @return {String}
+   */
   getUrl: function () {
     throw new Error('This method need to be implemented')
   }

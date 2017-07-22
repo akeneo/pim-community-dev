@@ -12,18 +12,18 @@ import UserContext from 'pim/user-context'
 export default BaseForm.extend({
   grid: null,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     var metaData = this.config.metadata || {}
     metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale')
@@ -33,9 +33,9 @@ export default BaseForm.extend({
     BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty().append(this.grid.render().$el)
 

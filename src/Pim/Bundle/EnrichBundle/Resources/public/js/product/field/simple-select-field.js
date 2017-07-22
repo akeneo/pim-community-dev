@@ -26,9 +26,9 @@ export default Field.extend({
     'click .add-attribute-option': 'createOption'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getTemplateContext: function () {
     return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
       var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit')
@@ -38,9 +38,9 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * Create a new option for this simple select field
-             */
+  /**
+   * Create a new option for this simple select field
+   */
   createOption: function () {
     if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
       return
@@ -56,16 +56,16 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function (context) {
     return this.fieldTemplate(context)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function () {
     this.$('[data-toggle="tooltip"]').tooltip()
     this.getChoiceUrl().then(function (choiceUrl) {
@@ -104,15 +104,23 @@ export default Field.extend({
           var id = $(element).val()
           if (id !== '') {
             if (this.choicePromise === null || this.promiseIdentifier !== id) {
-              this.choicePromise = $.get(choiceUrl, {options: {identifiers: [id]}})
+              this.choicePromise = $.get(choiceUrl, {
+                options: {
+                  identifiers: [id]
+                }
+              })
               this.promiseIdentifier = id
             }
 
             this.choicePromise.then(function (response) {
-              var selected = _.findWhere(response, {code: id})
+              var selected = _.findWhere(response, {
+                code: id
+              })
 
               if (!selected) {
-                selected = _.findWhere(response.results, {id: id})
+                selected = _.findWhere(response.results, {
+                  id: id
+                })
               } else {
                 selected = this.convertBackendItem(selected)
               }
@@ -128,25 +136,25 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * Get the URL to retrieve the choice list for this select field
-             *
-             * @returns {Promise}
-             */
+  /**
+   * Get the URL to retrieve the choice list for this select field
+   *
+   * @returns {Promise}
+   */
   getChoiceUrl: function () {
     return $.Deferred().resolve(
-                    Routing.generate(
-                        'pim_enrich_attributeoption_get',
-                      {
-                        identifier: this.attribute.code
-                      }
-                    )
-                ).promise()
+      Routing.generate(
+        'pim_enrich_attributeoption_get',
+        {
+          identifier: this.attribute.code
+        }
+      )
+    ).promise()
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   updateModel: function () {
     var data = this.$('.field-input:first input[type="hidden"].select-field').val()
     data = data === '' ? this.attribute.empty_value : data
@@ -156,13 +164,13 @@ export default Field.extend({
     this.setCurrentValue(data)
   },
 
-            /**
-             * Convert the item returned from the backend to fit select2 needs
-             *
-             * @param {object} item
-             *
-             * @return {object}
-             */
+  /**
+   * Convert the item returned from the backend to fit select2 needs
+   *
+   * @param {object} item
+   *
+   * @return {object}
+   */
   convertBackendItem: function (item) {
     return {
       id: item.code,

@@ -53,7 +53,9 @@ export default function (elementId) {
   }).appendTo(footerContainer)
 
   var $openButton = $el.find('button.pimmultiselect').addClass('btn btn-group')
-  $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style')
+  $openButton.append($('<span>', {
+    'class': 'caret'
+  })).removeAttr('style')
   if (target) {
     $openButton.prependTo($(target))
   }
@@ -63,14 +65,17 @@ export default function (elementId) {
   var $content = $menu.find('.ui-multiselect-checkboxes')
   if (!$content.html()) {
     $content.html(
-                    $('<span>', { html: opts.emptyText,
-                      css: {
-                        'position': 'absolute',
-                        'color': '#999',
-                        'padding': '15px',
-                        'font-size': '13px'
-                      }})
-                )
+      $('<span>', {
+        html: opts.emptyText,
+        css: {
+          'position': 'absolute',
+          'color': '#999',
+          'padding': '15px',
+          'font-size': '13px'
+        }
+      })
+    )
     $saveButton.addClass('disabled')
   }
-};
+}
+;

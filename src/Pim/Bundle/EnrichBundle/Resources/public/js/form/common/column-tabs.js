@@ -18,18 +18,18 @@ export default FormTabs.extend({
 
   currentKey: 'current_column_tab',
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'column-tab:select-tab', this.selectTab)
 
     return FormTabs.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   registerTab: function (event) {
     FormTabs.prototype.registerTab.apply(this, arguments)
     this.getRoot().trigger('column-tab:register', event)

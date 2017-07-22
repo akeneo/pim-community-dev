@@ -39,18 +39,18 @@ export default BaseForm.extend({
     'click .view-type-item': 'switchViewType'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (meta) {
     this.config = meta.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function (gridAlias) {
     this.gridAlias = gridAlias
 
@@ -67,24 +67,24 @@ export default BaseForm.extend({
     Backbone.Router.prototype.on('route', this.unbindEvents.bind(this))
 
     return FetcherRegistry.getFetcher('datagrid-view')
-                    .defaultColumns(this.gridAlias)
-                    .then(function (columns) {
-                      this.defaultColumns = columns
+      .defaultColumns(this.gridAlias)
+      .then(function (columns) {
+        this.defaultColumns = columns
 
-                      return BaseForm.prototype.configure.apply(this, arguments)
-                    }.bind(this))
+        return BaseForm.prototype.configure.apply(this, arguments)
+      }.bind(this))
   },
 
-            /**
-             * Detach event listeners
-             */
+  /**
+   * Detach event listeners
+   */
   unbindEvents: function () {
     this.off()
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.initializeSelection().then(function () {
       this.initializeViewTypes()
@@ -101,16 +101,16 @@ export default BaseForm.extend({
     }.bind(this))
   },
 
-            /**
-             * Initialize the view type to display at initialization.
-             */
+  /**
+   * Initialize the view type to display at initialization.
+   */
   initializeViewTypes: function () {
     this.currentViewType = 'view'
   },
 
-            /**
-             * Initialize the Select2 component and format elements.
-             */
+  /**
+   * Initialize the Select2 component and format elements.
+   */
   initializeSelectWidget: function () {
     var $select = this.$('input[type="hidden"]')
 
@@ -118,10 +118,10 @@ export default BaseForm.extend({
       dropdownCssClass: 'select2--bigDrop grid-view-selector',
       closeOnSelect: false,
 
-                    /**
-                     * Format result (datagrid view list) method of select2.
-                     * This way we can display views and their infos beside them.
-                     */
+      /**
+       * Format result (datagrid view list) method of select2.
+       * This way we can display views and their infos beside them.
+       */
       formatResult: function (item, $container) {
         FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
           form.setParent(this)
@@ -130,9 +130,9 @@ export default BaseForm.extend({
         }.bind(this))
       }.bind(this),
 
-                    /**
-                     * Format current selection method of select2.
-                     */
+      /**
+       * Format current selection method of select2.
+       */
       formatSelection: function (item, $container) {
         FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
           form.setParent(this)
@@ -155,7 +155,6 @@ export default BaseForm.extend({
 
           var searchParameters = this.getSelectSearchParameters(options.term, page)
           var fetcher = this.config.fetchers[this.currentViewType]
-
           if (this.currentLoadingPage === page && this.currentLoadingTerm === options.term) {
             return
           }
@@ -181,10 +180,10 @@ export default BaseForm.extend({
         }.bind(this), 400)
       }.bind(this),
 
-                    /**
-                     * Initialize the select2 with current selected view. If no current view is selected,
-                     * we select the user's one. If he doesn't have one, we create a default one for him!
-                     */
+      /**
+       * Initialize the select2 with current selected view. If no current view is selected,
+       * we select the user's one. If he doesn't have one, we create a default one for him!
+       */
       initSelection: function (element, callback) {
         callback(this.currentView)
       }.bind(this)
@@ -205,23 +204,23 @@ export default BaseForm.extend({
     $search.prepend($('<i class="icon-search"></i>'))
   },
 
-            /**
-             * Method called on view type switching.
-             *
-             * @param {Event} event
-             */
+  /**
+   * Method called on view type switching.
+   *
+   * @param {Event} event
+   */
   switchViewType: function (event) {
     this.currentViewType = $(event.target).data('value')
 
     this.render()
   },
 
-            /**
-             * Initialize the Select2 selection based on the DatagridState.
-             * Could be the User default one, or an existing view edited or whatever.
-             *
-             * @return {Promise}
-             */
+  /**
+   * Initialize the Select2 selection based on the DatagridState.
+   * Could be the User default one, or an existing view edited or whatever.
+   *
+   * @return {Promise}
+   */
   initializeSelection: function () {
     var activeViewId = DatagridState.get(this.gridAlias, 'view')
     var isDefaultView = (activeViewId === '0')
@@ -229,22 +228,25 @@ export default BaseForm.extend({
 
     this.getUserDefaultView().then(function (userDefaultView) {
       if (userDefaultView && (!activeViewId || isDefaultView)) {
-                        // User is on default view but has a custom default one
+        // User is on default view but has a custom default one
         userDefaultView.text = userDefaultView.label
         deferred.resolve(userDefaultView)
       } else if (activeViewId && !isDefaultView) {
-                        // User is on an existing view
+        // User is on an existing view
         FetcherRegistry.getFetcher('datagrid-view')
-                            .fetch(activeViewId, {alias: this.gridAlias, cached: false})
-                            .then(this.postFetchDatagridView.bind(this))
-                            .then(function (view) {
-                              deferred.resolve(view)
-                            })
-                            .fail(function () {
-                              this.selectView(userDefaultView || this.getDefaultView())
-                            }.bind(this))
+          .fetch(activeViewId, {
+            alias: this.gridAlias,
+            cached: false
+          })
+          .then(this.postFetchDatagridView.bind(this))
+          .then(function (view) {
+            deferred.resolve(view)
+          })
+          .fail(function () {
+            this.selectView(userDefaultView || this.getDefaultView())
+          }.bind(this))
       } else {
-                        // Other, set the default view
+        // Other, set the default view
         deferred.resolve(this.getDefaultView())
       }
     }.bind(this))
@@ -268,25 +270,25 @@ export default BaseForm.extend({
     return deferred
   },
 
-            /**
-             * Method called right after fetching the view from the backend.
-             * This is where we can handle the view before it goes to select2.
-             *
-             * @param {Object} view
-             *
-             * @return {Promise}
-             */
+  /**
+   * Method called right after fetching the view from the backend.
+   * This is where we can handle the view before it goes to select2.
+   *
+   * @param {Object} view
+   *
+   * @return {Promise}
+   */
   postFetchDatagridView: function (view) {
     view.text = view.label
 
     return $.Deferred().resolve(view).promise()
   },
 
-            /**
-             * Return the default view object which contains default columns & no filter.
-             *
-             * @return {Object}
-             */
+  /**
+   * Return the default view object which contains default columns & no filter.
+   *
+   * @return {Object}
+   */
   getDefaultView: function () {
     return {
       id: 0,
@@ -297,28 +299,28 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Return the default user view object.
-             *
-             * @return {Object}
-             */
+  /**
+   * Return the default user view object.
+   *
+   * @return {Object}
+   */
   getUserDefaultView: function () {
     return FetcherRegistry.getFetcher('datagrid-view')
-                    .defaultUserView(this.gridAlias)
-                    .then(function (defaultUserView) {
-                      this.defaultUserView = defaultUserView.view
+      .defaultUserView(this.gridAlias)
+      .then(function (defaultUserView) {
+        this.defaultUserView = defaultUserView.view
 
-                      return defaultUserView.view
-                    }.bind(this))
+        return defaultUserView.view
+      }.bind(this))
   },
 
-            /**
-             * Ensure given choices contain a default view if user doesn't have one.
-             *
-             * @param {array} choices
-             *
-             * @return {array}
-             */
+  /**
+   * Ensure given choices contain a default view if user doesn't have one.
+   *
+   * @param {array} choices
+   *
+   * @return {array}
+   */
   ensureDefaultView: function (choices) {
     if (this.defaultUserView !== null || this.currentViewType !== 'view') {
       return choices
@@ -329,10 +331,10 @@ export default BaseForm.extend({
     return choices
   },
 
-            /**
-             * Method called when the grid state changes.
-             * It allows this selector to react to new filters / columns etc..
-             */
+  /**
+   * Method called when the grid state changes.
+   * It allows this selector to react to new filters / columns etc..
+   */
   onGridStateChange: function () {
     var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns'])
     if (datagridState.columns === null) {
@@ -347,54 +349,56 @@ export default BaseForm.extend({
     this.getRoot().trigger('grid:view-selector:state-changed', datagridState)
   },
 
-            /**
-             * Method called when a new view has been created.
-             * This method fetches the newly created view thanks to its id, then selects it.
-             *
-             * @param {int} viewId
-             */
+  /**
+   * Method called when a new view has been created.
+   * This method fetches the newly created view thanks to its id, then selects it.
+   *
+   * @param {int} viewId
+   */
   onViewCreated: function (viewId) {
     FetcherRegistry.getFetcher('datagrid-view').clear()
     FetcherRegistry.getFetcher('datagrid-view')
-                    .fetch(viewId, {alias: this.gridAlias})
-                    .then(function (view) {
-                      this.selectView(view)
-                    }.bind(this))
+      .fetch(viewId, {
+        alias: this.gridAlias
+      })
+      .then(function (view) {
+        this.selectView(view)
+      }.bind(this))
   },
 
-            /**
-             * Method called when a view has been saved.
-             * This method fetches the saved view thanks to its id, then selects it.
-             *
-             * @param {int} viewId
-             */
+  /**
+   * Method called when a view has been saved.
+   * This method fetches the saved view thanks to its id, then selects it.
+   *
+   * @param {int} viewId
+   */
   onViewSaved: function (viewId) {
     this.onViewCreated(viewId)
   },
 
-            /**
-             * Method called when a view is removed.
-             * We reset all filters on the grid.
-             */
+  /**
+   * Method called when a view is removed.
+   * We reset all filters on the grid.
+   */
   onViewRemoved: function () {
     FetcherRegistry.getFetcher('datagrid-view').clear()
     this.selectView(this.getDefaultView())
   },
 
-            /**
-             * Close the Select2 instance of this View Selector
-             */
+  /**
+   * Close the Select2 instance of this View Selector
+   */
   closeSelect2: function () {
     if (this.select2Instance !== null) {
       this.select2Instance.select2('close')
     }
   },
 
-            /**
-             * Method called when the user selects a view through this selector.
-             *
-             * @param {Object} view The selected view
-             */
+  /**
+   * Method called when the user selects a view through this selector.
+   *
+   * @param {Object} view The selected view
+   */
   selectView: function (view) {
     DatagridState.set(this.gridAlias, {
       view: view.id,
@@ -407,14 +411,14 @@ export default BaseForm.extend({
     this.reloadPage()
   },
 
-            /**
-             * Get grid view fetcher search parameters by giving select2 search term & page
-             *
-             * @param {string} term
-             * @param {int}    page
-             *
-             * @return {Object}
-             */
+  /**
+   * Get grid view fetcher search parameters by giving select2 search term & page
+   *
+   * @param {string} term
+   * @param {int}    page
+   *
+   * @return {Object}
+   */
   getSelectSearchParameters: function (term, page) {
     return $.extend(true, {}, this.config.searchParameters, {
       search: term,
@@ -426,14 +430,14 @@ export default BaseForm.extend({
     })
   },
 
-            /**
-             * Take incoming data and format them to have all required parameters
-             * to be used by the select2 module.
-             *
-             * @param {array} data
-             *
-             * @return {array}
-             */
+  /**
+   * Take incoming data and format them to have all required parameters
+   * to be used by the select2 module.
+   *
+   * @param {array} data
+   *
+   * @return {array}
+   */
   toSelect2Format: function (data) {
     return _.map(data, function (view) {
       view.text = view.label
@@ -446,9 +450,9 @@ export default BaseForm.extend({
     })
   },
 
-            /**
-             * Reload the page.
-             */
+  /**
+   * Reload the page.
+   */
   reloadPage: function () {
     var url = window.location.hash
     Backbone.history.fragment = new Date().getTime()

@@ -24,7 +24,9 @@ export default Backbone.View.extend({
     core: {
       animation: 200,
       html_titles: true,
-      strings: { loading: __('jstree.loading') }
+      strings: {
+        loading: __('jstree.loading')
+      }
     },
     plugins: [
       'themes',
@@ -63,16 +65,16 @@ export default Backbone.View.extend({
     categories: []
   },
 
-            /**
-             * Callback called when a node is checked in jstree
-             *
-             * @param {Object} data
-             */
+  /**
+   * Callback called when a node is checked in jstree
+   *
+   * @param {Object} data
+   */
   checkNode: function (data) {
     var code = String(data.rslt.obj.data('code'))
-                // All products case
+    // All products case
     if (code === '') {
-                    // Uncheck other nodes
+      // Uncheck other nodes
       data.inst.get_container_ul().find('li.jstree-checked:not(.jstree-all)').each(function () {
         data.inst.uncheck_node(this)
       })
@@ -83,16 +85,16 @@ export default Backbone.View.extend({
         this.attributes.categories.push(code)
       }
 
-                    // Uncheck "All products" if checked
+      // Uncheck "All products" if checked
       data.inst.uncheck_node(data.inst.get_container_ul().find('li.jstree-all'))
     }
   },
 
-            /**
-             * Callback called when a node is unchecked in jstree
-             *
-             * @param {Object} data
-             */
+  /**
+   * Callback called when a node is unchecked in jstree
+   *
+   * @param {Object} data
+   */
   uncheckNode: function (data) {
     var code = data.rslt.obj.data('code')
 
@@ -101,23 +103,25 @@ export default Backbone.View.extend({
     }
   },
 
-            /**
-             * Callback called when a node is loaded in jstree
-             *
-             * @param {Object} data
-             */
+  /**
+   * Callback called when a node is loaded in jstree
+   *
+   * @param {Object} data
+   */
   loadNode: function (data) {
     var node = data.rslt.obj
 
     if (node === -1) {
-                    // Add the All products checkbox
+      // Add the All products checkbox
       data.inst.create_node(data.inst.get_container(), 'last', {
         attr: {
           'id': 'node_',
           'class': 'jstree-unclassified jstree-all separated',
           'data-code': ''
         },
-        data: { title: __('jstree.all') }
+        data: {
+          title: __('jstree.all')
+        }
       }, function ($node) {
         if (this.attributes.categories.length === 0) {
           data.inst.check_node($node)
@@ -128,9 +132,9 @@ export default Backbone.View.extend({
     }
   },
 
-            /**
-             * Render the tree in the element's HTML when the channel category is fetched and bind events from jstree
-             */
+  /**
+   * Render the tree in the element's HTML when the channel category is fetched and bind events from jstree
+   */
   render: function () {
     var loadingMask = new LoadingMask()
     loadingMask.render().$el.appendTo(this.$el.parent())
@@ -138,63 +142,67 @@ export default Backbone.View.extend({
 
     FetcherRegistry.initialize().then(function () {
       FetcherRegistry.getFetcher('channel')
-                        .fetch(this.attributes.channel)
-                        .then(function (channel) {
-                          return $.when(
-                                FetcherRegistry.getFetcher('category').fetch(channel.category_tree)
-                            ).then(function (category) {
-                              this.$el.html(this.template({
-                                tree: category,
-                                label: i18n.getLabel(
-                                        category.labels,
-                                        UserContext.get('uiLocale'),
-                                        category.code
-                                    )
-                              }))
+        .fetch(this.attributes.channel)
+        .then(function (channel) {
+          return $.when(
+            FetcherRegistry.getFetcher('category').fetch(channel.category_tree)
+          ).then(function (category) {
+            this.$el.html(this.template({
+              tree: category,
+              label: i18n.getLabel(
+                category.labels,
+                UserContext.get('uiLocale'),
+                category.code
+              )
+            }))
 
-                              this.$('.root').jstree(_.extend(this.config, {
-                                json_data: {
-                                  ajax: {
-                                    url: function (node) {
-                                      if (node === -1 && this.attributes.categories.length > 0) {
-                                                    // First load of the tree: get the checked categories
-                                        return Routing.generate(
-                                                        'pim_enrich_category_rest_list_selected_children',
-                                          {
-                                            identifier: category.code,
-                                            selected: this.attributes.categories
-                                          }
-                                                    )
-                                      }
+            this.$('.root').jstree(_.extend(this.config, {
+              json_data: {
+                ajax: {
+                  url: function (node) {
+                    if (node === -1 && this.attributes.categories.length > 0) {
+                      // First load of the tree: get the checked categories
+                      return Routing.generate(
+                        'pim_enrich_category_rest_list_selected_children',
+                        {
+                          identifier: category.code,
+                          selected: this.attributes.categories
+                        }
+                      )
+                    }
 
-                                      return Routing.generate('pim_enrich_categorytree_children', {
-                                        _format: 'json'
-                                      })
-                                    }.bind(this),
-                                    data: function (node) {
-                                      if (node === -1) {
-                                        return {id: this.get_container().data('tree-id')}
-                                      }
+                    return Routing.generate('pim_enrich_categorytree_children', {
+                      _format: 'json'
+                    })
+                  }.bind(this),
+                  data: function (node) {
+                    if (node === -1) {
+                      return {
+                        id: this.get_container().data('tree-id')
+                      }
+                    }
 
-                                      return {id: node.attr('id').replace('node_', '')}
-                                    }
-                                  }
-                                }
-                              }))
-                                .on('check_node.jstree', function (event, data) {
-                                  this.checkNode(data)
-                                }.bind(this))
-                                .on('uncheck_node.jstree', function (event, data) {
-                                  this.uncheckNode(data)
-                                }.bind(this))
-                                .on('load_node.jstree', function (event, data) {
-                                  this.loadNode(data)
-                                }.bind(this))
-                            }.bind(this))
-                        }.bind(this))
-                        .done(function () {
-                          this.$el.parent().find('.loading-mask').remove()
-                        }.bind(this))
+                    return {
+                      id: node.attr('id').replace('node_', '')
+                    }
+                  }
+                }
+              }
+            }))
+              .on('check_node.jstree', function (event, data) {
+                this.checkNode(data)
+              }.bind(this))
+              .on('uncheck_node.jstree', function (event, data) {
+                this.uncheckNode(data)
+              }.bind(this))
+              .on('load_node.jstree', function (event, data) {
+                this.loadNode(data)
+              }.bind(this))
+          }.bind(this))
+        }.bind(this))
+        .done(function () {
+          this.$el.parent().find('.loading-mask').remove()
+        }.bind(this))
     }.bind(this))
   }
 })

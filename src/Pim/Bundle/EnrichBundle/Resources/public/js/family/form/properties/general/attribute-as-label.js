@@ -22,23 +22,23 @@ export default BaseForm.extend({
   errors: [],
   catalogLocale: UserContext.get('catalogLocale'),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -48,12 +48,12 @@ export default BaseForm.extend({
       i18n: i18n,
       catalogLocale: this.catalogLocale,
       attributes: _.filter(
-                        this.getFormData().attributes,
-                        function (attribute) {
-                          return attribute.type === 'pim_catalog_text' ||
-                            attribute.type === 'pim_catalog_identifier'
-                        }
-                    ),
+        this.getFormData().attributes,
+        function (attribute) {
+          return attribute.type === 'pim_catalog_text' ||
+            attribute.type === 'pim_catalog_identifier'
+        }
+      ),
       currentAttribute: this.getFormData().attribute_as_label,
       fieldBaseId: this.config.fieldBaseId,
       errors: this.errors,
@@ -67,11 +67,11 @@ export default BaseForm.extend({
     this.renderExtensions()
   },
 
-            /**
-             * Update object state on property change
-             *
-             * @param event
-             */
+  /**
+   * Update object state on property change
+   *
+   * @param event
+   */
   updateState: function (event) {
     var data = this.getFormData()
     data.attribute_as_label = event.currentTarget.value

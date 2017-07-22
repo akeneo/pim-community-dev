@@ -7,6 +7,8 @@ var UserContext = Backbone.Model.extend({
 
 var instance = new UserContext()
 
-instance.fetch({async: false})
+instance.fetch({
+  async: false
+})
 
 export default instance

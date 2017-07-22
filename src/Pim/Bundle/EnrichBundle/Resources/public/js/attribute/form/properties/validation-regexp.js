@@ -3,22 +3,15 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-'use strict';
 
-define([
-    'pim/attribute-edit-form/properties/text'
-],
-function (
-    BaseField
-) {
-    return BaseField.extend({
-        /**
-         * {@inheritdoc}
-         *
-         * This field should be displayed only when the validation rule is set to "regular expression".
-         */
-        isVisible: function () {
-            return 'regexp' === this.getFormData().validation_rule;
-        }
-    });
-});
+import BaseField from 'pim/attribute-edit-form/properties/text'
+export default BaseField.extend({
+  /**
+   * {@inheritdoc}
+   *
+   * This field should be displayed only when the validation rule is set to "regular expression".
+   */
+  isVisible: function () {
+    return this.getFormData().validation_rule === 'regexp'
+  }
+})

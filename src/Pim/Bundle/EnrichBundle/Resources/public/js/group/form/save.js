@@ -19,9 +19,9 @@ export default BaseSave.extend({
   updateSuccessMessage: __('pim_enrich.entity.group.info.update_successful'),
   updateFailureMessage: __('pim_enrich.entity.group.info.update_failed'),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   save: function () {
     var group = $.extend(true, {}, this.getFormData())
 
@@ -32,16 +32,18 @@ export default BaseSave.extend({
     if (notReadyFields.length > 0) {
       var fieldLabels = _.map(notReadyFields, function (field) {
         return i18n.getLabel(
-                            field.attribute.label,
-                            UserContext.get('catalogLocale'),
-                            field.attribute.code
-                        )
+          field.attribute.label,
+          UserContext.get('catalogLocale'),
+          field.attribute.code
+        )
       })
 
       messenger.notify(
-                        'error',
-                        __('pim_enrich.entity.group.info.field_not_ready', {'fields': fieldLabels.join(', ')})
-                    )
+        'error',
+        __('pim_enrich.entity.group.info.field_not_ready', {
+          'fields': fieldLabels.join(', ')
+        })
+      )
 
       return
     }
@@ -50,14 +52,14 @@ export default BaseSave.extend({
     this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
     return GroupSaver
-                    .save(group.code, group)
-                    .then(function (data) {
-                      this.postSave()
+      .save(group.code, group)
+      .then(function (data) {
+        this.postSave()
 
-                      this.setData(data)
-                      this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
-                    }.bind(this))
-                    .fail(this.fail.bind(this))
-                    .always(this.hideLoadingMask.bind(this))
+        this.setData(data)
+        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+      }.bind(this))
+      .fail(this.fail.bind(this))
+      .always(this.hideLoadingMask.bind(this))
   }
 })

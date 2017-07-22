@@ -26,9 +26,9 @@ export default BaseForm.extend({
     'click .create': 'promptCreateView'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (this.getRoot().currentViewType !== 'view') {
       this.$el.html('')
@@ -45,15 +45,17 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Prompt the view creation modal.
-             */
+  /**
+   * Prompt the view creation modal.
+   */
   promptCreateView: function () {
     this.getRoot().trigger('grid:view-selector:close-selector')
 
     var modal = new Backbone.BootstrapModal({
       title: __('grid.view_selector.choose_label'),
-      content: this.templateInput({placeholder: __('grid.view_selector.placeholder')}),
+      content: this.templateInput({
+        placeholder: __('grid.view_selector.placeholder')
+      }),
       okText: __('pim_datagrid.view_selector.create_view_modal.confirm'),
       cancelText: __('pim_datagrid.view_selector.create_view_modal.cancel')
     })
@@ -81,12 +83,12 @@ export default BaseForm.extend({
     })
   },
 
-            /**
-             * Save the current Datagrid view in database and triggers an event to the parent
-             * to select it.
-             *
-             * @param {object} modal
-             */
+  /**
+   * Save the current Datagrid view in database and triggers an event to the parent
+   * to select it.
+   *
+   * @param {object} modal
+   */
   saveView: function (modal) {
     var gridState = DatagridState.get(this.getRoot().gridAlias, ['filters', 'columns'])
     var newView = {
@@ -96,13 +98,13 @@ export default BaseForm.extend({
     }
 
     DatagridViewSaver.save(newView, this.getRoot().gridAlias)
-                    .done(function (response) {
-                      this.getRoot().trigger('grid:view-selector:view-created', response.id)
-                    }.bind(this))
-                    .fail(function (response) {
-                      _.each(response.responseJSON, function (error) {
-                        messenger.notify('error', error)
-                      })
-                    })
+      .done(function (response) {
+        this.getRoot().trigger('grid:view-selector:view-created', response.id)
+      }.bind(this))
+      .fail(function (response) {
+        _.each(response.responseJSON, function (error) {
+          messenger.notify('error', error)
+        })
+      })
   }
 })

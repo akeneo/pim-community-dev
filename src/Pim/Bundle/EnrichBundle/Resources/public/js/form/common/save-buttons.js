@@ -22,9 +22,9 @@ export default BaseForm.extend({
   },
   events: {},
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.model = new Backbone.Model({
       buttons: []
@@ -35,9 +35,9 @@ export default BaseForm.extend({
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     var buttons = this.model.get('buttons')
     this.$el.html(this.template({
@@ -49,11 +49,11 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Add a button to the main button
-             *
-             * @param {Object} options
-             */
+  /**
+   * Add a button to the main button
+   *
+   * @param {Object} options
+   */
   addButton: function (options) {
     var button = _.extend({}, this.buttonDefaults, options)
     this.events = _.extend(this.events, button.events)

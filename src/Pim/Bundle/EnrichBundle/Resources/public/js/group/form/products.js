@@ -14,18 +14,18 @@ import Grid from 'pim/common/grid'
 export default BaseForm.extend({
   className: 'products',
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.code,
@@ -35,13 +35,13 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.productGroupGrid) {
       this.productGroupGrid = new Grid(
-                        this.config.gridId,
+        this.config.gridId,
         {
           locale: UserContext.get('catalogLocale'),
           currentGroup: this.getFormData().meta.id,
@@ -49,7 +49,7 @@ export default BaseForm.extend({
           selection: this.getFormData().products,
           selectionIdentifier: 'identifier'
         }
-                    )
+      )
 
       this.productGroupGrid.on('grid:selection:updated', function (selection) {
         this.setData('products', selection)

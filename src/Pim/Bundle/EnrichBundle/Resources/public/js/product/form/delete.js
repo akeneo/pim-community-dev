@@ -11,9 +11,9 @@ import ProductRemover from 'pim/remover/product'
 export default DeleteForm.extend({
   remover: ProductRemover,
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   getIdentifier: function () {
     return this.getFormData().meta.id
   }

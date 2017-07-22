@@ -9,9 +9,9 @@
 import DownloadFile from 'pim/form/common/download-file'
 import SecurityContext from 'pim/security-context'
 export default DownloadFile.extend({
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   isVisible: function () {
     var formData = this.getFormData()
     if (DownloadFile.prototype.isVisible.apply(this)) {

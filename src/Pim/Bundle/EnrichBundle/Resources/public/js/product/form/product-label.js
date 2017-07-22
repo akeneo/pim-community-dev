@@ -10,10 +10,10 @@
 import Label from 'pim/form/common/label'
 import UserContext from 'pim/user-context'
 export default Label.extend({
-            /**
-             * Provide the object label
-             * @return {String}
-             */
+  /**
+   * Provide the object label
+   * @return {String}
+   */
   getLabel: function () {
     var meta = this.getFormData().meta
 

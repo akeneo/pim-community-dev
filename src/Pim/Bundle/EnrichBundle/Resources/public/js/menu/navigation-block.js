@@ -15,20 +15,20 @@ export default BaseForm.extend({
   className: 'AknColumn-block',
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * Proxy for 'pim_menu:column:register_navigation_item' event
-             *
-             * {@inheritdoc}
-             */
+  /**
+   * Proxy for 'pim_menu:column:register_navigation_item' event
+   *
+   * {@inheritdoc}
+   */
   configure: function () {
     this.onExtensions('pim_menu:column:register_navigation_item', function (event) {
       this.trigger('pim_menu:column:register_navigation_item', event)
@@ -37,9 +37,9 @@ export default BaseForm.extend({
     BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty().append(this.template({
       title: __(this.config.title)

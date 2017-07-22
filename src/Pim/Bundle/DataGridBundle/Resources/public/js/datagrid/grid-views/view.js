@@ -3,156 +3,156 @@ import Backbone from 'backbone';
 import _ from 'underscore';
 import __ from 'oro/translator';
 import GridViewsCollection from 'oro/datagrid/grid-views/collection';
-    
 
-    /**
-     * Datagrid views widget
-     *
-     * @export oro/datagrid/grid-views
-     * @class   oro.datagrid.GridViews
-     * @extends Backbone.View
-     */
-    export default Backbone.View.extend({
-        /** @property */
-        events: {
-            "click a": "onChange"
-        },
 
-        /** @property */
-        template: _.template(
-            '<div class="btn-group ">' +
-                '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
-                    '<%=  current %>' + '<span class="caret"></span>' +
-                '</button>' +
-                '<ul class="dropdown-menu pull-right">' +
-                    '<% _.each(choices, function (choice) { %>' +
-                        '<li><a href="#" data-value="' + '<%= choice.value %>' + '">' + '<%= choice.label %>' + '</a></li>' +
-                    '<% }); %>' +
-                '</ul>' +
-            '</div>'
-        ),
+/**
+ * Datagrid views widget
+ *
+ * @export oro/datagrid/grid-views
+ * @class   oro.datagrid.GridViews
+ * @extends Backbone.View
+ */
+export default Backbone.View.extend({
+  /** @property */
+  events: {
+    "click a": "onChange"
+  },
 
-        /** @property */
-        enabled: true,
+  /** @property */
+  template: _.template(
+    '<div class="btn-group ">' +
+    '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
+    '<%=  current %>' + '<span class="caret"></span>' +
+    '</button>' +
+    '<ul class="dropdown-menu pull-right">' +
+    '<% _.each(choices, function (choice) { %>' +
+    '<li><a href="#" data-value="' + '<%= choice.value %>' + '">' + '<%= choice.label %>' + '</a></li>' +
+    '<% }); %>' +
+    '</ul>' +
+    '</div>'
+  ),
 
-        /** @property */
-        choices: [],
+  /** @property */
+  enabled: true,
 
-        /** @property */
-        viewsCollection: GridViewsCollection,
+  /** @property */
+  choices: [],
 
-        /**
-         * Initializer.
-         *
-         * @param {Object} options
-         * @param {Backbone.Collection} options.collection
-         * @param {Boolean} [options.enable]
-         * @param {Array}   [options.choices]
-         * @param {Array}   [options.views]
-         */
-        initialize: function (options) {
-            options = options || {};
+  /** @property */
+  viewsCollection: GridViewsCollection,
 
-            if (!options.collection) {
-                throw new TypeError("'collection' is required");
-            }
+  /**
+   * Initializer.
+   *
+   * @param {Object} options
+   * @param {Backbone.Collection} options.collection
+   * @param {Boolean} [options.enable]
+   * @param {Array}   [options.choices]
+   * @param {Array}   [options.views]
+   */
+  initialize: function(options) {
+    options = options || {};
 
-            if (options.choices) {
-                this.choices = _.union(this.choices, options.choices);
-            }
+    if (!options.collection) {
+      throw new TypeError("'collection' is required");
+    }
 
-            this.collection = options.collection;
-            this.enabled = options.enable != false;
+    if (options.choices) {
+      this.choices = _.union(this.choices, options.choices);
+    }
 
-            this.listenTo(this.collection, "updateState", this.render);
-            this.listenTo(this.collection, "beforeFetch", this.render);
+    this.collection = options.collection;
+    this.enabled = options.enable != false;
 
-            options.views = options.views || [];
-            this.viewsCollection = new this.viewsCollection(options.views);
+    this.listenTo(this.collection, "updateState", this.render);
+    this.listenTo(this.collection, "beforeFetch", this.render);
 
-            Backbone.View.prototype.initialize.call(this, options);
-        },
+    options.views = options.views || [];
+    this.viewsCollection = new this.viewsCollection(options.views);
 
-        /**
-         * Disable view selector
-         *
-         * @return {*}
-         */
-        disable: function () {
-            this.enabled = false;
-            this.render();
+    Backbone.View.prototype.initialize.call(this, options);
+  },
 
-            return this;
-        },
+  /**
+   * Disable view selector
+   *
+   * @return {*}
+   */
+  disable: function() {
+    this.enabled = false;
+    this.render();
 
-        /**
-         * Enable view selector
-         *
-         * @return {*}
-         */
-        enable: function () {
-            this.enabled = true;
-            this.render();
+    return this;
+  },
 
-            return this;
-        },
+  /**
+   * Enable view selector
+   *
+   * @return {*}
+   */
+  enable: function() {
+    this.enabled = true;
+    this.render();
 
-        /**
-         * Select change event handler
-         *
-         * @param {Event} e
-         */
-        onChange: function (e) {
-            e.preventDefault();
-            var value = $(e.target).data('value');
-            if (value !== this.collection.state.gridView) {
-                this.changeView(value);
-            }
-        },
+    return this;
+  },
 
-        /**
-         * Updates collection
-         *
-         * @param gridView
-         * @returns {*}
-         */
-        changeView: function (gridView) {
-            var view = this.viewsCollection.get(gridView);
+  /**
+   * Select change event handler
+   *
+   * @param {Event} e
+   */
+  onChange: function(e) {
+    e.preventDefault();
+    var value = $(e.target).data('value');
+    if (value !== this.collection.state.gridView) {
+      this.changeView(value);
+    }
+  },
 
-            if (view) {
-                var viewState = _.extend({}, this.collection.initialState, view.toGridState());
-                this.collection.updateState(viewState);
-                this.collection.fetch();
-            }
+  /**
+   * Updates collection
+   *
+   * @param gridView
+   * @returns {*}
+   */
+  changeView: function(gridView) {
+    var view = this.viewsCollection.get(gridView);
 
-            return this;
-        },
+    if (view) {
+      var viewState = _.extend({}, this.collection.initialState, view.toGridState());
+      this.collection.updateState(viewState);
+      this.collection.fetch();
+    }
 
-        render: function () {
-            this.$el.empty();
+    return this;
+  },
 
-            if (this.choices.length > 0) {
-                var currentView = _.filter(
-                    this.choices,
-                    _.bind(function (item) {
-                        return item.value == this.collection.state.gridView;
-                    }, this)
-                );
+  render: function() {
+    this.$el.empty();
 
-                var currentViewLabel = currentView.length ? _.first(currentView).label : __('Please select view');
+    if (this.choices.length > 0) {
+      var currentView = _.filter(
+        this.choices,
+        _.bind(function(item) {
+          return item.value == this.collection.state.gridView;
+        }, this)
+      );
 
-                this.$el.append(
-                    $(
-                        this.template({
-                            disabled: !this.enabled,
-                            choices: this.choices,
-                            current: currentViewLabel
-                        })
-                    )
-                );
-            }
+      var currentViewLabel = currentView.length ? _.first(currentView).label : __('Please select view');
 
-            return this;
-        }
-    });
+      this.$el.append(
+        $(
+          this.template({
+            disabled: !this.enabled,
+            choices: this.choices,
+            current: currentViewLabel
+          })
+        )
+      );
+    }
+
+    return this;
+  }
+});
 

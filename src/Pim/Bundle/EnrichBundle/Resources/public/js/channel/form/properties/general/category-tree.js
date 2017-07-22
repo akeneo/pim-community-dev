@@ -20,20 +20,20 @@ export default BaseForm.extend({
   template: _.template(template),
   catalogLocale: UserContext.get('catalogLocale'),
 
-    /**
-     * Initializes configuration.
-     *
-     * @param {Object} config
-     */
+  /**
+   * Initializes configuration.
+   *
+   * @param {Object} config
+   */
   initialize: function (config) {
     this.config = config.config
 
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
@@ -43,7 +43,9 @@ export default BaseForm.extend({
       if (this.getFormData().category_tree.length === 0) {
         var data = this.getFormData()
         data.category_tree = _.first(categories).code
-        this.setData(data, {'silent': true})
+        this.setData(data, {
+          'silent': true
+        })
       }
 
       this.$el.html(this.template({
@@ -58,27 +60,27 @@ export default BaseForm.extend({
       }))
 
       this.$('.select2').select2()
-                        .on('change', this.updateState.bind(this))
+        .on('change', this.updateState.bind(this))
       this.renderExtensions()
     }.bind(this))
 
     return this
   },
 
-    /**
-     * Sets new category tree on change.
-     *
-     * @param {Object} event
-     */
+  /**
+   * Sets new category tree on change.
+   *
+   * @param {Object} event
+   */
   updateState: function (event) {
     this.setCategory(event.currentTarget.value)
   },
 
-    /**
-     * Sets specified category tree into root model.
-     *
-     * @param {Array} code
-     */
+  /**
+   * Sets specified category tree into root model.
+   *
+   * @param {Array} code
+   */
   setCategory: function (code) {
     var data = this.getFormData()
 

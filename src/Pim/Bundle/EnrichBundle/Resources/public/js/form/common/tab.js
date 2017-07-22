@@ -3,44 +3,39 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-'use strict';
 
-define([
-    'oro/translator',
-    'pim/form'
-],
-function (__, BaseForm) {
-    return BaseForm.extend({
-        className: 'AknTabContainer-content',
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+export default BaseForm.extend({
+  className: 'AknTabContainer-content',
 
-        /**
-         * {@inheritdoc}
-         */
-        initialize: function (config) {
-            this.config = config.config;
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            this.trigger('tab:register', {
-                code: this.code,
-                label: __(this.config.label)
-            });
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.trigger('tab:register', {
+      code: this.code,
+      label: __(this.config.label)
+    })
 
-            return BaseForm.prototype.configure.apply(this, arguments);
-        },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-        /**
-         * {@inheritdoc}
-         */
-        render: function () {
-            this.$el.empty();
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.empty()
 
-            this.renderExtensions();
-        }
-    });
-});
+    this.renderExtensions()
+  }
+})

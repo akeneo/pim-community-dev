@@ -25,19 +25,19 @@ export default BaseForm.extend({
     'click': 'delete'
   },
 
-            /**
-             * The remover should be injected / overridden by the concrete implementation
-             * It is an object that define a remove function
-             */
+  /**
+   * The remover should be injected / overridden by the concrete implementation
+   * It is an object that define a remove function
+   */
   remover: {
     remove: function () {
       throw 'Remove function should be implemented in remover'
     }
   },
 
-            /**
-             * @param {Object} meta
-             */
+  /**
+   * @param {Object} meta
+   */
   initialize: function (meta) {
     this.config = _.extend({}, {
       trans: {
@@ -50,56 +50,58 @@ export default BaseForm.extend({
     }, meta.config)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
-    this.$el.html(this.template({'__': __}))
+    this.$el.html(this.template({
+      '__': __
+    }))
     this.delegateEvents()
 
     return this
   },
 
-            /**
-             * Open a dialog to ask the user to confirm the deletion
-             */
+  /**
+   * Open a dialog to ask the user to confirm the deletion
+   */
   delete: function () {
     Dialog.confirm(
-                    __(this.config.trans.title),
-                    __(this.config.trans.content),
-                    this.doDelete.bind(this)
-                )
+      __(this.config.trans.title),
+      __(this.config.trans.content),
+      this.doDelete.bind(this)
+    )
   },
 
-            /**
-             * Send a request to the backend in order to delete the element
-             */
+  /**
+   * Send a request to the backend in order to delete the element
+   */
   doDelete: function () {
     var config = this.config
     var loadingMask = new LoadingMask()
     loadingMask.render().$el.appendTo(this.getRoot().$el).show()
 
     this.remover.remove(this.getIdentifier())
-                    .done(function () {
-                      messenger.notify('success', __(this.config.trans.success))
-                      router.redirectToRoute(this.config.redirect)
-                    }.bind(this))
-                    .fail(function (xhr) {
-                      var message = xhr.responseJSON && xhr.responseJSON.message
-                            ? xhr.responseJSON.message : __(config.trans.failed)
+      .done(function () {
+        messenger.notify('success', __(this.config.trans.success))
+        router.redirectToRoute(this.config.redirect)
+      }.bind(this))
+      .fail(function (xhr) {
+        var message = xhr.responseJSON && xhr.responseJSON.message
+          ? xhr.responseJSON.message : __(config.trans.failed)
 
-                      messenger.notify('error', message)
-                    })
-                    .always(function () {
-                      loadingMask.hide().$el.remove()
-                    })
+        messenger.notify('error', message)
+      })
+      .always(function () {
+        loadingMask.hide().$el.remove()
+      })
   },
 
-            /**
-             * Get the current form identifier
-             *
-             * @return {String}
-             */
+  /**
+   * Get the current form identifier
+   *
+   * @return {String}
+   */
   getIdentifier: function () {
     return this.getFormData().code
   }

@@ -22,9 +22,9 @@ export default Field.extend({
     'click': 'onSelect'
   },
 
-            /**
-             * Initialize the view
-             */
+  /**
+   * Initialize the view
+   */
   initialize: function () {
     this.selected = false
     this.field = null
@@ -32,12 +32,12 @@ export default Field.extend({
     Field.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * Render the copy field view
-             * Delegates the render of the input itself to the Field.renderCopyInput() method
-             *
-             * @returns {Object}
-             */
+  /**
+   * Render the copy field view
+   * Delegates the render of the input itself to the Field.renderCopyInput() method
+   *
+   * @returns {Object}
+   */
   render: function () {
     this.$el.empty()
 
@@ -51,24 +51,27 @@ export default Field.extend({
       i18n: i18n
     }
 
-    mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []})
+    mediator.trigger('pim_enrich:form:field:extension:add', {
+      'field': this,
+      'promises': []
+    })
 
     this.$el.html(this.template(templateContext))
     this.field.renderCopyInput(this.getCurrentValue())
-                    .then(function (render) {
-                      this.$('.field-input').html(render)
-                      this.renderElements()
-                    }.bind(this))
+      .then(function (render) {
+        this.$('.field-input').html(render)
+        this.renderElements()
+      }.bind(this))
 
     this.delegateEvents()
 
     return this
   },
 
-            /**
-             * Render elements of this field in different available positions.
-             * In the copy case, only implements extension on input position.
-             */
+  /**
+   * Render elements of this field in different available positions.
+   * In the copy case, only implements extension on input position.
+   */
   renderElements: function () {
     _.each(this.elements, function (elements, position) {
       if (position === 'field-input') {
@@ -86,28 +89,28 @@ export default Field.extend({
     }.bind(this))
   },
 
-            /**
-             * Bound this copy field to the original field
-             *
-             * @param {Field} field
-             */
+  /**
+   * Bound this copy field to the original field
+   *
+   * @param {Field} field
+   */
   setField: function (field) {
     this.field = field
   },
 
-            /**
-             * Callback called when the copy field is clicked, toggle the select checkbox state
-             */
+  /**
+   * Callback called when the copy field is clicked, toggle the select checkbox state
+   */
   onSelect: function () {
     this.selected = !this.selected
     this.$('.copy-field-selector').prop('checked', this.selected)
   },
 
-            /**
-             * Mark this copy field as selected or not
-             *
-             * @param {boolean} selected
-             */
+  /**
+   * Mark this copy field as selected or not
+   *
+   * @param {boolean} selected
+   */
   setSelected: function (selected) {
     this.selected = selected
   }

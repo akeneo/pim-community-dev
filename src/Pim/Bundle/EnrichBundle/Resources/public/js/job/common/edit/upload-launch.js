@@ -13,18 +13,18 @@ import BaseLaunch from 'pim/job/common/edit/launch'
 import router from 'pim/router'
 import messenger from 'oro/messenger'
 export default BaseLaunch.extend({
-            /**
-             * {@inherit}
-             */
+  /**
+   * {@inherit}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:job:file_updated', this.render.bind(this))
 
     return BaseLaunch.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inherit}
-             */
+  /**
+   * {@inherit}
+   */
   launch: function () {
     if (this.getFormData().file) {
       var formData = new FormData()
@@ -40,19 +40,19 @@ export default BaseLaunch.extend({
         cache: false,
         processData: false
       })
-                    .then(function (response) {
-                      router.redirect(response.redirectUrl)
-                    })
-                    .fail(function () {
-                      messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
-                    })
-                    .always(router.hideLoadingMask())
+        .then(function (response) {
+          router.redirect(response.redirectUrl)
+        })
+        .fail(function () {
+          messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'))
+        })
+        .always(router.hideLoadingMask())
     }
   },
 
-            /**
-             * {@inherit}
-             */
+  /**
+   * {@inherit}
+   */
   isVisible: function () {
     return $.Deferred().resolve(this.getFormData().file).promise()
   }

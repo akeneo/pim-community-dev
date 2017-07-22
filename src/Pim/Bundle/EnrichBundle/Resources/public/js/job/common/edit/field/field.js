@@ -15,22 +15,22 @@ import template from 'pim/template/export/common/edit/field/field'
 export default BaseForm.extend({
   template: _.template(template),
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(
-                this.template(this.getTemplateContext())
-            )
+      this.template(this.getTemplateContext())
+    )
 
     this.$('.field-input').prepend(this.renderInput(this.getTemplateContext()))
     this.$('[data-toggle="tooltip"]').tooltip()
@@ -40,22 +40,22 @@ export default BaseForm.extend({
     return this
   },
 
-        /**
-         * Render the input itself
-         *
-         * @param {object} templateContext
-         *
-         * @return {string}
-         */
+  /**
+   * Render the input itself
+   *
+   * @param {object} templateContext
+   *
+   * @return {string}
+   */
   renderInput: function (templateContext) {
     return this.fieldTemplate(templateContext)
   },
 
-        /**
-         * Get the template object for the field
-         *
-         * @return {object}
-         */
+  /**
+   * Get the template object for the field
+   *
+   * @return {object}
+   */
   getTemplateContext: function () {
     return {
       __: __,
@@ -65,27 +65,27 @@ export default BaseForm.extend({
     }
   },
 
-        /**
-         * Get the current value of the field
-         *
-         * @return {mixed}
-         */
+  /**
+   * Get the current value of the field
+   *
+   * @return {mixed}
+   */
   getValue: function () {
     return propertyAccessor.accessProperty(this.getFormData(), this.getFieldCode())
   },
 
-        /**
-         * Get the field code of the property
-         *
-         * @return {strign}
-         */
+  /**
+   * Get the field code of the property
+   *
+   * @return {strign}
+   */
   getFieldCode: function () {
     return this.config.fieldCode
   },
 
-        /**
-         * Update the model after dom update
-         */
+  /**
+   * Update the model after dom update
+   */
   updateState: function () {
     var data = propertyAccessor.updateProperty(this.getFormData(), this.getFieldCode(), this.getFieldValue())
 

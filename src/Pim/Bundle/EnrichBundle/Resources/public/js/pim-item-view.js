@@ -33,12 +33,16 @@ export default Backbone.View.extend({
   },
   deleteItem: function () {
     Dialog.confirm(
-                    __('pim_enrich.item.delete.confirm.content', {'itemName': this.itemName}),
-                    __('pim_enrich.item.delete.confirm.title', {'itemName': this.itemName}),
-                    function () {
-                      this.parent.deleteItem(this)
-                    }.bind(this)
-                )
+      __('pim_enrich.item.delete.confirm.content', {
+        'itemName': this.itemName
+      }),
+      __('pim_enrich.item.delete.confirm.title', {
+        'itemName': this.itemName
+      }),
+      function () {
+        this.parent.deleteItem(this)
+      }.bind(this)
+    )
   },
   inLoading: function (loading) {
     this.parent.inLoading(loading)

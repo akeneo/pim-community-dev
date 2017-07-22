@@ -17,9 +17,9 @@ export default BaseForm.extend({
   className: 'tabsection',
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     var config = this.options.config
 

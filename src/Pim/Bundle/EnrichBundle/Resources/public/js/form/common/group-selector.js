@@ -22,9 +22,9 @@ export default BaseForm.extend({
     'click li': 'change'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.badges = {}
     this.elements = []
@@ -32,9 +32,9 @@ export default BaseForm.extend({
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty()
     this.$el.html(this.template({
@@ -48,42 +48,44 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Set the element collection
-             *
-             * @param {Array} elements
-             */
+  /**
+   * Set the element collection
+   *
+   * @param {Array} elements
+   */
   setElements: function (elements) {
     this.elements = elements
     this.ensureDefault()
   },
 
-            /**
-             * On attribute group change
-             *
-             * @param {Event} event
-             */
+  /**
+   * On attribute group change
+   *
+   * @param {Event} event
+   */
   change: function (event) {
     this.setCurrent(event.currentTarget.dataset.element)
   },
 
-            /**
-             * Get current attribute group
-             *
-             * @return {String}
-             */
+  /**
+   * Get current attribute group
+   *
+   * @return {String}
+   */
   getCurrent: function () {
     return sessionStorage.getItem('current_select_group_' + this.code)
   },
 
-            /**
-             * Set current attribute group
-             *
-             * @param {String} current
-             * @param {Object} options
-             */
+  /**
+   * Set current attribute group
+   *
+   * @param {String} current
+   * @param {Object} options
+   */
   setCurrent: function (current, options) {
-    options = options || {silent: false}
+    options = options || {
+      silent: false
+    }
 
     if (current !== this.getCurrent()) {
       sessionStorage.setItem('current_select_group_' + this.code, current)
@@ -95,41 +97,43 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Ensure default values for the current attribute group
-             */
+  /**
+   * Ensure default values for the current attribute group
+   */
   ensureDefault: function () {
     if (_.isUndefined(this.getCurrent()) ||
-                    !this.getElements()[this.getCurrent()]
-                ) {
-      this.setCurrent(_.first(_.keys(this.getElements())), {silent: true})
+      !this.getElements()[this.getCurrent()]
+    ) {
+      this.setCurrent(_.first(_.keys(this.getElements())), {
+        silent: true
+      })
     }
   },
 
-            /**
-             * Get the current attribute group
-             *
-             * @return {String}
-             */
+  /**
+   * Get the current attribute group
+   *
+   * @return {String}
+   */
   getCurrentElement: function () {
     return this.getElements()[this.getCurrent()]
   },
 
-            /**
-             * Get all attribute groups
-             *
-             * @return {object}
-             */
+  /**
+   * Get all attribute groups
+   *
+   * @return {object}
+   */
   getElements: function () {
     return this.elements
   },
 
-            /**
-             * Increment count on attribute group for the given code
-             *
-             * @param {String} element
-             * @param {String} code
-             */
+  /**
+   * Increment count on attribute group for the given code
+   *
+   * @param {String} element
+   * @param {String} code
+   */
   addToBadge: function (element, code) {
     if (!this.badges[element]) {
       this.badges[element] = {}
@@ -143,23 +147,22 @@ export default BaseForm.extend({
     this.render()
   },
 
-            /**
-             * Remove badge for the given attribute group
-             *
-             * @param {String} element
-             * @param {String} code
-             */
+  /**
+   * Remove badge for the given attribute group
+   *
+   * @param {String} element
+   * @param {String} code
+   */
   removeBadge: function (element, code) {
     delete this.badges[element][code]
-
     this.render()
   },
 
-            /**
-             * Remove badges for all attribute groups
-             *
-             * @param {String} code
-             */
+  /**
+   * Remove badges for all attribute groups
+   *
+   * @param {String} code
+   */
   removeBadges: function (code) {
     if (!code) {
       this.badges = {}

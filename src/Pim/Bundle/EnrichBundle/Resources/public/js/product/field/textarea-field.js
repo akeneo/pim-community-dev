@@ -16,16 +16,16 @@ export default Field.extend({
     'change .field-input:first textarea': 'updateModel'
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   renderInput: function (context) {
     return this.fieldTemplate(context)
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   updateModel: function () {
     var data = this.$('.field-input:first textarea:first').val()
     data = data === '' ? this.attribute.empty_value : data
@@ -33,9 +33,9 @@ export default Field.extend({
     this.setCurrentValue(data)
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   setFocus: function () {
     this.$('.field-input:first textarea').focus()
   }

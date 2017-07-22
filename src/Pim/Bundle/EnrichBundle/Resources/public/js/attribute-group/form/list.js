@@ -24,21 +24,21 @@ export default BaseForm.extend({
     'click .attribute-group-link': 'redirectToGroup'
   },
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     return $.when(
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                ).then(function (attributeGroups) {
-                  this.attributeGroups = attributeGroups
-                }.bind(this))
+      FetcherRegistry.getFetcher('attribute-group').fetchAll(),
+      BaseForm.prototype.configure.apply(this, arguments)
+    ).then(function (attributeGroups) {
+      this.attributeGroups = attributeGroups
+    }.bind(this))
   },
 
-    /**
-     * {@inheritdoc}
-     */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       attributeGroups: _.sortBy(_.values(this.attributeGroups), 'sort_order'),
@@ -65,9 +65,9 @@ export default BaseForm.extend({
     this.renderExtensions()
   },
 
-    /**
-     * Update the attribute order based on the dom
-     */
+  /**
+   * Update the attribute order based on the dom
+   */
   updateAttributeOrders: function () {
     var sortOrder = _.reduce(this.$('.attribute-group'), function (previous, current, order) {
       var next = _.extend({}, previous)
@@ -87,15 +87,17 @@ export default BaseForm.extend({
     }.bind(this))
   },
 
-    /**
-     * Redirect to attribute group page
-     *
-     * @param {event} event
-     */
+  /**
+   * Redirect to attribute group page
+   *
+   * @param {event} event
+   */
   redirectToGroup: function (event) {
     router.redirectToRoute(
-            'pim_enrich_attributegroup_edit',
-            {identifier: event.target.dataset.attributeGroupCode}
-        )
+      'pim_enrich_attributegroup_edit',
+      {
+        identifier: event.target.dataset.attributeGroupCode
+      }
+    )
   }
 })

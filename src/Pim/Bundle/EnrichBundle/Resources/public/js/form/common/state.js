@@ -20,9 +20,9 @@ export default BaseForm.extend({
   state: null,
   linkSelector: 'a[href^="/"]:not(".no-hash")',
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (meta) {
     this.config = _.extend({}, {
       confirmationMessage: 'pim_enrich.confirmation.discard_changes',
@@ -30,16 +30,18 @@ export default BaseForm.extend({
       message: 'pim_enrich.info.entity.updated'
     }, meta.config)
 
-    this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)})
+    this.confirmationMessage = __(this.config.confirmationMessage, {
+      entity: __(this.config.entity)
+    })
     this.confirmationTitle = __(this.config.confirmationTitle)
     this.message = __(this.config.message)
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * @inheritdoc
-             */
+  /**
+   * @inheritdoc
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render)
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
@@ -53,83 +55,83 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * Detach event listeners
-             */
+  /**
+   * Detach event listeners
+   */
   unbindEvents: function () {
     $(window).off('beforeunload', this.beforeUnload)
   },
 
-            /**
-             * @inheritdoc
-             */
+  /**
+   * @inheritdoc
+   */
   render: function () {
     if (this.state === null || undefined === this.state) {
       this.collectState()
     }
 
     this.$el.html(
-                    this.template({
-                      message: this.message
-                    })
-                ).css('opacity', this.hasModelChanged() ? 1 : 0)
+      this.template({
+        message: this.message
+      })
+    ).css('opacity', this.hasModelChanged() ? 1 : 0)
 
     return this
   },
 
-            /**
-             * Store a stringified representation of the form model for further comparisons
-             */
+  /**
+   * Store a stringified representation of the form model for further comparisons
+   */
   collectState: function () {
     this.state = JSON.stringify(this.getFormData())
   },
 
-            /**
-             * Force collect state and re-render
-             */
+  /**
+   * Force collect state and re-render
+   */
   collectAndRender: function () {
     this.collectState()
     this.render()
   },
 
-            /**
-             * Callback triggered on beforeunload event
-             */
+  /**
+   * Callback triggered on beforeunload event
+   */
   beforeUnload: function () {
     if (this.hasModelChanged()) {
       return this.confirmationMessage
     }
   },
 
-            /**
-             * Callback triggered on any link click event to ask confirmation if there are unsaved changes
-             *
-             * @param {Object} event
-             *
-             * @return {boolean}
-             */
+  /**
+   * Callback triggered on any link click event to ask confirmation if there are unsaved changes
+   *
+   * @param {Object} event
+   *
+   * @return {boolean}
+   */
   linkClicked: function (event) {
     if (this.hasModelChanged()) {
       event.canLeave = confirm(this.confirmationMessage)
     }
   },
 
-            /**
-             * Check if current form model has changed compared to the stored model state
-             *
-             * @return {boolean}
-             */
+  /**
+   * Check if current form model has changed compared to the stored model state
+   *
+   * @return {boolean}
+   */
   hasModelChanged: function () {
     return this.state !== JSON.stringify(this.getFormData())
   },
 
-            /**
-             * Display a dialog modal to ask an action confirmation if model has changed
-             *
-             * @param {string} message
-             * @param {string} title
-             * @param {function} action
-             */
+  /**
+   * Display a dialog modal to ask an action confirmation if model has changed
+   *
+   * @param {string} message
+   * @param {string} title
+   * @param {function} action
+   */
   confirmAction: function (message, title, action) {
     if (this.hasModelChanged()) {
       Dialog.confirm(message, title, action)
@@ -138,16 +140,16 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Callback that can be triggered from anywhere to ask an action confirmation
-             *
-             * @param {Object} event
-             */
+  /**
+   * Callback that can be triggered from anywhere to ask an action confirmation
+   *
+   * @param {Object} event
+   */
   onConfirmation: function (event) {
     this.confirmAction(
-                    event.message || this.confirmationMessage,
-                    event.title || this.confirmationTitle,
-                    event.action
-                )
+      event.message || this.confirmationMessage,
+      event.title || this.confirmationTitle,
+      event.action
+    )
   }
 })

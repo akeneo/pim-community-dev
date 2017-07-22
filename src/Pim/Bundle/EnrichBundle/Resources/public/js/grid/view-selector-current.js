@@ -18,22 +18,22 @@ export default BaseForm.extend({
   dirtyColumns: false,
   dirtyFilters: false,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(
-                    this.getRoot(),
-                    'grid:view-selector:state-changed',
-                    this.onDatagridStateChange.bind(this)
-                )
+      this.getRoot(),
+      'grid:view-selector:state-changed',
+      this.onDatagridStateChange.bind(this)
+    )
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       view: this.datagridView,
@@ -46,12 +46,12 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Method called on datagrid state change (when columns or filters are modified).
-             * Set the state to dirty if it's the case then re-render this extension.
-             *
-             * @param {Object} datagridState
-             */
+  /**
+   * Method called on datagrid state change (when columns or filters are modified).
+   * Set the state to dirty if it's the case then re-render this extension.
+   *
+   * @param {Object} datagridState
+   */
   onDatagridStateChange: function (datagridState) {
     if (datagridState.columns === null) {
       datagridState.columns = ''
@@ -77,23 +77,23 @@ export default BaseForm.extend({
     this.render()
   },
 
-            /**
-             * Set the view of this module.
-             *
-             * @param {Object} view
-             */
+  /**
+   * Set the view of this module.
+   *
+   * @param {Object} view
+   */
   setView: function (view) {
     this.datagridView = view
   },
 
-            /**
-             * Check if current datagrid state filters are modified regarding the initial view
-             *
-             * @param {Object} initialViewFilters
-             * @param {Object} datagridStateFilters
-             *
-             * @return {boolean}
-             */
+  /**
+   * Check if current datagrid state filters are modified regarding the initial view
+   *
+   * @param {Object} initialViewFilters
+   * @param {Object} datagridStateFilters
+   *
+   * @return {boolean}
+   */
   areFiltersModified: function (initialViewFilters, datagridStateFilters) {
     return initialViewFilters !== datagridStateFilters
   }

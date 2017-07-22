@@ -16,7 +16,11 @@ export default function (tab) {
     }
     var loadingMask = new LoadingMask()
     loadingMask.render().$el.appendTo($target)
-                    .css({ 'position': 'absolute', 'width': '100%', 'height': '80%' })
+      .css({
+        'position': 'absolute',
+        'width': '100%',
+        'height': '80%'
+      })
     loadingMask.show()
 
     $.get($target.attr('data-url'), function (data) {
@@ -25,4 +29,5 @@ export default function (tab) {
       $target.closest('form').trigger('tab.loaded', $target)
     })
   }
-};
+}
+;

@@ -10,11 +10,11 @@ import BaseLabel from 'pim/form/common/label'
 import __ from 'oro/translator'
 export default BaseLabel.extend({
 
-            /**
-             * Provide the object label
-             *
-             * @return {String}
-             */
+  /**
+   * Provide the object label
+   *
+   * @return {String}
+   */
   getLabel: function () {
     var prefix = __('pim_enrich.form.job_instance.title.' + this.getFormData().type)
 

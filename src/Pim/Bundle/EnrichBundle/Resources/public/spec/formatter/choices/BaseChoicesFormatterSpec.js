@@ -34,8 +34,14 @@ describe('Base choices formatter', function () {
     spyOn(i18n, 'getLabel').and.callThrough()
 
     expect(Formatter.format(this.entities)).toEqual([
-                    { id: 'webcams', text: 'Webcams' },
-                    { id: 'mugs', text: 'Tassen' }
+      {
+        id: 'webcams',
+        text: 'Webcams'
+      },
+      {
+        id: 'mugs',
+        text: 'Tassen'
+      }
     ])
   })
 
@@ -44,8 +50,14 @@ describe('Base choices formatter', function () {
     spyOn(i18n, 'getLabel').and.callThrough()
 
     expect(Formatter.format(this.entities)).toEqual([
-                    { id: 'webcams', text: '[webcams]' },
-                    { id: 'mugs', text: '[mugs]' }
+      {
+        id: 'webcams',
+        text: '[webcams]'
+      },
+      {
+        id: 'mugs',
+        text: '[mugs]'
+      }
     ])
   })
 })

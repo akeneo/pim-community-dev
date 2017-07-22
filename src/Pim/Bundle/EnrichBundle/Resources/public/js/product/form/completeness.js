@@ -24,18 +24,18 @@ export default BaseForm.extend({
     'click .missing-attributes a': 'showAttribute'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.initialFamily = null
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.code,
@@ -49,9 +49,9 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
       return this
@@ -59,53 +59,55 @@ export default BaseForm.extend({
 
     if (this.getFormData().meta) {
       $.when(
-                        FetcherRegistry.getFetcher('channel').fetchAll(),
-                        FetcherRegistry.getFetcher('locale').fetchActivated()
-                    ).then(function (channels, locales) {
-                      if (this.initialFamily === null) {
-                        this.initialFamily = this.getFormData().family
-                      }
+        FetcherRegistry.getFetcher('channel').fetchAll(),
+        FetcherRegistry.getFetcher('locale').fetchActivated()
+      ).then(function (channels, locales) {
+        if (this.initialFamily === null) {
+          this.initialFamily = this.getFormData().family
+        }
 
-                      this.$el.html(
-                            this.template({
-                              hasFamily: this.getFormData().family !== null,
-                              completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
-                              i18n: i18n,
-                              channels: channels,
-                              locales: locales,
-                              uiLocale: UserContext.get('uiLocale'),
-                              catalogLocale: UserContext.get('catalogLocale'),
-                              hasFamilyChanged: this.getFormData().family !== this.initialFamily
-                            })
-                        )
-                      this.delegateEvents()
-                    }.bind(this))
+        this.$el.html(
+          this.template({
+            hasFamily: this.getFormData().family !== null,
+            completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
+            i18n: i18n,
+            channels: channels,
+            locales: locales,
+            uiLocale: UserContext.get('uiLocale'),
+            catalogLocale: UserContext.get('catalogLocale'),
+            hasFamilyChanged: this.getFormData().family !== this.initialFamily
+          })
+        )
+        this.delegateEvents()
+      }.bind(this))
     }
 
     return this
   },
 
-            /**
-             * Sort completenesses. Put the user current catalog locale first.
-             *
-             * @param completenesses
-             *
-             * @returns {Array}
-             */
+  /**
+   * Sort completenesses. Put the user current catalog locale first.
+   *
+   * @param completenesses
+   *
+   * @returns {Array}
+   */
   sortCompleteness: function (completenesses) {
     if (_.isEmpty(completenesses)) {
       return []
     }
-    var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})]
+    var sortedCompleteness = [_.findWhere(completenesses, {
+      locale: UserContext.get('catalogLocale')
+    })]
 
     return _.union(sortedCompleteness, completenesses)
   },
 
-            /**
-             * Toggle the current locale
-             *
-             * @param Event event
-             */
+  /**
+   * Toggle the current locale
+   *
+   * @param Event event
+   */
   switchLocale: function (event) {
     var $completenessBlock = $(event.currentTarget).parents('.completeness-block')
     if ($completenessBlock.attr('data-closed') === 'false') {
@@ -115,25 +117,25 @@ export default BaseForm.extend({
     }
   },
 
-            /**
-             * Set focus to the attribute given by the event
-             *
-             * @param Event event
-             */
+  /**
+   * Set focus to the attribute given by the event
+   *
+   * @param Event event
+   */
   showAttribute: function (event) {
     this.getRoot().trigger(
-                    'pim_enrich:form:show_attribute',
+      'pim_enrich:form:show_attribute',
       {
         attribute: event.currentTarget.dataset.attribute,
         locale: event.currentTarget.dataset.locale,
         scope: event.currentTarget.dataset.channel
       }
-                )
+    )
   },
 
-            /**
-             * On family change listener
-             */
+  /**
+   * On family change listener
+   */
   onChangeFamily: function () {
     if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
       var data = this.getFormData()

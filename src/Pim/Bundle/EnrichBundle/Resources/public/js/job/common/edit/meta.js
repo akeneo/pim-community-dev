@@ -13,9 +13,9 @@ import template from 'pim/template/export/common/edit/meta'
 export default BaseForm.extend({
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       jobInstance: this.getFormData(),

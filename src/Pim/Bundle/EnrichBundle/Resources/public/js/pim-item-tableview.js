@@ -21,7 +21,9 @@ export default Backbone.View.extend({
     this.itemClass = options.itemClass
     this.itemViewClass = options.itemViewClass
     this.url = options.url
-    this.collection = new this.collectionClass({url: options.url})
+    this.collection = new this.collectionClass({
+      url: options.url
+    })
     this.render()
 
     this.load()
@@ -31,7 +33,9 @@ export default Backbone.View.extend({
     this.$el.html(this.renderTemplate())
 
     _.each(this.collection.models, function (ruleItem) {
-      this.addItem({item: ruleItem})
+      this.addItem({
+        item: ruleItem
+      })
     }.bind(this))
 
     if (!this.rendered) {
@@ -49,12 +53,12 @@ export default Backbone.View.extend({
     this.itemViews = []
     this.inLoading(true)
     this.collection
-                    .fetch({
-                      success: function () {
-                        this.inLoading(false)
-                        this.render()
-                      }.bind(this)
-                    })
+      .fetch({
+        success: function () {
+          this.inLoading(false)
+          this.render()
+        }.bind(this)
+      })
   },
   addItem: function (opts) {
     var options = opts || {}

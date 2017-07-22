@@ -13,9 +13,9 @@ export default BaseForm.extend({
   className: 'AknHeader',
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty().append(this.template())
 

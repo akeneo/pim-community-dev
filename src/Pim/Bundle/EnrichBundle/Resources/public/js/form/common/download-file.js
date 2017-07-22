@@ -17,27 +17,27 @@ import propertyAccessor from 'pim/common/property'
 export default BaseForm.extend({
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (meta) {
     this.config = meta.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.isVisible()) {
       return this
@@ -51,32 +51,31 @@ export default BaseForm.extend({
     return this
   },
 
-            /**
-             * Get the url with parameters
-             *
-             * @returns {string}
-             */
+  /**
+   * Get the url with parameters
+   *
+   * @returns {string}
+   */
   getUrl: function () {
     var parameters = {}
     if (this.config.urlParams) {
       var formData = this.getFormData()
       this.config.urlParams.forEach(function (urlParam) {
-        parameters[urlParam.property] =
-                            propertyAccessor.accessProperty(formData, urlParam.path)
+        parameters[urlParam.property] = propertyAccessor.accessProperty(formData, urlParam.path)
       })
     }
 
     return Routing.generate(
-                    this.config.url,
-                    parameters
-                )
+      this.config.url,
+      parameters
+    )
   },
 
-            /**
-             * Returns true if the extension should be visible
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Returns true if the extension should be visible
+   *
+   * @returns {boolean}
+   */
   isVisible: function () {
     return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath)
   }

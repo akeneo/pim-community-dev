@@ -32,11 +32,11 @@ _.extend(formState.prototype, {
     mediator.on('hash_navigation_click', this._confirmHashChange, this)
   },
 
-            /**
-             * Check is form changed
-             *
-             * @returns {boolean}
-             */
+  /**
+   * Check is form changed
+   *
+   * @returns {boolean}
+   */
   isChanged: function () {
     if (!_.isNull(this.data)) {
       return this.data !== this.getState()
@@ -45,57 +45,57 @@ _.extend(formState.prototype, {
     return false
   },
 
-            /**
-             * Collect form state
-             *
-             * @returns {*}
-             */
+  /**
+   * Collect form state
+   *
+   * @returns {*}
+   */
   getState: function () {
     var form = $(this.FORM_SELECTOR)
 
     if (form.length) {
       return JSON.stringify(
-                        _.reject(
-                            $(this.FORM_SELECTOR).serializeArray(),
-                            function (el) {
-                              return el.name === 'input_action'
-                            }
-                        )
-                    )
+        _.reject(
+          $(this.FORM_SELECTOR).serializeArray(),
+          function (el) {
+            return el.name === 'input_action'
+          }
+        )
+      )
     }
 
     return false
   },
 
-            /**
-             * Hash change event handler
-             *
-             * @param event
-             * @private
-             */
+  /**
+   * Hash change event handler
+   *
+   * @param event
+   * @private
+   */
   _confirmHashChange: function (event) {
     if (this.isChanged()) {
       event.stoppedProcess = !confirm(this.CONFIRMATION_MESSAGE)
     }
   },
 
-            /**
-             * Collecting event handler
-             *
-             * @private
-             */
+  /**
+   * Collecting event handler
+   *
+   * @private
+   */
   _collectHandler: function () {
     this.data = this.getState()
   },
 
-            /**
-             * Destroys event handlers
-             *
-             * @private
-             */
+  /**
+   * Destroys event handlers
+   *
+   * @private
+   */
   _onDestroyHandler: function () {
     if (_.isNull(this.data)) {
-                    // data was not collected disable listener
+      // data was not collected disable listener
       mediator.off('hash_navigation_request:complete', this._collectHandler, this)
     } else {
       this.data = null

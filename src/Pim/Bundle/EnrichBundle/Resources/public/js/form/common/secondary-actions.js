@@ -15,12 +15,12 @@ export default BaseForm.extend({
 
   template: _.template(template),
 
-            /**
-             * When there is no extensions attached to this module, nothing is rendered.
-             * Each extension represents a secondary action available for the user.
-             *
-             * {@inheritdoc}
-             */
+  /**
+   * When there is no extensions attached to this module, nothing is rendered.
+   * Each extension represents a secondary action available for the user.
+   *
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty()
 

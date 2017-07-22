@@ -123,8 +123,8 @@
      */
     render: function() {
       var $el = this.$el,
-          options = this.options,
-          content = options.content;
+        options = this.options,
+        content = options.content;
 
       //Create the modal container
       $el.html(options.template(options));
@@ -154,7 +154,7 @@
       this.delegateEvents();
 
       var self = this,
-          $el = this.$el;
+        $el = this.$el;
 
       //Create it
       $el.modal(_.extend({
@@ -177,9 +177,9 @@
 
       //Adjust the modal and backdrop z-index; for dealing with multiple modals
       var numModals = Modal.count,
-          $backdrop = $('.modal-backdrop:eq('+numModals+')'),
-          backdropIndex = parseInt($backdrop.css('z-index'), 10),
-          elIndex = parseInt($backdrop.css('z-index'), 10) + 1;
+        $backdrop = $('.modal-backdrop:eq(' + numModals + ')'),
+        backdropIndex = parseInt($backdrop.css('z-index'), 10),
+        elIndex = parseInt($backdrop.css('z-index'), 10) + 1;
 
       $backdrop.css('z-index', backdropIndex + numModals);
       this.$el.css('z-index', elIndex + numModals);
@@ -193,7 +193,7 @@
           self.trigger('cancel');
         });
 
-        $(document).one('keyup.dismiss.modal', function (e) {
+        $(document).one('keyup.dismiss.modal', function(e) {
           e.which == 27 && self.trigger('cancel');
 
           if (self.options.content && self.options.content.trigger) {
@@ -221,7 +221,7 @@
      */
     close: function() {
       var self = this,
-          $el = this.$el;
+        $el = this.$el;
 
       //Check if the modal should stay open
       if (this._preventClose) {
@@ -231,7 +231,7 @@
 
       $el.one('hidden', function onHidden(e) {
         // Ignore events propagated from interior objects, like bootstrap tooltips
-        if(e.target !== e.currentTarget){
+        if (e.target !== e.currentTarget) {
           return $el.one('hidden', onHidden);
         }
         self.remove();
@@ -271,9 +271,9 @@
 
   //AMD / RequireJS
   if (typeof define === 'function' && define.amd) {
-    
-      Backbone.BootstrapModal = Modal;
-    
+
+    Backbone.BootstrapModal = Modal;
+
   }
 
   //Regular; add to Backbone.Bootstrap.Modal

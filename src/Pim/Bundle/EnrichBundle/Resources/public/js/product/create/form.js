@@ -21,31 +21,31 @@ export default BaseForm.extend({
   },
   validationErrors: {},
 
-            /**
-             * Configure the form
-             *
-             * @return {Promise}
-             */
+  /**
+   * Configure the form
+   *
+   * @return {Promise}
+   */
   configure: function () {
     return $.when(
-                    FetcherRegistry.initialize(),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                )
+      FetcherRegistry.initialize(),
+      BaseForm.prototype.configure.apply(this, arguments)
+    )
   },
 
-            /**
-             * Model update callback
-             */
+  /**
+   * Model update callback
+   */
   updateModel: function () {
     this.getFormModel().set('identifier', this.$('[data-code="identifier"] input').val())
     this.getFormModel().set('family', this.$('[data-code="family"] input').select2('val'))
   },
 
-            /**
-             * Save the form content by posting it to backend
-             *
-             * @return {Promise}
-             */
+  /**
+   * Save the form content by posting it to backend
+   *
+   * @return {Promise}
+   */
   save: function () {
     this.validationErrors = {}
 
@@ -53,57 +53,57 @@ export default BaseForm.extend({
     this.$el.empty().append(loadingMask.render().$el.show())
 
     return $.post(Routing.generate('pim_enrich_product_rest_create'), this.getFormData())
-                    .fail(function (response) {
-                      this.validationErrors = response.responseJSON.values
-                      this.render()
-                    }.bind(this))
-                    .always(function () {
-                      loadingMask.remove()
-                    })
+      .fail(function (response) {
+        this.validationErrors = response.responseJSON.values
+        this.render()
+      }.bind(this))
+      .always(function () {
+        loadingMask.remove()
+      })
   },
 
-            /**
-             * Renders the form
-             *
-             * @return {Promise}
-             */
+  /**
+   * Renders the form
+   *
+   * @return {Promise}
+   */
   render: function () {
     if (!this.configured) {
       return this
     }
 
     return FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                    .then(function (identifier) {
-                      this.$el.html(
-                            this.template({
-                              identifier: identifier,
-                              labels: {
-                                identifier: i18n.getLabel(
-                                        identifier.labels,
-                                        UserContext.get('catalogLocale'),
-                                        identifier.code
-                                    ),
-                                family: __('pim_enrich.entity.product.create_popin.labels.family')
-                              },
-                              errors: this.validationErrors,
-                              __: __
-                            })
-                        )
-                      this.initSelect2()
+      .then(function (identifier) {
+        this.$el.html(
+          this.template({
+            identifier: identifier,
+            labels: {
+              identifier: i18n.getLabel(
+                identifier.labels,
+                UserContext.get('catalogLocale'),
+                identifier.code
+              ),
+              family: __('pim_enrich.entity.product.create_popin.labels.family')
+            },
+            errors: this.validationErrors,
+            __: __
+          })
+        )
+        this.initSelect2()
 
-                      return this.renderExtensions()
-                    }.bind(this), function () {
-                      this.$el.html(
-                            this.errorTemplate({
-                              message: __('error.creating.product')
-                            })
-                        )
-                    }.bind(this))
+        return this.renderExtensions()
+      }.bind(this), function () {
+        this.$el.html(
+          this.errorTemplate({
+            message: __('error.creating.product')
+          })
+        )
+      }.bind(this))
   },
 
-            /**
-             * Init select2 family field
-             */
+  /**
+   * Init select2 family field
+   */
   initSelect2: function () {
     var options = {
       allowClear: true,

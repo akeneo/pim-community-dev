@@ -17,18 +17,18 @@ export default BaseForm.extend({
     'click': 'backHome'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template())
 
     return BaseForm.prototype.render.apply(this, arguments)
   },
 
-            /**
-             * Redirect the user to app's home
-             */
+  /**
+   * Redirect the user to app's home
+   */
   backHome: function () {
     router.redirectToRoute('oro_default')
   }

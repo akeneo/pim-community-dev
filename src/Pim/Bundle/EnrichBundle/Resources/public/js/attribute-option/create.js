@@ -38,31 +38,33 @@ var CreateOptionView = Backbone.View.extend({
         $.ajax({
           method: 'POST',
           url: Routing.generate(
-                                'pim_enrich_attributeoption_create',
-                                { attributeId: this.attribute.meta.id }
-                            ),
+            'pim_enrich_attributeoption_create',
+            {
+              attributeId: this.attribute.meta.id
+            }
+          ),
           data: JSON.stringify(form.getFormData())
         }).done(function (option) {
           modal.close()
           messenger.notify(
-                                'success',
-                                _.__('pim_enrich.form.attribute_option.flash.option_created')
-                            )
+            'success',
+            _.__('pim_enrich.form.attribute_option.flash.option_created')
+          )
           deferred.resolve(option)
         }).fail(function (xhr) {
           var response = xhr.responseJSON
 
           if (response.code) {
             form.$('input[name="code"]').after(
-                                    this.errorTemplate({
-                                      errors: [response.code]
-                                    })
-                                )
+              this.errorTemplate({
+                errors: [response.code]
+              })
+            )
           } else {
             messenger.notify(
-                                    'error',
-                                    _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
-                                )
+              'error',
+              _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
+            )
           }
         }.bind(this))
       }.bind(this))
@@ -77,9 +79,12 @@ export default function (attribute) {
     throw new Error('Attribute must be provided to create a new option')
   }
 
-  var view = new CreateOptionView({ attribute: attribute })
+  var view = new CreateOptionView({
+    attribute: attribute
+  })
 
   return view.createOption().always(function () {
     view.remove()
   })
-};
+}
+;

@@ -14,9 +14,9 @@ export default BaseSave.extend({
   updateSuccessMessage: __('pim_enrich.entity.job_instance.info.update_successful'),
   updateFailureMessage: __('pim_enrich.entity.job_instance.info.update_failed'),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   save: function () {
     var jobInstance = $.extend(true, {}, this.getFormData())
 
@@ -27,18 +27,20 @@ export default BaseSave.extend({
     this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
     return this.getJobInstanceSaver()
-        .save(jobInstance.code, jobInstance)
-        .then(function (data) {
-          this.postSave()
+      .save(jobInstance.code, jobInstance)
+      .then(function (data) {
+        this.postSave()
 
-          this.setData(data)
-          this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
-          router.redirectToRoute(
-                this.config.redirectPath,
-                {code: jobInstance.code}
-            )
-        }.bind(this))
-        .fail(this.fail.bind(this))
-        .always(this.hideLoadingMask.bind(this))
+        this.setData(data)
+        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+        router.redirectToRoute(
+          this.config.redirectPath,
+          {
+            code: jobInstance.code
+          }
+        )
+      }.bind(this))
+      .fail(this.fail.bind(this))
+      .always(this.hideLoadingMask.bind(this))
   }
 })

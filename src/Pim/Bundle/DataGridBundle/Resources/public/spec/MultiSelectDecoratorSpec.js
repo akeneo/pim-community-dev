@@ -5,50 +5,50 @@ import MultiSelectDecorator from 'oro/multiselect-decorator';
 import $ from 'jquery';
 import _ from 'underscore';
 import Routing from 'routing';
-        describe('Decorate the MultiSelect element', function () {
+describe('Decorate the MultiSelect element', function() {
 
-            it('computes the minimum dropdown width', function () {
-                var firstElement = 'first';
-                var secondElement = 'second';
+  it('computes the minimum dropdown width', function() {
+    var firstElement = 'first';
+    var secondElement = 'second';
 
-                var firstSelector = jasmine.createSpyObj('selector 1', ['find']);
-                var secondSelector = jasmine.createSpyObj('selector 2', ['find']);
+    var firstSelector = jasmine.createSpyObj('selector 1', ['find']);
+    var secondSelector = jasmine.createSpyObj('selector 2', ['find']);
 
-                firstSelector.find.and.callFake(function () {
-                    var dom = jasmine.createSpyObj('dom 1', ['html', 'width']);
-                    dom.html.and.returnValue('The first attribute');
-                    dom.width.and.returnValue(150);
+    firstSelector.find.and.callFake(function() {
+      var dom = jasmine.createSpyObj('dom 1', ['html', 'width']);
+      dom.html.and.returnValue('The first attribute');
+      dom.width.and.returnValue(150);
 
-                    return dom;
-                });
+      return dom;
+    });
 
-                secondSelector.find.and.callFake(function () {
-                    var dom = jasmine.createSpyObj('dom 2', ['html', 'width']);
-                    dom.html.and.returnValue('The second attribute');
-                    dom.width.and.returnValue(175);
+    secondSelector.find.and.callFake(function() {
+      var dom = jasmine.createSpyObj('dom 2', ['html', 'width']);
+      dom.html.and.returnValue('The second attribute');
+      dom.width.and.returnValue(175);
 
-                    return dom;
-                });
+      return dom;
+    });
 
-                var jqueryResponse = {
-                    first: firstSelector,
-                    second: secondSelector
-                };
+    var jqueryResponse = {
+      first: firstSelector,
+      second: secondSelector
+    };
 
-                spyOn($.fn, 'init').and.callFake(function (param) {
-                    return jqueryResponse[param];
-                });
+    spyOn($.fn, 'init').and.callFake(function(param) {
+      return jqueryResponse[param];
+    });
 
-                var widget = jasmine.createSpyObj('widget', ['find']);
-                widget.find.and.returnValue([firstElement, secondElement]);
+    var widget = jasmine.createSpyObj('widget', ['find']);
+    widget.find.and.returnValue([firstElement, secondElement]);
 
-                spyOn(MultiSelectDecorator.prototype, 'initialize').and.returnValue(null);
-                spyOn(MultiSelectDecorator.prototype, 'getWidget').and.returnValue(widget);
+    spyOn(MultiSelectDecorator.prototype, 'initialize').and.returnValue(null);
+    spyOn(MultiSelectDecorator.prototype, 'getWidget').and.returnValue(widget);
 
-                var multiSelectDecorator = new MultiSelectDecorator();
-                var miniWidth = multiSelectDecorator.getMinimumDropdownWidth();
+    var multiSelectDecorator = new MultiSelectDecorator();
+    var miniWidth = multiSelectDecorator.getMinimumDropdownWidth();
 
-                expect(miniWidth).toEqual(201)
-            });
-        });
-    
+    expect(miniWidth).toEqual(201)
+  });
+});
+

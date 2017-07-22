@@ -38,13 +38,13 @@ export default Field.extend({
   },
   getTemplateContext: function () {
     return $.when(
-                Field.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('currency').fetchAll()
-            ).then(function (templateContext, currencies) {
-              templateContext.currencies = currencies
+      Field.prototype.getTemplateContext.apply(this, arguments),
+      FetcherRegistry.getFetcher('currency').fetchAll()
+    ).then(function (templateContext, currencies) {
+      templateContext.currencies = currencies
 
-              return templateContext
-            })
+      return templateContext
+    })
   },
   setFocus: function () {
     this.$('input[type="text"]:first').focus()

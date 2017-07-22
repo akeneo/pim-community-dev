@@ -7,6 +7,8 @@ var DateContext = Backbone.Model.extend({
 
 var instance = new DateContext()
 
-instance.fetch({async: false})
+instance.fetch({
+  async: false
+})
 
 export default instance

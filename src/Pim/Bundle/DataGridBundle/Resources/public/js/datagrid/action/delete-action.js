@@ -7,99 +7,99 @@ import Modal from 'oro/modal';
 import ModelAction from 'oro/datagrid/model-action';
 import mediator from 'oro/mediator';
 import userContext from 'pim/user-context';
-        
 
-        /**
-         * Delete action with confirm dialog, triggers REST DELETE request
-         *
-         * @export  oro/datagrid/delete-action
-         * @class   oro.datagrid.DeleteAction
-         * @extends oro.datagrid.ModelAction
-         */
-        export default ModelAction.extend({
 
-            /** @type oro.Modal */
-            errorModal: undefined,
+/**
+ * Delete action with confirm dialog, triggers REST DELETE request
+ *
+ * @export  oro/datagrid/delete-action
+ * @class   oro.datagrid.DeleteAction
+ * @extends oro.datagrid.ModelAction
+ */
+export default ModelAction.extend({
 
-            /** @type oro.Modal */
-            confirmModal: undefined,
+  /** @type oro.Modal */
+  errorModal: undefined,
 
-            /**
-             * Initialize view
-             *
-             * @param {Object} options
-             * @param {Backbone.Model} options.model Optional parameter
-             * @throws {TypeError} If model is undefined
-             */
-            initialize: function(options) {
-                options = options || {};
+  /** @type oro.Modal */
+  confirmModal: undefined,
 
-                this.gridName = options.datagrid.name;
+  /**
+   * Initialize view
+   *
+   * @param {Object} options
+   * @param {Backbone.Model} options.model Optional parameter
+   * @throws {TypeError} If model is undefined
+   */
+  initialize: function(options) {
+    options = options || {};
 
-                ModelAction.prototype.initialize.apply(this, arguments);
-            },
+    this.gridName = options.datagrid.name;
 
-            /**
-             * Execute delete model
-             */
-            execute: function() {
-                this.getConfirmDialog().open();
-            },
+    ModelAction.prototype.initialize.apply(this, arguments);
+  },
 
-            /**
-             * Confirm delete item
-             */
-            doDelete: function() {
-                this.model.id = true;
-                this.model.destroy({
-                    url: this.getLink(),
-                    wait: true,
-                    error: function() {
-                        this.getErrorDialog().open();
-                    }.bind(this),
-                    success: function() {
-                        var messageText = __('flash.' + this.getEntityHint() + '.removed');
-                        messenger.notify('success', messageText);
-                        userContext.fetch();
+  /**
+   * Execute delete model
+   */
+  execute: function() {
+    this.getConfirmDialog().open();
+  },
 
-                        mediator.trigger('datagrid:doRefresh:' + this.gridName);
-                    }.bind(this)
-                });
-            },
+  /**
+   * Confirm delete item
+   */
+  doDelete: function() {
+    this.model.id = true;
+    this.model.destroy({
+      url: this.getLink(),
+      wait: true,
+      error: function() {
+        this.getErrorDialog().open();
+      }.bind(this),
+      success: function() {
+        var messageText = __('flash.' + this.getEntityHint() + '.removed');
+        messenger.notify('success', messageText);
+        userContext.fetch();
 
-            /**
-             * Get view for confirm modal
-             *
-             * @return {oro.Modal}
-             */
-            getConfirmDialog: function() {
-                if (!this.confirmModal) {
-                    this.confirmModal = new DeleteConfirmation({
-                        content: __('confirmation.remove.' + this.getEntityHint())
-                    });
-                    this.confirmModal.on('ok', _.bind(this.doDelete, this));
-                }
-                return this.confirmModal;
-            },
+        mediator.trigger('datagrid:doRefresh:' + this.gridName);
+      }.bind(this)
+    });
+  },
 
-            /**
-             * Get view for error modal
-             *
-             * @return {oro.Modal}
-             */
-            getErrorDialog: function() {
-                if (!this.errorModal) {
-                    this.errorModal = new Modal({
-                        title: __('Delete Error'),
-                        content: __('error.removing.' + this.getEntityHint()),
-                        cancelText: false
-                    });
-                }
-                return this.errorModal;
-            },
+  /**
+   * Get view for confirm modal
+   *
+   * @return {oro.Modal}
+   */
+  getConfirmDialog: function() {
+    if (!this.confirmModal) {
+      this.confirmModal = new DeleteConfirmation({
+        content: __('confirmation.remove.' + this.getEntityHint())
+      });
+      this.confirmModal.on('ok', _.bind(this.doDelete, this));
+    }
+    return this.confirmModal;
+  },
 
-            getEntityHint: function() {
-                return this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
-            }
-        });
-    
+  /**
+   * Get view for error modal
+   *
+   * @return {oro.Modal}
+   */
+  getErrorDialog: function() {
+    if (!this.errorModal) {
+      this.errorModal = new Modal({
+        title: __('Delete Error'),
+        content: __('error.removing.' + this.getEntityHint()),
+        cancelText: false
+      });
+    }
+    return this.errorModal;
+  },
+
+  getEntityHint: function() {
+    return this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
+  }
+});
+

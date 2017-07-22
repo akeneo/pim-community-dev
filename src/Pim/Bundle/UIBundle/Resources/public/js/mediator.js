@@ -2,10 +2,10 @@
 import _ from 'underscore'
 import Backbone from 'backbone'
 
-    /**
-     * @export oro/mediator
-     * @name   oro.mediator
-     */
+/**
+ * @export oro/mediator
+ * @name   oro.mediator
+ */
 export default _.extend({
   clear: function (namespace) {
     this._events = _.omit(this._events, function (events, code) {

@@ -21,18 +21,18 @@ export default Backbone.View.extend({
     'click button': 'onAdd'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.buttonTitle = this.options.buttonTitle
     this.countTitle = this.options.countTitle
     this.addEvent = this.options.addEvent
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.html(this.template({
       buttonTitle: this.buttonTitle,
@@ -43,20 +43,20 @@ export default Backbone.View.extend({
     return this
   },
 
-            /**
-             * Update the item counter line and re-render the view.
-             *
-             * @param {int|string} number
-             */
+  /**
+   * Update the item counter line and re-render the view.
+   *
+   * @param {int|string} number
+   */
   updateNumberOfItems: function (number) {
     this.numberOfItems = number
 
     this.render()
   },
 
-            /**
-             * Method called when the 'add' button is clicked
-             */
+  /**
+   * Method called when the 'add' button is clicked
+   */
   onAdd: function () {
     this.trigger(this.addEvent)
   }

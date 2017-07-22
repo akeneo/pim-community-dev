@@ -19,9 +19,9 @@ export default BaseForm.extend({
   },
   active: false,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
@@ -31,11 +31,11 @@ export default BaseForm.extend({
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * On configure, this module triggers an event to register it to tabs.
-             *
-             * {@inheritdoc}
-             */
+  /**
+   * On configure, this module triggers an event to register it to tabs.
+   *
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('pim_menu:column:register_navigation_item', {
       code: this.getRoute(),
@@ -46,9 +46,9 @@ export default BaseForm.extend({
     BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.$el.empty().append(this.template({
       title: this.getLabel(),
@@ -60,41 +60,41 @@ export default BaseForm.extend({
     return BaseForm.prototype.render.apply(this, arguments)
   },
 
-            /**
-             * Redirect the user to the config destination
-             *
-             * @param {Event} event
-             */
+  /**
+   * Redirect the user to the config destination
+   *
+   * @param {Event} event
+   */
   redirect: function (event) {
     if (!_.has(event, 'extension') || event.extension === this.code) {
       router.redirectToRoute(this.getRoute())
     }
   },
 
-            /**
-             * Returns the route of the tab.
-             *
-             * @returns {string|undefined}
-             */
+  /**
+   * Returns the route of the tab.
+   *
+   * @returns {string|undefined}
+   */
   getRoute: function () {
     return this.config.to
   },
 
-            /**
-             * Returns the displayed label of the tab
-             *
-             * @returns {string}
-             */
+  /**
+   * Returns the displayed label of the tab
+   *
+   * @returns {string}
+   */
   getLabel: function () {
     return __(this.config.title)
   },
 
-            /**
-             * Highlight or un-highlight item
-             *
-             * @param {Event}  event
-             * @param {string} event.extension The extension code to highlight
-             */
+  /**
+   * Highlight or un-highlight item
+   *
+   * @param {Event}  event
+   * @param {string} event.extension The extension code to highlight
+   */
   highlight: function (event) {
     this.active = (event.extension === this.code)
 

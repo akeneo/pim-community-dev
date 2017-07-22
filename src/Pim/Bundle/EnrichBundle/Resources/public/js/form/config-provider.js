@@ -12,31 +12,31 @@ var loadConfig = function () {
 }
 
 export default {
-            /**
-             * Returns configuration for extensions.
-             *
-             * @return {Promise}
-             */
+  /**
+   * Returns configuration for extensions.
+   *
+   * @return {Promise}
+   */
   getExtensionMap: function () {
     return loadConfig().then(function (config) {
       return config.extensions
     })
   },
 
-            /**
-             * Returns configuration for attribute fields.
-             *
-             * @return {Promise}
-             */
+  /**
+   * Returns configuration for attribute fields.
+   *
+   * @return {Promise}
+   */
   getAttributeFields: function () {
     return loadConfig().then(function (config) {
       return config.attribute_fields
     })
   },
 
-            /**
-             * Clear cache of form registry
-             */
+  /**
+   * Clear cache of form registry
+   */
   clear: function () {
     promise = null
   }

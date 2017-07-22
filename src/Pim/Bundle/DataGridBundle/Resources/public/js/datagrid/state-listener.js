@@ -2,76 +2,79 @@ import _ from 'underscore';
 import mediator from 'oro/mediator';
 import AbstractListener from 'oro/datagrid/abstract-listener';
 import DatagridState from 'pim/datagrid/state';
-        
 
-        /**
-         * Datagrid state listener
-         */
-        var StateListener = AbstractListener.extend({
-            gridName: null,
-            $gridContainer: null,
 
-            initialize: function (options) {
-                if (!_.has(options, 'gridName')) {
-                    throw new Error('Grid name not specified');
-                }
-                if (!_.has(options, '$gridContainer')) {
-                    throw new Error('Grid container not specified');
-                }
+/**
+ * Datagrid state listener
+ */
+var StateListener = AbstractListener.extend({
+  gridName: null,
+  $gridContainer: null,
 
-                this.gridName       = options.gridName;
-                this.$gridContainer = options.$gridContainer;
+  initialize: function(options) {
+    if (!_.has(options, 'gridName')) {
+      throw new Error('Grid name not specified');
+    }
+    if (!_.has(options, '$gridContainer')) {
+      throw new Error('Grid container not specified');
+    }
 
-                this.subscribe();
-            },
+    this.gridName = options.gridName;
+    this.$gridContainer = options.$gridContainer;
 
-            subscribe: function () {
-                mediator.once('datagrid_collection_set_after', this.afterCollectionSet, this);
-                mediator.on('grid_load:complete', this.saveGridState, this);
+    this.subscribe();
+  },
 
-                this.$gridContainer.on('preExecute:reset:' + this.gridName, this.onGridReset.bind(this));
+  subscribe: function() {
+    mediator.once('datagrid_collection_set_after', this.afterCollectionSet, this);
+    mediator.on('grid_load:complete', this.saveGridState, this);
 
-                mediator.once('hash_navigation_request:start', this.unsubscribe, this);
-            },
+    this.$gridContainer.on('preExecute:reset:' + this.gridName, this.onGridReset.bind(this));
 
-            unsubscribe: function () {
-                mediator.off('grid_load:complete', this.saveGridState, this);
-            },
+    mediator.once('hash_navigation_request:start', this.unsubscribe, this);
+  },
 
-            afterCollectionSet: function () {
-                mediator.once(
-                    'datagrid_filters:rendered',
-                    function (collection) {
-                        collection.trigger('updateState', collection);
+  unsubscribe: function() {
+    mediator.off('grid_load:complete', this.saveGridState, this);
+  },
 
-                        // We have to use a timeout here because the toolbar is hidden right after triggering this event
-                        setTimeout(_.bind(function() {
-                            this.$gridContainer.find('div.toolbar, div.filter-box').show();
-                        }, this), 20);
-                    }, this
-                );
-            },
+  afterCollectionSet: function() {
+    mediator.once(
+      'datagrid_filters:rendered',
+      function(collection) {
+        collection.trigger('updateState', collection);
 
-            saveGridState: function (collection) {
-                if (collection.inputName === this.gridName) {
-                    var $filterBox = this.$gridContainer.find('.filter-box');
-                    if ($filterBox.length && !$filterBox.is(':visible')) {
-                        $filterBox.show();
-                    }
+        // We have to use a timeout here because the toolbar is hidden right after triggering this event
+        setTimeout(_.bind(function() {
+          this.$gridContainer.find('div.toolbar, div.filter-box').show();
+        }, this), 20);
+      }, this
+    );
+  },
 
-                    var encodedStateData = collection.encodeStateData(collection.state);
-                    DatagridState.set(this.gridName, 'filters', encodedStateData);
-                }
-            },
+  saveGridState: function(collection) {
+    if (collection.inputName === this.gridName) {
+      var $filterBox = this.$gridContainer.find('.filter-box');
+      if ($filterBox.length && !$filterBox.is(':visible')) {
+        $filterBox.show();
+      }
 
-            onGridReset: function (e, action) {
-                action.collection.initialState.filters = {};
-            }
-        });
+      var encodedStateData = collection.encodeStateData(collection.state);
+      DatagridState.set(this.gridName, 'filters', encodedStateData);
+    }
+  },
 
-        StateListener.init = function ($gridContainer, gridName) {
-            new StateListener({ $gridContainer: $gridContainer, gridName: gridName });
-        };
+  onGridReset: function(e, action) {
+    action.collection.initialState.filters = {};
+  }
+});
 
-        export default StateListener;
-    
+StateListener.init = function($gridContainer, gridName) {
+  new StateListener({
+    $gridContainer: $gridContainer,
+    gridName: gridName
+  });
+};
+
+export default StateListener;
+

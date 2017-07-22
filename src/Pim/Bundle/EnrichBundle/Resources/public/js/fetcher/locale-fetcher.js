@@ -5,18 +5,18 @@ import BaseFetcher from 'pim/base-fetcher'
 import Routing from 'routing'
 export default BaseFetcher.extend({
   entityActivatedListPromise: null,
-            /**
-             * @param {Object} options
-             */
+  /**
+   * @param {Object} options
+   */
   initialize: function (options) {
     this.options = options || {}
   },
 
-            /**
-             * Fetch all activated locales.
-             *
-             * @return {Promise}
-             */
+  /**
+   * Fetch all activated locales.
+   *
+   * @return {Promise}
+   */
   fetchActivated: function () {
     if (!this.entityActivatedListPromise) {
       if (!_.has(this.options.urls, 'list')) {
@@ -24,17 +24,19 @@ export default BaseFetcher.extend({
       }
 
       this.entityActivatedListPromise = $.getJSON(
-                        Routing.generate(this.options.urls.list),
-                        {activated: true}
-                    ).then(_.identity).promise()
+        Routing.generate(this.options.urls.list),
+        {
+          activated: true
+        }
+      ).then(_.identity).promise()
     }
 
     return this.entityActivatedListPromise
   },
 
-            /**
-             * {inheritdoc}
-             */
+  /**
+   * {inheritdoc}
+   */
   clear: function () {
     this.entityActivatedListPromise = null
 

@@ -4,13 +4,13 @@ import _ from 'underscore'
 import mediator from 'oro/mediator'
 import 'bootstrap'
 
-        /**
-         * Allow expanding/collapsing currency fields
-         *
-         * @author    Filips Alpe <filips@akeneo.com>
-         * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-         * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-         */
+/**
+ * Allow expanding/collapsing currency fields
+ *
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 
 export default Backbone.View.extend({
   fieldSelector: '.currency-field[data-metadata]',
@@ -25,39 +25,39 @@ export default Backbone.View.extend({
   inputThreshold: 3,
 
   currencyTemplate: _.template(
-                '<span class="currency-header<%= small ? " small" : "" %>">' +
-                    '<% _.each(currencies, function (currency) { %>' +
-                        '<span class="currency-label"><%= currency %></span>' +
-                    '<% }); %>' +
-                '</span>'
-            ),
+    '<span class="currency-header<%= small ? " small" : "" %>">' +
+    '<% _.each(currencies, function (currency) { %>' +
+    '<span class="currency-label"><%= currency %></span>' +
+    '<% }); %>' +
+    '</span>'
+  ),
 
   template: _.template(
-                '<% _.each(data, function (item) { %>' +
-                    '<% _.each(currencies, function (currency, index) { %>' +
-                        '<% if (item.label === currency) { %>' +
-                            '<% if (scopable && index === 0) { %>' +
-                                '<label class="control-label add-on" title="<%= item.scope %>">' +
-                                    '<%= item.scope[0].toUpperCase() %>' +
-                                '</label>' +
-                                '<div class="scopable-input">' +
-                            '<% } %>' +
-                            '<input type="hidden" id="<%= item.currency.fieldId %>" ' +
-                                'name="<%= item.currency.fieldName %>" value="<%= item.currency.data %>"' +
-                                '<%= item.currency.disabled ? " disabled" : "" %> >' +
-                            '<input type="text" class="<%= inputClass %>" id="<%= item.value.fieldId %>"' +
-                                'name="<%= item.value.fieldName %>" value="<%= item.value.data %>"' +
-                                '<% if (!scopable && index === 0) { %>' +
-                                    ' style="border-top-left-radius:3px;border-bottom-left-radius:3px;"' +
-                                '<% } %>' +
-                                '<%= item.value.disabled ? " disabled" : "" %> >' +
-                            '<% if (scopable && index + 1 === currencies.length) { %>' +
-                                '</div>' +
-                            '<% } %>' +
-                        '<% } %>' +
-                    '<% }); %>' +
-                '<% }); %>'
-            ),
+    '<% _.each(data, function (item) { %>' +
+    '<% _.each(currencies, function (currency, index) { %>' +
+    '<% if (item.label === currency) { %>' +
+    '<% if (scopable && index === 0) { %>' +
+    '<label class="control-label add-on" title="<%= item.scope %>">' +
+    '<%= item.scope[0].toUpperCase() %>' +
+    '</label>' +
+    '<div class="scopable-input">' +
+    '<% } %>' +
+    '<input type="hidden" id="<%= item.currency.fieldId %>" ' +
+    'name="<%= item.currency.fieldName %>" value="<%= item.currency.data %>"' +
+    '<%= item.currency.disabled ? " disabled" : "" %> >' +
+    '<input type="text" class="<%= inputClass %>" id="<%= item.value.fieldId %>"' +
+    'name="<%= item.value.fieldName %>" value="<%= item.value.data %>"' +
+    '<% if (!scopable && index === 0) { %>' +
+    ' style="border-top-left-radius:3px;border-bottom-left-radius:3px;"' +
+    '<% } %>' +
+    '<%= item.value.disabled ? " disabled" : "" %> >' +
+    '<% if (scopable && index + 1 === currencies.length) { %>' +
+    '</div>' +
+    '<% } %>' +
+    '<% } %>' +
+    '<% }); %>' +
+    '<% }); %>'
+  ),
 
   events: {
     'click label i.field-toggle': '_toggle'
@@ -114,16 +114,16 @@ export default Backbone.View.extend({
 
     $target.empty()
     $target.prepend(
-                    this.template({
-                      currencies: this.currencies,
-                      data: data,
-                      scopable: this.scopable,
-                      first: this.first,
-                      collapseIcon: this.collapseIcon,
-                      inputClass: this.currencies.length > this.inputThreshold
-                                        ? this.smallInputClass : this.inputClass
-                    })
-                )
+      this.template({
+        currencies: this.currencies,
+        data: data,
+        scopable: this.scopable,
+        first: this.first,
+        collapseIcon: this.collapseIcon,
+        inputClass: this.currencies.length > this.inputThreshold
+          ? this.smallInputClass : this.inputClass
+      })
+    )
 
     if (this.first) {
       $target.parent().parent().addClass('first')
@@ -140,7 +140,9 @@ export default Backbone.View.extend({
     var $fields = this.$el.find('div[data-scope]')
 
     if (this.scopable && $fields.length > 1) {
-      var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon })
+      var $toggleIcon = $('<i>', {
+        'class': 'field-toggle ' + this.collapseIcon
+      })
       $label.prepend($toggleIcon)
     }
 

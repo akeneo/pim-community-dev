@@ -10,28 +10,30 @@ import $ from 'jquery'
 import _ from 'underscore'
 import AddAttributeSelect from 'pim/product/add-select/attribute'
 export default AddAttributeSelect.extend({
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getItemsToExclude: function () {
     return $.Deferred().resolve(
-                    _.pluck(
-                        this.getFormData().attributes,
-                        'code'
-                    )
-                )
+      _.pluck(
+        this.getFormData().attributes,
+        'code'
+      )
+    )
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   addItems: function () {
-    this.getRoot().trigger(this.addEvent, { codes: this.selection })
+    this.getRoot().trigger(this.addEvent, {
+      codes: this.selection
+    })
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getSelectSearchParameters: function () {
     return _.extend({}, AddAttributeSelect.prototype.getSelectSearchParameters.apply(this, arguments), {
       rights: 0

@@ -18,22 +18,26 @@ export default BaseFilter.extend({
     'change [name="filter-value"]': 'updateState'
   },
 
-        /**
-         * {@inherit}
-         */
+  /**
+   * {@inherit}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-      _.defaults(data, {field: this.getCode(), operator: '=', value: true})
+      _.defaults(data, {
+        field: this.getCode(),
+        operator: '=',
+        value: true
+      })
     }.bind(this))
 
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * Returns rendered input.
-         *
-         * @return {String}
-         */
+  /**
+   * Returns rendered input.
+   *
+   * @return {String}
+   */
   renderInput: function () {
     return this.template({
       isEditable: this.isEditable(),
@@ -49,30 +53,40 @@ export default BaseFilter.extend({
     })
   },
 
-        /**
-         * Initializes select2 after rendering.
-         */
+  /**
+   * Initializes select2 after rendering.
+   */
   postRender: function () {
-    this.$('[name="filter-value"]').select2({minimumResultsForSearch: -1})
+    this.$('[name="filter-value"]').select2({
+      minimumResultsForSearch: -1
+    })
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   isEmpty: function () {
     return false
   },
 
-        /**
-         * Updates operator and value on fields change.
-         */
+  /**
+   * Updates operator and value on fields change.
+   */
   updateState: function () {
     var value = this.$('[name="filter-value"]').val()
 
     if (value === 'all') {
-      this.setData({field: this.getField(), operator: 'ALL', value: null})
+      this.setData({
+        field: this.getField(),
+        operator: 'ALL',
+        value: null
+      })
     } else {
-      this.setData({field: this.getField(), operator: '=', value: value === 'enabled'})
+      this.setData({
+        field: this.getField(),
+        operator: '=',
+        value: value === 'enabled'
+      })
     }
   }
 })

@@ -6,238 +6,240 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  * ============================================================ */
 
-!function ($) {
+!function($) {
   "use strict";
 
-  $.fn['bootstrapSwitch'] = function (method) {
+  $.fn['bootstrapSwitch'] = function(method) {
     var methods = {
-      init: function () {
-        return this.each(function () {
-            var $element = $(this)
-              , $div
-              , $switchLeft
-              , $switchRight
-              , $label
-              , myClasses = ""
-              , classes = $element.attr('class')
-              , color
-              , moving
-              , onLabel = "ON"
-              , offLabel = "OFF"
-              , icon = false;
+      init: function() {
+        return this.each(function() {
+          var $element = $(this),
+            $div,
+            $switchLeft,
+            $switchRight,
+            $label,
+            myClasses = "",
+            classes = $element.attr('class'),
+            color,
+            moving,
+            onLabel = "ON",
+            offLabel = "OFF",
+            icon = false;
 
-            $.each(['switch-mini', 'switch-small', 'switch-large'], function (i, el) {
-              if (classes.indexOf(el) >= 0)
-                myClasses = el;
-            });
+          $.each(['switch-mini', 'switch-small', 'switch-large'], function(i, el) {
+            if (classes.indexOf(el) >= 0)
+              myClasses = el;
+          });
 
-            $element.addClass('has-switch');
+          $element.addClass('has-switch');
 
-            if ($element.data('on') !== undefined)
-              color = "switch-" + $element.data('on');
+          if ($element.data('on') !== undefined)
+            color = "switch-" + $element.data('on');
 
-            if ($element.data('on-label') !== undefined)
-              onLabel = $element.data('on-label');
+          if ($element.data('on-label') !== undefined)
+            onLabel = $element.data('on-label');
 
-            if ($element.data('off-label') !== undefined)
-              offLabel = $element.data('off-label');
+          if ($element.data('off-label') !== undefined)
+            offLabel = $element.data('off-label');
 
-            if ($element.data('icon') !== undefined)
-              icon = $element.data('icon');
+          if ($element.data('icon') !== undefined)
+            icon = $element.data('icon');
 
-            $switchLeft = $('<span>')
-              .addClass("switch-left")
-              .addClass(myClasses)
-              .addClass(color)
-              .html(onLabel);
+          $switchLeft = $('<span>')
+            .addClass("switch-left")
+            .addClass(myClasses)
+            .addClass(color)
+            .html(onLabel);
 
-            color = '';
-            if ($element.data('off') !== undefined)
-              color = "switch-" + $element.data('off');
+          color = '';
+          if ($element.data('off') !== undefined)
+            color = "switch-" + $element.data('off');
 
-            $switchRight = $('<span>')
-              .addClass("switch-right")
-              .addClass(myClasses)
-              .addClass(color)
-              .html(offLabel);
+          $switchRight = $('<span>')
+            .addClass("switch-right")
+            .addClass(myClasses)
+            .addClass(color)
+            .html(offLabel);
 
-            $label = $('<label>')
-              .html("&nbsp;")
-              .addClass(myClasses)
-              .attr('for', $element.find('input').attr('id'));
+          $label = $('<label>')
+            .html("&nbsp;")
+            .addClass(myClasses)
+            .attr('for', $element.find('input').attr('id'));
 
-            if (icon) {
-              $label.html('<i class="icon icon-' + icon + '"></i>');
+          if (icon) {
+            $label.html('<i class="icon icon-' + icon + '"></i>');
+          }
+
+          $div = $element.find(':checkbox').wrap($('<div>')).parent().data('animated', false);
+
+          if ($element.data('animated') !== false)
+            $div.addClass('switch-animate').data('animated', true);
+
+          $div
+            .append($switchLeft)
+            .append($label)
+            .append($switchRight);
+
+          $element.find('>div').addClass(
+            $element.find('input').is(':checked') ? 'switch-on' : 'switch-off'
+          );
+
+          if ($element.find('input').is(':disabled'))
+            $(this).addClass('deactivate');
+
+          var changeStatus = function($this) {
+            $this.siblings('label').trigger('mousedown').trigger('mouseup').trigger('click');
+          };
+
+          $element.on('keydown', function(e) {
+            if (e.keyCode === 32) {
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              changeStatus($(e.target).find('span:first'));
             }
+          });
 
-            $div = $element.find(':checkbox').wrap($('<div>')).parent().data('animated', false);
+          $switchLeft.on('click', function(e) {
+            changeStatus($(this));
+          });
 
-            if ($element.data('animated') !== false)
-              $div.addClass('switch-animate').data('animated', true);
+          $switchRight.on('click', function(e) {
+            changeStatus($(this));
+          });
 
-            $div
-              .append($switchLeft)
-              .append($label)
-              .append($switchRight);
+          $element.find('input').on('change', function(e, skipOnChange) {
+            var $this = $(this),
+              $element = $this.parent(),
+              thisState = $this.is(':checked'),
+              state = $element.is('.switch-off');
 
-            $element.find('>div').addClass(
-              $element.find('input').is(':checked') ? 'switch-on' : 'switch-off'
-            );
+            e.preventDefault();
 
-            if ($element.find('input').is(':disabled'))
-              $(this).addClass('deactivate');
+            $element.css('left', '');
 
-            var changeStatus = function ($this) {
-              $this.siblings('label').trigger('mousedown').trigger('mouseup').trigger('click');
-            };
+            if (state === thisState) {
 
-            $element.on('keydown', function (e) {
-              if (e.keyCode === 32) {
+              if (thisState)
+                $element.removeClass('switch-off').addClass('switch-on');
+              else $element.removeClass('switch-on').addClass('switch-off');
+
+              if ($element.data('animated') !== false)
+                $element.addClass("switch-animate");
+
+              if (typeof skipOnChange === 'boolean' && skipOnChange)
+                return;
+
+              $element.parent().trigger('switch-change', {
+                'el': $this,
+                'value': thisState
+              })
+            }
+          });
+
+          $element.find('label').on('mousedown touchstart', function(e) {
+            var $this = $(this);
+            moving = false;
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            $this.closest('div').removeClass('switch-animate');
+
+            if ($this.closest('.has-switch').is('.deactivate'))
+              $this.unbind('click');
+            else {
+              $this.on('mousemove touchmove', function(e) {
+                var $element = $(this).closest('.switch'),
+                  relativeX = (e.pageX || e.originalEvent.targetTouches[0].pageX) - $element.offset().left,
+                  percent = (relativeX / $element.width()) * 100,
+                  left = 25,
+                  right = 75;
+
+                moving = true;
+
+                if (percent < left)
+                  percent = left;
+                else if (percent > right)
+                  percent = right;
+
+                $element.find('>div').css('left', (percent - right) + "%")
+              });
+
+              $this.on('click touchend', function(e) {
+                var $this = $(this),
+                  $target = $(e.target),
+                  $myCheckBox = $target.siblings('input');
+
                 e.stopImmediatePropagation();
                 e.preventDefault();
-                changeStatus($(e.target).find('span:first'));
-              }
-            });
 
-            $switchLeft.on('click', function (e) {
-              changeStatus($(this));
-            });
+                $this.unbind('mouseleave');
 
-            $switchRight.on('click', function (e) {
-              changeStatus($(this));
-            });
+                if (moving)
+                  $myCheckBox.prop('checked', !(parseInt($this.parent().css('left')) < -25));
+                else $myCheckBox.prop("checked", !$myCheckBox.is(":checked"));
 
-            $element.find('input').on('change', function (e, skipOnChange) {
-              var $this = $(this)
-                , $element = $this.parent()
-                , thisState = $this.is(':checked')
-                , state = $element.is('.switch-off');
+                moving = false;
+                $myCheckBox.trigger('change');
+              });
 
-              e.preventDefault();
+              $this.on('mouseleave', function(e) {
+                var $this = $(this),
+                  $myCheckBox = $this.siblings('input');
 
-              $element.css('left', '');
+                e.preventDefault();
+                e.stopImmediatePropagation();
 
-              if (state === thisState) {
+                $this.unbind('mouseleave');
+                $this.trigger('mouseup');
 
-                if (thisState)
-                  $element.removeClass('switch-off').addClass('switch-on');
-                else $element.removeClass('switch-on').addClass('switch-off');
+                $myCheckBox.prop('checked', !(parseInt($this.parent().css('left')) < -25)).trigger('change');
+              });
 
-                if ($element.data('animated') !== false)
-                  $element.addClass("switch-animate");
+              $this.on('mouseup', function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
 
-                if (typeof skipOnChange === 'boolean' && skipOnChange)
-                  return;
-
-                $element.parent().trigger('switch-change', {'el': $this, 'value': thisState})
-              }
-            });
-
-            $element.find('label').on('mousedown touchstart', function (e) {
-              var $this = $(this);
-              moving = false;
-
-              e.preventDefault();
-              e.stopImmediatePropagation();
-
-              $this.closest('div').removeClass('switch-animate');
-
-              if ($this.closest('.has-switch').is('.deactivate'))
-                $this.unbind('click');
-              else {
-                $this.on('mousemove touchmove', function (e) {
-                  var $element = $(this).closest('.switch')
-                    , relativeX = (e.pageX || e.originalEvent.targetTouches[0].pageX) - $element.offset().left
-                    , percent = (relativeX / $element.width()) * 100
-                    , left = 25
-                    , right = 75;
-
-                  moving = true;
-
-                  if (percent < left)
-                    percent = left;
-                  else if (percent > right)
-                    percent = right;
-
-                  $element.find('>div').css('left', (percent - right) + "%")
-                });
-
-                $this.on('click touchend', function (e) {
-                  var $this = $(this)
-                    , $target = $(e.target)
-                    , $myCheckBox = $target.siblings('input');
-
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
-
-                  $this.unbind('mouseleave');
-
-                  if (moving)
-                    $myCheckBox.prop('checked', !(parseInt($this.parent().css('left')) < -25));
-                  else $myCheckBox.prop("checked", !$myCheckBox.is(":checked"));
-
-                  moving = false;
-                  $myCheckBox.trigger('change');
-                });
-
-                $this.on('mouseleave', function (e) {
-                  var $this = $(this)
-                    , $myCheckBox = $this.siblings('input');
-
-                  e.preventDefault();
-                  e.stopImmediatePropagation();
-
-                  $this.unbind('mouseleave');
-                  $this.trigger('mouseup');
-
-                  $myCheckBox.prop('checked', !(parseInt($this.parent().css('left')) < -25)).trigger('change');
-                });
-
-                $this.on('mouseup', function (e) {
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
-
-                  $(this).unbind('mousemove');
-                });
-              }
-            });
-          }
+                $(this).unbind('mousemove');
+              });
+            }
+          });
+        }
         );
       },
-      toggleActivation: function () {
+      toggleActivation: function() {
         var $this = $(this);
 
         $this.toggleClass('deactivate');
         $this.find('input:checkbox').attr('disabled', $this.is('.deactivate'));
       },
-      isActive: function () {
+      isActive: function() {
         return !$(this).hasClass('deactivate');
       },
-      setActive: function (active) {
+      setActive: function(active) {
         var $this = $(this);
 
         if (active) {
           $this.removeClass('deactivate');
           $this.find('input:checkbox').attr('disabled', false);
-        }
-        else {
+        } else {
           $this.addClass('deactivate');
           $this.find('input:checkbox').attr('disabled', true);
         }
       },
-      toggleState: function (skipOnChange) {
+      toggleState: function(skipOnChange) {
         var $input = $(this).find('input:checkbox');
         $input.prop('checked', !$input.is(':checked')).trigger('change', skipOnChange);
       },
-      setState: function (value, skipOnChange) {
+      setState: function(value, skipOnChange) {
         $(this).find('input:checkbox').prop('checked', value).trigger('change', skipOnChange);
       },
-      status: function () {
+      status: function() {
         return $(this).find('input:checkbox').is(':checked');
       },
-      destroy: function () {
-        var $div = $(this).find('div')
-          , $checkbox;
+      destroy: function() {
+        var $div = $(this).find('div'),
+          $checkbox;
 
         $div.find(':not(input:checkbox)').remove();
 

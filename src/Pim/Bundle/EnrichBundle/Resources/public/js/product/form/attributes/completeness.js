@@ -20,11 +20,11 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * Add filter on field if the user doesn't have the right to edit it.
-             *
-             * @param {object} event
-             */
+  /**
+   * Add filter on field if the user doesn't have the right to edit it.
+   *
+   * @param {object} event
+   */
   addFieldFilter: function (event) {
     event.filters.push($.Deferred().resolve({
       completenesses: this.getFormData().meta.completenesses,
@@ -35,51 +35,53 @@ export default BaseForm.extend({
       }
 
       var localeCompleteness = _.findWhere(
-                        completenesses.completenesses,
-                        {locale: UserContext.get('catalogLocale')}
-                    )
+        completenesses.completenesses,
+        {
+          locale: UserContext.get('catalogLocale')
+        }
+      )
 
       if (undefined === localeCompleteness ||
-                        undefined === localeCompleteness.channels[UserContext.get('catalogScope')]
-                    ) {
+        undefined === localeCompleteness.channels[UserContext.get('catalogScope')]
+      ) {
         return $.Deferred().resolve([])
       }
 
       var missingAttributeCodes = _.pluck(
-                        localeCompleteness.channels[UserContext.get('catalogScope')].missing,
-                        'code'
-                    )
+        localeCompleteness.channels[UserContext.get('catalogScope')].missing,
+        'code'
+      )
 
       return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(missingAttributeCodes)
     })
-                .then(function (missingAttributes) {
-                  return function (attributes) {
-                    return _.filter(missingAttributes, function (missingAttribute) {
-                      return _.contains(_.pluck(attributes, 'code'), missingAttribute.code)
-                    })
-                  }
-                }))
+      .then(function (missingAttributes) {
+        return function (attributes) {
+          return _.filter(missingAttributes, function (missingAttribute) {
+            return _.contains(_.pluck(attributes, 'code'), missingAttribute.code)
+          })
+        }
+      }))
   },
 
-            /**
-             * {@inheritDoc}
-             */
+  /**
+   * {@inheritDoc}
+   */
   addFieldExtension: function (event) {
     event.promises.push(
-                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData()).then(function (fields) {
-                      var field = event.field
+      toFillFieldProvider.getFields(this.getRoot(), this.getFormData()).then(function (fields) {
+        var field = event.field
 
-                      if (_.contains(fields, field.attribute.code)) {
-                        field.addElement(
-                                'badge',
-                                'completeness',
-                                '<span class="AknBadge AknBadge--round AknBadge--highlight"></span>'
-                            )
-                      }
+        if (_.contains(fields, field.attribute.code)) {
+          field.addElement(
+            'badge',
+            'completeness',
+            '<span class="AknBadge AknBadge--round AknBadge--highlight"></span>'
+          )
+        }
 
-                      return event
-                    })
-                )
+        return event
+      })
+    )
 
     return this
   }

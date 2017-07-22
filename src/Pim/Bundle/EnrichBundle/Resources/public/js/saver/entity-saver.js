@@ -10,18 +10,20 @@ import _ from 'underscore'
 import BaseSaver from 'pim/saver/base'
 import Routing from 'routing'
 export default _.extend({}, BaseSaver, {
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getUrl: function (identifier) {
-    return Routing.generate(this.url, { identifier: identifier })
+    return Routing.generate(this.url, {
+      identifier: identifier
+    })
   },
 
-            /**
-             * Sets the url
-             *
-             * @param {String} url Route url
-             */
+  /**
+   * Sets the url
+   *
+   * @param {String} url Route url
+   */
   setUrl: function (url) {
     this.url = url
 

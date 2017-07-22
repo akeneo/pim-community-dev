@@ -26,13 +26,13 @@ export default Field.extend({
   },
   getTemplateContext: function () {
     return $.when(
-                Field.prototype.getTemplateContext.apply(this, arguments),
-                FetcherRegistry.getFetcher('measure').fetchAll()
-            ).then(function (templateContext, measures) {
-              templateContext.measures = measures
+      Field.prototype.getTemplateContext.apply(this, arguments),
+      FetcherRegistry.getFetcher('measure').fetchAll()
+    ).then(function (templateContext, measures) {
+      templateContext.measures = measures
 
-              return templateContext
-            })
+      return templateContext
+    })
   },
   setFocus: function () {
     this.$('.data:first').focus()

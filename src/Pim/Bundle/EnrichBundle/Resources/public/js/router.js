@@ -20,9 +20,9 @@ var Router = Backbone.Router.extend({
   loadingMask: null,
   currentController: null,
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function () {
     this.loadingMask = new LoadingMask()
     this.loadingMask.render().$el.appendTo($('.hash-loading-mask'))
@@ -31,20 +31,20 @@ var Router = Backbone.Router.extend({
     this.listenTo(mediator, 'route_complete', this._processLinks)
   },
 
-            /**
-             * Go to the homepage of the app
-             *
-             * @return {String}
-             */
+  /**
+   * Go to the homepage of the app
+   *
+   * @return {String}
+   */
   dashboard: function () {
     return this.defaultRoute(this.generate('pim_dashboard_index'))
   },
 
-            /**
-             * Render the given route
-             *
-             * @param {String} path
-             */
+  /**
+   * Render the given route
+   *
+   * @param {String} path
+   */
   defaultRoute: function (path) {
     if (path.indexOf('/') !== 0) {
       path = '/' + path
@@ -83,17 +83,17 @@ var Router = Backbone.Router.extend({
       this.currentController = new controller.class(controller)
       this.currentController.setActive(true)
       this.currentController.renderRoute(route, path)
-                        .done(function () {
-                          this.triggerComplete(route)
-                        }.bind(this))
-                        .fail(this.handleError.bind(this))
-                        .always(this.hideLoadingMask)
+        .done(function () {
+          this.triggerComplete(route)
+        }.bind(this))
+        .fail(this.handleError.bind(this))
+        .always(this.hideLoadingMask)
     }.bind(this))
   },
 
-            /**
-             * Manage not found error
-             */
+  /**
+   * Manage not found error
+   */
   notFound: function () {
     this.displayErrorPage('Page not found', 404)
   },
@@ -109,31 +109,31 @@ var Router = Backbone.Router.extend({
     }
   },
 
-            /**
-             * Manage error from xhr calls
-             *
-             * @param {Object} xhr
-             */
+  /**
+   * Manage error from xhr calls
+   *
+   * @param {Object} xhr
+   */
   errorPage: function (xhr) {
     this.displayErrorPage(xhr.statusText, xhr.status)
   },
 
-            /**
-             * Display the error page
-             *
-             * @param {String} message
-             * @param {Integer} code
-             */
+  /**
+   * Display the error page
+   *
+   * @param {String} message
+   * @param {Integer} code
+   */
   displayErrorPage: function (message, code) {
     var errorView = new Error(message, code)
     errorView.setElement($('#container')).render()
   },
 
-            /**
-             * Trigger route start events
-             *
-             * @param {String} route
-             */
+  /**
+   * Trigger route start events
+   *
+   * @param {String} route
+   */
   triggerStart: function (route) {
     this.trigger('route:' + route.name, route.params)
     this.trigger('route_start', route.name, route.params)
@@ -142,11 +142,11 @@ var Router = Backbone.Router.extend({
     mediator.trigger('route_start:' + route.name, route.params)
   },
 
-            /**
-             * Trigger completed route events
-             *
-             * @param {String} route
-             */
+  /**
+   * Trigger completed route events
+   *
+   * @param {String} route
+   */
   triggerComplete: function (route) {
     this.trigger('route_complete', route.name, route.params)
     this.trigger('route_complete:' + route.name, route.params)
@@ -154,37 +154,37 @@ var Router = Backbone.Router.extend({
     mediator.trigger('route_complete:' + route.name, route.params)
   },
 
-            /**
-             * Display the loading mask
-             */
+  /**
+   * Display the loading mask
+   */
   showLoadingMask: function () {
     this.loadingMask.show()
   },
 
-            /**
-             * Hide the loading mask
-             */
+  /**
+   * Hide the loading mask
+   */
   hideLoadingMask: function () {
     this.loadingMask.hide()
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   generate: function () {
     return Routing.generate.apply(Routing, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   match: function () {
     return RouteMatcher.match.apply(RouteMatcher, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   redirect: function (fragment, options) {
     if (this.currentController && !this.currentController.canLeave()) {
       return false
@@ -194,24 +194,26 @@ var Router = Backbone.Router.extend({
     Backbone.history.navigate(fragment, options)
   },
 
-            /**
-             * Redirect to the given route
-             */
+  /**
+   * Redirect to the given route
+   */
   redirectToRoute: function (route, routeParams, options) {
     this.redirect(Routing.generate(route, routeParams), options)
   },
 
-            /**
-             * Reload the current page
-             */
+  /**
+   * Reload the current page
+   */
   reloadPage: function () {
     var fragment = window.location.hash
-    this.redirect(fragment, {trigger: true})
+    this.redirect(fragment, {
+      trigger: true
+    })
   },
 
-            /**
-             * Process route links in the current page
-             */
+  /**
+   * Process route links in the current page
+   */
   _processLinks: function () {
     _.each($('a[route]'), function (link) {
       var route = link.getAttribute('route')

@@ -93,17 +93,17 @@ export default BaseForm.extend({
         var productFamily = self.getFormData().family
         if (productFamily !== null) {
           FetcherRegistry.getFetcher('family')
-                                .fetch(self.getFormData().family)
-                                .then(function (family) {
-                                  callback({
-                                    id: family.code,
-                                    text: i18n.getLabel(
-                                            family.labels,
-                                            UserContext.get('catalogLocale'),
-                                            family.code
-                                        )
-                                  })
-                                })
+            .fetch(self.getFormData().family)
+            .then(function (family) {
+              callback({
+                id: family.code,
+                text: i18n.getLabel(
+                  family.labels,
+                  UserContext.get('catalogLocale'),
+                  family.code
+                )
+              })
+            })
         }
       }
     }

@@ -20,18 +20,18 @@ export default BaseForm.extend({
     'click': 'redirect'
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   initialize: function (config) {
     this.config = config.config
 
     BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     this.isVisible().then(function (isVisible) {
       if (!isVisible) {
@@ -40,42 +40,42 @@ export default BaseForm.extend({
 
       this.$el.html(this.template({
         label: __(this.config.label),
-        buttonClass: this.config.buttonClass || 'AknButton--action'
+        buttonClass: this.config.buttonClass || 'AknButton--action'
       }))
     }.bind(this))
 
     return this
   },
 
-            /**
-             * Redirect to the route given in the config
-             */
+  /**
+   * Redirect to the route given in the config
+   */
   redirect: function () {
     router.redirect(this.getUrl())
   },
 
-            /**
-             * Get the route to redirect to
-             *
-             * @return {string}
-             */
+  /**
+   * Get the route to redirect to
+   *
+   * @return {string}
+   */
   getUrl: function () {
     var params = {}
     if (this.config.identifier) {
       params[this.config.identifier.name] = propertyAccessor.accessProperty(
-                        this.getFormData(),
-                        this.config.identifier.path
-                    )
+        this.getFormData(),
+        this.config.identifier.path
+      )
     }
 
     return Routing.generate(this.config.route, params)
   },
 
-            /**
-             * Should this extension render
-             *
-             * @return {Promise}
-             */
+  /**
+   * Should this extension render
+   *
+   * @return {Promise}
+   */
   isVisible: function () {
     return $.Deferred().resolve(true).promise()
   }

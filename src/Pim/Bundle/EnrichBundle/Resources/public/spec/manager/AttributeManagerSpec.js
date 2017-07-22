@@ -10,10 +10,11 @@ describe('Attribute manager', function () {
 
   it('checks identifier not optional', function () {
     expect(attributeManager.isOptional).toBeDefined()
-    var identifierAttribute = {type: 'pim_catalog_identifier'}
+    var identifierAttribute = {
+      type: 'pim_catalog_identifier'
+    }
     var lie = {
-      resolve: function () {
-      }
+      resolve: function () {}
     }
     spyOn($, 'Deferred').and.returnValue(lie)
     spyOn(lie, 'resolve')
@@ -22,18 +23,21 @@ describe('Attribute manager', function () {
   })
 
   it('checks attribute is optionnal when no family set', function () {
-    var attribute = {type: 'pim_catalog_other'}
-    var product = {family: null}
+    var attribute = {
+      type: 'pim_catalog_other'
+    }
+    var product = {
+      family: null
+    }
 
-                // mock a promise
+    // mock a promise
     var lie = {
-      resolve: function () {
-      }
+      resolve: function () {}
     }
     spyOn($, 'Deferred').and.returnValue(lie)
     spyOn(lie, 'resolve')
     attributeManager.isOptional(attribute, product)
-                // expects the promise resolves to true
+    // expects the promise resolves to true
     expect(lie.resolve).toHaveBeenCalledWith(true)
 
     product.family = undefined
@@ -47,18 +51,23 @@ describe('Attribute manager', function () {
       code: 'not_funny_nor_undead'
     }
 
-                // mock family with 'funny' and 'undead' attribute codes
+    // mock family with 'funny' and 'undead' attribute codes
     var adamsFamily = {
       code: 'Adams',
       attributes: [
-                        {code: 'undead'},
-                        {code: 'funny'}
+        {
+          code: 'undead'
+        },
+        {
+          code: 'funny'
+        }
       ]
     }
-    var product = {family: adamsFamily}
+    var product = {
+      family: adamsFamily
+    }
     var promiseSpy = {
-      then: function () {
-      }
+      then: function () {}
     }
 
     spyOn(promiseSpy, 'then')
@@ -68,16 +77,16 @@ describe('Attribute manager', function () {
 
     attributeManager.isOptional(attribute, product)
 
-                // here we catch the promise callback executed by
-                // .then(callback)
+    // here we catch the promise callback executed by
+    // .then(callback)
     var fetcherCallback = promiseSpy.then.calls.mostRecent().args[0]
 
-                // the attribute code is not 'undead' nor 'funny'
-                // so this attribute is optionnal
+    // the attribute code is not 'undead' nor 'funny'
+    // so this attribute is optionnal
     expect(fetcherCallback(adamsFamily)).toBeTruthy()
 
-                // if the attribute code is 'funny' or 'undead'
-                // then this attribute is not optionnal
+    // if the attribute code is 'funny' or 'undead'
+    // then this attribute is not optionnal
     attribute.code = 'funny'
     expect(fetcherCallback(adamsFamily)).toBeFalsy()
     attribute.code = 'undead'

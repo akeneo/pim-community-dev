@@ -18,31 +18,31 @@ export default Field.extend({
     'change .field-input:first textarea:first': 'updateModel'
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   renderInput: function (context) {
     return this.fieldTemplate(context)
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   postRender: function () {
     this.$('textarea').summernote({
       disableResizeEditor: true,
       height: 200,
       iconPrefix: 'icon-',
       toolbar: [
-                        ['font', ['bold', 'italic', 'underline', 'clear']],
-                        ['para', ['ul', 'ol']],
-                        ['insert', ['link']],
-                        ['view', ['codeview']]
+        ['font', ['bold', 'italic', 'underline', 'clear']],
+        ['para', ['ul', 'ol']],
+        ['insert', ['link']],
+        ['view', ['codeview']]
       ],
       callbacks: {}
     })
-                .on('summernote.blur', this.updateModel.bind(this))
-                .on('summernote.keyup', this.removeEmptyTags.bind(this))
+      .on('summernote.blur', this.updateModel.bind(this))
+      .on('summernote.keyup', this.removeEmptyTags.bind(this))
 
     this.$('.note-codable').on('blur', function () {
       this.removeEmptyTags()
@@ -60,9 +60,9 @@ export default Field.extend({
     }
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   updateModel: function () {
     var data = this.$('.field-input:first textarea:first').code()
     data = data === '' ? this.attribute.empty_value : data
@@ -70,9 +70,9 @@ export default Field.extend({
     this.setCurrentValue(data)
   },
 
-            /**
-             * @inheritDoc
-             */
+  /**
+   * @inheritDoc
+   */
   setFocus: function () {
     this.$('.field-input:first .note-editable').trigger('focus')
   }

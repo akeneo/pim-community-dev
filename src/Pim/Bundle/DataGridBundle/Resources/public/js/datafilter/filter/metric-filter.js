@@ -3,192 +3,192 @@ import _ from 'underscore';
 import NumberFilter from 'oro/datafilter/number-filter';
 import app from 'oro/app';
 import template from 'pim/template/datagrid/filter/metric-filter';
-        
 
-        /**
-         * Metric filter
-         *
-         * @author    Romain Monceau <romain@akeneo.com>
-         * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-         * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-         *
-         * @export  oro/datafilter/metric-filter
-         * @class   oro.datafilter.MetricFilter
-         * @extends oro.datafilter.NumberFilter
-         */
-        export default NumberFilter.extend({
-            /**
-             * @inheritDoc
-             */
-            initialize: function() {
-                NumberFilter.prototype.initialize.apply(this, arguments);
 
-                this.on('disable', this._onDisable, this);
+/**
+ * Metric filter
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @export  oro/datafilter/metric-filter
+ * @class   oro.datafilter.MetricFilter
+ * @extends oro.datafilter.NumberFilter
+ */
+export default NumberFilter.extend({
+  /**
+   * @inheritDoc
+   */
+  initialize: function() {
+    NumberFilter.prototype.initialize.apply(this, arguments);
 
-            },
+    this.on('disable', this._onDisable, this);
 
-            _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Unit') + '<span class="caret"></span>');
-            },
+  },
 
-            /**
-             * @inheritDoc
-             */
-            _renderCriteria: function (el) {
-                $(el).append(this.popupCriteriaTemplate({
-                    name:    this.name,
-                    choices: this.choices,
-                    units:   this.units
-                }));
+  _onDisable: function() {
+    this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
+    this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Unit') + '<span class="caret"></span>');
+  },
 
-                return this;
-            },
+  /**
+   * @inheritDoc
+   */
+  _renderCriteria: function(el) {
+    $(el).append(this.popupCriteriaTemplate({
+      name: this.name,
+      choices: this.choices,
+      units: this.units
+    }));
 
-            /**
-             * @inheritDoc
-             */
-            _writeDOMValue: function (value) {
-                this._setInputValue(this.criteriaValueSelectors.value, value.value);
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
-                this._setInputValue(this.criteriaValueSelectors.unit, value.unit);
+    return this;
+  },
 
-                return this;
-            },
+  /**
+   * @inheritDoc
+   */
+  _writeDOMValue: function(value) {
+    this._setInputValue(this.criteriaValueSelectors.value, value.value);
+    this._setInputValue(this.criteriaValueSelectors.type, value.type);
+    this._setInputValue(this.criteriaValueSelectors.unit, value.unit);
 
-            /**
-             * @inheritDoc
-             */
-            _readDOMValue: function () {
-                return {
-                    value: this._getInputValue(this.criteriaValueSelectors.value),
-                    type: this._getInputValue(this.criteriaValueSelectors.type),
-                    unit: this._getInputValue(this.criteriaValueSelectors.unit)
-                };
-            },
+    return this;
+  },
 
-            /**
-             * @inheritDoc
-             */
-            _getCriteriaHint: function () {
-                var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
-                if (_.contains(['empty', 'not empty'], value.type)) {
-                    return this._getChoiceOption(value.type).label;
-                }
-                if (!value.value) {
-                    return this.placeholder;
-                } else {
-                    var operator = _.find(this.choices, function(choice) {
-                        return choice.value == value.type;
-                    });
-                    operator = operator ? operator.label : '';
+  /**
+   * @inheritDoc
+   */
+  _readDOMValue: function() {
+    return {
+      value: this._getInputValue(this.criteriaValueSelectors.value),
+      type: this._getInputValue(this.criteriaValueSelectors.type),
+      unit: this._getInputValue(this.criteriaValueSelectors.unit)
+    };
+  },
 
-                    return operator + ' "' + value.value + ' ' + _.__(value.unit) + '"';
-                }
-            },
+  /**
+   * @inheritDoc
+   */
+  _getCriteriaHint: function() {
+    var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+    if (_.contains(['empty', 'not empty'], value.type)) {
+      return this._getChoiceOption(value.type).label;
+    }
+    if (!value.value) {
+      return this.placeholder;
+    } else {
+      var operator = _.find(this.choices, function(choice) {
+        return choice.value == value.type;
+      });
+      operator = operator ? operator.label : '';
 
-            /**
-             * @inheritDoc
-             */
-            popupCriteriaTemplate: _.template(template),
+      return operator + ' "' + value.value + ' ' + _.__(value.unit) + '"';
+    }
+  },
 
-            /**
-             * Selectors for filter criteria elements
-             *
-             * @property {Object}
-             */
-            criteriaValueSelectors: {
-                unit:  'input[name="metric_unit"]',
-                type:  'input[name="metric_type"]',
-                value: 'input[name="value"]'
-            },
+  /**
+   * @inheritDoc
+   */
+  popupCriteriaTemplate: _.template(template),
 
-            /**
-             * Empty value object
-             *
-             * @property {Object}
-             */
-            emptyValue: {
-                unit:  '',
-                type:  '',
-                value: ''
-            },
+  /**
+   * Selectors for filter criteria elements
+   *
+   * @property {Object}
+   */
+  criteriaValueSelectors: {
+    unit: 'input[name="metric_unit"]',
+    type: 'input[name="metric_type"]',
+    value: 'input[name="value"]'
+  },
 
-            /**
-             * @inheritDoc
-             */
-            _triggerUpdate: function(newValue, oldValue) {
-                if (!app.isEqualsLoosely(newValue, oldValue)) {
-                    this.trigger('update');
-                }
-            },
+  /**
+   * Empty value object
+   *
+   * @property {Object}
+   */
+  emptyValue: {
+    unit: '',
+    type: '',
+    value: ''
+  },
 
-            /**
-             * @inheritDoc
-             */
-            _onValueUpdated: function(newValue, oldValue) {
-                var menu = this.$('.choicefilter .dropdown-menu');
+  /**
+   * @inheritDoc
+   */
+  _triggerUpdate: function(newValue, oldValue) {
+    if (!app.isEqualsLoosely(newValue, oldValue)) {
+      this.trigger('update');
+    }
+  },
 
-                menu.find('li a').each(function() {
-                    var item = $(this),
-                        value = item.data('value');
+  /**
+   * @inheritDoc
+   */
+  _onValueUpdated: function(newValue, oldValue) {
+    var menu = this.$('.choicefilter .dropdown-menu');
 
-                    if (item.parent().hasClass('active')) {
-                        if (value == newValue.type || value == newValue.unit) {
-                            item.parent().removeClass('active');
-                        } else {
-                        }
-                    } else if (value == newValue.type || value == newValue.unit) {
-                        item.parent().addClass('active');
-                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
-                    }
-                });
-                if (_.contains(['empty', 'not empty'], newValue.type)) {
-                    this.$(this.criteriaValueSelectors.value).hide().siblings('.btn-group:eq(1)').hide();
-                } else {
-                    this.$(this.criteriaValueSelectors.value).show().siblings('.btn-group:eq(1)').show();
-                }
+    menu.find('li a').each(function() {
+      var item = $(this),
+        value = item.data('value');
 
-                this._triggerUpdate(newValue, oldValue);
-                this._updateCriteriaHint();
-            },
+      if (item.parent().hasClass('active')) {
+        if (value == newValue.type || value == newValue.unit) {
+          item.parent().removeClass('active');
+        } else {
+        }
+      } else if (value == newValue.type || value == newValue.unit) {
+        item.parent().addClass('active');
+        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
+      }
+    });
+    if (_.contains(['empty', 'not empty'], newValue.type)) {
+      this.$(this.criteriaValueSelectors.value).hide().siblings('.btn-group:eq(1)').hide();
+    } else {
+      this.$(this.criteriaValueSelectors.value).show().siblings('.btn-group:eq(1)').show();
+    }
 
-            /**
-             * @inheritDoc
-             */
-            setValue: function(value) {
-                value = this._formatRawValue(value);
-                if (this._isNewValueUpdated(value)) {
-                    var oldValue = this.value;
-                    this.value = app.deepClone(value);
-                    this._updateDOMValue();
-                    this._onValueUpdated(this.value, oldValue);
-                }
+    this._triggerUpdate(newValue, oldValue);
+    this._updateCriteriaHint();
+  },
 
-                return this;
-            },
+  /**
+   * @inheritDoc
+   */
+  setValue: function(value) {
+    value = this._formatRawValue(value);
+    if (this._isNewValueUpdated(value)) {
+      var oldValue = this.value;
+      this.value = app.deepClone(value);
+      this._updateDOMValue();
+      this._onValueUpdated(this.value, oldValue);
+    }
 
-            /**
-             * @inheritDoc
-             */
-            _onClickChoiceValue: function(e) {
-                NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                var parentDiv = $(e.currentTarget).closest('.metricfilter');
-                if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                    parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
-                } else {
-                    parentDiv.find('input[name="value"], .btn-group:eq(1)').show();
-                }
-            },
+    return this;
+  },
 
-            /**
-             * @inheritDoc
-             */
-            reset: function() {
-                this.setValue(this.emptyValue);
-                this.trigger('update');
+  /**
+   * @inheritDoc
+   */
+  _onClickChoiceValue: function(e) {
+    NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
+    var parentDiv = $(e.currentTarget).closest('.metricfilter');
+    if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
+      parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
+    } else {
+      parentDiv.find('input[name="value"], .btn-group:eq(1)').show();
+    }
+  },
 
-                return this;
-            }
-        });
-    
+  /**
+   * @inheritDoc
+   */
+  reset: function() {
+    this.setValue(this.emptyValue);
+    this.trigger('update');
+
+    return this;
+  }
+});
+

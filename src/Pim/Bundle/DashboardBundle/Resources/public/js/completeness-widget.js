@@ -48,14 +48,14 @@ export default AbstractWidget.extend({
       var divider = channelResult.total * _.keys(channelResult.locales).length
 
       channelResult.percentage = divider === 0
-                        ? 0
-                        : Math.round(channelResult.complete / divider * 100)
+        ? 0
+        : Math.round(channelResult.complete / divider * 100)
 
       _.each(channelResult.locales, function (localeResult, locale) {
         var divider = channelResult.total
         var ratio = divider === 0
-                            ? 0
-                            : Math.round(localeResult / divider * 100)
+          ? 0
+          : Math.round(localeResult / divider * 100)
 
         channelResult.locales[locale] = {
           complete: localeResult,

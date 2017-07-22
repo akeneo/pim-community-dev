@@ -7,7 +7,7 @@ import initSelect2 from 'pim/initselect2'
 import 'jquery-ui'
 import 'bootstrap'
 
-        // Allow using select2 search box in jquery ui dialog
+// Allow using select2 search box in jquery ui dialog
 $.ui.dialog.prototype._allowInteraction = function (e) {
   return !!$(e.target).closest('.ui-dialog, .select2-drop').length
 }
@@ -151,4 +151,5 @@ export default function (elementId, callback) {
       }
     })
   })
-};
+}
+;

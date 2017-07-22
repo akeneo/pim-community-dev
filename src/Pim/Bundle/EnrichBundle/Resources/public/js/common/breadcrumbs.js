@@ -21,64 +21,78 @@ export default BaseForm.extend({
     'click .breadcrumb-item': 'redirectItem'
   },
 
-            /**
-             * {@inheritdoc}
-             *
-             * @param {string} config.tab The main tab to highlight
-             * @param {string} [config.item] The sub item to highlight (optional)
-             */
+  /**
+   * {@inheritdoc}
+   *
+   * @param {string} config.tab The main tab to highlight
+   * @param {string} [config.item] The sub item to highlight (optional)
+   */
   initialize: function (config) {
     this.config = config.config
 
     return BaseForm.prototype.initialize.apply(this, arguments)
   },
 
-            /**
-             * This method will configure the breadcrumb. The configuration of this module contains backbone extension
-             * codes related to the menu. To avoid duplication of the labels, we load the configuration of these modules
-             * to bring back the labels into this module.
-             *
-             * {@inheritdoc}
-             */
+  /**
+   * This method will configure the breadcrumb. The configuration of this module contains backbone extension
+   * codes related to the menu. To avoid duplication of the labels, we load the configuration of these modules
+   * to bring back the labels into this module.
+   *
+   * {@inheritdoc}
+   */
   configure: function () {
-    mediator.trigger('pim_menu:highlight:tab', { extension: this.config.tab })
-    mediator.trigger('pim_menu:highlight:item', { extension: this.config.item })
+    mediator.trigger('pim_menu:highlight:tab', {
+      extension: this.config.tab
+    })
+    mediator.trigger('pim_menu:highlight:item', {
+      extension: this.config.item
+    })
 
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     return $.when(
-                    FormRegistry.getFormMeta(this.config.tab),
-                    FormRegistry.getFormMeta(this.config.item)
-                ).then(function (metaTab, metaItem) {
-                  var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) }
-                  var breadcrumbItem = null
-                  if (undefined !== metaItem) {
-                    breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) }
-                  }
+      FormRegistry.getFormMeta(this.config.tab),
+      FormRegistry.getFormMeta(this.config.item)
+    ).then(function (metaTab, metaItem) {
+      var breadcrumbTab = {
+        code: this.config.tab,
+        label: __(metaTab.config.title)
+      }
+      var breadcrumbItem = null
+      if (undefined !== metaItem) {
+        breadcrumbItem = {
+          code: this.config.item,
+          label: __(metaItem.config.title)
+        }
+      }
 
-                  this.$el.empty().append(this.template({
-                    breadcrumbTab: breadcrumbTab,
-                    breadcrumbItem: breadcrumbItem
-                  }))
-                }.bind(this))
+      this.$el.empty().append(this.template({
+        breadcrumbTab: breadcrumbTab,
+        breadcrumbItem: breadcrumbItem
+      }))
+    }.bind(this))
   },
 
-            /**
-             * Redirects to the linked tab
-             */
+  /**
+   * Redirects to the linked tab
+   */
   redirectTab: function () {
-    mediator.trigger('pim_menu:redirect:tab', { extension: this.config.tab })
+    mediator.trigger('pim_menu:redirect:tab', {
+      extension: this.config.tab
+    })
   },
 
-            /**
-             * Redirects to the linked item
-             */
+  /**
+   * Redirects to the linked item
+   */
   redirectItem: function () {
-    mediator.trigger('pim_menu:redirect:item', { extension: this.config.item })
+    mediator.trigger('pim_menu:redirect:item', {
+      extension: this.config.item
+    })
   }
 })

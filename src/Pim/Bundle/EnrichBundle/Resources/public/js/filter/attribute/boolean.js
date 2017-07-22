@@ -22,20 +22,24 @@ export default BaseFilter.extend({
     'change [name="filter-value"]': 'updateState'
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
-      _.defaults(data, {field: this.getCode(), operator: '=', value: true})
+      _.defaults(data, {
+        field: this.getCode(),
+        operator: '=',
+        value: true
+      })
     }.bind(this))
 
     return BaseFilter.prototype.configure.apply(this, arguments)
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   renderInput: function (templateContext) {
     return this.template(_.extend({}, templateContext, {
       value: this.getValue(),
@@ -47,16 +51,16 @@ export default BaseFilter.extend({
     }))
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   postRender: function () {
     this.$('.switch').bootstrapSwitch()
   },
 
-        /**
-         * {@inheritdoc}
-         */
+  /**
+   * {@inheritdoc}
+   */
   updateState: function () {
     this.setData({
       field: this.getField(),

@@ -11,19 +11,19 @@ export default {
     flash: true
   },
 
-            /**
-             * Shows notification message
-             *
-             * @param {(string|boolean)} type 'error'|'success'|'warning'|false
-             * @param {string} message text of message
-             * @param {Object} options
-             *
-             * @param {(string|jQuery)} options.container selector of jQuery with container element
-             * @param {(number|boolean)} options.delay time in ms to auto close message
-             *      or false - means to not close automatically
-             * @param {Function} options.template template function
-             * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
-             */
+  /**
+   * Shows notification message
+   *
+   * @param {(string|boolean)} type 'error'|'success'|'warning'|false
+   * @param {string} message text of message
+   * @param {Object} options
+   *
+   * @param {(string|jQuery)} options.container selector of jQuery with container element
+   * @param {(number|boolean)} options.delay time in ms to auto close message
+   *      or false - means to not close automatically
+   * @param {Function} options.template template function
+   * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
+   */
   notify: function (type, message, options) {
     this.showMessage(type, message, options)
   },
@@ -51,7 +51,7 @@ export default {
       closeIcon: this.getCloseIcon(type)
     })).appendTo(opt.container)
 
-                // Used to force the browser to visually render the element's styles to be able to use CSS transitions
+    // Used to force the browser to visually render the element's styles to be able to use CSS transitions
     $el.offset()
     $el.addClass('AknFlash--visible')
 
@@ -85,9 +85,9 @@ export default {
         'error': 'icon-warning-redlight.svg',
         'warning': 'icon-warning-orangelight.svg'
       },
-                    type,
-                    'icon-infos.svg'
-                )
+      type,
+      'icon-infos.svg'
+    )
   },
 
   getCloseIcon: function (type) {
@@ -98,8 +98,8 @@ export default {
         'error': 'icon-delete-reddark.svg',
         'warning': 'icon-delete-orangedark.svg'
       },
-                    type,
-                    'icon-delete-bluedark.svg'
-                )
+      type,
+      'icon-delete-bluedark.svg'
+    )
   }
 }

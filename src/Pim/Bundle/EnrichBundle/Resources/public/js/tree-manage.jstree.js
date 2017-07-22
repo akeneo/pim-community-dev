@@ -46,14 +46,14 @@ export default function (elementId, prefixRoute) {
     tree_selector: {
       ajax: {
         url: Routing.generate(
-                            prefixRoute + '_categorytree_listtree',
+          prefixRoute + '_categorytree_listtree',
           {
             _format: 'json',
             select_node_id: selectedNodeOrTree,
             context: 'manage',
             with_items_count: 0
           }
-                        )
+        )
       },
       auto_open_root: true,
       node_label_field: 'label',
@@ -67,14 +67,14 @@ export default function (elementId, prefixRoute) {
     json_data: {
       ajax: {
         url: Routing.generate(
-                            prefixRoute + '_categorytree_children',
+          prefixRoute + '_categorytree_children',
           {
             _format: 'json',
             context: 'manage'
           }
-                        ),
-        data: function (node) {
-                            // the result is fed to the AJAX request `data` option
+        ),
+        data: function(node) {
+          // the result is fed to the AJAX request `data` option
           var id = null
 
           if (node && node !== -1 && node.attr) {
@@ -112,10 +112,10 @@ export default function (elementId, prefixRoute) {
   if ($el.attr('data-creatable')) {
     this.config.plugins.push('contextmenu')
   }
-  this.init = function () {
-    $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
+  this.init = function() {
+    $el.jstree(this.config).bind('move_node.jstree', function(e, data) {
       var this_jstree = $.jstree._focused()
-      data.rslt.o.each(function (i) {
+      data.rslt.o.each(function(i) {
         $.ajax({
           async: false,
           type: 'POST',
@@ -124,12 +124,12 @@ export default function (elementId, prefixRoute) {
             id: $(this).attr('id').replace('node_', ''),
             parent: data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
             prev_sibling: this_jstree._get_prev(this, true)
-                                    ? this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
+              ? this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
             position: data.rslt.cp + i,
             code: data.rslt.name,
             copy: data.rslt.cy ? 1 : 0
           },
-          success: function (r) {
+          success: function(r) {
             if (!r.status) {
               this_jstree.rollback(data.rlbk)
             } else {
@@ -141,12 +141,14 @@ export default function (elementId, prefixRoute) {
           }
         })
       })
-    }).bind('select_node.jstree', function (e, data) {
+    }).bind('select_node.jstree', function(e, data) {
       if (!$el.attr('data-editable')) {
         return
       }
       var id = data.rslt.obj.attr('id').replace('node_', '')
-      var url = Routing.generate(prefixRoute + '_categorytree_edit', { id: id })
+      var url = Routing.generate(prefixRoute + '_categorytree_edit', {
+        id: id
+      })
       if ('#' + url === Backbone.history.location.hash || preventFirst) {
         preventFirst = false
 
@@ -157,27 +159,33 @@ export default function (elementId, prefixRoute) {
         async: true,
         type: 'GET',
         url: url + '?content=form',
-        success: function (data) {
+        success: function(data) {
           if (data) {
             $('#category-form').html(data)
-            Backbone.history.navigate('#' + url, {trigger: false})
+            Backbone.history.navigate('#' + url, {
+              trigger: false
+            })
             UI($('#category-form'))
             loadingMask.hide()
           }
         },
-        error: function (jqXHR) {
+        error: function(jqXHR) {
           OroError.dispatch(null, jqXHR)
           loadingMask.hide()
         }
       })
-    }).bind('loaded.jstree', function (event, data) {
+    }).bind('loaded.jstree', function(event, data) {
       if (event.namespace === 'jstree') {
-        data.inst.get_tree_select().select2({ width: '100%' })
+        data.inst.get_tree_select().select2({
+          width: '100%'
+        })
       }
-    }).bind('create.jstree', function (e, data) {
+    }).bind('create.jstree', function(e, data) {
       $.jstree._focused().lock()
       var id = data.rslt.parent.attr('id').replace('node_', '')
-      var url = Routing.generate(prefixRoute + '_categorytree_create', { parent: id })
+      var url = Routing.generate(prefixRoute + '_categorytree_create', {
+        parent: id
+      })
       var position = data.rslt.position
       var label = data.rslt.name
 
@@ -187,14 +195,16 @@ export default function (elementId, prefixRoute) {
         async: true,
         type: 'GET',
         url: url + '&content=form',
-        success: function (data) {
+        success: function(data) {
           if (data) {
             $('#category-form').html(data)
-            Backbone.history.navigate('#' + url, {trigger: false})
+            Backbone.history.navigate('#' + url, {
+              trigger: false
+            })
             loadingMask.hide()
           }
         },
-        error: function (jqXHR) {
+        error: function(jqXHR) {
           OroError.dispatch(null, jqXHR)
           loadingMask.hide()
         }
@@ -203,4 +213,5 @@ export default function (elementId, prefixRoute) {
   }
 
   this.init()
-};
+}
+;

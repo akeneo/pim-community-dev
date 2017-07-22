@@ -10,10 +10,12 @@ import _ from 'underscore'
 import BaseRemover from 'pim/remover/base'
 import Routing from 'routing'
 export default _.extend({}, BaseRemover, {
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   getUrl: function (code) {
-    return Routing.generate(__moduleConfig.url, {identifier: code})
+    return Routing.generate(__moduleConfig.url, {
+      identifier: code
+    })
   }
 })

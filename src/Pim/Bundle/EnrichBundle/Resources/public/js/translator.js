@@ -11,37 +11,37 @@ var fromJSON = Translator.fromJSON
 Translator.placeHolderPrefix = '{{ '
 Translator.placeHolderSuffix = ' }}'
 
-    /**
-     * Adds a translation to Translator object and stores
-     * translation id in protected dictionary
-     *
-     * @param {string} id
-     */
+/**
+ * Adds a translation to Translator object and stores
+ * translation id in protected dictionary
+ *
+ * @param {string} id
+ */
 Translator.add = function (id) {
   dict[id] = 1
   add.apply(Translator, arguments)
 }
 
-    /**
-     * Fetches translation by its id,
-     * but before checks if the id was registered in dictionary
-     *
-     * @param {string} id
-     * @returns {string}
-     */
+/**
+ * Fetches translation by its id,
+ * but before checks if the id was registered in dictionary
+ *
+ * @param {string} id
+ * @returns {string}
+ */
 Translator.get = function (id) {
   checkTranslation(id)
 
   return get.apply(Translator, arguments)
 }
 
-    /**
-     * Parses JSON data in store translations inside,
-     * also turns on debug mode if in data was such directive
-     *
-     * @param {Object} data
-     * @returns {Object} Translator
-     */
+/**
+ * Parses JSON data in store translations inside,
+ * also turns on debug mode if in data was such directive
+ *
+ * @param {Object} data
+ * @returns {Object} Translator
+ */
 Translator.fromJSON = function (data) {
   if (typeof data === 'string') {
     data = JSON.parse(data)
@@ -51,12 +51,12 @@ Translator.fromJSON = function (data) {
   return fromJSON.call(Translator, data)
 }
 
-    /**
-     * Checks if translation for passed id exist, if it's debug mode
-     * and there's no translation - output error message in console
-     *
-     * @param {string} id
-     */
+/**
+ * Checks if translation for passed id exist, if it's debug mode
+ * and there's no translation - output error message in console
+ *
+ * @param {string} id
+ */
 function checkTranslation (id) {
   if (!debug) {
     return
@@ -72,18 +72,18 @@ function checkTranslation (id) {
 }
 
 _.mixin({
-        /**
-         * Shortcut for Translator.get() method call,
-         * Due to it's underscore mixin, it can be used inside templates
-         * @returns {string}
-         */
+  /**
+   * Shortcut for Translator.get() method call,
+   * Due to it's underscore mixin, it can be used inside templates
+   * @returns {string}
+   */
   __: _.bind(Translator.get, Translator)
 })
 
-    /**
-     * Shortcut for Translator.get() method call
-     *
-     * @export oro/translator
-     * @returns {string}
-     */
+/**
+ * Shortcut for Translator.get() method call
+ *
+ * @export oro/translator
+ * @returns {string}
+ */
 export default _.__

@@ -2,82 +2,94 @@ import $ from 'jquery';
 import _ from 'underscore';
 import MultiSelectFilter from 'oro/datafilter/multiselect-filter';
 import Routing from 'routing';
-        
 
-        export default MultiSelectFilter.extend({
-            choicesFetched: false,
-            choiceUrl: null,
-            choiceUrlParams: {},
 
-            initialize: function(options) {
-                options = options || {};
-                if (_.has(options, 'choiceUrl')) {
-                    this.choiceUrl = options.choiceUrl;
-                }
-                if (_.has(options, 'choiceUrlParams')) {
-                    this.choiceUrlParams = options.choiceUrlParams;
-                }
+export default MultiSelectFilter.extend({
+  choicesFetched: false,
+  choiceUrl: null,
+  choiceUrlParams: {},
 
-                MultiSelectFilter.prototype.initialize.apply(this, arguments);
-            },
+  initialize: function(options) {
+    options = options || {};
+    if (_.has(options, 'choiceUrl')) {
+      this.choiceUrl = options.choiceUrl;
+    }
+    if (_.has(options, 'choiceUrlParams')) {
+      this.choiceUrlParams = options.choiceUrlParams;
+    }
 
-            render: function () {
-                var options =  this.choices.slice(0);
-                this.$el.empty();
+    MultiSelectFilter.prototype.initialize.apply(this, arguments);
+  },
 
-                if (this.populateDefault) {
-                    options.unshift({value: '', label: this.placeholder});
-                }
+  render: function() {
+    var options = this.choices.slice(0);
+    this.$el.empty();
 
-                this.$el.append(
-                    this.template({
-                        label: this.label,
-                        showLabel: this.showLabel,
-                        options: options,
-                        placeholder: this.placeholder,
-                        nullLink: this.nullLink,
-                        canDisable: this.canDisable,
-                        emptyValue: this.emptyValue
-                    })
-                );
+    if (this.populateDefault) {
+      options.unshift({
+        value: '',
+        label: this.placeholder
+      });
+    }
 
-                if (this.value.value) {
-                    _.each(this.value.value, function(item) {
-                        this.$(this.inputSelector).find('option[value="' + item + '"]').attr('selected', 'selected');
-                    }, this);
-                }
+    this.$el.append(
+      this.template({
+        label: this.label,
+        showLabel: this.showLabel,
+        options: options,
+        placeholder: this.placeholder,
+        nullLink: this.nullLink,
+        canDisable: this.canDisable,
+        emptyValue: this.emptyValue
+      })
+    );
 
-                this._initializeSelectWidget();
+    if (this.value.value) {
+      _.each(this.value.value, function(item) {
+        this.$(this.inputSelector).find('option[value="' + item + '"]').attr('selected', 'selected');
+      }, this);
+    }
 
-                return this;
-            },
+    this._initializeSelectWidget();
 
-            show: function() {
-                if (!this.choicesFetched && !this.choices.length && this.choiceUrl) {
-                    var url = Routing.generate(this.choiceUrl, this.choiceUrlParams);
+    return this;
+  },
 
-                    $.get(url, _.bind(function(data) {
-                        this._updateChoices(data.results);
-                        this.render();
+  show: function() {
+    if (!this.choicesFetched && !this.choices.length && this.choiceUrl) {
+      var url = Routing.generate(this.choiceUrl, this.choiceUrlParams);
 
-                        MultiSelectFilter.prototype.show.apply(this, arguments);
-                    }, this));
-                } else {
-                    MultiSelectFilter.prototype.show.apply(this, arguments);
-                }
-            },
+      $.get(url, _.bind(function(data) {
+        this._updateChoices(data.results);
+        this.render();
 
-            _updateChoices: function(results) {
-                var choices = [];
+        MultiSelectFilter.prototype.show.apply(this, arguments);
+      }, this));
+    } else {
+      MultiSelectFilter.prototype.show.apply(this, arguments);
+    }
+  },
 
-                _.each(results, function(result) {
-                    choices.push({ value: result.id, label: result.text });
-                });
-                choices.push({ value: 'empty', label: _.__('pim.grid.ajax_choice_filter.label_empty') });
-                choices.push({ value: 'not empty', label: _.__('pim.grid.ajax_choice_filter.label_not_empty') });
+  _updateChoices: function(results) {
+    var choices = [];
 
-                this.choices        = choices;
-                this.choicesFetched = true;
-            }
-        });
-    
+    _.each(results, function(result) {
+      choices.push({
+        value: result.id,
+        label: result.text
+      });
+    });
+    choices.push({
+      value: 'empty',
+      label: _.__('pim.grid.ajax_choice_filter.label_empty')
+    });
+    choices.push({
+      value: 'not empty',
+      label: _.__('pim.grid.ajax_choice_filter.label_not_empty')
+    });
+
+    this.choices = choices;
+    this.choicesFetched = true;
+  }
+});
+

@@ -27,10 +27,10 @@ export default Backbone.View.extend({
   needsData: true,
 
   refreshBtnTemplate: _.template(
-                '<span class="AknButtonList-item AknIconButton AknIconButton--grey btn-refresh">' +
-                    '<i class="icon-refresh"></i>' +
-                '</span>'
-            ),
+    '<span class="AknButtonList-item AknIconButton AknIconButton--grey btn-refresh">' +
+    '<i class="icon-refresh"></i>' +
+    '</span>'
+  ),
 
   initialize: function (options) {
     this.options = _.extend({}, this.defaults, this.options, options)
@@ -44,7 +44,11 @@ export default Backbone.View.extend({
   },
 
   render: function () {
-    this.$el.html(this.template({ data: this.data, options: this.options, __: __ }))
+    this.$el.html(this.template({
+      data: this.data,
+      options: this.options,
+      __: __
+    }))
 
     return this
   },
@@ -67,12 +71,14 @@ export default Backbone.View.extend({
     this.needsData = false
     this._beforeLoad()
 
-    $.get(Routing.generate('pim_dashboard_widget_data', { alias: this.options.alias }))
-                    .then(_.bind(function (resp) {
-                      this.data = this._processResponse(resp)
-                      this.render()
-                      this._afterLoad()
-                    }, this))
+    $.get(Routing.generate('pim_dashboard_widget_data', {
+      alias: this.options.alias
+    }))
+      .then(_.bind(function (resp) {
+        this.data = this._processResponse(resp)
+        this.render()
+        this._afterLoad()
+      }, this))
   },
 
   reload: function () {

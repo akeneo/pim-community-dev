@@ -15,16 +15,16 @@ import 'jquery-setup'
 export default function () {
   mediator.once('tab:changed', function () {
     setTimeout(function () {
-                // emulates 'document ready state' for selenium tests
+      // emulates 'document ready state' for selenium tests
       document['page-rendered'] = true
       mediator.trigger('page-rendered')
     }, 50)
   })
   layout.init()
 
-        /* ============================================================
-         * Oro Dropdown close prevent
-         * ============================================================ */
+  /* ============================================================
+   * Oro Dropdown close prevent
+   * ============================================================ */
   var dropdownToggles = $('.oro-dropdown-toggle')
   dropdownToggles.click(function () {
     var $parent = $(this).parent().toggleClass('open')
@@ -50,11 +50,11 @@ export default function () {
     $('.open').removeClass('open')
   })
 
-        /* ============================================================
-         * from height_fix.js
-         * ============================================================ */
+  /* ============================================================
+   * from height_fix.js
+   * ============================================================ */
 
-        /* dynamic height for central column */
+  /* dynamic height for central column */
   var debugBar = $('.sf-toolbar')
   var anchor = $('#bottom-anchor')
   var content = false
@@ -97,14 +97,14 @@ export default function () {
 
   if (!anchor.length) {
     anchor = $('<div id="bottom-anchor"/>')
-                .css({
-                  position: 'fixed',
-                  bottom: '0',
-                  left: '0',
-                  width: '1px',
-                  height: '1px'
-                })
-                .appendTo($(document.body))
+      .css({
+        position: 'fixed',
+        bottom: '0',
+        left: '0',
+        width: '1px',
+        height: '1px'
+      })
+      .appendTo($(document.body))
   }
 
   mediator.once('page-rendered', function () {
@@ -119,20 +119,20 @@ export default function () {
 
   mediator.bind('route_complete', adjustReloaded)
 
-        /* ============================================================
-         * from form_buttons.js
-         * ============================================================ */
+  /* ============================================================
+   * from form_buttons.js
+   * ============================================================ */
   $(document).on('click', '.action-button', function () {
     var actionInput = $('input[name = "input_action"]')
     actionInput.val($(this).attr('data-action'))
     $('#' + actionInput.attr('data-form-id')).submit()
   })
 
-        /* ============================================================
-         * from remove.confirm.js
-         * ============================================================ */
+  /* ============================================================
+   * from remove.confirm.js
+   * ============================================================ */
 
-        /* global router */
+  /* global router */
   $(document).on('click', '.remove-button', function () {
     var confirm
     var el = $(this)
@@ -151,10 +151,12 @@ export default function () {
         success: function () {
           el.trigger('removesuccess')
           messenger.enqueueMessage(
-                            'success',
-                            el.data('success-message'),
-                            { 'hashNavEnabled': true }
-                        )
+            'success',
+            el.data('success-message'),
+            {
+              'hashNavEnabled': true
+            }
+          )
           if (el.data('redirect')) {
             $.isActive(true)
             Backbone.history.navigate(el.data('redirect'))
@@ -166,11 +168,13 @@ export default function () {
           router.hideLoadingMask()
 
           messenger.notify(
-                            'error',
-                            el.data('error-message') ||
-                                __('Unexpected error occurred. Please contact system administrator.'),
-                            { flash: false }
-                        )
+            'error',
+            el.data('error-message') ||
+            __('Unexpected error occurred. Please contact system administrator.'),
+            {
+              flash: false
+            }
+          )
         }
       })
     })

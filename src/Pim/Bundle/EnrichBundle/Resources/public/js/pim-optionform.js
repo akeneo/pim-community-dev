@@ -13,7 +13,10 @@ var init = function (fieldId) {
   var callback = function (data) {
     if (data.status) {
       var $select = $field.siblings('input.pim-ajax-entity')
-      var selectData = { id: data.option.id, text: data.option.label }
+      var selectData = {
+        id: data.option.id,
+        text: data.option.label
+      }
       if ($select.attr('data-multiple')) {
         selectData = (function (newElement) {
           var selectData = $select.select2('data')

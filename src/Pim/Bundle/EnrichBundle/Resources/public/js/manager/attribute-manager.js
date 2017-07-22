@@ -3,59 +3,61 @@ import $ from 'jquery'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
 export default {
-            /**
-             * Get the attributes of the given entity
-             *
-             * @param {Object} entity
-             *
-             * @return {Promise}
-             */
+  /**
+   * Get the attributes of the given entity
+   *
+   * @param {Object} entity
+   *
+   * @return {Promise}
+   */
   getAttributes: function (entity) {
     if (!entity.family) {
       return $.Deferred().resolve(_.keys(entity.values))
     } else {
       return FetcherRegistry.getFetcher('family')
-                        .fetch(entity.family)
-                        .then(function (family) {
-                          return _.union(
-                                _.keys(entity.values),
-                                _.pluck(family.attributes, 'code')
-                            )
-                        })
+        .fetch(entity.family)
+        .then(function (family) {
+          return _.union(
+            _.keys(entity.values),
+            _.pluck(family.attributes, 'code')
+          )
+        })
     }
   },
 
-            /**
-             * Get all optional attributes available for a product
-             *
-             * @param {Object} product
-             *
-             * @return {Array}
-             */
+  /**
+   * Get all optional attributes available for a product
+   *
+   * @param {Object} product
+   *
+   * @return {Array}
+   */
   getAvailableOptionalAttributes: function (product) {
     return $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchAll(),
-                    this.getAttributes(product)
-                ).then(function (attributes, productAttributes) {
-                  var optionalAttributes = _.map(
-                        _.difference(_.pluck(attributes, 'code'), productAttributes),
-                        function (attributeCode) {
-                          return _.findWhere(attributes, { code: attributeCode })
-                        }
-                    )
+      FetcherRegistry.getFetcher('attribute').fetchAll(),
+      this.getAttributes(product)
+    ).then(function (attributes, productAttributes) {
+      var optionalAttributes = _.map(
+        _.difference(_.pluck(attributes, 'code'), productAttributes),
+        function (attributeCode) {
+          return _.findWhere(attributes, {
+            code: attributeCode
+          })
+        }
+      )
 
-                  return optionalAttributes
-                })
+      return optionalAttributes
+    })
   },
 
-            /**
-             * Check if an attribute is optional
-             *
-             * @param {Object} attribute
-             * @param {Object} product
-             *
-             * @return {Promise}
-             */
+  /**
+   * Check if an attribute is optional
+   *
+   * @param {Object} attribute
+   * @param {Object} product
+   *
+   * @return {Promise}
+   */
   isOptional: function (attribute, product) {
     var promise = new $.Deferred()
 
@@ -72,30 +74,33 @@ export default {
     return promise
   },
 
-            /**
-             * Get the value in the given collection for the given locale and scope
-             *
-             * @param {Array}  values
-             * @param {Object} attribute
-             * @param {string} locale
-             * @param {string} scope
-             *
-             * @return {Object}
-             */
+  /**
+   * Get the value in the given collection for the given locale and scope
+   *
+   * @param {Array}  values
+   * @param {Object} attribute
+   * @param {string} locale
+   * @param {string} scope
+   *
+   * @return {Object}
+   */
   getValue: function (values, attribute, locale, scope) {
     locale = attribute.localizable ? locale : null
     scope = attribute.scopable ? scope : null
 
-    return _.findWhere(values, { scope: scope, locale: locale })
+    return _.findWhere(values, {
+      scope: scope,
+      locale: locale
+    })
   },
 
-            /**
-             * Get values for the given object
-             *
-             * @param {Object} object
-             *
-             * @return {Promise}
-             */
+  /**
+   * Get values for the given object
+   *
+   * @param {Object} object
+   *
+   * @return {Promise}
+   */
   getValues: function (object) {
     return this.getAttributes(object).then(function (attributes) {
       _.each(attributes, function (attributeCode) {
@@ -108,15 +113,15 @@ export default {
     })
   },
 
-            /**
-             * Generate a single value for the given attribute, scope and locale
-             *
-             * @param {Object} attribute
-             * @param {string} locale
-             * @param {string} scope
-             *
-             * @return {Object}
-             */
+  /**
+   * Generate a single value for the given attribute, scope and locale
+   *
+   * @param {Object} attribute
+   * @param {string} locale
+   * @param {string} scope
+   *
+   * @return {Object}
+   */
   generateValue: function (attribute, locale, scope) {
     locale = attribute.localizable ? locale : null
     scope = attribute.scopable ? scope : null
@@ -128,26 +133,26 @@ export default {
     }
   },
 
-            /**
-             * Generate all missing values for an attribute
-             *
-             * @param {Array}  values
-             * @param {Object} attribute
-             * @param {Array}  locales
-             * @param {Array}  channels
-             * @param {Array}  currencies
-             *
-             * @return {Array}
-             */
+  /**
+   * Generate all missing values for an attribute
+   *
+   * @param {Array}  values
+   * @param {Object} attribute
+   * @param {Array}  locales
+   * @param {Array}  channels
+   * @param {Array}  currencies
+   *
+   * @return {Array}
+   */
   generateMissingValues: function (values, attribute, locales, channels, currencies) {
     _.each(locales, function (locale) {
       _.each(channels, function (channel) {
         var newValue = this.getValue(
-                            values,
-                            attribute,
-                            locale.code,
-                            channel.code
-                        )
+          values,
+          attribute,
+          locale.code,
+          channel.code
+        )
 
         if (!newValue) {
           newValue = this.generateValue(attribute, locale.code, channel.code)
@@ -163,21 +168,26 @@ export default {
     return values
   },
 
-            /**
-             * Generate missing prices in the given collection for the given currencies
-             *
-             * @param {Array} prices
-             * @param {Array} currencies
-             *
-             * @return {Array}
-             */
+  /**
+   * Generate missing prices in the given collection for the given currencies
+   *
+   * @param {Array} prices
+   * @param {Array} currencies
+   *
+   * @return {Array}
+   */
   generateMissingPrices: function (prices, currencies) {
     var generatedPrices = []
     _.each(currencies, function (currency) {
-      var price = _.findWhere(prices, { currency: currency.code })
+      var price = _.findWhere(prices, {
+        currency: currency.code
+      })
 
       if (!price) {
-        price = { amount: null, currency: currency.code }
+        price = {
+          amount: null,
+          currency: currency.code
+        }
       }
 
       generatedPrices.push(price)
@@ -186,13 +196,13 @@ export default {
     return _.sortBy(generatedPrices, 'currency')
   },
 
-            /**
-             * Generate missing product associations
-             *
-             * @param {Array} values
-             *
-             * @return {Array}
-             */
+  /**
+   * Generate missing product associations
+   *
+   * @param {Array} values
+   *
+   * @return {Array}
+   */
   generateMissingAssociations: function (values) {
     values.products = _.result(values, 'products', []).sort()
     values.groups = _.result(values, 'groups', []).sort()

@@ -7,17 +7,17 @@ export default BaseForm.extend({
   className: 'tabbable tabs-left history',
   historyGrid: null,
 
-            /**
-             * @param {Object} meta
-             */
+  /**
+   * @param {Object} meta
+   */
   initialize: function (meta) {
     this.config = _.extend({}, meta.config)
     this.config.modelDependent = false
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.trigger('tab:register', {
       code: this.config.tabCode ? this.config.tabCode : this.code,
@@ -27,18 +27,18 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.historyGrid) {
       this.historyGrid = new Grid(
-                        'history-grid',
+        'history-grid',
         {
           object_class: this.config.class,
           object_id: this.getFormData().meta.id
         }
-                    )
+      )
     }
 
     this.$el.empty().append(this.historyGrid.render().$el)

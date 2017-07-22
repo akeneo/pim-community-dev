@@ -20,9 +20,9 @@ export default BaseForm.extend({
 
   template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
     UserContext.off('change:catalogLocale change:catalogScope', this.render)
@@ -31,28 +31,28 @@ export default BaseForm.extend({
     return BaseForm.prototype.configure.apply(this, arguments)
   },
 
-            /**
-             * {@inheritdoc}
-             */
+  /**
+   * {@inheritdoc}
+   */
   render: function () {
     if (!this.configured) {
       return this
     }
 
     var familyPromise = _.isNull(this.getFormData().family)
-                    ? $.Deferred().resolve(null)
-                    : FetcherRegistry.getFetcher('family').fetch(this.getFormData().family)
+      ? $.Deferred().resolve(null)
+      : FetcherRegistry.getFetcher('family').fetch(this.getFormData().family)
 
     familyPromise.then(function (family) {
       var product = this.getFormData()
 
       this.$el.html(
-                        this.template({
-                          familyLabel: family
-                                ? i18n.getLabel(family.labels, UserContext.get('catalogLocale'), product.family)
-                                : _.__('pim_enrich.entity.product.meta.family.none')
-                        })
-                    )
+        this.template({
+          familyLabel: family
+            ? i18n.getLabel(family.labels, UserContext.get('catalogLocale'), product.family)
+            : _.__('pim_enrich.entity.product.meta.family.none')
+        })
+      )
 
       BaseForm.prototype.render.apply(this, arguments)
     }.bind(this))

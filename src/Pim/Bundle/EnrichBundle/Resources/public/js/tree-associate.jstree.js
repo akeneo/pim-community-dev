@@ -20,7 +20,9 @@ export default function (elementId, hiddenCategoryId, routes) {
     core: {
       animation: 200,
       html_titles: true,
-      strings: { loading: _.__('jstree.loading') }
+      strings: {
+        loading: _.__('jstree.loading')
+      }
     },
     plugins: [
       'themes',
@@ -33,7 +35,7 @@ export default function (elementId, hiddenCategoryId, routes) {
       two_state: true,
       real_checkboxes: true,
       override_ui: true,
-      real_checkboxes_names: function (n) {
+      real_checkboxes_names: function(n) {
         return ['category_' + n[0].id, 1]
       }
     },
@@ -43,15 +45,15 @@ export default function (elementId, hiddenCategoryId, routes) {
     },
     json_data: {
       ajax: {
-        url: function (node) {
+        url: function(node) {
           var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item')
 
           if ((!node || (node === -1)) && treeHasItem) {
-                                // First load of the tree: get the checked categories
+            // First load of the tree: get the checked categories
             var selected = this.parseHiddenCategories()
 
             return Routing.generate(
-                                    routes.list_categories,
+              routes.list_categories,
               {
                 id: id,
                 categoryId: currentTree,
@@ -60,19 +62,19 @@ export default function (elementId, hiddenCategoryId, routes) {
                 context: 'associate',
                 selected: selected
               }
-                                )
+            )
           }
 
           return Routing.generate(
-                                routes.children,
+            routes.children,
             {
               _format: 'json',
               dataLocale: dataLocale,
               context: 'associate'
             }
-                            )
+          )
         }.bind(this),
-        data: function (node) {
+        data: function(node) {
           var data = {}
           var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item')
 
@@ -87,10 +89,10 @@ export default function (elementId, hiddenCategoryId, routes) {
 
           return data
         },
-        complete: function () {
-                            // Disable the root checkbox
+        complete: function() {
+          // Disable the root checkbox
           $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled')
-                            // Lock the loaded tree if the state is locked
+          // Lock the loaded tree if the state is locked
           if (locked) {
             this.lock()
           }
@@ -113,7 +115,7 @@ export default function (elementId, hiddenCategoryId, routes) {
     }
   }
 
-  this.switchTree = function (treeId) {
+  this.switchTree = function(treeId) {
     currentTree = treeId
     var $tree = $('#tree-' + treeId)
 
@@ -125,17 +127,17 @@ export default function (elementId, hiddenCategoryId, routes) {
     $tree.show()
     $('#tree-link-' + treeId).trigger('shown')
 
-                // If empty, load the associated jstree
+    // If empty, load the associated jstree
     if ($tree.children('ul').size() === 0) {
       self.initTree(treeId)
     }
   }
 
-  this.initTree = function (treeId) {
+  this.initTree = function(treeId) {
     var $tree = $('#tree-' + treeId)
     $tree.jstree(self.config)
 
-    $tree.bind('check_node.jstree', function (e, d) {
+    $tree.bind('check_node.jstree', function(e, d) {
       if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
         var selected = this.parseHiddenCategories()
         var id = d.rslt.obj[0].id.replace('node_', '')
@@ -151,7 +153,7 @@ export default function (elementId, hiddenCategoryId, routes) {
       }
     }.bind(this))
 
-    $tree.bind('uncheck_node.jstree', function (e, d) {
+    $tree.bind('uncheck_node.jstree', function(e, d) {
       if (d.inst.get_checked()) {
         var selected = this.parseHiddenCategories()
         var id = d.rslt.obj[0].id.replace('node_', '')
@@ -167,8 +169,8 @@ export default function (elementId, hiddenCategoryId, routes) {
     }.bind(this))
   }
 
-  var setLocked = function () {
-    $('#trees-list').find('a').each(function () {
+  var setLocked = function() {
+    $('#trees-list').find('a').each(function() {
       var ref = $.jstree._reference(this.id.replace('tree-link-', '#tree-'))
       if (ref) {
         if (locked) {
@@ -180,37 +182,38 @@ export default function (elementId, hiddenCategoryId, routes) {
     })
   }
 
-  this.lock = function () {
+  this.lock = function() {
     locked = true
     setLocked()
   }
 
-  this.unlock = function () {
+  this.unlock = function() {
     locked = false
     setLocked()
   }
 
-  this.bindEvents = function () {
-    $('#trees-list').on('click', 'a', function () {
+  this.bindEvents = function() {
+    $('#trees-list').on('click', 'a', function() {
       self.switchTree(this.id.replace('tree-link-', ''))
     })
     mediator.on('jstree:lock', this.lock)
     mediator.on('jstree:unlock', this.unlock)
   }
 
-            /**
-             * @return {Array}
-             */
-  this.parseHiddenCategories = function () {
+  /**
+   * @return {Array}
+   */
+  this.parseHiddenCategories = function() {
     var hiddenValue = $(hiddenCategoryId).val()
 
     return hiddenValue.length > 0 ? hiddenValue.split(',') : []
   }
 
-  this.init = function () {
+  this.init = function() {
     self.switchTree(selectedTree)
     self.bindEvents()
   }
 
   this.init()
-};
+}
+;
