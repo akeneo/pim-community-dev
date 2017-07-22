@@ -40,7 +40,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normlizes_localization_constraint_violation_with_scope_and_locale(
+    function it_normalizes_localization_constraint_violation_with_scope_and_locale(
         ConstraintViolationInterface $violation,
         ProductInterface $product,
         ValueInterface $value,
@@ -164,6 +164,28 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price');
 
         $violation->getPropertyPath()->willReturn('values[price-<all_channels>-<all_locales>].float');
+        $violation->getMessage()->willReturn('The price should be above 10.');
+
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
+            'attribute' => 'price',
+            'locale'    => null,
+            'scope'     => null,
+            'message'   => 'The price should be above 10.'
+        ]);
+    }
+
+    function it_normalizes_constraint_violation_without_channel_and_locale(
+        ConstraintViolationInterface $violation,
+        ProductInterface $product,
+        ValueInterface $value,
+        AttributeInterface $attribute
+    ) {
+        $value->getLocale()->willReturn(null);
+        $value->getScope()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('price');
+
+        $violation->getPropertyPath()->willReturn('values[price]');
         $violation->getMessage()->willReturn('The price should be above 10.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
