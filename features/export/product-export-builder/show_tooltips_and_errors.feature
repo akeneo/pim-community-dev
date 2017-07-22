@@ -27,7 +27,7 @@ Feature: Show tooltips and validation errors on export builder
     And I should see the tooltip "Use the product categories in the tree (defined by the channel above) to select the products to export"
     And I should see the tooltip "Use the product identifiers to export separated by commas, spaces or line breaks"
 
-  Scenario: Succefully show error messages on export builder
+  Scenario: Successfully show error messages on export builderCompleteness
     Given I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
     And I change the Label to ""
