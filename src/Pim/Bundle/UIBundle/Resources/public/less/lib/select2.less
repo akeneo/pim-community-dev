@@ -32,6 +32,11 @@
     background-position: ~"calc(100% - 10px)" 10px;
     padding-right: @AknFormHeight - 4px;
   }
+
+  .select2-allowclear .select2-choice abbr {
+    top: 12px;
+    margin-right: 10px;
+  }
 }
 
 .select2-drop-active {
@@ -139,7 +144,7 @@
     .select2-search-choice {
       margin: 1px;
       height: @AknFormHeight - 4px;
-      line-height: @AknFormHeight - 4px;
+      line-height: @AknFormHeight - 6px;
       padding: 0 10px 0 20px;
     }
 
@@ -157,7 +162,7 @@
   }
 
   .select2-search-choice-close {
-    top: 8px;
+    top: (@AknFormHeight / 2) - (12px / 2) - 2 * 2px;
   }
 
   &.select2-container-active .select2-choices {
