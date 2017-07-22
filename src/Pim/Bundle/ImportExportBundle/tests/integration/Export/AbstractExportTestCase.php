@@ -111,4 +111,27 @@ abstract class AbstractExportTestCase extends TestCase
 
         $this->assertSame($expectedCsv, $csv);
     }
+
+    /**
+     * Look in every fixture directory if a fixture $name exists.
+     * And return the pathname of the fixture if it exists.
+     *
+     * @param string $name
+     *
+     * @throws \Exception if no fixture $name has been found
+     *
+     * @return string
+     */
+    protected function getFixturePath($name)
+    {
+        $configuration = $this->getConfiguration();
+        foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
+            $path = $fixtureDirectory . $name;
+            if (is_file($path) && false !== realpath($path)) {
+                return realpath($path);
+            }
+        }
+
+        throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
 }
