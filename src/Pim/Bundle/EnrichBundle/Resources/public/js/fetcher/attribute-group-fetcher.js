@@ -1,4 +1,3 @@
-
 /**
  * Attribute group fetcher
  *
@@ -10,6 +9,7 @@ import $ from 'jquery'
 import _ from 'underscore'
 import BaseFetcher from 'pim/base-fetcher'
 import Routing from 'routing'
+
 export default BaseFetcher.extend({
   /**
    * Overrides base method, to send query using POST instead GET,

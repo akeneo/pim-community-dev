@@ -1,4 +1,3 @@
-
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseController from 'pim/controller/base'

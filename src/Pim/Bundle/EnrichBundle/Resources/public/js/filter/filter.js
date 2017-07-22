@@ -1,10 +1,10 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import mediator from 'oro/mediator'
 import BaseForm from 'pim/form'
 import filterTemplate from 'pim/template/filter/filter'
+
 export default BaseForm.extend({
   className: 'AknFieldContainer control-group filter-item',
   elements: {},

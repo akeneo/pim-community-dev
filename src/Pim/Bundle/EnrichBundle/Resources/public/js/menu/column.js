@@ -1,4 +1,3 @@
-
 /**
  * Extension for menu columns
  * This extends the default column and adds some behaviors only used in the menu context (visibility)
@@ -7,10 +6,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import _ from 'underscore'
 import Column from 'pim/form/common/column'
 import router from 'pim/router'
 import mediator from 'oro/mediator'
+
 export default Column.extend({
   active: false,
 

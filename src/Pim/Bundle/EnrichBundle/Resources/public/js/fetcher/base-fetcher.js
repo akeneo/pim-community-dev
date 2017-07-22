@@ -1,9 +1,8 @@
-/* global console */
-
 import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 import Routing from 'routing'
+
 export default Backbone.Model.extend({
   entityListPromise: null,
   entityPromises: {},

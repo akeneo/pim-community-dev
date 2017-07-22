@@ -1,4 +1,3 @@
-
 /**
  * Display navigation links in column for the tab display
  *
@@ -9,11 +8,11 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/column-tabs-navigation'
+
 export default BaseForm.extend({
   className: 'AknColumn-block',
   template: _.template(template),

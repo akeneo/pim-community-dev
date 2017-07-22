@@ -1,4 +1,3 @@
-
 /**
  * Attribute tab extension for products
  *
@@ -9,6 +8,7 @@
  */
 import Routing from 'routing'
 import Attributes from 'pim/form/common/attributes'
+
 export default Attributes.extend({
   /**
    * {@inheritdoc}

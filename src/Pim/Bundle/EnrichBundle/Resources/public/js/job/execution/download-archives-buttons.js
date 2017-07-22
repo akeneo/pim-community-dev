@@ -1,4 +1,3 @@
-
 /**
  * Download file extension
  *
@@ -13,6 +12,7 @@ import template from 'pim/template/job-execution/download-archives-buttons'
 import Routing from 'routing'
 import propertyAccessor from 'pim/common/property'
 import securityContext from 'pim/security-context'
+
 export default BaseForm.extend({
   template: _.template(template),
 

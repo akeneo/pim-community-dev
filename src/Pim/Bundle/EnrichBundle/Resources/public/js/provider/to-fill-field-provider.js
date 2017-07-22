@@ -1,4 +1,3 @@
-
 /**
  * Attribute group selector extension
  *

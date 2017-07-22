@@ -1,4 +1,3 @@
-
 /**
  * Completeness panel extension
  *
@@ -15,6 +14,7 @@ import template from 'pim/template/product/completeness'
 import FetcherRegistry from 'pim/fetcher-registry'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
+
 export default BaseForm.extend({
   template: _.template(template),
   className: 'panel-pane completeness-panel',

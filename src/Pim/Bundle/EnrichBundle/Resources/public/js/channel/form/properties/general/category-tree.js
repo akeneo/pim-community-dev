@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the category general properties field of a channel
  *

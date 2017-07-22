@@ -1,6 +1,6 @@
-
 import $ from 'jquery'
 import Routing from 'routing'
+
 var promise = null
 
 var loadConfig = function () {

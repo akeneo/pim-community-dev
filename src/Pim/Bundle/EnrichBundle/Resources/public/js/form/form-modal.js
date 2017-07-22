@@ -1,4 +1,3 @@
-
 /**
  * This service instantiates a modal with a custom form.
  * The custom form must be passed in as a service.
@@ -46,6 +45,7 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import mediator from 'oro/mediator'
 import FormBuilder from 'pim/form-builder'
+
 export default Backbone.View.extend({
   /**
    * The form name the modal should display.

@@ -1,4 +1,3 @@
-
 /**
  * Base extension for menu
  *
@@ -9,6 +8,7 @@
 import _ from 'underscore'
 import BaseForm from 'pim/form'
 import template from 'pim/template/menu/menu'
+
 export default BaseForm.extend({
   className: 'AknHeader',
   template: _.template(template),

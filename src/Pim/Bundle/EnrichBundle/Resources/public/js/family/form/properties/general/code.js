@@ -1,4 +1,3 @@
-
 /**
  * Code field view
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/properties/input'
+
 export default BaseForm.extend({
   className: 'input',
   template: _.template(template),

@@ -6,6 +6,7 @@
 
 import DeleteForm from 'pim/form/common/delete'
 import AttributeRemover from 'pim/remover/attribute'
+
 export default DeleteForm.extend({
   remover: AttributeRemover
 })

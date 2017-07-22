@@ -1,4 +1,3 @@
-
 /**
  * Family mass edit attributes requirements table view
  *
@@ -8,6 +7,7 @@
  */
 import BaseAttributesView from 'pim/family-edit-form/attributes/attributes'
 import mediator from 'oro/mediator'
+
 export default BaseAttributesView.extend({
   lock: false,
 

@@ -1,4 +1,3 @@
-
 /**
  * Base extension for navigation blocks
  * A navigation block is composed of a title and a list of items, displayed in the columns.
@@ -11,6 +10,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/menu/navigation-block'
+
 export default BaseForm.extend({
   className: 'AknColumn-block',
   template: _.template(template),

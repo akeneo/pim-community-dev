@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the conversion unit properties of a channel
  *
@@ -15,6 +14,7 @@ import template from 'pim/template/channel/tab/properties/conversion-unit'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'tabsection',
   template: _.template(template),

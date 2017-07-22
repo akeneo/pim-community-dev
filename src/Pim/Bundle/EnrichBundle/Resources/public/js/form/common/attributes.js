@@ -1,4 +1,3 @@
-
 /**
  * Attribute tab extension
  *
@@ -9,8 +8,6 @@
  */
 import $ from 'jquery'
 import _ from 'underscore'
-import Backbone from 'backbone'
-import mediator from 'oro/mediator'
 import Routing from 'routing'
 import BaseForm from 'pim/form'
 import FieldManager from 'pim/field-manager'
@@ -23,6 +20,7 @@ import formTemplate from 'pim/template/form/tab/attributes'
 import Dialog from 'pim/dialog'
 import messenger from 'oro/messenger'
 import i18n from 'pim/i18n'
+
 export default BaseForm.extend({
   template: _.template(formTemplate),
   className: 'tabbable object-attributes',

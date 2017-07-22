@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the generals properties of a variant group
  *

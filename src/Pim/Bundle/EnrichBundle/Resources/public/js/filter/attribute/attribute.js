@@ -5,16 +5,15 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-
 import $ from 'jquery'
 import _ from 'underscore'
-import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/filter'
 import FetcherRegistry from 'pim/fetcher-registry'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
 import ScopeSwitcher from 'pim/product-edit-form/scope-switcher'
 import LocaleSwitcher from 'pim/product-edit-form/locale-switcher'
+
 export default BaseFilter.extend({
   /**
    * {@inherit}

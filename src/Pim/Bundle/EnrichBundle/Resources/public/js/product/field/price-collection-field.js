@@ -1,4 +1,3 @@
-
 /**
  * Price collection field
  *
@@ -12,6 +11,7 @@ import Field from 'pim/field'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
 import fieldTemplate from 'pim/template/product/field/price-collection'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

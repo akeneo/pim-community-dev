@@ -1,9 +1,9 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import Backbone from 'backbone'
 import template from 'pim/template/datagrid/configure-columns-action'
+
 var Column = Backbone.Model.extend({
   defaults: {
     label: '',

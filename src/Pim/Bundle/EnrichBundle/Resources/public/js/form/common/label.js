@@ -1,4 +1,3 @@
-
 /**
  * Label extension
  *
@@ -10,6 +9,7 @@
 import BaseForm from 'pim/form'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
+
 export default BaseForm.extend({
   tagName: 'h1',
   className: 'AknTitleContainer-title',

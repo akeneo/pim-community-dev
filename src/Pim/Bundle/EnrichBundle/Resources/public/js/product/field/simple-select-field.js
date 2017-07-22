@@ -1,4 +1,3 @@
-
 /**
  * Simple select field
  *
@@ -17,6 +16,7 @@ import SecurityContext from 'pim/security-context'
 import initSelect2 from 'pim/initselect2'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   choicePromise: null,

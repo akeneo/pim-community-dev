@@ -1,4 +1,3 @@
-
 /**
  * Base extension for menu
  *
@@ -12,6 +11,7 @@ import BaseForm from 'pim/form'
 import router from 'pim/router'
 import template from 'pim/template/menu/item'
 import mediator from 'oro/mediator'
+
 export default BaseForm.extend({
   template: _.template(template),
   events: {

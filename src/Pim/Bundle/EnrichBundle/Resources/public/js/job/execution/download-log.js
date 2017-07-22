@@ -1,4 +1,3 @@
-
 /**
  * Download log button
  *
@@ -8,6 +7,7 @@
  */
 import DownloadFile from 'pim/form/common/download-file'
 import SecurityContext from 'pim/security-context'
+
 export default DownloadFile.extend({
   /**
    * {@inheritdoc}

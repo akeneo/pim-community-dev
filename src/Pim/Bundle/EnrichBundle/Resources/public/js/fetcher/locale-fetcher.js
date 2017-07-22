@@ -1,8 +1,8 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import BaseFetcher from 'pim/base-fetcher'
 import Routing from 'routing'
+
 export default BaseFetcher.extend({
   entityActivatedListPromise: null,
   /**

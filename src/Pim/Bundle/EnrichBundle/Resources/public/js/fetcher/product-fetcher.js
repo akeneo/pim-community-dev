@@ -1,10 +1,10 @@
-
 import $ from 'jquery'
 import Backbone from 'backbone'
 import Routing from 'routing'
 import mediator from 'oro/mediator'
 import CacheInvalidator from 'pim/cache-invalidator'
 import ProductManager from 'pim/product-manager'
+
 export default Backbone.Model.extend({
   /**
    * @param {Object} options

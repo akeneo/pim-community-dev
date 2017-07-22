@@ -1,4 +1,3 @@
-
 /**
  * Created at extension
  *
@@ -11,6 +10,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import formTemplate from 'pim/template/form/meta/created'
+
 export default BaseForm.extend({
   tagName: 'span',
 

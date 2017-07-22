@@ -1,4 +1,3 @@
-
 /**
  * Multi select field
  *
@@ -18,6 +17,7 @@ import initSelect2 from 'pim/initselect2'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import AttributeManager from 'pim/attribute-manager'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   choicePromise: null,

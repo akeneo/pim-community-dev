@@ -1,12 +1,10 @@
-
 import $ from 'jquery'
-import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseController from 'pim/controller/base'
 import FormBuilder from 'pim/form-builder'
-import PageTitle from 'pim/page-title'
 import Error from 'pim/error'
 import Routing from 'routing'
+
 export default BaseController.extend({
   /**
    * {@inheritdoc}

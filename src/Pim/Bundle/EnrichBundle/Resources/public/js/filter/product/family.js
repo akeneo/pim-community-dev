@@ -1,4 +1,3 @@
-
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/filter'
@@ -8,6 +7,7 @@ import fetcherRegistry from 'pim/fetcher-registry'
 import userContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'family',
   config: {},

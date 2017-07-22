@@ -1,11 +1,8 @@
-
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/filter'
-import FetcherRegistry from 'pim/fetcher-registry'
-import UserContext from 'pim/user-context'
 import template from 'pim/template/filter/product/identifier'
+
 export default BaseFilter.extend({
   shortname: 'identifier',
   template: _.template(template),

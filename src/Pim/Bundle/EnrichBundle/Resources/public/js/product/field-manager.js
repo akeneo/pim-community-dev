@@ -1,4 +1,3 @@
-
 /**
  * Field manager
  *
@@ -12,9 +11,11 @@ import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
 import ConfigProvider from 'pim/form-config-provider'
 import requireContext from 'require-context'
+
 var fields = {}
 var visibleFields = {}
 var loadedModules = {}
+
 var getFieldForAttribute = function (attribute) {
   var deferred = $.Deferred()
 

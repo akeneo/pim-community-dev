@@ -1,5 +1,5 @@
-
 import FormController from 'pim/controller/form'
+
 export default FormController.extend({
   /**
    * {@inheritdoc}

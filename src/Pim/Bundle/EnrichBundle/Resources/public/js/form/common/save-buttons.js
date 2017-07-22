@@ -1,4 +1,3 @@
-
 /**
  * Save buttons extension
  *
@@ -7,12 +6,11 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
-import mediator from 'oro/mediator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/save-buttons'
+
 export default BaseForm.extend({
   className: 'AknTitleContainer-rightButton',
   template: _.template(template),

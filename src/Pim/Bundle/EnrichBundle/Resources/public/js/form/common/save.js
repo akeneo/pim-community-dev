@@ -1,4 +1,3 @@
-
 /**
  * Save extension
  *
@@ -8,9 +7,9 @@
  */
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import mediator from 'oro/mediator'
 import LoadingMask from 'oro/loading-mask'
 import messenger from 'oro/messenger'
+
 export default BaseForm.extend({
   loadingMask: null,
   updateFailureMessage: __('pim_enrich.entity.info.update_failed'),

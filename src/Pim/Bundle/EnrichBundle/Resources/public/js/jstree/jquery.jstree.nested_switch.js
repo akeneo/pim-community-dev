@@ -4,17 +4,17 @@
  * File: jstree.nested_switch.js
  *
 /* Group: jstree nested_switch plugin */
-(function($) {
+(function ($) {
   'use strict'
 
   var nested_switch_id = 'nested_switch_input'
 
   $.jstree.plugin('nested_switch', {
-    __init: function() {
+    __init: function () {
       var container = this.get_container()
 
       // Create the tree toolbar and load trees in tree selector
-      container.bind('init.jstree', $.proxy(function() {
+      container.bind('init.jstree', $.proxy(function () {
         var settings = this._get_settings().nested_switch
         this.data.nested_switch.state = settings.state
         this.data.nested_switch.label = settings.label
@@ -50,9 +50,9 @@
           'class': 'control-label pull-left'
         })
 
-        switch_wrapper.on('switch-change', function(e, data) {
+        switch_wrapper.on('switch-change', function (e, data) {
           // Execute callback with a timeout to give bootstrapSwitch time to change the switch
-          setTimeout(function() {
+          setTimeout(function () {
             var callback = _this.data.nested_switch.callback
             if (callback) {
               callback(data.value)
@@ -72,7 +72,7 @@
       callback: null
     },
     _fn: {
-      get_nested_switch: function() {
+      get_nested_switch: function () {
         return $('#' + nested_switch_id)
       }
     }

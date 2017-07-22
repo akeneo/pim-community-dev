@@ -1,7 +1,7 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import FormRegistry from 'pim/form-registry'
+
 var buildForm = function (formName) {
   return $.when(
     FormRegistry.getForm(formName),

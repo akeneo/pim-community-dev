@@ -1,4 +1,3 @@
-
 /**
  * Mass edit attribute requirements
  *
@@ -9,6 +8,7 @@
 import _ from 'underscore'
 import $ from 'jquery'
 import BaseForm from 'pim/form'
+
 export default BaseForm.extend({
   /**
    * {@inheritdoc}

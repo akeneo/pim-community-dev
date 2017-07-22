@@ -7,6 +7,7 @@
 import _ from 'underscore'
 import BaseRemover from 'pim/remover/base'
 import Routing from 'routing'
+
 export default _.extend({}, BaseRemover, {
   /**
    * {@inheritdoc}

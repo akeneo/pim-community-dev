@@ -1,4 +1,3 @@
-
 /**
  * Updated at extension
  *
@@ -10,8 +9,8 @@
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import mediator from 'oro/mediator'
 import formTemplate from 'pim/template/form/meta/updated'
+
 export default BaseForm.extend({
   tagName: 'span',
   className: 'AknTitleContainer-metaItem',

@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
@@ -6,6 +5,7 @@ import Routing from 'routing'
 import FormBuilder from 'pim/form-builder'
 import messenger from 'oro/messenger'
 import errorTemplate from 'pim/template/attribute-option/validation-error'
+
 var CreateOptionView = Backbone.View.extend({
   errorTemplate: _.template(errorTemplate),
   attribute: null,

@@ -1,4 +1,3 @@
-
 /**
  * Edit form
  *
@@ -8,7 +7,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 import _ from 'underscore'
-import __ from 'oro/translator'
 import Backbone from 'backbone'
 import template from 'pim/template/form/edit-form'
 import BaseForm from 'pim/form'
@@ -17,6 +15,7 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import FieldManager from 'pim/field-manager'
 import formBuilder from 'pim/form-builder'
 import messenger from 'oro/messenger'
+
 export default BaseForm.extend({
   template: _.template(template),
 

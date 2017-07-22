@@ -1,4 +1,3 @@
-
 /**
  * Base extension for tab
  * This represents a main tab of the application, associated with icon, text and column.
@@ -13,6 +12,7 @@ import BaseForm from 'pim/form'
 import router from 'pim/router'
 import template from 'pim/template/menu/tab'
 import mediator from 'oro/mediator'
+
 export default BaseForm.extend({
   template: _.template(template),
   events: {

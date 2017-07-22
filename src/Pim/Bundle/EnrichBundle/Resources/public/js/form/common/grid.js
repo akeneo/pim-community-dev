@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
@@ -9,6 +8,7 @@ import template from 'pim/template/form/grid'
 import PageableCollection from 'oro/pageable-collection'
 import DatagridState from 'pim/datagrid/state'
 import requireContext from 'require-context'
+
 export default Backbone.View.extend({
   template: _.template(template),
   className: 'AknTabContainer-content--fullWidth',

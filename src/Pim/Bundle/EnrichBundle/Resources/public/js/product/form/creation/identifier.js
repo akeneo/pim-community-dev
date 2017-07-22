@@ -1,4 +1,3 @@
-
 /**
  * Identifier field to be added in a creation form
  *

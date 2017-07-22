@@ -10,6 +10,7 @@ import BaseForm from 'pim/form'
 import fetcherRegistry from 'pim/fetcher-registry'
 import AttributeOptionGrid from 'pim/attributeoptionview'
 import template from 'pim/template/attribute/tab/choices/options-grid'
+
 export default BaseForm.extend({
   template: _.template(template),
   locales: [],

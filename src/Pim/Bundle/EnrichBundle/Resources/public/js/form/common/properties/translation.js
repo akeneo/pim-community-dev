@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the localized properties of an object
  *
@@ -11,6 +10,7 @@ import _ from 'underscore'
 import BaseForm from 'pim/form'
 import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/form/properties/translation'
+
 export default BaseForm.extend({
   className: 'translation-container',
   template: _.template(template),

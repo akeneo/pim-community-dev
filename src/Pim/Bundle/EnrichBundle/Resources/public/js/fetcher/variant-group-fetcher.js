@@ -1,10 +1,8 @@
-
-import $ from 'jquery'
 import BaseFetcher from 'pim/base-fetcher'
-import Routing from 'routing'
 import mediator from 'oro/mediator'
 import CacheInvalidator from 'pim/cache-invalidator'
 import ProductManager from 'pim/product-manager'
+
 export default BaseFetcher.extend({
   /**
    * @param {Object} options

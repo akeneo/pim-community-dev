@@ -1,4 +1,3 @@
-
 /**
  * Attribute group selector extension
  *
@@ -16,6 +15,7 @@ import template from 'pim/template/form/tab/attribute/attribute-group-selector'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import toFillFieldProvider from 'pim/provider/to-fill-field-provider'
+
 export default GroupSelectorForm.extend({
   tagName: 'div',
 

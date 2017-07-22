@@ -1,4 +1,3 @@
-
 /**
  * Save extension
  *
@@ -16,6 +15,7 @@ import ProductSaver from 'pim/saver/product'
 import FieldManager from 'pim/field-manager'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
+
 export default BaseSave.extend({
   updateSuccessMessage: __('pim_enrich.entity.product.info.update_successful'),
   updateFailureMessage: __('pim_enrich.entity.product.info.update_failed'),

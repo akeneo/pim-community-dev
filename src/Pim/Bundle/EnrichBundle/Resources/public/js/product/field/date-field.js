@@ -1,4 +1,3 @@
-
 /**
  * Date field
  *
@@ -13,6 +12,7 @@ import _ from 'underscore'
 import fieldTemplate from 'pim/template/product/field/date'
 import Datepicker from 'datepicker'
 import DateContext from 'pim/date-context'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

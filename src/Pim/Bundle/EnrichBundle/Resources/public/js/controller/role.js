@@ -1,7 +1,7 @@
-
 import FormController from 'pim/controller/form'
 import securityContext from 'pim/security-context'
 import configProvider from 'pim/form-config-provider'
+
 export default FormController.extend({
   /**
    * {@inheritdoc}

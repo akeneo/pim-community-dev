@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
@@ -9,6 +8,7 @@ import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
 import template from 'pim/template/filter/attribute/select'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'select',
   template: _.template(template),

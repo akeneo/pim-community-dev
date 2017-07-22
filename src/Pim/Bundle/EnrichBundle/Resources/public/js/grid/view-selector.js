@@ -1,4 +1,3 @@
-
 /**
  * Main module for the Datagrid View Selector.
  * Mainly composed by a Select2 component with several extension points.
@@ -19,6 +18,7 @@ import initSelect2 from 'pim/initselect2'
 import DatagridState from 'pim/datagrid/state'
 import FetcherRegistry from 'pim/fetcher-registry'
 import FormBuilder from 'pim/form-builder'
+
 export default BaseForm.extend({
   template: _.template(template),
   resultsPerPage: 20,

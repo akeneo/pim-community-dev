@@ -1,4 +1,3 @@
-
 /**
  * Attributes tabs view
  *
@@ -9,9 +8,9 @@
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/family/tab/attributes'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'attributes',
   template: _.template(template),

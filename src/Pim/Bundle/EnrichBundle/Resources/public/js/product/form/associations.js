@@ -1,4 +1,3 @@
-
 /**
  * Association tab extension
  *
@@ -10,12 +9,10 @@
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
-import Backbone from 'backbone'
 import BaseForm from 'pim/form'
 import formTemplate from 'pim/template/product/tab/associations'
 import panesTemplate from 'pim/template/product/tab/association-panes'
 import FetcherRegistry from 'pim/fetcher-registry'
-import AttributeManager from 'pim/attribute-manager'
 import UserContext from 'pim/user-context'
 import Routing from 'routing'
 import mediator from 'oro/mediator'

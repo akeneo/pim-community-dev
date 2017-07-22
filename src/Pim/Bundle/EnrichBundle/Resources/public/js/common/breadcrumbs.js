@@ -1,4 +1,3 @@
-
 /**
  * Extension to display breadcrumbItems on every page
  *
@@ -13,6 +12,7 @@ import BaseForm from 'pim/form'
 import template from 'pim/template/common/breadcrumbs'
 import mediator from 'oro/mediator'
 import FormRegistry from 'pim/form-registry'
+
 export default BaseForm.extend({
   className: 'AknBreadcrumb',
   template: _.template(template),

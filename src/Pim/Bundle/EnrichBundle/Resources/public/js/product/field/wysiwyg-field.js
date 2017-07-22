@@ -1,4 +1,3 @@
-
 /**
  * Wysiwyg field
  *
@@ -12,6 +11,7 @@ import Field from 'pim/field'
 import _ from 'underscore'
 import fieldTemplate from 'pim/template/product/field/textarea'
 import 'summernote'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

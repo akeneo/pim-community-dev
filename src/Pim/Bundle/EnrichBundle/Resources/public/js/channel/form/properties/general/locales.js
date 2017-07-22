@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the locales general properties field of a channel
  *

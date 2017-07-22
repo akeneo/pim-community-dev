@@ -1,7 +1,7 @@
-
 import _ from 'underscore'
 import UserContext from 'pim/user-context'
 import i18n from 'pim/i18n'
+
 export default {
   /**
    * Format a collection of entities into a list of choices as follows.

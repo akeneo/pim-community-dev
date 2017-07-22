@@ -1,10 +1,9 @@
-
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/filter'
-import Routing from 'routing'
 import template from 'pim/template/filter/product/completeness'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'completeness',
   template: _.template(template),

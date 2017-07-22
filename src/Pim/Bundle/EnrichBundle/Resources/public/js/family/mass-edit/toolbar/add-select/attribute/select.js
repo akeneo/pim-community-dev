@@ -1,4 +1,3 @@
-
 /**
  * Family mass edit form add attribute select extension view
  *
@@ -6,10 +5,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
 import FamilyAddAttributeSelect from 'pim/family-edit-form/attributes/toolbar/add-select/attribute'
+
 export default FamilyAddAttributeSelect.extend({
   /**
    * {@inheritdoc}

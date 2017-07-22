@@ -1,4 +1,3 @@
-
 import router from 'pim-router'
 import __ from 'oro/translator'
 var routeParams = {}

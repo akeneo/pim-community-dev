@@ -1,4 +1,3 @@
-
 /**
  * Launch button
  *
@@ -15,6 +14,7 @@ import router from 'pim/router'
 import propertyAccessor from 'pim/common/property'
 import messenger from 'oro/messenger'
 import template from 'pim/template/export/common/edit/launch'
+
 export default BaseForm.extend({
   template: _.template(template),
   events: {

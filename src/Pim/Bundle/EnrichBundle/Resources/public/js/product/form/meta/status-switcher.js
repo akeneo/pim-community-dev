@@ -1,4 +1,3 @@
-
 /**
  * Status switcher extension
  *
@@ -9,9 +8,9 @@
  */
 import _ from 'underscore'
 import __ from 'oro/translator'
-import mediator from 'oro/mediator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/product/meta/status-switcher'
+
 export default BaseForm.extend({
   className: 'AknColumn-block AknDropdown',
   template: _.template(template),

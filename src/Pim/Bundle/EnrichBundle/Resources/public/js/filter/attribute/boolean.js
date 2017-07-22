@@ -5,16 +5,12 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/attribute/attribute'
-import FetcherRegistry from 'pim/fetcher-registry'
-import UserContext from 'pim/user-context'
-import i18n from 'pim/i18n'
 import template from 'pim/template/filter/attribute/boolean'
 import 'bootstrap.bootstrapswitch'
+
 export default BaseFilter.extend({
   shortname: 'boolean',
   template: _.template(template),

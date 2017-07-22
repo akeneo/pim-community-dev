@@ -1,4 +1,3 @@
-
 /**
  * Form tabs extension
  * This is an extension of the form-tabs, to be able to display select buttons in a higher element.
@@ -7,10 +6,10 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import FormTabs from 'pim/form/common/form-tabs'
 import template from 'pim/template/form/column-tabs'
+
 export default FormTabs.extend({
   className: '',
 

@@ -1,4 +1,3 @@
-
 /**
  * Module to save channel
  *
@@ -11,6 +10,7 @@ import BaseSaver from 'pim/saver/base'
 import Routing from 'routing'
 import mediator from 'oro/mediator'
 import $ from 'jquery'
+
 export default _.extend({}, BaseSaver, {
   /**
    * {@inheritdoc}

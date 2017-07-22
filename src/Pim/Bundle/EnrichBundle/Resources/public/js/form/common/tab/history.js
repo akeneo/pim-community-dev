@@ -1,8 +1,8 @@
-
 import _ from 'underscore'
 import BaseForm from 'pim/form'
 import Grid from 'pim/common/grid'
 import __ from 'oro/translator'
+
 export default BaseForm.extend({
   className: 'tabbable tabs-left history',
   historyGrid: null,

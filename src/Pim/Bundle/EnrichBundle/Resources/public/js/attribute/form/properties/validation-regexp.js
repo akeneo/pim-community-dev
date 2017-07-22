@@ -5,6 +5,7 @@
  */
 
 import BaseField from 'pim/attribute-edit-form/properties/text'
+
 export default BaseField.extend({
   /**
    * {@inheritdoc}

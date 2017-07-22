@@ -1,4 +1,3 @@
-
 /**
  * Confirm button extension
  *
@@ -11,6 +10,7 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import Routing from 'routing'
 import template from 'pim/template/form/index/confirm-button'
+
 export default BaseForm.extend({
   template: _.template(template),
 

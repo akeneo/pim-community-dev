@@ -1,4 +1,3 @@
-
 /**
  * Product label extension
  *
@@ -9,6 +8,7 @@
  */
 import Label from 'pim/form/common/label'
 import UserContext from 'pim/user-context'
+
 export default Label.extend({
   /**
    * Provide the object label

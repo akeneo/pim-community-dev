@@ -1,4 +1,3 @@
-
 /**
  * Displays the created at meta information
  *
@@ -9,6 +8,7 @@
 import _ from 'underscore'
 import Created from 'pim/form/common/meta/created'
 import template from 'pim/template/product/meta/created'
+
 export default Created.extend({
   className: 'AknColumn-block',
 

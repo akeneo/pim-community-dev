@@ -16,7 +16,7 @@ var relatedEntity = null
 var $el = null
 var categoryBaseRoute = ''
 
-var getActiveNode = function(skipVirtual) {
+var getActiveNode = function (skipVirtual) {
   if (skipVirtual) {
     return selectedNode > 0 ? selectedNode : selectedTree
   }
@@ -24,11 +24,11 @@ var getActiveNode = function(skipVirtual) {
   return selectedNode !== 0 ? selectedNode : selectedTree
 }
 
-var triggerUpdate = function() {
+var triggerUpdate = function () {
   $el.trigger('tree.updated')
 }
 
-var getTreeUrl = function() {
+var getTreeUrl = function () {
   return Routing.generate(
     getRoute('listtree'),
     {
@@ -41,7 +41,7 @@ var getTreeUrl = function() {
   )
 }
 
-var getChildrenUrl = function() {
+var getChildrenUrl = function () {
   return Routing.generate(
     getRoute('children'),
     {
@@ -52,15 +52,15 @@ var getChildrenUrl = function() {
   )
 }
 
-var selectNode = function(nodeId) {
+var selectNode = function (nodeId) {
   $el.jstree('select_node', '#node_' + nodeId)
 }
 
-var clearSelection = function() {
+var clearSelection = function () {
   $el.jstree('deselect_all')
 }
 
-var createNode = function(id, target, title) {
+var createNode = function (id, target, title) {
   var targetId = target !== null ? '#' + target : -1
   $el.jstree('create', targetId, 'last', {
     attr: {
@@ -77,13 +77,13 @@ var createNode = function(id, target, title) {
   }
 }
 
-var getNodeId = function(node) {
+var getNodeId = function (node) {
   var nodeId = (node && node.attr && node.attr('id')) ? node.attr('id').replace('node_', '') : ''
 
   return +nodeId
 }
 
-var getTreeConfig = function() {
+var getTreeConfig = function () {
   return {
     core: {
       animation: 200,
@@ -103,7 +103,7 @@ var getTreeConfig = function() {
     nested_switch: {
       state: includeSub,
       label: __('jstree.include_sub'),
-      callback: function(state) {
+      callback: function (state) {
         includeSub = state
 
         $el.jstree('instance').data.tree_selector.ajax.url = getTreeUrl()
@@ -128,7 +128,7 @@ var getTreeConfig = function() {
     json_data: {
       ajax: {
         url: getChildrenUrl(),
-        data: function(node) {
+        data: function (node) {
           // the result is fed to the AJAX request `data` option
           return {
             id: getNodeId(node),
@@ -156,7 +156,7 @@ var getTreeConfig = function() {
   }
 }
 
-var initTree = function() {
+var initTree = function () {
   $el.jstree(getTreeConfig())
     .on('trees_loaded.jstree', onTreesLoaded)
     .on('after_tree_loaded.jstree', afterTreeLoaded)
@@ -164,17 +164,17 @@ var initTree = function() {
     .on('select_node.jstree', onSelectNode)
 }
 
-var getRoute = function(routeName) {
+var getRoute = function (routeName) {
   return categoryBaseRoute + '_' + routeName
 }
 
-var onTreesLoaded = function(event, tree_select_id) {
+var onTreesLoaded = function (event, tree_select_id) {
   $('#' + tree_select_id).select2({
     width: '100%'
   })
 }
 
-var afterTreeLoaded = function(e, root_node_id) {
+var afterTreeLoaded = function (e, root_node_id) {
   var previousTree = selectedTree
   selectedTree = +root_node_id
 
@@ -192,7 +192,7 @@ var afterTreeLoaded = function(e, root_node_id) {
   }
 }
 
-var afterOpenNode = function(e, data) {
+var afterOpenNode = function (e, data) {
   var $node = $(data.args[0])
 
   if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
@@ -200,7 +200,7 @@ var afterOpenNode = function(e, data) {
   }
 }
 
-var onSelectNode = function(e, data) {
+var onSelectNode = function (e, data) {
   if (data.args.length === 1) {
     // Return if the select was not user triggered
     return
@@ -219,7 +219,7 @@ var onSelectNode = function(e, data) {
 }
 
 export default {
-  init: function($element, state, baseRoute) {
+  init: function ($element, state, baseRoute) {
     if (!$element || !$element.length || !_.isObject($element)) {
       return
     }
@@ -235,7 +235,7 @@ export default {
     initTree()
   },
 
-  getState: function() {
+  getState: function () {
     return {
       selectedNode: selectedNode,
       selectedTree: selectedTree,
@@ -243,11 +243,11 @@ export default {
     }
   },
 
-  refresh: function() {
+  refresh: function () {
     initTree()
   },
 
-  reset: function() {
+  reset: function () {
     if ($el) {
       clearSelection()
       selectedNode = all

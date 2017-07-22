@@ -1,4 +1,3 @@
-
 /**
  * State manager extension
  *
@@ -14,6 +13,7 @@ import Backbone from 'backbone'
 import Dialog from 'pim/dialog'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/state'
+
 export default BaseForm.extend({
   className: 'updated-status',
   template: _.template(template),

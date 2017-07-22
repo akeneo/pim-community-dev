@@ -1,4 +1,3 @@
-
 /**
  * Attributes used as label field view
  *
@@ -6,7 +5,6 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
@@ -16,6 +14,7 @@ import UserContext from 'pim/user-context'
 import SecurityContext from 'pim/security-context'
 import template from 'pim/template/family/tab/general/attribute-as-image'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'AknFieldContainer',
   template: _.template(template),

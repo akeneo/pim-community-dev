@@ -1,8 +1,7 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
-import BaseFetcher from 'pim/base-fetcher'
 import requireContext from 'require-context'
+
 export default {
   fetchers: {},
   initializePromise: null,

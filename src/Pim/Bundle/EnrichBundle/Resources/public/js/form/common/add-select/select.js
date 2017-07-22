@@ -1,4 +1,3 @@
-
 /**
  * Common add select extension view
  *
@@ -18,6 +17,7 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import ChoicesFormatter from 'pim/formatter/choices/base'
 import mediator from 'oro/mediator'
 import initSelect2 from 'pim/initselect2'
+
 export default BaseForm.extend({
   tagName: 'div',
   targetElement: 'input[type="hidden"]',

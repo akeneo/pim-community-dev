@@ -1,4 +1,3 @@
-
 /**
  * Generic grid renderer
  *
@@ -9,6 +8,7 @@
 import BaseForm from 'pim/form'
 import Grid from 'pim/common/grid'
 import UserContext from 'pim/user-context'
+
 export default BaseForm.extend({
   grid: null,
 

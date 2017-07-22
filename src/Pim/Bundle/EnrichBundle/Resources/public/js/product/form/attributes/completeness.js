@@ -1,4 +1,3 @@
-
 /**
  * completeness filter extension
  *
@@ -12,6 +11,7 @@ import BaseForm from 'pim/form'
 import fetcherRegistry from 'pim/fetcher-registry'
 import UserContext from 'pim/user-context'
 import toFillFieldProvider from 'pim/provider/to-fill-field-provider'
+
 export default BaseForm.extend({
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)

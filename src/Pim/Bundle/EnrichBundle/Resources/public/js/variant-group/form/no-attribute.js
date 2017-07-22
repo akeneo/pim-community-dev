@@ -1,4 +1,3 @@
-
 /**
  * Module used to display when no attribute are available
  *
@@ -11,6 +10,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/variant-group/form/no-attribute'
+
 export default BaseForm.extend({
   template: _.template(template),
   className: 'AknAttributeActions-help no-attribute',

@@ -1,4 +1,3 @@
-
 /**
  * Delete extension
  *
@@ -14,6 +13,7 @@ import router from 'pim/router'
 import LoadingMask from 'oro/loading-mask'
 import messenger from 'oro/messenger'
 import Dialog from 'pim/dialog'
+
 export default BaseForm.extend({
   tagName: 'button',
 

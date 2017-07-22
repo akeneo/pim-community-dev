@@ -1,4 +1,3 @@
-
 /**
  * Main image extension
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/main-image'
 import MediaUrlGenerator from 'pim/media-url-generator'
+
 export default BaseForm.extend({
   className: 'AknTitleContainer-image',
   template: _.template(template),

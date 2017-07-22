@@ -6,6 +6,7 @@
 
 import _ from 'underscore'
 import BaseField from 'pim/attribute-edit-form/properties/boolean'
+
 export default BaseField.extend({
   /**
    * {@inheritdoc}

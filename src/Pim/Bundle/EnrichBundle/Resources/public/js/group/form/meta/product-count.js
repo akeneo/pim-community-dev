@@ -1,4 +1,3 @@
-
 /**
  * Group meta extension to display number of products this group contains
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import formTemplate from 'pim/template/group/meta/product-count'
+
 export default BaseForm.extend({
   tagName: 'span',
   template: _.template(formTemplate),

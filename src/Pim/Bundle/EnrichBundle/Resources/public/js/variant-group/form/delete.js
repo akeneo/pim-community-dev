@@ -1,4 +1,3 @@
-
 /**
  * Delete extension for variant groups
  *
@@ -8,6 +7,7 @@
  */
 import DeleteForm from 'pim/form/common/delete'
 import VariantGroupRemover from 'pim/remover/variant-group'
+
 export default DeleteForm.extend({
   remover: VariantGroupRemover
 })

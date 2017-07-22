@@ -1,4 +1,3 @@
-
 /**
  * Redirect button
  *
@@ -7,10 +6,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 import $ from 'jquery'
-import _ from 'underscore'
-import __ from 'oro/translator'
 import Redirect from 'pim/common/redirect'
 import Routing from 'routing'
+
 export default Redirect.extend({
   /**
    * {@inheritdoc}

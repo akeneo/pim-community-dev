@@ -1,4 +1,3 @@
-
 /**
  * Categories selector tree
  *
@@ -17,6 +16,7 @@ import FetcherRegistry from 'pim/fetcher-registry'
 import UserContext from 'pim/user-context'
 import template from 'pim/template/filter/product/category/selector'
 import 'jquery.jstree'
+
 export default Backbone.View.extend({
   template: _.template(template),
 

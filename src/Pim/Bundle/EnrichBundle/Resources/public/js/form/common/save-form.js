@@ -1,4 +1,3 @@
-
 /**
  * Save extension for simple entity types
  *
@@ -6,7 +5,6 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseSave from 'pim/form/common/save'
@@ -16,6 +14,7 @@ import FieldManager from 'pim/field-manager'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
 import router from 'pim/router'
+
 export default BaseSave.extend({
   /**
    * Sets message labels for updates

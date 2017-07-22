@@ -1,8 +1,8 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import ConfigProvider from 'pim/form-config-provider'
 import requireContext from 'require-context'
+
 var getForm = function (formName) {
   return ConfigProvider.getExtensionMap().then(function (extensionMap) {
     var form = _.first(_.where(extensionMap, {

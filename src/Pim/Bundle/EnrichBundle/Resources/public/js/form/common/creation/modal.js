@@ -1,14 +1,12 @@
-
 import $ from 'jquery'
 import Backbone from 'backbone'
 import Routing from 'routing'
 import BaseForm from 'pim/form'
-import FormBuilder from 'pim/form-builder'
-import UserContext from 'pim/user-context'
 import __ from 'oro/translator'
 import LoadingMask from 'oro/loading-mask'
 import router from 'pim/router'
 import messenger from 'oro/messenger'
+
 export default BaseForm.extend({
   config: {},
 

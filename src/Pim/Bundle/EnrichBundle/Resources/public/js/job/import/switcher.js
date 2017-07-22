@@ -1,4 +1,3 @@
-
 /**
  * Import switcher extension.
  * This will display all the main actions related to import (upload, import now)
@@ -10,6 +9,7 @@
 import _ from 'underscore'
 import BaseForm from 'pim/form'
 import template from 'pim/template/import/switcher'
+
 export default BaseForm.extend({
   className: 'AknButtonList',
   template: _.template(template),

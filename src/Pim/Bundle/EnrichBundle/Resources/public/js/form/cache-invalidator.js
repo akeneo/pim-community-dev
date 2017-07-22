@@ -1,8 +1,8 @@
-
 import _ from 'underscore'
 import BaseForm from 'pim/form'
 import mediator from 'oro/mediator'
 import FetcherRegistry from 'pim/fetcher-registry'
+
 export default BaseForm.extend({
   /**
    * {@inheritdoc}

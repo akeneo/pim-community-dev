@@ -1,13 +1,11 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/attribute/attribute'
 import FetcherRegistry from 'pim/fetcher-registry'
-import UserContext from 'pim/user-context'
-import i18n from 'pim/i18n'
 import template from 'pim/template/filter/attribute/price-collection'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'price-collection',
   template: _.template(template),

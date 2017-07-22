@@ -1,4 +1,3 @@
-
 /**
  * Create extension for the Datagrid View Selector.
  * It displays a button near the selector to allow the user to create a new view.
@@ -7,7 +6,6 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import Backbone from 'backbone'
@@ -17,6 +15,7 @@ import templateInput from 'pim/template/grid/view-selector/create-view-label-inp
 import DatagridState from 'pim/datagrid/state'
 import DatagridViewSaver from 'pim/saver/datagrid-view'
 import messenger from 'oro/messenger'
+
 export default BaseForm.extend({
   template: _.template(template),
   templateInput: _.template(templateInput),

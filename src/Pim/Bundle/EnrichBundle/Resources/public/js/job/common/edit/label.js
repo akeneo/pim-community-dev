@@ -1,4 +1,3 @@
-
 /**
  * Title extension for jobs
  *
@@ -8,6 +7,7 @@
  */
 import BaseLabel from 'pim/form/common/label'
 import __ from 'oro/translator'
+
 export default BaseLabel.extend({
 
   /**

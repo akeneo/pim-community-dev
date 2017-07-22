@@ -1,11 +1,9 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
-import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/export/common/edit/validation'
-import messenger from 'oro/messenger'
 import propertyAccessor from 'pim/common/property'
+
 export default BaseForm.extend({
   template: _.template(template),
   errors: [],

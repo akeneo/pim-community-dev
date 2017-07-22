@@ -1,15 +1,12 @@
-
-// Should be reworked to be a boolean filter
-
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/filter'
-import Routing from 'routing'
 import template from 'pim/template/filter/product/enabled'
 import 'pim/fetcher-registry'
 import 'pim/user-context'
 import 'pim/i18n'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'enabled',
   template: _.template(template),

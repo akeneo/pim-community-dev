@@ -1,4 +1,3 @@
-
 /**
  * Redirect button
  *
@@ -14,6 +13,7 @@ import Routing from 'routing'
 import router from 'pim/router'
 import propertyAccessor from 'pim/common/property'
 import template from 'pim/template/form/redirect'
+
 export default BaseForm.extend({
   template: _.template(template),
   events: {

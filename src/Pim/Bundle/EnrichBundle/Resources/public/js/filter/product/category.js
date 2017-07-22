@@ -1,14 +1,13 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import Backbone from 'backbone'
 import BaseFilter from 'pim/filter/filter'
-import Routing from 'routing'
 import CategoryTree from 'pim/filter/product/category/selector'
 import fetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/filter/product/category'
 import 'jquery.select2'
+
 var TreeModal = Backbone.BootstrapModal.extend({
   className: 'modal jstree-modal'
 })

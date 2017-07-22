@@ -1,4 +1,3 @@
-
 /**
  * This extension will display the user navigation.
  * The user navigation contains:
@@ -16,6 +15,7 @@ import router from 'pim/router'
 import UserContext from 'pim/user-context'
 import Notifications from 'pim/notifications'
 import template from 'pim/template/menu/user-navigation'
+
 export default BaseForm.extend({
   className: 'AknHeader-userMenu',
   template: _.template(template),

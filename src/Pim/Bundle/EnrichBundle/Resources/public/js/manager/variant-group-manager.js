@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import AttributeManager from 'pim/attribute-manager'

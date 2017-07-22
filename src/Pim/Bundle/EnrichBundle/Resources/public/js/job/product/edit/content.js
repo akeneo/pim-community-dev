@@ -1,4 +1,3 @@
-
 /**
  * Content form
  *
@@ -8,9 +7,9 @@
  */
 import _ from 'underscore'
 import __ from 'oro/translator'
-import Backbone from 'backbone'
 import template from 'pim/template/export/product/edit/content'
 import BaseForm from 'pim/form'
+
 export default BaseForm.extend({
   template: _.template(template),
 

@@ -1,4 +1,3 @@
-
 /**
  * Product completeness extension
  * Displays the global completeness of the product.
@@ -12,6 +11,7 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import UserContext from 'pim/user-context'
 import template from 'pim/template/product/form/product-completeness'
+
 export default BaseForm.extend({
   template: _.template(template),
 

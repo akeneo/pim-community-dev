@@ -1,7 +1,5 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
-import Backbone from 'backbone'
 import Routing from 'routing'
 import BaseForm from 'pim/form'
 import UserContext from 'pim/user-context'
@@ -13,6 +11,7 @@ import initSelect2 from 'pim/initselect2'
 import template from 'pim/template/product-create-popin'
 import errorTemplate from 'pim/template/product-create-error'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   template: _.template(template),
   errorTemplate: _.template(errorTemplate),

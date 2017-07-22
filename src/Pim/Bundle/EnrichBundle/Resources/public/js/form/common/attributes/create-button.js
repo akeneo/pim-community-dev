@@ -1,4 +1,3 @@
-
 /**
  * Create attribute button
  *
@@ -17,6 +16,7 @@ import Routing from 'routing'
 import FetcherRegistry from 'pim/fetcher-registry'
 import router from 'pim/router'
 import 'bootstrap-modal'
+
 export default BaseForm.extend({
   template: _.template(template),
   templateModal: _.template(templateModal),

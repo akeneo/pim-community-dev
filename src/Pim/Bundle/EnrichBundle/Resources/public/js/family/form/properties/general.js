@@ -1,4 +1,3 @@
-
 /**
  * Extension used for family properties tab general tab section
  *
@@ -9,10 +8,10 @@
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import FetcherRegistry from 'pim/fetcher-registry'
 import propertyAccessor from 'pim/common/property'
 import template from 'pim/template/form/tab/section'
 import LoadingMask from 'oro/loading-mask'
+
 export default BaseForm.extend({
   className: 'tabsection',
   template: _.template(template),

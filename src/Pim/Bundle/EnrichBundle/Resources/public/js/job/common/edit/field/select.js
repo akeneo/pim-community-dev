@@ -1,4 +1,3 @@
-
 /**
  * Select field extension
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import BaseField from 'pim/job/common/edit/field/field'
 import fieldTemplate from 'pim/template/export/common/edit/field/select'
 import 'jquery.select2'
+
 export default BaseField.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

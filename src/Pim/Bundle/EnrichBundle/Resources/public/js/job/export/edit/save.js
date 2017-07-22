@@ -1,4 +1,3 @@
-
 /**
  * Save extension for job instance
  *
@@ -8,6 +7,7 @@
  */
 import BaseSave from 'pim/job-instance-edit-form/save'
 import JobInstanceSaver from 'pim/saver/job-instance-export'
+
 export default BaseSave.extend({
   /**
    * {@inheritdoc}

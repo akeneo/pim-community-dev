@@ -1,7 +1,7 @@
-
 import $ from 'jquery'
 import mediator from 'oro/mediator'
 import Routing from 'routing'
+
 export default {
   /**
    * Save an entity

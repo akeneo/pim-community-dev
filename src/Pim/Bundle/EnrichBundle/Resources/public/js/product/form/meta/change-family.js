@@ -1,4 +1,3 @@
-
 /**
  * Change family extension
  *
@@ -19,6 +18,7 @@ import Routing from 'routing'
 import initSelect2 from 'pim/initselect2'
 import 'bootstrap-modal'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   tagName: 'i',
   className: 'icon-pencil change-family AknTitleContainer-metaLink',

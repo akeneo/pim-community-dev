@@ -1,4 +1,3 @@
-
 /**
  * Override of the attributes module.
  *
@@ -13,6 +12,7 @@ import FieldManager from 'pim/field-manager'
 import SecurityContext from 'pim/security-context'
 import BaseAttributes from 'pim/form/common/attributes'
 import mediator from 'oro/mediator'
+
 export default BaseAttributes.extend({
   locked: false,
 

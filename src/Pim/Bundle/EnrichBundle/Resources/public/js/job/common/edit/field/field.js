@@ -1,4 +1,3 @@
-
 /**
  * Base field form extension
  *
@@ -6,12 +5,12 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import propertyAccessor from 'pim/common/property'
 import template from 'pim/template/export/common/edit/field/field'
+
 export default BaseForm.extend({
   template: _.template(template),
 

@@ -1,4 +1,3 @@
-
 /**
  * Display a vertical column for navigation or filters
  *
@@ -11,6 +10,7 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/column'
 import navigationTemplate from 'pim/template/form/column-navigation'
+
 export default BaseForm.extend({
   className: 'AknColumn',
   template: _.template(template),

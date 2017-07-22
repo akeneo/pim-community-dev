@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import requireContext from 'require-context'
 var config = __moduleConfig

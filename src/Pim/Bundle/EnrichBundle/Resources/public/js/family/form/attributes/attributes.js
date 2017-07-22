@@ -1,4 +1,3 @@
-
 /**
  * Family attributes settings table view
  *
@@ -15,9 +14,9 @@ import UserContext from 'pim/user-context'
 import SecurityContext from 'pim/security-context'
 import i18n from 'pim/i18n'
 import FetcherRegistry from 'pim/fetcher-registry'
-import Dialog from 'pim/dialog'
 import Messenger from 'oro/messenger'
 import LoadingMask from 'oro/loading-mask'
+
 export default BaseForm.extend({
   className: 'tabsection-content tab-content',
   attributeRequiredIconClass: 'AknAcl-icon AknAcl-icon--granted icon-ok required',

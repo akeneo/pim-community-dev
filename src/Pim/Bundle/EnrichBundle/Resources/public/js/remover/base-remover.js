@@ -1,6 +1,6 @@
-
 import $ from 'jquery'
 import mediator from 'oro/mediator'
+
 export default {
   /**
    * Remove an entity

@@ -1,4 +1,3 @@
-
 /**
  * Sub section extension
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/subsection'
+
 export default BaseForm.extend({
   className: 'AknSubsection',
   template: _.template(template),

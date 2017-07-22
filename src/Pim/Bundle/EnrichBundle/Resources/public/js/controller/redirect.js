@@ -1,6 +1,4 @@
-
 import $ from 'jquery'
-import _ from 'underscore'
 import BaseController from 'pim/controller/base'
 import router from 'pim/router'
 export default BaseController.extend({

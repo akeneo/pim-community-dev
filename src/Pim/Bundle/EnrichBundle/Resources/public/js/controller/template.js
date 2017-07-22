@@ -1,7 +1,6 @@
-
 import $ from 'jquery'
-import _ from 'underscore'
 import BaseController from 'pim/controller/base'
+
 export default BaseController.extend({
   /**
    * {@inheritdoc}

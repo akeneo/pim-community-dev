@@ -1,5 +1,4 @@
 import Backbone from 'backbone'
-import _ from 'underscore'
 import __ from 'oro/translator'
 import Dialog from 'pim/dialog'
 

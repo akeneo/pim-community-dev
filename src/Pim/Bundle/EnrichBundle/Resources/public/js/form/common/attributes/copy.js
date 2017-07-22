@@ -1,4 +1,3 @@
-
 /**
  * Copy extension
  *
@@ -11,7 +10,6 @@
 import $ from 'jquery'
 import _ from 'underscore'
 import BaseForm from 'pim/form'
-import mediator from 'oro/mediator'
 import template from 'pim/template/form/tab/attribute/copy'
 import CopyField from 'pim/form/common/attributes/copy-field'
 import FieldManager from 'pim/field-manager'
@@ -19,6 +17,7 @@ import AttributeManager from 'pim/attribute-manager'
 import UserContext from 'pim/user-context'
 import FetcherRegistry from 'pim/fetcher-registry'
 import i18n from 'pim/i18n'
+
 export default BaseForm.extend({
   template: _.template(template),
   className: 'AknAttributeActions-copyActions attribute-copy-actions',

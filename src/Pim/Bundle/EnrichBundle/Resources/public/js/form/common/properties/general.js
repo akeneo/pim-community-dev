@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the generals properties of an entity type
  *
@@ -9,10 +8,10 @@
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import FetcherRegistry from 'pim/fetcher-registry'
 import propertyAccessor from 'pim/common/property'
 import template from 'pim/template/form/properties/general'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'tabsection',
   template: _.template(template),

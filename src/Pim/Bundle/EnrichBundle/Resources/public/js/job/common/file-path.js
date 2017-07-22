@@ -1,4 +1,3 @@
-
 /**
  * Displays the file path to upload
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/import/file-path'
+
 export default BaseForm.extend({
   className: 'AknCenteredBox',
   template: _.template(template),

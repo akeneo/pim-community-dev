@@ -1,4 +1,3 @@
-
 /**
  * Download pdf extension
  *
@@ -12,11 +11,10 @@ import BaseForm from 'pim/form'
 import template from 'pim/template/product/download-pdf'
 import Routing from 'routing'
 import UserContext from 'pim/user-context'
+
 export default BaseForm.extend({
   tagName: 'a',
-
   className: 'AknDropdown-menuLink btn-download',
-
   template: _.template(template),
 
   /**

@@ -1,4 +1,3 @@
-
 /**
  * Family edit form add attribute select extension view
  *
@@ -9,6 +8,7 @@
 import $ from 'jquery'
 import _ from 'underscore'
 import AddAttributeSelect from 'pim/product/add-select/attribute'
+
 export default AddAttributeSelect.extend({
   /**
    * {@inheritdoc}

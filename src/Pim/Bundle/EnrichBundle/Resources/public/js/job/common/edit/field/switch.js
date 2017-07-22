@@ -1,4 +1,3 @@
-
 /**
  * Switch view extension
  *
@@ -10,6 +9,7 @@ import _ from 'underscore'
 import BaseField from 'pim/job/common/edit/field/field'
 import fieldTemplate from 'pim/template/export/common/edit/field/switch'
 import 'bootstrap.bootstrapswitch'
+
 export default BaseField.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

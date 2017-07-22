@@ -1,4 +1,3 @@
-
 /**
  * Copy field extension
  *
@@ -7,12 +6,12 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import Backbone from 'backbone'
 import _ from 'underscore'
 import Field from 'pim/field'
 import template from 'pim/template/form/tab/attribute/copy-field'
 import i18n from 'pim/i18n'
 import mediator from 'oro/mediator'
+
 export default Field.extend({
   tagName: 'div',
   field: null,

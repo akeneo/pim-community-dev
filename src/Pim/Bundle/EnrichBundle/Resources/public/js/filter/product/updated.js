@@ -1,17 +1,11 @@
-
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/filter'
-import Routing from 'routing'
 import template from 'pim/template/filter/product/updated'
-import fetcherRegistry from 'pim/fetcher-registry'
-import userContext from 'pim/user-context'
-import i18n from 'pim/i18n'
-import initSelect2 from 'jquery.select2'
 import Datepicker from 'datepicker'
 import DateContext from 'pim/date-context'
 import DateFormatter from 'pim/formatter/date'
+
 export default BaseFilter.extend({
   shortname: 'updated',
   template: _.template(template),

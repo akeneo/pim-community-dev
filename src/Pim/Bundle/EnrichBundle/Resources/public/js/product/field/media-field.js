@@ -1,4 +1,3 @@
-
 /**
  * Media field
  *
@@ -18,6 +17,7 @@ import mediator from 'oro/mediator'
 import messenger from 'oro/messenger'
 import MediaUrlGenerator from 'pim/media-url-generator'
 import 'jquery.slimbox'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

@@ -1,4 +1,3 @@
-
 /**
  * Mass Edit Common Attributes exclusive module.
  *
@@ -13,6 +12,7 @@ import _ from 'underscore'
 import $ from 'jquery'
 import BaseForm from 'pim/form'
 import UserContext from 'pim/user-context'
+
 export default BaseForm.extend({
   /**
    * {@inheritdoc}

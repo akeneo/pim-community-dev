@@ -1,4 +1,3 @@
-
 /**
  * Family save extension
  *
@@ -16,6 +15,7 @@ import FieldManager from 'pim/field-manager'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
 import 'pim/security-context'
+
 export default BaseSave.extend({
   updateSuccessMessage: __('pim_enrich.entity.family.info.update_successful'),
   updateFailureMessage: __('pim_enrich.entity.family.info.update_failed'),

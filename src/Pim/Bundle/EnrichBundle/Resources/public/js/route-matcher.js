@@ -1,5 +1,5 @@
-
 import Routing from 'routing'
+
 var matchUrl = function (url) {
   var routes = Routing.getRoutes().c
   var route

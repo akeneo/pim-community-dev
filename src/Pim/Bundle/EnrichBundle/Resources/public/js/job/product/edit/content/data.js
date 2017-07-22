@@ -1,4 +1,3 @@
-
 /**
  * This extension manages the data filter collection and its generation.
  *
@@ -15,6 +14,7 @@ import BaseForm from 'pim/form'
 import fetcherRegistry from 'pim/fetcher-registry'
 import formBuilder from 'pim/form-builder'
 import PropertyAccessor from 'pim/common/property'
+
 export default BaseForm.extend({
   filterViews: [],
   template: _.template(template),

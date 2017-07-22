@@ -1,7 +1,7 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
+
 export default {
   /**
    * Get the attributes of the given entity

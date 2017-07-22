@@ -1,4 +1,3 @@
-
 /**
  * Structure section
  *
@@ -11,6 +10,7 @@ import __ from 'oro/translator'
 import template from 'pim/template/export/product/edit/content/structure'
 import BaseForm from 'pim/form'
 import propertyAccessor from 'pim/common/property'
+
 export default BaseForm.extend({
   className: 'structure-filters',
   errors: {},

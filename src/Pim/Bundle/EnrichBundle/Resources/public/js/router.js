@@ -1,4 +1,3 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
@@ -11,6 +10,7 @@ import mediator from 'oro/mediator'
 import Error from 'pim/error'
 import securityContext from 'pim/security-context'
 import 'pim/controller/template'
+
 var Router = Backbone.Router.extend({
   DEFAULT_ROUTE: 'oro_default',
   routes: {

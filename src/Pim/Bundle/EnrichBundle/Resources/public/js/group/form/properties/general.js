@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the generals properties of a group
  *
@@ -9,9 +8,9 @@
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/group/tab/properties/general'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'tabsection',
   template: _.template(template),

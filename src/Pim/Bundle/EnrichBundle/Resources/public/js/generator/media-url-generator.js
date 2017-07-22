@@ -1,7 +1,5 @@
-
-import $ from 'jquery'
-import _ from 'underscore'
 import Routing from 'routing'
+
 export default {
   /**
    * Get the show media URL

@@ -1,5 +1,3 @@
-
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseFilter from 'pim/filter/attribute/attribute'
@@ -8,6 +6,7 @@ import Datepicker from 'datepicker'
 import DateFormatter from 'pim/formatter/date'
 import DateContext from 'pim/date-context'
 import 'jquery.select2'
+
 export default BaseFilter.extend({
   shortname: 'date',
   template: _.template(template),

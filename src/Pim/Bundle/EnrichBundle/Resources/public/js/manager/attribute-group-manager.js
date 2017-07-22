@@ -1,8 +1,8 @@
-
 import $ from 'jquery'
 import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
 import AttributeManager from 'pim/attribute-manager'
+
 export default {
   /**
    * Get all the attribute group for the given object

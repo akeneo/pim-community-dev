@@ -5,13 +5,11 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-
-import $ from 'jquery'
 import _ from 'underscore'
-import Backbone from 'backbone'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import requireContext from 'require-context'
+
 export default BaseForm.extend({
   config: {},
   template: null,

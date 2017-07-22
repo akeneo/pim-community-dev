@@ -1,4 +1,3 @@
-
 /**
  * Attributes structure filter
  *
@@ -6,16 +5,14 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import Backbone from 'backbone'
 import template from 'pim/template/export/product/edit/content/structure/attributes'
 import BaseForm from 'pim/form'
 import LoadingMask from 'oro/loading-mask'
-import fetcherRegistry from 'pim/fetcher-registry'
-import UserContext from 'pim/user-context'
 import AttributeSelector from 'pim/job/product/edit/content/structure/attributes-selector'
+
 export default BaseForm.extend({
   className: 'AknFieldContainer attributes',
   template: _.template(template),

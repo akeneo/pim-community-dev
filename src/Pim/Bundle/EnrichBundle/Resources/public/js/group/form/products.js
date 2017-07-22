@@ -1,4 +1,3 @@
-
 /**
  * Module used to display the product datagrid in a group
  *
@@ -8,9 +7,9 @@
  */
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import FetcherRegistry from 'pim/fetcher-registry'
 import UserContext from 'pim/user-context'
 import Grid from 'pim/common/grid'
+
 export default BaseForm.extend({
   className: 'products',
 

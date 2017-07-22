@@ -5,6 +5,7 @@
  */
 
 import BaseEditForm from 'pim/form/common/edit-form'
+
 export default BaseEditForm.extend({
   type: null,
 

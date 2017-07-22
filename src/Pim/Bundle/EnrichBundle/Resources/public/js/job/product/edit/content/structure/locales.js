@@ -1,4 +1,3 @@
-
 /**
  * Locale structure filter
  *
@@ -6,13 +5,13 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
 import __ from 'oro/translator'
 import template from 'pim/template/export/product/edit/content/structure/locales'
 import BaseForm from 'pim/form'
 import fetcherRegistry from 'pim/fetcher-registry'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'AknFieldContainer',
   template: _.template(template),

@@ -1,4 +1,3 @@
-
 /**
  * Save extension for the Datagrid View Selector.
  * It displays a button near the selector to allow the user to save the current changes
@@ -14,11 +13,10 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/grid/view-selector/save-view'
 import DatagridState from 'pim/datagrid/state'
-import Dialog from 'pim/dialog'
-import Routing from 'routing'
 import UserContext from 'pim/user-context'
 import DatagridViewSaver from 'pim/saver/datagrid-view'
 import messenger from 'oro/messenger'
+
 export default BaseForm.extend({
   template: _.template(template),
   tagName: 'span',

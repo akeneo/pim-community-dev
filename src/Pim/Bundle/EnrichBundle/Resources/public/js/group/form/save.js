@@ -1,4 +1,3 @@
-
 /**
  * Save extension for Group
  *
@@ -15,6 +14,7 @@ import GroupSaver from 'pim/saver/group'
 import FieldManager from 'pim/field-manager'
 import i18n from 'pim/i18n'
 import UserContext from 'pim/user-context'
+
 export default BaseSave.extend({
   updateSuccessMessage: __('pim_enrich.entity.group.info.update_successful'),
   updateFailureMessage: __('pim_enrich.entity.group.info.update_failed'),

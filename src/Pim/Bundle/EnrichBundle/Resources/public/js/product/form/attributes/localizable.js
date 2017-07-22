@@ -9,6 +9,7 @@
 import _ from 'underscore'
 import BaseForm from 'pim/form'
 import FetcherRegistry from 'pim/fetcher-registry'
+
 export default BaseForm.extend({
   configure: function () {
     this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)

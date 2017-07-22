@@ -1,4 +1,3 @@
-
 /**
  * Metric field
  *
@@ -13,6 +12,7 @@ import _ from 'underscore'
 import FetcherRegistry from 'pim/fetcher-registry'
 import fieldTemplate from 'pim/template/product/field/metric'
 import initSelect2 from 'pim/initselect2'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

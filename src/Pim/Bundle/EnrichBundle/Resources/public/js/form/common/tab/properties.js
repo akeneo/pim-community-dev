@@ -1,4 +1,3 @@
-
 /**
  * Module used to display a simple properties tab
  *
@@ -9,9 +8,9 @@
 import _ from 'underscore'
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
-import FetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/form/tab/properties'
 import 'jquery.select2'
+
 export default BaseForm.extend({
   className: 'properties',
   template: _.template(template),

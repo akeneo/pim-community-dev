@@ -1,4 +1,3 @@
-
 /**
  * Form main class
  *
@@ -11,6 +10,7 @@ import $ from 'jquery'
 import _ from 'underscore'
 import Backbone from 'backbone'
 import mediator from 'oro/mediator'
+
 export default Backbone.View.extend({
   code: 'form',
   parent: null,

@@ -1,4 +1,3 @@
-
 /**
  * Category tab extension
  *
@@ -18,6 +17,7 @@ import UserContext from 'pim/user-context'
 import Routing from 'routing'
 import TreeAssociate from 'pim/tree/associate'
 import mediator from 'oro/mediator'
+
 export default BaseForm.extend({
   template: _.template(formTemplate),
   switcherTemplate: _.template(switcherTemplate),

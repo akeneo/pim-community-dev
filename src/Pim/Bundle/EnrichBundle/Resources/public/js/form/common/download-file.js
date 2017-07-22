@@ -1,4 +1,3 @@
-
 /**
  * Download file extension
  *
@@ -12,8 +11,8 @@ import __ from 'oro/translator'
 import BaseForm from 'pim/form'
 import template from 'pim/template/form/download-file'
 import Routing from 'routing'
-import UserContext from 'pim/user-context'
 import propertyAccessor from 'pim/common/property'
+
 export default BaseForm.extend({
   template: _.template(template),
 

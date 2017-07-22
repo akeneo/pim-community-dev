@@ -1,4 +1,3 @@
-
 /**
  * Field abstract class
  *
@@ -14,6 +13,7 @@ import fieldTemplate from 'pim/template/product/field/field'
 import AttributeManager from 'pim/attribute-manager'
 import i18n from 'pim/i18n'
 import mediator from 'oro/mediator'
+
 var FieldModel = Backbone.Model.extend({
   values: []
 })

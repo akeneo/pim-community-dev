@@ -1,4 +1,3 @@
-
 /**
  * Properties form
  *
@@ -11,6 +10,7 @@ import __ from 'oro/translator'
 import template from 'pim/template/export/common/edit/properties'
 import BaseForm from 'pim/form'
 import propertyAccessor from 'pim/common/property'
+
 export default BaseForm.extend({
   template: _.template(template),
   errors: {},

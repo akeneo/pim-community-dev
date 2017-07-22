@@ -1,4 +1,3 @@
-
 /**
  * Family label translation fields view
  *
@@ -8,6 +7,7 @@
  */
 import BaseTranslation from 'pim/common/properties/translation'
 import SecurityContext from 'pim/security-context'
+
 export default BaseTranslation.extend({
   /**
    * {@inheritdoc}

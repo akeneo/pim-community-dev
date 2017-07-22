@@ -5,16 +5,16 @@
  * File: jstree.tree_selector.js
  *
 /* Group: jstree tree_selector plugin */
-(function($) {
+(function ($) {
   'use strict'
 
   var tree_select_id = 'tree_select'
 
   $.jstree.plugin('tree_selector', {
-    __init: function() {
+    __init: function () {
       this.get_container()
         // Create the tree toolbar and load trees in tree selector
-        .bind('init.jstree', $.proxy(function() {
+        .bind('init.jstree', $.proxy(function () {
           var _this = this
           var settings = this._get_settings().tree_selector
           this.data.tree_selector.ajax = settings.ajax
@@ -35,7 +35,7 @@
           })
           tree_select.addClass('jstree-tree-select')
 
-          tree_select.bind('change', function() {
+          tree_select.bind('change', function () {
             _this.switch_tree()
           })
 
@@ -45,17 +45,17 @@
           this.load_trees()
         }, this))
         // Rewrite the root node to link it to the selected tree
-        .bind('loaded.jstree', $.proxy(function(event) {
+        .bind('loaded.jstree', $.proxy(function (event) {
           if (event.namespace === 'jstree') {
             this.switch_tree()
           }
         // Select the node marked as 'toselect' from the server
         }, this))
-        .bind('clean_node.jstree', $.proxy(function(e, data) {
+        .bind('clean_node.jstree', $.proxy(function (e, data) {
           // Switch to node clicked when requested by the data for this node
           var _this = this
           if (data.rslt.obj) {
-            $.each(data.rslt.obj, function(index, node) {
+            $.each(data.rslt.obj, function (index, node) {
               if ($(node).hasClass('toselect')) {
                 _this.select_node($(node))
                 $(node).removeClass('toselect')
@@ -73,12 +73,12 @@
       preselect_node_id: false
     },
     _fn: {
-      refresh: function() {
+      refresh: function () {
         this.refresh_trees()
 
         return this.__call_old()
       },
-      switch_tree: function() {
+      switch_tree: function () {
         // Create new root node, place it into the tree and
         // open it if setup to auto_open_root
         var selected_tree = this.get_tree_select().find(':selected')
@@ -111,10 +111,10 @@
 
         this.get_container().trigger('after_tree_loaded.jstree', root_node_id)
       },
-      get_tree_select: function() {
+      get_tree_select: function () {
         return $('#' + tree_select_id)
       },
-      load_trees: function() {
+      load_trees: function () {
         var _this = this
         var trees
 
@@ -141,7 +141,7 @@
           this.get_tree_select().append(no_tree_option)
         }
 
-        $.each(trees, function(index, tree) {
+        $.each(trees, function (index, tree) {
           var option_text = tree[_this.data.tree_selector.node_label_field]
           var option = $('<option>', {
             value: tree.id,
@@ -167,12 +167,12 @@
 
         this.get_container().trigger('trees_loaded.jstree', tree_select_id)
       },
-      _load_data_trees: function() {
+      _load_data_trees: function () {
         var trees_data = this.data.tree_selector.data
 
         return $.parseJSON(trees_data)
       },
-      _load_ajax_trees: function() {
+      _load_ajax_trees: function () {
         var trees_url = this.data.tree_selector.ajax.url
         var trees_url_parameters = this.data.tree_selector.ajax.parameters
         var trees = []
@@ -182,13 +182,13 @@
           async: false,
           dataType: 'json',
           data: trees_url_parameters
-        }).done(function(ajax_trees) {
+        }).done(function (ajax_trees) {
           trees = ajax_trees
         })
 
         return trees
       },
-      _prepare_node: function(id, node_name, node_code) {
+      _prepare_node: function (id, node_name, node_code) {
         var node = $('<li>', {
           id: id,
           rel: 'folder',
@@ -211,12 +211,12 @@
 
         return node
       },
-      refresh_trees: function() {
+      refresh_trees: function () {
         this.get_tree_select().empty()
         this.load_trees()
         this.switch_tree()
       },
-      get_tree_id: function() {
+      get_tree_id: function () {
         var root_node = this.get_container_ul().find('li')[0]
         return $(root_node).attr('id')
       }

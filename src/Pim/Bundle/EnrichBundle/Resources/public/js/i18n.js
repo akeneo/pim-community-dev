@@ -1,6 +1,6 @@
-
 import _ from 'underscore'
 import template from 'pim/template/i18n/flag'
+
 export default {
   flagTemplate: _.template(template),
   getFlag: function (locale, displayLanguage) {

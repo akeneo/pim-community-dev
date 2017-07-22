@@ -1,4 +1,3 @@
-
 /**
  * Locale switcher extension
  *
@@ -13,6 +12,7 @@ import BaseForm from 'pim/form'
 import template from 'pim/template/product/locale-switcher'
 import FetcherRegistry from 'pim/fetcher-registry'
 import i18n from 'pim/i18n'
+
 export default BaseForm.extend({
   template: _.template(template),
   className: 'AknDropdown AknButtonList-item locale-switcher',

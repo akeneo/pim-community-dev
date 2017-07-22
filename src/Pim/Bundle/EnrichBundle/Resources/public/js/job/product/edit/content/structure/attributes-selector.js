@@ -1,4 +1,3 @@
-
 /**
  * Attribute selector
  *
@@ -15,6 +14,7 @@ import userContext from 'pim/user-context'
 import fetcherRegistry from 'pim/fetcher-registry'
 import template from 'pim/template/export/product/edit/content/structure/attributes-selector'
 import attributeListTemplate from 'pim/template/export/product/edit/content/structure/attribute-list'
+
 export default Backbone.View.extend({
   events: {
     'click .attribute-groups li': 'changeAttributeGroup',

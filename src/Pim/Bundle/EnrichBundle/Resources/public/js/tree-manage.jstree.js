@@ -73,7 +73,7 @@ export default function (elementId, prefixRoute) {
             context: 'manage'
           }
         ),
-        data: function(node) {
+        data: function (node) {
           // the result is fed to the AJAX request `data` option
           var id = null
 
@@ -112,10 +112,10 @@ export default function (elementId, prefixRoute) {
   if ($el.attr('data-creatable')) {
     this.config.plugins.push('contextmenu')
   }
-  this.init = function() {
-    $el.jstree(this.config).bind('move_node.jstree', function(e, data) {
+  this.init = function () {
+    $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
       var this_jstree = $.jstree._focused()
-      data.rslt.o.each(function(i) {
+      data.rslt.o.each(function (i) {
         $.ajax({
           async: false,
           type: 'POST',
@@ -129,7 +129,7 @@ export default function (elementId, prefixRoute) {
             code: data.rslt.name,
             copy: data.rslt.cy ? 1 : 0
           },
-          success: function(r) {
+          success: function (r) {
             if (!r.status) {
               this_jstree.rollback(data.rlbk)
             } else {
@@ -141,7 +141,7 @@ export default function (elementId, prefixRoute) {
           }
         })
       })
-    }).bind('select_node.jstree', function(e, data) {
+    }).bind('select_node.jstree', function (e, data) {
       if (!$el.attr('data-editable')) {
         return
       }
@@ -159,7 +159,7 @@ export default function (elementId, prefixRoute) {
         async: true,
         type: 'GET',
         url: url + '?content=form',
-        success: function(data) {
+        success: function (data) {
           if (data) {
             $('#category-form').html(data)
             Backbone.history.navigate('#' + url, {
@@ -169,18 +169,18 @@ export default function (elementId, prefixRoute) {
             loadingMask.hide()
           }
         },
-        error: function(jqXHR) {
+        error: function (jqXHR) {
           OroError.dispatch(null, jqXHR)
           loadingMask.hide()
         }
       })
-    }).bind('loaded.jstree', function(event, data) {
+    }).bind('loaded.jstree', function (event, data) {
       if (event.namespace === 'jstree') {
         data.inst.get_tree_select().select2({
           width: '100%'
         })
       }
-    }).bind('create.jstree', function(e, data) {
+    }).bind('create.jstree', function (e, data) {
       $.jstree._focused().lock()
       var id = data.rslt.parent.attr('id').replace('node_', '')
       var url = Routing.generate(prefixRoute + '_categorytree_create', {
@@ -195,7 +195,7 @@ export default function (elementId, prefixRoute) {
         async: true,
         type: 'GET',
         url: url + '&content=form',
-        success: function(data) {
+        success: function (data) {
           if (data) {
             $('#category-form').html(data)
             Backbone.history.navigate('#' + url, {
@@ -204,7 +204,7 @@ export default function (elementId, prefixRoute) {
             loadingMask.hide()
           }
         },
-        error: function(jqXHR) {
+        error: function (jqXHR) {
           OroError.dispatch(null, jqXHR)
           loadingMask.hide()
         }

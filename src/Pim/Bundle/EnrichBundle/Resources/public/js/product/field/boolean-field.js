@@ -1,4 +1,3 @@
-
 /**
  * Boolean field
  *
@@ -11,6 +10,7 @@ import Field from 'pim/field'
 import _ from 'underscore'
 import fieldTemplate from 'pim/template/product/field/boolean'
 import 'bootstrap.bootstrapswitch'
+
 export default Field.extend({
   fieldTemplate: _.template(fieldTemplate),
   events: {

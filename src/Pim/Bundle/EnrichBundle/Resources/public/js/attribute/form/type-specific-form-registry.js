@@ -1,5 +1,5 @@
-
 import _ from 'underscore'
+
 export default {
   /**
    * Get the form name corresponding to the specified attribute type, or null.

@@ -1,4 +1,3 @@
-
 /**
  * Import switcher item extension
  * This extension is related to src/Pim/Bundle/EnrichBundle/Resources/public/js/job/import/switcher.js
@@ -10,6 +9,7 @@
  */
 import __ from 'oro/translator'
 import BaseForm from 'pim/form'
+
 export default BaseForm.extend({
   visible: false,
 

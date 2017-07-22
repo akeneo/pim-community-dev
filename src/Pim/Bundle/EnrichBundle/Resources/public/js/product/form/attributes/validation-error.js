@@ -1,4 +1,3 @@
-
 /**
  * Validation error extension
  *
@@ -11,6 +10,7 @@ import _ from 'underscore'
 import Backbone from 'backbone'
 import template from 'pim/template/product/tab/attribute/validation-error'
 import i18n from 'pim/i18n'
+
 export default Backbone.View.extend({
   template: _.template(template),
   className: 'AknFieldContainer-validationErrors validation-errors',

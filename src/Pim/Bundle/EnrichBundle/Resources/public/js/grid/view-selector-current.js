@@ -1,4 +1,3 @@
-
 /**
  * Module to display the current view in the Datagrid View Selector.
  * This module accepts extensions to display more info beside the view.
@@ -7,11 +6,10 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-import $ from 'jquery'
 import _ from 'underscore'
-import Backbone from 'backbone'
 import BaseForm from 'pim/form'
 import template from 'pim/template/grid/view-selector/current'
+
 export default BaseForm.extend({
   template: _.template(template),
   datagridView: null,
