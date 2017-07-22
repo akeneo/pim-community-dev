@@ -410,7 +410,6 @@ flash:
     updated: Valuutta päivitetty
     error.linked_to_channel: Et voi poistaa kanavaan liitettyä valuuttaa.
   family:
-    created: Tuoteperhe luotu
     updated: Tuoteperhe päivitetty
     removed: Tuoteperhe poistettu
     identifier not removable: Tunnus-määritettä ei voi poistaa tuoteperheestä
@@ -429,7 +428,6 @@ flash:
     enabled: Tuote on otettu käyttöön
     disabled: Tuote on poistettu käytöstä
   group:
-    created: Ryhmä luotu onnistuneesti
     updated: Ryhmä päivitetty onnistuneesti
     removed: Ryhmän poistaminen onnistui
   variant group:
@@ -733,9 +731,7 @@ pane.accordion:
   group_values: Ryhmän arvot
 popin.create:
   association_type.title: Luo uusi määritetyyppi
-  family.title: Luo uusi tuoteperhe
   group.title: Luo uusi ryhmä
-  group_type.title: Luo uusi ryhmätyyppi
   product.title: Luo uusi tuote
   variant_group.title: Luo uusi tuotevariaatioryhmä
   option.title: Luo uusi vaihtoehto

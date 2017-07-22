@@ -130,12 +130,16 @@ pim_enrich:
     info:
       update_failed: Actualització fallida
       update_successful: Actualització completada
+    create_popin:
+      code: Codi
+      label: Etiqueta
+      labels:
+        save: Desar
+        cancel: Cancelar
     product:
       title: producte
       btn:
-        enable: Habilitar
         enabled: Habilitat
-        disable: Deshabilitar
         disabled: Deshabilitat
         download_pdf: PDF
         compare_translate: Comparar / traduir
@@ -175,6 +179,7 @@ pim_enrich:
             group_label: Etiqueta
             more_products: '{{ count }} més productes...'
             close: Tancar
+        status: Estat
       copy:
         select: Seleccionar
         all: Tots
@@ -200,6 +205,9 @@ pim_enrich:
           family: Trieu una família
           save: Desar
           cancel: Cancelar
+      message:
+        created: Producte creat correctament
+      completeness: Complet
     association_type:
       meta:
         created: Creat
@@ -209,6 +217,10 @@ pim_enrich:
       btn:
         save: Desar
       title: tipus d'associació
+      create_popin:
+        title: Crear un nou tipus d'associació
+      message:
+        created: Tipus d'associació creat correctament
     group_type:
       meta:
         created: Creat
@@ -218,6 +230,10 @@ pim_enrich:
       btn:
         save: Desar
       title: tipus de grup
+      create_popin:
+        title: Crear un nou tipus de grup
+      message:
+        created: Tipus de grup creat correctament
     channel:
       title: canal
       meta:
@@ -236,6 +252,10 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
+      create_popin:
+        title: Crear una nova família
+      message:
+        created: Família creada correctament
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -257,6 +277,10 @@ pim_enrich:
         created_by: Creat per
         updated: Actualitzat
         updated_by: Actualitzat per
+      create_popin:
+        title: Crear un nou grup de variants
+      message:
+        created: Grup de variants creat correctament
     group:
       title: Grup
       info:
@@ -272,6 +296,10 @@ pim_enrich:
         created_by: Creat per
         updated: Actualitzat
         updated_by: Actualitzat per
+      create_popin:
+        title: Crea un grup nou
+      message:
+        created: Grup creat correctament
     attribute:
       scopable: Abastable
       type:
@@ -406,6 +434,7 @@ pim_enrich:
           general: General
           code: Codi
           attribute_as_label: Atribut utilitzat com a etiqueta
+          empty_attribute_as_image: No seleccionat
           label_translations: Traduccions d'etiquetes
         attributes:
           title: Atributs
@@ -430,7 +459,6 @@ pim_enrich:
         "no": "No"
         "yes": "Sí"
     variant_group:
-      axis.help: 'Els eixos defineixen els atributs sobre els que els productes del grup han de variar. Els eixos són atributs amb opcions, sense configuració regional i sense abast. No es poden canviar després de la creació del grup de variants.'
       tab:
         properties:
           title: Propietats
@@ -753,8 +781,15 @@ pim_enrich:
     edit_common_attributes:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
   index:
+    import_profiles:
+      list: Seleccioneu un job
+      create_popin:
+        title: Crear un nou perfil d'importació
     group:
       create_btn: Crear grup
+    export_profiles:
+      create_popin:
+        title: Crear un nou perfil d'exportació
     user:
       title: Usuari
       create_btn: Crear usuari
@@ -818,6 +853,190 @@ batch_jobs:
     label: Afegir a un grup de variants
     perform:
       label: Afegir a un grup de variants
+  csv_product_export:
+    label: Exportar productes a CSV
+    export.label: Exportar productes
+  csv_category_export:
+    label: Exportar categories en CSV
+    export.label: Exportar categories
+  csv_attribute_export:
+    label: Exportar atributs a CSV
+    export.label: Exportar atributs
+  csv_attribute_option_export:
+    label: Exportar opcions d'atribut en CSV
+    export.label: Exportar opcions d'atribut
+  csv_association_type_export:
+    label: Exportar tipus d'associació en CSV
+    export.label: Exportar tipus d'associacions
+  csv_group_export:
+    label: Exportar grups en CSV
+    export.label: Exportar grups
+  csv_variant_group_export:
+    label: Exportar grup de variants a CSV
+    export.label: Exportar grup de variants
+  csv_family_export:
+    label: Exportar famílies en CSV
+    export.label: Exportar família
+  csv_product_import:
+    label: Importar producte en CSV
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  csv_category_import:
+    label: Importar categories en CSV
+    validation.label: Validar arxius
+    import.label: Importar categories
+  csv_attribute_import:
+    label: Importar atributs en CSV
+    validation.label: Validar arxius
+    import.label: Importar atributs
+  csv_attribute_option_import:
+    label: Importar opcions d'atribut en CSV
+    validation.label: Validar arxius
+    import.label: Importar opcions d'atribut
+  csv_association_type_import:
+    label: Importar tipus d'associació en CSV
+    validation.label: Validar arxius
+    import.label: Importar tipus d'associació
+  csv_family_import:
+    label: Importar famílies en CSV
+    validation.label: Validar arxius
+    import.label: Importar família
+  csv_group_import:
+    label: Importar grups en CSV
+    validation.label: Validar arxius
+    import.label: Importar grups
+  csv_variant_group_import:
+    label: Importar Grup de variants des d'un CSV
+    validation.label: Validar arxius
+    import.label: Importació de grupo de variants
+  csv_channel_export:
+    label: Canal d'exportació en CSV
+    export.label: Canal d'exportació
+  csv_locale_export:
+    label: Exportació de configuració regional en CSV
+    export.label: Exportació de configuració regional
+  csv_attribute_group_export:
+    label: Exportació de grup d'atributs en CSV
+    export.label: Exportació de grup d'atributs
+  csv_currency_export:
+    label: Exportació de moneda en CSV
+    export.label: Exportació de moneda
+  csv_group_type_export:
+    label: Exportació de tipus de grup en CSV
+    export.label: Exportació de tipus de grup
+  csv_channel_import:
+    label: Importació de canal en CSV
+    validation.label: Validar arxius
+    import.label: Importació de canal
+  csv_locale_import:
+    label: Importació de configuració regional en CSV
+    validation.label: Validar arxius
+    import.label: Importació de configuració regional
+  csv_attribute_group_import:
+    label: Impoftació de grup d'atributs en CSV
+    validation.label: Validar arxius
+    import.label: Importació de grup d'atributs
+  csv_currency_import:
+    label: Importació de moneda en CSV
+    validation.label: Validar arxius
+    import.label: Importació de moneda
+  csv_group_type_import:
+    label: Importació de tipus de grup en CSV
+    validation.label: Validar arxius
+    import.label: Importació de tipus de grup
+  xlsx_category_import:
+    label: Importació de categoria en XLSX
+    validation.label: Validar arxius
+    import.label: Importar categories
+  xlsx_association_type_import:
+    label: Importar tipus d'associació en XLSX
+    validation.label: Validar arxius
+    import.label: Importar tipus d'associació
+  xlsx_attribute_import:
+    label: Atribut importació en XLSX
+    validation.label: Validar arxius
+    import.label: Importar atributs
+  xlsx_attribute_option_import:
+    label: Importació d'opcions d'atribut en XLSX
+    validation.label: Validar arxius
+    import.label: Importar opcions d'atribut
+  xlsx_family_import:
+    label: Importació de família en XLSX
+    validation.label: Validar arxius
+    import.label: Importar família
+  xlsx_product_export:
+    label: Exportació de producte en XLSX
+    export.label: Exportar productes
+  xlsx_product_import:
+    label: Importació de producte en XLSX
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  xlsx_group_export:
+    label: Exportació de grup en XLSX
+    export.label: Exportar grups
+  xlsx_variant_group_export:
+    label: Exportació de variant de grup en XLSX
+    export.label: Exportar grup de variants
+  xlsx_group_import:
+    label: Importació de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importar grups
+  xlsx_variant_group_import:
+    label: Importacin de variant de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de variant grup
+  xlsx_family_export:
+    label: Exportació de família en XLSX
+    export.label: Exportar família
+  xlsx_category_export:
+    label: Exportació de categoria en XLSX
+    export.label: Exportar categories
+  xlsx_attribute_export:
+    label: Importació d'atribut de XLSX
+    export.label: Importació d'atribut de XLSX
+  xlsx_attribute_option_export:
+    label: Exportació d'opcions d'atribut en XLSX
+    export.label: Exportació d'opcions d'atribut en XLSX
+  xlsx_association_type_export:
+    label: Exportació de tipus d'associació en CSV
+    export.label: Exportació de tipus d'associació en CSV
+  xlsx_channel_export:
+    label: Exportació de canal en XLSX
+    export.label: Canal d'exportació
+  xlsx_locale_export:
+    label: Exportació de configuració regional en XLSX
+    export.label: Exportació de configuració regional
+  xlsx_attribute_group_export:
+    label: Exportació de grup d'atributs en XLSX
+    export.label: Exportació de grup d'atributs
+  xlsx_currency_export:
+    label: Exportació de moneda en XLSX
+    export.label: Exportació de moneda
+  xlsx_group_type_export:
+    label: Exportació de tipus de grup en XLSX
+    export.label: Exportació de tipus de grup
+  xlsx_channel_import:
+    label: Importació de canal de XLSX
+    validation.label: Validar arxius
+    import.label: Importació de canal
+  xlsx_locale_import:
+    label: Importació de configuració regional en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de configuració regional
+  xlsx_attribute_group_import:
+    label: Impoftació de grup d'atributs en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de grup d'atributs
+  xlsx_currency_import:
+    label: Importació de moneda en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de moneda
+  xlsx_group_type_import:
+    label: Importació de tipus de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de tipus de grup
 pim_menu:
   tab:
     dashboard: Panell de contol
