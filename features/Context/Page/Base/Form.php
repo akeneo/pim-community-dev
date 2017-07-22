@@ -68,7 +68,11 @@ class Form extends Base
      */
     public function save()
     {
-        $this->getElement('Save')->click();
+        $this->spin(function () {
+            $this->getElement('Save')->click();
+
+            return true;
+        }, 'Cannot click on the save button.');
     }
 
     /**

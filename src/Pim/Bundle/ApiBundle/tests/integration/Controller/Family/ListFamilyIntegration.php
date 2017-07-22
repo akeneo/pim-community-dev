@@ -37,6 +37,7 @@ class ListFamilyIntegration extends ApiTestCase
                     "a_text", "a_text_area", "a_yes_no", "an_image", "sku"
                 ],
                 "attribute_as_label": "sku",
+                "attribute_as_image": "an_image",
                 "attribute_requirements": {
                     "ecommerce": [
                         "a_date", "a_file", "a_localizable_image", "a_localized_and_scopable_text_area", "a_metric",
@@ -66,6 +67,7 @@ class ListFamilyIntegration extends ApiTestCase
                 "code": "familyA1",
                 "attributes": ["a_date", "a_file", "a_localizable_image", "sku"],
                 "attribute_as_label": "sku",
+                "attribute_as_image": null,
                 "attribute_requirements": {
                     "ecommerce": ["a_date", "a_file", "sku"],
                     "ecommerce_china": ["sku"],
@@ -84,6 +86,7 @@ class ListFamilyIntegration extends ApiTestCase
                 "code": "familyA2",
                 "attributes": ["a_metric", "a_number_float", "sku"],
                 "attribute_as_label": "sku",
+                "attribute_as_image": null,
                 "attribute_requirements" : {
                     "ecommerce": ["a_metric", "sku"],
                     "ecommerce_china": ["sku"],

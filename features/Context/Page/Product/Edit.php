@@ -78,7 +78,7 @@ class Edit extends ProductEditForm
                     ]
                 ],
                 'Main context selector' => [
-                    'css'        => '.tab-container .attribute-edit-actions .context-selectors',
+                    'css'        => '.AknTitleContainer-context',
                     'decorators' => [
                         ContextSwitcherDecorator::class
                     ]
@@ -114,7 +114,9 @@ class Edit extends ProductEditForm
     {
         $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
         $link = $this->spin(function () use ($dropdown, $localeCode) {
-            $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
+            if (!$dropdown->hasClass('open')) {
+                $dropdown->click();
+            }
 
             return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
         }, 'Can not click on the locale dropdown button');
@@ -297,13 +299,7 @@ class Edit extends ProductEditForm
      */
     public function disableProduct()
     {
-        $el = $this->getElement('Status switcher');
-
-        $this->getProductStatusSwitcherCaret()->click();
-        $button = $el->find('css', 'ul a[data-status="disable"]');
-        if ($button) {
-            $button->click();
-        }
+        $this->changeProductStatus('disable');
 
         return $this;
     }
@@ -315,15 +311,36 @@ class Edit extends ProductEditForm
      */
     public function enableProduct()
     {
-        $el = $this->getElement('Status switcher');
-
-        $this->getProductStatusSwitcherCaret()->click();
-        $button = $el->find('css', 'ul a[data-status="enable"]');
-        if ($button) {
-            $button->click();
-        }
+        $this->changeProductStatus('enable');
 
         return $this;
+    }
+
+    /**
+     * @param $status string enable|disable
+     */
+    protected function changeProductStatus($status)
+    {
+        $this->spin(function () use ($status) {
+            $el = $this->getElement('Status switcher');
+            if (null === $el) {
+                return false;
+            }
+
+            $container = $this->getClosest($el, 'AknDropdown');
+            if (null === $container) {
+                return false;
+            }
+
+            $container->click();
+            $button = $container->find('css', sprintf('.AknDropdown-menuLink[data-status="%s"]', $status));
+            if (null === $button) {
+                return false;
+            }
+            $button->click();
+
+            return true;
+        }, sprintf('Can not %s product on PEF', $status));
     }
 
     /**
@@ -632,19 +649,5 @@ class Edit extends ProductEditForm
         return $this->spin(function () use ($dropdownMenu) {
             return $dropdownMenu->find('css', '.save-product-and-back');
         }, '"Save and back" button not found');
-    }
-
-    /**
-     * Get the caret of the product switcher to provide click
-     *
-     * @return NodeElement
-     */
-    protected function getProductStatusSwitcherCaret()
-    {
-        $el = $this->getElement('Status switcher');
-
-        return $this->spin(function () use ($el) {
-            return $el->find('css', '.AknDropdownButton-caretContainer');
-        }, 'Unable to find the status dropdown caret to enable or disable product on PEF');
     }
 }

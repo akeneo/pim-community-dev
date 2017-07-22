@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * This class allows to get the real class name of an entity by its name
@@ -14,16 +14,16 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 class EntityClassResolver
 {
     /**
-     * @var SmartManagerRegistry
+     * @var RegistryInterface
      */
     protected $doctrine;
 
     /**
      * Constructor
      *
-     * @param SmartManagerRegistry $doctrine
+     * @param RegistryInterface $doctrine
      */
-    public function __construct(SmartManagerRegistry $doctrine)
+    public function __construct(RegistryInterface $doctrine)
     {
         $this->doctrine = $doctrine;
     }

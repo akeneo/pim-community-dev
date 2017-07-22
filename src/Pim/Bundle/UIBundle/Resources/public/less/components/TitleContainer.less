@@ -9,16 +9,17 @@
   align-items: stretch;
 
   &-imageContainer:not(:empty) {
-    width: @imageSize;
-    height: @imageSize;
+    width: @imageSize + 2px;
+    height: @imageSize + 2px;
+    border: 1px solid @AknBorderColor;
     margin-right: 20px;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
   }
 
   &-image {
-    width: @imageSize;
-    height: @imageSize;
-    border: 1px solid @AknBorderColor;
-    border-radius: 4px;
+    margin: auto;
   }
 
   &-mainContainer {
@@ -30,16 +31,11 @@
   }
 
   &-meta {
-    padding-top: 20px;
     display: flex;
 
     &:empty {
       display: none;
     }
-  }
-
-  &-breadcrumbs:not(:empty) {
-    padding-bottom: 10px;
   }
 
   &-title {

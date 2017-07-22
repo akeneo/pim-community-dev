@@ -1,6 +1,6 @@
 const utils = require('loader-utils')
 const path = require('path')
-const hasModule = (content) => content.indexOf('module') >= 0
+const hasModule = (content) => content.indexOf('__moduleConfig') >= 0
 const { chain } = require('lodash')
 
 function formatModuleName (name) {

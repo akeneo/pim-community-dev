@@ -62,18 +62,18 @@ module.exports = {
       },
 
             // Inject the module config (to replace module.config() from requirejs)
-      {
-        test: /\.js$/,
-        exclude: /node_modules|spec/,
-        use: [
-          {
-            loader: resolve(__dirname, 'frontend/config-loader'),
-            options: {
-              configMap: config
-            }
-          }
-        ]
-      },
+            {
+                test: /\.js$/,
+                exclude: /\/node_modules\/|\/spec\//,
+                use: [
+                    {
+                        loader: resolve(__dirname, 'frontend/config-loader'),
+                        options: {
+                            configMap: config
+                        }
+                    }
+                ]
+            },
 
             // Load html without needing to prefix the requires with 'text!'
       {
@@ -150,6 +150,10 @@ module.exports = {
     ]
   },
 
+    watchOptions: {
+        ignored: /node_modules|app|app\/cache|vendor/
+    },
+
     // Support old loader declarations
   resolveLoader: {
     moduleExtensions: ['-loader']
@@ -171,11 +175,12 @@ module.exports = {
     new AddToContextPlugin(values(paths), rootDir),
 
         // Ignore these directories when webpack watches for changes
-    new webpack.WatchIgnorePlugin([
-      resolve(rootDir, './node_modules'),
-      resolve(rootDir, './app'),
-      resolve(rootDir, './vendor')
-    ]),
+        new webpack.WatchIgnorePlugin([
+            resolve(rootDir, './node_modules'),
+            resolve(rootDir, './app'),
+            resolve(rootDir, './app/cache'),
+            resolve(rootDir, './vendor')
+        ]),
 
         // Inject live reload to auto refresh the page (hmr not compatible with our app)
     new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),

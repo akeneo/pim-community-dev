@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
+use Pim\Component\Catalog\Factory\FamilyFactory;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
@@ -38,6 +39,9 @@ class FamilyController
     /** @var FamilySearchableRepository */
     protected $familySearchableRepo;
 
+    /** @var FamilyFactory */
+    protected $familyFactory;
+
     /** @var FamilyUpdater */
     protected $updater;
 
@@ -61,8 +65,12 @@ class FamilyController
     protected $propertiesFields = [
         'code',
         'attribute_as_label',
+        'attribute_as_image',
         'labels',
     ];
+
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
 
     /**
      * @param FamilyRepositoryInterface  $familyRepository
@@ -73,6 +81,8 @@ class FamilyController
      * @param RemoverInterface           $remover
      * @param ValidatorInterface         $validator
      * @param SecurityFacade             $securityFacade
+     * @param FamilyFactory              $familyFactory
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -82,7 +92,9 @@ class FamilyController
         SaverInterface $saver,
         RemoverInterface $remover,
         ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        FamilyFactory $familyFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->familyRepository = $familyRepository;
         $this->normalizer = $normalizer;
@@ -92,6 +104,8 @@ class FamilyController
         $this->remover = $remover;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
+        $this->familyFactory = $familyFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -255,5 +269,39 @@ class FamilyController
                 'internal_api'
             )
         );
+    }
+
+    /**
+     * Creates family
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $family = $this->familyFactory->create();
+        $this->updater->update($family, json_decode($request->getContent(), true));
+        $violations = $this->validator->validate($family);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['family' => $family]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($family);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $family,
+            'internal_api'
+        ));
     }
 }

@@ -2,15 +2,17 @@
 
 .AknBadge {
   line-height: @AknDefaultFontSize;
+  height: @AknDefaultFontSize;
   font-size: @AknDefaultFontSize;
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   display: inline-block;
-  border-radius: 2px;
-  padding: 4px;
+  border-radius: 100px;
+  padding: 0 12px;
   transition: background 0.1s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
   margin: 0 4px;
+  text-transform: uppercase;
 
   &-icon {
     margin: 0 5px 0 0;
@@ -49,16 +51,16 @@
   }
 
   &--warning {
-    background: lighten(@AknOrange, 20%);
-    color: darken(@AknOrange, 30%);
+    background: @AknOrange;
+    color: white;
 
     &:hover {
-      background: lighten(@AknOrange, 10%);
+      background: @AknOrange;
     }
   }
 
   &--warning &-icon {
-    color: darken(@AknOrange, 20%);
+    color: white;
   }
 
   &--grey {
@@ -89,6 +91,7 @@
 
   &--round {
     border-radius: 10px;
+    padding: 0 6px;
 
     &:not(:empty) {
       padding-left: 7px;
@@ -102,5 +105,11 @@
 
   &--hidden {
     display: none;
+  }
+
+  &--big {
+    height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+    font-size: @AknDefaultFontSize;
   }
 }

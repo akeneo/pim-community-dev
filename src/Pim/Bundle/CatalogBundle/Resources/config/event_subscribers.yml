@@ -29,7 +29,6 @@ services:
             - '@pim_catalog.context.catalog'
         tags:
             - { name: doctrine.event_subscriber }
-            - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_subscriber.scopable:
         class: '%pim_catalog.event_subscriber.scopable.class%'
@@ -37,13 +36,11 @@ services:
             - '@pim_catalog.context.catalog'
         tags:
             - { name: doctrine.event_subscriber }
-            - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_subscriber.timestampable:
         class: '%pim_catalog.event_subscriber.timestampable.class%'
         tags:
             - { name: doctrine.event_subscriber }
-            - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_subscriber.category.check_channels:
         class: '%pim_catalog.event_subscriber.category.check_channels.class%'

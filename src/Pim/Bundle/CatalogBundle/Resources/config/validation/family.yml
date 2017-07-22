@@ -6,6 +6,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 - code
         - Pim\Component\Catalog\Validator\Constraints\FamilyRequirements: ~
         - Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel: ~
+        - Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImage: ~
     properties:
         code:
             - NotBlank: ~

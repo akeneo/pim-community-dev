@@ -93,8 +93,8 @@ Feature: Export products according to simple select values
     And I filter by "manufacturer.code" with operator "In list" and value "Nike,Converse"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
-    And I edit the "manufacturer" attribute
-    And I visit the "Values" tab
+    And I am on the "manufacturer" attribute page
+    And I visit the "Options" tab
     And I remove the "Nike" option
     And I confirm the deletion
     And I am on the "csv_footwear_product_export" export job edit page

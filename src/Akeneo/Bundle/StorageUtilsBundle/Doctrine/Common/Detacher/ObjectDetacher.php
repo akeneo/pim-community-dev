@@ -5,10 +5,8 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -22,18 +20,18 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInterface
 {
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var array */
     protected $scheduledForCheck;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ObjectManager $objectManager
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ObjectManager $objectManager)
     {
-        $this->managerRegistry = $registry;
+        $this->objectManager = $objectManager;
         $this->scheduledForCheck = null;
     }
 
@@ -158,7 +156,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      */
     protected function getObjectManager($object)
     {
-        return $this->managerRegistry->getManagerForClass(ClassUtils::getClass($object));
+        return $this->objectManager;
     }
 
     /**

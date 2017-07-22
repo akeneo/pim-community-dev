@@ -34,6 +34,11 @@ class TextIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveAReferenceDataName('pim_catalog_text');
     }
 
+    public function testTextShouldNotHaveAutoOptionSorting()
+    {
+        $this->assertDoesNotHaveAutoOptionSorting('pim_catalog_text');
+    }
+
     public function testTextMaxCharactersIsNotGreaterThan()
     {
         $this->assertMaxCharactersIsNotGreaterThan('pim_catalog_text', 255);

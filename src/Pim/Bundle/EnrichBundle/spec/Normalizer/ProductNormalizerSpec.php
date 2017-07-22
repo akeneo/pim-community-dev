@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -18,9 +19,11 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -40,7 +43,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
-        CompletenessCalculatorInterface $completenessCalculator
+        CompletenessCalculatorInterface $completenessCalculator,
+        FileNormalizer $fileNormalizer
     ) {
         $this->beConstructedWith(
         $productNormalizer,
@@ -57,7 +61,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $collectionFilter,
         $completenessCollectionNormalizer,
         $userContext,
-        $completenessCalculator
+        $completenessCalculator,
+        $fileNormalizer
         );
     }
 
@@ -78,12 +83,14 @@ class ProductNormalizerSpec extends ObjectBehavior
         $channelRepository,
         $userContext,
         $collectionFilter,
+        $fileNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
         ArrayCollection $groups,
-        FileInfoInterface $fileInfo
+        ValueInterface $image,
+        FileInfoInterface $dataImage
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -142,6 +149,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $mug->getLabel('en_US')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
+        $mug->getImage()->willReturn($image);
+        $image->getData()->willReturn($dataImage);
+        $fileNormalizer->normalize($dataImage, Argument::any(), Argument::any())->willReturn([
+            'filePath'         => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
+        ]);
 
         $mug->getAssociations()->willReturn([$upsell]);
         $upsell->getAssociationType()->willReturn($groupType);
@@ -169,13 +182,17 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'model_type'        => 'product',
                     'structure_version' => 12,
                     'completenesses'    => null,
+                    'image'             => [
+                        'filePath'         => '/p/i/m/4/all.png',
+                        'originalFileName' => 'all.png',
+                    ],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
                     'associations'      => [
                         'group' => ['groupIds' => [12]]
-                    ],
+                    ]
                 ]
             ]
         );

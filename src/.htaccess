@@ -1,1 +1,3 @@
 deny from all
+
+{"code":"csv_product_export","label":"Demo CSV product export","type":"export","configuration":{"filePath":"/tmp/export_%job_label%_%datetime%.csv","delimiter":";","enclosure":"\"","withHeader":true,"decimalSeparator":".","dateFormat":"yyyy-MM-dd","with_media":true,"filters":{"data":[{"field":"enabled","operator":"=","value":true},{"field":"completeness","operator":">=","value":100},{"field":"categories","operator":"IN CHILDREN","value":["master"]},{"field":"description","value":"zzfzfz","operator":"CONTAINS"}],"structure":{"scope":"mobile","locales":["fr_FR","en_US","de_DE"]}}}}

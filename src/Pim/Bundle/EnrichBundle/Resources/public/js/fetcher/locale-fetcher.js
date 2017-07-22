@@ -13,9 +13,7 @@ export default BaseFetcher.extend({
   },
 
             /**
-             * Fetch an element based on its identifier
-             *
-             * @param {string} identifier
+             * Fetch all activated locales.
              *
              * @return {Promise}
              */

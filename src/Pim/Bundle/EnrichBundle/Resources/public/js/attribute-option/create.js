@@ -39,7 +39,7 @@ var CreateOptionView = Backbone.View.extend({
           method: 'POST',
           url: Routing.generate(
                                 'pim_enrich_attributeoption_create',
-                                { attributeId: this.attribute.id }
+                                { attributeId: this.attribute.meta.id }
                             ),
           data: JSON.stringify(form.getFormData())
         }).done(function (option) {

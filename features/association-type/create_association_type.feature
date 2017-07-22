@@ -15,8 +15,9 @@ Feature: Association type creation
     When I fill in the following information in the popin:
       | Code | up_sell |
     And I press the "Save" button
-    Then I should be on the "up_sell" association type page
-    And I should see the text "up_sell"
+    Then I should see the text "Association type successfully created"
+    And I should be on the "up_sell" association type page
+    And I should see "up_sell"
 
   Scenario: Fail to create an association type with an empty or invalid code
     Given I press the "Save" button

@@ -184,13 +184,13 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
         $exception = InvalidPropertyException::dataExpected(
             'name',
             'a valid scope',
-            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
+            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter'
         );
 
         $this->beConstructedWith(
             'name',
             null,
-            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
+            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
             'Property "name" expects a valid scope.',
             InvalidPropertyException::VALID_DATA_EXPECTED_CODE
         );

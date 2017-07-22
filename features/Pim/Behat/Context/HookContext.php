@@ -9,9 +9,10 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use WebDriver\Exception\UnexpectedAlertOpen;
 
 /**
  * Class HookContext
@@ -79,7 +80,7 @@ class HookContext extends PimContext
      */
     public function closeConnection()
     {
-        foreach ($this->getSmartRegistry()->getConnections() as $connection) {
+        foreach ($this->getDoctrine()->getConnections() as $connection) {
             $connection->close();
         }
     }
@@ -93,16 +94,18 @@ class HookContext extends PimContext
      */
     public function takeScreenshotAfterFailedStep(AfterStepScope $event)
     {
-        if ($event->getTestResult() === TestResult::FAILED) {
+        if ($event->getTestResult()->getResultCode() === TestResult::FAILED) {
             $driver = $this->getSession()->getDriver();
 
             $rootDir   = dirname($this->getParameter('kernel.root_dir'));
-            $filePath  = $event->getLogicalParent()->getFile();
+            $filePath  = $event->getFeature()->getFile();
+            $scenarios = $event->getFeature()->getScenarios();
+            $scenario = $scenarios[count($scenarios) - 1];
             $stepStats = [
                 'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
-                'scenario_line'  => $event->getLogicalParent()->getLine(),
-                'scenario_label' => $event->getLogicalParent()->getTitle(),
-                'exception'      => $event->getException()->getMessage(),
+                'scenario_line'  => $event->getStep()->getLine(),
+                'scenario_label' => $scenario->getTitle(),
+                //'exception'      => $event->getException()->getMessage(), TODO: Fix this if we want to make glados work again
                 'step_line'      => $event->getStep()->getLine(),
                 'step_label'     => $event->getStep()->getText(),
                 'status'         => 'failed'
@@ -118,7 +121,7 @@ class HookContext extends PimContext
                 }
 
                 $lineNum  = $event->getStep()->getLine();
-                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
+                $filename = strstr($event->getFeature()->getFile(), 'features/');
                 $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
                 $path     = sprintf('%s/%s', $dir, $filename);
 
@@ -188,14 +191,19 @@ class HookContext extends PimContext
     public function collectErrors()
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+
+            // This check won't work with steps provoking an alert to open, in this case skip it.
             try {
-                $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
                 $result = $this->getSession()->evaluateScript($script);
-                if ($result) {
-                    $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
-                }
-            } catch (\Exception $e) {
-                echo "Unable to retrieve js error\n";
+            } catch (UnexpectedAlertOpen $e) {
+                return;
+            }
+
+            if ($result) {
+                $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+
+                throw new JSErrorEncounteredException("Encountered a JS error: '{$result}'");
             }
         }
     }
@@ -242,7 +250,7 @@ class HookContext extends PimContext
      */
     public function clearUOW()
     {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+        foreach ($this->getDoctrine()->getEntityManagers() as $manager) {
             $manager->clear();
         }
     }
@@ -293,11 +301,11 @@ class HookContext extends PimContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     * @return RegistryInterface
      */
-    private function getSmartRegistry()
+    private function getDoctrine()
     {
-        return $this->getService('akeneo_storage_utils.doctrine.smart_manager_registry');
+        return $this->getService('doctrine');
     }
 
     /**

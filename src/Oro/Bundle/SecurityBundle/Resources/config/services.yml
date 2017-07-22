@@ -231,4 +231,4 @@ services:
     oro_security.acl.entity_class_resolver:
         class: '%oro_security.acl.entity_class_resolver.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine'

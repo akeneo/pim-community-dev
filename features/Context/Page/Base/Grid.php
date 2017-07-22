@@ -761,13 +761,19 @@ class Grid extends Index
             return !$this->isLoadingMaskVisible();
         }, 'Loading mask is still visible');
 
-        $filterList = $this->spin(function () {
-            return $this
+        $this->spin(function () {
+            $filterList = $this
                 ->getElement('Filters')
                 ->find('css', '#add-filter-button');
-        }, 'Impossible to find filter list');
 
-        $filterList->click();
+            if (null === $filterList) {
+                return false;
+            }
+
+            $filterList->click();
+
+            return true;
+        }, 'Impossible to click on the filter list');
     }
 
     /**

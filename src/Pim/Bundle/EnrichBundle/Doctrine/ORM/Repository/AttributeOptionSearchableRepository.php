@@ -116,12 +116,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
             return false;
         }
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
-        $properties = $attribute->getProperties();
 
-        if (!isset($properties['autoOptionSorting'])) {
-            return false;
-        }
-
-        return $properties['autoOptionSorting'];
+        return $attribute->getProperty('auto_option_sorting');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -79,6 +78,7 @@ class FixturesLoader
             $this->dropDatabase();
             $this->createDatabase();
             $this->restoreDatabase($dumpFile);
+            $this->clearAclCache();
 
             return;
         }
@@ -275,7 +275,7 @@ class FixturesLoader
             '-h '.$this->container->getParameter('database_host'),
             '-u '.$this->container->getParameter('database_user'),
             '-p'.$this->container->getParameter('database_password'),
-            sprintf('-e "DROP DATABASE %s;"', $this->container->getParameter('database_name')),
+            sprintf('-e "DROP DATABASE IF EXISTS %s;"', $this->container->getParameter('database_name')),
         ]);
     }
 
@@ -344,5 +344,16 @@ class FixturesLoader
         }
 
         return $process->getOutput();
+    }
+
+    /**
+     * Clear Oro cache about Acl.
+     * This cache should be cleared when loading the fixtures with mysql dump.
+     * It avoids inconsistency between the cache and the new data in the database.
+     */
+    protected function clearAclCache()
+    {
+        $aclCache = $this->container->get('security.acl.cache');
+        $aclCache->clearCache();
     }
 }

@@ -59,7 +59,6 @@ class WebUser extends PimContext
         }, sprintf('Cannot create a new %s', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
-        $this->wait();
     }
 
     /**
@@ -85,7 +84,6 @@ class WebUser extends PimContext
     public function iChooseTheAttributeType($type)
     {
         $this->getCurrentPage()->selectAttributeType($type);
-        $this->wait();
     }
 
     /**
@@ -914,36 +912,34 @@ class WebUser extends PimContext
     /**
      * @Then /^I should see select choices of the "(.*)" in the following order:$/
      *
-     * @param string $field
-     * @param array  $items
+     * @param string       $fieldName
+     * @param PyStringNode $items
      */
     public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
     {
-        $searched = array_values(explode(',', implode(',', $items->getStrings())));
+        $expectedChoices = array_values(explode(',', implode(',', $items->getStrings())));
 
-        $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+        $label = $this->spin(function () use ($fieldName) {
+            return $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+        }, sprintf('Cannot find field "%s"', $fieldName));
 
-        $valuesRoot = $this->getClosest($label, 'select2');
+        $this->spin(function () use ($label, $expectedChoices) {
+            $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
 
-        $foundChoices = $valuesRoot
-            ->findAll('css', '.field-input select option');
+            $foundChoices = $fieldContainer
+                ->findAll('css', '.AknFieldContainer-inputContainer select option');
 
-        $fieldsArray = [];
-        foreach ($foundChoices as $choice) {
-            $fieldsArray[] = trim($choice->getHtml());
-        }
+            $foundChoices = array_map(function ($choice) {
+                return trim($choice->getHtml());
+            }, $foundChoices);
 
-        $fieldsArray = array_values(array_filter($fieldsArray));
+            $foundChoices = array_values(array_filter($foundChoices));
 
-        if ($searched !== $fieldsArray) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Order of choices for field "%s" is not as expected, got: %s',
-                    $fieldName,
-                    implode(', ', $fieldsArray)
-                )
-            );
-        }
+            return $expectedChoices === $foundChoices;
+        }, sprintf(
+            'Order of choices for field "%s" is not as expected.',
+            $fieldName
+        ));
     }
 
     /**
@@ -1255,20 +1251,27 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string|null $not
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^I should( not)? see reorder handles$/
+     * @Then /^I should see reorder handles$/
      */
-    public function iShouldSeeReorderHandles($not = null)
+    public function iShouldSeeReorderHandles()
     {
-        $count = $this->getCurrentPage()->countOrderableOptions();
-        if ((null === $not && $count <= 0) || (null !== $not && $count > 0)) {
-            throw $this->createExpectationException(
-                sprintf("Expected to%s see reorder handle, %d found", $not, $count)
-            );
-        }
+        $this->spin(function () {
+            $count = $this->getCurrentPage()->countOrderableOptions();
+
+            return $count > 0;
+        }, 'Expected to see reorder handles.');
+    }
+
+    /**
+     * @Then /^I should not see reorder handles$/
+     */
+    public function iShouldNotSeeReorderHandles()
+    {
+        $this->spin(function () {
+            $count = $this->getCurrentPage()->countOrderableOptions();
+
+            return $count <= 0;
+        }, 'Expected not to see reorder handles.');
     }
 
     /**
@@ -1280,29 +1283,25 @@ class WebUser extends PimContext
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
-        $expectedAttributes = $this->listToArray($attributes);
-        $options            = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+        $this->spin(function () use ($attributes) {
+            $expectedAttributes = $this->listToArray($attributes);
+            $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
-        if (count($expectedAttributes) !== $actual = count($options)) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected to see %d eligible attributes as label, actually saw %d:'."\n%s",
-                    count($expectedAttributes),
-                    $actual,
-                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
-                )
-            );
-        }
+            if (count($expectedAttributes) !== $actual = count($options)) {
+                return false;
+            }
 
-        if ($expectedAttributes !== $options) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected to see eligible attributes as label %s, actually saw %s',
-                    print_r(\Doctrine\Common\Util\Debug::export($expectedAttributes, 2), true),
-                    print_r(\Doctrine\Common\Util\Debug::export($options, 2), true)
-                )
-            );
-        }
+            if ($expectedAttributes !== $options) {
+                return false;
+            }
+
+            return true;
+        }, sprintf(
+                'Expected to see eligible attributes as label %s, actually saw %s',
+                json_encode($this->listToArray($attributes)),
+                json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
+            )
+        );
     }
 
     /**
@@ -1323,10 +1322,10 @@ class WebUser extends PimContext
      */
     public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
-        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
-        if ($popin && !$element) {
+        $element = null;
+        if ($popin) {
             $element = $this->spin(function () {
-                return $this->getCurrentPage()->find('css', '.modal');
+                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
             }, 'Modal not found.');
         }
 
@@ -1469,7 +1468,6 @@ class WebUser extends PimContext
 
                 $this->getCurrentPage()->addOption($code, $data);
 
-                $this->wait();
                 return true;
             }, sprintf('Unable to create the attribute option %s', $data['Code']));
         }
@@ -1492,22 +1490,11 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param TableNode $table
-     *
      * @When /^I add an empty attribute option$/
-     * @When /^I add the following attribute option:$/
      */
-    public function iAddAnOptionRow(TableNode $table = null)
+    public function iAddAnEmptyAttributeOption()
     {
         $this->getCurrentPage()->createOption();
-
-        if (null !== $table) {
-            $values = $table->getRowsHash();
-            $code = $values['Code'];
-            unset($values['Code']);
-
-            $this->getCurrentPage()->fillLastOption($code, $values);
-        }
     }
 
     /**
@@ -1515,7 +1502,7 @@ class WebUser extends PimContext
      */
     public function iUpdateTheLastAttributeOption()
     {
-        $this->getCurrentPage()->saveLastOption();
+        $this->getCurrentPage()->saveNewOption();
     }
 
     /**
@@ -1754,7 +1741,7 @@ class WebUser extends PimContext
     public function productShouldBeDisabled(Product $product)
     {
         $this->spin(function () use ($product) {
-            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+            $this->getMainContext()->getEntityManager()->refresh($product);
 
             return !$product->isEnabled();
         }, 'Product was expected to be be disabled');
@@ -1770,7 +1757,7 @@ class WebUser extends PimContext
     public function productShouldBeEnabled(Product $product)
     {
         $this->spin(function () use ($product) {
-            $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+            $this->getMainContext()->getEntityManager()->refresh($product);
 
             return $product->isEnabled();
         }, 'Product was expected to be be enabled');
@@ -2412,17 +2399,7 @@ class WebUser extends PimContext
      */
     public function clearUOW()
     {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->clear();
-        }
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
+        $this->getMainContext()->getEntityManager()->clear();
     }
 
     /**
