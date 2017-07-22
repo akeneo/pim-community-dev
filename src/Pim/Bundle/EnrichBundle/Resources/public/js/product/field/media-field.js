@@ -68,7 +68,7 @@ export default Field.extend({
       return
     }
 
-    var formData = new FormData()
+    var formData = new window.FormData()
     formData.append('file', input.files[0])
 
     this.setReady(false)

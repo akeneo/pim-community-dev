@@ -31,7 +31,7 @@ export default BaseForm.extend({
    */
   remover: {
     remove: function () {
-      throw 'Remove function should be implemented in remover'
+      throw new Error('Remove function should be implemented in remover')
     }
   },
 

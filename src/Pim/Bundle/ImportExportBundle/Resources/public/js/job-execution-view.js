@@ -213,16 +213,19 @@ export default {
 
     params.model = jobExecution
 
-    new JobExecutionView(_.extend(params, {
+    const jobExecutionView = new JobExecutionView(_.extend(params, {
       el: params.jobExecutionSelector
     }))
-    new JobExecutionStatusView(_.extend(params, {
+
+    const jobExecutionStatusView = new JobExecutionStatusView(_.extend(params, {
       el: params.jobExecutionStatusSelector
     }))
-    new JobExecutionButtonsView(_.extend(params, {
+
+    const jobExecutionButtonsView = new JobExecutionButtonsView(_.extend(params, {
       el: params.jobExecutionButtonsSelector
     }))
-    new JobExecutionLogButtonView(_.extend(params, {
+
+    const jobExecutionLogButtonView = new JobExecutionLogButtonView(_.extend(params, {
       el: params.jobExecutionLogButtonSelector
     }))
 
@@ -248,5 +251,12 @@ export default {
         displayRefreshLink()
       }
     }, 120000)
+
+    return {
+      jobExecutionView,
+      jobExecutionStatusView,
+      jobExecutionButtonsView,
+      jobExecutionLogButtonView
+    }
   }
 }

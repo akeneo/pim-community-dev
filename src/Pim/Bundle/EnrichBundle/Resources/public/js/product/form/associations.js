@@ -180,28 +180,28 @@ export default BaseForm.extend({
    * @param {string} associationType
    */
   setCurrentAssociationType: function (associationType) {
-    sessionStorage.setItem('current_association_type', associationType)
+    window.sessionStorage.setItem('current_association_type', associationType)
   },
 
   /**
    * @returns {string}
    */
   getCurrentAssociationType: function () {
-    return sessionStorage.getItem('current_association_type')
+    return window.sessionStorage.getItem('current_association_type')
   },
 
   /**
    * @param {string} associationTarget
    */
   setCurrentAssociationTarget: function (associationTarget) {
-    sessionStorage.setItem('current_association_target', associationTarget)
+    window.sessionStorage.setItem('current_association_target', associationTarget)
   },
 
   /**
    * @returns {string}
    */
   getCurrentAssociationTarget: function () {
-    return sessionStorage.getItem('current_association_target') || 'products'
+    return window.sessionStorage.getItem('current_association_target') || 'products'
   },
 
   loadAssociationTypes: function () {

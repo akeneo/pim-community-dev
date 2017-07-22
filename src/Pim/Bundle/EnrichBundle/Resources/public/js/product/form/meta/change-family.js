@@ -95,14 +95,16 @@ export default BaseForm.extend({
           FetcherRegistry.getFetcher('family')
             .fetch(self.getFormData().family)
             .then(function (family) {
-              callback({
+              const familyDetails = {
                 id: family.code,
                 text: i18n.getLabel(
                   family.labels,
                   UserContext.get('catalogLocale'),
                   family.code
                 )
-              })
+              }
+
+              callback(familyDetails)
             })
         }
       }

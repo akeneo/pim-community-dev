@@ -1,5 +1,4 @@
 /* global jQuery */
-/* jshint unused:vars */
 /**
  * Allow to select on which tree to work and manage creation and deletion of trees
  * File: jstree.tree_selector.js

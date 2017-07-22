@@ -80,7 +80,7 @@ var Router = Backbone.Router.extend({
       }
 
       controller.el = $view
-      this.currentController = new controller.class(controller)
+      this.currentController = new controller.class(controller) // eslint-disable-line
       this.currentController.setActive(true)
       this.currentController.renderRoute(route, path)
         .done(function () {

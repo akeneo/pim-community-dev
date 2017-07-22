@@ -12,17 +12,12 @@ import template from 'pim/template/form/form-tabs'
 
 export default BaseForm.extend({
   template: _.template(template),
-
   className: 'tabbable tabs-top',
-
   tabs: [],
-
   urlParsed: false,
-
   events: {
     'click header ul.nav-tabs li': 'selectTab'
   },
-
   currentKey: 'current_form_tab',
 
   /**
@@ -127,7 +122,7 @@ export default BaseForm.extend({
     var needRender = false
 
     if (this.getCurrentTab() !== tab) {
-      sessionStorage.setItem(this.currentKey, tab)
+      window.sessionStorage.setItem(this.currentKey, tab)
       needRender = true
     }
 
@@ -144,7 +139,7 @@ export default BaseForm.extend({
    * @return {string}
    */
   getCurrentTab: function () {
-    return sessionStorage.getItem(this.currentKey)
+    return window.sessionStorage.getItem(this.currentKey)
   },
 
   /**
@@ -153,14 +148,14 @@ export default BaseForm.extend({
   ensureDefault: function () {
     var tabs = this.getTabs()
 
-    if (!_.isNull(sessionStorage.getItem('redirectTab')) &&
+    if (!_.isNull(window.sessionStorage.getItem('redirectTab')) &&
       _.findWhere(tabs, {
-        code: sessionStorage.getItem('redirectTab').substring(1)
+        code: window.sessionStorage.getItem('redirectTab').substring(1)
       })
     ) {
-      this.setCurrentTab(sessionStorage.redirectTab.substring(1))
+      this.setCurrentTab(window.sessionStorage.redirectTab.substring(1))
 
-      sessionStorage.removeItem('redirectTab')
+      window.sessionStorage.removeItem('redirectTab')
     }
 
     var currentTabIsNotDefined = _.isNull(this.getCurrentTab())
@@ -180,13 +175,15 @@ export default BaseForm.extend({
    * @return {Object}
    */
   getTabExtension: function (code) {
-    return this.extensions[_.find(this.extensions, function (extension) {
+    const tabExtension = _.find(this.extensions, function (extension) {
       var extensionCode = extension.config && extension.config.tabCode
-        ? extension.config.tabCode
-        : extension.code
+            ? extension.config.tabCode
+            : extension.code
       var expectedPosition = extensionCode.length - code.length
 
       return expectedPosition >= 0 && expectedPosition === extensionCode.indexOf(code, expectedPosition)
-    }).code]
+    }).code
+
+    return this.extensions[tabExtension]
   }
 })

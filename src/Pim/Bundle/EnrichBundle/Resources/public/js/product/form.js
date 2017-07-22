@@ -62,7 +62,7 @@ export default Backbone.View.extend({
     extension.position = position
 
     if ((undefined === this.extensions) || (this.extensions === null)) {
-      throw 'this.extensions have to be defined. Please ensure you called initialize() method.'
+      throw new Error('this.extensions have to be defined. Please ensure you called initialize() method.')
     }
 
     this.extensions[code] = extension
@@ -76,11 +76,13 @@ export default Backbone.View.extend({
    * @return {Object}
    */
   getExtension: function (code) {
-    return this.extensions[_.findKey(this.extensions, function (extension) {
+    const extension = _.findKey(this.extensions, function (extension) {
       var expectedPosition = extension.code.length - code.length
 
       return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition)
-    })]
+    })
+
+    return this.extensions[extension]
   },
 
   /**

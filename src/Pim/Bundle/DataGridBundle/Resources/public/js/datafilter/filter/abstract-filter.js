@@ -1,9 +1,8 @@
 /* global define */
-import $ from 'jquery';
-import _ from 'underscore';
-import Backbone from 'backbone';
-import app from 'oro/app';
-
+import $ from 'jquery'
+import _ from 'underscore'
+import Backbone from 'backbone'
+import app from 'oro/app'
 
 /**
  * Basic grid filter
@@ -96,37 +95,37 @@ export default Backbone.View.extend({
    * @param {Object} options
    * @param {Boolean} [options.enabled]
    */
-  initialize: function(options) {
-    options = options || {};
+  initialize: function (options) {
+    options = options || {}
     if (_.has(options, 'enabled')) {
-      this.enabled = options.enabled;
+      this.enabled = options.enabled
     }
     if (_.has(options, 'canDisable')) {
-      this.canDisable = options.canDisable;
+      this.canDisable = options.canDisable
     }
     if (_.has(options, 'placeholder')) {
-      this.placeholder = options.placeholder;
+      this.placeholder = options.placeholder
     }
     if (_.has(options, 'showLabel')) {
-      this.showLabel = options.showLabel;
+      this.showLabel = options.showLabel
     }
     if (_.has(options, 'name')) {
-      this.$el.attr('data-name', options.name);
+      this.$el.attr('data-name', options.name)
     }
     if (_.has(options, 'type')) {
-      this.$el.attr('data-type', options.type);
+      this.$el.attr('data-type', options.type)
     }
 
-    this.defaultEnabled = this.enabled;
+    this.defaultEnabled = this.enabled
 
     // init empty value object if it was not initialized so far
     if (_.isUndefined(this.emptyValue)) {
-      this.emptyValue = {};
+      this.emptyValue = {}
     }
     // init raw value of filter
-    this.value = _.clone(this.emptyValue);
+    this.value = _.clone(this.emptyValue)
 
-    Backbone.View.prototype.initialize.apply(this, arguments);
+    Backbone.View.prototype.initialize.apply(this, arguments)
   },
 
   /**
@@ -134,14 +133,14 @@ export default Backbone.View.extend({
    *
    * @return {*}
    */
-  enable: function() {
+  enable: function () {
     if (!this.enabled) {
-      this.render();
-      this.enabled = true;
-      this.show();
-      this.trigger('enable', this);
+      this.render()
+      this.enabled = true
+      this.show()
+      this.trigger('enable', this)
     }
-    return this;
+    return this
   },
 
   /**
@@ -149,14 +148,14 @@ export default Backbone.View.extend({
    *
    * @return {*}
    */
-  disable: function() {
+  disable: function () {
     if (this.enabled) {
-      this.enabled = false;
-      this.hide();
-      this.trigger('disable', this);
-      this.reset();
+      this.enabled = false
+      this.hide()
+      this.trigger('disable', this)
+      this.reset()
     }
-    return this;
+    return this
   },
 
   /**
@@ -164,9 +163,9 @@ export default Backbone.View.extend({
    *
    * @return {*}
    */
-  show: function() {
-    this.$el.css('display', 'inline-block');
-    return this;
+  show: function () {
+    this.$el.css('display', 'inline-block')
+    return this
   },
 
   /**
@@ -174,9 +173,9 @@ export default Backbone.View.extend({
    *
    * @return {*}
    */
-  hide: function() {
-    this.$el.hide();
-    return this;
+  hide: function () {
+    this.$el.hide()
+    return this
   },
 
   /**
@@ -184,9 +183,9 @@ export default Backbone.View.extend({
    *
    * @return {*}
    */
-  reset: function() {
-    this.setValue(this.emptyValue);
-    return this;
+  reset: function () {
+    this.setValue(this.emptyValue)
+    return this
   },
 
   /**
@@ -194,8 +193,8 @@ export default Backbone.View.extend({
    *
    * @return {Object}
    */
-  getValue: function() {
-    return app.deepClone(this.value);
+  getValue: function () {
+    return app.deepClone(this.value)
   },
 
   /**
@@ -204,14 +203,14 @@ export default Backbone.View.extend({
    * @param value
    * @return {*}
    */
-  setValue: function(value) {
+  setValue: function (value) {
     if (this._isNewValueUpdated(value)) {
-      var oldValue = this.value;
-      this.value = app.deepClone(value);
-      this._updateDOMValue();
-      this._onValueUpdated(this.value, oldValue);
+      var oldValue = this.value
+      this.value = app.deepClone(value)
+      this._updateDOMValue()
+      this._onValueUpdated(this.value, oldValue)
     }
-    return this;
+    return this
   },
 
   /**
@@ -222,8 +221,8 @@ export default Backbone.View.extend({
    * @return {*}
    * @protected
    */
-  _formatRawValue: function(value) {
-    return value;
+  _formatRawValue: function (value) {
+    return value
   },
 
   /**
@@ -233,8 +232,8 @@ export default Backbone.View.extend({
    * @return {*}
    * @protected
    */
-  _formatDisplayValue: function(value) {
-    return value;
+  _formatDisplayValue: function (value) {
+    return value
   },
 
   /**
@@ -244,7 +243,7 @@ export default Backbone.View.extend({
    * @return {Boolean}
    * @protected
    */
-  _isNewValueUpdated: function(newValue) {
+  _isNewValueUpdated: function (newValue) {
     return !app.isEqualsLoosely(this.value, newValue)
   },
 
@@ -255,8 +254,8 @@ export default Backbone.View.extend({
    * @param {*} oldValue
    * @protected
    */
-  _onValueUpdated: function(newValue, oldValue) {
-    this._triggerUpdate(newValue, oldValue);
+  _onValueUpdated: function (newValue, oldValue) {
+    this._triggerUpdate(newValue, oldValue)
   },
 
   /**
@@ -266,8 +265,8 @@ export default Backbone.View.extend({
    * @param {*} oldValue
    * @protected
    */
-  _triggerUpdate: function(newValue, oldValue) {
-    this.trigger('update');
+  _triggerUpdate: function (newValue, oldValue) {
+    this.trigger('update')
   },
 
   /**
@@ -275,8 +274,8 @@ export default Backbone.View.extend({
    *
    * @return {Boolean}
    */
-  isEmpty: function() {
-    return app.isEqualsLoosely(this.getValue(), this.emptyValue);
+  isEmpty: function () {
+    return app.isEqualsLoosely(this.getValue(), this.emptyValue)
   },
 
   /**
@@ -287,11 +286,11 @@ export default Backbone.View.extend({
    *
    * @return {Boolean}
    */
-  isEmptyValue: function() {
+  isEmptyValue: function () {
     if (_.has(this.emptyValue, 'value') && _.has(this.value, 'value')) {
-      return app.isEqualsLoosely(this.value.value, this.emptyValue.value);
+      return app.isEqualsLoosely(this.value.value, this.emptyValue.value)
     }
-    return true;
+    return true
   },
 
   /**
@@ -301,22 +300,22 @@ export default Backbone.View.extend({
    * @return {*}
    * @protected
    */
-  _getInputValue: function(input) {
-    var result = undefined;
-    var $input = this.$(input);
+  _getInputValue: function (input) {
+    var result
+    var $input = this.$(input)
     switch ($input.attr('type')) {
       case 'radio':
-        $input.each(function() {
+        $input.each(function () {
           if ($(this).is(':checked')) {
-            result = $(this).val();
+            result = $(this).val()
           }
-        });
-        break;
+        })
+        break
       default:
-        result = $input.val();
+        result = $input.val()
 
     }
-    return result;
+    return result
   },
 
   /**
@@ -327,25 +326,25 @@ export default Backbone.View.extend({
    * @protected
    * @return {*}
    */
-  _setInputValue: function(input, value) {
-    var $input = this.$(input);
+  _setInputValue: function (input, value) {
+    var $input = this.$(input)
     switch ($input.attr('type')) {
       case 'radio':
-        $input.each(function() {
-          var $input = $(this);
+        $input.each(function () {
+          var $input = $(this)
           if ($input.attr('value') == value) {
-            $input.attr('checked', true);
-            $input.click();
+            $input.attr('checked', true)
+            $input.click()
           } else {
-            $(this).removeAttr('checked');
+            $(this).removeAttr('checked')
           }
-        });
-        break;
+        })
+        break
       default:
-        $input.val(value);
+        $input.val(value)
 
     }
-    return this;
+    return this
   },
 
   /**
@@ -354,8 +353,8 @@ export default Backbone.View.extend({
    * @return {*}
    * @protected
    */
-  _updateDOMValue: function() {
-    return this._writeDOMValue(this._getDisplayValue());
+  _updateDOMValue: function () {
+    return this._writeDOMValue(this._getDisplayValue())
   },
 
   /**
@@ -363,8 +362,8 @@ export default Backbone.View.extend({
    *
    * @return {String}
    */
-  _getCriteriaHint: function() {
-    return '';
+  _getCriteriaHint: function () {
+    return ''
   },
 
   /**
@@ -373,9 +372,9 @@ export default Backbone.View.extend({
    * @return {*}
    * @protected
    */
-  _getDisplayValue: function() {
-    var value = (arguments.length > 0) ? arguments[0] : this.getValue();
-    return this._formatDisplayValue(value);
+  _getDisplayValue: function () {
+    var value = (arguments.length > 0) ? arguments[0] : this.getValue()
+    return this._formatDisplayValue(value)
   },
 
   /**
@@ -386,10 +385,10 @@ export default Backbone.View.extend({
    * @protected
    * @return {*}
    */
-  _writeDOMValue: function(value) {
-    throw new Error("Method _writeDOMValue is abstract and must be implemented");
-  //this._setInputValue(inputValueSelector, value.value);
-  //return this
+  _writeDOMValue: function (value) {
+    throw new Error('Method _writeDOMValue is abstract and must be implemented')
+  // this._setInputValue(inputValueSelector, value.value);
+  // return this
   },
 
   /**
@@ -398,9 +397,9 @@ export default Backbone.View.extend({
    * @return {Object}
    * @protected
    */
-  _readDOMValue: function() {
-    throw new Error("Method _readDOMValue is abstract and must be implemented");
-  //return { value: this._getInputValue(this.inputValueSelector) }
+  _readDOMValue: function () {
+    throw new Error('Method _readDOMValue is abstract and must be implemented')
+  // return { value: this._getInputValue(this.inputValueSelector) }
   },
 
   /**
@@ -410,22 +409,22 @@ export default Backbone.View.extend({
    * @param {Boolean} status
    * @protected
    */
-  _setButtonPressed: function(element, status) {
-    var $element = $(element);
-    var rightOffset = ($(window).width() - ($element.offset().left + $element.outerWidth()));
+  _setButtonPressed: function (element, status) {
+    var $element = $(element)
+    var rightOffset = ($(window).width() - ($element.offset().left + $element.outerWidth()))
 
     if (status) {
-      element.parent().addClass(this.buttonActiveClass);
+      element.parent().addClass(this.buttonActiveClass)
     } else {
-      element.parent().removeClass(this.buttonActiveClass);
+      element.parent().removeClass(this.buttonActiveClass)
     }
 
     if (rightOffset < 0) {
-      $element.addClass('AknDropdown-menu--right');
-      $element.removeClass('AknDropdown-menu--alignLeft');
+      $element.addClass('AknDropdown-menu--right')
+      $element.removeClass('AknDropdown-menu--alignLeft')
     } else {
-      $element.addClass('AknDropdown-menu--alignLeft');
-      $element.removeClass('AknDropdown-menu--right');
+      $element.addClass('AknDropdown-menu--alignLeft')
+      $element.removeClass('AknDropdown-menu--right')
     }
   },
 
@@ -435,11 +434,10 @@ export default Backbone.View.extend({
    * @param {Event} e
    * @private
    */
-  _preventEnterProcessing: function(e) {
+  _preventEnterProcessing: function (e) {
     if (e.keyCode == 13) {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault()
+      e.stopPropagation()
     }
   }
-});
-
+})

@@ -21,7 +21,7 @@ export default BaseController.extend({
     fetcherRegistry.getFetcher('locale').clear()
     fetcherRegistry.getFetcher('measure').clear()
 
-    var type = this.getQueryParam(location.href, 'attribute_type')
+    var type = this.getQueryParam(window.location.href, 'attribute_type')
 
     var formName = type === 'pim_catalog_identifier'
       ? 'pim-attribute-identifier-create-form'

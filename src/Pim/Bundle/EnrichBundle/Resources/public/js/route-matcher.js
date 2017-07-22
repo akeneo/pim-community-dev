@@ -23,7 +23,7 @@ var matchUrl = function (url) {
   url = url.replace(Routing.getBaseUrl(), '')
 
   var escape = function (value) {
-    return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
   }
 
   for (var name in routes) {

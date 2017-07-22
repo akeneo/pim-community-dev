@@ -1,4 +1,3 @@
-/* jshint unused:vars */
 import $ from 'jquery'
 import _ from 'underscore'
 import ChoicesFormatter from 'pim/formatter/choices/base'
@@ -52,7 +51,7 @@ export default {
     })
 
     $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
-      self.initSelect.call(self, $(this))
+      self.initSelect.call(self, $(this)) // eslint-disable-line
     })
 
     if ($target.hasClass('select-field')) {

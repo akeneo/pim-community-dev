@@ -24,8 +24,8 @@ export default BaseForm.extend({
   className: null,
   mainFetcher: null,
   template: _.template(template),
-  lineView: LineView,
-  footerView: FooterView,
+  LineView,
+  FooterView,
   config: {},
   resultsPerPage: null,
   selection: [],
@@ -142,7 +142,7 @@ export default BaseForm.extend({
 
     $select.on('select2-open', this.onSelectOpen.bind(this))
 
-    this.footerViewInstance = new this.footerView({
+    this.footerViewInstance = new this.FooterView({
       buttonTitle: this.config.select2.buttonTitle,
       countTitle: this.config.select2.countTitle,
       addEvent: this.addEvent
@@ -225,7 +225,7 @@ export default BaseForm.extend({
     if (_.isUndefined(line) || _.isNull(line)) {
       line = {
         itemCode: item.id,
-        itemView: new this.lineView({
+        itemView: new this.LineView({
           checked: _.contains(this.selection, item.id),
           item: item
         })

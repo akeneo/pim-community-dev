@@ -40,7 +40,7 @@ export default BaseForm.extend({
   configure: function () {
     this.tabs = []
 
-    this.currentTab = sessionStorage.getItem(this.currentKey)
+    this.currentTab = window.sessionStorage.getItem(this.currentKey)
 
     this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab)
     this.listenTo(this.getRoot(), 'column-tab:select-tab', this.setCurrentTab)

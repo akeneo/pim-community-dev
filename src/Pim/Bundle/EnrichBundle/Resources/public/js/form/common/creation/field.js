@@ -40,7 +40,7 @@ export default BaseForm.extend({
    */
   render: function () {
     if (!this.configured) {
-      this
+      return this
     }
 
     const errors = this.getRoot().validationErrors || []

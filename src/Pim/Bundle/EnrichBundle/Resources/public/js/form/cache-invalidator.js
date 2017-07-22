@@ -38,7 +38,7 @@ export default BaseForm.extend({
    * @return {int}
    */
   getLocaleStructureVersion: function (modelType) {
-    return parseInt(sessionStorage.getItem('structure_version_' + modelType))
+    return parseInt(window.sessionStorage.getItem('structure_version_' + modelType))
   },
 
   /**
@@ -48,7 +48,7 @@ export default BaseForm.extend({
    * @param {int}    structureVersion
    */
   setLocaleStructureVersion: function (modelType, structureVersion) {
-    sessionStorage.setItem('structure_version_' + modelType, structureVersion)
+    window.sessionStorage.setItem('structure_version_' + modelType, structureVersion)
   },
 
   /**

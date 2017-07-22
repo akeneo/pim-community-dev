@@ -71,7 +71,7 @@ export default BaseForm.extend({
    * @return {String}
    */
   getCurrent: function () {
-    return sessionStorage.getItem('current_select_group_' + this.code)
+    return window.sessionStorage.getItem('current_select_group_' + this.code)
   },
 
   /**
@@ -86,7 +86,7 @@ export default BaseForm.extend({
     }
 
     if (current !== this.getCurrent()) {
-      sessionStorage.setItem('current_select_group_' + this.code, current)
+      window.sessionStorage.setItem('current_select_group_' + this.code, current)
 
       if (!options.silent) {
         this.trigger('group:change')

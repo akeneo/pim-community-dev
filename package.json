@@ -38,7 +38,8 @@
       "src/Oro/**/**/*.js",
       "src/**/js/jstree/**.js",
       "src/**/js/tree-**.js",
-      "src/**/js/jquery**.js"
+      "src/**/js/jquery**.js",
+      "src/Pim/Bundle/EnrichBundle/Resources/public/spec/**/*.js"
     ]
   },
   "dependencies": {

@@ -78,10 +78,12 @@ export default BaseForm.extend({
         .fetch(formData)
         .then(function (family) {
           const {labels, code} = family
-          callback({
+          const details = {
             id: code,
             text: i18n.getLabel(labels, locale, code)
-          })
+          }
+
+          callback(details)
         })
     }
   },

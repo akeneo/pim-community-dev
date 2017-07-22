@@ -34,7 +34,7 @@ var init = function (fieldId) {
       messenger.notify('error', $field.data('error-message'))
     }
   }
-  new DialogForm(fieldId, callback)
+  return new DialogForm(fieldId, callback)
 }
 
 export default {

@@ -112,7 +112,7 @@ export default BaseForm.extend({
    */
   linkClicked: function (event) {
     if (this.hasModelChanged()) {
-      event.canLeave = confirm(this.confirmationMessage)
+      event.canLeave = window.confirm(this.confirmationMessage)
     }
   },
 

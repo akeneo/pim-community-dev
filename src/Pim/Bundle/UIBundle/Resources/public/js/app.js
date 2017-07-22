@@ -52,7 +52,7 @@ export default {
       var name = this._decodeComponent(pair[0])
       var value = this._decodeComponent(pair[1])
 
-      var path = name.match(/(^[^\[]+)(\[.*\]$)?/)
+      var path = name.match(/(^[^[]+)(\[.*\]$)?/)
       var first = path[1]
       if (path[2]) {
         // case of 'array[level1]' || 'array[level1][level2]'
@@ -129,10 +129,10 @@ export default {
           return Number(v)
         }
 
-        return (toNumber(value1) == toNumber(value2))
+        return (toNumber(value1) == toNumber(value2)) // eslint-disable-line eqeqeq
       }
 
-      return ((value1 || '') == (value2 || ''))
+      return ((value1 || '') == (value2 || '')) // eslint-disable-line eqeqeq
     } else if (_.isObject(value1)) {
       var valueKeys = _.keys(value1)
 
@@ -149,7 +149,7 @@ export default {
 
       return true
     } else {
-      return value1 == value2
+      return value1 == value2 // eslint-disable-line eqeqeq
     }
   },
 

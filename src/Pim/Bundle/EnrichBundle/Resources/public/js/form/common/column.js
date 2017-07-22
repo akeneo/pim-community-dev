@@ -80,7 +80,7 @@ export default BaseForm.extend({
    * @returns {boolean}
    */
   isCollapsed: function () {
-    var result = sessionStorage.getItem(this.getSessionStorageKey())
+    var result = window.sessionStorage.getItem(this.getSessionStorageKey())
 
     if (result === null) {
       return false
@@ -95,7 +95,7 @@ export default BaseForm.extend({
    * @param {boolean} value
    */
   setCollapsed: function (value) {
-    sessionStorage.setItem(this.getSessionStorageKey(), value ? '1' : '0')
+    window.sessionStorage.setItem(this.getSessionStorageKey(), value ? '1' : '0')
 
     if (value) {
       this.$el.addClass('AknColumn--collapsed')

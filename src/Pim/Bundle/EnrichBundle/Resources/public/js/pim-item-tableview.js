@@ -11,17 +11,19 @@ export default Backbone.View.extend({
   $target: null,
   itemViews: [],
   url: '',
-  collectionClass: null,
+  CollectionClass: null,
   itemClass: null,
-  itemViewClass: null,
+  ItemViewClass: null,
   rendered: false,
+
   initialize: function (options) {
     this.$target = options.$target
-    this.collectionClass = options.collectionClass
+    this.CollectionClass = options.collectionClass
     this.itemClass = options.itemClass
-    this.itemViewClass = options.itemViewClass
+    this.ItemViewClass = options.itemViewClass
     this.url = options.url
-    this.collection = new this.collectionClass({
+
+    this.collection = new this.CollectionClass({
       url: options.url
     })
     this.render()
@@ -70,7 +72,7 @@ export default Backbone.View.extend({
     }
   },
   createItemView: function (item) {
-    var itemView = new this.itemViewClass({
+    var itemView = new this.ItemViewClass({
       model: item,
       parent: this
     })

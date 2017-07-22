@@ -25,7 +25,7 @@ export default BaseLaunch.extend({
    */
   launch: function () {
     if (this.getFormData().file) {
-      var formData = new FormData()
+      var formData = new window.FormData()
       formData.append('file', this.getFormData().file)
 
       router.showLoadingMask()

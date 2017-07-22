@@ -17,6 +17,7 @@ if (!Date.prototype.toISOString) {
       return r
     }
 
+    /* eslint-disable */
     Date.prototype.toISOString = function () {
       return this.getUTCFullYear() +
         '-' + pad(this.getUTCMonth() + 1) +
@@ -27,6 +28,7 @@ if (!Date.prototype.toISOString) {
         '.' + String((this.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) +
         'Z'
     }
+    /* eslint-disable */
   }())
 }
 
