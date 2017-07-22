@@ -410,7 +410,6 @@ flash:
     updated: Moneda actualitzada correctament
     error.linked_to_channel: Podeu inhabilitar una moneda vinculada a un canal.
   family:
-    created: Família creada correctament
     updated: Família actualitzada correctament
     removed: Família eliminada correctament
     identifier not removable: L'atribut identificador no es pot suprimir d'una família
@@ -429,7 +428,6 @@ flash:
     enabled: El producte ha estat habilitat
     disabled: El producte ha estat deshabilitat
   group:
-    created: Grup creat correctament
     updated: Grup actualitzat correctament
     removed: Grup suprimit correctament
   variant group:
@@ -733,9 +731,7 @@ pane.accordion:
   group_values: Valors de grup
 popin.create:
   association_type.title: Crear un nou tipus d'associació
-  family.title: Crear una nova família
   group.title: Crea un grup nou
-  group_type.title: Crear un nou tipus de grup
   product.title: Crear un nou producte
   variant_group.title: Crear un nou grup de variants
   option.title: Crear una nova opció

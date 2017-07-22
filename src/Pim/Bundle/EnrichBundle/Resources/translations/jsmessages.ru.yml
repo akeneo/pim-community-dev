@@ -130,12 +130,16 @@ pim_enrich:
     info:
       update_failed: Не удалось обновить
       update_successful: Обновление завершено
+    create_popin:
+      code: Код
+      label: Метка
+      labels:
+        save: Сохранить
+        cancel: Отмена
     product:
       title: продукт
       btn:
-        enable: Включить
         enabled: Включено
-        disable: Отключить
         disabled: Отключено
         download_pdf: PDF
         compare_translate: Сравнить / Перевести
@@ -175,6 +179,7 @@ pim_enrich:
             group_label: Метка
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
+        status: Статус
       copy:
         select: Выбрать
         all: Все
@@ -200,6 +205,9 @@ pim_enrich:
           family: Выберите семейство
           save: Сохранить
           cancel: Отмена
+      message:
+        created: Продукт успешно создан
+      completeness: Завершено
     association_type:
       meta:
         created: Создано
@@ -209,6 +217,10 @@ pim_enrich:
       btn:
         save: Сохранить
       title: тип ассоциации
+      create_popin:
+        title: Создать новый тип ассоциации
+      message:
+        created: Тип ассоциации успешно создан
     group_type:
       meta:
         created: Создано
@@ -218,6 +230,10 @@ pim_enrich:
       btn:
         save: Сохранить
       title: тип группы
+      create_popin:
+        title: Создать новый тип группы
+      message:
+        created: Тип группы успешно создан
     channel:
       title: канал
       meta:
@@ -236,6 +252,10 @@ pim_enrich:
         updated_by: Обновлена
       btn:
         save: Сохранить
+      create_popin:
+        title: Создать новое семейство
+      message:
+        created: Семейство успешно создано
     attribute_option:
       code: Код
       label: Метка
@@ -257,6 +277,10 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+      create_popin:
+        title: Создать новую вариативную группу
+      message:
+        created: Вариативная группа успешно создана
     group:
       title: Группа
       btn:
@@ -267,6 +291,10 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+      create_popin:
+        title: Создать новую группу
+      message:
+        created: Группа успешно создана
     attribute:
       scopable: Область назначаема
       type:
@@ -401,6 +429,7 @@ pim_enrich:
           general: Основные
           code: Код
           attribute_as_label: Атрибут используется в качестве метки
+          empty_attribute_as_image: Не выбран
           label_translations: Переводы меток
         attributes:
           title: Атрибуты
@@ -425,7 +454,6 @@ pim_enrich:
         "no": "Нет"
         "yes": "Да"
     variant_group:
-      axis.help: 'Ось является атрибутом, который определяет варианты для группы вариантов. Оси это атрибуты с параметрами, не локализуемые и не определяемые областью. Эту настройку нельзя изменить после создания группы вариантов.'
       tab:
         properties:
           title: Свойства
@@ -747,8 +775,15 @@ pim_enrich:
     edit_common_attributes:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
   index:
+    import_profiles:
+      list: Выберите задание
+      create_popin:
+        title: Создать новый профиль импорта
     group:
       create_btn: Создать группу
+    export_profiles:
+      create_popin:
+        title: Создать новый профиль экспорта
     user:
       title: Пользователь
       create_btn: Создать пользователя
@@ -812,6 +847,135 @@ batch_jobs:
     label: Добавить в группу вариантов
     perform:
       label: Добавить в группу вариантов
+  csv_product_export:
+    label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_category_export:
+    label: Экспорт категорий в CSV
+    export.label: Экспорт категорий
+  csv_attribute_export:
+    label: Экспорт атрибутов в CSV
+    export.label: Экспорт атрибутов
+  csv_association_type_export:
+    label: Экспорт типов ассоциаций в CSV
+    export.label: Экспорт типов ассоциаций
+  csv_group_export:
+    label: Экспорт групп в CSV
+    export.label: Экспорт групп
+  csv_variant_group_export:
+    label: Экспорт групп вариантов в CSV
+    export.label: Экспорт групп вариантов
+  csv_family_export:
+    label: Экспорт семейств в CSV
+    export.label: Экспорт семейств
+  csv_product_import:
+    label: Импорт продуктов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  csv_category_import:
+    label: Импорт категорий из CSV
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  csv_attribute_import:
+    label: Импорт атрибутов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  csv_attribute_option_import:
+    label: Импорт выборов атрибутов из CSV
+    validation.label: Проверка файла
+  csv_association_type_import:
+    label: Импорт типов ассоциаций из CSV
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  csv_family_import:
+    label: Импорт семейств из CSV
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  csv_group_import:
+    label: Импорт группы из CSV
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  csv_variant_group_import:
+    label: Импорт группы вариантов в CSV
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
+  csv_channel_import:
+    validation.label: Проверка файла
+  csv_locale_import:
+    validation.label: Проверка файла
+  csv_attribute_group_import:
+    validation.label: Проверка файла
+  csv_currency_import:
+    validation.label: Проверка файла
+  csv_group_type_import:
+    validation.label: Проверка файла
+  xlsx_category_import:
+    label: Импорт категорий из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  xlsx_association_type_import:
+    label: Импорт типов ассоциаций из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  xlsx_attribute_import:
+    label: Импорт атрибутов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  xlsx_attribute_option_import:
+    label: Импорт элементов списочных атрибутов из XLSX
+    validation.label: Проверка файла
+  xlsx_family_import:
+    label: Импорт семейств из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  xlsx_product_export:
+    label: Экспорт продуктов в XLSX
+    export.label: Экспорт продуктов
+  xlsx_product_import:
+    label: Импорт продуктов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_group_export:
+    label: Экспорт групп в XLSX
+    export.label: Экспорт групп
+  xlsx_variant_group_export:
+    label: Экспорт групп вариантов в XLSX
+    export.label: Экспорт групп вариантов
+  xlsx_group_import:
+    label: Импорт групп из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  xlsx_variant_group_import:
+    label: Импорт групп вариантов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
+  xlsx_family_export:
+    label: Экспорт семейств в XLSX
+    export.label: Экспорт семейств
+  xlsx_category_export:
+    label: Экспорт категорий в XLSX
+    export.label: Экспорт категорий
+  xlsx_attribute_export:
+    label: Экспорт атрибутов в XLSX
+    export.label: Экспорт атрибутов в XLSX
+  xlsx_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в XLSX
+    export.label: Экспорт элементов списочных атрибутов в XLSX
+  xlsx_association_type_export:
+    label: Экспорт типов ассоциаций в XLSX
+    export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_import:
+    validation.label: Проверка файла
+  xlsx_locale_import:
+    validation.label: Проверка файла
+  xlsx_attribute_group_import:
+    validation.label: Проверка файла
+  xlsx_currency_import:
+    validation.label: Проверка файла
+  xlsx_group_type_import:
+    validation.label: Проверка файла
 pim_menu:
   tab:
     dashboard: Панель управления

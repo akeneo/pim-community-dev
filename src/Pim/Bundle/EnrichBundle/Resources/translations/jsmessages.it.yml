@@ -134,12 +134,16 @@ pim_enrich:
     info:
       update_failed: Aggiornamento non riuscito
       update_successful: Aggiornamento completato
+    create_popin:
+      code: Codice
+      label: Etichetta
+      labels:
+        save: Salva
+        cancel: Cancella
     product:
       title: Articoli
       btn:
-        enable: Attiva
         enabled: Attivato
-        disable: Disabilita
         disabled: Disabilitato
         download_pdf: PDF
         compare_translate: Confronta / Traduci
@@ -180,6 +184,7 @@ pim_enrich:
             group_label: Etichetta
             more_products: '{{ count }} prodotti in più...'
             close: Chiudi
+        status: Stato
       copy:
         select: Selezionare
         all: Tutto
@@ -205,6 +210,9 @@ pim_enrich:
           family: Scegli una famiglia
           save: Salva
           cancel: Cancella
+      message:
+        created: Articolo creato con successo
+      completeness: Completo
     association_type:
       info:
         deletion_successful: Tipo di associazione rimosso con successo.
@@ -219,6 +227,10 @@ pim_enrich:
       btn:
         save: Salva
       title: Tipo associazione
+      create_popin:
+        title: Creare un nuovo tipo di associazione
+      message:
+        created: Tipo di associazione creata con successo
     group_type:
       info:
         deletion_successful: Il tipo di gruppo è stato eliminato correttamente.
@@ -233,6 +245,10 @@ pim_enrich:
       btn:
         save: Salva
       title: Tipo gruppo
+      create_popin:
+        title: Crea un nuovo tipo di gruppo
+      message:
+        created: Tipo di gruppo creato con successo
     channel:
       title: canale
       info:
@@ -255,7 +271,6 @@ pim_enrich:
         update_successful: Famiglia aggiornata con successo.
         create_successful: Canale creato con successo.
         update_failed: Errore durante l'aggiornamento della famiglia.
-        cant_remove_attribute_as_label: Impossibile rimuovere l'attributo utilizzato come etichetta
         attribute_edit_permission_is_not_granted: Non hai i diritti per modificare gli attributi della famiglia
       meta:
         created: Creato
@@ -264,6 +279,10 @@ pim_enrich:
         updated_by: Aggiornato da
       btn:
         save: Salva
+      create_popin:
+        title: Crea una nuova famiglia
+      message:
+        created: Famiglia creata con successo
     attribute_option:
       code: Codice
       label: Etichetta
@@ -285,6 +304,10 @@ pim_enrich:
         created_by: Creato da
         updated: Caricato
         updated_by: Aggiornato da
+      create_popin:
+        title: Crea una nuova variante di gruppo
+      message:
+        created: Variante gruppo creata con successo
     group:
       title: Gruppo
       info:
@@ -300,6 +323,10 @@ pim_enrich:
         created_by: Creato da
         updated: Caricato
         updated_by: Aggiornato da
+      create_popin:
+        title: Crea un nuovo gruppo
+      message:
+        created: Gruppo creato con successo
     job_instance:
       title: profilo del job
       info:
@@ -440,6 +467,7 @@ pim_enrich:
           general: Generale
           code: Codice
           attribute_as_label: Attributo utilizzato come etichetta
+          empty_attribute_as_image: Non Selezionato
           label_translations: Traduzioni etichetta
         attributes:
           title: Attributi
@@ -466,7 +494,6 @@ pim_enrich:
         "no": "No"
         "yes": "Sì"
     variant_group:
-      axis.help: 'Gli assi definiscono gli attributi sui quali i prodotti di un gruppo dovrebbero variare. Gli assi sono attributi con opzioni, non localizzabili e senza ambito. Non possono essere modificati dopo la creazione del gruppo di varianti.'
       tab:
         properties:
           title: Proprietà
@@ -808,8 +835,15 @@ pim_enrich:
     association_type:
       title: Anteprima tipi associazione
       create_btn: Crea tipo associazione
+    import_profiles:
+      list: Seleziona un job
+      create_popin:
+        title: Crea un nuovo profilo di importazione
     group:
       create_btn: Crea gruppo
+    export_profiles:
+      create_popin:
+        title: Crea un nuovo profilo di esportazione
     user:
       title: Utente
       create_btn: Crea utente
@@ -889,6 +923,190 @@ batch_jobs:
     label: Aggiungi al gruppo di varianti
     perform:
       label: Aggiungi al gruppo di varianti
+  csv_product_export:
+    label: Esportazione prodotti in CSV
+    export.label: Esportazione Prodotti
+  csv_category_export:
+    label: Esportazione categorie in CSV
+    export.label: Esportazione categorie
+  csv_attribute_export:
+    label: Esporta gli attributi in CSV
+    export.label: Esportazione di attributo
+  csv_attribute_option_export:
+    label: Esportazione opzioni degli attributi in CSV
+    export.label: Estrazione opzioni degli attributi
+  csv_association_type_export:
+    label: Estrazione tipi associazione in CSV
+    export.label: Estrazione tipi associazione
+  csv_group_export:
+    label: Esportazione gruppi in CSV
+    export.label: Esportazione gruppi
+  csv_variant_group_export:
+    label: Esportazione in CSV dei gruppi di varianti
+    export.label: Esportazione gruppo varianti
+  csv_family_export:
+    label: Esportazione famiglie in CSV
+    export.label: Esportazione famiglie
+  csv_product_import:
+    label: Importazione prodotti in CSV
+    validation.label: Validazione file
+    import.label: Importazione prodotti
+    import_associations.label: Importazione associazioni
+  csv_category_import:
+    label: Importazione categorie in CSV
+    validation.label: Validazione file
+    import.label: Importazione categorie
+  csv_attribute_import:
+    label: Importazione attributi in CSV
+    validation.label: Validazione file
+    import.label: Importazione attributi
+  csv_attribute_option_import:
+    label: Importazione opzioni degli attributi in CSV
+    validation.label: Validazione file
+    import.label: Opzioni importazione attributi
+  csv_association_type_import:
+    label: Importazione tipi associazione in CSV
+    validation.label: Validazione file
+    import.label: Importazione tipi associazione
+  csv_family_import:
+    label: Importazione famiglie in CSV
+    validation.label: Validazione file
+    import.label: Importazione famiglie
+  csv_group_import:
+    label: importazione gruppi in CSV
+    validation.label: Validazione file
+    import.label: importazione gruppi
+  csv_variant_group_import:
+    label: Importazione in CSV dei gruppi di varianti
+    validation.label: Validazione file
+    import.label: Importazione gruppi di varianti
+  csv_channel_export:
+    label: Esportazione canali in CSV
+    export.label: Esportazione canali
+  csv_locale_export:
+    label: Esportazione localizzazioni in CSV
+    export.label: Esportazione delle localizzazioni
+  csv_attribute_group_export:
+    label: Esportazione dei gruppi di attributi in CSV
+    export.label: Esportazione dei gruppi di attributi
+  csv_currency_export:
+    label: Esportazione valute in CSV
+    export.label: Esportazione valute
+  csv_group_type_export:
+    label: Esportazione dei tipi di gruppo in CSV
+    export.label: Esportazione dei tipi di gruppo
+  csv_channel_import:
+    label: Importazione canali in CSB
+    validation.label: Validazione file
+    import.label: Importazione canali
+  csv_locale_import:
+    label: Importazione localizzazioni in CSV
+    validation.label: Validazione file
+    import.label: Importazione localizzazione
+  csv_attribute_group_import:
+    label: Importazione dei gruppi di attributi in CSV
+    validation.label: Validazione file
+    import.label: Importazione dei gruppi di attributi
+  csv_currency_import:
+    label: Importazione valute in CSV
+    validation.label: Validazione file
+    import.label: Importazione valute
+  csv_group_type_import:
+    label: Importazione dei tipi di gruppo in CSV
+    validation.label: Validazione file
+    import.label: Importazione dei tipi di gruppo
+  xlsx_category_import:
+    label: Importazione categorie in XLSX
+    validation.label: Validazione file
+    import.label: Importazione categorie
+  xlsx_association_type_import:
+    label: Importazione dei tipi di associazione in XLSX
+    validation.label: Validazione file
+    import.label: Importazione tipi associazione
+  xlsx_attribute_import:
+    label: Importazione attributi in XLSX
+    validation.label: Validazione file
+    import.label: Importazione attributi
+  xlsx_attribute_option_import:
+    label: Importazione delle opzioni degli attributi in XLSX
+    validation.label: Validazione file
+    import.label: Opzioni importazione attributi
+  xlsx_family_import:
+    label: Importazione famiglie in XLSX
+    validation.label: Validazione file
+    import.label: Importazione famiglie
+  xlsx_product_export:
+    label: Esportazione prodotti in XLSX
+    export.label: Esportazione Prodotti
+  xlsx_product_import:
+    label: Importazione prodotti in XLSX
+    validation.label: Validazione file
+    import.label: Importazione prodotti
+    import_associations.label: Importazione associazioni
+  xlsx_group_export:
+    label: Esportazione gruppi in XLSX
+    export.label: Esportazione gruppi
+  xlsx_variant_group_export:
+    label: Esportazione in XLSX dei gruppi di varianti
+    export.label: Esportazione gruppo varianti
+  xlsx_group_import:
+    label: Importazione gruppi in XLSX
+    validation.label: Validazione file
+    import.label: importazione gruppi
+  xlsx_variant_group_import:
+    label: Importazione gruppi di varianti in XLSX
+    validation.label: Validazione file
+    import.label: Importazione dei gruppi di varianti
+  xlsx_family_export:
+    label: Esportazione famiglie in XLSX
+    export.label: Esportazione famiglie
+  xlsx_category_export:
+    label: Esportazione categorie in XLSX
+    export.label: Esportazione categorie
+  xlsx_attribute_export:
+    label: Esportazione attributi in XLSX
+    export.label: Esportazione attributi in XLSX
+  xlsx_attribute_option_export:
+    label: Esportazione delle opzioni degli attributi in XLSX
+    export.label: Esportazione delle opzioni degli attributi in XLSX
+  xlsx_association_type_export:
+    label: Esportazione dei tipi di associazione in XLSX
+    export.label: Esportazione dei tipi di associazione in XLSX
+  xlsx_channel_export:
+    label: Esportazione canali in XLSX
+    export.label: Esportazione canali
+  xlsx_locale_export:
+    label: Esportazione localizzazioni in XLSX
+    export.label: Esportazione delle localizzazioni
+  xlsx_attribute_group_export:
+    label: Esportazione dei gruppi di attributi in XLSX
+    export.label: Esportazione dei gruppi di attributi
+  xlsx_currency_export:
+    label: Esportazione valute in XLSX
+    export.label: Esportazione valute
+  xlsx_group_type_export:
+    label: Esportazione dei tipi di gruppo in XLSX
+    export.label: Esportazione dei tipi di gruppo
+  xlsx_channel_import:
+    label: Importazione canali in XLSX
+    validation.label: Validazione file
+    import.label: Importazione canali
+  xlsx_locale_import:
+    label: Importazione localizzazioni in XLSX
+    validation.label: Validazione file
+    import.label: Importazione localizzazione
+  xlsx_attribute_group_import:
+    label: Importazione dei gruppi di attributi in XLSX
+    validation.label: Validazione file
+    import.label: Importazione dei gruppi di attributi
+  xlsx_currency_import:
+    label: Importazione valute in XLSX
+    validation.label: Validazione file
+    import.label: Importazione valute
+  xlsx_group_type_import:
+    label: Importazione dei tipi di gruppo in XLSX
+    validation.label: Validazione file
+    import.label: Importazione dei tipi di gruppo
 pim_menu:
   tab:
     dashboard: Dashboard

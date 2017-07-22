@@ -410,7 +410,6 @@ flash:
     updated: Валюта успешно обновлена
     error.linked_to_channel: Нельзя дезактивировать валюты, связанныe с каналом.
   family:
-    created: Семейство успешно создано
     updated: Семейство успешно обновлено
     removed: Семейство успешно удалено
     identifier not removable: Идентификатор атрибута не может быть удален из семейства
@@ -429,7 +428,6 @@ flash:
     enabled: Продукт был активирован
     disabled: Продукт был дезактивирован
   group:
-    created: Группа успешно создана
     updated: Группа успешно обновлена
     removed: Группа успешно удалена
   variant group:
@@ -733,9 +731,7 @@ pane.accordion:
   group_values: Значения группы
 popin.create:
   association_type.title: Создать новый тип ассоциации
-  family.title: Создать новое семейство
   group.title: Создать новую группу
-  group_type.title: Создать новый тип группы
   product.title: Создать новый продукт
   variant_group.title: Создать новую вариативную группу
   option.title: Создать новое свойство

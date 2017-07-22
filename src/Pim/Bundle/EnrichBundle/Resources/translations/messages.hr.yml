@@ -410,7 +410,6 @@ flash:
     updated: Valuta je uspješno ažurirana
     error.linked_to_channel: Ne može se onemogućiti valutu vezanu za kanal.
   family:
-    created: Obitelj je uspješno kreirana
     updated: Obitelj je uspješno ažurirana
     removed: Obitelj je uspješno uklonjena
     identifier not removable: Identifikator atribua ne može biti uklonjen iz obitelji
@@ -429,7 +428,6 @@ flash:
     enabled: Proizvod je omogućen
     disabled: Proizvod je onemogućen
   group:
-    created: Grupa je uspješno kreirana
     updated: Grupa je uspješno ažurirana
     removed: Grupa je uspješno uklonjena
   variant group:
@@ -732,9 +730,7 @@ pane.accordion:
   group_values: Grupne vrijednosti
 popin.create:
   association_type.title: Kreiraj novi tip pridruživanja
-  family.title: Kreiraj novu obitelj
   group.title: Kreiraj novu grupu
-  group_type.title: Kreiraj novi tip grupe
   product.title: Kreiraj novi proizvod
   variant_group.title: Kreiraj novu varijantu grupe
   option.title: Kreiraj novu opciju
