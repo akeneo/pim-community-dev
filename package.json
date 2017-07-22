@@ -7,8 +7,8 @@
     "webpack": "webpack --display-error-details --config webpack.config.js --progress --env=prod",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "webpack-jasmine": "node ./node_modules/karma/bin/karma start --single-run",
-    "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
+    "lint": "node ./node_modules/standard",
+    "lint-fix": "node ./node_modules/standard --fix"
   },
   "repository": {
     "type": "git",
