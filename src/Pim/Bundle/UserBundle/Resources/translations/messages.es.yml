@@ -1,7 +1,6 @@
 pim_user:
   user:
     tab:
-      general.title: General
       additional.title: Adicional
       group_and_role.title: Grupos y Roles
       password.title: Contraseña
