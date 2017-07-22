@@ -1,21 +1,14 @@
-'use strict';
+import _ from 'underscore'
+import BaseRemover from 'pim/remover/base'
+import Routing from 'routing'
 
-define([
-        'underscore',
-        'pim/remover/base',
-        'routing'
-    ], function (
-        _,
-        BaseRemover,
-        Routing
-    ) {
-        return _.extend({}, BaseRemover, {
-            /**
-             * {@inheritdoc}
-             */
-            getUrl: function (code) {
-                return Routing.generate(__moduleConfig.url, {code: code});
-            }
-        });
-    }
-);
+export default _.extend({}, BaseRemover, {
+  /**
+   * {@inheritdoc}
+   */
+  getUrl: function (code) {
+    return Routing.generate(__moduleConfig.url, {
+      code: code
+    })
+  }
+})

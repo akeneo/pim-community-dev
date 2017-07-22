@@ -26,15 +26,34 @@
  */
 
 (function() {
-  var Dropzone, Emitter, camelize, contentLoaded, detectVerticalSquash, drawImageIOSFix, noop, without,
+  var Dropzone,
+    Emitter,
+    camelize,
+    contentLoaded,
+    detectVerticalSquash,
+    drawImageIOSFix,
+    noop,
+    without,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) {
+      for (var key in parent) {
+        if (__hasProp.call(parent, key))
+          child[key] = parent[key];
+      }
+      function ctor() {
+        this.constructor = child;
+      }
+      ctor.prototype = parent.prototype;
+      child.prototype = new ctor();
+      child.__super__ = parent.prototype; return child;
+    };
 
   noop = function() {};
 
   Emitter = (function() {
-    function Emitter() {}
+    function Emitter() {
+    }
 
     Emitter.prototype.addEventListener = Emitter.prototype.on;
 
@@ -48,7 +67,12 @@
     };
 
     Emitter.prototype.emit = function() {
-      var args, callback, callbacks, event, _i, _len;
+      var args,
+        callback,
+        callbacks,
+        event,
+        _i,
+        _len;
       event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       this._callbacks = this._callbacks || {};
       callbacks = this._callbacks[event];
@@ -68,7 +92,11 @@
     Emitter.prototype.removeEventListener = Emitter.prototype.off;
 
     Emitter.prototype.off = function(event, fn) {
-      var callback, callbacks, i, _i, _len;
+      var callback,
+        callbacks,
+        i,
+        _i,
+        _len;
       if (!this._callbacks || arguments.length === 0) {
         this._callbacks = {};
         return this;
@@ -96,7 +124,8 @@
   })();
 
   Dropzone = (function(_super) {
-    var extend, resolveOption;
+    var extend,
+      resolveOption;
 
     __extends(Dropzone, _super);
 
@@ -157,7 +186,12 @@
       },
       forceFallback: false,
       fallback: function() {
-        var child, messageElement, span, _i, _len, _ref;
+        var child,
+          messageElement,
+          span,
+          _i,
+          _len,
+          _ref;
         this.element.className = "" + this.element.className + " dz-browser-not-supported";
         _ref = this.element.getElementsByTagName("div");
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -179,7 +213,9 @@
         return this.element.appendChild(this.getFallbackForm());
       },
       resize: function(file) {
-        var info, srcRatio, trgRatio;
+        var info,
+          srcRatio,
+          trgRatio;
         info = {
           srcX: 0,
           srcY: 0,
@@ -244,7 +280,19 @@
         return this.element.classList.remove("dz-started");
       },
       addedfile: function(file) {
-        var node, removeFileEvent, removeLink, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
+        var node,
+          removeFileEvent,
+          removeLink,
+          _i,
+          _j,
+          _k,
+          _len,
+          _len1,
+          _len2,
+          _ref,
+          _ref1,
+          _ref2,
+          _results;
         if (this.element === this.previewsContainer) {
           this.element.classList.add("dz-started");
         }
@@ -304,7 +352,10 @@
         return this._updateMaxFilesReachedClass();
       },
       thumbnail: function(file, dataUrl) {
-        var thumbnailElement, _i, _len, _ref;
+        var thumbnailElement,
+          _i,
+          _len,
+          _ref;
         if (file.previewElement) {
           file.previewElement.classList.remove("dz-file-preview");
           _ref = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
@@ -321,7 +372,11 @@
         }
       },
       error: function(file, message) {
-        var node, _i, _len, _ref, _results;
+        var node,
+          _i,
+          _len,
+          _ref,
+          _results;
         if (file.previewElement) {
           file.previewElement.classList.add("dz-error");
           if (typeof message !== "String" && message.error) {
@@ -347,7 +402,11 @@
       },
       processingmultiple: noop,
       uploadprogress: function(file, progress, bytesSent) {
-        var node, _i, _len, _ref, _results;
+        var node,
+          _i,
+          _len,
+          _ref,
+          _results;
         if (file.previewElement) {
           _ref = file.previewElement.querySelectorAll("[data-dz-uploadprogress]");
           _results = [];
@@ -391,7 +450,13 @@
     };
 
     extend = function() {
-      var key, object, objects, target, val, _i, _len;
+      var key,
+        object,
+        objects,
+        target,
+        val,
+        _i,
+        _len;
       target = arguments[0], objects = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       for (_i = 0, _len = objects.length; _i < _len; _i++) {
         object = objects[_i];
@@ -404,7 +469,9 @@
     };
 
     function Dropzone(element, options) {
-      var elementOptions, fallback, _ref;
+      var elementOptions,
+        fallback,
+        _ref;
       this.element = element;
       this.version = Dropzone.version;
       this.defaultOptions.previewTemplate = this.defaultOptions.previewTemplate.replace(/\n*/g, "");
@@ -462,7 +529,11 @@
     }
 
     Dropzone.prototype.getAcceptedFiles = function() {
-      var file, _i, _len, _ref, _results;
+      var file,
+        _i,
+        _len,
+        _ref,
+        _results;
       _ref = this.files;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -475,7 +546,11 @@
     };
 
     Dropzone.prototype.getRejectedFiles = function() {
-      var file, _i, _len, _ref, _results;
+      var file,
+        _i,
+        _len,
+        _ref,
+        _results;
       _ref = this.files;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -488,7 +563,11 @@
     };
 
     Dropzone.prototype.getFilesWithStatus = function(status) {
-      var file, _i, _len, _ref, _results;
+      var file,
+        _i,
+        _len,
+        _ref,
+        _results;
       _ref = this.files;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -509,7 +588,11 @@
     };
 
     Dropzone.prototype.getActiveFiles = function() {
-      var file, _i, _len, _ref, _results;
+      var file,
+        _i,
+        _len,
+        _ref,
+        _results;
       _ref = this.files;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -522,7 +605,13 @@
     };
 
     Dropzone.prototype.init = function() {
-      var eventName, noPropagation, setupHiddenFileInput, _i, _len, _ref, _ref1;
+      var eventName,
+        noPropagation,
+        setupHiddenFileInput,
+        _i,
+        _len,
+        _ref,
+        _ref1;
       if (this.element.tagName === "form") {
         this.element.setAttribute("enctype", "multipart/form-data");
       }
@@ -555,7 +644,10 @@
             _this.hiddenFileInput.style.width = "0";
             document.body.appendChild(_this.hiddenFileInput);
             return _this.hiddenFileInput.addEventListener("change", function() {
-              var file, files, _i, _len;
+              var file,
+                files,
+                _i,
+                _len;
               files = _this.hiddenFileInput.files;
               if (files.length) {
                 for (_i = 0, _len = files.length; _i < _len; _i++) {
@@ -683,7 +775,14 @@
     };
 
     Dropzone.prototype.updateTotalUploadProgress = function() {
-      var activeFiles, file, totalBytes, totalBytesSent, totalUploadProgress, _i, _len, _ref;
+      var activeFiles,
+        file,
+        totalBytes,
+        totalBytesSent,
+        totalUploadProgress,
+        _i,
+        _len,
+        _ref;
       totalBytesSent = 0;
       totalBytes = 0;
       activeFiles = this.getActiveFiles();
@@ -710,7 +809,10 @@
     };
 
     Dropzone.prototype.getFallbackForm = function() {
-      var existingFallback, fields, fieldsString, form;
+      var existingFallback,
+        fields,
+        fieldsString,
+        form;
       if (existingFallback = this.getExistingFallback()) {
         return existingFallback;
       }
@@ -731,9 +833,16 @@
     };
 
     Dropzone.prototype.getExistingFallback = function() {
-      var fallback, getFallback, tagName, _i, _len, _ref;
+      var fallback,
+        getFallback,
+        tagName,
+        _i,
+        _len,
+        _ref;
       getFallback = function(elements) {
-        var el, _i, _len;
+        var el,
+          _i,
+          _len;
         for (_i = 0, _len = elements.length; _i < _len; _i++) {
           el = elements[_i];
           if (/(^| )fallback($| )/.test(el.className)) {
@@ -751,13 +860,20 @@
     };
 
     Dropzone.prototype.setupEventListeners = function() {
-      var elementListeners, event, listener, _i, _len, _ref, _results;
+      var elementListeners,
+        event,
+        listener,
+        _i,
+        _len,
+        _ref,
+        _results;
       _ref = this.listeners;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         elementListeners = _ref[_i];
         _results.push((function() {
-          var _ref1, _results1;
+          var _ref1,
+            _results1;
           _ref1 = elementListeners.events;
           _results1 = [];
           for (event in _ref1) {
@@ -771,13 +887,20 @@
     };
 
     Dropzone.prototype.removeEventListeners = function() {
-      var elementListeners, event, listener, _i, _len, _ref, _results;
+      var elementListeners,
+        event,
+        listener,
+        _i,
+        _len,
+        _ref,
+        _results;
       _ref = this.listeners;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         elementListeners = _ref[_i];
         _results.push((function() {
-          var _ref1, _results1;
+          var _ref1,
+            _results1;
           _ref1 = elementListeners.events;
           _results1 = [];
           for (event in _ref1) {
@@ -791,7 +914,11 @@
     };
 
     Dropzone.prototype.disable = function() {
-      var file, _i, _len, _ref, _results;
+      var file,
+        _i,
+        _len,
+        _ref,
+        _results;
       this.clickableElements.forEach(function(element) {
         return element.classList.remove("dz-clickable");
       });
@@ -813,7 +940,14 @@
     };
 
     Dropzone.prototype.filesize = function(size) {
-      var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
+      var cutoff,
+        i,
+        selectedSize,
+        selectedUnit,
+        unit,
+        units,
+        _i,
+        _len;
       units = ['TB', 'GB', 'MB', 'KB', 'b'];
       selectedSize = selectedUnit = null;
       for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
@@ -841,7 +975,8 @@
     };
 
     Dropzone.prototype.drop = function(e) {
-      var files, items;
+      var files,
+        items;
       if (!e.dataTransfer) {
         return;
       }
@@ -858,7 +993,8 @@
     };
 
     Dropzone.prototype.paste = function(e) {
-      var items, _ref;
+      var items,
+        _ref;
       if ((e != null ? (_ref = e.clipboardData) != null ? _ref.items : void 0 : void 0) == null) {
         return;
       }
@@ -870,7 +1006,10 @@
     };
 
     Dropzone.prototype.handleFiles = function(files) {
-      var file, _i, _len, _results;
+      var file,
+        _i,
+        _len,
+        _results;
       _results = [];
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
@@ -880,7 +1019,11 @@
     };
 
     Dropzone.prototype._addFilesFromItems = function(items) {
-      var entry, item, _i, _len, _results;
+      var entry,
+        item,
+        _i,
+        _len,
+        _results;
       _results = [];
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
@@ -906,11 +1049,14 @@
     };
 
     Dropzone.prototype._addFilesFromDirectory = function(directory, path) {
-      var dirReader, entriesReader;
+      var dirReader,
+        entriesReader;
       dirReader = directory.createReader();
       entriesReader = (function(_this) {
         return function(entries) {
-          var entry, _i, _len;
+          var entry,
+            _i,
+            _len;
           for (_i = 0, _len = entries.length; _i < _len; _i++) {
             entry = entries[_i];
             if (entry.isFile) {
@@ -972,7 +1118,9 @@
     };
 
     Dropzone.prototype.enqueueFiles = function(files) {
-      var file, _i, _len;
+      var file,
+        _i,
+        _len;
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         this.enqueueFile(file);
@@ -1035,7 +1183,10 @@
     };
 
     Dropzone.prototype.removeAllFiles = function(cancelIfNecessary) {
-      var file, _i, _len, _ref;
+      var file,
+        _i,
+        _len,
+        _ref;
       if (cancelIfNecessary == null) {
         cancelIfNecessary = false;
       }
@@ -1072,7 +1223,14 @@
       img = document.createElement("img");
       img.onload = (function(_this) {
         return function() {
-          var canvas, ctx, resizeInfo, thumbnail, _ref, _ref1, _ref2, _ref3;
+          var canvas,
+            ctx,
+            resizeInfo,
+            thumbnail,
+            _ref,
+            _ref1,
+            _ref2,
+            _ref3;
           file.width = img.width;
           file.height = img.height;
           resizeInfo = _this.options.resize.call(_this, file);
@@ -1101,7 +1259,10 @@
     };
 
     Dropzone.prototype.processQueue = function() {
-      var i, parallelUploads, processingLength, queuedFiles;
+      var i,
+        parallelUploads,
+        processingLength,
+        queuedFiles;
       parallelUploads = this.options.parallelUploads;
       processingLength = this.getUploadingFiles().length;
       i = processingLength;
@@ -1130,7 +1291,9 @@
     };
 
     Dropzone.prototype.processFiles = function(files) {
-      var file, _i, _len;
+      var file,
+        _i,
+        _len;
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         file.processing = true;
@@ -1144,9 +1307,13 @@
     };
 
     Dropzone.prototype._getFilesWithXhr = function(xhr) {
-      var file, files;
+      var file,
+        files;
       return files = (function() {
-        var _i, _len, _ref, _results;
+        var _i,
+          _len,
+          _ref,
+          _results;
         _ref = this.files;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1160,7 +1327,13 @@
     };
 
     Dropzone.prototype.cancelUpload = function(file) {
-      var groupedFile, groupedFiles, _i, _j, _len, _len1, _ref;
+      var groupedFile,
+        groupedFiles,
+        _i,
+        _j,
+        _len,
+        _len1,
+        _ref;
       if (file.status === Dropzone.UPLOADING) {
         groupedFiles = this._getFilesWithXhr(file.xhr);
         for (_i = 0, _len = groupedFiles.length; _i < _len; _i++) {
@@ -1188,7 +1361,8 @@
     };
 
     resolveOption = function() {
-      var args, option;
+      var args,
+        option;
       option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       if (typeof option === 'function') {
         return option.apply(this, args);
@@ -1201,7 +1375,40 @@
     };
 
     Dropzone.prototype.uploadFiles = function(files) {
-      var file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, method, option, progressObj, response, updateProgress, url, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+      var file,
+        formData,
+        handleError,
+        headerName,
+        headerValue,
+        headers,
+        i,
+        input,
+        inputName,
+        inputType,
+        key,
+        method,
+        option,
+        progressObj,
+        response,
+        updateProgress,
+        url,
+        value,
+        xhr,
+        _i,
+        _j,
+        _k,
+        _l,
+        _len,
+        _len1,
+        _len2,
+        _len3,
+        _m,
+        _ref,
+        _ref1,
+        _ref2,
+        _ref3,
+        _ref4,
+        _ref5;
       xhr = new XMLHttpRequest();
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
@@ -1214,7 +1421,9 @@
       response = null;
       handleError = (function(_this) {
         return function() {
-          var _j, _len1, _results;
+          var _j,
+            _len1,
+            _results;
           _results = [];
           for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
             file = files[_j];
@@ -1225,7 +1434,15 @@
       })(this);
       updateProgress = (function(_this) {
         return function(e) {
-          var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
+          var allFilesFinished,
+            progress,
+            _j,
+            _k,
+            _l,
+            _len1,
+            _len2,
+            _len3,
+            _results;
           if (e != null) {
             progress = 100 * e.loaded / e.total;
             for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
@@ -1348,7 +1565,9 @@
     };
 
     Dropzone.prototype._finished = function(files, responseText, e) {
-      var file, _i, _len;
+      var file,
+        _i,
+        _len;
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         file.status = Dropzone.SUCCESS;
@@ -1365,7 +1584,9 @@
     };
 
     Dropzone.prototype._errorProcessing = function(files, message, xhr) {
-      var file, _i, _len;
+      var file,
+        _i,
+        _len;
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         file.status = Dropzone.ERROR;
@@ -1412,13 +1633,21 @@
   Dropzone.autoDiscover = true;
 
   Dropzone.discover = function() {
-    var checkElements, dropzone, dropzones, _i, _len, _results;
+    var checkElements,
+      dropzone,
+      dropzones,
+      _i,
+      _len,
+      _results;
     if (document.querySelectorAll) {
       dropzones = document.querySelectorAll(".dropzone");
     } else {
       dropzones = [];
       checkElements = function(elements) {
-        var el, _i, _len, _results;
+        var el,
+          _i,
+          _len,
+          _results;
         _results = [];
         for (_i = 0, _len = elements.length; _i < _len; _i++) {
           el = elements[_i];
@@ -1448,7 +1677,11 @@
   Dropzone.blacklistedBrowsers = [/opera.*Macintosh.*version\/12/i];
 
   Dropzone.isBrowserSupported = function() {
-    var capableBrowser, regex, _i, _len, _ref;
+    var capableBrowser,
+      regex,
+      _i,
+      _len,
+      _ref;
     capableBrowser = true;
     if (window.File && window.FileReader && window.FileList && window.Blob && window.FormData && document.querySelector) {
       if (!("classList" in document.createElement("a"))) {
@@ -1470,7 +1703,10 @@
   };
 
   without = function(list, rejectedItem) {
-    var item, _i, _len, _results;
+    var item,
+      _i,
+      _len,
+      _results;
     _results = [];
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       item = list[_i];
@@ -1520,7 +1756,14 @@
   };
 
   Dropzone.getElements = function(els, name) {
-    var e, el, elements, _i, _j, _len, _len1, _ref;
+    var e,
+      el,
+      elements,
+      _i,
+      _j,
+      _len,
+      _len1,
+      _ref;
     if (els instanceof Array) {
       elements = [];
       try {
@@ -1557,7 +1800,11 @@
   };
 
   Dropzone.isValidFile = function(file, acceptedFiles) {
-    var baseMimeType, mimeType, validType, _i, _len;
+    var baseMimeType,
+      mimeType,
+      validType,
+      _i,
+      _len;
     if (!acceptedFiles) {
       return true;
     }
@@ -1623,7 +1870,16 @@
    */
 
   detectVerticalSquash = function(img) {
-    var alpha, canvas, ctx, data, ey, ih, iw, py, ratio, sy;
+    var alpha,
+      canvas,
+      ctx,
+      data,
+      ey,
+      ih,
+      iw,
+      py,
+      ratio,
+      sy;
     iw = img.naturalWidth;
     ih = img.naturalHeight;
     canvas = document.createElement("canvas");
@@ -1674,7 +1930,15 @@
    */
 
   contentLoaded = function(win, fn) {
-    var add, doc, done, init, poll, pre, rem, root, top;
+    var add,
+      doc,
+      done,
+      init,
+      poll,
+      pre,
+      rem,
+      root,
+      top;
     done = false;
     top = true;
     doc = win.document;

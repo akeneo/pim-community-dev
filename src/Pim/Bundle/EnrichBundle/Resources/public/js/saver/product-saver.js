@@ -1,21 +1,14 @@
-'use strict';
+import _ from 'underscore'
+import BaseSaver from 'pim/saver/base'
+import Routing from 'routing'
 
-define([
-        'underscore',
-        'pim/saver/base',
-        'routing'
-    ], function (
-        _,
-        BaseSaver,
-        Routing
-    ) {
-        return _.extend({}, BaseSaver, {
-            /**
-             * {@inheritdoc}
-             */
-            getUrl: function (id) {
-                return Routing.generate(__moduleConfig.url, {id: id});
-            }
-        });
-    }
-);
+export default _.extend({}, BaseSaver, {
+  /**
+   * {@inheritdoc}
+   */
+  getUrl: function (id) {
+    return Routing.generate(__moduleConfig.url, {
+      id: id
+    })
+  }
+})

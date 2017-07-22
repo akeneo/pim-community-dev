@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Edit form
  *
@@ -7,102 +6,85 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'pim/template/form/edit-form',
-        'pim/form',
-        'oro/mediator',
-        'pim/fetcher-registry',
-        'pim/field-manager',
-        'pim/form-builder',
-        'oro/messenger'
-    ],
-    function (
-        _,
-        __,
-        Backbone,
-        template,
-        BaseForm,
-        mediator,
-        FetcherRegistry,
-        FieldManager,
-        formBuilder,
-        messenger
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
+import _ from 'underscore'
+import Backbone from 'backbone'
+import template from 'pim/template/form/edit-form'
+import BaseForm from 'pim/form'
+import mediator from 'oro/mediator'
+import FetcherRegistry from 'pim/fetcher-registry'
+import FieldManager from 'pim/field-manager'
+import formBuilder from 'pim/form-builder'
+import messenger from 'oro/messenger'
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                mediator.clear('pim_enrich:form');
-                Backbone.Router.prototype.once('route', this.unbindEvents);
+export default BaseForm.extend({
+  template: _.template(template),
 
-                if (_.has(__moduleConfig, 'forwarded-events')) {
-                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
-                }
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    mediator.clear('pim_enrich:form')
+    Backbone.Router.prototype.once('route', this.unbindEvents)
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.displayError.bind(this));
-
-                this.onExtensions('save-buttons:register-button', function (button) {
-                    this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
-                }.bind(this));
-
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
-                this.getRoot().trigger('pim_enrich:form:render:before');
-
-                this.$el.html(this.template());
-
-                this.renderExtensions();
-
-                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
-                }.bind(this));
-
-                this.getRoot().trigger('pim_enrich:form:render:after');
-            },
-
-            /**
-             * Clear the mediator
-             */
-            unbindEvents: function () {
-                mediator.clear('pim_enrich:form');
-            },
-
-            /**
-             * Clear the cached information
-             */
-            clearCache: function () {
-                FetcherRegistry.clearAll();
-                FieldManager.clearFields();
-                this.render();
-            },
-
-            /**
-             * Display validation error as flash message
-             *
-             * @param {Event} event
-             */
-            displayError: function (event) {
-                _.each(event.response, function (error) {
-                    if (error.global) {
-                        messenger.notify('error', error.message);
-                    }
-                })
-            }
-        });
+    if (_.has(__moduleConfig, 'forwarded-events')) {
+      this.forwardMediatorEvents(__moduleConfig['forwarded-events'])
     }
-);
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.displayError.bind(this))
+
+    this.onExtensions('save-buttons:register-button', function (button) {
+      this.getExtension('save-buttons').trigger('save-buttons:add-button', button)
+    }.bind(this))
+
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
+
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    if (!this.configured) {
+      return this
+    }
+    this.getRoot().trigger('pim_enrich:form:render:before')
+
+    this.$el.html(this.template())
+
+    this.renderExtensions()
+
+    formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+      form.setElement('.user-menu').render()
+    })
+
+    this.getRoot().trigger('pim_enrich:form:render:after')
+  },
+
+  /**
+   * Clear the mediator
+   */
+  unbindEvents: function () {
+    mediator.clear('pim_enrich:form')
+  },
+
+  /**
+   * Clear the cached information
+   */
+  clearCache: function () {
+    FetcherRegistry.clearAll()
+    FieldManager.clearFields()
+    this.render()
+  },
+
+  /**
+   * Display validation error as flash message
+   *
+   * @param {Event} event
+   */
+  displayError: function (event) {
+    _.each(event.response, function (error) {
+      if (error.global) {
+        messenger.notify('error', error.message)
+      }
+    })
+  }
+})

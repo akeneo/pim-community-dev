@@ -1,19 +1,12 @@
-'use strict';
+import FormController from 'pim/controller/form'
 
-define([
-        'pim/controller/form'
-    ], function (
-        FormController
-    ) {
-        return FormController.extend({
-            /**
-             * {@inheritdoc}
-             */
-            afterSubmit: function () {
-                window.location.reload(); //TODO nav: reload the page to update the menu
+export default FormController.extend({
+  /**
+   * {@inheritdoc}
+   */
+  afterSubmit: function () {
+    window.location.reload() // TODO nav: reload the page to update the menu
 
-                FormController.prototype.afterSubmit.apply(this, arguments);
-            }
-        });
-    }
-);
+    FormController.prototype.afterSubmit.apply(this, arguments)
+  }
+})

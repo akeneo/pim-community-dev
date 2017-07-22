@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Module used to display the generals properties of a variant group
  *
@@ -7,42 +5,31 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/template/variant-group/tab/properties/general',
-        'jquery.select2'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        FetcherRegistry,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'tabsection',
-            template: _.template(template),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/variant-group/tab/properties/general'
+import 'jquery.select2'
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    model: this.getFormData(),
-                    sectionTitle: __('pim_enrich.form.variant_group.tab.properties.general'),
-                    codeLabel: __('pim_enrich.form.variant_group.tab.properties.code'),
-                    typeLabel: __('pim_enrich.form.variant_group.tab.properties.type'),
-                    axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis'),
-                    __: __
-                }));
+export default BaseForm.extend({
+  className: 'tabsection',
+  template: _.template(template),
 
-                this.$el.find('select.select2').select2({});
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.html(this.template({
+      model: this.getFormData(),
+      sectionTitle: __('pim_enrich.form.variant_group.tab.properties.general'),
+      codeLabel: __('pim_enrich.form.variant_group.tab.properties.code'),
+      typeLabel: __('pim_enrich.form.variant_group.tab.properties.type'),
+      axisLabel: __('pim_enrich.form.variant_group.tab.properties.axis'),
+      __: __
+    }))
 
-                this.renderExtensions();
-            }
-        });
-    }
-);
+    this.$el.find('select.select2').select2({})
+
+    this.renderExtensions()
+  }
+})

@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Displays a list of meta information
  *
@@ -6,42 +5,37 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/form/meta'
-    ],
-    function (_, __, BaseForm, template) {
-        return BaseForm.extend({
-            template: _.template(template),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/meta'
 
-            config: {},
+export default BaseForm.extend({
+  template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
+  config: {},
 
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (meta) {
+    this.config = meta.config
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.empty();
+    return BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                if (!_.isEmpty(this.extensions)) {
-                    this.$el.html(this.template({
-                        label: __(this.config.label)
-                    }));
-                }
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.empty()
 
-                return BaseForm.prototype.render.apply(this, arguments);
-            }
-        });
+    if (!_.isEmpty(this.extensions)) {
+      this.$el.html(this.template({
+        label: __(this.config.label)
+      }))
     }
-);
+
+    return BaseForm.prototype.render.apply(this, arguments)
+  }
+})

@@ -8,59 +8,42 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-'use strict';
+import BaseForm from 'pim/form'
+import FormBuilder from 'pim/form-builder'
+import FormRegistry from 'pim/attribute-edit-form/type-specific-form-registry'
 
-define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'oro/translator',
-    'pim/form',
-    'pim/form-builder',
-    'pim/attribute-edit-form/type-specific-form-registry'
-], function (
-    $,
-    _,
-    Backbone,
-    __,
-    BaseForm,
-    FormBuilder,
-    FormRegistry
-) {
-    return BaseForm.extend({
-        config: {},
+export default BaseForm.extend({
+  config: {},
 
-        /**
-         * {@inheritdoc}
-         */
-        initialize: function (config) {
-            this.config = config.config;
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            var formName = FormRegistry.getFormName(this.getRoot().getType(), this.config.mode);
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    var formName = FormRegistry.getFormName(this.getRoot().getType(), this.config.mode)
 
-            if (undefined !== formName && null !== formName) {
-                return FormBuilder.buildForm(formName)
-                    .then(function (form) {
-                        this.addExtension(
-                            form.code,
-                            form,
-                            'self',
-                            100
-                        );
+    if (undefined !== formName && formName !== null) {
+      return FormBuilder.buildForm(formName)
+        .then(function (form) {
+          this.addExtension(
+            form.code,
+            form,
+            'self',
+            100
+          )
 
-                        return BaseForm.prototype.configure.apply(this);
-                    }.bind(this))
-                ;
-            }
+          return BaseForm.prototype.configure.apply(this)
+        }.bind(this))
+    }
 
-            return BaseForm.prototype.configure.apply(this);
-        }
-    });
-});
+    return BaseForm.prototype.configure.apply(this)
+  }
+})

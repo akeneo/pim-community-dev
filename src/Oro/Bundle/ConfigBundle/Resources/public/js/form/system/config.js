@@ -1,72 +1,62 @@
-"use strict";
 
-define([
-        'oro/translator',
-        'backbone',
-        'oro/mediator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/template/form/index/index'
-    ],
-    function(
-        __,
-        Backbone,
-        mediator,
-        BaseForm,
-        FetcherRegistry,
-        template
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                this.model = new Backbone.Model({});
+import __ from 'oro/translator';
+import Backbone from 'backbone';
+import mediator from 'oro/mediator';
+import BaseForm from 'pim/form';
+import FetcherRegistry from 'pim/fetcher-registry';
+import template from 'pim/template/form/index/index';
+export default BaseForm.extend({
+  template: _.template(template),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function() {
+    this.model = new Backbone.Model({});
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                Backbone.Router.prototype.once('route', this.unbindEvents);
+    BaseForm.prototype.initialize.apply(this, arguments);
+  },
 
-                if (_.has(__moduleConfig, 'forwarded-events')) {
-                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
-                }
+  /**
+   * {@inheritdoc}
+   */
+  configure: function() {
+    Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+    if (_.has(__moduleConfig, 'forwarded-events')) {
+      this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
+    }
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
+    return BaseForm.prototype.configure.apply(this, arguments);
+  },
 
-                this.getRoot().trigger('oro_config:form:render:before');
+  /**
+   * {@inheritdoc}
+   */
+  render: function() {
+    if (!this.configured) {
+      return this;
+    }
 
-                this.$el.html(this.template({
-                    title: __('oro_config.form.config.title')
-                }));
+    this.getRoot().trigger('oro_config:form:render:before');
 
-                this.renderExtensions();
+    this.$el.html(this.template({
+      title: __('oro_config.form.config.title')
+    }));
 
-                this.getRoot().trigger('oro_config:form:render:after');
+    this.renderExtensions();
 
-                return this;
-            },
+    this.getRoot().trigger('oro_config:form:render:after');
 
-            /**
-             * Clear the mediator events
-             */
-            unbindEvents: function () {
-                mediator.clear('oro_config:form');
-            }
-        });
+    return this;
+  },
+
+  /**
+   * Clear the mediator events
+   */
+  unbindEvents: function() {
+    mediator.clear('oro_config:form');
+  }
 });
+

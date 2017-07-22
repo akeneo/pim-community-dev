@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Attributes tabs view
  *
@@ -7,57 +5,47 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/template/family/tab/attributes'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        FetcherRegistry,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'attributes',
-            template: _.template(template),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/family/tab/attributes'
+import 'jquery.select2'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  className: 'attributes',
+  template: _.template(template),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.trigger('tab:register', {
-                    code: this.code,
-                    label: __(this.config.label)
-                });
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.trigger('tab:register', {
+      code: this.code,
+      label: __(this.config.label)
+    })
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                this.$el.html(this.template());
-
-                this.renderExtensions();
-            }
-        });
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    if (!this.configured) {
+      return this
     }
-);
+
+    this.$el.html(this.template({}))
+
+    this.renderExtensions()
+  }
+})

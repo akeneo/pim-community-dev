@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Base extension for navigation blocks
  * A navigation block is composed of a title and a list of items, displayed in the columns.
@@ -8,54 +6,45 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/menu/navigation-block'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'AknColumn-block',
-            template: _.template(template),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/menu/navigation-block'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  className: 'AknColumn-block',
+  template: _.template(template),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * Proxy for 'pim_menu:column:register_navigation_item' event
-             *
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.onExtensions('pim_menu:column:register_navigation_item', function (event) {
-                    this.trigger('pim_menu:column:register_navigation_item', event);
-                });
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * Proxy for 'pim_menu:column:register_navigation_item' event
+   *
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.onExtensions('pim_menu:column:register_navigation_item', function (event) {
+      this.trigger('pim_menu:column:register_navigation_item', event)
+    })
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.empty().append(this.template({
-                    title: __(this.config.title)
-                }));
+    BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                BaseForm.prototype.render.apply(this, arguments);
-            }
-        })
-    });
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.empty().append(this.template({
+      title: __(this.config.title)
+    }))
+
+    BaseForm.prototype.render.apply(this, arguments)
+  }
+})

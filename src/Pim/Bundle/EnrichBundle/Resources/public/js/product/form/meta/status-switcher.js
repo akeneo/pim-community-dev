@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Status switcher extension
  *
@@ -7,66 +6,54 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'oro/mediator',
-        'pim/form',
-        'pim/template/product/meta/status-switcher'
-    ],
-    function (
-        _,
-        __,
-        mediator,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'AknColumn-block AknDropdown',
-            template: _.template(template),
-            events: {
-                'click .AknDropdown-menuLink': 'updateStatus'
-            },
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/product/meta/status-switcher'
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+export default BaseForm.extend({
+  className: 'AknColumn-block AknDropdown',
+  template: _.template(template),
+  events: {
+    'click .AknDropdown-menuLink': 'updateStatus'
+  },
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                var status = this.getRoot().getFormData().enabled;
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                this.$el.html(this.template({
-                    status: status,
-                    label: __('pim_enrich.entity.product.meta.status'),
-                    enabledLabel: __('pim_enrich.entity.product.btn.enabled'),
-                    disabledLabel: __('pim_enrich.entity.product.btn.disabled')
-                }));
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    var status = this.getRoot().getFormData().enabled
 
-                this.delegateEvents();
+    this.$el.html(this.template({
+      status: status,
+      label: __('pim_enrich.entity.product.meta.status'),
+      enabledLabel: __('pim_enrich.entity.product.btn.enabled'),
+      disabledLabel: __('pim_enrich.entity.product.btn.disabled')
+    }))
 
-                return this;
-            },
+    this.delegateEvents()
 
-            /**
-             * Update the current status of the product
-             *
-             * @param {Event} event
-             */
-            updateStatus: function (event) {
-                var newStatus = event.currentTarget.dataset.status === 'enable';
-                this.getFormModel().set('enabled', newStatus);
-                this.getRoot().trigger('pim_enrich:form:entity:update_state');
-                this.render();
-            }
-        });
-    }
-);
+    return this
+  },
+
+  /**
+   * Update the current status of the product
+   *
+   * @param {Event} event
+   */
+  updateStatus: function (event) {
+    var newStatus = event.currentTarget.dataset.status === 'enable'
+    this.getFormModel().set('enabled', newStatus)
+    this.getRoot().trigger('pim_enrich:form:entity:update_state')
+    this.render()
+  }
+})

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Attributes tab top toolbar view
  *
@@ -7,44 +5,34 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/family/tab/attributes/toolbar'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'AknGridToolbar',
-            template: _.template(template),
-            errors: [],
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/family/tab/attributes/toolbar'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  className: 'AknGridToolbar',
+  template: _.template(template),
+  errors: [],
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                this.$el.html(this.template({}));
-
-                this.renderExtensions();
-            }
-        });
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    if (!this.configured) {
+      return this
     }
-);
+
+    this.$el.html(this.template({}))
+
+    this.renderExtensions()
+  }
+})

@@ -1,15 +1,13 @@
-'use strict';
+import router from 'pim-router'
+import __ from 'oro/translator'
+var routeParams = {}
 
-define(['pim-router', 'oro/translator'], function (router, __) {
-    var routeParams = {};
+router.on('route_complete', function (name) {
+  document.title = __('page_title.' + name, routeParams)
+})
 
-    router.on('route_complete', function (name) {
-        document.title = __('page_title.' + name, routeParams);
-    });
-
-    return {
-        set: function (params) {
-            routeParams = params;
-        }
-    };
-});
+export default {
+  set: function (params) {
+    routeParams = params
+  }
+}

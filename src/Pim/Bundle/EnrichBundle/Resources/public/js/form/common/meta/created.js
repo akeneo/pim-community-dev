@@ -1,4 +1,3 @@
- 'use strict';
 /**
  * Created at extension
  *
@@ -7,53 +6,48 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/form/meta/created'
-    ],
-    function (_, __, BaseForm, formTemplate) {
-        return BaseForm.extend({
-            tagName: 'span',
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import formTemplate from 'pim/template/form/meta/created'
 
-            className: 'AknTitleContainer-metaItem',
+export default BaseForm.extend({
+  tagName: 'span',
 
-            template: _.template(formTemplate),
+  className: 'AknTitleContainer-metaItem',
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
+  template: _.template(formTemplate),
 
-                this.label   = __(this.config.label);
-                this.labelBy = __(this.config.labelBy);
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (meta) {
+    this.config = meta.config
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+    this.label = __(this.config.label)
+    this.labelBy = __(this.config.labelBy)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                var product = this.getFormData();
-                var html = '';
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                if (product.meta.created) {
-                    html = this.template({
-                        label: this.label,
-                        labelBy: this.labelBy,
-                        loggedAt: _.result(product.meta.created, 'logged_at', null),
-                        author: _.result(product.meta.created, 'author', null)
-                    });
-                }
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    var product = this.getFormData()
+    var html = ''
 
-                this.$el.html(html);
-
-                return this;
-            }
-        });
+    if (product.meta.created) {
+      html = this.template({
+        label: this.label,
+        labelBy: this.labelBy,
+        loggedAt: _.result(product.meta.created, 'logged_at', null),
+        author: _.result(product.meta.created, 'author', null)
+      })
     }
-);
+
+    this.$el.html(html)
+
+    return this
+  }
+})

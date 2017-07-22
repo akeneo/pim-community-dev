@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Redirect button
  *
@@ -6,51 +5,44 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/common/redirect',
-        'routing'
-    ],
-    function ($, _, __, Redirect, Routing) {
-        return Redirect.extend({
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+import $ from 'jquery'
+import Redirect from 'pim/common/redirect'
+import Routing from 'routing'
 
-                Redirect.prototype.initialize.apply(this, arguments);
-            },
+export default Redirect.extend({
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * Get the route to redirect to
-             *
-             * @return {string}
-             */
-            getUrl: function () {
-                var code = this.getFormData().jobInstance.code;
-                var type = this.getFormData().jobInstance.type;
-                var route = 'pim_importexport_%type%_profile_show'.replace('%type%', type);
+    Redirect.prototype.initialize.apply(this, arguments)
+  },
 
-                return Routing.generate(route, {
-                    code: code
-                });
-            },
+  /**
+   * Get the route to redirect to
+   *
+   * @return {string}
+   */
+  getUrl: function () {
+    var code = this.getFormData().jobInstance.code
+    var type = this.getFormData().jobInstance.type
+    var route = 'pim_importexport_%type%_profile_show'.replace('%type%', type)
 
-            /**
-             * Only visible when the type of jobInstance is import or export
-             *
-             * @returns {*|{then, fail, end}}
-             */
-            isVisible: function () {
-                var type = this.getFormData().jobInstance.type;
+    return Routing.generate(route, {
+      code: code
+    })
+  },
 
-                return $.Deferred().resolve(type === 'export' || type === 'import').promise();
-            }
+  /**
+   * Only visible when the type of jobInstance is import or export
+   *
+   * @returns {*|{then, fail, end}}
+   */
+  isVisible: function () {
+    var type = this.getFormData().jobInstance.type
 
-        });
-    }
-);
+    return $.Deferred().resolve(type === 'export' || type === 'import').promise()
+  }
+
+})

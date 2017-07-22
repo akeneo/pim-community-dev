@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Textarea field
  *
@@ -7,46 +6,37 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'pim/field',
-        'underscore',
-        'pim/template/product/field/textarea'
-    ],
-    function (
-        Field,
-        _,
-        fieldTemplate
-    ) {
-        return Field.extend({
-            fieldTemplate: _.template(fieldTemplate),
-            events: {
-                'change .field-input:first textarea': 'updateModel'
-            },
+import Field from 'pim/field'
+import _ from 'underscore'
+import fieldTemplate from 'pim/template/product/field/textarea'
 
-            /**
-             * @inheritDoc
-             */
-            renderInput: function (context) {
-                return this.fieldTemplate(context);
-            },
+export default Field.extend({
+  fieldTemplate: _.template(fieldTemplate),
+  events: {
+    'change .field-input:first textarea': 'updateModel'
+  },
 
-            /**
-             * @inheritDoc
-             */
-            updateModel: function () {
-                var data = this.$('.field-input:first textarea:first').val();
-                data = '' === data ? this.attribute.empty_value : data;
+  /**
+   * @inheritDoc
+   */
+  renderInput: function (context) {
+    return this.fieldTemplate(context)
+  },
 
-                this.setCurrentValue(data);
-            },
+  /**
+   * @inheritDoc
+   */
+  updateModel: function () {
+    var data = this.$('.field-input:first textarea:first').val()
+    data = data === '' ? this.attribute.empty_value : data
 
-            /**
-             * @inheritDoc
-             */
-            setFocus: function () {
-                this.$('.field-input:first textarea').focus();
-            }
-        });
-    }
-);
+    this.setCurrentValue(data)
+  },
+
+  /**
+   * @inheritDoc
+   */
+  setFocus: function () {
+    this.$('.field-input:first textarea').focus()
+  }
+})

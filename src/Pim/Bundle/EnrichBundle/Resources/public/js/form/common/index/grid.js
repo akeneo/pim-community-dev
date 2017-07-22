@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Generic grid renderer
  *
@@ -6,48 +5,40 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'pim/form',
-        'pim/common/grid',
-        'pim/user-context'
-    ],
-    function (
-        BaseForm,
-        Grid,
-        UserContext
-    ) {
-        return BaseForm.extend({
-            grid: null,
+import BaseForm from 'pim/form'
+import Grid from 'pim/common/grid'
+import UserContext from 'pim/user-context'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  grid: null,
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                var metaData = this.config.metadata || {};
-                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                this.grid = new Grid(this.config.alias, metaData);
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    var metaData = this.config.metadata || {}
+    metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale')
 
-                BaseForm.prototype.configure.apply(this, arguments);
-            },
+    this.grid = new Grid(this.config.alias, metaData)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.empty().append(this.grid.render().$el);
+    BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                return this;
-            }
-        });
-    });
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.empty().append(this.grid.render().$el)
+
+    return this
+  }
+})

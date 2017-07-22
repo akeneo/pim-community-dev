@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Module used to display the localized properties of an object
  *
@@ -7,152 +5,145 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-        'jquery',
-        'underscore',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/template/form/properties/translation'
-    ],
-    function (
-        $,
-        _,
-        BaseForm,
-        FetcherRegistry,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'translation-container',
-            template: _.template(template),
-            events: {
-                'change .label-field': 'updateModel'
-            },
-            validationErrors: {},
-            locales: [],
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import FetcherRegistry from 'pim/fetcher-registry'
+import template from 'pim/template/form/properties/translation'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  className: 'translation-container',
+  template: _.template(template),
+  events: {
+    'change .label-field': 'updateModel'
+  },
+  validationErrors: {},
+  locales: [],
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:entity:pre_save',
-                    this.onPreSave
-                );
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:entity:bad_request',
-                    this.onValidationError
-                );
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(
+      this.getRoot(),
+      'pim_enrich:form:entity:pre_save',
+      this.onPreSave
+    )
 
-                this.listenTo(
-                    this.getRoot(),
-                    'pim_enrich:form:entity:locales_updated',
-                    this.onLocalesUpdated.bind(this)
-                );
+    this.listenTo(
+      this.getRoot(),
+      'pim_enrich:form:entity:bad_request',
+      this.onValidationError
+    )
 
-                return $.when(
-                    this.getLocales(true)
-                        .then(function (locales) {
-                            this.locales = locales;
-                        }.bind(this)),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
-            },
+    this.listenTo(
+      this.getRoot(),
+      'pim_enrich:form:entity:locales_updated',
+      this.onLocalesUpdated.bind(this)
+    )
 
-            /**
-             * Pre save callback
-             */
-            onPreSave: function () {
-                this.validationErrors = {};
+    return $.when(
+      this.getLocales(true)
+        .then(function (locales) {
+          this.locales = locales
+        }.bind(this)),
+      BaseForm.prototype.configure.apply(this, arguments)
+    )
+  },
 
-                this.render();
-            },
+  /**
+   * Pre save callback
+   */
+  onPreSave: function () {
+    this.validationErrors = {}
 
-            /**
-             * On validation callback
-             *
-             * @param {Event} event
-             */
-            onValidationError: function (event) {
-                this.validationErrors = event.response.translations ? event.response.translations : {};
+    this.render()
+  },
 
-                this.render();
-            },
+  /**
+   * On validation callback
+   *
+   * @param {Event} event
+   */
+  onValidationError: function (event) {
+    this.validationErrors = event.response.translations ? event.response.translations : {}
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    model: this.getFormData(),
-                    locales: this.locales,
-                    errors: this.validationErrors,
-                    label: this.config.label,
-                    fieldBaseId: this.config.fieldBaseId,
-                    isReadOnly: this.isReadOnly()
-                }));
+    this.render()
+  },
 
-                this.delegateEvents();
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.html(this.template({
+      model: this.getFormData(),
+      locales: this.locales,
+      errors: this.validationErrors,
+      label: this.config.label,
+      fieldBaseId: this.config.fieldBaseId,
+      isReadOnly: this.isReadOnly()
+    }))
 
-                this.renderExtensions();
-            },
+    this.delegateEvents()
 
-            /**
-             * @returns {Boolean}
-             */
-            isReadOnly: function () {
-                return false;
-            },
+    this.renderExtensions()
+  },
 
-            /**
-             * @param {Object} event
-             */
-            updateModel: function (event) {
-                var data = this.getFormData();
+  /**
+   * @returns {Boolean}
+   */
+  isReadOnly: function () {
+    return false
+  },
 
-                if (Array.isArray(data.labels)) {
-                    data.labels = {};
-                }
+  /**
+   * @param {Object} event
+   */
+  updateModel: function (event) {
+    var data = this.getFormData()
 
-                data.labels[event.target.dataset.locale] = event.target.value;
-
-                this.setData(data);
-            },
-
-            /**
-             * Updates locales if were updated
-             */
-            onLocalesUpdated: function () {
-                this.getLocales(false)
-                    .then(function (locales) {
-                            this.locales = locales;
-
-                            return this.render();
-                    }.bind(this));
-            },
-
-            /**
-             * Fetches and returns activated locales.
-             *
-             * @param {Boolean} cached
-             *
-             * @returns {Promise}
-             */
-            getLocales: function (cached) {
-                return FetcherRegistry.getFetcher('locale')
-                    .search({activated: true, cached: cached});
-            }
-        });
+    if (Array.isArray(data.labels)) {
+      data.labels = {}
     }
-);
+
+    data.labels[event.target.dataset.locale] = event.target.value
+
+    this.setData(data)
+  },
+
+  /**
+   * Updates locales if were updated
+   */
+  onLocalesUpdated: function () {
+    this.getLocales(false)
+      .then(function (locales) {
+        this.locales = locales
+
+        return this.render()
+      }.bind(this))
+  },
+
+  /**
+   * Fetches and returns activated locales.
+   *
+   * @param {Boolean} cached
+   *
+   * @returns {Promise}
+   */
+  getLocales: function (cached) {
+    return FetcherRegistry.getFetcher('locale')
+      .search({
+        activated: true,
+        cached: cached
+      })
+  }
+})

@@ -1,31 +1,31 @@
-define(
-    ['jquery', 'underscore', 'backbone', 'oro/messenger'],
-    function ($, _, Backbone, messenger) {
-        'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import messenger from 'oro/messenger';
 
-        return Backbone.View.extend({
 
-            action: null,
+export default Backbone.View.extend({
 
-            initialize: function (action) {
-                this.action = action;
-            },
+  action: null,
 
-            run: function () {
-                $.get(this.action.getLinkWithParameters())
-                    .done(function () {
-                        messenger.notify(
-                            'success',
-                            _.__('pim.grid.mass_action.quick_export.launched')
-                        );
-                    })
-                    .error(function (jqXHR) {
-                        messenger.notify(
-                            'error',
-                            _.__(jqXHR.responseText)
-                        );
-                    });
-            }
-        });
-    }
-);
+  initialize: function(action) {
+    this.action = action;
+  },
+
+  run: function() {
+    $.get(this.action.getLinkWithParameters())
+      .done(function() {
+        messenger.notify(
+          'success',
+          _.__('pim.grid.mass_action.quick_export.launched')
+        );
+      })
+      .error(function(jqXHR) {
+        messenger.notify(
+          'error',
+          _.__(jqXHR.responseText)
+        );
+      });
+  }
+});
+

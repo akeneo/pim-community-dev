@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Import switcher extension.
  * This will display all the main actions related to import (upload, import now)
@@ -7,88 +6,81 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'pim/form',
-        'pim/template/import/switcher'
-    ],
-    function (
-        _,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'AknButtonList',
-            template: _.template(template),
-            actions: [],
-            events: {
-                'click .switcher-action': 'switch'
-            },
-            currentActionCode: null,
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/import/switcher'
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.actions = [];
+export default BaseForm.extend({
+  className: 'AknButtonList',
+  template: _.template(template),
+  actions: [],
+  events: {
+    'click .switcher-action': 'switch'
+  },
+  currentActionCode: null,
 
-                this.listenTo(this.getRoot(), 'switcher:register', this.registerAction);
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.actions = []
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+    this.listenTo(this.getRoot(), 'switcher:register', this.registerAction)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (_.isEmpty(this.actions)) {
-                    return;
-                }
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                if (null === this.currentActionCode) {
-                    this.setCurrentActionCode(_.first(this.actions).code);
-                }
-
-                this.$el.empty().append(this.template({
-                    actions: this.actions,
-                    current: this.currentActionCode
-                }));
-
-                return BaseForm.prototype.render.apply(this, arguments);
-            },
-
-            /**
-             * Registers a new main action
-             *
-             * @param {Object} action
-             * @param {String} action.label The label to display in this switcher
-             * @param {String} action.code  The extension code to display on click
-             */
-            registerAction: function (action) {
-                this.actions.push(action);
-                this.render();
-            },
-
-            /**
-             * Switches a new action to display
-             *
-             * @param {Event} event
-             */
-            switch: function (event) {
-                this.setCurrentActionCode(event.target.dataset.code);
-                this.render();
-            },
-
-            /**
-             * Sets the new displayed action
-             *
-             * @param {String} code The code of the current extension
-             */
-            setCurrentActionCode: function (code) {
-                this.currentActionCode = code;
-                this.getRoot().trigger('switcher:switch', { code: code });
-            }
-        });
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    if (_.isEmpty(this.actions)) {
+      return
     }
-);
+
+    if (this.currentActionCode === null) {
+      this.setCurrentActionCode(_.first(this.actions).code)
+    }
+
+    this.$el.empty().append(this.template({
+      actions: this.actions,
+      current: this.currentActionCode
+    }))
+
+    return BaseForm.prototype.render.apply(this, arguments)
+  },
+
+  /**
+   * Registers a new main action
+   *
+   * @param {Object} action
+   * @param {String} action.label The label to display in this switcher
+   * @param {String} action.code  The extension code to display on click
+   */
+  registerAction: function (action) {
+    this.actions.push(action)
+    this.render()
+  },
+
+  /**
+   * Switches a new action to display
+   *
+   * @param {Event} event
+   */
+  switch: function (event) {
+    this.setCurrentActionCode(event.target.dataset.code)
+    this.render()
+  },
+
+  /**
+   * Sets the new displayed action
+   *
+   * @param {String} code The code of the current extension
+   */
+  setCurrentActionCode: function (code) {
+    this.currentActionCode = code
+    this.getRoot().trigger('switcher:switch', {
+      code: code
+    })
+  }
+})

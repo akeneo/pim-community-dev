@@ -1,4 +1,3 @@
-'use strict';
 /**
  * State manager extension
  *
@@ -7,161 +6,150 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'pim/dialog',
-        'pim/form',
-        'pim/template/form/state'
-    ],
-    function (
-        $,
-        _,
-        __,
-        Backbone,
-        Dialog,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'updated-status',
-            template: _.template(template),
-            state: null,
-            linkSelector: 'a[href^="/"]:not(".no-hash")',
+import $ from 'jquery'
+import _ from 'underscore'
+import __ from 'oro/translator'
+import Backbone from 'backbone'
+import Dialog from 'pim/dialog'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/state'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = _.extend({}, {
-                    confirmationMessage: 'pim_enrich.confirmation.discard_changes',
-                    confirmationTitle: 'pim_enrich.confirmation.leave',
-                    message: 'pim_enrich.info.entity.updated'
-                }, meta.config);
+export default BaseForm.extend({
+  className: 'updated-status',
+  template: _.template(template),
+  state: null,
+  linkSelector: 'a[href^="/"]:not(".no-hash")',
 
-                this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)});
-                this.confirmationTitle   = __(this.config.confirmationTitle);
-                this.message             = __(this.config.message);
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (meta) {
+    this.config = _.extend({}, {
+      confirmationMessage: 'pim_enrich.confirmation.discard_changes',
+      confirmationTitle: 'pim_enrich.confirmation.leave',
+      message: 'pim_enrich.info.entity.updated'
+    }, meta.config)
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+    this.confirmationMessage = __(this.config.confirmationMessage, {
+      entity: __(this.config.entity)
+    })
+    this.confirmationTitle = __(this.config.confirmationTitle)
+    this.message = __(this.config.message)
 
-            /**
-             * @inheritdoc
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:can-leave', this.linkClicked);
-                $(window).on('beforeunload', this.beforeUnload.bind(this));
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                Backbone.Router.prototype.on('route', this.unbindEvents);
+  /**
+   * @inheritdoc
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render)
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender)
+    this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation)
+    this.listenTo(this.getRoot(), 'pim_enrich:form:can-leave', this.linkClicked)
+    $(window).on('beforeunload', this.beforeUnload.bind(this))
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+    Backbone.Router.prototype.on('route', this.unbindEvents)
 
-            /**
-             * Detach event listeners
-             */
-            unbindEvents: function () {
-                $(window).off('beforeunload', this.beforeUnload);
-            },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-            /**
-             * @inheritdoc
-             */
-            render: function () {
-                if (null === this.state || undefined === this.state) {
-                    this.collectState();
-                }
+  /**
+   * Detach event listeners
+   */
+  unbindEvents: function () {
+    $(window).off('beforeunload', this.beforeUnload)
+  },
 
-                this.$el.html(
-                    this.template({
-                        message: this.message
-                    })
-                ).css('opacity', this.hasModelChanged() ? 1 : 0);
-
-                return this;
-            },
-
-            /**
-             * Store a stringified representation of the form model for further comparisons
-             */
-            collectState: function () {
-                this.state = JSON.stringify(this.getFormData());
-            },
-
-            /**
-             * Force collect state and re-render
-             */
-            collectAndRender: function () {
-                this.collectState();
-                this.render();
-            },
-
-            /**
-             * Callback triggered on beforeunload event
-             */
-            beforeUnload: function () {
-                if (this.hasModelChanged()) {
-                    return this.confirmationMessage;
-                }
-            },
-
-            /**
-             * Callback triggered on any link click event to ask confirmation if there are unsaved changes
-             *
-             * @param {Object} event
-             *
-             * @return {boolean}
-             */
-            linkClicked: function (event) {
-                if (this.hasModelChanged()) {
-                    event.canLeave = confirm(this.confirmationMessage);
-                }
-            },
-
-            /**
-             * Check if current form model has changed compared to the stored model state
-             *
-             * @return {boolean}
-             */
-            hasModelChanged: function () {
-                return this.state !== JSON.stringify(this.getFormData());
-            },
-
-            /**
-             * Display a dialog modal to ask an action confirmation if model has changed
-             *
-             * @param {string} message
-             * @param {string} title
-             * @param {function} action
-             */
-            confirmAction: function (message, title, action) {
-                if (this.hasModelChanged()) {
-                    Dialog.confirm(message, title, action);
-                } else {
-                    action();
-                }
-            },
-
-            /**
-             * Callback that can be triggered from anywhere to ask an action confirmation
-             *
-             * @param {Object} event
-             */
-            onConfirmation: function (event) {
-                this.confirmAction(
-                    event.message || this.confirmationMessage,
-                    event.title || this.confirmationTitle,
-                    event.action
-                );
-            }
-        });
+  /**
+   * @inheritdoc
+   */
+  render: function () {
+    if (this.state === null || undefined === this.state) {
+      this.collectState()
     }
-);
+
+    this.$el.html(
+      this.template({
+        message: this.message
+      })
+    ).css('opacity', this.hasModelChanged() ? 1 : 0)
+
+    return this
+  },
+
+  /**
+   * Store a stringified representation of the form model for further comparisons
+   */
+  collectState: function () {
+    this.state = JSON.stringify(this.getFormData())
+  },
+
+  /**
+   * Force collect state and re-render
+   */
+  collectAndRender: function () {
+    this.collectState()
+    this.render()
+  },
+
+  /**
+   * Callback triggered on beforeunload event
+   */
+  beforeUnload: function () {
+    if (this.hasModelChanged()) {
+      return this.confirmationMessage
+    }
+  },
+
+  /**
+   * Callback triggered on any link click event to ask confirmation if there are unsaved changes
+   *
+   * @param {Object} event
+   *
+   * @return {boolean}
+   */
+  linkClicked: function (event) {
+    if (this.hasModelChanged()) {
+      event.canLeave = window.confirm(this.confirmationMessage)
+    }
+  },
+
+  /**
+   * Check if current form model has changed compared to the stored model state
+   *
+   * @return {boolean}
+   */
+  hasModelChanged: function () {
+    return this.state !== JSON.stringify(this.getFormData())
+  },
+
+  /**
+   * Display a dialog modal to ask an action confirmation if model has changed
+   *
+   * @param {string} message
+   * @param {string} title
+   * @param {function} action
+   */
+  confirmAction: function (message, title, action) {
+    if (this.hasModelChanged()) {
+      Dialog.confirm(message, title, action)
+    } else {
+      action()
+    }
+  },
+
+  /**
+   * Callback that can be triggered from anywhere to ask an action confirmation
+   *
+   * @param {Object} event
+   */
+  onConfirmation: function (event) {
+    this.confirmAction(
+      event.message || this.confirmationMessage,
+      event.title || this.confirmationTitle,
+      event.action
+    )
+  }
+})

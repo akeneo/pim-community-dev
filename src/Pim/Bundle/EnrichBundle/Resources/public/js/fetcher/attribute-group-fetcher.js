@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Attribute group fetcher
  *
@@ -7,51 +5,44 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-define([
-    'jquery',
-    'underscore',
-    'pim/base-fetcher',
-    'routing'
-], function (
-    $,
-    _,
-    BaseFetcher,
-    Routing
-) {
-    return BaseFetcher.extend({
-        /**
-         * Overrides base method, to send query using POST instead GET,
-         * because the request URI can be too long.
-         * TODO Should be deleted to set it back to GET.
-         * SEE attribute fetcher
-         *
-         * {@inheritdoc}
-         */
-        getJSON: function (url, parameters) {
-            return $.post(Routing.generate(url), parameters, null, 'json');
-        },
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseFetcher from 'pim/base-fetcher'
+import Routing from 'routing'
 
-        /**
-         * Overrides bas method to remove the limit and fetch all the attribute groups.
-         *
-         * {@inheritdoc}
-         */
-        fetchAll: function () {
-            if (!this.entityListPromise) {
-                if (!_.has(this.options.urls, 'list')) {
-                    return $.Deferred().reject().promise();
-                }
+export default BaseFetcher.extend({
+  /**
+   * Overrides base method, to send query using POST instead GET,
+   * because the request URI can be too long.
+   * TODO Should be deleted to set it back to GET.
+   * SEE attribute fetcher
+   *
+   * {@inheritdoc}
+   */
+  getJSON: function (url, parameters) {
+    return $.post(Routing.generate(url), parameters, null, 'json')
+  },
 
-                this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list, {
-                        options: {
-                            limit: -1
-                        }
-                    })
-                ).then(_.identity).promise();
-            }
+  /**
+   * Overrides bas method to remove the limit and fetch all the attribute groups.
+   *
+   * {@inheritdoc}
+   */
+  fetchAll: function () {
+    if (!this.entityListPromise) {
+      if (!_.has(this.options.urls, 'list')) {
+        return $.Deferred().reject().promise()
+      }
 
-            return this.entityListPromise;
-        }
-    });
-});
+      this.entityListPromise = $.getJSON(
+        Routing.generate(this.options.urls.list, {
+          options: {
+            limit: -1
+          }
+        })
+      ).then(_.identity).promise()
+    }
+
+    return this.entityListPromise
+  }
+})

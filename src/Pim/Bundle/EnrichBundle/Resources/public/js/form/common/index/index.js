@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Index extension for any basic screen with grid
  *
@@ -7,48 +5,38 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/form/index/index',
-        'pim/form-builder'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        template,
-        formBuilder
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/index/index'
+import formBuilder from 'pim/form-builder'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  template: _.template(template),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    title: __(this.config.title)
-                }));
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                this.renderExtensions();
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.html(this.template({
+      title: __(this.config.title)
+    }))
 
-                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
-                }.bind(this));
+    this.renderExtensions()
 
-                return this;
-            }
-        });
-    });
+    formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+      form.setElement('.user-menu').render()
+    })
+
+    return this
+  }
+})

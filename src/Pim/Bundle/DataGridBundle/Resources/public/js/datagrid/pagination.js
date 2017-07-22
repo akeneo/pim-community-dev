@@ -1,223 +1,224 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
 
-    /**
-     * Datagrid pagination widget
-     *
-     * @export  oro/datagrid/pagination
-     * @class   oro.datagrid.Pagination
-     * @extends Backbone.View
-     */
-    return Backbone.View.extend({
-        /** @property */
-        tagName: 'div',
 
-        /** @property */
-        className: 'AknGridToolbar-center',
+/**
+ * Datagrid pagination widget
+ *
+ * @export  oro/datagrid/pagination
+ * @class   oro.datagrid.Pagination
+ * @extends Backbone.View
+ */
+export default Backbone.View.extend({
+  /** @property */
+  tagName: 'div',
 
-        /** @property */
-        windowSize: 10,
+  /** @property */
+  className: 'AknGridToolbar-center',
 
-        /** @property */
-        enabled: true,
+  /** @property */
+  windowSize: 10,
 
-        /** @property */
-        hidden: false,
+  /** @property */
+  enabled: true,
 
-        /** @property */
-        template: _.template(
-            '<label>Page:</label>' +
-            '<ul class="AknPagination-icons">' +
-                '<% _.each(handles, function (handle) { %>' +
-                    '<li class="AknPagination-item <% if (handle.className) { %><%= handle.className %><% } %>">' +
-                        '<a href="#" class="AknPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
-                            '<% if (handle.wrapClass) {%>' +
-                                '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
-                                    '<%= handle.label %>' +
-                                '</i>' +
-                            '<% } else { %>' +
-                                '<%= handle.label %>' +
-                            '<% } %>' +
-                        '</a>' +
-                    '</li>' +
-                '<% }); %>' +
-            '</ul>' +
-            '<label>of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
-        ),
+  /** @property */
+  hidden: false,
 
-        /** @property */
-        events: {
-            "click a": "onChangePage"
-        },
+  /** @property */
+  template: _.template(
+    '<label>Page:</label>' +
+    '<ul class="AknPagination-icons">' +
+    '<% _.each(handles, function (handle) { %>' +
+    '<li class="AknPagination-item <% if (handle.className) { %><%= handle.className %><% } %>">' +
+    '<a href="#" class="AknPagination-link" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
+    '<% if (handle.wrapClass) {%>' +
+    '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
+    '<%= handle.label %>' +
+    '</i>' +
+    '<% } else { %>' +
+    '<%= handle.label %>' +
+    '<% } %>' +
+    '</a>' +
+    '</li>' +
+    '<% }); %>' +
+    '</ul>' +
+    '<label>of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
+  ),
 
-        /** @property */
-        fastForwardHandleConfig: {
-            prev: {
-                label: 'Prev',
-                wrapClass: 'icon-chevron-left hide-text'
-            },
-            next: {
-                label: 'Next',
-                wrapClass: 'icon-chevron-right hide-text'
-            }
-        },
+  /** @property */
+  events: {
+    "click a": "onChangePage"
+  },
 
-        /**
-         * Initializer.
-         *
-         * @param {Object} options
-         * @param {Backbone.Collection} options.collection
-         * @param {Object} options.fastForwardHandleConfig
-         * @param {Number} options.windowSize
-         */
-        initialize: function (options) {
-            options = options || {};
+  /** @property */
+  fastForwardHandleConfig: {
+    prev: {
+      label: 'Prev',
+      wrapClass: 'icon-chevron-left hide-text'
+    },
+    next: {
+      label: 'Next',
+      wrapClass: 'icon-chevron-right hide-text'
+    }
+  },
 
-            if (!options.collection) {
-                throw new TypeError("'collection' is required");
-            }
+  /**
+   * Initializer.
+   *
+   * @param {Object} options
+   * @param {Backbone.Collection} options.collection
+   * @param {Object} options.fastForwardHandleConfig
+   * @param {Number} options.windowSize
+   */
+  initialize: function(options) {
+    options = options || {};
 
-            this.collection = options.collection;
-            this.listenTo(this.collection, "add", this.render);
-            this.listenTo(this.collection, "remove", this.render);
-            this.listenTo(this.collection, "reset", this.render);
+    if (!options.collection) {
+      throw new TypeError("'collection' is required");
+    }
 
-            this.hidden = options.hide == true;
+    this.collection = options.collection;
+    this.listenTo(this.collection, "add", this.render);
+    this.listenTo(this.collection, "remove", this.render);
+    this.listenTo(this.collection, "reset", this.render);
 
-            Backbone.View.prototype.initialize.call(this, options);
-        },
+    this.hidden = options.hide == true;
 
-        /**
-         * Disable pagination
-         *
-         * @return {*}
-         */
-        disable: function() {
-            this.enabled = false;
-            this.render();
-            return this;
-        },
+    Backbone.View.prototype.initialize.call(this, options);
+  },
 
-        /**
-         * Enable pagination
-         *
-         * @return {*}
-         */
-        enable: function() {
-            this.enabled = true;
-            this.render();
-            return this;
-        },
+  /**
+   * Disable pagination
+   *
+   * @return {*}
+   */
+  disable: function() {
+    this.enabled = false;
+    this.render();
+    return this;
+  },
 
-        /**
-         * jQuery event handler for the page handlers. Goes to the right page upon clicking.
-         *
-         * @param {Event} e
-         * @protected
-         */
-        onChangePage: function (e) {
-            e.preventDefault();
+  /**
+   * Enable pagination
+   *
+   * @return {*}
+   */
+  enable: function() {
+    this.enabled = true;
+    this.render();
+    return this;
+  },
 
-            if (!this.enabled) {
-                return;
-            }
+  /**
+   * jQuery event handler for the page handlers. Goes to the right page upon clicking.
+   *
+   * @param {Event} e
+   * @protected
+   */
+  onChangePage: function(e) {
+    e.preventDefault();
 
-            var label = $(e.target).text();
-            var ffConfig = this.fastForwardHandleConfig;
+    if (!this.enabled) {
+      return;
+    }
 
-            var collection = this.collection;
+    var label = $(e.target).text();
+    var ffConfig = this.fastForwardHandleConfig;
 
-            if (ffConfig) {
-                var prevLabel = _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined;
-                var nextLabel = _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined;
-                switch (label) {
-                    case prevLabel:
-                        if (collection.hasPrevious()) collection.getPreviousPage();
-                        return;
-                    case nextLabel:
-                        if (collection.hasNext()) collection.getNextPage();
-                        return;
-                }
-            }
+    var collection = this.collection;
 
-            var pageIndex = $(e.target).text() * 1 - state.firstPage;
-            collection.getPage(state.firstPage === 0 ? pageIndex : pageIndex + 1);
-        },
+    if (ffConfig) {
+      var prevLabel = _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined;
+      var nextLabel = _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined;
+      switch (label) {
+        case prevLabel:
+          if (collection.hasPrevious()) collection.getPreviousPage();
+          return;
+        case nextLabel:
+          if (collection.hasNext()) collection.getNextPage();
+          return;
+      }
+    }
 
-        /**
-         * Internal method to create a list of page handle objects for the template
-         * to render them.
-         *
-         * @return {Array.<Object>} an array of page handle objects hashes
-         */
-        makeHandles: function (handles) {
-            handles = handles || [];
+    var pageIndex = $(e.target).text() * 1 - state.firstPage;
+    collection.getPage(state.firstPage === 0 ? pageIndex : pageIndex + 1);
+  },
 
-            var collection = this.collection;
-            var state = collection.state;
+  /**
+   * Internal method to create a list of page handle objects for the template
+   * to render them.
+   *
+   * @return {Array.<Object>} an array of page handle objects hashes
+   */
+  makeHandles: function(handles) {
+    handles = handles || [];
 
-            // convert all indices to 0-based here
-            var lastPage = state.lastPage ? state.lastPage : state.firstPage;
-            lastPage = state.firstPage === 0 ? lastPage : lastPage - 1;
-            var currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
-            var windowStart = Math.floor(currentPage / this.windowSize) * this.windowSize;
-            var windowEnd = windowStart + this.windowSize;
-            windowEnd = windowEnd <= lastPage ? windowEnd : lastPage + 1;
+    var collection = this.collection;
+    var state = collection.state;
 
-            if (collection.mode !== "infinite") {
-                for (var i = windowStart; i < windowEnd; i++) {
-                    handles.push({
-                        label: i + 1,
-                        title: "No. " + (i + 1),
-                        className: currentPage === i ? "active" : undefined
-                    });
-                }
-            }
+    // convert all indices to 0-based here
+    var lastPage = state.lastPage ? state.lastPage : state.firstPage;
+    lastPage = state.firstPage === 0 ? lastPage : lastPage - 1;
+    var currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
+    var windowStart = Math.floor(currentPage / this.windowSize) * this.windowSize;
+    var windowEnd = windowStart + this.windowSize;
+    windowEnd = windowEnd <= lastPage ? windowEnd : lastPage + 1;
 
-            var ffConfig = this.fastForwardHandleConfig;
+    if (collection.mode !== "infinite") {
+      for (var i = windowStart; i < windowEnd; i++) {
+        handles.push({
+          label: i + 1,
+          title: "No. " + (i + 1),
+          className: currentPage === i ? "active" : undefined
+        });
+      }
+    }
 
-            if (ffConfig.prev) {
-                handles.unshift({
-                    label: _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined,
-                    wrapClass: _.has(ffConfig.prev, 'wrapClass') ? ffConfig.prev.wrapClass : undefined,
-                    className: collection.hasPrevious() ? undefined : 'AknActionButton--disabled'
-                });
-            }
+    var ffConfig = this.fastForwardHandleConfig;
 
-            if (ffConfig.next) {
-                handles.push({
-                    label: _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined,
-                    wrapClass: _.has(ffConfig.next, 'wrapClass') ? ffConfig.next.wrapClass : undefined,
-                    className: collection.hasNext() ? void 0 : 'AknActionButton--disabled'
-                });
-            }
+    if (ffConfig.prev) {
+      handles.unshift({
+        label: _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined,
+        wrapClass: _.has(ffConfig.prev, 'wrapClass') ? ffConfig.prev.wrapClass : undefined,
+        className: collection.hasPrevious() ? undefined : 'AknActionButton--disabled'
+      });
+    }
 
-            return handles;
-        },
+    if (ffConfig.next) {
+      handles.push({
+        label: _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined,
+        wrapClass: _.has(ffConfig.next, 'wrapClass') ? ffConfig.next.wrapClass : undefined,
+        className: collection.hasNext() ? void 0 : 'AknActionButton--disabled'
+      });
+    }
 
-        /**
-         * Render pagination
-         *
-         * @return {*}
-         */
-        render: function() {
-            this.$el.empty();
+    return handles;
+  },
 
-            var state = this.collection.state;
+  /**
+   * Render pagination
+   *
+   * @return {*}
+   */
+  render: function() {
+    this.$el.empty();
 
-            this.$el.append($(this.template({
-                disabled: !this.enabled || !state.totalRecords,
-                handles: this.makeHandles(),
-                state: state
-            })));
+    var state = this.collection.state;
 
-            if (this.hidden) {
-                this.$el.hide();
-            }
+    this.$el.append($(this.template({
+      disabled: !this.enabled || !state.totalRecords,
+      handles: this.makeHandles(),
+      state: state
+    })));
 
-            return this;
-        }
-    });
+    if (this.hidden) {
+      this.$el.hide();
+    }
+
+    return this;
+  }
 });
+

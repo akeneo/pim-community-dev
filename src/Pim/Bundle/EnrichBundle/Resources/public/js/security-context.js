@@ -1,19 +1,17 @@
-'use strict';
+import Backbone from 'backbone'
+import Routing from 'routing'
 
-define(
-    ['backbone', 'routing'],
-    function (Backbone, Routing) {
-        var SecurityContext = Backbone.Model.extend({
-            url: Routing.generate('pim_user_security_rest_get'),
-            isGranted: function (acl) {
-                return this.get(acl) === true;
-            }
-        });
+const SecurityContext = Backbone.Model.extend({
+  url: Routing.generate('pim_user_security_rest_get'),
+  isGranted: function (acl) {
+    return this.get(acl) === true
+  }
+})
 
-        var instance = new SecurityContext();
+var instance = new SecurityContext()
 
-        instance.fetch({async: false});
+instance.fetch({
+  async: false
+})
 
-        return instance;
-    }
-);
+export default instance

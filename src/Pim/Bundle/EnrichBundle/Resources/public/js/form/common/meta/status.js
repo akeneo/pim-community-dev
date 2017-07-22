@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Updated at extension
  *
@@ -6,56 +5,50 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'oro/mediator',
-        'pim/template/form/meta/status',
-        'pim/common/property'
-    ],
-    function (_, __, BaseForm, mediator, formTemplate, propertyAccessor) {
-        return BaseForm.extend({
-            tagName: 'span',
-            className: 'AknTitleContainer-metaItem',
-            template: _.template(formTemplate),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import formTemplate from 'pim/template/form/meta/status'
+import propertyAccessor from 'pim/common/property'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
-                this.label   = __(this.config.label);
-                this.value   = __(this.config.value);
+export default BaseForm.extend({
+  tagName: 'span',
+  className: 'AknTitleContainer-metaItem',
+  template: _.template(formTemplate),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (meta) {
+    this.config = meta.config
+    this.label = __(this.config.label)
+    this.value = __(this.config.value)
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                var status = this.getFormData();
-                var value = this.config.valuePath ?
-                    propertyAccessor.accessProperty(status, this.config.valuePath) : '';
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                this.$el.html(this.template({
-                    label: this.label,
-                    value: value
-                }));
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    var status = this.getFormData()
+    var value = this.config.valuePath
+      ? propertyAccessor.accessProperty(status, this.config.valuePath) : ''
 
-                return this;
-            }
-        });
-    }
-);
+    this.$el.html(this.template({
+      label: this.label,
+      value: value
+    }))
+
+    return this
+  }
+})

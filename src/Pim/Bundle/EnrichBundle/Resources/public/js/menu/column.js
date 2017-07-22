@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Extension for menu columns
  * This extends the default column and adds some behaviors only used in the menu context (visibility)
@@ -8,89 +6,79 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'pim/form/common/column',
-        'pim/router',
-        'oro/mediator'
-    ],
-    function (
-        _,
-        Column,
-        router,
-        mediator
-    ) {
-        return Column.extend({
-            active: false,
+import Column from 'pim/form/common/column'
+import router from 'pim/router'
+import mediator from 'oro/mediator'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                mediator.on('pim_menu:highlight:tab', this.highlight, this);
+export default Column.extend({
+  active: false,
 
-                Column.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function () {
+    mediator.on('pim_menu:highlight:tab', this.highlight, this)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (this.active) {
-                    return Column.prototype.render.apply(this, arguments);
-                } else {
-                    return this.$el.empty();
-                }
-            },
+    Column.prototype.initialize.apply(this, arguments)
+  },
 
-            /**
-             * Highlight or un-highlight tab
-             *
-             * @param {Event} event
-             * @param {string} event.extension The extension code to highlight
-             */
-            highlight: function (event) {
-                this.active = (event.extension === this.getTab());
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    if (this.active) {
+      return Column.prototype.render.apply(this, arguments)
+    } else {
+      return this.$el.empty()
+    }
+  },
 
-                this.render();
-            },
+  /**
+   * Highlight or un-highlight tab
+   *
+   * @param {Event} event
+   * @param {string} event.extension The extension code to highlight
+   */
+  highlight: function (event) {
+    this.active = (event.extension === this.getTab())
 
-            /**
-             * Returns the code of the attached tab
-             *
-             * @returns {string}
-             */
-            getTab: function () {
-                return this.config.tab;
-            },
+    this.render()
+  },
 
-            /**
-             * The DOM element contains a `data-tab` attribute for compatibility with tab Bootstram tabs.
-             *
-             * {@inheritdoc}
-             */
-            redirect: function (event) {
-                router.redirectToRoute(event.currentTarget.dataset.tab);
-            },
+  /**
+   * Returns the code of the attached tab
+   *
+   * @returns {string}
+   */
+  getTab: function () {
+    return this.config.tab
+  },
 
-            /**
-             * Registers a new item to display on navigation template
-             *
-             * @param {Event}    navigationItem
-             * @param {string}   navigationItem.label
-             * @param {function} navigationItem.isVisible
-             * @param {string}   navigationItem.route
-             * @param {number}   navigationItem.position
-             */
-            registerNavigationItem: function (navigationItem) {
-                Column.prototype.registerNavigationItem.apply(this, arguments);
+  /**
+   * The DOM element contains a `data-tab` attribute for compatibility with tab Bootstram tabs.
+   *
+   * {@inheritdoc}
+   */
+  redirect: function (event) {
+    router.redirectToRoute(event.currentTarget.dataset.tab)
+  },
 
-                this.getRoot().trigger('pim_menu:register_item', {
-                    target: this.getTab(),
-                    route: navigationItem.code,
-                    position: navigationItem.position
-                });
-            }
-        });
-    });
+  /**
+   * Registers a new item to display on navigation template
+   *
+   * @param {Event}    navigationItem
+   * @param {string}   navigationItem.label
+   * @param {function} navigationItem.isVisible
+   * @param {string}   navigationItem.route
+   * @param {number}   navigationItem.position
+   */
+  registerNavigationItem: function (navigationItem) {
+    Column.prototype.registerNavigationItem.apply(this, arguments)
+
+    this.getRoot().trigger('pim_menu:register_item', {
+      target: this.getTab(),
+      route: navigationItem.code,
+      position: navigationItem.position
+    })
+  }
+})

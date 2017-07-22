@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/datafilter/choice-filter'],
-function(_, ChoiceFilter) {
-    'use strict';
+import _ from 'underscore';
+import ChoiceFilter from 'oro/datafilter/choice-filter';
 
-    /**
-     * Number filter: formats value as a number
-     *
-     * @export  oro/datafilter/number-filter
-     * @class   oro.datafilter.NumberFilter
-     * @extends oro.datafilter.ChoiceFilter
-     */
-    return ChoiceFilter.extend({});
-});
+
+/**
+ * Number filter: formats value as a number
+ *
+ * @export  oro/datafilter/number-filter
+ * @class   oro.datafilter.NumberFilter
+ * @extends oro.datafilter.ChoiceFilter
+ */
+export default ChoiceFilter.extend({});
+

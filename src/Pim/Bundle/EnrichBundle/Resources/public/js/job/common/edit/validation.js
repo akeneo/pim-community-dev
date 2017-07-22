@@ -1,60 +1,53 @@
-'use strict';
+import $ from 'jquery'
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/export/common/edit/validation'
+import propertyAccessor from 'pim/common/property'
 
-define([
-    'jquery',
-    'underscore',
-    'oro/translator',
-    'pim/form',
-    'pim/template/export/common/edit/validation',
-    'oro/messenger',
-    'pim/common/property'
+export default BaseForm.extend({
+  template: _.template(template),
+  errors: [],
 
-], function ($, _, __, BaseForm, template, messenger, propertyAccessor) {
-    return BaseForm.extend({
-        template: _.template(template),
-        errors: [],
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this))
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this))
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            this.listenTo(this.getRoot(), 'pim_enrich:form:filter:extension:add', this.addFilterExtension.bind(this));
-            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.setValidationErrors.bind(this));
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-            return BaseForm.prototype.configure.apply(this, arguments);
-        },
+  setValidationErrors: function (event) {
+    this.errors = event.response
 
-        setValidationErrors: function (event) {
-            this.errors = event.response;
+    this.getRoot().trigger('pim_enrich:form:entity:validation_error', event)
+  },
 
-            this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
-        },
+  /**
+   * Adds the extension to filters.
+   * If there is an error for the current filter, we add an element to it.
+   *
+   * @param {Object} event
+   */
+  addFilterExtension: function (event) {
+    var filter = event.filter
 
-        /**
-         * Adds the extension to filters.
-         * If there is an error for the current filter, we add an element to it.
-         *
-         * @param {Object} event
-         */
-        addFilterExtension: function (event) {
-            var filter = event.filter;
+    if (propertyAccessor
+        .accessProperty(this.errors, 'configuration.filters.data' + filter.getField()) !== null
+    ) {
+      var content = $(this.template({
+        errors: propertyAccessor.accessProperty(
+          this.errors,
+          'configuration.filters.data' + filter.getField()
+        )
+      }))
 
-            if (null !== propertyAccessor
-                .accessProperty(this.errors, 'configuration.filters.data' + filter.getField())
-            ) {
-                var content = $(this.template({
-                    errors: propertyAccessor.accessProperty(
-                        this.errors,
-                        'configuration.filters.data' + filter.getField()
-                    )
-                }));
-
-                event.filter.addElement(
-                    'below-input',
-                    'validation',
-                    content
-                );
-            }
-        }
-    });
-});
+      event.filter.addElement(
+        'below-input',
+        'validation',
+        content
+      )
+    }
+  }
+})

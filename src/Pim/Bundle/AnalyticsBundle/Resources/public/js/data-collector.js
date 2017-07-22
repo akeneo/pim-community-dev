@@ -1,15 +1,11 @@
-define(
-    ['jquery', 'underscore', 'routing'],
-    function ($, _, Routing) {
-        'use strict';
+import $ from 'jquery'
+import Routing from 'routing'
 
-        /**
-         * @return {Object}
-         */
-        return {
-            collect: function (route) {
-                return $.getJSON(Routing.generate(route));
-            }
-        };
-    }
-);
+/**
+ * @return {Object}
+ */
+export default {
+  collect: function (route) {
+    return $.getJSON(Routing.generate(route))
+  }
+}

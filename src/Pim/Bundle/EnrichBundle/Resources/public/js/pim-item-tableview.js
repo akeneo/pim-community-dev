@@ -1,124 +1,128 @@
-define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pim/dialog'],
-    function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
-        'use strict';
+import _ from 'underscore'
+import Backbone from 'backbone'
+import __ from 'oro/translator'
+import LoadingMask from 'oro/loading-mask'
+import Dialog from 'pim/dialog'
 
-        return Backbone.View.extend({
-            tagName: 'table',
-            template: '',
-            events: {},
-            $target: null,
-            itemViews: [],
-            url: '',
-            collectionClass: null,
-            itemClass: null,
-            itemViewClass: null,
-            rendered: false,
-            initialize: function (options) {
-                this.$target         = options.$target;
-                this.collectionClass = options.collectionClass;
-                this.itemClass       = options.itemClass;
-                this.itemViewClass   = options.itemViewClass;
-                this.url             = options.url;
-                this.collection      = new this.collectionClass({url: options.url});
-                this.render();
+export default Backbone.View.extend({
+  tagName: 'table',
+  template: '',
+  events: {},
+  $target: null,
+  itemViews: [],
+  url: '',
+  CollectionClass: null,
+  itemClass: null,
+  ItemViewClass: null,
+  rendered: false,
 
-                this.load();
-            },
-            render: function () {
-                this.$el.empty();
-                this.$el.html(this.renderTemplate());
+  initialize: function (options) {
+    this.$target = options.$target
+    this.CollectionClass = options.collectionClass
+    this.itemClass = options.itemClass
+    this.ItemViewClass = options.itemViewClass
+    this.url = options.url
 
-                _.each(this.collection.models, function (ruleItem) {
-                    this.addItem({item: ruleItem});
-                }.bind(this));
+    this.collection = new this.CollectionClass({
+      url: options.url
+    })
+    this.render()
 
-                if (!this.rendered) {
-                    this.$target.html(this.$el);
+    this.load()
+  },
+  render: function () {
+    this.$el.empty()
+    this.$el.html(this.renderTemplate())
 
-                    this.rendered = true;
-                }
+    _.each(this.collection.models, function (ruleItem) {
+      this.addItem({
+        item: ruleItem
+      })
+    }.bind(this))
 
-                return this;
-            },
-            renderTemplate: function () {
-                return this.template({});
-            },
-            load: function () {
-                this.itemViews = [];
-                this.inLoading(true);
-                this.collection
-                    .fetch({
-                        success: function () {
-                            this.inLoading(false);
-                            this.render();
-                        }.bind(this)
-                    });
-            },
-            addItem: function (opts) {
-                var options = opts || {};
+    if (!this.rendered) {
+      this.$target.html(this.$el)
 
-                var newItemView = this.createItemView(options.item);
-
-                if (newItemView) {
-                    this.$el.children('tbody').append(newItemView.$el);
-                }
-            },
-            createItemView: function (item) {
-                var itemView = new this.itemViewClass({
-                    model:    item,
-                    parent:   this
-                });
-
-                itemView.showReadableItem();
-
-                this.collection.add(item);
-                this.itemViews.push(itemView);
-
-                return itemView;
-            },
-            deleteItem: function (item) {
-                this.inLoading(true);
-
-                item.model.destroy({
-                    success: function () {
-                        this.inLoading(false);
-
-                        this.collection.remove(item);
-
-                        if (0 === this.collection.length) {
-                            this.render();
-                            item.$el.hide(0);
-                        } else if (!item.model.id) {
-                            item.$el.hide(0);
-                        } else {
-                            item.$el.hide(500);
-                        }
-                    }.bind(this),
-                    error: function (data, response) {
-                        this.inLoading(false);
-                        var message;
-
-                        if (response.responseJSON) {
-                            message = response.responseJSON;
-                        } else {
-                            message = response.responseText;
-                        }
-
-                        Dialog.alert(message, __('pim_enrich.item.list.delete.error'));
-                    }.bind(this)
-                });
-            },
-            inLoading: function (loading) {
-                if (loading) {
-                    var loadingMask = new LoadingMask();
-                    loadingMask.render().$el.appendTo(this.$el);
-                    loadingMask.show();
-                } else {
-                    this.$el.find('.loading-mask').remove();
-                }
-            }
-        });
+      this.rendered = true
     }
-);
 
+    return this
+  },
+  renderTemplate: function () {
+    return this.template({})
+  },
+  load: function () {
+    this.itemViews = []
+    this.inLoading(true)
+    this.collection
+      .fetch({
+        success: function () {
+          this.inLoading(false)
+          this.render()
+        }.bind(this)
+      })
+  },
+  addItem: function (opts) {
+    var options = opts || {}
+
+    var newItemView = this.createItemView(options.item)
+
+    if (newItemView) {
+      this.$el.children('tbody').append(newItemView.$el)
+    }
+  },
+  createItemView: function (item) {
+    var itemView = new this.ItemViewClass({
+      model: item,
+      parent: this
+    })
+
+    itemView.showReadableItem()
+
+    this.collection.add(item)
+    this.itemViews.push(itemView)
+
+    return itemView
+  },
+  deleteItem: function (item) {
+    this.inLoading(true)
+
+    item.model.destroy({
+      success: function () {
+        this.inLoading(false)
+
+        this.collection.remove(item)
+
+        if (this.collection.length === 0) {
+          this.render()
+          item.$el.hide(0)
+        } else if (!item.model.id) {
+          item.$el.hide(0)
+        } else {
+          item.$el.hide(500)
+        }
+      }.bind(this),
+      error: function (data, response) {
+        this.inLoading(false)
+        var message
+
+        if (response.responseJSON) {
+          message = response.responseJSON
+        } else {
+          message = response.responseText
+        }
+
+        Dialog.alert(message, __('pim_enrich.item.list.delete.error'))
+      }.bind(this)
+    })
+  },
+  inLoading: function (loading) {
+    if (loading) {
+      var loadingMask = new LoadingMask()
+      loadingMask.render().$el.appendTo(this.$el)
+      loadingMask.show()
+    } else {
+      this.$el.find('.loading-mask').remove()
+    }
+  }
+})

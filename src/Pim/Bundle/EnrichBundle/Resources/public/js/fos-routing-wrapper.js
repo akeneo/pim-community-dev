@@ -1,4 +1,4 @@
 require('fos-routing-base')
 require('routes')
-var Routing = Routing || window.Routing;
-module.exports = Routing;
+
+module.exports = Routing || window.Routing // eslint-disable-line no-undef

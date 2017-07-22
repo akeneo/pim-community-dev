@@ -1,38 +1,36 @@
 /* global define */
-define(['oro/datagrid/string-cell'],
-    function(StringCell) {
-        'use strict';
+import StringCell from 'oro/datagrid/string-cell';
 
-        /**
-         * Completeness column cell
-         *
-         * @extends oro.datagrid.StringCell
-         */
-        return StringCell.extend({
-            /**
-             * Render the completeness.
-             */
-            render: function () {
-                var ratio = this.formatter.fromRaw(this.model.get(this.column.get('name')));
 
-                var completeness = '-';
-                if (null !== ratio && '' !== ratio) {
-                    var cssClass = '';
-                    if (100 === ratio) {
-                        cssClass+= 'success';
-                    } else if (0 === ratio) {
-                        cssClass+= 'important';
-                    } else {
-                        cssClass+= 'warning';
-                    }
+/**
+ * Completeness column cell
+ *
+ * @extends oro.datagrid.StringCell
+ */
+export default StringCell.extend({
+  /**
+   * Render the completeness.
+   */
+  render: function() {
+    var ratio = this.formatter.fromRaw(this.model.get(this.column.get('name')));
 
-                    completeness = '<span class="AknBadge AknBadge--'+ cssClass +'">'+ ratio +'%</span>';
-                }
+    var completeness = '-';
+    if (null !== ratio && '' !== ratio) {
+      var cssClass = '';
+      if (100 === ratio) {
+        cssClass += 'success';
+      } else if (0 === ratio) {
+        cssClass += 'important';
+      } else {
+        cssClass += 'warning';
+      }
 
-                this.$el.empty().html(completeness);
-
-                return this;
-            }
-        });
+      completeness = '<span class="AknBadge AknBadge--' + cssClass + '">' + ratio + '%</span>';
     }
-);
+
+    this.$el.empty().html(completeness);
+
+    return this;
+  }
+});
+

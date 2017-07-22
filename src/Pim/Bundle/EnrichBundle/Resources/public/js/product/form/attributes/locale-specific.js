@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Locale specific field extension
  *
@@ -6,56 +5,50 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'pim/form'
-    ],
-    function ($, _, BaseForm) {
-        return BaseForm.extend({
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+import _ from 'underscore'
+import BaseForm from 'pim/form'
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+export default BaseForm.extend({
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension)
 
-            /**
-             * Add this field extension to the given field event
-             *
-             * @param {Object} event
-             *
-             * @returns {Promise}
-             */
-            addFieldExtension: function (event) {
-                var field = event.field;
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                if (!field.attribute.is_locale_specific) {
-                    return;
-                }
+  /**
+   * Add this field extension to the given field event
+   *
+   * @param {Object} event
+   *
+   * @returns {Promise}
+   */
+  addFieldExtension: function (event) {
+    var field = event.field
 
-                if (!_.contains(field.attribute.available_locales, field.context.locale)) {
-                    this.updateFieldElements(field);
-                }
-
-                return this;
-            },
-
-            /**
-             * Update the given field by adding element to it
-             *
-             * @param {Object} field
-             */
-            updateFieldElements: function (field) {
-                var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
-                var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
-
-                field.addElement(
-                    'field-input',
-                    'input_placeholder',
-                    element
-                );
-            }
-        });
+    if (!field.attribute.is_locale_specific) {
+      return
     }
-);
+
+    if (!_.contains(field.attribute.available_locales, field.context.locale)) {
+      this.updateFieldElements(field)
+    }
+
+    return this
+  },
+
+  /**
+   * Update the given field by adding element to it
+   *
+   * @param {Object} field
+   */
+  updateFieldElements: function (field) {
+    var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
+    var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>'
+
+    field.addElement(
+      'field-input',
+      'input_placeholder',
+      element
+    )
+  }
+})

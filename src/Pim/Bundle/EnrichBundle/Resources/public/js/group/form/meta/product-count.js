@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Group meta extension to display number of products this group contains
  *
@@ -7,54 +5,49 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/group/meta/product-count'
-    ],
-    function (_, __, BaseForm, formTemplate) {
-        return BaseForm.extend({
-            tagName: 'span',
-            template: _.template(formTemplate),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import formTemplate from 'pim/template/group/meta/product-count'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  tagName: 'span',
+  template: _.template(formTemplate),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                var group = this.getFormData();
-                var html = '';
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                if (_.has(group, 'products')) {
-                    html = this.template({
-                        label: __(this.config.productCountLabel),
-                        productCount: group.products.length
-                    });
-                }
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    var group = this.getFormData()
+    var html = ''
 
-                this.$el.html(html);
-
-                return this;
-            }
-        });
+    if (_.has(group, 'products')) {
+      html = this.template({
+        label: __(this.config.productCountLabel),
+        productCount: group.products.length
+      })
     }
-);
+
+    this.$el.html(html)
+
+    return this
+  }
+})

@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Import switcher item extension
  * This extension is related to src/Pim/Bundle/EnrichBundle/Resources/public/js/job/import/switcher.js
@@ -8,65 +7,57 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'oro/translator',
-        'pim/form'
-    ],
-    function (
-        __,
-        BaseForm
-    ) {
-        return BaseForm.extend({
-            visible: false,
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  visible: false,
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'switcher:switch', this.switch);
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                this.getRoot().trigger('switcher:register', {
-                    label: __(this.config.label),
-                    code: this.code
-                });
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'switcher:switch', this.switch)
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+    this.getRoot().trigger('switcher:register', {
+      label: __(this.config.label),
+      code: this.code
+    })
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.empty();
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                if (this.visible) {
-                    return BaseForm.prototype.render.apply(this, arguments);
-                }
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.empty()
 
-                this.delegateEvents();
-            },
-
-            /**
-             * This will enable or disable the current item.
-             *
-             * @param {Object} event
-             * @param {String} event.code The code of the current switcher item
-             */
-            switch: function (event) {
-                this.visible = event.code === this.code;
-
-                this.render();
-            }
-        });
+    if (this.visible) {
+      return BaseForm.prototype.render.apply(this, arguments)
     }
-);
+
+    this.delegateEvents()
+  },
+
+  /**
+   * This will enable or disable the current item.
+   *
+   * @param {Object} event
+   * @param {String} event.code The code of the current switcher item
+   */
+  switch: function (event) {
+    this.visible = event.code === this.code
+
+    this.render()
+  }
+})

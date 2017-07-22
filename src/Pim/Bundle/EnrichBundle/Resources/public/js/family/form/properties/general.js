@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Extension used for family properties tab general tab section
  *
@@ -7,99 +5,84 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-    'underscore',
-    'oro/translator',
-    'pim/form',
-    'pim/fetcher-registry',
-    'pim/common/property',
-    'pim/template/form/tab/section',
-    'oro/loading-mask'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        FetcherRegistry,
-        propertyAccessor,
-        template,
-        LoadingMask
-    ) {
-        return BaseForm.extend({
-            className: 'tabsection',
-            template: _.template(template),
-            errors: [],
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import propertyAccessor from 'pim/common/property'
+import template from 'pim/template/form/tab/section'
+import LoadingMask from 'oro/loading-mask'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  className: 'tabsection',
+  template: _.template(template),
+  errors: [],
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    __: __,
-                    sectionTitle: this.config.label,
-                    dropZone: this.config.dropZone
-                }));
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                this.renderExtensions();
-            },
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.html(this.template({
+      __: __,
+      sectionTitle: this.config.label,
+      dropZone: this.config.dropZone
+    }))
 
-            /**
-             * Get the validation errors for the given field
-             *
-             * @param {string} field
-             *
-             * @return {mixed}
-             */
-            getValidationErrorsForField: function (field) {
-                return propertyAccessor
-                    .accessProperty(
-                        this.errors,
-                        field,
-                        []
-                    );
-            },
+    this.renderExtensions()
+  },
 
-            /**
-             * Sets errors
-             *
-             * @param {Object} errors
-             */
-            setValidationErrors: function (errors) {
-                this.errors = errors.response;
-            },
+  /**
+   * Get the validation errors for the given field
+   *
+   * @param {string} field
+   *
+   * @return {mixed}
+   */
+  getValidationErrorsForField: function (field) {
+    return propertyAccessor
+      .accessProperty(
+        this.errors,
+        field, []
+    )
+  },
 
-            /**
-             * Resets validation errors
-             */
-            resetValidationErrors: function () {
-                this.errors = {};
-                this.render();
-            },
+  /**
+   * Sets errors
+   *
+   * @param {Object} errors
+   */
+  setValidationErrors: function (errors) {
+    this.errors = errors.response
+  },
 
-            /**
-             * Shows the loading mask
-             */
-            showLoadingMask: function () {
-                this.loadingMask = new LoadingMask();
-                this.loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-            },
+  /**
+   * Resets validation errors
+   */
+  resetValidationErrors: function () {
+    this.errors = {}
+    this.render()
+  },
 
-            /**
-             * Hides the loading mask
-             */
-            hideLoadingMask: function () {
-                this.loadingMask.hide().$el.remove();
-            }
-        });
-    }
-);
+  /**
+   * Shows the loading mask
+   */
+  showLoadingMask: function () {
+    this.loadingMask = new LoadingMask()
+    this.loadingMask.render().$el.appendTo(this.getRoot().$el).show()
+  },
 
+  /**
+   * Hides the loading mask
+   */
+  hideLoadingMask: function () {
+    this.loadingMask.hide().$el.remove()
+  }
+})

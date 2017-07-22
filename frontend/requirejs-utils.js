@@ -18,28 +18,28 @@ const utils = {
      * @param  {Array} requireYamls An array containing the filenames of each RequireJS.yaml
      * @return {Object}             Returns an object containing the extracted config, and all the absolute module paths
      */
-    getRequireConfig(requireYamls, baseDir) {
-        let paths = {}
-        let config = {}
+  getRequireConfig (requireYamls, baseDir) {
+    let paths = {}
+    let config = {}
 
-        requireYamls.forEach((yaml) => {
-            try {
-                const contents = readFileSync(yaml, 'utf8')
-                const parsed = parse(contents)
-                const requirePaths = parsed.config.paths || {}
-                const requireMaps = get(parsed.config, 'map.*') || {}
-                const mergedPaths = assign(requirePaths, requireMaps)
-                const absolutePaths = mapValues(mergedPaths, (modulePath) => {
-                    return resolve(baseDir, `./web/bundles/${modulePath}`)
-                })
-
-                paths = deepMerge(paths, absolutePaths)
-                config = deepMerge(config, parsed.config.config || {})
-            } catch (e) {}
+    requireYamls.forEach((yaml) => {
+      try {
+        const contents = readFileSync(yaml, 'utf8')
+        const parsed = parse(contents)
+        const requirePaths = parsed.config.paths || {}
+        const requireMaps = get(parsed.config, 'map.*') || {}
+        const mergedPaths = assign(requirePaths, requireMaps)
+        const absolutePaths = mapValues(mergedPaths, (modulePath) => {
+          return resolve(baseDir, `./web/bundles/${modulePath}`)
         })
 
-        return { config, paths }
-    },
+        paths = deepMerge(paths, absolutePaths)
+        config = deepMerge(config, parsed.config.config || {})
+      } catch (e) {}
+    })
+
+    return { config, paths }
+  },
 
     /**
      * Combines the absolute module paths and custom module
@@ -49,35 +49,36 @@ const utils = {
      * @param  {String} sourceDir The directory executing webpack
      * @return {Object}               An object requirejs paths and config, allowed context and module aliases
      */
-    getModulePaths(baseDir, sourceDir) {
-        const sourcePath = resolve(baseDir, 'web/js/require-paths.js')
+  getModulePaths (baseDir, sourceDir) {
+    const sourcePath = resolve(baseDir, 'web/js/require-paths.js')
 
-        if (!existsSync(sourcePath)) {
-            throw new Error(`The web/js/require-paths.js module does not exist - You need to run
+    if (!existsSync(sourcePath)) {
+      throw new Error(`The web/js/require-paths.js module does not exist - You need to run
             "app/console pim:install" or "app/console pim:installer:dump-require-paths" before
             running webpack \n`.red)
-        }
+    }
 
         // File dumped by the pim:installer:dump-require-paths command
-        const pathSourceFile = require(sourcePath)
-        const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir)
+    const pathSourceFile = require(sourcePath)
+    const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir)
 
-        const aliases = assign(paths,
+    const aliases = assign(paths,
             mapValues(customPaths, custom => resolve(baseDir, custom)
         ), {
-            'require-polyfill': resolve(sourceDir, './frontend/require-polyfill.js'),
-            'require-context': resolve(sourceDir, './frontend/require-context.js')
+          'require-polyfill': resolve(sourceDir, './frontend/require-polyfill.js'),
+          'require-context': resolve(sourceDir, './frontend/require-context.js')
         })
 
         // Derive the allowed context paths from all the paths in all the requirejs.yml files
-        const contextPaths = values(aliases).map(alias => {
-          const filename = alias.replace(/.js$/, '')
-          return globToRegex(filename).toString().slice(2, -2)
-        })
-        const context = `/^.*(${contextPaths.join('|')})$/`
+    const contextPaths = values(aliases).map(alias => {
+      const filename = alias.replace(/.js$/, '')
 
-        return { paths, config, context, aliases }
-    }
+      return globToRegex(filename).toString().slice(2, -2)
+    })
+    const context = `/^.*(${contextPaths.join('|')})$/`
+
+    return { paths, config, context, aliases }
+  }
 }
 
 module.exports = utils

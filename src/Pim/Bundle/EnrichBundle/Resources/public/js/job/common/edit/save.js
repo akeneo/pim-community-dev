@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Save extension for job instance
  *
@@ -7,62 +5,42 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form/common/save',
-        'oro/messenger',
-        'pim/field-manager',
-        'pim/i18n',
-        'pim/user-context',
-        'routing',
-        'pim/router'
-    ],
-    function (
-        $,
-        _,
-        __,
-        BaseSave,
-        messenger,
-        FieldManager,
-        i18n,
-        UserContext,
-        Routing,
-        router
-    ) {
-        return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.job_instance.info.update_successful'),
-            updateFailureMessage: __('pim_enrich.entity.job_instance.info.update_failed'),
+import $ from 'jquery'
+import __ from 'oro/translator'
+import BaseSave from 'pim/form/common/save'
+import router from 'pim/router'
 
-            /**
-             * {@inheritdoc}
-             */
-            save: function () {
-                var jobInstance = $.extend(true, {}, this.getFormData());
+export default BaseSave.extend({
+  updateSuccessMessage: __('pim_enrich.entity.job_instance.info.update_successful'),
+  updateFailureMessage: __('pim_enrich.entity.job_instance.info.update_failed'),
 
-                delete jobInstance.meta;
-                delete jobInstance.connector;
+  /**
+   * {@inheritdoc}
+   */
+  save: function () {
+    var jobInstance = $.extend(true, {}, this.getFormData())
 
-                this.showLoadingMask();
-                this.getRoot().trigger('pim_enrich:form:entity:pre_save');
+    delete jobInstance.meta
+    delete jobInstance.connector
 
-                return this.getJobInstanceSaver()
-                    .save(jobInstance.code, jobInstance)
-                    .then(function (data) {
-                        this.postSave();
+    this.showLoadingMask()
+    this.getRoot().trigger('pim_enrich:form:entity:pre_save')
 
-                        this.setData(data);
-                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
-                        router.redirectToRoute(
-                            this.config.redirectPath,
-                            {code: jobInstance.code}
-                        );
-                    }.bind(this))
-                    .fail(this.fail.bind(this))
-                    .always(this.hideLoadingMask.bind(this));
-            }
-        });
-    }
-);
+    return this.getJobInstanceSaver()
+      .save(jobInstance.code, jobInstance)
+      .then(function (data) {
+        this.postSave()
+
+        this.setData(data)
+        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data)
+        router.redirectToRoute(
+          this.config.redirectPath,
+          {
+            code: jobInstance.code
+          }
+        )
+      }.bind(this))
+      .fail(this.fail.bind(this))
+      .always(this.hideLoadingMask.bind(this))
+  }
+})

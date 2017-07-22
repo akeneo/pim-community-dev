@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Save extension
  *
@@ -7,114 +5,104 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'oro/translator',
-        'pim/form',
-        'oro/mediator',
-        'oro/loading-mask',
-        'oro/messenger'
-    ],
-    function (
-        __,
-        BaseForm,
-        mediator,
-        LoadingMask,
-        messenger
-    ) {
-        return BaseForm.extend({
-            loadingMask: null,
-            updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
-            updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
-            label: __('pim_enrich.entity.save.label'),
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import LoadingMask from 'oro/loading-mask'
+import messenger from 'oro/messenger'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+export default BaseForm.extend({
+  loadingMask: null,
+  updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
+  updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
+  label: __('pim_enrich.entity.save.label'),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (config) {
+    this.config = config.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.trigger('save-buttons:register-button', {
-                    className: 'save',
-                    priority: 200,
-                    label: this.label,
-                    events: {
-                        'click .save': this.save.bind(this)
-                    }
-                });
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.trigger('save-buttons:register-button', {
+      className: 'save',
+      priority: 200,
+      label: this.label,
+      events: {
+        'click .save': this.save.bind(this)
+      }
+    })
 
-            /**
-             * Save the current form
-             */
-            save: function () {
-                throw new Error('This method must be implemented');
-            },
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-            /**
-             * Show the loading mask
-             */
-            showLoadingMask: function () {
-                this.loadingMask = new LoadingMask();
-                this.loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-            },
+  /**
+   * Save the current form
+   */
+  save: function () {
+    throw new Error('This method must be implemented')
+  },
 
-            /**
-             * Hide the loading mask
-             */
-            hideLoadingMask: function () {
-                this.loadingMask.hide().$el.remove();
-            },
+  /**
+   * Show the loading mask
+   */
+  showLoadingMask: function () {
+    this.loadingMask = new LoadingMask()
+    this.loadingMask.render().$el.appendTo(this.getRoot().$el).show()
+  },
 
-            /**
-             * What to do after a save
-             */
-            postSave: function () {
-                this.getRoot().trigger('pim_enrich:form:entity:post_save');
+  /**
+   * Hide the loading mask
+   */
+  hideLoadingMask: function () {
+    this.loadingMask.hide().$el.remove()
+  },
 
-                messenger.notify(
-                    'success',
-                    this.updateSuccessMessage
-                );
-            },
+  /**
+   * What to do after a save
+   */
+  postSave: function () {
+    this.getRoot().trigger('pim_enrich:form:entity:post_save')
 
-            /**
-             * On save fail
-             *
-             * @param {Object} response
-             */
-            fail: function (response) {
-                switch (response.status) {
-                    case 400:
-                        this.getRoot().trigger(
-                            'pim_enrich:form:entity:bad_request',
-                            {'sentData': this.getFormData(), 'response': response.responseJSON}
-                        );
-                        break;
-                    case 500:
-                        /* global console */
-                        var message = response.responseJSON ? response.responseJSON : response;
+    messenger.notify(
+      'success',
+      this.updateSuccessMessage
+    )
+  },
 
-                        console.error('Errors:', message);
-                        this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
-                        break;
-                    default:
-                }
+  /**
+   * On save fail
+   *
+   * @param {Object} response
+   */
+  fail: function (response) {
+    switch (response.status) {
+      case 400:
+        this.getRoot().trigger(
+          'pim_enrich:form:entity:bad_request', {
+            'sentData': this.getFormData(),
+            'response': response.responseJSON
+          }
+        )
+        break
+      case 500:
+        /* global console */
+        var message = response.responseJSON ? response.responseJSON : response
 
-                messenger.notify(
-                    'error',
-                    this.updateFailureMessage
-                );
-            }
-        });
+        console.error('Errors:', message)
+        this.getRoot().trigger('pim_enrich:form:entity:error:save', message)
+        break
+      default:
     }
-);
+
+    messenger.notify(
+      'error',
+      this.updateFailureMessage
+    )
+  }
+})

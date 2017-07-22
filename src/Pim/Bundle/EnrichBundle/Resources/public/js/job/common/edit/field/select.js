@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Select field extension
  *
@@ -7,38 +5,32 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-    'underscore',
-    'pim/job/common/edit/field/field',
-    'pim/template/export/common/edit/field/select',
-    'jquery.select2'
-], function (
-    _,
-    BaseField,
-    fieldTemplate
-) {
-    return BaseField.extend({
-        fieldTemplate: _.template(fieldTemplate),
-        events: {
-            'change select': 'updateState'
-        },
+import _ from 'underscore'
+import BaseField from 'pim/job/common/edit/field/field'
+import fieldTemplate from 'pim/template/export/common/edit/field/select'
+import 'jquery.select2'
 
-        /**
-         * {@inheritdoc}
-         */
-        render: function () {
-            BaseField.prototype.render.apply(this, arguments);
+export default BaseField.extend({
+  fieldTemplate: _.template(fieldTemplate),
+  events: {
+    'change select': 'updateState'
+  },
 
-            this.$('.select2').select2();
-        },
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    BaseField.prototype.render.apply(this, arguments)
 
-        /**
-         * Get the field dom value
-         *
-         * @return {string}
-         */
-        getFieldValue: function () {
-            return this.$('select').val();
-        }
-    });
-});
+    this.$('.select2').select2()
+  },
+
+  /**
+   * Get the field dom value
+   *
+   * @return {string}
+   */
+  getFieldValue: function () {
+    return this.$('select').val()
+  }
+})

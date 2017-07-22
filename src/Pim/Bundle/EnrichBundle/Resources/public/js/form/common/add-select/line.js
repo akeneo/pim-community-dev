@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Common add select line view
  *
@@ -7,54 +5,43 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'pim/template/form/add-select/line'
-    ],
-    function (
-        $,
-        _,
-        Backbone,
-        template
-    ) {
-        return Backbone.View.extend({
-            className: '.select2-results',
-            template: _.template(template),
-            checked: false,
-            item: null,
+import _ from 'underscore'
+import Backbone from 'backbone'
+import template from 'pim/template/form/add-select/line'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                this.item = this.options.item;
-            },
+export default Backbone.View.extend({
+  className: '.select2-results',
+  template: _.template(template),
+  checked: false,
+  item: null,
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    item:    this.item,
-                    checked: this.checked
-                }));
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function () {
+    this.item = this.options.item
+  },
 
-                return this;
-            },
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.html(this.template({
+      item: this.item,
+      checked: this.checked
+    }))
 
-            /**
-             * Update the checkbox status then render the view
-             *
-             * @param {bool} checked
-             */
-            setCheckedCheckbox: function (checked) {
-                this.checked = checked;
+    return this
+  },
 
-                this.render();
-            }
-        });
-    }
-);
+  /**
+   * Update the checkbox status then render the view
+   *
+   * @param {bool} checked
+   */
+  setCheckedCheckbox: function (checked) {
+    this.checked = checked
+
+    this.render()
+  }
+})

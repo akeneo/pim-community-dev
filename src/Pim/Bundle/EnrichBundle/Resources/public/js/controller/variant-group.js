@@ -1,14 +1,7 @@
-'use strict';
+import BaseController from 'pim/controller/group'
 
-define(
-    [
-        'pim/controller/group'
-    ],
-    function (BaseController) {
-        return BaseController.extend({
-            initialize: function () {
-                this.config = __moduleConfig;
-            }
-        });
-    }
-);
+export default BaseController.extend({
+  initialize: function () {
+    this.config = __moduleConfig
+  }
+})

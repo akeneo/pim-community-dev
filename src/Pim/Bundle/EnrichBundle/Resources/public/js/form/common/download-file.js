@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Download file extension
  *
@@ -7,91 +6,76 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/template/form/download-file',
-        'routing',
-        'pim/user-context',
-        'pim/common/property'
-    ],
-    function (
-        _,
-        __,
-        BaseForm,
-        template,
-        Routing,
-        UserContext,
-        propertyAccessor
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
+import _ from 'underscore'
+import __ from 'oro/translator'
+import BaseForm from 'pim/form'
+import template from 'pim/template/form/download-file'
+import Routing from 'routing'
+import propertyAccessor from 'pim/common/property'
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
+export default BaseForm.extend({
+  template: _.template(template),
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  initialize: function (meta) {
+    this.config = meta.config
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+    BaseForm.prototype.initialize.apply(this, arguments)
+  },
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.isVisible()) {
-                    return this;
-                }
-                this.$el.html(this.template({
-                    btnLabel: __(this.config.label),
-                    btnIcon: this.config.iconName,
-                    url: this.getUrl()
-                }));
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                return this;
-            },
-
-            /**
-             * Get the url with parameters
-             *
-             * @returns {string}
-             */
-            getUrl: function () {
-                var parameters = {};
-                if (this.config.urlParams) {
-                    var formData = this.getFormData();
-                    this.config.urlParams.forEach(function (urlParam) {
-                        parameters[urlParam.property] =
-                            propertyAccessor.accessProperty(formData, urlParam.path);
-                    });
-                }
-
-                return Routing.generate(
-                    this.config.url,
-                    parameters
-                );
-            },
-
-            /**
-             * Returns true if the extension should be visible
-             *
-             * @returns {boolean}
-             */
-            isVisible: function () {
-                return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath);
-            }
-        });
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    if (!this.isVisible()) {
+      return this
     }
-);
+    this.$el.html(this.template({
+      btnLabel: __(this.config.label),
+      btnIcon: this.config.iconName,
+      url: this.getUrl()
+    }))
+
+    return this
+  },
+
+  /**
+   * Get the url with parameters
+   *
+   * @returns {string}
+   */
+  getUrl: function () {
+    var parameters = {}
+    if (this.config.urlParams) {
+      var formData = this.getFormData()
+      this.config.urlParams.forEach(function (urlParam) {
+        parameters[urlParam.property] = propertyAccessor.accessProperty(formData, urlParam.path)
+      })
+    }
+
+    return Routing.generate(
+      this.config.url,
+      parameters
+    )
+  },
+
+  /**
+   * Returns true if the extension should be visible
+   *
+   * @returns {boolean}
+   */
+  isVisible: function () {
+    return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath)
+  }
+})

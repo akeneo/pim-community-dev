@@ -1,149 +1,151 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator'],
-function($, _, Backbone, __) {
-    'use strict';
+import $ from 'jquery';
+import _ from 'underscore';
+import Backbone from 'backbone';
+import __ from 'oro/translator';
 
-    /**
-     * Loading mask widget
-     *
-     * @export  oro/loading-mask
-     * @class   oro.LoadingMask
-     * @extends Backbone.View
-     */
-    return Backbone.View.extend({
 
-        /** @property {Boolean} */
-        displayed: false,
+/**
+ * Loading mask widget
+ *
+ * @export  oro/loading-mask
+ * @class   oro.LoadingMask
+ * @extends Backbone.View
+ */
+export default Backbone.View.extend({
 
-        /** @property {Boolean} */
-        liveUpdate: true,
+  /** @property {Boolean} */
+  displayed: false,
 
-        /** @property {String} */
-        className: 'loading-mask',
+  /** @property {Boolean} */
+  liveUpdate: true,
 
-        /** @property {String} */
-        loadingHint: __('Loading...'),
+  /** @property {String} */
+  className: 'loading-mask',
 
-        /** @property */
-        template:_.template(
-            '<div id="loading-wrapper" class="AknLoadingMask-wrapper loading-wrapper"></div>' +
-            '<div id="loading-frame" class="AknLoadingMask-frame loading-frame">' +
-                '<div class="AknLoadingMask-box box well">' +
-                    '<div class="AknLoadingMask-content loading-content">' +
-                        '<%= loadingHint %>' +
-                    '</div>' +
-                '</div>' +
-            '</div>'
-        ),
+  /** @property {String} */
+  loadingHint: __('Loading...'),
 
-        /**
-         * Initialize
-         *
-         * @param {Object} options
-         * @param {Boolean} [options.liveUpdate] Update position of loading animation on window scroll and resize
-         */
-        initialize: function(options) {
-            options = options || {};
+  /** @property */
+  template: _.template(
+    '<div id="loading-wrapper" class="AknLoadingMask-wrapper loading-wrapper"></div>' +
+    '<div id="loading-frame" class="AknLoadingMask-frame loading-frame">' +
+    '<div class="AknLoadingMask-box box well">' +
+    '<div class="AknLoadingMask-content loading-content">' +
+    '<%= loadingHint %>' +
+    '</div>' +
+    '</div>' +
+    '</div>'
+  ),
 
-            if (_.has(options, 'liveUpdate')) {
-                this.liveUpdate = options.liveUpdate;
-            }
+  /**
+   * Initialize
+   *
+   * @param {Object} options
+   * @param {Boolean} [options.liveUpdate] Update position of loading animation on window scroll and resize
+   */
+  initialize: function(options) {
+    options = options || {};
 
-            if (this.liveUpdate) {
-                var updateProxy = $.proxy(this.updatePos, this);
-                $(window).resize(updateProxy).scroll(updateProxy);
-            }
-            Backbone.View.prototype.initialize.apply(this, arguments);
-        },
+    if (_.has(options, 'liveUpdate')) {
+      this.liveUpdate = options.liveUpdate;
+    }
 
-        /**
-         * Show loading mask
-         *
-         * @return {*}
-         */
-        show: function() {
-            this.$el.show();
-            this.displayed = true;
-            this.resetPos().updatePos();
-            return this;
-        },
+    if (this.liveUpdate) {
+      var updateProxy = $.proxy(this.updatePos, this);
+      $(window).resize(updateProxy).scroll(updateProxy);
+    }
+    Backbone.View.prototype.initialize.apply(this, arguments);
+  },
 
-        /**
-         * Update position of loading animation
-         *
-         * @return {*}
-         * @protected
-         */
-        updatePos: function() {
-            if (!this.displayed) {
-                return this;
-            }
-            var $containerEl = this.$('.loading-wrapper');
-            var $loadingEl = this.$('.loading-frame');
+  /**
+   * Show loading mask
+   *
+   * @return {*}
+   */
+  show: function() {
+    this.$el.show();
+    this.displayed = true;
+    this.resetPos().updatePos();
+    return this;
+  },
 
-            var loadingHeight = $loadingEl.height();
-            var loadingWidth = $loadingEl.width();
-            var containerWidth = $containerEl.outerWidth();
-            var containerHeight = $containerEl.outerHeight();
-            if (loadingHeight > containerHeight) {
-                $containerEl.css('height', loadingHeight + 'px');
-            }
+  /**
+   * Update position of loading animation
+   *
+   * @return {*}
+   * @protected
+   */
+  updatePos: function() {
+    if (!this.displayed) {
+      return this;
+    }
+    var $containerEl = this.$('.loading-wrapper');
+    var $loadingEl = this.$('.loading-frame');
 
-            var halfLoadingHeight = loadingHeight / 2;
-            var loadingTop = containerHeight / 2  - halfLoadingHeight;
-            var loadingLeft = (containerWidth - loadingWidth) / 2;
+    var loadingHeight = $loadingEl.height();
+    var loadingWidth = $loadingEl.width();
+    var containerWidth = $containerEl.outerWidth();
+    var containerHeight = $containerEl.outerHeight();
+    if (loadingHeight > containerHeight) {
+      $containerEl.css('height', loadingHeight + 'px');
+    }
 
-            // Move loading message to visible center of container if container is visible
-            var windowHeight = $(window).outerHeight();
-            var containerTop = $containerEl.offset().top;
-            if (containerTop < windowHeight && (containerTop + loadingTop + loadingHeight) > windowHeight) {
-                loadingTop = (windowHeight - containerTop) / 2 - halfLoadingHeight;
-            }
+    var halfLoadingHeight = loadingHeight / 2;
+    var loadingTop = containerHeight / 2 - halfLoadingHeight;
+    var loadingLeft = (containerWidth - loadingWidth) / 2;
 
-            loadingTop = loadingTop < containerHeight - loadingHeight ? loadingTop : containerHeight - loadingHeight;
-            loadingLeft = loadingLeft > 0 ? Math.round(loadingLeft) : 0;
-            loadingTop = loadingTop > 0 ? Math.round(loadingTop) : 0;
+    // Move loading message to visible center of container if container is visible
+    var windowHeight = $(window).outerHeight();
+    var containerTop = $containerEl.offset().top;
+    if (containerTop < windowHeight && (containerTop + loadingTop + loadingHeight) > windowHeight) {
+      loadingTop = (windowHeight - containerTop) / 2 - halfLoadingHeight;
+    }
 
-            $loadingEl.css('top', loadingTop + 'px');
-            $loadingEl.css('left', loadingLeft + 'px');
-            return this;
-        },
+    loadingTop = loadingTop < containerHeight - loadingHeight ? loadingTop : containerHeight - loadingHeight;
+    loadingLeft = loadingLeft > 0 ? Math.round(loadingLeft) : 0;
+    loadingTop = loadingTop > 0 ? Math.round(loadingTop) : 0;
 
-        /**
-         * Update position of loading animation
-         *
-         * @return {*}
-         * @protected
-         */
-        resetPos: function() {
-            this.$('.loading-wrapper').css('height', '100%');
-            return this;
-        },
+    $loadingEl.css('top', loadingTop + 'px');
+    $loadingEl.css('left', loadingLeft + 'px');
+    return this;
+  },
 
-        /**
-         * Hide loading mask
-         *
-         * @return {*}
-         */
-        hide: function() {
-            this.$el.hide();
-            this.displayed = false;
-            this.resetPos();
-            return this;
-        },
+  /**
+   * Update position of loading animation
+   *
+   * @return {*}
+   * @protected
+   */
+  resetPos: function() {
+    this.$('.loading-wrapper').css('height', '100%');
+    return this;
+  },
 
-        /**
-         * Render loading mask
-         *
-         * @return {*}
-         */
-        render: function() {
-            this.$el.empty();
-            this.$el.append(this.template({
-                loadingHint: this.loadingHint
-            }));
-            this.hide();
-            return this;
-        }
-    });
+  /**
+   * Hide loading mask
+   *
+   * @return {*}
+   */
+  hide: function() {
+    this.$el.hide();
+    this.displayed = false;
+    this.resetPos();
+    return this;
+  },
+
+  /**
+   * Render loading mask
+   *
+   * @return {*}
+   */
+  render: function() {
+    this.$el.empty();
+    this.$el.append(this.template({
+      loadingHint: this.loadingHint
+    }));
+    this.hide();
+    return this;
+  }
 });
+

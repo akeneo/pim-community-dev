@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Label extension
  *
@@ -7,49 +6,48 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    ['pim/form', 'pim/user-context', 'pim/i18n'],
-    function (BaseForm, UserContext, i18n) {
-        return BaseForm.extend({
-            tagName: 'h1',
-            className: 'AknTitleContainer-title',
+import BaseForm from 'pim/form'
+import UserContext from 'pim/user-context'
+import i18n from 'pim/i18n'
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                UserContext.off('change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+export default BaseForm.extend({
+  tagName: 'h1',
+  className: 'AknTitleContainer-title',
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+  /**
+   * {@inheritdoc}
+   */
+  configure: function () {
+    UserContext.off('change:catalogLocale', this.render)
+    this.listenTo(UserContext, 'change:catalogLocale', this.render)
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render)
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.text(
-                    this.getLabel()
-                );
+    return BaseForm.prototype.configure.apply(this, arguments)
+  },
 
-                return this;
-            },
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.text(
+      this.getLabel()
+    )
 
-            /**
-             * Provide the object label
-             *
-             * @return {String}
-             */
-            getLabel: function () {
-                var data = this.getFormData();
+    return this
+  },
 
-                return i18n.getLabel(
-                    data.labels,
-                    UserContext.get('catalogLocale'),
-                    data.code
-                );
-            }
-        });
-    }
-);
+  /**
+   * Provide the object label
+   *
+   * @return {String}
+   */
+  getLabel: function () {
+    var data = this.getFormData()
+
+    return i18n.getLabel(
+      data.labels,
+      UserContext.get('catalogLocale'),
+      data.code
+    )
+  }
+})

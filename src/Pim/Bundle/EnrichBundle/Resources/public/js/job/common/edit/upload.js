@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Displays a drop zone to upload a file.
  *
@@ -7,58 +5,58 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-    'jquery',
-    'underscore',
-    'oro/translator',
-    'pim/form',
-    'pim/template/export/common/edit/upload'
-], function ($, _, __, BaseForm, template) {
-    return BaseForm.extend({
-        template: _.template(template),
-        events: {
-            'change input[type="file"]': 'addFile',
-            'click .clear-field': 'removeFile'
-        },
+import _ from 'underscore'
+import BaseForm from 'pim/form'
+import template from 'pim/template/export/common/edit/upload'
 
-        /**
-         * {@inheritdoc}
-         */
-        render: function () {
-            this.$el.html(this.template({
-                file: this.getFormData().file
-            }));
+export default BaseForm.extend({
+  template: _.template(template),
+  events: {
+    'change input[type="file"]': 'addFile',
+    'click .clear-field': 'removeFile'
+  },
 
-            this.delegateEvents();
+  /**
+   * {@inheritdoc}
+   */
+  render: function () {
+    this.$el.html(this.template({
+      file: this.getFormData().file
+    }))
 
-            return this;
-        },
+    this.delegateEvents()
 
-        /**
-         * When a file is added to the dom input
-         */
-        addFile: function () {
-            var input = this.$('input[type="file"]').get(0);
-            if (!input || 0 === input.files.length) {
-                return;
-            }
+    return this
+  },
 
-            this.setData({file: input.files[0]});
+  /**
+   * When a file is added to the dom input
+   */
+  addFile: function () {
+    var input = this.$('input[type="file"]').get(0)
+    if (!input || input.files.length === 0) {
+      return
+    }
 
-            this.getRoot().trigger('pim_enrich:form:job:file_updated');
+    this.setData({
+      file: input.files[0]
+    })
 
-            this.render();
-        },
+    this.getRoot().trigger('pim_enrich:form:job:file_updated')
 
-        /**
-         * When the user remove the file from the input
-         */
-        removeFile: function () {
-            this.setData({file: null});
+    this.render()
+  },
 
-            this.getRoot().trigger('pim_enrich:form:job:file_updated');
+  /**
+   * When the user remove the file from the input
+   */
+  removeFile: function () {
+    this.setData({
+      file: null
+    })
 
-            this.render();
-        }
-    });
-});
+    this.getRoot().trigger('pim_enrich:form:job:file_updated')
+
+    this.render()
+  }
+})
