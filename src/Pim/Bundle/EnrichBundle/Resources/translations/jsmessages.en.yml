@@ -205,6 +205,8 @@ pim_enrich:
                         more_products: '{{ count }} more products...'
                         close: Close
                 status: Status
+                scope: Channel
+                locale: Locale
             copy:
                 select: Select
                 all: All
