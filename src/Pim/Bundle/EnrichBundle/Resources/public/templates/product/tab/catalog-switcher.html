@@ -1,6 +1,6 @@
 <ul class="AknHorizontalNavtab-list nav nav-tabs tree-selector" id="trees-list">
     <% _.each(trees, function (tree) { %>
-        <li class="AknHorizontalNavtab-item<% if (tree.code === state.currentTree) { %> AknHorizontalNavtab-item--active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
+        <li class="AknHorizontalNavtab-item<% if (tree.code === state.currentTree) { %> AknHorizontalNavtab-item--active active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
             <div class="
                 AknHorizontalNavtab-link
                 <%- _.result(categoriesCount, tree.code, 0) > 0 ? 'tree-has-item' : '' %>
