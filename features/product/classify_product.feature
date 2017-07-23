@@ -45,8 +45,7 @@ Feature: Classify a product in the trees I have access
       | product category | user group | access |
       | slippers         | Manager    | none   |
     And I edit the "rangers" product
-    And I visit the "Categories" column tab
-    When I open the tree selector
+    When I visit the "Categories" column tab
     Then I should see the text "Boots"
     And I should see the text "Shoes"
     But I should not see the text "Slippers"
