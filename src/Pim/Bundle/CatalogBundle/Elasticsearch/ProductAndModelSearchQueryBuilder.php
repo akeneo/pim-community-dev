@@ -18,7 +18,6 @@ class ProductAndModelSearchQueryBuilder extends SearchQueryBuilder
         if (empty($source)) {
             $source = ['identifier'];
         }
-
         $searchQuery = [
             '_source' => $source,
             'query'   => [],
@@ -45,6 +44,7 @@ class ProductAndModelSearchQueryBuilder extends SearchQueryBuilder
             $searchQuery['query'] = new \stdClass();
         }
 
+        // Add extra clause to do smart search (p&pm)
         if (empty($searchQuery['query']['bool']['filter'])) {
             $searchQuery['query']['bool']['filter'] = [];
         }

@@ -46,6 +46,7 @@ class ProductSearchQueryBuilder extends SearchQueryBuilder
             $searchQuery['query'] = new \stdClass();
         }
 
+        // Add extra clause to search for products only
         if (empty($searchQuery['query']['bool']['filter'])) {
             $searchQuery['query']['bool']['filter'] = [];
         }
