@@ -131,8 +131,7 @@ define(
                         this.trees,
                         {code: this.state.toJSON().currentTree}),
                         'label'
-                    ),
-                    label: __('pim_enrich.form.product.tab.categories.catalog_selector')
+                    )
                 }));
             },
 
