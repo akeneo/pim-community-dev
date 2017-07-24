@@ -106,6 +106,9 @@ class UpdateFamilyVariantIntegration extends TestCase
 
     /**
      * Validation: The number of level of the family variant cannot be changed
+     *
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedExceptionMessage Property "number of attribute sets" cannot be modified, "2 attribute sets" given.
      */
     public function testTheFamilyVariantLevelNumberImmutability()
     {
@@ -125,13 +128,6 @@ class UpdateFamilyVariantIntegration extends TestCase
                 ],
             ],
         ]);
-
-        $errors = $this->validateFamilyVariant($familyVariant);
-        $this->assertEquals(1, $errors->count());
-        $this->assertEquals(
-            'The number of level of an existing family variant cannot be changed',
-            $errors->get(0)->getMessage()
-        );
     }
 
     /**
@@ -223,7 +219,7 @@ class UpdateFamilyVariantIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return new Configuration([Configuration::getFunctionalCatalog('catalog_modeling')]);
     }

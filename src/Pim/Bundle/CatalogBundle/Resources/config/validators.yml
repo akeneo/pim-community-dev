@@ -67,7 +67,6 @@ services:
         class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
         arguments:
             - '@translator'
-            - '@doctrine.orm.entity_manager'
             -
                 - 'pim_catalog_metric'
                 - 'pim_catalog_simpleselect'

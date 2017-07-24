@@ -66,6 +66,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
         $familyVariant->getId()->willReturn(42);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(
             ['name', 'size', 'description', 'color', 'sku']
@@ -156,6 +157,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
         $familyVariant->getId()->willReturn(42);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(
             ['name', 'size', 'description', 'color', 'sku']
@@ -227,6 +229,33 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
                 ]
             ],
         ], []);
+    }
+
+    function it_throws_an_exception_if_the_number_of_attribute_set_is_changed(
+        FamilyVariantInterface $familyVariant
+    ) {
+        $familyVariant->getId()->willReturn(42);
+        $familyVariant->getNumberOfLevel()->willReturn(1);
+        $familyVariant->setCode('my-tshirt')->shouldBeCalled();
+
+        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [
+            $familyVariant,
+            [
+                'code' => 'my-tshirt',
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['description'],
+                        'level' => 1,
+                    ],
+                    [
+                        'axes' => ['size', 'other'],
+                        'attributes' => ['size', 'sku'],
+                        'level' => 2,
+                    ],
+                ],
+            ],
+        ]);
     }
 
     function it_throws_an_exception_if_the_family_code_is_invalid(

@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -112,6 +113,16 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
+                if (null !== $familyVariant->getId() &&
+                    $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
+                ) {
+                    throw ImmutablePropertyException::immutableProperty(
+                        'number of attribute sets',
+                        sprintf('%d attribute sets', count($value)),
+                        static::class
+                    );
+                }
+
                 foreach ($value as $attributeSetData) {
                     if (!isset($attributeSetData['level'])) {
                         continue;
@@ -154,6 +165,23 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 }
                 break;
         }
+    }
+
+    /**
+     * @param array $attributeSets
+     *
+     * @return int
+     */
+    private function getNumberOfLevel(array $attributeSets): int
+    {
+        $numberOfLevel = 0;
+        foreach ($attributeSets as $attributeSet) {
+            if ($numberOfLevel < $attributeSet['level']) {
+                $numberOfLevel = $attributeSet['level'];
+            }
+        }
+
+        return $numberOfLevel;
     }
 
     /**
@@ -206,7 +234,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
         return array_map(function ($attributeCode) use ($level) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            if (!$attribute instanceof AttributeInterface) {
+            if (null === $attribute) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     sprintf('attribute_set_%d', $level),
                     'attribute code',
