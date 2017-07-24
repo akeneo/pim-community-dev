@@ -138,14 +138,18 @@ pim_enrich:
     info:
       update_failed: Opdateringen fejlede
       update_successful: Opdatering lykkedes
+    create_popin:
+      code: Kode
+      label: Etiket
+      labels:
+        save: Gem
+        cancel: Annuller
     product:
       navigation: Produkt navigation
       infos: Produkt info
       title: produkt
       btn:
-        enable: Aktivér
         enabled: Aktiveret
-        disable: Deaktivér
         disabled: Deaktiveret
         download_pdf: PDF
         compare_translate: Sammenlign / oversætte
@@ -186,6 +190,7 @@ pim_enrich:
             group_label: Etiket
             more_products: '{{ count }} flere produkter...'
             close: Luk
+        status: Status
       copy:
         select: Vælg
         all: Alle
@@ -211,6 +216,9 @@ pim_enrich:
           family: Vælg familie
           save: Gem
           cancel: Annuller
+      message:
+        created: Produktet blev oprettet
+      completeness: Fuldført
     association_type:
       info:
         deletion_successful: Sammenhængs type slettet.
@@ -226,6 +234,10 @@ pim_enrich:
       btn:
         save: Gem
       title: sammenhængstype
+      create_popin:
+        title: Oprette en ny sammenhæng
+      message:
+        created: Sammenhængstype oprettet
     group_type:
       info:
         deletion_successful: Gruppen type slettet.
@@ -241,6 +253,10 @@ pim_enrich:
       btn:
         save: Gem
       title: gruppetype
+      create_popin:
+        title: Opret en ny gruppe
+      message:
+        created: Gruppetypen oprettet
     channel:
       title: kanal
       info:
@@ -265,6 +281,7 @@ pim_enrich:
         create_successful: Kanal oprettet.
         update_failed: Der opstod en fejl under opdatering af familie.
         cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
+        cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
         attribute_edit_permission_is_not_granted: Du har ingen rettigheder til at redigere denne families attributter
       meta:
         created: Oprettet
@@ -273,6 +290,10 @@ pim_enrich:
         updated_by: opdateret af
       btn:
         save: Gem
+      create_popin:
+        title: Opret en ny familie
+      message:
+        created: Familien blev oprettet
     attribute_option:
       code: Kode
       label: Etiket
@@ -295,6 +316,10 @@ pim_enrich:
         created_by: Oprettet af
         updated: Opdateret
         updated_by: opdateret af
+      create_popin:
+        title: Opret en ny variantgruppe
+      message:
+        created: Variantgruppe oprettet
     group:
       title: Gruppe
       info:
@@ -311,12 +336,23 @@ pim_enrich:
         created_by: Oprettet af
         updated: Opdateret
         updated_by: opdateret af
+      create_popin:
+        title: Opret en ny gruppe
+      message:
+        created: Gruppe oprettet
     job_instance:
       title: jobprofil
       info:
         update_failed: Jobprofil kunne ikke opdateres.
         update_successful: Jobprofil er blevet opdateret.
     attribute:
+      info:
+        deletion_successful: Atributten blev slettet.
+        deletion_failed: Atributten kunne ikke slettes.
+        update_successful: Atributten blev opdateret.
+        update_failed: Atributten kunne ikke opdateres.
+        create_successful: Atributten blev oprettet.
+        create_failed: Atributten kunne ikke oprettes.
       scopable: Omfangbar
       type:
         pim_catalog_identifier: Identifikator
@@ -456,6 +492,8 @@ pim_enrich:
           general: Generelt
           code: Kode
           attribute_as_label: Attributten anvendes som etiket
+          attribute_as_image: Attributten anvendes som det primære billede
+          empty_attribute_as_image: Ikke valgte
           label_translations: Etiket oversættelser
         attributes:
           title: Egenskaber
@@ -482,7 +520,7 @@ pim_enrich:
         "no": "Nej"
         "yes": "Ja"
     variant_group:
-      axis.help: 'Akse er attributter, der definerer varianter af gruppen variant. Akse er attributter med optioner, ikke oversættelige og ikke postobjektet. Det kan ikke ændres efter oprettelsen af gruppen variant.'
+      axis.help: Akse er attributter, der definerer varianter af gruppen variant. Akse er attributter med optioner, ikke oversættelige og ikke postobjektet. Det kan ikke ændres efter oprettelsen af gruppen variant.
       tab:
         properties:
           title: Egenskaber
@@ -634,19 +672,24 @@ pim_enrich:
     attribute:
       meta:
         created: Oprettet
+        created_by: af
         updated: Sidst opdateret
+        updated_by: af
       tab:
         properties:
           title: Egenskaber
           section:
             common: Generelle parametre
+            type_specific: Specifik type parametre
             validation: Valideringsparametre
           label:
             allowed_extensions: Tilladte filendelser
+            auto_option_sorting: Sorter automatisk indstillinger efter alfabetisk rækkefølge
             available_locales: Tilgængelige landestandarder
             code: Kode
             date_max: Maks. dato
             date_min: Min. dato
+            decimals_allowed: Decimal værdier tilladt
             default_metric_unit: Standard metriske enhed
             group: Attributgruppe
             is_locale_specific: Landestandard specifik
@@ -654,14 +697,18 @@ pim_enrich:
             max_characters: Maks. tegn
             max_file_size: Maks. filstørrelse (MB)
             metric_family: Metriske familie
+            minimum_input_length: Minimumlængde for autokomplettering
+            negative_allowed: Negative værdier tilladt
             number_max: Maks. antal
             number_min: Min. antal
+            reference_data_name: Reference data type
             scopable: Værdi pr. kanal
             type: Type
             unique: Unik værdi
             useable_as_grid_filter: Brugbare i gitter
             validation_regexp: Regulære udtryk
             validation_rule: Valideringsregel
+            wysiwyg_enabled: RTF-editoren aktiveret
           default_label:
             default_metric_unit: Vælg enhed
             group: Vælg attributgruppe
@@ -832,6 +879,11 @@ pim_enrich:
     import_profiles:
       title: import profil oversigt
       create_btn: opret import profil
+      list: Vælg et job
+      create_popin:
+        title: Opret en ny importprofil
+      message:
+        created: Importer profil oprettet
     import_history:
       title: importer rapporter
     variant_group:
@@ -843,6 +895,10 @@ pim_enrich:
     export_profiles:
       title: eksporter profil oversigt
       create_btn: opret eksportprofil
+      create_popin:
+        title: Opret en ny eksportprofil
+      message:
+        created: Eksport profil oprettet
     export_history:
       title: eksportere rapporterne
     family:
@@ -953,6 +1009,190 @@ batch_jobs:
     label: Tilføj til variant gruppe
     perform:
       label: Tilføj til variant gruppe
+  csv_product_export:
+    label: Produkt eksport til CSV
+    export.label: Produkt eksport
+  csv_category_export:
+    label: Kategori eksport til CSV
+    export.label: Kategori eksport
+  csv_attribute_export:
+    label: Attributten udførsel til CSV
+    export.label: Attribut eksport
+  csv_attribute_option_export:
+    label: Attribut options eksport til CSV
+    export.label: Attribut option eksport
+  csv_association_type_export:
+    label: Association type export in CSV
+    export.label: Association type export
+  csv_group_export:
+    label: Gruppen eksport til CSV
+    export.label: Gruppe eksport
+  csv_variant_group_export:
+    label: Variant gruppe eksporter til CSV
+    export.label: Variant gruppe eksport
+  csv_family_export:
+    label: Familie eksport i CSV
+    export.label: Familie eksport
+  csv_product_import:
+    label: Produkt eksport fra CSV-fil
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Association import
+  csv_category_import:
+    label: Kategori eksport fra CSV
+    validation.label: Filvalidering
+    import.label: Kategori import
+  csv_attribute_import:
+    label: Attributten udførsel fra CSV
+    validation.label: Filvalidering
+    import.label: Attribut import
+  csv_attribute_option_import:
+    label: Attribut indstillinger -  import fra CSV
+    validation.label: Filvalidering
+    import.label: Attribut indstilling import
+  csv_association_type_import:
+    label: Association type import fra CSV
+    validation.label: Filvalidering
+    import.label: Association type import
+  csv_family_import:
+    label: Familie import i CSV
+    validation.label: Filvalidering
+    import.label: Familie import
+  csv_group_import:
+    label: Gruppe import fra CSV
+    validation.label: Filvalidering
+    import.label: Gruppe import
+  csv_variant_group_import:
+    label: Variant gruppe importer fra CSV
+    validation.label: Filvalidering
+    import.label: Variant gruppe import
+  csv_channel_export:
+    label: Kanal eksportet til CSV
+    export.label: Kanal eksport
+  csv_locale_export:
+    label: Landestandard eksport i CSV
+    export.label: Landestandard eksport
+  csv_attribute_group_export:
+    label: Attribut gruppe eksport til CSV
+    export.label: Attribut gruppe eksport
+  csv_currency_export:
+    label: Valuta eksport til CSV
+    export.label: Valuta eksport
+  csv_group_type_export:
+    label: Gruppen type eksport til CSV
+    export.label: Grupp type eksport
+  csv_channel_import:
+    label: Kanal import fra CSV
+    validation.label: Filvalidering
+    import.label: Kanal import
+  csv_locale_import:
+    label: Landestandard import fra CSV
+    validation.label: Filvalidering
+    import.label: Landestandard import
+  csv_attribute_group_import:
+    label: Attribut gruppe import fra CSV
+    validation.label: Filvalidering
+    import.label: Attribut gruppe import
+  csv_currency_import:
+    label: Valuta import fra CSV
+    validation.label: Filvalidering
+    import.label: Valuta import
+  csv_group_type_import:
+    label: Gruppe type import fra CSV
+    validation.label: Filvalidering
+    import.label: Gruppe type import
+  xlsx_category_import:
+    label: Kategori import fra XLSX
+    validation.label: Filvalidering
+    import.label: Kategori import
+  xlsx_association_type_import:
+    label: Sammenkædningstype import fra CSV
+    validation.label: Filvalidering
+    import.label: Association type import
+  xlsx_attribute_import:
+    label: Attribut import fra XLSX
+    validation.label: Filvalidering
+    import.label: Attribut import
+  xlsx_attribute_option_import:
+    label: Attribut tilvalg import fra XLSX
+    validation.label: Filvalidering
+    import.label: Attribut indstilling import
+  xlsx_family_import:
+    label: Familie import i XLSX
+    validation.label: Filvalidering
+    import.label: Familie import
+  xlsx_product_export:
+    label: Produkt eksport til XLSX
+    export.label: Produkt eksport
+  xlsx_product_import:
+    label: Produkt import fra XLSX
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Association import
+  xlsx_group_export:
+    label: Gruppe eksport til XLSX
+    export.label: Gruppe eksport
+  xlsx_variant_group_export:
+    label: Variant gruppe eksport til XLSX
+    export.label: Variant gruppe eksport
+  xlsx_group_import:
+    label: Gruppe import fra XLSX
+    validation.label: Filvalidering
+    import.label: Gruppe import
+  xlsx_variant_group_import:
+    label: Variant gruppe import fra XLSX
+    validation.label: Filvalidering
+    import.label: Variant gruppe import
+  xlsx_family_export:
+    label: Familie eksport til XLSX
+    export.label: Familie eksport
+  xlsx_category_export:
+    label: Kategori eksport til XLSX
+    export.label: Kategori eksport
+  xlsx_attribute_export:
+    label: Attribut eksport til XLSX
+    export.label: Attribut eksport til XLSX
+  xlsx_attribute_option_export:
+    label: Attribut tilvalg eksport til XLSX
+    export.label: Attribut tilvalg eksport til XLSX
+  xlsx_association_type_export:
+    label: Sammenkædningstype eksport til CSV
+    export.label: Sammenkædningstype eksport til CSV
+  xlsx_channel_export:
+    label: Kanal eksport til XLSX
+    export.label: Kanal eksport
+  xlsx_locale_export:
+    label: Landestandard eksport til XLSX
+    export.label: Landestandard eksport
+  xlsx_attribute_group_export:
+    label: Attribut gruppe eksport til CSV
+    export.label: Attribut gruppe eksport
+  xlsx_currency_export:
+    label: Valuta eksport til XLSX
+    export.label: Valuta eksport
+  xlsx_group_type_export:
+    label: Gruppe type eksport til XLSX
+    export.label: Grupp type eksport
+  xlsx_channel_import:
+    label: Kanal import fra XLSX
+    validation.label: Filvalidering
+    import.label: Kanal import
+  xlsx_locale_import:
+    label: Landestandard import fra XLSX
+    validation.label: Filvalidering
+    import.label: Landestandard import
+  xlsx_attribute_group_import:
+    label: Attribut gruppe import fra CSV
+    validation.label: Filvalidering
+    import.label: Attribut gruppe import
+  xlsx_currency_import:
+    label: Valuta import fra XLSX
+    validation.label: Filvalidering
+    import.label: Valuta import
+  xlsx_group_type_import:
+    label: Gruppen type import fra XLSX
+    validation.label: Filvalidering
+    import.label: Gruppe type import
 job_tracker:
   download_archive:
     archive: Download genereret Arkiv

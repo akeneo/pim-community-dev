@@ -130,7 +130,8 @@ define(
                 const loadingMask = new LoadingMask();
                 this.$el.empty().append(loadingMask.render().$el.show());
 
-                const data = this.getFormData();
+                const data = $.extend(this.getFormData(),
+                this.config.defaultValues || {});
 
                 return $.ajax({
                     url: Routing.generate(this.config.postUrl),

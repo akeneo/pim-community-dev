@@ -18,7 +18,12 @@
   outline: none;
 
   &-caret {
-    margin-left: 5px;
+    display: inline-block;
+    width: 12px;
+    height: 6px;
+    background: url("../../../images/jstree/icon-down.svg") no-repeat 0 center;
+    background-size: 12px;
+    margin-left: 3px;
   }
 
   &:hover,
@@ -90,5 +95,14 @@
     padding-left: 0;
     padding-right: 0;
     text-align: center;
+  }
+
+  &--withoutBorder {
+    border: none;
+    padding: 0;
+  }
+
+  &-highlight {
+    color: @AknLightPurple;
   }
 }

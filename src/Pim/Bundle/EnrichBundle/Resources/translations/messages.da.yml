@@ -411,7 +411,6 @@ flash:
     updated: Valuta opdateret
     error.linked_to_channel: Du kan ikke deaktivere en valuta, der er knyttet til en kanal.
   family:
-    created: Familien blev oprettet
     updated: Familien opdateret
     removed: Familien fjernet
     identifier not removable: Id attribut kan ikke fjernes fra en familie
@@ -430,7 +429,6 @@ flash:
     enabled: Produktet er blevet aktiveret
     disabled: Produktet er blevet deaktiveret
   group:
-    created: Gruppe oprettet
     updated: Gruppe opdateret
     removed: Gruppen blev slettet
   variant group:
@@ -734,9 +732,7 @@ pane.accordion:
   group_values: Gruppeværdier
 popin.create:
   association_type.title: Oprette en ny sammenhæng
-  family.title: Opret en ny familie
   group.title: Opret en ny gruppe
-  group_type.title: Opret en ny gruppe
   product.title: Opret et nyt produkt
   variant_group.title: Opret en ny variantgruppe
   option.title: Opret et nyt tilvalg

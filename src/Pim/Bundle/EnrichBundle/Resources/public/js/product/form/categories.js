@@ -76,6 +76,12 @@ define(
                     label: __('pim_enrich.form.product.tab.categories.title')
                 });
 
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render();
+                    }
+                }.bind(this));
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 

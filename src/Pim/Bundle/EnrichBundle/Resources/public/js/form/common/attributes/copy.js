@@ -65,14 +65,17 @@ define(
                 }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
-
-                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-                    this.setScope(event.scopeCode);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (eventScope) {
+                    if ('copy_product' === eventScope.context) {
+                        this.setScope(eventScope.scopeCode);
+                    }
                 }.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-                    this.setLocale(event.localeCode);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (eventLocale) {
+                    if ('copy_product' === eventLocale.context) {
+                        this.setLocale(eventLocale.localeCode);
+                    }
                 }.bind(this));
 
                 return this.getScopeLabel(this.scope).then(function (scopeLabel) {
@@ -200,13 +203,17 @@ define(
             /**
              * Initialize  the locale if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} eventLocale
+             * @param {String} eventLocale.context
+             * @param {String} eventLocale.localeCode
              */
-            initLocale: function (event) {
-                if (undefined === this.getLocale()) {
-                    this.setLocale(event.localeCode);
-                } else {
-                    event.localeCode = this.getLocale();
+            initLocale: function (eventLocale) {
+                if ('copy_product' === eventLocale.context) {
+                    if (undefined === this.getLocale()) {
+                        this.setLocale(eventLocale.localeCode);
+                    } else {
+                        eventLocale.localeCode = this.getLocale();
+                    }
                 }
             },
 
@@ -232,13 +239,17 @@ define(
             /**
              * Initialize  the scope if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} scopeEvent
+             * @param {string} scopeEvent.context
+             * @param {string} scopeEvent.scopeCode
              */
-            initScope: function (event) {
-                if (undefined === this.getScope()) {
-                    this.setScope(event.scopeCode);
-                } else {
-                    event.scopeCode = this.getScope();
+            initScope: function (scopeEvent) {
+                if ('copy_product' === scopeEvent.context) {
+                    if (undefined === this.getScope()) {
+                        this.setScope(scopeEvent.scopeCode);
+                    } else {
+                        scopeEvent.scopeCode = this.getScope();
+                    }
                 }
             },
 

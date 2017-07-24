@@ -410,7 +410,6 @@ flash:
     updated: Moneda actualizada correctamente
     error.linked_to_channel: No puede desactivar una moneda ligada a un canal.
   family:
-    created: Familia creada correctamente
     updated: Familia actualizada correctamente
     removed: Familia eliminada correctamente
     identifier not removable: Identificador de atributo no puede eliminarse de una familia
@@ -429,7 +428,6 @@ flash:
     enabled: El producto ha sido habilitado
     disabled: Producto ha sido deshabilitado
   group:
-    created: Grupo creado con éxito
     updated: Grupo actualizado correctamente
     removed: Grupo eliminado correctamente
   variant group:
@@ -733,9 +731,7 @@ pane.accordion:
   group_values: Valores de grupo
 popin.create:
   association_type.title: Crear un nuevo tipo de asociación
-  family.title: Crear una nueva familia
   group.title: Crea un nuevo grupo
-  group_type.title: Crear un nuevo tipo de grupo
   product.title: Crear un nuevo producto
   variant_group.title: Crear un nuevo grupo de variantes
   option.title: Crear una nueva opción

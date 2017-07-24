@@ -130,12 +130,16 @@ pim_enrich:
     info:
       update_failed: Päivitys epäonnistui
       update_successful: Päivitys onnistui
+    create_popin:
+      code: Koodi
+      label: Nimike
+      labels:
+        save: Tallenna
+        cancel: Peruuta
     product:
       title: tuote
       btn:
-        enable: Ota käyttöön
         enabled: Käytössä
-        disable: Poista käytöstä
         disabled: Poistettu käytöstä
         download_pdf: PDF
         compare_translate: Vertaa / Käännä
@@ -175,6 +179,7 @@ pim_enrich:
             group_label: Nimike
             more_products: '{{ count }} lisää tuotteita...'
             close: Sulje
+        status: Status
       copy:
         select: Valitse
         all: Kaikki
@@ -200,6 +205,9 @@ pim_enrich:
           family: Valitse perhe
           save: Tallenna
           cancel: Peruuta
+      message:
+        created: Tuote luotu
+      completeness: Valmis
     association_type:
       meta:
         created: Luotu
@@ -209,6 +217,10 @@ pim_enrich:
       btn:
         save: Tallenna
       title: sidoksen tyyppi
+      create_popin:
+        title: Luo uusi määritetyyppi
+      message:
+        created: Sidostyyppi luotu onnistuneesti
     group_type:
       meta:
         created: Luotu
@@ -218,6 +230,10 @@ pim_enrich:
       btn:
         save: Tallenna
       title: ryhmän tyyppi
+      create_popin:
+        title: Luo uusi ryhmätyyppi
+      message:
+        created: Ryhmätyyppi lisätty onnistuneesti
     channel:
       title: kanava
       meta:
@@ -236,6 +252,10 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
+      create_popin:
+        title: Luo uusi tuoteperhe
+      message:
+        created: Tuoteperhe luotu
     attribute_option:
       code: Koodi
       label: Nimike
@@ -257,6 +277,10 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+      create_popin:
+        title: Luo uusi tuotevariaatioryhmä
+      message:
+        created: Tuotevariaatioryhmä poistettu onnistuneesti
     group:
       title: Ryhmä
       btn:
@@ -267,6 +291,10 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+      create_popin:
+        title: Luo uusi ryhmä
+      message:
+        created: Ryhmä luotu onnistuneesti
     attribute:
       scopable: Scopable
       type:
@@ -401,6 +429,7 @@ pim_enrich:
           general: Yleinen
           code: Koodi
           attribute_as_label: Attribuutti käytössä otsikkona
+          empty_attribute_as_image: Ei ole valittu
           label_translations: Nimikkeiden käännökset
         attributes:
           title: Attribuutit
@@ -425,7 +454,6 @@ pim_enrich:
         "no": "Ei"
         "yes": "Kyllä"
     variant_group:
-      axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
       tab:
         properties:
           title: Ominaisuudet
@@ -747,8 +775,15 @@ pim_enrich:
     edit_common_attributes:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
   index:
+    import_profiles:
+      list: Valitse työ
+      create_popin:
+        title: Luo uusi tuontiprofiili
     group:
       create_btn: Luo ryhmä
+    export_profiles:
+      create_popin:
+        title: Luo uusi vientiprofiili
     user:
       title: Käyttäjä
       create_btn: Luo käyttäjä
@@ -808,6 +843,140 @@ batch_jobs:
     label: Lisää tuotevariaatioryhmään
     perform:
       label: Lisää tuotevariaatioryhmään
+  csv_product_export:
+    label: Tuotteiden vienti CSV-muodossa
+    export.label: Tuotteiden vienti
+  csv_category_export:
+    label: Kategorian vienti CSV-muodossa
+    export.label: Kategorian vienti
+  csv_attribute_export:
+    label: Attribuuttien vienti CSV-muodossa
+    export.label: Attribuuttien vienti
+  csv_attribute_option_export:
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
+  csv_association_type_export:
+    label: Liitännäistyyppien vienti CSV-muodossa
+    export.label: Liitännäistyyppien vienti
+  csv_group_export:
+    label: Ryhmän vienti CSV-muodossa
+    export.label: Ryhmän vienti
+  csv_variant_group_export:
+    label: Muuttujaryhmien vienti CSV-muodossa
+    export.label: Muutujaryhmien vienti
+  csv_family_export:
+    label: Ryhmän tuonti CSV-tiedostona
+    export.label: Ryhmän vienti
+  csv_product_import:
+    label: Tuotteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  csv_category_import:
+    label: Kategorioiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  csv_attribute_import:
+    label: Attribuuttien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  csv_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  csv_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  csv_family_import:
+    label: Ryhmän tuonti CSV-tiedostona
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  csv_group_import:
+    label: Ryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  csv_variant_group_import:
+    label: Muuttujaryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muutujaryhmien tuonti
+  csv_channel_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_locale_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_attribute_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_currency_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_group_type_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_category_import:
+    label: Kategorioiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  xlsx_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  xlsx_attribute_import:
+    label: Attribuuttien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  xlsx_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  xlsx_family_import:
+    label: Perheiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  xlsx_product_export:
+    label: Tuotteiden vienti XLSX-muodossa
+    export.label: Tuotteiden vienti
+  xlsx_product_import:
+    label: Tuotteiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_group_export:
+    label: Ryhmävienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_variant_group_export:
+    label: Muuttujaryhmien vienti XLSX-muodossa
+    export.label: Muutujaryhmien vienti
+  xlsx_group_import:
+    label: Ryhmätuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  xlsx_variant_group_import:
+    label: Muuttujaryhmien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muuttujaryhmien tuonti
+  xlsx_family_export:
+    label: Perhevienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_category_export:
+    label: Kategoriavienti XLSX-muodossa
+    export.label: Kategorian vienti
+  xlsx_attribute_export:
+    label: Attribuuttivienti XLSX-muodossa
+    export.label: Attribuuttivienti XLSX-muodossa
+  xlsx_attribute_option_export:
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
+  xlsx_association_type_export:
+    label: Liitännäistyyppien vienti XLSX-muodossa
+    export.label: Liitännäistyyppien vienti XLSX-muodossa
+  xlsx_channel_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_locale_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_attribute_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_currency_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_group_type_import:
+    validation.label: Tiedostojen tarkistaminen
 pim_menu:
   tab:
     dashboard: Ohjauspaneeli
