@@ -104,6 +104,48 @@ extensions:
             tabCode: pim-job-instance-permission
             readOnly: true
 
+    pim-job-instance-xlsx-base-import-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-base-import-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_import_profile_edit_permissions
+        position: 115
+        config:
+            title: pimee_enrich.form.job_instance.tab.permission.title
+            tabCode: pim-job-instance-permission
+
+    pim-job-instance-xlsx-base-import-show-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-base-import-show-tabs
+        targetZone: container
+        position: 115
+        aclResourceId: pimee_importexport_import_profile_show_permissions
+        config:
+            title: pimee_enrich.form.job_instance.tab.permission.title
+            tabCode: pim-job-instance-permission
+            readOnly: true
+
+    pim-job-instance-xlsx-product-import-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-product-import-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_import_profile_edit_permissions
+        position: 115
+        config:
+            title: pimee_enrich.form.job_instance.tab.permission.title
+            tabCode: pim-job-instance-permission
+
+    pim-job-instance-xlsx-product-import-show-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-product-import-show-tabs
+        targetZone: container
+        position: 115
+        aclResourceId: pimee_importexport_import_profile_show_permissions
+        config:
+            title: pimee_enrich.form.job_instance.tab.permission.title
+            tabCode: pim-job-instance-permission
+            readOnly: true
+
     pim-job-instance-xlsx-base-export-edit-permission:
         module: pimee/common/tab/permission
         parent: pim-job-instance-xlsx-base-export-edit-tabs

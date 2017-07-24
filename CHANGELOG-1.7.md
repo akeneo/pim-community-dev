@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6471: Fix permission tab for XLSX import profiles.
+
 # 1.7.6 (2017-06-30)
 
 ## Bug fixes
