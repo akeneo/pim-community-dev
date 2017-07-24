@@ -59,6 +59,9 @@ class ProductModel implements ProductModelInterface
     /** @var Collection */
     protected $children;
 
+    /** @var FamilyVariantInterface */
+    protected $familyVariant;
+
     /**
      * Create an instance of ProductModel.
      */
@@ -424,5 +427,21 @@ class ProductModel implements ProductModelInterface
     public function getChildren(): Collection
     {
         return $this->children;
+    }
+
+    /**
+     * @return FamilyVariantInterface
+     */
+    public function getFamilyVariant(): FamilyVariantInterface
+    {
+        return $this->familyVariant;
+    }
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
+    {
+        $this->familyVariant = $familyVariant;
     }
 }

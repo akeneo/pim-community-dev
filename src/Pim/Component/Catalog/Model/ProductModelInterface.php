@@ -37,9 +37,6 @@ interface ProductModelInterface extends
      * Sets the product model identifier.
      *
      * @param string $identifier
-     *
-     * @return void
-     *
      */
     public function setIdentifier(string $identifier): void;
 
@@ -173,4 +170,14 @@ interface ProductModelInterface extends
      * @return Collection
      */
     public function getChildren(): Collection;
+
+    /**
+     * @return FamilyVariantInterface
+     */
+    public function getFamilyVariant(): FamilyVariantInterface;
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
 }

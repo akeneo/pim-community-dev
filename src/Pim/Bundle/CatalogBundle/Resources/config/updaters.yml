@@ -67,7 +67,8 @@ services:
         arguments:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.entity_with_values'
-            - ['family_variant', 'categories']
+            - '@pim_catalog.repository.family_variant'
+            - ['categories']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.entity_with_values:
