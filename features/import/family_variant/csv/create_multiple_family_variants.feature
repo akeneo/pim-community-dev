@@ -9,16 +9,16 @@ Feature: Create variants of family through CSV import
     And I am logged in as "Peter"
     And I am on the imports page
 
-  Scenario: I successfully create and use a CSV family variant import
+  Scenario: I successfully create and use a family variant import in CSV
     Given I create a new import
     When I fill in the following information in the popin:
-      | Code  | family_variant_import     |
-      | Label | CSV family variant import |
-      | Job   | CSV family variant import |
+      | Code  | family_variant_import        |
+      | Label | Family variant import in CSV |
+      | Job   | Family variant import in CSV |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I am on the imports page
-    And I click on the "CSV family variant import" row
+    And I click on the "Family variant import in CSV" row
     And I upload and import the file "family_variant.csv"
     And I wait for the "family_variant_import" job to finish
     Then there should be the following family variants:
