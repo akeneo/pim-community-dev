@@ -22,9 +22,6 @@ class Client
     /** @var array */
     private $hosts;
 
-    /** @var string */
-    private $indexName;
-
     /** @var NativeClient */
     private $client;
 
@@ -36,28 +33,28 @@ class Client
      * @param array         $hosts
      * @param string        $indexName
      */
-    public function __construct(ClientBuilder $builder, array $hosts, $indexName)
+    public function __construct(ClientBuilder $builder, array $hosts)
     {
         $this->builder = $builder;
         $this->hosts = $hosts;
-        $this->indexName = $indexName;
 
         $builder->setHosts($hosts);
         $this->client = $builder->build();
     }
 
     /**
+     * @param string       $indexName
      * @param string       $indexType
      * @param string       $id
      * @param array        $body
      * @param Refresh|null $refresh
      *
-     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
+     * @return array see <a href='psi_element://https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}'>https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}</a>
      */
-    public function index($indexType, $id, array $body, Refresh $refresh = null)
+    public function index($indexName, $indexType, $id, array $body, Refresh $refresh = null)
     {
         $params = [
-            'index' => $this->indexName,
+            'index' => $indexName,
             'type' => $indexType,
             'id' => $id,
             'body' => $body,
@@ -80,7 +77,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes($indexType, $documents, $keyAsId, Refresh $refresh = null)
+    public function bulkIndexes($indexName, $indexType, $documents, $keyAsId, Refresh $refresh = null)
     {
         $params = [];
 
@@ -91,7 +88,7 @@ class Client
 
             $params['body'][] = [
                 'index' => [
-                    '_index' => $this->indexName,
+                    '_index' => $indexName,
                     '_type' => $indexType,
                     '_id' => $document[$keyAsId],
                 ],
@@ -113,10 +110,10 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_get_a_document}
      */
-    public function get($indexType, $id)
+    public function get($indexName, $indexType, $id)
     {
         $params = [
-            'index' => $this->indexName,
+            'index' => $indexName,
             'type' => $indexType,
             'id' => $id,
         ];
@@ -130,10 +127,10 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_search_for_a_document}
      */
-    public function search($indexType, array $body)
+    public function search($indexName, $indexType, array $body)
     {
         $params = [
-            'index' => $this->indexName,
+            'index' => $indexName,
             'type' => $indexType,
             'body' => $body,
         ];
@@ -147,10 +144,10 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_a_document}
      */
-    public function delete($indexType, $id)
+    public function delete($indexName, $indexType, $id)
     {
         $params = [
-            'index' => $this->indexName,
+            'index' => $indexName,
             'type' => $indexType,
             'id' => $id,
         ];
@@ -164,14 +161,14 @@ class Client
      *
      * @return array
      */
-    public function bulkDelete($indexType, $documentIds)
+    public function bulkDelete($indexName, $indexType, $documentIds)
     {
         $params = [];
 
         foreach ($documentIds as $identifier) {
             $params['body'][] = [
                 'delete' => [
-                    '_index' => $this->indexName,
+                    '_index' => $indexName,
                     '_type' => $indexType,
                     '_id' => $identifier,
                 ],
@@ -184,9 +181,9 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_an_index}
      */
-    public function deleteIndex()
+    public function deleteIndex($indexName)
     {
-        return $this->client->indices()->delete(['index' => $this->indexName]);
+        return $this->client->indices()->delete(['index' => $indexName]);
     }
 
     /**
@@ -194,10 +191,10 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_create_an_index}
      */
-    public function createIndex(array $body)
+    public function createIndex($indexName, array $body)
     {
         $params = [
-            'index' => $this->indexName,
+            'index' => $indexName,
             'body' => $body,
         ];
 
@@ -209,16 +206,16 @@ class Client
      *
      * @return bool
      */
-    public function hasIndex()
+    public function hasIndex($indexName)
     {
-        return $this->client->indices()->exists(['index' => $this->indexName]);
+        return $this->client->indices()->exists(['index' => $indexName]);
     }
 
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html}
      */
-    public function refreshIndex()
+    public function refreshIndex($indexName)
     {
-        return $this->client->indices()->refresh(['index' => $this->indexName]);
+        return $this->client->indices()->refresh(['index' => $indexName]);
     }
 }
