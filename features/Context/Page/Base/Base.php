@@ -447,7 +447,19 @@ class Base extends Page
         $tabs = $this->getPageTabs();
 
         $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
+            $link = $tabs->findLink($tab);
+            if (null !== $link) {
+                return $link;
+            }
+
+            $matchingElements = array_filter(
+                $tabs->findAll('css', '.AknHorizontalNavtab-link'),
+                function (NodeElement $element) use ($tab) {
+                    return strpos($element->getText(), $tab) !== false;
+                }
+            );
+            
+            return array_shift($matchingElements);
         }, sprintf('Could not find a tab named "%s"', $tab));
 
         $this->spin(function () {
@@ -459,7 +471,12 @@ class Base extends Page
         $this->spin(function () use ($tabDom) {
             $tabDom->click();
 
-            return $tabDom->getParent()->hasClass('active') || $tabDom->getParent()->hasClass('tab-scrollable');
+            return 0 < count(array_filter(
+                ['active', 'tab-scrollable', 'AknHorizontalNavtab-item--active'],
+                function ($class) use ($tabDom) {
+                    return $tabDom->getParent()->hasClass($class);
+                }
+            ));
         }, sprintf('Cannot switch to the tab %s', $tab));
     }
 

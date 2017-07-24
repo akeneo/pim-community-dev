@@ -435,7 +435,6 @@ pim_enrich:
                     attribute_group_selector: Attribute group
                 categories:
                     title: Categories
-                    catalog_selector: Catalog
             panel:
                 completeness:
                     title: Completeness

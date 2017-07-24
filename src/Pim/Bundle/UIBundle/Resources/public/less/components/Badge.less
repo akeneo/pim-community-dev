@@ -1,14 +1,14 @@
 @import '../base/variables';
 
 .AknBadge {
-  line-height: @AknDefaultFontSize;
-  height: @AknDefaultFontSize;
+  line-height: @AknDefaultFontSize + 4px;
+  height: @AknDefaultFontSize + 4px;
   font-size: @AknDefaultFontSize;
   background: @AknLightGray;
   color: @AknDefaultFontColor;
   display: inline-block;
   border-radius: 100px;
-  padding: 0 12px;
+  padding: 0 4px;
   transition: background 0.1s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
   margin: 0 4px;
@@ -111,5 +111,6 @@
     height: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
+    padding: 0 8px;
   }
 }
