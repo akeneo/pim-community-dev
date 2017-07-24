@@ -11,6 +11,16 @@ class ProductUpdaterIntegration extends TestCase
 {
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedExceptionMessage Property "not_found" does not exist.
+     */
+    public function testCreateAProductWithAttributeGroupNotFound()
+    {
+        $this->generateToken('mary');
+        $this->createProduct(['values' => ['not_found' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
+    }
+
+    /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "a_multi_select" does not exist.
      */
     public function testCreateAProductWithAttributeGroupNotViewable()
@@ -94,6 +104,16 @@ class ProductUpdaterIntegration extends TestCase
         ]);
 
         $this->assertSame($product->getValue('a_text')->getData(), 'The text bis');
+    }
+
+    /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "not_found" given.
+     */
+    public function testCreateAProductWithLocaleNotFound()
+    {
+        $this->generateToken('mary');
+        $this->createProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'not_found', 'scope' => 'ecommerce']]]]);
     }
 
     /**

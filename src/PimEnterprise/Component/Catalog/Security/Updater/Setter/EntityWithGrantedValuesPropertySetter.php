@@ -11,12 +11,10 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
-use Akeneo\Component\StorageUtils\Exception\ResourceNotFoundException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
@@ -70,96 +68,94 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
         if (null === $attribute) {
-            throw new ResourceNotFoundException(AttributeInterface::class);
+            throw UnknownPropertyException::unknownProperty($field);
         }
 
-        $channel = $options['scope'];
-        $locale = $options['locale'];
+        $channelCode = $options['scope'];
+        $localeCode = $options['locale'];
 
-        $oldValue = $entityWithValues->getValue($field, $locale, $channel);
-        $this->propertySetter->setData($entityWithValues, $field, $data, $options);
-        $newValue = $entityWithValues->getValue($field, $locale, $channel);
+        $permissions = [
+            'view_attribute' => $this->authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attribute),
+            'edit_attribute' => $this->authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attribute),
+            'view_locale'    => null,
+            'edit_locale'    => null,
+        ];
 
-        $this->checkGrantedAttributeGroup($attribute, $oldValue, $newValue);
-        $this->checkGrantedLocalizableAttribute($attribute, $oldValue, $newValue);
-    }
+        $this->checkViewableAttributeGroup($attribute, $permissions);
 
-    /**
-     * Check if an attribute belongs to a granted attribute group
-     *
-     * @param AttributeInterface  $attribute
-     * @param ValueInterface|null $oldValue
-     * @param ValueInterface|null $newValue
-     *
-     * @throws UnknownPropertyException
-     * @throws ResourceAccessDeniedException
-     */
-    private function checkGrantedAttributeGroup(
-        AttributeInterface $attribute,
-        ValueInterface $oldValue = null,
-        ValueInterface $newValue = null
-    ) {
-        $canEdit = $this->authorizationChecker->isGranted([Attributes::EDIT_ATTRIBUTES], $attribute);
-        $canView = $this->authorizationChecker->isGranted([Attributes::VIEW_ATTRIBUTES], $attribute);
-
-        if (!$canView && !$canEdit) {
-            throw UnknownPropertyException::unknownProperty($attribute->getCode());
-        }
-
-        if ($canView && !$canEdit) {
-            $valueIsDeleted = null !== $oldValue && $oldValue->hasData() && null === $newValue;
-            $valueIsAdded = null === $oldValue && null !== $newValue && $newValue->hasData();
-            $valueIsChanged = null !== $oldValue && null !== $newValue && !$oldValue->isEqual($newValue);
-
-            if ($valueIsChanged || $valueIsAdded || $valueIsDeleted) {
-                throw new ResourceAccessDeniedException($newValue, sprintf(
-                    'Attribute "%s" belongs to the attribute group "%s" on which you only have view permission.',
+        if (null !== $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            if (null === $locale) {
+                throw new UnknownPropertyException($localeCode, sprintf(
+                    'Attribute "%s" expects an existing and activated locale, "%s" given.',
                     $attribute->getCode(),
-                    $attribute->getGroup()->getCode()
+                    $localeCode
                 ));
             }
+
+            $permissions = array_merge($permissions, [
+                'view_locale' => $this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale),
+                'edit_locale' => $this->authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale)
+            ]);
+
+            $this->checkViewableLocalizableAttribute($attribute, $permissions, $localeCode);
+        }
+
+        $oldValue = $entityWithValues->getValue($field, $localeCode, $channelCode);
+        $this->propertySetter->setData($entityWithValues, $field, $data, $options);
+        $newValue = $entityWithValues->getValue($field, $localeCode, $channelCode);
+
+        $this->checkEditableAttribute($attribute, $permissions, $oldValue, $newValue);
+    }
+
+    private function checkViewableAttributeGroup(AttributeInterface $attribute, array $permissions): void
+    {
+        if (!$permissions['view_attribute'] && !$permissions['edit_attribute']) {
+            throw UnknownPropertyException::unknownProperty($attribute->getCode());
         }
     }
 
-    /**
-     * Check if a locale is granted
-     *
-     * @param AttributeInterface $attribute
-     * @param ValueInterface     $oldValue
-     * @param ValueInterface     $newValue
-     */
-    private function checkGrantedLocalizableAttribute(
+    private function checkViewableLocalizableAttribute(
         AttributeInterface $attribute,
+        array $permissions,
+        string $localeCode
+    ): void {
+        if (!$permissions['view_locale'] && !$permissions['edit_locale']) {
+            throw new UnknownPropertyException($localeCode, sprintf(
+                'Attribute "%s" expects an existing and activated locale, "%s" given.',
+                $attribute->getCode(),
+                $localeCode
+            ));
+        }
+    }
+
+    private function checkEditableAttribute(
+        AttributeInterface $attribute,
+        array $permissions,
         ValueInterface $oldValue = null,
         ValueInterface $newValue = null
-    ) {
-        if (!$attribute->isLocalizable() || !$attribute->isLocaleSpecific() && null === $newValue->getLocale()) {
+    ): void {
+        $valueIsDeleted = null !== $oldValue && $oldValue->hasData() && null === $newValue;
+        $valueIsAdded = null === $oldValue && null !== $newValue && $newValue->hasData();
+        $valueIsChanged = null !== $oldValue && null !== $newValue && !$oldValue->isEqual($newValue);
+
+        if (!$valueIsChanged && !$valueIsAdded && !$valueIsDeleted) {
             return;
         }
 
-        $locale = $this->localeRepository->findOneByIdentifier($newValue->getLocale());
-        $canView = $this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $locale);
-        $canEdit = $this->authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $locale);
-
-        if (!$canView && !$canEdit) {
-            throw new UnknownPropertyException($locale->getCode(), sprintf(
-                'Attribute "%s" expects an existing and activated locale, "%s" given.',
+        if ($permissions['view_attribute'] && !$permissions['edit_attribute']) {
+            throw new ResourceAccessDeniedException($newValue, sprintf(
+                'Attribute "%s" belongs to the attribute group "%s" on which you only have view permission.',
                 $attribute->getCode(),
-                $locale->getCode()
+                $attribute->getGroup()->getCode()
             ));
         }
 
-        if ($canView && !$canEdit) {
-            $valueIsDeleted = null !== $oldValue && $oldValue->hasData() && null === $newValue;
-            $valueIsAdded = null === $oldValue && null !== $newValue && $newValue->hasData();
-            $valueIsChanged = null !== $oldValue && null !== $newValue && !$oldValue->isEqual($newValue);
-
-            if ($valueIsChanged || $valueIsAdded || $valueIsDeleted) {
-                throw new ResourceAccessDeniedException($newValue, sprintf(
-                    'You only have a view permission on the locale "%s".',
-                    $locale->getCode()
-                ));
-            }
+        if (null !== $newValue->getLocale() && true === $permissions['view_locale'] && false === $permissions['edit_locale']) {
+            throw new ResourceAccessDeniedException($newValue, sprintf(
+                'You only have a view permission on the locale "%s".',
+                $newValue->getLocale()
+            ));
         }
     }
 }

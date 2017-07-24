@@ -112,7 +112,7 @@ JSON;
     "identifier": "my_product",
     "values": {
         "a_localized_and_scopable_text_area": [
-            {"data": "{$this->getFixturePath('akeneo.jpg')}", "locale": "de_DE", "scope": "ecommerce"}
+            {"data": "DE ecommerce", "locale": "de_DE", "scope": "ecommerce"}
         ]
     }
 }
