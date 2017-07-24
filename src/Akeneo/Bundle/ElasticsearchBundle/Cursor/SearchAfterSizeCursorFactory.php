@@ -34,6 +34,9 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
     protected $pageSize;
 
     /** @var string */
+    protected $indexName;
+
+    /** @var string */
     protected $indexType;
 
     /**
@@ -50,6 +53,7 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
         $entityClassName,
         $cursorClassName,
         $pageSize,
+        $indexName,
         $indexType
     ) {
         $this->searchEngine = $searchEngine;
@@ -57,6 +61,7 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
         $this->entityClassName = $entityClassName;
         $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
+        $this->indexName = $indexName;
         $this->indexType = $indexType;
     }
 
@@ -77,6 +82,7 @@ class SearchAfterSizeCursorFactory implements CursorFactoryInterface
             $repository,
             $queryBuilder,
             $options['search_after'],
+            $this->indexName,
             $this->indexType,
             $options['page_size'],
             $options['limit'],

@@ -33,6 +33,9 @@ class CursorFactory implements CursorFactoryInterface
     protected $pageSize;
 
     /** @var string */
+    protected $indexName;
+
+    /** @var string */
     protected $indexType;
 
     /**
@@ -49,6 +52,7 @@ class CursorFactory implements CursorFactoryInterface
         $entityClassName,
         $cursorClassName,
         $pageSize,
+        $indexName,
         $indexType
     ) {
         $this->searchEngine = $searchEngine;
@@ -56,6 +60,7 @@ class CursorFactory implements CursorFactoryInterface
         $this->entityClassName = $entityClassName;
         $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
+        $this->indexName = $indexType;
         $this->indexType = $indexType;
     }
 
@@ -71,6 +76,6 @@ class CursorFactory implements CursorFactoryInterface
 
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        return new $this->cursorClassName($this->searchEngine, $repository, $queryBuilder, $this->indexType, $pageSize);
+        return new $this->cursorClassName($this->searchEngine, $repository, $queryBuilder, $this->indexName, $this->indexType, $pageSize);
     }
 }

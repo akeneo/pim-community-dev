@@ -32,12 +32,14 @@ class Cursor extends AbstractCursor implements CursorInterface
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
+        $indexName,
         $indexType,
         $pageSize
     ) {
         $this->esClient = $esClient;
         $this->repository = $repository;
         $this->esQuery = $esQuery;
+        $this->indexName = $indexName;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->searchAfter = [];
@@ -89,7 +91,7 @@ class Cursor extends AbstractCursor implements CursorInterface
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($this->indexName, $this->indexType, $esQuery);
         $this->count = $response['hits']['total'];
 
         $identifiers = [];

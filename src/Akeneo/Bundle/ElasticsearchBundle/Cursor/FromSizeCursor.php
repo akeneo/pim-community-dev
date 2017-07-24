@@ -46,6 +46,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
+        $indexName,
         $indexType,
         $pageSize,
         $limit,
@@ -54,6 +55,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $this->esClient = $esClient;
         $this->repository = $repository;
         $this->esQuery = $esQuery;
+        $this->indexName = $indexName;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->limit = $limit;
@@ -97,7 +99,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $esQuery['sort'] = $sort;
         $esQuery['from'] = $this->from;
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($this->indexName, $this->indexType, $esQuery);
         $this->count = $response['hits']['total'];
 
         $identifiers = [];
