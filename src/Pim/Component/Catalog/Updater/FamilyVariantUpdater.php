@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -10,7 +11,9 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**
  * Update the family variant properties
@@ -110,14 +113,22 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
+                if (null !== $familyVariant->getId() &&
+                    $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
+                ) {
+                    throw ImmutablePropertyException::immutableProperty(
+                        'number of attribute sets',
+                        sprintf('%d attribute sets', count($value)),
+                        static::class
+                    );
+                }
+
                 foreach ($value as $attributeSetData) {
-                    if (!isset($attributeSetData['axes']) ||
-                        !isset($attributeSetData['level'])
-                    ) {
+                    if (!isset($attributeSetData['level'])) {
                         continue;
                     }
 
-                    if (!is_array($attributeSetData['axes'])) {
+                    if (isset($attributeSetData['axes']) && !is_array($attributeSetData['axes'])) {
                         throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                     }
 
@@ -129,31 +140,111 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
                     }
 
-                    $attributeSet = $this->attributeSetFactory->create();
-                    $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
-                    $attributeSet->setLevel($attributeSetData['level']);
-                    if (isset($attributeSetData['attributes'])) {
-                        $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
+                    if (null === $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'])) {
+                        $attributeSet = $this->attributeSetFactory->create();
+                        $attributeSet->setLevel($attributeSetData['level']);
+
+                        $familyVariant->addVariantAttributeSet($attributeSet);
                     }
 
-                    $familyVariant->addVariantAttributeSet($attributeSet);
+                    if (isset($attributeSetData['axes'])) {
+                        $attributeSet->setAxes(
+                            $this->getAttributes($attributeSetData['axes'], $attributeSetData['level'])
+                        );
+                    }
+
+                    if (isset($attributeSetData['attributes'])) {
+                        if (null !== $familyVariant->getId()) {
+                            $this->removeAttributeFromPreviousLevel($familyVariant, $attributeSetData);
+                        }
+
+                        $attributeSet->setAttributes(
+                            $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
+                        );
+                    }
                 }
                 break;
         }
     }
 
     /**
-     * @param array $attributeCodes
+     * @param array $attributeSets
      *
-     * @return array
+     * @return int
      */
-    private function getAttributes(array $attributeCodes): array
+    private function getNumberOfLevel(array $attributeSets): int
     {
-        $attributes = [];
-        foreach ($attributeCodes as $attributeCode) {
-            $attributes[] = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $numberOfLevel = 0;
+        foreach ($attributeSets as $attributeSet) {
+            if ($numberOfLevel < $attributeSet['level']) {
+                $numberOfLevel = $attributeSet['level'];
+            }
         }
 
-        return $attributes;
+        return $numberOfLevel;
+    }
+
+    /**
+     * We consider that if an attribute added in a given attribute set is also
+     * present in an upper one: for instance in level 2 and level 1, then it
+     * means this attribute has been moved from level 1 to level 2, and need to
+     * be removed from level 1.
+     *
+     * We loop over all attribute sets preceding the current one (considering the
+     * common attributes as a "level 0" attribute set), then we remove from them
+     * all attributes that are already present in the current one.
+     *
+     * @param FamilyVariantInterface $familyVariant
+     * @param array                  $attributeSetData
+     */
+    private function removeAttributeFromPreviousLevel(
+        FamilyVariantInterface $familyVariant,
+        array $attributeSetData
+    ): void {
+        $currentLevel = $attributeSetData['level'];
+        $previousAttributeSetAttributes = [];
+
+        while (1 < $currentLevel) {
+            $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'] - 1);
+            if ($attributeSet instanceof VariantAttributeSetInterface) {
+                $previousAttributeSetAttributes[] = $attributeSet->getAttributes();
+            }
+            $currentLevel--;
+        }
+
+        $previousAttributeSetAttributes[] = $familyVariant->getCommonAttributes();
+
+        foreach ($previousAttributeSetAttributes as $previousAttributes) {
+            foreach ($previousAttributes as $previousAttribute) {
+                if (in_array($previousAttribute->getCode(), $attributeSetData['attributes'])) {
+                    $previousAttributes->removeElement($previousAttribute);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string[] $attributeCodes
+     * @param int      $level
+     *
+     * @return AttributeInterface[]
+     */
+    private function getAttributes(array $attributeCodes, int $level): array
+    {
+        return array_map(function ($attributeCode) use ($level) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if (null === $attribute) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    sprintf('attribute_set_%d', $level),
+                    'attribute code',
+                    'The attribute does not exist',
+                    static::class,
+                    $attributeCode
+                );
+            }
+
+            return $attribute;
+        }, $attributeCodes);
     }
 }

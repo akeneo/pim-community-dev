@@ -101,9 +101,9 @@ batch_jobs:
         validation.label: File validation
         import.label: Family import
     csv_family_variant_import:
-        label: CSV family variant import
+        label: Family variant import in CSV
         validation.label: File validation
-        import.label: CSV family variant import
+        import.label: Family variant import
     csv_group_import:
         label: Group import in CSV
         validation.label: File validation
@@ -168,9 +168,9 @@ batch_jobs:
         validation.label: File validation
         import.label: Family import
     xlsx_family_variant_import:
-        label: XLSX family variant import
+        label: Family variant import in XLSX
         validation.label: File validation
-        import.label: XLSX family variant import
+        import.label: Family variant import
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export

@@ -94,7 +94,7 @@ class FamilyVariantValidator extends ConstraintValidator
         if (count($attributeCodes) !== count(array_unique($attributeCodes))) {
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_attributes_unique');
             $this->context->buildViolation($message, [
-                '%attributes%' => implode(array_diff_assoc($attributeCodes, array_unique($attributeCodes)))
+                '%attributes%' => implode(',', array_diff_assoc($attributeCodes, array_unique($attributeCodes)))
             ])->addViolation();
         }
     }

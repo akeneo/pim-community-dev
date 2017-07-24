@@ -42,6 +42,14 @@ interface FamilyVariantInterface extends TranslatableInterface
     public function getVariantAttributeSet(int $level): ?VariantAttributeSetInterface;
 
     /**
+     * This method is needed for the validation of the variant attribute sets.
+     * It is performed from the family variant, with the option "traversable: true".
+     *
+     * @return Collection
+     */
+    public function getVariantAttributeSets(): Collection;
+
+    /**
      * @return Collection
      */
     public function getAttributes(): Collection;

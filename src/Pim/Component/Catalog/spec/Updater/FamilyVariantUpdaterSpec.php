@@ -3,19 +3,23 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Updater\FamilyVariantUpdater;
+use Prophecy\Argument;
 
 class FamilyVariantUpdaterSpec extends ObjectBehavior
 {
@@ -38,7 +42,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_updates_a_family_variant(
+    function it_updates_a_new_family_variant(
         $updater,
         $attributeSetFactory,
         $familyRepository,
@@ -53,10 +57,16 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $description,
         AttributeInterface $sku,
-        AttributeInterface $other
+        AttributeInterface $other,
+        Collection $axes1,
+        Collection $axes2,
+        CommonAttributeCollection $commonAttributes,
+        \Iterator $commonAttributesIterator
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
+        $familyVariant->getId()->willReturn(42);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(
             ['name', 'size', 'description', 'color', 'sku']
@@ -71,19 +81,33 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $familyVariant->setCode('my-tshirt')->shouldBeCalled();
         $familyVariant->setFamily($family)->shouldBeCalled();
+        $familyVariant->getVariantAttributeSet(Argument::any())->willReturn(null);
         $updater->update($familyVariant, ['en_US' => 'My tshirt'])->shouldBeCalled();
 
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
+
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
+        $commonAttributes->getIterator()->willReturn($commonAttributesIterator);
+        $commonAttributesIterator->rewind()->shouldBeCalled();
+        $commonAttributesIterator->valid()->willReturn(false);
+        $commonAttributesIterator->current()->willReturn();
+        $commonAttributesIterator->next()->shouldNotBeCalled();
 
         $familyVariant->addVariantAttributeSet($attributeSet1)->shouldBeCalled();
         $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
         $attributeSet1->setLevel(1)->shouldBeCalled();
+        $attributeSet1->getAxes()->willReturn($axes1);
+        $axes1->isEmpty()->willReturn(true);
+        $axes1->map(Argument::any())->shouldNotBeCalled();
 
         $familyVariant->addVariantAttributeSet($attributeSet2)->shouldBeCalled();
         $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
         $attributeSet2->setLevel(2)->shouldBeCalled();
+        $attributeSet2->getAxes()->willReturn($axes2);
+        $axes2->isEmpty()->willReturn(true);
+        $axes2->map(Argument::any())->shouldNotBeCalled();
 
         $this->update($familyVariant, [
             'code' => 'my-tshirt',
@@ -104,6 +128,134 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
                 ]
             ],
         ], []);
+    }
+
+    function it_updates_an_existing_family_variant(
+        $updater,
+        $attributeSetFactory,
+        $familyRepository,
+        $attributeRepository,
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
+        VariantAttributeSetInterface $attributeSet1,
+        VariantAttributeSetInterface $attributeSet2,
+        AttributeInterface $name,
+        AttributeInterface $size,
+        AttributeInterface $color,
+        AttributeInterface $description,
+        AttributeInterface $sku,
+        AttributeInterface $other,
+        Collection $axes1,
+        Collection $axes2,
+        Collection $axisCodes1,
+        Collection $axisCodes2,
+        CommonAttributeCollection $commonAttributes,
+        Collection $attributes1,
+        \Iterator $commonAttributesIterator,
+        \Iterator $attributesIterator1
+    ) {
+        $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
+
+        $familyVariant->getId()->willReturn(42);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(
+            ['name', 'size', 'description', 'color', 'sku']
+        );
+
+        $attributeRepository->findOneByIdentifier('name')->willreturn($name);
+        $attributeRepository->findOneByIdentifier('size')->willreturn($size);
+        $attributeRepository->findOneByIdentifier('color')->willreturn($color);
+        $attributeRepository->findOneByIdentifier('description')->willreturn($description);
+        $attributeRepository->findOneByIdentifier('sku')->willreturn($sku);
+        $attributeRepository->findOneByIdentifier('other')->willreturn($other);
+
+        $familyVariant->setCode('my-tshirt')->shouldBeCalled();
+        $familyVariant->setFamily($family)->shouldBeCalled();
+        $familyVariant->getVariantAttributeSet(1)->willReturn($attributeSet1);
+        $familyVariant->getVariantAttributeSet(2)->willReturn($attributeSet2);
+        $updater->update($familyVariant, ['en_US' => 'My tshirt'])->shouldBeCalled();
+
+        $attributeSetFactory->create()->shouldNotBeCalled();
+
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
+        $commonAttributes->getIterator()->willReturn($commonAttributesIterator);
+        $commonAttributesIterator->rewind()->shouldBeCalled();
+        $commonAttributesIterator->valid()->willReturn(false);
+        $commonAttributesIterator->current()->willReturn();
+        $commonAttributesIterator->next()->shouldNotBeCalled();
+
+        $axes1->isEmpty()->willReturn(false);
+        $axes1->map(Argument::any())->willReturn($axisCodes1);
+        $axisCodes1->toArray()->willReturn(['color']);
+
+        $attributeSet1->setAxes([$color])->shouldBeCalled();
+        $attributeSet1->setAttributes([$description])->shouldBeCalled();
+        $attributeSet1->setLevel(Argument::any())->shouldNotBeCalled();
+        $attributeSet1->getAxes()->willReturn($axes1);
+        $attributeSet1->getAttributes()->willReturn($attributes1);
+        $attributes1->getIterator()->willReturn($attributesIterator1);
+        $attributesIterator1->rewind()->shouldBeCalled();
+        $attributesIterator1->valid()->willReturn(false);
+        $attributesIterator1->current()->willReturn();
+        $attributesIterator1->next()->shouldNotBeCalled();
+
+        $attributeSet2->getAxes()->willReturn($axes2);
+        $axes2->isEmpty()->willReturn(false);
+        $axes2->map(Argument::any())->willReturn($axisCodes2);
+        $axisCodes2->toArray()->willReturn(['size', 'other']);
+
+        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
+        $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
+        $attributeSet2->setLevel(Argument::any())->shouldNotBeCalled();
+        $familyVariant->addVariantAttributeSet(Argument::any())->shouldNotBeCalled();
+
+        $this->update($familyVariant, [
+            'code' => 'my-tshirt',
+            'family' => 't-shirt',
+            'labels' => [
+                'en_US' => 'My tshirt'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['description'],
+                    'level' => 1,
+                ],
+                [
+                    'axes' => ['size', 'other'],
+                    'attributes' => ['size', 'sku'],
+                    'level' => 2,
+                ]
+            ],
+        ], []);
+    }
+
+    function it_throws_an_exception_if_the_number_of_attribute_set_is_changed(
+        FamilyVariantInterface $familyVariant
+    ) {
+        $familyVariant->getId()->willReturn(42);
+        $familyVariant->getNumberOfLevel()->willReturn(1);
+        $familyVariant->setCode('my-tshirt')->shouldBeCalled();
+
+        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [
+            $familyVariant,
+            [
+                'code' => 'my-tshirt',
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['description'],
+                        'level' => 1,
+                    ],
+                    [
+                        'axes' => ['size', 'other'],
+                        'attributes' => ['size', 'sku'],
+                        'level' => 2,
+                    ],
+                ],
+            ],
+        ]);
     }
 
     function it_throws_an_exception_if_the_family_code_is_invalid(

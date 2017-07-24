@@ -93,10 +93,10 @@ jobs:
         order: 60
         connector: Data fixtures
         alias:     fixtures_family_variant_csv
-        label:     Family variant data fixtures
+        label:     Family variants data fixtures
         type:      fixtures
         configuration:
-            filePath: family_variant.csv
+            filePath: family_variants.csv
 
     fixtures_variant_group_csv:
         order: 70

@@ -5,6 +5,7 @@ Pim\Component\Catalog\Model\FamilyVariant:
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
+                - family
 
     properties:
         code:
@@ -16,6 +17,10 @@ Pim\Component\Catalog\Model\FamilyVariant:
                 max: 100
         translations:
             - Valid: ~
+    getters:
+        variantAttributeSets:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true
 
 Pim\Component\Catalog\Model\FamilyVariantTranslation:
     properties:

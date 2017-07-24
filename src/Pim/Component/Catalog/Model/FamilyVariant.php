@@ -105,6 +105,14 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
+    public function getVariantAttributeSets(): Collection
+    {
+        return $this->variantAttributeSets;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAttributes(): Collection
     {
         $attributes = [];
