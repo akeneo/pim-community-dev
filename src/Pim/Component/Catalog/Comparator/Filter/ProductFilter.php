@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Comparator\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFilter implements ProductFilterInterface
+class ProductFilter implements FilterInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -54,7 +54,7 @@ class ProductFilter implements ProductFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(ProductInterface $product, array $newProduct)
+    public function filter(EntityWithValuesInterface $product, array $newProduct): array
     {
         $originalValues = $this->getOriginalProduct($product);
 
@@ -87,7 +87,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array|null
      */
-    protected function compareField(array $originalValues, $field, $code)
+    protected function compareField(array $originalValues, $field, $code): ?array
     {
         $comparator = $this->comparatorRegistry->getFieldComparator($code);
         $diff = $comparator->compare($field, $this->getOriginalField($originalValues, $code));
@@ -109,7 +109,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array|null
      */
-    protected function compareAttribute(array $originalValues, array $values)
+    protected function compareAttribute(array $originalValues, array $values): ?array
     {
         $this->cacheAttributeTypeByCodes(array_keys($values));
 
@@ -151,7 +151,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array
      */
-    protected function getOriginalAttribute(array $originalValues, array $attribute, $code)
+    protected function getOriginalAttribute(array $originalValues, array $attribute, $code): array
     {
         $key = $this->buildKey($attribute, $code);
 
@@ -161,11 +161,11 @@ class ProductFilter implements ProductFilterInterface
     /**
      * Normalize original product
      *
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $product
      *
      * @return array
      */
-    protected function getOriginalProduct(ProductInterface $product)
+    protected function getOriginalProduct(EntityWithValuesInterface $product): array
     {
         $originalProduct = $this->normalizer->normalize($product, 'standard');
 
@@ -180,7 +180,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array
      */
-    protected function flatProductValues(array $product)
+    protected function flatProductValues(array $product): array
     {
         if (isset($product['values'])) {
             $values = $product['values'];
@@ -202,7 +202,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array
      */
-    protected function mergeValueToResult(array $collection, array $value)
+    protected function mergeValueToResult(array $collection, array $value): array
     {
         foreach ($value as $code => $data) {
             if (array_key_exists($code, $collection)) {
@@ -221,7 +221,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return string
      */
-    protected function buildKey(array $data, $code)
+    protected function buildKey(array $data, $code): string
     {
         return sprintf('%s-%s-%s', $code, $data['locale'], $data['scope']);
     }
@@ -229,7 +229,7 @@ class ProductFilter implements ProductFilterInterface
     /**
      * @param array $codes
      */
-    private function cacheAttributeTypeByCodes(array $codes)
+    private function cacheAttributeTypeByCodes(array $codes): void
     {
         $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
 

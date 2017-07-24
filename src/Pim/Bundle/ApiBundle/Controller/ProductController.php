@@ -20,7 +20,7 @@ use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Api\Security\PrimaryKeyEncrypter;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
@@ -90,7 +90,7 @@ class ProductController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $emptyValuesFilter;
 
     /** @var StreamResourceResponse */
@@ -109,7 +109,7 @@ class ProductController
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param ProductRepositoryInterface            $productRepository
-     * @param PaginatorInterface                    $searchAfterPaginator
+     * @param PaginatorInterface      $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
      * @param ValidatorInterface                    $productValidator
      * @param ProductBuilderInterface               $productBuilder
@@ -117,7 +117,7 @@ class ProductController
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
      * @param RouterInterface                       $router
-     * @param ProductFilterInterface                $emptyValuesFilter
+     * @param FilterInterface                       $emptyValuesFilter
      * @param StreamResourceResponse                $partialUpdateStreamResource
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param array                                 $apiConfiguration
@@ -137,7 +137,7 @@ class ProductController
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RouterInterface $router,
-        ProductFilterInterface $emptyValuesFilter,
+        FilterInterface $emptyValuesFilter,
         StreamResourceResponse $partialUpdateStreamResource,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         array $apiConfiguration

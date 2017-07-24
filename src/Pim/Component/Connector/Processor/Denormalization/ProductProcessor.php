@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -40,7 +40,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $productFilter;
 
     /**
@@ -49,7 +49,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      * @param ObjectUpdaterInterface                $updater       product updater
      * @param ValidatorInterface                    $validator     product validator
      * @param ObjectDetacherInterface               $detacher      detacher to remove it from UOW when skip
-     * @param ProductFilterInterface                $productFilter product filter
+     * @param FilterInterface                       $productFilter product filter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -57,7 +57,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductFilterInterface $productFilter
+        FilterInterface $productFilter
     ) {
         parent::__construct($repository);
 
