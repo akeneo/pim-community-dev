@@ -89,7 +89,7 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             new ResourceAccessDeniedException(
                 $product->getWrappedObject(),
-                'Product "product_a" cannot be viewed, it is only classified in categories on which you do not have a view permission.'
+                'You can neither view, nor update, nor delete the product "product_a", as it is only categorized in categories on which you do not have a view permission.'
             )
         )->during('filter', [$product]);
     }
