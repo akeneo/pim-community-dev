@@ -104,7 +104,10 @@ JSON;
                 },
                 "created": "2017-03-11T10:39:38+01:00",
                 "updated": "2017-03-11T10:39:38+01:00",
-                "associations": {}
+                "associations": {},
+                "metadata": {
+                    "workflow_status": "read_only"
+                }
             },
             {
                 "_links": {
@@ -121,7 +124,10 @@ JSON;
                 "values": {},
                 "created": "2017-03-11T10:39:38+01:00",
                 "updated": "2017-03-11T10:39:38+01:00",
-                "associations": {}
+                "associations": {},
+                "metadata": {
+                    "workflow_status": "read_only"
+                }
             },
             {
                 "_links": {
@@ -143,6 +149,9 @@ JSON;
                         "products": ["product_viewable_by_everybody_2"],
                         "groups": []
                     }
+                },
+                "metadata": {
+                    "workflow_status": "working_copy"
                 }
             }
         ]

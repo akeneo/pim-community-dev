@@ -51,7 +51,10 @@ class GetProductDraftIntegration extends ApiTestCase
   },
   "created": "2017-07-17T14:23:49+02:00",
   "updated": "2017-07-17T14:23:49+02:00",
-  "associations": {}
+  "associations": {},
+  "metadata": {
+        "workflow_status": "draft_in_progress"
+  }
 }
 JSON;
 
@@ -101,8 +104,6 @@ JSON;
 JSON;
 
         $response = $clientAsMary->getResponse();
-
-        var_dump($response->getContent());
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         $this->assertSame($response->getContent(), $expectedResponseContent);

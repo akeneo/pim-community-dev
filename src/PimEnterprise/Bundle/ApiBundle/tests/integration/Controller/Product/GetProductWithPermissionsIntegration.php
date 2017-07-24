@@ -77,7 +77,10 @@ class GetProductWithPermissionsIntegration extends AbstractProductTestCase
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "read_only"
+    }
 }
 JSON;
 
