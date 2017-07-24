@@ -21,7 +21,7 @@ class ProductFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\Filter\FilterInterface');
     }
 
     function it_returns_all_values_on_a_new_product(
