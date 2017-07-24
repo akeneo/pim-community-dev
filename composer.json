@@ -28,7 +28,7 @@
         ]
     },
     "require": {
-        "akeneo/pim-community-dev": "1.8.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-catalog-modeling",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
