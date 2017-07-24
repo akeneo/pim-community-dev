@@ -71,6 +71,7 @@ define(
 
                         this.$el.html(
                             this.template({
+                                __: __,
                                 hasFamily: this.getFormData().family !== null,
                                 completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
@@ -79,7 +80,10 @@ define(
                                 uiLocale: UserContext.get('uiLocale'),
                                 catalogLocale: UserContext.get('catalogLocale'),
                                 hasFamilyChanged: this.getFormData().family !== this.initialFamily,
-                                missingValuesLabel: 'missing values'
+                                missingValuesKey: 'pim_enrich.form.product.panel.completeness.missing_values',
+                                noFamilyLabel: __('pim_enrich.form.product.panel.completeness.info.no_family'),
+                                noCompletenessLabel:
+                                    __('pim_enrich.form.product.panel.completeness.info.no_completeness')
                             })
                         );
                         this.delegateEvents();

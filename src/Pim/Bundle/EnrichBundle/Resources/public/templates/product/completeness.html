@@ -1,11 +1,7 @@
 <% if (!hasFamily) { %>
-    <p>
-        <%- _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>
-    </p>
+    <p><%- noFamilyLabel %></p>
 <% } else if (_.isEmpty(completenesses) || hasFamilyChanged) { %>
-    <p>
-        <%- _.__('pim_enrich.form.product.panel.completeness.info.no_completeness') %>
-    </p>
+    <p><%- noCompletenessLabel %></p>
 <% } else { %>
     <% _.each(completenesses, function(channel) { %>
         <% var ratio = (channel['stats']['complete'] / channel['stats']['total']) * 100; %>
@@ -29,9 +25,9 @@
                             <div class="AknCompletenessPanel-progress AknProgress AknProgress--micro progress <%- localeCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
                                 <div class="AknProgress-bar bar" data-ratio="<%- localeCompleteness.completeness.ratio %>" style="width: <%- localeCompleteness.completeness.ratio %>%;"></div>
                             </div>
-                            <% if (localeCompleteness.completeness.missing.length > 0) { %>
+                            <% if (localeCompleteness.completeness.missing > 0) { %>
                                 <div class="AknCompletenessPanel-missing missing">
-                                    <% missingValuesLabel %> <%- localeCompleteness.completeness.missing.length %>
+                                    <%- __(missingValuesKey, {count: localeCompleteness.completeness.missing}, localeCompleteness.completeness.missing) %>
                                 </div>
                             <% } %>
                         </div>
