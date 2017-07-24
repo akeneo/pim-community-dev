@@ -33,19 +33,19 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch;
  *
  * @internal This class is used by the ProductQueryBuilder to create an ES search query.
  */
-class SearchQueryBuilder
+abstract class SearchQueryBuilder
 {
     /** @var array */
-    private $mustNotClauses = [];
+    protected $mustNotClauses = [];
 
     /** @var array */
-    private $filterClauses = [];
+    protected $filterClauses = [];
 
     /** @var array */
-    private $shouldClauses = [];
+    protected $shouldClauses = [];
 
     /** @var array */
-    private $sortClauses = [];
+    protected $sortClauses = [];
 
     /**
      * Adds a must_not clause to the query
