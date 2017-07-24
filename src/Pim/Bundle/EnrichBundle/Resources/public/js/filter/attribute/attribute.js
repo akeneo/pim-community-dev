@@ -34,7 +34,7 @@ define([
          * {@inherit}
          */
         initialize: function (config) {
-            if (config.config) {
+            if (undefined !== config) {
                 this.config = config.config;
             }
 
@@ -123,24 +123,16 @@ define([
                 var scopeSwitcher = new ScopeSwitcher();
                 scopeSwitcher.setDisplayInline(true);
 
-                this.listenTo(
-                    scopeSwitcher,
-                    'pim_enrich:form:scope_switcher:pre_render',
-                    function (scopeEvent) {
-                        if (this.getScope()) {
-                            scopeEvent.scopeCode = this.getScope();
-                        } else {
-                            this.setScope(scopeEvent.scopeCode, {silent: true});
-                        }
-                    }.bind(this)
-                );
+                this.listenTo(scopeSwitcher, 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 this.listenTo(
                     scopeSwitcher,
                     'pim_enrich:form:scope_switcher:change',
                     function (scopeEvent) {
-                        this.setScope(scopeEvent.scopeCode, {silent: true});
-                        this.trigger('pim_enrich:form:entity:post_update');
+                        if ('base_product' === scopeEvent.context) {
+                            this.setScope(scopeEvent.scopeCode, {silent: true});
+                            this.trigger('pim_enrich:form:entity:post_update');
+                        }
                     }.bind(this)
                 );
 
@@ -151,24 +143,16 @@ define([
                 var localeSwitcher = new LocaleSwitcher();
                 localeSwitcher.setDisplayInline(true);
 
-                this.listenTo(
-                    localeSwitcher,
-                    'pim_enrich:form:locale_switcher:pre_render',
-                    function (localeEvent) {
-                        if (this.getLocale()) {
-                            localeEvent.localeCode = this.getLocale();
-                        } else {
-                            this.setLocale(localeEvent.localeCode, {silent: true});
-                        }
-                    }.bind(this)
-                );
+                this.listenTo(localeSwitcher, 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
 
                 this.listenTo(
                     localeSwitcher,
                     'pim_enrich:form:locale_switcher:change',
                     function (localeEvent) {
-                        this.setLocale(localeEvent.localeCode, {silent: true});
-                        this.trigger('pim_enrich:form:entity:post_update');
+                        if ('base_product' === localeEvent.context) {
+                            this.setLocale(localeEvent.localeCode, {silent: true});
+                            this.trigger('pim_enrich:form:entity:post_update');
+                        }
                     }.bind(this)
                 );
 
@@ -235,6 +219,36 @@ define([
                         container
                     );
                 }.bind(this));
+        },
+
+        /**
+         * Initialize the scope
+         *
+         * @param {Object} scopeEvent
+         * @param {string} scopeEvent.context
+         * @param {string} scopeEvent.scopeCode
+         */
+        initScope: function (scopeEvent) {
+            if (this.getScope()) {
+                scopeEvent.scopeCode = this.getScope();
+            } else {
+                this.setScope(scopeEvent.scopeCode, {silent: true});
+            }
+        },
+
+        /**
+         * Initialize the locale
+         *
+         * @param {Object} localeEvent
+         * @param {string} localeEvent.context
+         * @param {string} localeEvent.localeCode
+         */
+        initLocale: function (localeEvent) {
+            if (this.getLocale()) {
+                localeEvent.localeCode = this.getLocale();
+            } else {
+                this.setLocale(localeEvent.localeCode, {silent: true});
+            }
         }
     });
 });

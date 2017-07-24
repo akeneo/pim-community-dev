@@ -64,6 +64,7 @@ define(
                     },
                     __: __,
                     stepExecutions: model.stepExecutions,
+                    status: model.status,
                     failures: model.failures,
                     id: model.meta.id
                 }));

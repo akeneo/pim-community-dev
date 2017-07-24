@@ -369,7 +369,6 @@ flash:
   currency:
     updated: Valuta succesvol bijgewerkt
   family:
-    created: Familie succesvol aangemaakt
     updated: Famille mise à jour avec succès
     removed: Familie succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd uit een familie
@@ -388,7 +387,6 @@ flash:
     enabled: Product is ingeschakeld
     disabled: Product is uitgeschakeld
   group:
-    created: Groep succesvol aangemaakt
     updated: Groep succesvol bijgewerkt
     removed: Groep succesvol verwijderd
   variant group:
@@ -664,9 +662,7 @@ pane.accordion:
   group_values: Groepswaarden
 popin.create:
   association_type.title: Een nieuw associatietype aanmaken
-  family.title: Nieuwe familie aanmaken
   group.title: Nieuwe groep aanmaken
-  group_type.title: Nieuw groepstype aanmaken
   product.title: Een nieuw product aanmaken
   variant_group.title: Nieuwe variant groep toevoegen
   option.title: Nieuwe optie aanmaken

@@ -130,12 +130,16 @@ pim_enrich:
     info:
       update_failed: Update niet geslaagd
       update_successful: Update met succes voltooid
+    create_popin:
+      code: Code
+      label: Label
+      labels:
+        save: Opslaan
+        cancel: Annuleren
     product:
       title: product
       btn:
-        enable: Inschakelen
         enabled: Ingeschakeld
-        disable: Uitschakelen
         disabled: Uitgeschakeld
         download_pdf: PDF
         compare_translate: Vergelijk / Vertaal
@@ -175,6 +179,7 @@ pim_enrich:
             group_label: Label
             more_products: '{{ count }} extra producten...'
             close: Sluiten
+        status: Status
       copy:
         select: Selecteer
         all: Alle
@@ -198,6 +203,9 @@ pim_enrich:
           family: Kies een familie
           save: Opslaan
           cancel: Annuleren
+      message:
+        created: Product succesvol aangemaakt
+      completeness: Voltooien
     association_type:
       info:
         deletion_successful: Associatietype succesvol verwijderd.
@@ -212,6 +220,10 @@ pim_enrich:
       btn:
         save: Opslaan
       title: koppelingstype
+      create_popin:
+        title: Een nieuw associatietype aanmaken
+      message:
+        created: Associatietype met succes aangemaakt
     group_type:
       meta:
         created: Aangemaakt
@@ -221,6 +233,10 @@ pim_enrich:
       btn:
         save: Opslaan
       title: groepstype
+      create_popin:
+        title: Nieuw groepstype aanmaken
+      message:
+        created: Groepstype succesvol aangemaakt
     channel:
       title: kanaal
       info:
@@ -248,6 +264,10 @@ pim_enrich:
         updated_by: Bijgewerkt door
       btn:
         save: Opslaan
+      create_popin:
+        title: Nieuwe familie aanmaken
+      message:
+        created: Familie succesvol aangemaakt
     attribute_option:
       code: Code
       label: Label
@@ -269,6 +289,10 @@ pim_enrich:
         created_by: Aangemaakt door
         updated: Bijgewerkt
         updated_by: Bijgewerkt door
+      create_popin:
+        title: Nieuwe variant groep toevoegen
+      message:
+        created: Variantgroep succesvol aangemaakt
     group:
       title: Groep
       info:
@@ -284,6 +308,10 @@ pim_enrich:
         created_by: Aangemaakt door
         updated: Bijgewerkt
         updated_by: Bijgewerkt door
+      create_popin:
+        title: Nieuwe groep aanmaken
+      message:
+        created: Groep succesvol aangemaakt
     job_instance:
       info:
         update_failed: Het jobprofiel kon niet worden bijgewerkt.
@@ -415,6 +443,7 @@ pim_enrich:
           general: Algemeen
           code: Code
           attribute_as_label: Attribuut gebruikt als label
+          empty_attribute_as_image: Niet geselecteerd
           label_translations: Labelvertalingen
         attributes:
           title: Attributen
@@ -754,8 +783,15 @@ pim_enrich:
     edit_common_attributes:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
   index:
+    import_profiles:
+      list: Selecteer een taak
+      create_popin:
+        title: Een nieuw importprofiel aanmaken
     group:
       create_btn: Groep aanmaken
+    export_profiles:
+      create_popin:
+        title: Een nieuw exportprofiel aanmaken
     user:
       title: Gebruiker
       create_btn: Gebruiker aanmaken
@@ -797,6 +833,183 @@ batch_jobs:
     label: Update productwaarde
     perform:
       label: Update productwaarde
+  csv_product_export:
+    label: Productexport in CSV
+    export.label: Productexport
+  csv_category_export:
+    label: Categorie-export in CSV
+    export.label: Categorie-export
+  csv_attribute_export:
+    label: Attribuutexport in CSV
+    export.label: Attribuutexport
+  csv_attribute_option_export:
+    label: Attribuutoptie-export in CSV
+    export.label: Attribuutoptie-export
+  csv_association_type_export:
+    label: Associatietype-export in CSV
+    export.label: Associatietype-export
+  csv_group_export:
+    label: Groepexport in CSV
+    export.label: Groepexport
+  csv_variant_group_export:
+    label: Variant groep export in CSV
+    export.label: Variant groep export
+  csv_product_import:
+    label: Productimport in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Productimport
+    import_associations.label: Productassociatie import
+  csv_category_import:
+    label: Categorie-import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Categorie-import
+  csv_attribute_import:
+    label: Attribuut-import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Attribuut-import
+  csv_attribute_option_import:
+    label: Attribuutoptie-import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Attribuutoptie-import
+  csv_association_type_import:
+    label: Associatietype-import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Associatietype-import
+  csv_family_import:
+    validation.label: Bestandsvalidatie
+  csv_group_import:
+    label: Groep importeren in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Groep importeren
+  csv_variant_group_import:
+    label: Variant groep import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Variant groep import
+  csv_channel_export:
+    label: Kanaal export in CSV
+    export.label: Kanaal export
+  csv_locale_export:
+    label: Locale export in CSV
+    export.label: Locale export
+  csv_attribute_group_export:
+    label: Attribuut groep export in CSV
+    export.label: Attribuut groep export
+  csv_currency_export:
+    label: Valuta export in CSV
+    export.label: Valuta export
+  csv_group_type_export:
+    label: Groepstype export in CSV
+    export.label: Groepstype export
+  csv_channel_import:
+    label: Kanaal import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Kanaal import
+  csv_locale_import:
+    label: Locale import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Locale import
+  csv_attribute_group_import:
+    label: Attribuut groep import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Attribuut groep import
+  csv_currency_import:
+    label: Valuta import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Valuta import
+  csv_group_type_import:
+    label: Groepstype-import in CSV
+    validation.label: Bestandsvalidatie
+    import.label: Groepstype import
+  xlsx_category_import:
+    label: Categorie import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Categorie-import
+  xlsx_association_type_import:
+    label: Associatie type import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Associatietype-import
+  xlsx_attribute_import:
+    label: Attribuut import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Attribuut-import
+  xlsx_attribute_option_import:
+    label: Attribuut optie import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Attribuutoptie-import
+  xlsx_family_import:
+    label: Familie import in XLSX
+    validation.label: Bestandsvalidatie
+  xlsx_product_export:
+    label: Product export in XLSX
+    export.label: Productexport
+  xlsx_product_import:
+    label: Product import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Productimport
+    import_associations.label: Productassociatie import
+  xlsx_group_export:
+    label: Groep export in XLSX
+    export.label: Groepexport
+  xlsx_variant_group_export:
+    label: Variant groep export in XLSX
+    export.label: Variant groep export
+  xlsx_group_import:
+    label: Groep import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Groep importeren
+  xlsx_variant_group_import:
+    label: Variant groep import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Variant Groep import
+  xlsx_family_export:
+    label: Familie export in XLSX
+  xlsx_category_export:
+    label: Categorie export in XLSX
+    export.label: Categorie-export
+  xlsx_attribute_export:
+    label: Attribuut export in XLSX
+    export.label: Attribuut export in XLSX
+  xlsx_attribute_option_export:
+    label: Attribuut optie export in XLSX
+    export.label: Attribuut optie export in XLSX
+  xlsx_association_type_export:
+    label: Associatie type export in XLSX
+    export.label: Associatie type export in XLSX
+  xlsx_channel_export:
+    label: Kanaal export in XLSX
+    export.label: Kanaal export
+  xlsx_locale_export:
+    label: Locale export in XLSX
+    export.label: Locale export
+  xlsx_attribute_group_export:
+    label: Attribuut groep export in XLSX
+    export.label: Attribuut groep export
+  xlsx_currency_export:
+    label: Valuta export in XLSX
+    export.label: Valuta export
+  xlsx_group_type_export:
+    label: Groepstype export in XLSX
+    export.label: Groepstype export
+  xlsx_channel_import:
+    label: Kanaal import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Kanaal import
+  xlsx_locale_import:
+    label: Locale import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Locale import
+  xlsx_attribute_group_import:
+    label: Attribuut groep import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Attribuut groep import
+  xlsx_currency_import:
+    label: Valuta import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Valuta import
+  xlsx_group_type_import:
+    label: Groepstype import in XLSX
+    validation.label: Bestandsvalidatie
+    import.label: Groepstype import
 pim_menu:
   tab:
     dashboard: Dashboard
