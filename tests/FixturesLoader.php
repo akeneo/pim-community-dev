@@ -72,7 +72,6 @@ class FixturesLoader
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
-        // TODO: this should change according to the storage
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
 
         if (file_exists($dumpFile)) {
