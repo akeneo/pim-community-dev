@@ -7,42 +7,33 @@
         <%- _.__('pim_enrich.form.product.panel.completeness.info.no_completeness') %>
     </p>
 <% } else { %>
-    <% _.each(completenesses, function(locale) { %>
-        <% var ratio = (locale['stats']['complete'] / locale['stats']['total']) * 100; %>
-        <div class="AknCompletenessPanel-block completeness-block" data-closed="<%- (100 === ratio || locale['locale'] !== catalogLocale) ? 'true' : 'false' %>">
+    <% _.each(completenesses, function(channel) { %>
+        <% var ratio = (channel['stats']['complete'] / channel['stats']['total']) * 100; %>
+        <div class="AknCompletenessPanel-block completeness-block">
             <header class="AknCompletenessPanel-header">
-                <span class="AknCompletenessPanel-headerLocale locale" data-locale="<%- locale['locale'] %>"><%= i18n.getFlag(locale['locale'], false) %> <%- _.findWhere(locales, {code: locale['locale']}).language %></span>
+                <span class="AknCompletenessPanel-headerLocale channel" data-channel="<%- channel.channel %>"><%- channel.label %></span>
                 <span class="AknCompletenessPanel-headerStats stats">
-                    <%- ratio %>%
+                    <%- Math.round(ratio) %>%
                 </span>
             </header>
             <div class="AknCompletenessPanel-content content">
-                <% _.each(locale['channels'], function(channelCompleteness) { %>
-                    <% if (channelCompleteness.completeness) { %>
+                <% _.each(channel['locales'], function(localeCompleteness) { %>
+                    <% if (localeCompleteness.completeness) { %>
                         <div class="AknCompletenessPanel-channel">
                             <div class="AknCompletenessPanel-progressContainer">
-                                <span class="AknCompletenessPanel-channelTitle channel" data-channel="<%- channelCompleteness.completeness.channel %>">
-                                    <%- i18n.getLabel(_.findWhere(channels, {code: channelCompleteness.completeness.channel}).labels, catalogLocale, channelCompleteness.completeness.channel) %>
+                                <span class="AknCompletenessPanel-channelTitle channel" data-locale="<%- localeCompleteness.completeness.locale %>">
+                                    <%- localeCompleteness.label %>
                                 </span>
-                                <span class="AknCompletenessPanel-progressRatio literal-progress"><%- channelCompleteness.completeness.ratio %>%</span>
+                                <span class="AknCompletenessPanel-progressRatio literal-progress"><%- localeCompleteness.completeness.ratio %>%</span>
                             </div>
-                            <div class="AknCompletenessPanel-progress AknProgress AknProgress--micro progress <%- channelCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
-                                <div class="AknProgress-bar bar" data-ratio="<%- channelCompleteness.completeness.ratio %>" style="width: <%- channelCompleteness.completeness.ratio %>%;"></div>
+                            <div class="AknCompletenessPanel-progress AknProgress AknProgress--micro progress <%- localeCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
+                                <div class="AknProgress-bar bar" data-ratio="<%- localeCompleteness.completeness.ratio %>" style="width: <%- localeCompleteness.completeness.ratio %>%;"></div>
                             </div>
-                            <div class="AknCompletenessPanel-missing missing">
-                                <% if (channelCompleteness.completeness.missing !== 0) { %>
-                                    <%- _.__('pim_enrich.form.product.panel.completeness.missing_values') %>:
-                                        <span class="missing-attributes">
-                                            <% _.each(channelCompleteness.missing, function(missing, i) { %>
-                                                <% if (0 !== i) { %> | <% } %>
-                                                <a href="javascript:void(0);" data-attribute="<%- missing.code %>" data-locale="<%- locale['locale'] %>" data-channel="<%- channelCompleteness.completeness.channel %>"><%- i18n.getLabel(missing.labels, catalogLocale, missing.code) %></a>
-                                            <% }) %>
-                                        </span>
-                                    <% } %>
-                                <% if (0 === channelCompleteness.completeness.missing && channelCompleteness.missing.length > 0) { %>
-                                    <span class="AknBadge AknBadget--important">Completeness error</span>
-                                <% } %>
-                            </div>
+                            <% if (localeCompleteness.completeness.missing.length > 0) { %>
+                                <div class="AknCompletenessPanel-missing missing">
+                                    <% missingValuesLabel %> <%- localeCompleteness.completeness.missing.length %>
+                                </div>
+                            <% } %>
                         </div>
                     <% }%>
                 <% }); %>

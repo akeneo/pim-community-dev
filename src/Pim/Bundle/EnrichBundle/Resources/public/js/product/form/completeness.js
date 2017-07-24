@@ -78,7 +78,8 @@ define(
                                 locales: locales,
                                 uiLocale: UserContext.get('uiLocale'),
                                 catalogLocale: UserContext.get('catalogLocale'),
-                                hasFamilyChanged: this.getFormData().family !== this.initialFamily
+                                hasFamilyChanged: this.getFormData().family !== this.initialFamily,
+                                missingValuesLabel: 'missing values'
                             })
                         );
                         this.delegateEvents();
@@ -89,7 +90,7 @@ define(
             },
 
             /**
-             * Sort completenesses. Put the user current catalog locale first.
+             * Sort completenesses. Put the user current catalog scope first.
              *
              * @param completenesses
              *
@@ -99,7 +100,7 @@ define(
                 if (_.isEmpty(completenesses)) {
                     return [];
                 }
-                var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})];
+                var sortedCompleteness = [_.findWhere(completenesses, {channel: UserContext.get('catalogScope')})];
 
                 return _.union(sortedCompleteness, completenesses);
             },
