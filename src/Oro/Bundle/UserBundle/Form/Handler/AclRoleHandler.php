@@ -105,7 +105,7 @@ class AclRoleHandler
     public function process(Role $role)
     {
         if (in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->getRequest());
+            $this->form->handleRequest($this->getRequest());
 
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();

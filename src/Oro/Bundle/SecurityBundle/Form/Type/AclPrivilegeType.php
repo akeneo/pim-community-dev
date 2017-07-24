@@ -18,7 +18,7 @@ class AclPrivilegeType extends AbstractType
     {
         $builder->add(
             'identity',
-            new AclPrivilegeIdentityType(),
+            AclPrivilegeIdentityType::class,
             [
                 'required' => false,
             ]
@@ -26,14 +26,14 @@ class AclPrivilegeType extends AbstractType
 
         $builder->add(
             'permissions',
-            new PermissionCollectionType(),
+            PermissionCollectionType::class,
             [
-                'type'         => new AclPermissionType(),
-                'allow_add'    => true,
-                'prototype'    => false,
-                'allow_delete' => false,
-                'options'      => [
-                    'privileges_config' => $options['privileges_config']
+                'entry_type'    => AclPermissionType::class,
+                'allow_add'     => true,
+                'prototype'     => false,
+                'allow_delete'  => false,
+                'entry_options' => [
+                    'privileges_config' => $options['privileges_config'],
                 ],
             ]
         );

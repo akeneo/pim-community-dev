@@ -14,7 +14,7 @@ class PrivilegeCollectionType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['privileges_config'] = $options['options']['privileges_config'];
+        $view->vars['privileges_config'] = $options['entry_options']['privileges_config'];
         //TODO: Removing 'SHARE' from config. Remove this code after sharing is implemented.
         if (in_array('SHARE', $view->vars['privileges_config']['permissions'])) {
             array_pop($view->vars['privileges_config']['permissions']);

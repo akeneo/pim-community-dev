@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
+use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
 use Oro\Bundle\UserBundle\Form\Type\AclRoleType as OroAclRoleType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,14 +26,14 @@ class AclRoleType extends OroAclRoleType
                 $fieldName,
                 PrivilegeCollectionType::class,
                 [
-                    'type'         => new AclPrivilegeType(),
-                    'allow_add'    => true,
-                    'prototype'    => false,
-                    'allow_delete' => false,
-                    'mapped'       => false,
-                    'options'      => [
+                    'entry_type'    => AclPrivilegeType::class,
+                    'allow_add'     => true,
+                    'prototype'     => false,
+                    'allow_delete'  => false,
+                    'mapped'        => false,
+                    'entry_options' => [
                         'privileges_config' => $config,
-                    ]
+                    ],
                 ]
             );
         }
