@@ -31,7 +31,7 @@ Feature: Create valid variants of family through CSV import
       clothing_color_size;;Kleidung nach Farbe/Größe;Clothing by color/size;Vêtements par couleur/taille;color,size;;name,image_1,variation_image,composition;
       """
 
-  Scenario: Successfully skipped family variants without family during import
+  Scenario: Successfully skipped family variants with identifier attribute not on product level
     Given the following CSV file to import:
       """
       code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2

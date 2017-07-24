@@ -137,7 +137,9 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     }
 
                     if (isset($attributeSetData['axes'])) {
-                        $attributeSet->setAxes($this->getAttributes($attributeSetData['axes']));
+                        $attributeSet->setAxes(
+                            $this->getAttributes($attributeSetData['axes'], $attributeSetData['level'])
+                        );
                     }
 
                     if (isset($attributeSetData['attributes'])) {
@@ -145,7 +147,9 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                             $this->removeAttributeFromPreviousLevel($familyVariant, $attributeSetData);
                         }
 
-                        $attributeSet->setAttributes($this->getAttributes($attributeSetData['attributes']));
+                        $attributeSet->setAttributes(
+                            $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
+                        );
                     }
                 }
                 break;
@@ -193,13 +197,26 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
 
     /**
      * @param string[] $attributeCodes
+     * @param int      $level
      *
      * @return AttributeInterface[]
      */
-    private function getAttributes(array $attributeCodes): array
+    private function getAttributes(array $attributeCodes, int $level): array
     {
-        return array_map(function ($attributeCode) {
-            return $this->attributeRepository->findOneByIdentifier($attributeCode);
+        return array_map(function ($attributeCode) use ($level) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if (!$attribute instanceof AttributeInterface) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    sprintf('attribute_set_%d', $level),
+                    'attribute code',
+                    'The attribute does not exist',
+                    static::class,
+                    $attributeCode
+                );
+            }
+
+            return $attribute;
         }, $attributeCodes);
     }
 }

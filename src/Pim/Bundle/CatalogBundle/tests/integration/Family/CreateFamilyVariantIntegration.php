@@ -483,6 +483,37 @@ class CreateFamilyVariantIntegration extends TestCase
     }
 
     /**
+     * Validation: The attribute set attributes must exists
+     *
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.
+     */
+    public function testAttributesExist()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['weather', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['sku', 'price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
