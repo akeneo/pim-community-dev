@@ -197,9 +197,11 @@ pimee_enrich:
                 add_tag:
                     label: Add tags to assets
                     description: Tags will be added to the assets.
+                    field: Tags
                 add_to_category:
                     label: Classify assets in categories
                     description: The assets will be positioned into following categories, the existing placement is kept.
+                    field: Categories
 
 pim_menu:
     tab:

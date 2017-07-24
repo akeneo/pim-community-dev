@@ -1,6 +1,18 @@
-<input type="hidden" class="input-large tags select-field"
-       value="<%- value %>"
-       <%- readOnly ? 'readonly disabled' : '' %>
-       multiple
-       data-placeholder="<%- _.__('pim_enrich.form.asset.add-tag.modal.empty_selection') %>"
-/>
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label control-label AknFieldContainer-label required" for="pim_enrich_mass_edit_choose_action_operation_add_tag">
+                <%- field %>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <input type="hidden" class="input-large tags select-field"
+                   value="<%- value %>"
+                   id="pim_enrich_mass_edit_choose_action_operation_add_tag"
+                   <%- readOnly ? 'readonly disabled' : '' %>
+                   multiple
+                   data-placeholder="<%- _.__('pim_enrich.form.asset.add-tag.modal.empty_selection') %>"
+            />
+        </div>
+    </div>
+</div>

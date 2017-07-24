@@ -29,6 +29,8 @@ class EnterpriseWebUser extends BaseWebUser
             ->getPage('Batch Operation')
             ->addStep('Publish products', 'Batch Publish')
             ->addStep('Unpublish products', 'Batch Unpublish')
+            ->addStep('Add tags to assets', 'Batch AddTags')
+            ->addStep('Classify assets in categories', 'Batch Classify')
             ->chooseOperation($operation)
             ->choose();
 

@@ -16,9 +16,9 @@ use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +56,7 @@ class RuleController
     /** @var CommandLauncher */
     protected $commandLauncher;
 
-    /** @var GridFilterAdapterInterface */
+    /** @var MassActionParametersParser */
     protected $parameterParser;
 
     /**
@@ -67,7 +67,7 @@ class RuleController
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
      * @param OroToPimGridFilterAdapter             $gridFilterAdapter
      * @param CommandLauncher                       $commandLauncher
-     * @param GridFilterAdapterInterface            $parameterParser
+     * @param MassActionParametersParser            $parameterParser
      */
     public function __construct(
         RuleDefinitionRepositoryInterface $repository,
@@ -77,7 +77,7 @@ class RuleController
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         OroToPimGridFilterAdapter $gridFilterAdapter,
         CommandLauncher $commandLauncher,
-        GridFilterAdapterInterface $parameterParser
+        MassActionParametersParser $parameterParser
     ) {
         $this->repository = $repository;
         $this->remover = $remover;

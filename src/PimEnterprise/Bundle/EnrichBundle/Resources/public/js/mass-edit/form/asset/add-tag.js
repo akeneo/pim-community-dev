@@ -12,7 +12,7 @@ define(
         'oro/translator',
         'pim/mass-edit-form/product/operation',
         'pimee/common/select2/asset-tag',
-        'text!pimee/template/mass-edit/asset/add-tag',
+        'pimee/template/mass-edit/asset/add-tag',
         'pim/initselect2'
     ],
     function (
@@ -36,7 +36,8 @@ define(
             render: function () {
                 this.$el.html(this.template({
                     readOnly: this.readOnly,
-                    value: this.getValue().join(',')
+                    value: this.getValue().join(','),
+                    field: __(this.config.field)
                 }));
 
                 var options = Select2Configurator.getConfig(this.getValue());

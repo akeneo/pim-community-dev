@@ -21,11 +21,6 @@ config:
                         warmup: false
                         urls:
                             list: pimee_security_permissions_rest
-                channel-tranformation:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            get: pimee_enrich_channel_asset_transformation
         pim/controller-registry:
             defaultController:
                 module: pim/controller/template

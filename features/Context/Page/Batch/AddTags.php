@@ -27,8 +27,11 @@ class AddTags extends Form
             $this->elements,
             [
                 'Tags'    => ['css' => '.add-tags-to-assets .select2-container-multi'],
-                'Next'    => ['css' => '.configuration .btn-primary'],
-                'Confirm' => ['css' => '.confirmation .btn-primary'],
+                'Cancel'                    => ['css' => '.AknButton[data-action-target="grid"]'],
+                'Choose'                    => ['css' => '.AknButton[data-action-target="choose"]'],
+                'Configure'                 => ['css' => '.AknButton[data-action-target="configure"]'],
+                'Confirm'                   => ['css' => '.AknButton[data-action-target="confirm"]'],
+                'Validate'                   => ['css' => '.AknButton[data-action-target="validate"]'],
             ]
         );
     }
@@ -44,6 +47,38 @@ class AddTags extends Form
     }
 
     /**
+     * Go to the grid
+     *
+     * @return string
+     */
+    public function cancel()
+    {
+        $this->spin(function () {
+            $this->getElement('Cancel')->click();
+
+            return true;
+        }, 'Cannot got to the grid');
+
+        return $this->currentStep;
+    }
+
+    /**
+     * Go to the choose step
+     *
+     * @return string
+     */
+    public function select()
+    {
+        $this->spin(function () {
+            $this->getElement('Choose')->click();
+
+            return true;
+        }, 'Cannot got to the choose step');
+
+        return $this->currentStep;
+    }
+
+    /**
      * Go to the configuration step
      *
      * @return string
@@ -51,7 +86,7 @@ class AddTags extends Form
     public function choose()
     {
         $this->spin(function () {
-            $this->getElement('Choose')->click();
+            $this->getElement('Configure')->click();
 
             return true;
         }, 'Cannot got to the configuration step');
@@ -67,7 +102,7 @@ class AddTags extends Form
     public function configure()
     {
         $this->spin(function () {
-            $this->getElement('Configure')->click();
+            $this->getElement('Confirm')->click();
 
             return true;
         }, 'Cannot got to the confirm step');
@@ -83,7 +118,7 @@ class AddTags extends Form
     public function confirm()
     {
         $this->spin(function () {
-            $this->getElement('Confirm')->click();
+            $this->getElement('Validate')->click();
 
             return true;
         }, 'Cannot confirm the wizard');

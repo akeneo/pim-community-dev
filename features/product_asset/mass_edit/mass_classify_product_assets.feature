@@ -11,12 +11,12 @@ Feature: Mass edit assets to change their categories
     Given I am logged in as "Pamela"
     And I am on the assets page
     And I select rows minivan, machine and bridge
-    And I press "Classify" on the "Bulk Actions" dropdown button
+    And I press "Mass edit assets" on the "Bulk Actions" dropdown button
+    And I choose the "Classify assets in categories" operation
     And I press the "Asset main catalog" button
     And I expand the "asset_main_catalog" category
     And I click on the "print" category
-    And I press the "Next" button
-    And I press the "Confirm" button
+    And I confirm mass edit
     And I should be on the assets page
     When I wait for the "classify_assets" job to finish
     And I am on the assets page
@@ -34,13 +34,13 @@ Feature: Mass edit assets to change their categories
     Given I am logged in as "Pamela"
     And I am on the assets page
     And I select all entities
-    And I press "Classify" on the "Bulk Actions" dropdown button
+    And I press "Mass edit assets" on the "Bulk Actions" dropdown button
+    And I choose the "Classify assets in categories" operation
     And I press the "Asset main catalog" button
     And I expand the "asset_main_catalog" category
     And I click on the "audio" category
     And I click on the "client_documents" category
-    And I press the "Next" button
-    And I press the "Confirm" button
+    And I confirm mass edit
     And I should be on the assets page
     When I wait for the "classify_assets" job to finish
     And I am on the assets page
