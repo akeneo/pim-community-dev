@@ -21,10 +21,9 @@ define(
     function ($, _, __, BaseForm, template, FetcherRegistry, i18n, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'panel-pane completeness-panel',
+            className: 'panel-pane completeness-panel AknCompletenessPanel',
             initialFamily: null,
             events: {
-                'click header': 'switchLocale',
                 'click .missing-attributes a': 'showAttribute'
             },
 
@@ -103,20 +102,6 @@ define(
                 var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})];
 
                 return _.union(sortedCompleteness, completenesses);
-            },
-
-            /**
-             * Toggle the current locale
-             *
-             * @param Event event
-             */
-            switchLocale: function (event) {
-                var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
-                if ($completenessBlock.attr('data-closed') === 'false') {
-                    $completenessBlock.attr('data-closed', 'true');
-                } else {
-                    $completenessBlock.attr('data-closed', 'false');
-                }
             },
 
             /**
