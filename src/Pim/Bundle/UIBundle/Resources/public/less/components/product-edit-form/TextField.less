@@ -8,6 +8,26 @@
   width: 100%;
   border-radius: 2px;
   padding: 0 8px;
+  z-index: 1;
+
+  &-layer {
+    border: 1px solid @AknBorderColor;
+    position: absolute;
+    width: ~"calc(100% - 4px)";
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+
+    &--first {
+      top: @AknLocalizableGap * 2;
+      left: @AknLocalizableGap * 2;
+    }
+
+    &--second {
+      top: @AknLocalizableGap;
+      left: @AknLocalizableGap;
+    }
+  }
 
   &--noRightRadius {
     border-top-right-radius: 0;
@@ -60,6 +80,11 @@
     padding-right: @AknFormHeight - 4px;
     color: @AknLightFontColor;
     cursor: not-allowed;
+  }
+
+  &--localizable {
+    width: ~"calc(100% - 4px)";
+    position: relative;
   }
 }
 

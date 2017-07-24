@@ -17,10 +17,12 @@
   }
 
   &-currency {
+    background: white;
     height: @AknFormHeight - 2px;
     line-height: @AknFormHeight - 2px;
-    border: 1px solid @AknBorderColor;
-    background: lighten(@AknGrey, 25%);
+    border-top: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
     width: 44px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -28,5 +30,12 @@
     display: block;
     box-sizing: content-box;
     text-align: center;
+    z-index: 1;
+    color: @AknLightFontColor;
+  }
+
+  &--localizable &-item {
+    position: relative;
+    padding-right: 2 * @AknLocalizableGap;
   }
 }
