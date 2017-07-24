@@ -55,7 +55,6 @@ class UpdateFamilyVariantIntegration extends TestCase
         $this->assertEquals(0, $errors->count());
 
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
-
         $this->get('doctrine.orm.entity_manager')->refresh($familyVariant);
 
         $this->assertEquals(
@@ -64,15 +63,15 @@ class UpdateFamilyVariantIntegration extends TestCase
             'Common attributes are invalid'
         );
 
-        $variantAttributeSet1 = $familyVariant->getVariantAttributeSet(1);
+        $variantAttributeSet = $familyVariant->getVariantAttributeSet(1);
         $this->assertEquals(
             ['eu_shoes_size'],
-            $this->extractAttributeCode($variantAttributeSet1->getAxes()),
+            $this->extractAttributeCode($variantAttributeSet->getAxes()),
             'Axis is invalid (level 1)'
         );
         $this->assertEquals(
             ['EAN', 'brand', 'collection', 'color', 'description', 'erp_name', 'image_1', 'weight'],
-            $this->extractAttributeCode($variantAttributeSet1->getAttributes()),
+            $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
 
@@ -106,7 +105,7 @@ class UpdateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Validation: The number of level of the family variant cannot be changes
+     * Validation: The number of level of the family variant cannot be changed
      */
     public function testTheFamilyVariantLevelNumberImmutability()
     {
@@ -121,7 +120,7 @@ class UpdateFamilyVariantIntegration extends TestCase
                 ],
                 [
                     'axes' => ['supplier'],
-                    'attributes' => ['EAN', 'name', 'notice', 'price', 'sku',],
+                    'attributes' => ['EAN', 'name', 'notice', 'price', 'sku'],
                     'level'=> 2,
                 ],
             ],
@@ -131,6 +130,92 @@ class UpdateFamilyVariantIntegration extends TestCase
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
             'The number of level of an existing family variant cannot be changed',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Validation: An attribute can be moved from a variant attribute set to a lower one
+     */
+    public function testMovingOfAnAttributeToLowerLevel()
+    {
+        $familyVariant = $this->getFamilyVariant('variant_clothing_color_and_size');
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'variant_attribute_sets' => [
+                [
+                    'attributes' => ['brand', 'variation_image'],
+                    'level'=> 2,
+                ],
+                [
+                    'attributes' => ['collection'],
+                    'level'=> 1,
+                ],
+            ],
+        ]);
+
+        $errors = $this->validateFamilyVariant($familyVariant);
+        $this->assertEquals(0, $errors->count());
+
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->get('doctrine.orm.entity_manager')->refresh($familyVariant);
+
+        $this->assertEquals(
+            [
+                'care_instructions',
+                'description',
+                'erp_name',
+                'keywords',
+                'meta_description',
+                'meta_title',
+                'notice',
+                'price',
+                'supplier',
+                'variation_name',
+                'wash_temperature',
+            ],
+            $this->extractAttributeCode($familyVariant->getCommonAttributes()),
+            'Variant attribute are invalid (level 1)'
+        );
+
+        $variantAttributeSet1 = $familyVariant->getVariantAttributeSet(1);
+        $this->assertEquals(
+            ['collection', 'color', 'composition', 'image_1', 'name'],
+            $this->extractAttributeCode($variantAttributeSet1->getAttributes()),
+            'Variant attribute are invalid (level 1)'
+        );
+
+        $variantAttributeSet2 = $familyVariant->getVariantAttributeSet(2);
+        $this->assertEquals(
+            ['EAN', 'brand', 'size', 'sku', 'variation_image', 'weight'],
+            $this->extractAttributeCode($variantAttributeSet2->getAttributes()),
+            'Variant attribute are invalid (level 2)'
+        );
+    }
+
+    /**
+     * Validation: An attribute cannot be moved from a variant attribute set to an upper one
+     */
+    public function testMovingOfAnAttributeToUpperLevel()
+    {
+        $familyVariant = $this->getFamilyVariant('variant_clothing_color_and_size');
+
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'attributes' => ['weight'],
+                        'level' => 1,
+                    ],
+                ],
+            ]
+        );
+
+        $errors = $this->validateFamilyVariant($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Attributes must be unique, "weight" are used several times in variant attributes sets',
             $errors->get(0)->getMessage()
         );
     }

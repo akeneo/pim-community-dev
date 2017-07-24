@@ -13,6 +13,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -58,10 +59,13 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         AttributeInterface $sku,
         AttributeInterface $other,
         Collection $axes1,
-        Collection $axes2
+        Collection $axes2,
+        CommonAttributeCollection $commonAttributes,
+        \Iterator $commonAttributesIterator
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
+        $familyVariant->getId()->willReturn(42);
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(
             ['name', 'size', 'description', 'color', 'sku']
@@ -80,6 +84,13 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $updater->update($familyVariant, ['en_US' => 'My tshirt'])->shouldBeCalled();
 
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
+
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
+        $commonAttributes->getIterator()->willReturn($commonAttributesIterator);
+        $commonAttributesIterator->rewind()->shouldBeCalled();
+        $commonAttributesIterator->valid()->willReturn(false);
+        $commonAttributesIterator->current()->willReturn();
+        $commonAttributesIterator->next()->shouldNotBeCalled();
 
         $familyVariant->addVariantAttributeSet($attributeSet1)->shouldBeCalled();
         $attributeSet1->setAxes([$color])->shouldBeCalled();
@@ -136,10 +147,15 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         Collection $axes1,
         Collection $axes2,
         Collection $axisCodes1,
-        Collection $axisCodes2
+        Collection $axisCodes2,
+        CommonAttributeCollection $commonAttributes,
+        Collection $attributes1,
+        \Iterator $commonAttributesIterator,
+        \Iterator $attributesIterator1
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
 
+        $familyVariant->getId()->willReturn(42);
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(
             ['name', 'size', 'description', 'color', 'sku']
@@ -160,6 +176,13 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $attributeSetFactory->create()->shouldNotBeCalled();
 
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
+        $commonAttributes->getIterator()->willReturn($commonAttributesIterator);
+        $commonAttributesIterator->rewind()->shouldBeCalled();
+        $commonAttributesIterator->valid()->willReturn(false);
+        $commonAttributesIterator->current()->willReturn();
+        $commonAttributesIterator->next()->shouldNotBeCalled();
+
         $axes1->isEmpty()->willReturn(false);
         $axes1->map(Argument::any())->willReturn($axisCodes1);
         $axisCodes1->toArray()->willReturn(['color']);
@@ -168,6 +191,12 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
         $attributeSet1->setLevel(Argument::any())->shouldNotBeCalled();
         $attributeSet1->getAxes()->willReturn($axes1);
+        $attributeSet1->getAttributes()->willReturn($attributes1);
+        $attributes1->getIterator()->willReturn($attributesIterator1);
+        $attributesIterator1->rewind()->shouldBeCalled();
+        $attributesIterator1->valid()->willReturn(false);
+        $attributesIterator1->current()->willReturn();
+        $attributesIterator1->next()->shouldNotBeCalled();
 
         $attributeSet2->getAxes()->willReturn($axes2);
         $axes2->isEmpty()->willReturn(false);
