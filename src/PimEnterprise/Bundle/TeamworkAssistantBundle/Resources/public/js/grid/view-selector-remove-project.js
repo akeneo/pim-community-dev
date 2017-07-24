@@ -66,7 +66,9 @@ define(
             /**
              * Prompt the datagrid project deletion modal.
              */
-            promptDeletion: function () {
+            promptDeletion: function (event) {
+                event.stopPropagation();
+
                 Dialog.confirm(
                     __('teamwork_assistant.grid.view_selector.confirmation.remove'),
                     __('teamwork_assistant.grid.view_selector.confirmation.delete'),

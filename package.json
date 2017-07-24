@@ -1,6 +1,6 @@
 {
   "name": "pim-enterprise-dev",
-  "version": "1.6.1",
+  "version": "1.8.0",
   "description": "Akeneo PIM Enterprise Application",
   "homepage": "http://www.akeneo.com",
   "private": true,
@@ -10,13 +10,6 @@
     "webpack-watch": "webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch",
     "lint": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/akeneo/pim-enterprise-dev.git"
-  },
-  "bugs": {
-    "url": "https://github.com/akeneo/pim-enterprise-dev/issues"
   },
   "dependencies": {
     "pim-community-dev": "file:vendor/akeneo/pim-community-dev"
