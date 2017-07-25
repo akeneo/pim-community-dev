@@ -10,12 +10,20 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'pim/template/product/locale-switcher',
         'pim/fetcher-registry',
         'pim/i18n'
     ],
-    function (_, BaseForm, template, FetcherRegistry, i18n) {
+    function (
+        _,
+        __,
+        BaseForm,
+        template,
+        FetcherRegistry,
+        i18n
+    ) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknDropdown AknButtonList-item locale-switcher',
@@ -23,6 +31,18 @@ define(
                 'click li a': 'changeLocale'
             },
             displayInline: false,
+            config: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -30,15 +50,19 @@ define(
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
-                        var params = { localeCode: _.first(locales).code };
-                        this.trigger('pim_enrich:form:locale_switcher:pre_render', params);
+                        const params = {
+                            localeCode: _.first(locales).code,
+                            context: this.config.context
+                        };
+                        this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
                         this.$el.html(
                             this.template({
                                 locales: locales,
                                 currentLocale: _.findWhere(locales, {code: params.localeCode}),
                                 i18n: i18n,
-                                displayInline: this.displayInline
+                                displayInline: this.displayInline,
+                                label: __('pim_enrich.entity.product.meta.locale')
                             })
                         );
                         this.delegateEvents();
@@ -62,8 +86,9 @@ define(
              * @param {Object} event
              */
             changeLocale: function (event) {
-                this.trigger('pim_enrich:form:locale_switcher:change', {
-                    localeCode: event.currentTarget.dataset.locale
+                this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
+                    localeCode: event.currentTarget.dataset.locale,
+                    context: this.config.context
                 });
 
                 this.render();

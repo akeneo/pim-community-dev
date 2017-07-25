@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Nije moguće grupirati sljedeće proizvode jer su već u varijanti grupe ili nemaju osi grupe.
       no_variant_group: Nema varijante grupe za sada. Molimo da najprije kreirate varijantu grupe.
       no_valid_variant_group: Niti jedna varijanta grupe ne dijeli atribute s odabranim proizvodima.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Pokrenuta je masovna radnja "dodati u varijantu grupe". Biti ćete obaviješteni kad bude gotovo.
     set-attribute-requirements:
       label: Postavi zahtjeve za atribute
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Povucite i ispustite za upload ili kliknite ovdje
   edit: uredi
   save: spremi
-  save and back: spremi i nazad na tablični prikaz
   save and create: spremi i kreiraj novi
   save and next: spremi i kreni dalje
   save and finish: spremi i završi
@@ -413,7 +410,6 @@ flash:
     updated: Valuta je uspješno ažurirana
     error.linked_to_channel: Ne može se onemogućiti valutu vezanu za kanal.
   family:
-    created: Obitelj je uspješno kreirana
     updated: Obitelj je uspješno ažurirana
     removed: Obitelj je uspješno uklonjena
     identifier not removable: Identifikator atribua ne može biti uklonjen iz obitelji
@@ -432,7 +428,6 @@ flash:
     enabled: Proizvod je omogućen
     disabled: Proizvod je onemogućen
   group:
-    created: Grupa je uspješno kreirana
     updated: Grupa je uspješno ažurirana
     removed: Grupa je uspješno uklonjena
   variant group:
@@ -735,9 +730,7 @@ pane.accordion:
   group_values: Grupne vrijednosti
 popin.create:
   association_type.title: Kreiraj novi tip pridruživanja
-  family.title: Kreiraj novu obitelj
   group.title: Kreiraj novu grupu
-  group_type.title: Kreiraj novi tip grupe
   product.title: Kreiraj novi proizvod
   variant_group.title: Kreiraj novu varijantu grupe
   option.title: Kreiraj novu opciju

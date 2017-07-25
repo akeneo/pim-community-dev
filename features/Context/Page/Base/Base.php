@@ -50,7 +50,7 @@ class Base extends Page
      */
     public function getElement($name)
     {
-        $element = parent::getElement($name);
+        $element = $this->createElement($name);
 
         if (isset($this->elements[$name]['decorators'])) {
             $element = $this->decorate($element, $this->elements[$name]['decorators']);
@@ -161,13 +161,15 @@ class Base extends Page
      */
     public function getUrl(array $options = [])
     {
-        $url = preg_split('/#/', $this->getPath())[1];
+        $url = $this->getPath();
 
         foreach ($options as $parameter => $value) {
             $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
         }
 
-        return $url;
+        $baseUrl = rtrim($this->getParameter('base_url'), '/').'/';
+
+        return 0 !== strpos($url, 'http') ? $baseUrl.ltrim($url, '/') : $url;
     }
 
     /**
@@ -368,7 +370,7 @@ class Base extends Page
      *
      * @return null|Element
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
     }

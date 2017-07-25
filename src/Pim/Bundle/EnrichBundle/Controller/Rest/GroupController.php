@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,6 +55,12 @@ class GroupController
     /** @var RemoverInterface */
     protected $remover;
 
+    /** @var GroupFactory */
+    protected $groupFactory;
+
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param GroupRepositoryInterface   $groupRepository
      * @param ProductRepositoryInterface $productRepository
@@ -64,6 +71,8 @@ class GroupController
      * @param NormalizerInterface        $violationNormalizer
      * @param SaverInterface             $saver
      * @param RemoverInterface           $remover
+     * @param GroupFactory               $groupFactory
+     * @param NormalizerInterface        $constraintViolationNormalizer
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -74,7 +83,9 @@ class GroupController
         ValidatorInterface $validator,
         NormalizerInterface $violationNormalizer,
         SaverInterface $saver,
-        RemoverInterface $remover
+        RemoverInterface $remover,
+        GroupFactory $groupFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->groupRepository = $groupRepository;
         $this->productRepository = $productRepository;
@@ -85,6 +96,8 @@ class GroupController
         $this->userContext = $userContext;
         $this->validator = $validator;
         $this->remover = $remover;
+        $this->groupFactory = $groupFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -191,5 +204,40 @@ class GroupController
         $this->remover->remove($group);
 
         return new JsonResponse();
+    }
+
+    /**
+     * Creates group
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $group = $this->groupFactory->createGroup();
+        $this->updater->update($group, $data);
+        $violations = $this->validator->validate($group);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['group' => $group]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($group);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $group,
+            'internal_api'
+        ));
     }
 }

@@ -39,7 +39,7 @@ extensions:
 
     pim-job-instance-yml-base-import-show-import-button:
         module: pim/job/common/edit/launch
-        parent: pim-job-instance-yml-base-import-show-launch-switcher-item
+        parent: pim-job-instance-yml-base-import-show-file-path
         targetZone: buttons
         config:
             label: pim_enrich.form.job_instance.button.import.launch

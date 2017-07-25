@@ -165,7 +165,7 @@ class ProductRepository extends EntityRepository implements
             ->innerJoin('p.values', 'v')
             ->innerJoin('v.attribute', 'a')
             ->where($qb->expr()->in('p.id', $productIds))
-            ->groupBy('a.id');
+            ->distinct(true);
 
         $attributes = $qb->getQuery()->getArrayResult();
         $attributeIds = [];

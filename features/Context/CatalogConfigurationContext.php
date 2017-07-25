@@ -4,11 +4,11 @@ namespace Context;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pim\Behat\Context\PimContext;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CatalogConfigurationContext extends RawMinkContext
+class CatalogConfigurationContext extends PimContext
 {
     /** @var string Catalog configuration path */
     protected $catalogPath = 'catalog';

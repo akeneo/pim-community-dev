@@ -47,8 +47,8 @@ Feature: Import options
     When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "code: This value should not be blank"
+    Then I should see the text "skipped 1"
+    And I should see the text "code: This value should not be blank"
 
   Scenario: Skip options with unknown attribute code
     Given the "footwear" catalog configuration
@@ -66,8 +66,8 @@ Feature: Import options
     When I am on the "csv_footwear_option_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "Property \"attribute\" expects a valid attribute code. The attribute does not exist, \"unknown\" given."
+    Then I should see the text "skipped 1"
+    And I should see the text "Property \"attribute\" expects a valid attribute code. The attribute does not exist, \"unknown\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Import options with localizable label
@@ -87,17 +87,16 @@ Feature: Import options
     When I am on the "option_import" import job page
     And I launch the import job
     Then I wait for the "option_import" job to finish
-    And I edit the "Test" attribute
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "04FR"
-    And I should see "04US"
-    And I should see "04DE"
-    And I should see "05FR"
-    And I should see "05US"
-    And I should see "05DE"
-    And I should see "05GB"
-    And I should see "05GB"
+    And I am on the "Test" attribute page
+    And I visit the "Options" tab
+    And I should see the text "04FR"
+    And I should see the text "04US"
+    And I should see the text "04DE"
+    And I should see the text "05FR"
+    And I should see the text "05US"
+    And I should see the text "05DE"
+    And I should see the text "05GB"
+    And I should see the text "05GB"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Stop an import when a label is provided for a disabled language
@@ -117,8 +116,8 @@ Feature: Import options
     When I am on the "option_import" import job page
     And I launch the import job
     And I wait for the "option_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "Field \"label-fr_CA\" is provided, authorized fields are: \"attribute, code, sort_order, label-de_DE, label-en_GB, label-en_US, label-fr_FR\""
+    Then I should see the text "Status: FAILED"
+    And I should see the text "Field \"label-fr_CA\" is provided, authorized fields are: \"attribute, code, sort_order, label-de_DE, label-en_GB, label-en_US, label-fr_FR\""
 
   Scenario: Import options with full numeric codes
     Given the "footwear" catalog configuration

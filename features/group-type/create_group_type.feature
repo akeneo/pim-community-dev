@@ -15,9 +15,10 @@ Feature: Group type creation
     When I fill in the following information in the popin:
       | Code | special |
     And I press the "Save" button
+    Then I should see the text "Group type successfully created"
     And I wait 5 seconds
     Then I should be on the "special" group type page
-    And I should see "special"
+    And I should see the text "special"
 
   Scenario: Fail to create a group type with an empty or invalid code
     Given I press the "Save" button

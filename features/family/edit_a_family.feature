@@ -15,8 +15,8 @@ Feature: Edit a family
     When I fill in the following information:
       | English (United States) | My family |
     And I save the family
-    Then I should see "Family successfully updated"
-    And I should see "My family"
+    Then I should see the text "Family successfully updated"
+    And I should see the text "My family"
 
   Scenario: Successfully edit a family
     And the following attributes:
@@ -34,7 +34,7 @@ Feature: Edit a family
     And I save the family
     And I should not see the text "There are unsaved changes."
     When I am on the products page
-    And I should see "Elixir"
+    And I should see the text "Elixir"
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Boots" family page
@@ -42,7 +42,7 @@ Feature: Edit a family
       | English (United States) | NewBoots |
     And I save the family
     Then I should not see the text "There are unsaved changes."
-    Then I should see "NewBoots"
+    Then I should see the text "NewBoots"
 
   @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -56,7 +56,7 @@ Feature: Edit a family
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   Scenario: Disable property fields when the user can't edit a family
     Given I am on the "Administrator" role page

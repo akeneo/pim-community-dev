@@ -103,7 +103,7 @@ services:
     pim_catalog.doctrine.query.filter.object_id_resolver:
         class: '%pim_catalog.doctrine.query.filter.object_id_resolver.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine.orm.default_entity_manager'
         calls:
             - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
             - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
@@ -113,7 +113,7 @@ services:
     pim_catalog.doctrine.query.filter.object_code_resolver:
         class: '%pim_catalog.doctrine.query.filter.object_code_resolver.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine.orm.default_entity_manager'
         calls:
             - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
             - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]

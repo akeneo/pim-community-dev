@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
@@ -13,6 +12,7 @@ use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -69,14 +69,14 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $completenessCollectionNormalizer;
 
-    /** @var string */
-    protected $storageDriver;
-
     /** @var UserContext */
     protected $userContext;
 
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
+
+    /** @var FileNormalizer */
+    protected $fileNormalizer;
 
     /**
      * @param NormalizerInterface               $productNormalizer
@@ -92,9 +92,9 @@ class ProductNormalizer implements NormalizerInterface
      * @param ChannelRepositoryInterface        $channelRepository
      * @param CollectionFilterInterface         $collectionFilter
      * @param NormalizerInterface               $completenessCollectionNormalizer
-     * @param string                            $storageDriver
      * @param UserContext                       $userContext
      * @param CompletenessCalculatorInterface   $completenessCalculator
+     * @param FileNormalizer                    $fileNormalizer
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -110,9 +110,9 @@ class ProductNormalizer implements NormalizerInterface
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
-        $storageDriver,
         UserContext $userContext,
-        CompletenessCalculatorInterface $completenessCalculator
+        CompletenessCalculatorInterface $completenessCalculator,
+        FileNormalizer $fileNormalizer
     ) {
         $this->productNormalizer                = $productNormalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -127,9 +127,9 @@ class ProductNormalizer implements NormalizerInterface
         $this->channelRepository                = $channelRepository;
         $this->collectionFilter                 = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
-        $this->storageDriver                    = $storageDriver;
         $this->userContext                      = $userContext;
         $this->completenessCalculator           = $completenessCalculator;
+        $this->fileNormalizer                   = $fileNormalizer;
     }
 
     /**
@@ -158,7 +158,8 @@ class ProductNormalizer implements NormalizerInterface
             'updated'           => $updated,
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $this->getNormalizedCompletenesses($product)
+            'completenesses'    => $this->getNormalizedCompletenesses($product),
+            'image'             => $this->normalizeImage($product->getImage(), $format, $context),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
@@ -228,5 +229,21 @@ class ProductNormalizer implements NormalizerInterface
             }
         }
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
+    }
+
+    /**
+     * @param ValueInterface $data
+     * @param string         $format
+     * @param array          $context
+     *
+     * @return array|null
+     */
+    protected function normalizeImage(?ValueInterface $data, $format, $context = [])
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
     }
 }

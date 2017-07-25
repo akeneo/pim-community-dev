@@ -50,7 +50,7 @@ Feature: Classify a product
     And I expand the "2014_collection" category
     And I click on the "123" category
     When I save the product
-    Then I should see "Product successfully updated"
+    Then I should see the text "Product successfully updated"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5656
   Scenario: Change categories without saving

@@ -29,7 +29,7 @@ Feature: Quick export products according to the product grid context
       | type    | message                                                     |
       | success | Quick export CSV product quick export grid context finished |
     When I go on the last executed job resume of "csv_product_grid_context_quick_export"
-    Then I should see "COMPLETED"
+    Then I should see the text "COMPLETED"
     And the name of the exported file of "csv_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.csv"
     And exported file of "csv_product_grid_context_quick_export" should contain:
     """
@@ -51,7 +51,7 @@ Feature: Quick export products according to the product grid context
       | type    | message                                                      |
       | success | Quick export XLSX product quick export grid context finished |
     When I go on the last executed job resume of "xlsx_product_grid_context_quick_export"
-    Then I should see "COMPLETED"
+    Then I should see the text "COMPLETED"
     And the name of the exported file of "xlsx_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.xlsx"
     And exported xlsx file of "xlsx_product_grid_context_quick_export" should contain:
       | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size | weight | weight-unit |

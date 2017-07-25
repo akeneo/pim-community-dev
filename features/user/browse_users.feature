@@ -12,4 +12,4 @@ Feature: Browse users
     Given I am on the users page
     And I should see users "admin", "Peter", "Julia", "Mary" and "Sandra"
     When I click on the "View" action of the row which contains "Peter"
-    Then I should see "Peter Williams"
+    Then I should see the text "Peter Williams"

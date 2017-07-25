@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: At
 This value should not be a decimal.: Værdien må ikke være en decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Filtypen er ikke tilladt (tilladte filtyper: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Værdien %value% benyttes allerede på et andet produkt for entydig attribut %attribute%
+The same identifier is already set on another product: Den samme id er allerede indstillet på et andet produkt
 regex.comma_or_semicolon.message: Dette felt må ikke indeholde komma eller semikolon.
 file.extensions.message: 'Filtypen er ikke tilladt (tilladte filtyper: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Denne form for værdi forventer brugen af {{ decimal_separator }} til at adskille decimaler.
@@ -21,3 +22,8 @@ file.extensions.message: 'Filtypen er ikke tilladt (tilladte filtyper: %extensio
 "This type of value expects the use of comma (,) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Denne form for værdi forventer brugen af en arabisk decimalseparator (٫) til at adskille decimaler.
 "This type of value expects the use of the format {{ date_format }} for dates.": Denne form for værdi forventer brug af formatet {{ date_format }} på datoer.
+"The category \"%category%\" has to be a root category.": Kategorien "%category%" skal være en rod kategori.
+"The attribute \"%attributeCode%\" does not exist.": Attributten "%attributeCode%" findes ikke.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Attributten "%attributeCode%" er ikke en metrisk attribut.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Enhed "%unitCode%" findes ikke eller hører ikke til den standard metriske familie af den givne attribut "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Valuta "%currency%" skal være aktiveret.

@@ -12,8 +12,8 @@ Feature: Export locales
     And I am on the "csv_footwear_locale_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_locale_export" job to finish
-    Then I should see "Read 210"
-    And I should see "Written 210"
+    Then I should see the text "Read 210"
+    And I should see the text "Written 210"
     And exported file of "csv_footwear_locale_export" should contain:
     """
     code;activated

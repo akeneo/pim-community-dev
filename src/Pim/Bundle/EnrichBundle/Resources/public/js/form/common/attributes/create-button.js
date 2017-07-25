@@ -75,7 +75,7 @@ define(
                         modal.open();
                         modal.$el.find('.modal-footer').remove();
 
-                        modal.$el.on('click', 'span.attribute-choice', function () {
+                        modal.$el.on('click', '.attribute-choice', function () {
                             modal.close();
                             modal.$el.remove();
                             router.redirect($(this).attr('data-route'), {trigger: true});
@@ -112,7 +112,7 @@ define(
                     if (attributeTypesMap.hasOwnProperty(key)) {
                         sortedAttributeTypesByLabel.push({
                             code: key,
-                            label: __('pim_enrich.entity.attribute_label.' + attributeTypesMap[key])
+                            label: __('pim_enrich.entity.attribute.type.' + attributeTypesMap[key])
                         });
                     }
                 }

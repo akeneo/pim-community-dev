@@ -130,24 +130,25 @@ pim_enrich:
     info:
       update_failed: 更新失败
       update_successful: 分组已更新
+    create_popin:
+      code: 代码
+      label: 标签
+      labels:
+        save: 保存
+        cancel: 取消
     product:
       title: 产品
       btn:
-        enable: 启用
         enabled: 已启用
-        disable: 禁用
         disabled: 已禁用
         download_pdf: PDF
         compare_translate: 比较/翻译
         delete: 删除
         save: 保存
-        save_and_back: 保存并返回到列表
       history:
         version: 版本
         author: 作者
         logged_at: 登录
-        more: 更多
-        less: 更少
         from: 从
         modified: 已修改
         property: 属性
@@ -178,6 +179,7 @@ pim_enrich:
             group_label: 标签
             more_products: '{{ count }} 更多产品...'
             close: 关闭
+        status: 状态
       copy:
         select: 选择
         all: 所有
@@ -203,14 +205,10 @@ pim_enrich:
           family: 选择一个品类
           save: 保存
           cancel: 取消
-    attribute:
-      scopable: 范围允许
-      global: 全局
+      message:
+        created: 产品已创建
+      completeness: 完成
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - 字段
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -219,11 +217,11 @@ pim_enrich:
       btn:
         save: 保存
       title: 关联类型
+      create_popin:
+        title: 创建关联类型
+      message:
+        created: 关联类型已创建
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - 字段
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -232,12 +230,12 @@ pim_enrich:
       btn:
         save: 保存
       title: 分组类型
+      create_popin:
+        title: 创建组类型
+      message:
+        created: 分组类型已创建
     channel:
       title: 频道
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - 字段
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -254,21 +252,10 @@ pim_enrich:
         updated_by: 更新者：
       btn:
         save: 保存
-    attribute_label:
-      pim_catalog_identifier: 标识
-      pim_catalog_text: 文本
-      pim_catalog_textarea: 文本区域
-      pim_catalog_number: 数量
-      pim_catalog_price_collection: 价格
-      pim_catalog_multiselect: 多选
-      pim_catalog_simpleselect: 单选
-      pim_catalog_file: 文件
-      pim_catalog_image: 图片
-      pim_catalog_boolean: "确定/取消"
-      pim_catalog_date: 日期
-      pim_catalog_metric: 公制
-      pim_reference_data_simpleselect: 参考数据简单选择
-      pim_reference_data_multiselect: 参考数据多项选择
+      create_popin:
+        title: 创建一个新品类
+      message:
+        created: 产品族已创建
     attribute_option:
       code: 代码
       label: 标签
@@ -280,9 +267,6 @@ pim_enrich:
         deletion_failed: 款式组不能被删除。
         update_successful: 款式组已更新
         update_failed: 款式组不能被删除。
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - 字段
         already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
         no_attributes: 这个款式组还没有属性
       btn:
@@ -293,12 +277,12 @@ pim_enrich:
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
+      create_popin:
+        title: 创建一个新的款式组
+      message:
+        created: 属性组已创建
     group:
       title: 分组
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - 字段
       btn:
         save: 保存
       meta:
@@ -307,6 +291,31 @@ pim_enrich:
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
+      create_popin:
+        title: 创建新组
+      message:
+        created: 分组已创建
+    attribute:
+      scopable: 范围允许
+      type:
+        pim_catalog_identifier: 标识
+        pim_catalog_text: 文本
+        pim_catalog_textarea: 文本区域
+        pim_catalog_number: 数量
+        pim_catalog_price_collection: 价格
+        pim_catalog_multiselect: 多选
+        pim_catalog_simpleselect: 单选
+        pim_catalog_file: 文件
+        pim_catalog_image: 图片
+        pim_catalog_boolean: "确定/取消"
+        pim_catalog_date: 日期
+        pim_catalog_metric: 公制
+        pim_reference_data_simpleselect: 参考数据简单选择
+        pim_reference_data_multiselect: 参考数据多项选择
+      validation_rule:
+        email: 电子邮件
+        regexp: 正则表达式
+        url: 链接地址
     attribute_group:
       info:
         update_successful: 属性组已更新
@@ -343,6 +352,7 @@ pim_enrich:
             no_available_attributes: 没有需要添加的属性
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
+          attribute_group_selector: 属性组
         categories:
           title: 分类
       panel:
@@ -417,6 +427,7 @@ pim_enrich:
           general: 一般信息
           code: 代码
           attribute_as_label: 属性作为标签
+          empty_attribute_as_image: 未选择
           label_translations: 标签翻译
         attributes:
           title: 属性
@@ -560,6 +571,47 @@ pim_enrich:
             help: 关闭产品历史自动更新以提高性能
         history:
           title: 历史
+      file_path: 文件路径
+    attribute:
+      meta:
+        created: 已创建
+        updated: 上次更新
+      tab:
+        properties:
+          title: 属性
+          section:
+            common: 一般参数
+            validation: 验证参数
+          label:
+            allowed_extensions: 允许的扩展
+            available_locales: 可用区域
+            code: 代码
+            date_max: 最大日期
+            date_min: 最小日期
+            default_metric_unit: 默认度量单位
+            group: 属性组
+            is_locale_specific: 特定的区域
+            max_characters: 最大字符数
+            max_file_size: 最大文件大小 (MB)
+            metric_family: 度量族
+            number_max: 最大编号
+            number_min: 最小编号
+            type: 类型
+            unique: 唯一性值
+            useable_as_grid_filter: 在表格中可用
+            validation_regexp: 正则表达式
+            validation_rule: 验证规则
+          default_label:
+            default_metric_unit: 选择一个单位
+            group: 选择属性组
+            metric_family: 选择一个品类
+            reference_data_name: 选择引用的数据类型
+        labels:
+          title: 标签翻译
+        choices:
+          title: 选项
+        history:
+          title: 历史
     mass_edit:
       family:
         attributes:
@@ -697,8 +749,15 @@ pim_enrich:
     edit_common_attributes:
       description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
   index:
+    import_profiles:
+      list: 选择一份作业
+      create_popin:
+        title: 新建的导入方案
     group:
       create_btn: 创建组
+    export_profiles:
+      create_popin:
+        title: 创建新的导出配置文件
     user:
       title: 用户
       create_btn: 创建用户
@@ -762,13 +821,133 @@ batch_jobs:
     label: 添加到款式组
     perform:
       label: 添加到款式组
+  csv_product_export:
+    label: 产品导出到CSV
+    export.label: 产品导出
+  csv_category_export:
+    label: 分类导出到CSV
+    export.label: 分类导出
+  csv_attribute_export:
+    label: 属性导出到CSV
+    export.label: 属性导出
+  csv_attribute_option_export:
+    label: 属性选项导出到CSV
+    export.label: 属性选项导出
+  csv_association_type_export:
+    label: 相关类型导出到CSV
+    export.label: 相关类型导出
+  csv_group_export:
+    label: 分组导出到CSV
+    export.label: 分组导出
+  csv_product_import:
+    label: 从CSV导入产品
+    validation.label: 文件验证
+    import.label: 产品导入
+    import_associations.label: 相关导入
+  csv_category_import:
+    label: 从CSV导入分类
+    validation.label: 文件验证
+    import.label: 分类导入
+  csv_attribute_import:
+    label: 从CSV导入属性
+    validation.label: 文件验证
+    import.label: 属性导入
+  csv_attribute_option_import:
+    label: 从CSV导入属性选项
+    validation.label: 文件验证
+    import.label: 属性选项导入
+  csv_association_type_import:
+    label: 从CSV导入相关类型
+    validation.label: 文件验证
+    import.label: 相关类型导入
+  csv_family_import:
+    validation.label: 文件验证
+  csv_group_import:
+    label: 从CSV导入分组
+    validation.label: 文件验证
+    import.label: 分组导入
+  csv_variant_group_import:
+    validation.label: 文件验证
+  csv_channel_import:
+    validation.label: 文件验证
+  csv_locale_import:
+    validation.label: 文件验证
+  csv_attribute_group_import:
+    validation.label: 文件验证
+  csv_currency_import:
+    validation.label: 文件验证
+  csv_group_type_import:
+    validation.label: 文件验证
+  xlsx_category_import:
+    label: 用XLSX导入分类
+    validation.label: 文件验证
+    import.label: 分类导入
+  xlsx_association_type_import:
+    label: 从XLSX中导入关联类型
+    validation.label: 文件验证
+    import.label: 相关类型导入
+  xlsx_attribute_import:
+    label: 属性导入到XLSX
+    validation.label: 文件验证
+    import.label: 属性导入
+  xlsx_attribute_option_import:
+    label: 用XLSX导入属性选项
+    validation.label: 文件验证
+    import.label: 属性选项导入
+  xlsx_family_import:
+    label: 在XLSX导入品类
+    validation.label: 文件验证
+  xlsx_product_export:
+    label: 产品导出到 XLSX
+    export.label: 产品导出
+  xlsx_product_import:
+    label: 从 XLSX导入产品
+    validation.label: 文件验证
+    import.label: 产品导入
+    import_associations.label: 相关导入
+  xlsx_group_export:
+    label: 分组导出到 XLSX
+    export.label: 分组导出
+  xlsx_variant_group_export:
+    label: 款式组导出到XLSX
+  xlsx_group_import:
+    label: 从XLSX导入分组
+    validation.label: 文件验证
+    import.label: 分组导入
+  xlsx_variant_group_import:
+    label: 在 XLSX 中导入款式组
+    validation.label: 文件验证
+    import.label: 导入款式组
+  xlsx_family_export:
+    label: 在XLSX导入品类
+  xlsx_category_export:
+    label: 在XLSX中导出分类
+    export.label: 分类导出
+  xlsx_attribute_export:
+    label: 属性导出到XLSX
+    export.label: 属性导出到XLSX
+  xlsx_attribute_option_export:
+    label: 属性选项导出到XLSX
+    export.label: 属性选项导出到XLSX
+  xlsx_association_type_export:
+    label: 关联类型导出到XLSX
+    export.label: 关联类型导出到XLSX
+  xlsx_channel_import:
+    validation.label: 文件验证
+  xlsx_locale_import:
+    validation.label: 文件验证
+  xlsx_attribute_group_import:
+    validation.label: 文件验证
+  xlsx_currency_import:
+    validation.label: 文件验证
+  xlsx_group_type_import:
+    validation.label: 文件验证
 pim_menu:
   tab:
-    collect: 收集
-    enrich: 添加
+    dashboard: 主界面
+    products: 商品
     settings: 设置 
     system: 系统
-    spread: 传播
   item:
     association_type: 关联类型
     attribute: 属性
@@ -793,9 +972,9 @@ pim_menu:
     user_role: 角色
     info: 系统信息
     job_tracker: 过程跟踪器
-pim_header:
   user:
     logout: 退出登录
     user_account: 我的帐户
 pim_notification:
   mark_all_as_read: 标记所有为已读
+  loading: 正在加载...

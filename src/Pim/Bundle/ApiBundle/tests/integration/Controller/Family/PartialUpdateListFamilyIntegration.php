@@ -37,6 +37,7 @@ JSON;
                 'code'                   => 'familyA1',
                 'attributes'             => ['a_date', 'a_file', 'a_localizable_image', 'sku'],
                 'attribute_as_label'     => 'sku',
+                'attribute_as_image'     => null,
                 'attribute_requirements' => [
                     'ecommerce'       => ['a_date', 'a_file', 'sku'],
                     'ecommerce_china' => ['sku'],
@@ -50,6 +51,7 @@ JSON;
                 'code'                   => 'familyC',
                 'attributes'             => ['a_yes_no', 'sku'],
                 'attribute_as_label'     => 'sku',
+                'attribute_as_image'     => null,
                 'attribute_requirements' => [
                     'ecommerce'       => ['sku'],
                     'ecommerce_china' => ['sku'],

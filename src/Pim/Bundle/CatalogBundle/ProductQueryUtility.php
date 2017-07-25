@@ -6,7 +6,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
- * Provides util methods to ease the query building in MongoDB
+ * Provides util methods to ease the query building
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

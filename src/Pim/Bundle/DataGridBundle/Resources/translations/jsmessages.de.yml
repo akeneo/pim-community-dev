@@ -27,6 +27,8 @@ Action performed.: Aktion ausgeführt.
 Action is not performed.: Aktion nicht ausgeführt.
 Please, select item to perform action.: Bitte Element zum Ausführen der Aktion wählen.
 View per page: Pro Seite
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Entität
 oro.datagrid.noentities: Keine Einträge gefunden
 oro.datagrid.noresults: "Keine Ergebnisse gefunden. Versuchen Sie Ihre Suchparameter zu verändern."
@@ -84,6 +86,6 @@ grid.view_selector:
   placeholder: Name der neuen Ansicht
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   confirmation:
-    remove: Sind Sie sicher, dass Sie diese Tabellenansicht löschen möchten?
+    remove: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
     delete: Löschbestätigung
-grid.view_selector.flash.updated: Tabellenansicht erfolgreich aktualisiert
+grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert

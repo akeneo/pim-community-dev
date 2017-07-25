@@ -28,14 +28,32 @@ class IndexingProductIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->saveAll($products);
 
-        $indexedProductFoo = $this->esClient->get(self::DOCUMENT_TYPE, 'foo');
-        $this->assertTrue($indexedProductFoo['found']);
+        $indexedProductFoo = $this->esClient->search(self::DOCUMENT_TYPE, [
+            'query' => [
+                'term' => [
+                    'identifier' => 'foo'
+                ]
+            ]
+        ]);
+        $this->assertSame(1, $indexedProductFoo['hits']['total']);
 
-        $indexedProductBar = $this->esClient->get(self::DOCUMENT_TYPE, 'bar');
-        $this->assertTrue($indexedProductBar['found']);
+        $indexedProductBar = $this->esClient->search(self::DOCUMENT_TYPE, [
+            'query' => [
+                'term' => [
+                    'identifier' => 'bar'
+                ]
+            ]
+        ]);
+        $this->assertSame(1, $indexedProductBar['hits']['total']);
 
-        $indexedProductBaz = $this->esClient->get(self::DOCUMENT_TYPE, 'baz');
-        $this->assertTrue($indexedProductBaz['found']);
+        $indexedProductBaz = $this->esClient->search(self::DOCUMENT_TYPE, [
+            'query' => [
+                'term' => [
+                    'identifier' => 'baz'
+                ]
+            ]
+        ]);
+        $this->assertSame(1, $indexedProductBaz['hits']['total']);
     }
 
     public function testIndexingProductOnUnitarySave()
@@ -43,8 +61,17 @@ class IndexingProductIntegration extends TestCase
         $product = $this->productBuilder->createProduct('bat');
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $indexedProduct = $this->esClient->get(self::DOCUMENT_TYPE, 'bat');
-        $this->assertTrue($indexedProduct['found']);
+        $this->esClient->refreshIndex();
+
+        $indexedProduct = $this->esClient->search(self::DOCUMENT_TYPE, [
+            'query' => [
+                'term' => [
+                    'identifier' => 'bat'
+                ]
+            ]
+        ]);
+
+        $this->assertSame(1, $indexedProduct['hits']['total']);
     }
 
     /**
@@ -63,6 +90,6 @@ class IndexingProductIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()], false);
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

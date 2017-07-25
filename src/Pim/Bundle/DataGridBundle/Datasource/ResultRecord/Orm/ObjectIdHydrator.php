@@ -26,7 +26,7 @@ class ObjectIdHydrator implements HydratorInterface
         $qb
             ->resetDQLPart('from')
             ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
-            ->groupBy($rootIdExpr);
+            ->distinct(true);
 
         $qb = $this->setOrderByFieldsToSelect($qb);
         $qb->addSelect($rootIdExpr);

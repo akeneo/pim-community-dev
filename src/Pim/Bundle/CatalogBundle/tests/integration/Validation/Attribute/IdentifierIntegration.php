@@ -141,6 +141,24 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function testIdentifierShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->getAttribute('sku');
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'auto_option_sorting' => false,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
+    }
+
     public function testIdentifierShouldNotHaveAvailableLocales()
     {
         $attribute = $this->getAttribute('sku');

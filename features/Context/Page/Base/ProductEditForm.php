@@ -26,8 +26,8 @@ class ProductEditForm extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown'                => ['css' => '.attribute-edit-actions .locale-switcher'],
-                'Channel dropdown'                => ['css' => '.attribute-edit-actions .scope-switcher'],
+                'Locales dropdown'                => ['css' => '.AknTitleContainer .locale-switcher'],
+                'Channel dropdown'                => ['css' => '.AknTitleContainer .scope-switcher'],
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
@@ -157,12 +157,15 @@ class ProductEditForm extends Form
             $field = $fieldContainer->find('css', 'div.field-input > textarea');
 
             if (!$field || !$field->isVisible()) {
-                $id = $fieldContainer->find('css', 'textarea')->getAttribute('id');
-                $this->getSession()->executeScript(
-                    sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
-                );
+                $textarea = $fieldContainer->find('css', 'textarea');
+                if (null !== $textarea) {
+                    $id = $textarea->getAttribute('id');
+                    $this->getSession()->executeScript(
+                        sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
+                    );
 
-                return true;
+                    return true;
+                }
             }
 
             $field->setValue($value);
@@ -430,7 +433,7 @@ class ProductEditForm extends Form
      *
      * @return null|Element
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->spin(function () use ($text) {
             return $this->find(

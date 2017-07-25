@@ -75,6 +75,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -116,7 +117,8 @@ JSON;
         "sort_order":12,
         "localizable":false,
         "scopable":false,
-        "labels":[]
+        "labels":[],
+        "auto_option_sorting":null
     }
 JSON;
 
@@ -151,6 +153,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -208,6 +211,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 

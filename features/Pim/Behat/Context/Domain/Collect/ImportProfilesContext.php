@@ -86,7 +86,7 @@ class ImportProfilesContext extends ImportExportContext
 
         array_unshift($rows, $columns);
 
-        $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
+        $this->theFollowingFileToImport('csv', new PyStringNode($rows, 0));
     }
 
     /**
@@ -121,7 +121,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $this->getNavigationContext()->openPage('Import show', ['code' => $job->getCode()]);
+        $this->getNavigationContext()->iAmOnThePage('Import show', ['code' => $job->getCode()]);
     }
 
     /**

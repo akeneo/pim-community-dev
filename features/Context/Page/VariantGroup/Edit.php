@@ -33,7 +33,7 @@ class Edit extends ProductEditForm
             $this->elements,
             [
                 'Main context selector' => [
-                    'css'        => '.tab-container .object-attributes .attribute-edit-actions .context-selectors',
+                    'css'        => '.AknTitleContainer-context',
                     'decorators' => [
                         ContextSwitcherDecorator::class
                     ]

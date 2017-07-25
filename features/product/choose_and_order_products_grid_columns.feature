@@ -14,7 +14,7 @@ Feature: Choose and order product grids columns
     And I am on the products page
 
   Scenario: Successfully display default columns
-    Then I should see the columns Sku, Label, Family, Status, Complete, Created At, Updated At, Groups
+    Then I should see the columns Sku, Image, Label, Family, Status, Complete, Created At, Updated At, Groups
 
   @skip
   Scenario: Successfully hide some columns

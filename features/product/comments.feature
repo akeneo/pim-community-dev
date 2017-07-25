@@ -22,7 +22,7 @@ Feature: Leave a comment on a product
     Given I am logged in as "Julia"
     And I am on the "rangers" product page
     And I visit the "Comments" column tab
-    Then I should see "No comment for now"
+    Then I should see the text "No comment for now"
     When I add a new comment "My comment"
     Then I should not see "No comment for now"
     And I should see the following product comments:
@@ -61,7 +61,7 @@ Feature: Leave a comment on a product
     And I visit the "Comments" column tab
     And I add a new comment "My comment"
     When I delete the "My comment" comment
-    Then I should see "Confirm deletion"
+    Then I should see the text "Confirm deletion"
     And I confirm the removal
     Then I should not see "My comment"
 

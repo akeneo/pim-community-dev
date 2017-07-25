@@ -131,13 +131,10 @@ pim_enrich:
         compare_translate: Porównaj / Tłumacz
         delete: Usuń
         save: Zapisz
-        save_and_back: Zapisz i wróć do listy
       history:
         version: Wersja
         author: Autor
         logged_at: Zalogowano jako
-        more: Więcej
-        less: Mniej
         from: Od
         modified: Zmodyfikowany
         property: Właściwości
@@ -188,14 +185,7 @@ pim_enrich:
           family: Wybierz rodzinę
           save: Zapisz
           cancel: Anuluj
-    attribute:
-      scopable: Określaj zasięg
-      global: Globalnie
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -203,10 +193,6 @@ pim_enrich:
         save: Zapisz
       title: typ powiązania
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -215,10 +201,6 @@ pim_enrich:
       title: typ grupy
     channel:
       title: kanał
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -231,30 +213,12 @@ pim_enrich:
         updated: Zaktualizowano
       btn:
         save: Zapisz
-    attribute_label:
-      pim_catalog_identifier: Identyfikator
-      pim_catalog_text: Tekst
-      pim_catalog_textarea: Pole tekstowe
-      pim_catalog_number: Liczba
-      pim_catalog_price_collection: Cena
-      pim_catalog_multiselect: Wielokrotny wybór
-      pim_catalog_simpleselect: Pojedynczy wybór
-      pim_catalog_file: Plik
-      pim_catalog_image: Obrazek
-      pim_catalog_boolean: "Tak/Nie"
-      pim_catalog_date: Data
-      pim_catalog_metric: Miara
-      pim_reference_data_simpleselect: Referencja pojedynczy wybór
-      pim_reference_data_multiselect: Referencja wielokrotny wybór
     attribute_option:
       code: Kod
       label: Etykieta
       actions: Działania
     variant_group:
       info:
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - pola
         no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
       btn:
         save: Zapisz
@@ -264,16 +228,33 @@ pim_enrich:
         updated: Zaktualizowano
     group:
       title: Grupa
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - pola
       btn:
         save: Zapisz
       meta:
         product_count: Produkty
         created: Utworzono
         updated: Zaktualizowano
+    attribute:
+      scopable: Określaj zasięg
+      type:
+        pim_catalog_identifier: Identyfikator
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Pole tekstowe
+        pim_catalog_number: Liczba
+        pim_catalog_price_collection: Cena
+        pim_catalog_multiselect: Wielokrotny wybór
+        pim_catalog_simpleselect: Pojedynczy wybór
+        pim_catalog_file: Plik
+        pim_catalog_image: Obrazek
+        pim_catalog_boolean: "Tak/Nie"
+        pim_catalog_date: Data
+        pim_catalog_metric: Miara
+        pim_reference_data_simpleselect: Referencja pojedynczy wybór
+        pim_reference_data_multiselect: Referencja wielokrotny wybór
+      validation_rule:
+        email: E-mail
+        regexp: Wyrażenie regularne
+        url: URL
     attribute_group:
       info:
         update_successful: Grupa atrybutów została pomyślnie zaktualizowana
@@ -311,6 +292,7 @@ pim_enrich:
             no_available_attributes: Nie ma więcej atrybutów do dodania
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
+          attribute_group_selector: Grupa atrybutów
         categories:
           title: Kategorie
       panel:
@@ -409,6 +391,7 @@ pim_enrich:
         "no": "Nie"
         "yes": "Tak"
     variant_group:
+      axis.help: 'Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.'
       tab:
         properties:
           title: Właściwości
@@ -532,6 +515,45 @@ pim_enrich:
           real_time_versioning:
             title: Aktualizacja historii w czasie rzeczywistym
             help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+        history:
+          title: Historia
+      file_path: Ścieżka do pliku
+    attribute:
+      meta:
+        created: Utworzono
+        updated: Ostatnia aktualizacja
+      tab:
+        properties:
+          title: Właściwości
+          section:
+            common: Parametry ogólne
+          label:
+            allowed_extensions: Dozwolone rozszerzenia
+            available_locales: Dostępne ustawienia regionalne
+            code: Kod
+            date_max: Data końcowa
+            date_min: Data początkowa
+            default_metric_unit: Domyślna jednostka metryczna
+            group: Grupa atrybutów
+            max_characters: Maksymalna liczba znaków
+            max_file_size: Maksymalny rozmiar pliku (MB)
+            metric_family: Zestaw metryk
+            number_max: Maksymalna liczba
+            number_min: Minimalna liczba
+            type: Typ
+            unique: Unikatowa wartość
+            useable_as_grid_filter: Używane w tabeli
+            validation_regexp: Wyrażenie regularne
+            validation_rule: Reguła sprawdzania poprawności
+          default_label:
+            default_metric_unit: Wybierz jednostkę
+            group: Wybierz grupę atrybutów
+            metric_family: Wybierz rodzinę
+            reference_data_name: Wybierz typ danych referencyjnych
+        labels:
+          title: Tłumaczenia etykiety
+        choices:
+          title: Ustawienia
         history:
           title: Historia
     mass_edit:
@@ -663,11 +685,10 @@ batch_jobs:
       label: Określ wymagania atrybutów
 pim_menu:
   tab:
-    collect: Gromadzenie
-    enrich: Uzupełnianie
+    dashboard: Kokpit
+    products: Produkty
     settings: Ustawienia
     system: System
-    spread: Propagowanie
   item:
     association_type: Typy powiązań
     attribute: Atrybuty
@@ -692,9 +713,9 @@ pim_menu:
     user_role: Role
     info: Informacje o systemie
     job_tracker: Śledzenie procesu
-pim_header:
   user:
     logout: Wyloguj się
     user_account: Moje konto
 pim_notification:
   mark_all_as_read: Oznacz wszystkie jako przeczytane
+  loading: Ładuję...

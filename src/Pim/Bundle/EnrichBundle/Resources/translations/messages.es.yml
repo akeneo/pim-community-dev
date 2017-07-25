@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: No puede agrupar el siguiente producto debido a que ya forma parte de un grupo de variantes o no posee el axis de grupo.
       no_variant_group: Ningún grupo de variantes por ahora. Por favor comience por crear un grupo de variantes.
       no_valid_variant_group: Ningún grupo de variantes comparte atributos con los productos seleccionados.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: La acción en masa "agregar a grupo de variantes" ha sido lanzada. Será notificado una vez finalizada.
     set-attribute-requirements:
       label: Configurar requerimientos del atributo
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Arrastrar y soltar para cargar o haga clic aquí
   edit: editar
   save: guardar
-  save and back: guardar y volver a la grilla
   save and create: guardar y crear nuevo
   save and next: guardar y siguiente
   save and finish: guardar y finalizar
@@ -413,7 +410,6 @@ flash:
     updated: Moneda actualizada correctamente
     error.linked_to_channel: No puede desactivar una moneda ligada a un canal.
   family:
-    created: Familia creada correctamente
     updated: Familia actualizada correctamente
     removed: Familia eliminada correctamente
     identifier not removable: Identificador de atributo no puede eliminarse de una familia
@@ -432,7 +428,6 @@ flash:
     enabled: El producto ha sido habilitado
     disabled: Producto ha sido deshabilitado
   group:
-    created: Grupo creado con éxito
     updated: Grupo actualizado correctamente
     removed: Grupo eliminado correctamente
   variant group:
@@ -736,9 +731,7 @@ pane.accordion:
   group_values: Valores de grupo
 popin.create:
   association_type.title: Crear un nuevo tipo de asociación
-  family.title: Crear una nueva familia
   group.title: Crea un nuevo grupo
-  group_type.title: Crear un nuevo tipo de grupo
   product.title: Crear un nuevo producto
   variant_group.title: Crear un nuevo grupo de variantes
   option.title: Crear una nueva opción

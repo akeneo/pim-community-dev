@@ -38,4 +38,4 @@ Feature: Edit a category
     Given I edit the "winter_boots" category
     When I fill in the following information:
       | English (United States) | My winter boots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

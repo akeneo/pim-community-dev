@@ -22,8 +22,8 @@ Feature: Display the product history
     And I should see history:
       | version | property           | value      |
       | 2       | Weather conditions | cold,snowy |
-    When I edit the "weather_conditions" attribute
-    And I visit the "Values" tab
+    When I am on the "weather_conditions" attribute page
+    And I visit the "Options" tab
     And I remove the "snowy" option
     And I confirm the deletion
     And I save the attribute
@@ -120,7 +120,7 @@ Feature: Display the product history
     And I should see history:
       | version | property     | value    |
       | 2       | Manufacturer | Converse |
-    When I edit the "manufacturer" attribute
+    When I am on the "manufacturer" attribute page
     And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "boots" product
@@ -153,10 +153,10 @@ Feature: Display the product history
       | version | property           | value      |
       | 2       | Weather conditions | cold,snowy |
       | 2       | Comment            | nice boots |
-    When I edit the "weather_conditions" attribute
+    When I am on the "weather_conditions" attribute page
     And I press the "Delete" button and wait for modal
     And I confirm the deletion
-    And I edit the "comment" attribute
+    And I am on the "comment" attribute page
     And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "boots" product

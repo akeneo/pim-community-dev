@@ -28,7 +28,7 @@ Feature: Execute an import with template values
     And I wait for the "variant_group_import" job to finish
     When I am on the "tshirts" variant group page
     And I visit the "Attributes" tab
-    Then I should see "Description"
+    Then I should see the text "Description"
     When I am on the "hoodies" variant group page
     Then I should not see "Description"
 
@@ -45,6 +45,6 @@ Feature: Execute an import with template values
     And I wait for the "variant_group_import" job to finish
     When I am on the "tshirts" variant group page
     And I visit the "Attributes" tab
-    Then I should see "Description"
+    Then I should see the text "Description"
     When I visit the "Media" group
-    Then I should see "Legend"
+    Then I should see the text "Legend"

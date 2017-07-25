@@ -78,44 +78,6 @@ class AssociationTypeController
     }
 
     /**
-     * Create an association type
-     *
-     * @param Request $request
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_associationtype_create")
-     *
-     * @return Response
-     */
-    public function createAction(Request $request)
-    {
-        $associationType = new AssociationType();
-
-        if ($this->assocTypeHandler->process($associationType)) {
-            $this
-                ->requestStack
-                ->getCurrentRequest()
-                ->getSession()
-                ->getFlashBag()
-                ->add('success', new Message('flash.association type.created'));
-
-            $response = [
-                'status' => 1,
-                'url'    => $this->router->generate(
-                    'pim_enrich_associationtype_edit',
-                    ['code' => $associationType->getCode()]
-                )
-            ];
-
-            return new Response(json_encode($response));
-        }
-
-        return [
-            'form' => $this->assocTypeForm->createView(),
-        ];
-    }
-
-    /**
      * Edit an association type
      *
      * @param string $code

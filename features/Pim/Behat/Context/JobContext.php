@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -107,7 +107,7 @@ class JobContext extends PimContext
      * @param string      $action
      * @param JobInstance $job
      *
-     * @return Step\Then
+     * @return Then
      *
      * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
      */
@@ -120,7 +120,7 @@ class JobContext extends PimContext
              'Failed to launch the job profile. Make sure it is valid and that you have right to launch it.' :
              'Failed to save the job profile. Make sure that you have right to edit it.';
 
-        return new Step\Then(sprintf('I should see the text "%s"', $message));
+        return new Then(sprintf('I should see the text "%s"', $message));
     }
 
     /**

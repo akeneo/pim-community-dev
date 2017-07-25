@@ -127,8 +127,6 @@ pim_enrich:
       description: Selecteer de variant groep waarin u de geselecteerde producten wilt toevoegen
       success_flash: Producten werden met succes toegevoegd aan de geselecteerde variant groepen
       no_variant_group: Geen variant groep beschikbaar. Gelieve eerst een variant groep aan te maken.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: De massa actie "voeg toe aan variant groep" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     set-attribute-requirements:
       description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
@@ -307,7 +305,6 @@ btn:
     group type: groepstype aanmaken
   edit: bewerken
   save: opslaan
-  save and back: opslaan en terug naar raster
   save and create: opslaan en nieuwe aanmaken
   save and next: opslaan en volgende
   save and finish: opslaan en afronden
@@ -372,7 +369,6 @@ flash:
   currency:
     updated: Valuta succesvol bijgewerkt
   family:
-    created: Familie succesvol aangemaakt
     updated: Famille mise à jour avec succès
     removed: Familie succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd uit een familie
@@ -391,7 +387,6 @@ flash:
     enabled: Product is ingeschakeld
     disabled: Product is uitgeschakeld
   group:
-    created: Groep succesvol aangemaakt
     updated: Groep succesvol bijgewerkt
     removed: Groep succesvol verwijderd
   variant group:
@@ -667,9 +662,7 @@ pane.accordion:
   group_values: Groepswaarden
 popin.create:
   association_type.title: Een nieuw associatietype aanmaken
-  family.title: Nieuwe familie aanmaken
   group.title: Nieuwe groep aanmaken
-  group_type.title: Nieuw groepstype aanmaken
   product.title: Een nieuw product aanmaken
   variant_group.title: Nieuwe variant groep toevoegen
   option.title: Nieuwe optie aanmaken

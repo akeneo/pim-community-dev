@@ -77,6 +77,18 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (scopeEvent) {
+                    if ('base_product' === scopeEvent.context) {
+                        this.setScope(scopeEvent.scopeCode);
+                    }
+                }.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.setLocale(localeEvent.localeCode);
+                    }
+                }.bind(this));
 
                 FieldManager.clearFields();
 
@@ -86,14 +98,6 @@ define(
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-                    this.setScope(event.scopeCode);
-                }.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-                    this.setLocale(event.localeCode);
-                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -243,7 +247,7 @@ define(
                     });
 
                     this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group_code
+                        _.first(attributes).group
                     );
 
                     this.setData(formData);
@@ -306,7 +310,7 @@ define(
                     this.config.removeAttributeRoute,
                     {
                         code: this.getFormData().code,
-                        attributeId: attribute.id
+                        attributeId: attribute.meta.id
                     }
                 );
             },
@@ -314,13 +318,17 @@ define(
             /**
              * Initialize  the scope if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} scopeEvent
+             * @param {string} scopeEvent.context
+             * @param {string} scopeEvent.scopeCode
              */
-            initScope: function (event) {
-                if (undefined === this.getScope()) {
-                    this.setScope(event.scopeCode, {silent: true});
-                } else {
-                    event.scopeCode = this.getScope();
+            initScope: function (scopeEvent) {
+                if ('base_product' === scopeEvent.context) {
+                    if (undefined === this.getScope()) {
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                    } else {
+                        scopeEvent.scopeCode = this.getScope();
+                    }
                 }
             },
 
@@ -344,13 +352,17 @@ define(
             /**
              * Initialize  the locale if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} eventLocale
+             * @param {String} eventLocale.context
+             * @param {String} eventLocale.localeCode
              */
-            initLocale: function (event) {
-                if (undefined === this.getLocale()) {
-                    this.setLocale(event.localeCode, {silent: true});
-                } else {
-                    event.localeCode = this.getLocale();
+            initLocale: function (eventLocale) {
+                if ('base_product' === eventLocale.context) {
+                    if (undefined === this.getLocale()) {
+                        this.setLocale(eventLocale.localeCode, {silent: true});
+                    } else {
+                        eventLocale.localeCode = this.getLocale();
+                    }
                 }
             },
 

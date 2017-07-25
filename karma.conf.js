@@ -9,7 +9,6 @@ webpack.plugins = _.dropRight(webpack.plugins, 5)
 
 delete webpack.devtool
 
-
 module.exports = function(config) {
     config.set({
         files: [

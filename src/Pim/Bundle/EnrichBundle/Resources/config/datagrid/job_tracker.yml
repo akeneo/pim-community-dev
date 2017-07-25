@@ -69,7 +69,6 @@ datagrid:
                 status:
                     type:             choice
                     data_name:        status
-                    filter_by_having: true
                     options:
                         field_options:
                             multiple: true

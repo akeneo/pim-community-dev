@@ -27,6 +27,9 @@ Action performed.: Azione eseguita.
 Action is not performed.: Azione non eseguita.
 Please, select item to perform action.: Per favore, seleziona l'articolo per eseguire l'azione.
 View per page: Mostra per pagina
+Enabled: Abilitato
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
 oro.datagrid.noresults: "Nessun risultato trovato. Prova a cambiare i criteri di ricerca."
@@ -38,7 +41,7 @@ oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
 oro_datagrid.select.all: "Tutto"
 oro_datagrid.select.visible: "Tutti visibili"
-oro_datagrid.select.none: "Nessuno"
+oro_datagrid.select.none: "Nessun"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
 pim.grid.choice_filter:

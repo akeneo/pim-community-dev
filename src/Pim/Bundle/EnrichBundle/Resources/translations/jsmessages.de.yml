@@ -132,24 +132,25 @@ pim_enrich:
     info:
       update_failed: Update fehlgeschlagen
       update_successful: Update erfolgreich
+    create_popin:
+      code: Code
+      label: Bezeichnung
+      labels:
+        save: Speichern
+        cancel: Abbrechen
     product:
       title: Produkt
       btn:
-        enable: Aktivieren
         enabled: Aktiviert
-        disable: Deaktivieren
         disabled: Deaktiviert
         download_pdf: PDF
         compare_translate: Vergleichen / Übersetzen
         delete: Löschen
         save: Speichern
-        save_and_back: Speichern und zurück zur Übersicht
       history:
         version: Version
         author: Autor
         logged_at: Angemeldet am
-        more: Mehr
-        less: Weniger
         from: Von
         modified: Bearbeitet
         property: Eigenschaft
@@ -181,6 +182,7 @@ pim_enrich:
             group_label: Bezeichnung
             more_products: '{{ count }} weitere Produkte...'
             close: Schließen
+        status: Status
       copy:
         select: Auswählen
         all: Alle
@@ -206,18 +208,15 @@ pim_enrich:
           family: Wählen Sie eine Produktfamilie
           save: Speichern
           cancel: Abbrechen
-    attribute:
-      scopable: Je Ausgabekanal individualisierbar
-      global: Global
+      message:
+        created: Produkt erfolgreich erstellt
+      completeness: Vollständig
     association_type:
       info:
         deletion_successful: Verbindungstyp erfolgreich entfernt.
         deletion_failed: Verbindungstyp konnte nicht entfernt werden.
         update_successful: Verbindungstyp erfolgreich aktualisiert.
         update_failed: Verbindungstyp konnte nicht aktualisiert werden.
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - Felder
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -226,15 +225,16 @@ pim_enrich:
       btn:
         save: Speichern
       title: Verbindungstyp
+      create_popin:
+        title: Einen neuen Verbindungstyp anlegen
+      message:
+        created: Verbindungstyp erfolgreich erstellt
     group_type:
       info:
         deletion_successful: Gruppentyp erfolgreich gelöscht.
         deletion_failed: Gruppentyp konnte nicht gelöscht werden.
         update_successful: Gruppentyp erfolgreich aktualisiert.
         update_failed: Der Gruppentyp konnte nicht aktualisiert werden.
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - Felder
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -243,6 +243,10 @@ pim_enrich:
       btn:
         save: Speichern
       title: Gruppentyp
+      create_popin:
+        title: Neuen Gruppentypen anlegen
+      message:
+        created: Gruppentyp erfolgreich erstellt
     channel:
       title: Ausgabekanal
       info:
@@ -252,9 +256,6 @@ pim_enrich:
         update_failed: Ausgabekanal konnte nicht aktualisiert werden.
         create_successful: Ausgabekanal erfolgreich angelegt.
         create_failed: Ausgabekanal konnte nicht angelegt werden.
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - Felder
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -268,7 +269,6 @@ pim_enrich:
         update_successful: Produktfamilie erfolgreich aktualisiert.
         create_successful: Ausgabekanal erfolgreich angelegt.
         update_failed: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
-        cant_remove_attribute_as_label: Als Label verwendetes Attribut kann nicht entfernt werden
         attribute_edit_permission_is_not_granted: Sie haben keine Berechtigungen um die Attribute der Produktfamilie zu bearbeiten
       meta:
         created: Erstellt
@@ -277,21 +277,10 @@ pim_enrich:
         updated_by: Aktualisiert von
       btn:
         save: Speichern
-    attribute_label:
-      pim_catalog_identifier: Kennung
-      pim_catalog_text: Text
-      pim_catalog_textarea: Textbereich
-      pim_catalog_number: Nummer
-      pim_catalog_price_collection: Preis
-      pim_catalog_multiselect: Mehrfachauswahl
-      pim_catalog_simpleselect: Einfachauswahl
-      pim_catalog_file: Datei
-      pim_catalog_image: Abbildung
-      pim_catalog_boolean: "Ja/Nein"
-      pim_catalog_date: Datum
-      pim_catalog_metric: Maßeinheit
-      pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
-      pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+      create_popin:
+        title: Neue Produktfamilie anlegen
+      message:
+        created: Produktfamilie erfolgreich angelegt
     attribute_option:
       code: Code
       label: Bezeichnung
@@ -303,9 +292,6 @@ pim_enrich:
         deletion_failed: Die Variantengruppe konnte nicht gelöscht werden.
         update_successful: Variantengruppe erfolgreich aktualisiert.
         update_failed: Die Variantengruppe konnte nicht aktualisiert werden.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - Felder
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
         no_attributes: Diese Variantengruppe hat noch keine Attribute
       btn:
@@ -316,6 +302,10 @@ pim_enrich:
         created_by: Erstellt von
         updated: Aktualisiert
         updated_by: Aktualisiert von
+      create_popin:
+        title: Neue Variantengruppe anlegen
+      message:
+        created: Variantengruppe erfolgreich erstellt
     group:
       title: Gruppe
       info:
@@ -323,9 +313,6 @@ pim_enrich:
         deletion_failed: Gruppe konnte nicht gelöscht werden.
         update_successful: Gruppe erfolgreich aktualisiert.
         update_failed: Die Gruppe konnte nicht aktualisiert werden.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - Felder
       btn:
         save: Speichern
       meta:
@@ -334,11 +321,36 @@ pim_enrich:
         created_by: Erstellt von
         updated: Aktualisiert
         updated_by: Aktualisiert von
+      create_popin:
+        title: Neue Gruppe anlegen
+      message:
+        created: Gruppe erfolgreich erstellt
     job_instance:
       title: Job-Profil
       info:
         update_failed: Das Job-Profil konnte nicht aktualisiert werden.
         update_successful: Das Job-Profil wurde erfolgreich aktualisiert.
+    attribute:
+      scopable: Je Ausgabekanal individualisierbar
+      type:
+        pim_catalog_identifier: Kennung
+        pim_catalog_text: Text
+        pim_catalog_textarea: Textbereich
+        pim_catalog_number: Nummer
+        pim_catalog_price_collection: Preis
+        pim_catalog_multiselect: Mehrfachauswahl
+        pim_catalog_simpleselect: Einfachauswahl
+        pim_catalog_file: Datei
+        pim_catalog_image: Abbildung
+        pim_catalog_boolean: "Ja/Nein"
+        pim_catalog_date: Datum
+        pim_catalog_metric: Maßeinheit
+        pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+        pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+      validation_rule:
+        email: E-Mail
+        regexp: Regulärer Ausdruck
+        url: URL
     attribute_group:
       info:
         update_successful: Attributgruppe erfolgreich aktualisiert
@@ -379,6 +391,7 @@ pim_enrich:
             attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
+          attribute_group_selector: Attributgruppe
         categories:
           title: Kategorien
       panel:
@@ -453,6 +466,7 @@ pim_enrich:
           general: Allgemein
           code: Code
           attribute_as_label: Attribut als Label verwendet
+          empty_attribute_as_image: Nicht ausgewählt
           label_translations: Feldbezeichner-Übersetzungen
         attributes:
           title: Attribute
@@ -623,6 +637,49 @@ pim_enrich:
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
         history:
           title: Historie
+      file_path: Dateipfad
+    attribute:
+      meta:
+        created: Erstellt
+        updated: Letzte Aktualisierung
+      tab:
+        properties:
+          title: Eigenschaften
+          section:
+            common: Allgemeine Parameter
+            validation: Validierungsparameter
+          label:
+            allowed_extensions: Zulässige Dateiendungen
+            available_locales: Verfügbare Gebietsschemata
+            code: Code
+            date_max: Max. Datum
+            date_min: Min. Datum
+            default_metric_unit: Standard-Maßeinheit
+            group: Attributgruppe
+            is_locale_specific: Gebietsschema-spezifisch
+            localizable: Wert je Gebietsschema
+            max_characters: Max. Zeichen
+            max_file_size: Maximale Dateigröße (MB)
+            metric_family: Metrische Gruppe
+            number_max: Max. Wert
+            number_min: Min. Wert
+            scopable: Wert je Ausgabekanal
+            type: Typ
+            unique: Eindeutiger Wert
+            useable_as_grid_filter: Verwendbar im Raster
+            validation_regexp: Regulärer Ausdruck
+            validation_rule: Validierungsregel
+          default_label:
+            default_metric_unit: Wählen Sie eine Einheit
+            group: Wählen Sie die Attributgruppe
+            metric_family: Wählen Sie eine Produktfamilie
+            reference_data_name: Wählen Sie den Referenz-Datentyp
+        labels:
+          title: Feldbezeichner-Übersetzungen
+        choices:
+          title: Optionen
+        history:
+          title: Historie
     mass_edit:
       family:
         attributes:
@@ -781,6 +838,9 @@ pim_enrich:
     import_profiles:
       title: Übersicht Importprofil
       create_btn: Importprofil anlegen
+      list: Wählen Sie einen Auftrag
+      create_popin:
+        title: Ein neues Importprofil anlegen
     import_history:
       title: Importberichte
     variant_group:
@@ -792,6 +852,8 @@ pim_enrich:
     export_profiles:
       title: Übersicht Exportprofil
       create_btn: Exportprofil anlegen
+      create_popin:
+        title: Ein neues Exportprofil anlegen
     export_history:
       title: Exportberichte
     family:
@@ -900,6 +962,190 @@ batch_jobs:
     label: Zu einer Variantengruppe hinzufügen
     perform:
       label: Zu einer Variantengruppe hinzufügen
+  csv_product_export:
+    label: Produkt-Export als CSV-Datei
+    export.label: Produkt export
+  csv_category_export:
+    label: Kategorie-Export als CSV-Datei
+    export.label: Kategorie export
+  csv_attribute_export:
+    label: Attribut-Export als CSV-Datei
+    export.label: Attribut export
+  csv_attribute_option_export:
+    label: Attribut-Option in CSV-Datei exportieren
+    export.label: Attribut-Option export
+  csv_association_type_export:
+    label: Verbindungstyp-Export als CSV-Datei
+    export.label: Verbindungstyp-Export
+  csv_group_export:
+    label: Gruppen-Export in CSV-Datei
+    export.label: Gruppen-Export
+  csv_variant_group_export:
+    label: Variantengruppen-Export als CSV
+    export.label: Variantengruppen-Export
+  csv_family_export:
+    label: Exportiere Produktfamilie in CSV-Datei
+    export.label: Exportiere Produktfamilie
+  csv_product_import:
+    label: Produkt-Export als CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
+  csv_category_import:
+    label: Kategorie-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Kategorie-Import
+  csv_attribute_import:
+    label: Attribut-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Import
+  csv_attribute_option_import:
+    label: Attribut-Optionen aus CSV-Datei importieren
+    validation.label: Dateivalidierung
+    import.label: Attribut-Option import
+  csv_association_type_import:
+    label: Verbindungstyp-Import als CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Verbindungstyp-Import
+  csv_family_import:
+    label: Produktfamilien-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Produktfamilien-Import
+  csv_group_import:
+    label: Gruppen-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppen-Import
+  csv_variant_group_import:
+    label: Variantengruppen-Import als CSV
+    validation.label: Dateivalidierung
+    import.label: Variantengruppen-Import
+  csv_channel_export:
+    label: Ausgabekanal-Export als CSV-Datei
+    export.label: Ausgabekanal-Export
+  csv_locale_export:
+    label: Gebietsschema-Export als CSV-Datei
+    export.label: Gebietsschema-Export
+  csv_attribute_group_export:
+    label: Attributgruppen-Export als CSV-Datei
+    export.label: Attributgruppen-Export
+  csv_currency_export:
+    label: Währungs-Export als CSV-Datei
+    export.label: Währungs-Export
+  csv_group_type_export:
+    label: Gruppentyp-Export als CSV-Datei
+    export.label: Gruppentyp-Export
+  csv_channel_import:
+    label: Ausgabekanal-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Ausgabekanal-Import
+  csv_locale_import:
+    label: Gebietsschema-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gebietsschema-Import
+  csv_attribute_group_import:
+    label: Attributgruppen-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Attributgruppen-Import
+  csv_currency_import:
+    label: Währungs-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Währungs-Import
+  csv_group_type_import:
+    label: Gruppentyp-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppentyp-Import
+  xlsx_category_import:
+    label: Kategorie-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Kategorie-Import
+  xlsx_association_type_import:
+    label: Verbindungstyp-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Verbindungstyp-Import
+  xlsx_attribute_import:
+    label: Attribut-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Import
+  xlsx_attribute_option_import:
+    label: Attributoptionen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Option import
+  xlsx_family_import:
+    label: Produktfamilien-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Produktfamilien-Import
+  xlsx_product_export:
+    label: Produkt-Export als XLSX-Datei
+    export.label: Produkt export
+  xlsx_product_import:
+    label: Produkt-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
+  xlsx_group_export:
+    label: Gruppen-Export als XSLX-Datei
+    export.label: Gruppen-Export
+  xlsx_variant_group_export:
+    label: Variantengruppen-Export als XLSX-Datei
+    export.label: Variantengruppen-Export
+  xlsx_group_import:
+    label: Gruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppen-Import
+  xlsx_variant_group_import:
+    label: Variantengruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Variantengruppen-Import
+  xlsx_family_export:
+    label: Produktfamilien-Eport als XLSX-Datei
+    export.label: Exportiere Produktfamilie
+  xlsx_category_export:
+    label: Kategorie-Export als XLSX-Datei
+    export.label: Kategorie export
+  xlsx_attribute_export:
+    label: Attribut-Export als XLSX-Datei
+    export.label: Attribut-Export als XLSX-Datei
+  xlsx_attribute_option_export:
+    label: Attributoptionen-Export als XLSX-Datei
+    export.label: Attributoptionen-Export als XLSX-Datei
+  xlsx_association_type_export:
+    label: Verbindungstyp-Export als XLSX-Datei
+    export.label: Verbindungstyp-Export als XLSX-Datei
+  xlsx_channel_export:
+    label: Ausgabekanal-Export als XLSX-Datei
+    export.label: Ausgabekanal-Export
+  xlsx_locale_export:
+    label: Gebietsschema-Export als XLSX-Datei
+    export.label: Gebietsschema-Export
+  xlsx_attribute_group_export:
+    label: Attributgruppen-Export als XLSX-Datei
+    export.label: Attributgruppen-Export
+  xlsx_currency_export:
+    label: Währungs-Export als XLSX-Datei
+    export.label: Währungs-Export
+  xlsx_group_type_export:
+    label: Gruppentyp-Export als XLSX-Datei
+    export.label: Gruppentyp-Export
+  xlsx_channel_import:
+    label: Ausgabekanal-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Ausgabekanal-Import
+  xlsx_locale_import:
+    label: Gebietsschema-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Gebietsschema-Import
+  xlsx_attribute_group_import:
+    label: Attributgruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Attributgruppen-Import
+  xlsx_currency_import:
+    label: Währungs-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Währungs-Import
+  xlsx_group_type_import:
+    label: Gruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppentyp-Import
 job_tracker:
   download_archive:
     archive: Generiertes Archiv herunterladen
@@ -909,11 +1155,10 @@ job_tracker:
     invalid_csv: Ungültige Daten herunterladen
 pim_menu:
   tab:
-    collect: Sammeln
-    enrich: Anreichern
+    dashboard: Dashboard
+    products: Produkte
     settings: Einstellungen
     system: System
-    spread: Ausleiten
   item:
     association_type: Verbindungstypen
     attribute: Attribute
@@ -938,9 +1183,9 @@ pim_menu:
     user_role: Rollen
     info: Systeminformationen
     job_tracker: Prozess-Tracker
-pim_header:
   user:
     logout: Abmelden
     user_account: Mein Konto
 pim_notification:
   mark_all_as_read: Alle als gelesen markieren
+  loading: Lädt...

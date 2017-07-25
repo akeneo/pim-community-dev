@@ -141,8 +141,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Продукт нельзя добавить в группу, так как он уже относится к группе вариантов или не имеет оси группы.
       no_variant_group: Сейчас нет групп вариантов. Начните с создания группы вариантов.
       no_valid_variant_group: Ни одна группа вариантов не имеет общих атрибутов с выбранными продуктами.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Было начато массовое действие «добавить в группы вариантов». Вы будете уведомлены, когда оно будет завершено.
     set-attribute-requirements:
       label: Установить требования к атрибутам
@@ -344,7 +342,6 @@ btn:
     drag_or_upload: Перетащите чтобы загрузить, или нажмите здесь
   edit: редактировать
   save: сохранить
-  save and back: сохранить и вернуться к списку
   save and create: сохранить и создать новый
   save and next: cохранить и далее
   save and finish: сохранить и закончить
@@ -413,7 +410,6 @@ flash:
     updated: Валюта успешно обновлена
     error.linked_to_channel: Нельзя дезактивировать валюты, связанныe с каналом.
   family:
-    created: Семейство успешно создано
     updated: Семейство успешно обновлено
     removed: Семейство успешно удалено
     identifier not removable: Идентификатор атрибута не может быть удален из семейства
@@ -432,7 +428,6 @@ flash:
     enabled: Продукт был активирован
     disabled: Продукт был дезактивирован
   group:
-    created: Группа успешно создана
     updated: Группа успешно обновлена
     removed: Группа успешно удалена
   variant group:
@@ -736,9 +731,7 @@ pane.accordion:
   group_values: Значения группы
 popin.create:
   association_type.title: Создать новый тип ассоциации
-  family.title: Создать новое семейство
   group.title: Создать новую группу
-  group_type.title: Создать новый тип группы
   product.title: Создать новый продукт
   variant_group.title: Создать новую вариативную группу
   option.title: Создать новое свойство

@@ -4,7 +4,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -16,12 +18,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith($attributeRepository);
     }
 
-    function it_supports_constraint_violation(ConstraintViolationInterface $violation)
-    {
-        $this->supportsNormalization($violation, 'internal_api')->shouldReturn(true);
-    }
-
-    function it_normlizes_constraint_violation_with_scope_and_locale(
+    function it_normalizes_constraint_violation_with_scope_and_locale(
         ConstraintViolationInterface $violation,
         ProductInterface $product,
         ValueInterface $value,
@@ -73,7 +70,6 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $violation->getRoot()->willReturn($product);
         $value->getLocale()->willReturn('fr_FR');
         $value->getScope()->willReturn(null);
         $value->getAttribute()->willReturn($attribute);
@@ -96,7 +92,6 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $violation->getRoot()->willReturn($product);
         $value->getLocale()->willReturn('fr_FR');
         $value->getScope()->willReturn(null);
         $value->getAttribute()->willReturn($attribute);

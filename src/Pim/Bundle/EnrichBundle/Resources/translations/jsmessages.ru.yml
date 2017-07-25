@@ -130,24 +130,25 @@ pim_enrich:
     info:
       update_failed: Не удалось обновить
       update_successful: Обновление завершено
+    create_popin:
+      code: Код
+      label: Метка
+      labels:
+        save: Сохранить
+        cancel: Отмена
     product:
       title: продукт
       btn:
-        enable: Включить
         enabled: Включено
-        disable: Отключить
         disabled: Отключено
         download_pdf: PDF
         compare_translate: Сравнить / Перевести
         delete: Удалить
         save: Сохранить
-        save_and_back: Сохранить и вернуться к списку
       history:
         version: Версия
         author: Автор
         logged_at: Дата входа
-        more: Дополнительно
-        less: Менее
         from: С
         modified: Изменен
         property: Свойство
@@ -178,6 +179,7 @@ pim_enrich:
             group_label: Метка
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
+        status: Статус
       copy:
         select: Выбрать
         all: Все
@@ -203,14 +205,10 @@ pim_enrich:
           family: Выберите семейство
           save: Сохранить
           cancel: Отмена
-    attribute:
-      scopable: Область назначаема
-      global: Глобальный
+      message:
+        created: Продукт успешно создан
+      completeness: Завершено
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - поля
       meta:
         created: Создано
         created_by: Создана
@@ -219,11 +217,11 @@ pim_enrich:
       btn:
         save: Сохранить
       title: тип ассоциации
+      create_popin:
+        title: Создать новый тип ассоциации
+      message:
+        created: Тип ассоциации успешно создан
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - поля
       meta:
         created: Создано
         created_by: Создана
@@ -232,12 +230,12 @@ pim_enrich:
       btn:
         save: Сохранить
       title: тип группы
+      create_popin:
+        title: Создать новый тип группы
+      message:
+        created: Тип группы успешно создан
     channel:
       title: канал
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - поля
       meta:
         created: Создано
         created_by: Создана
@@ -254,21 +252,10 @@ pim_enrich:
         updated_by: Обновлена
       btn:
         save: Сохранить
-    attribute_label:
-      pim_catalog_identifier: Идентификатор
-      pim_catalog_text: Текст
-      pim_catalog_textarea: Текст
-      pim_catalog_number: Число
-      pim_catalog_price_collection: Цена
-      pim_catalog_multiselect: Множественный выбор
-      pim_catalog_simpleselect: Простой выбор
-      pim_catalog_file: Файл
-      pim_catalog_image: Изображение
-      pim_catalog_boolean: "Да/Нет"
-      pim_catalog_date: Дата
-      pim_catalog_metric: Метрическая
-      pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
-      pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
+      create_popin:
+        title: Создать новое семейство
+      message:
+        created: Семейство успешно создано
     attribute_option:
       code: Код
       label: Метка
@@ -280,9 +267,6 @@ pim_enrich:
         deletion_failed: Не удалось удалить группу вариантов.
         update_successful: Группа вариантов успешно обновлена.
         update_failed: Не удалось обновить группу вариантов.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - поля
         already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
         no_attributes: Это группа вариантов пока не имеет атрибутов
       btn:
@@ -293,12 +277,12 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+      create_popin:
+        title: Создать новую вариативную группу
+      message:
+        created: Вариативная группа успешно создана
     group:
       title: Группа
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - поля
       btn:
         save: Сохранить
       meta:
@@ -307,6 +291,31 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+      create_popin:
+        title: Создать новую группу
+      message:
+        created: Группа успешно создана
+    attribute:
+      scopable: Область назначаема
+      type:
+        pim_catalog_identifier: Идентификатор
+        pim_catalog_text: Текст
+        pim_catalog_textarea: Текст
+        pim_catalog_number: Число
+        pim_catalog_price_collection: Цена
+        pim_catalog_multiselect: Множественный выбор
+        pim_catalog_simpleselect: Простой выбор
+        pim_catalog_file: Файл
+        pim_catalog_image: Изображение
+        pim_catalog_boolean: "Да/Нет"
+        pim_catalog_date: Дата
+        pim_catalog_metric: Метрическая
+        pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
+        pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
+      validation_rule:
+        email: E-mail
+        regexp: Регулярное выражение
+        url: URL
     attribute_group:
       info:
         update_successful: Группа атрибутов успешно обновлена
@@ -345,6 +354,7 @@ pim_enrich:
             no_available_attributes: Нет больше атрибутов для добавления
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
+          attribute_group_selector: Группа атрибутов
         categories:
           title: Категории
       panel:
@@ -419,6 +429,7 @@ pim_enrich:
           general: Основные
           code: Код
           attribute_as_label: Атрибут используется в качестве метки
+          empty_attribute_as_image: Не выбран
           label_translations: Переводы меток
         attributes:
           title: Атрибуты
@@ -577,6 +588,47 @@ pim_enrich:
             help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
         history:
           title: Журнал
+      file_path: Путь к файлу
+    attribute:
+      meta:
+        created: Создано
+        updated: Последнее обновление
+      tab:
+        properties:
+          title: Свойства
+          section:
+            common: Общие параметры
+            validation: Параметры проверки
+          label:
+            allowed_extensions: Допустимые расширения
+            available_locales: Доступные локали
+            code: Код
+            date_max: Макс. дата
+            date_min: Мин. дата
+            default_metric_unit: Единица измерения по умолчанию
+            group: Группа атрибутов
+            is_locale_specific: Специфично для локали
+            max_characters: Максимум символов
+            max_file_size: Максимальный размер файла (МБ)
+            metric_family: Семейство измерений
+            number_max: Макс. число
+            number_min: Мин. число
+            type: Тип
+            unique: Уникальное значение
+            useable_as_grid_filter: Используется в сетке
+            validation_regexp: Регулярное выражение
+            validation_rule: Правило проверки
+          default_label:
+            default_metric_unit: Выберите единицу измерения
+            group: Выберите группу атрибутов
+            metric_family: Выберите семейство
+            reference_data_name: Выберите ссылочный тип данных
+        labels:
+          title: Переводы меток
+        choices:
+          title: Параметры
+        history:
+          title: Журнал
     mass_edit:
       family:
         attributes:
@@ -723,8 +775,15 @@ pim_enrich:
     edit_common_attributes:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
   index:
+    import_profiles:
+      list: Выберите задание
+      create_popin:
+        title: Создать новый профиль импорта
     group:
       create_btn: Создать группу
+    export_profiles:
+      create_popin:
+        title: Создать новый профиль экспорта
     user:
       title: Пользователь
       create_btn: Создать пользователя
@@ -788,13 +847,141 @@ batch_jobs:
     label: Добавить в группу вариантов
     perform:
       label: Добавить в группу вариантов
+  csv_product_export:
+    label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_category_export:
+    label: Экспорт категорий в CSV
+    export.label: Экспорт категорий
+  csv_attribute_export:
+    label: Экспорт атрибутов в CSV
+    export.label: Экспорт атрибутов
+  csv_association_type_export:
+    label: Экспорт типов ассоциаций в CSV
+    export.label: Экспорт типов ассоциаций
+  csv_group_export:
+    label: Экспорт групп в CSV
+    export.label: Экспорт групп
+  csv_variant_group_export:
+    label: Экспорт групп вариантов в CSV
+    export.label: Экспорт групп вариантов
+  csv_family_export:
+    label: Экспорт семейств в CSV
+    export.label: Экспорт семейств
+  csv_product_import:
+    label: Импорт продуктов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  csv_category_import:
+    label: Импорт категорий из CSV
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  csv_attribute_import:
+    label: Импорт атрибутов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  csv_attribute_option_import:
+    label: Импорт выборов атрибутов из CSV
+    validation.label: Проверка файла
+  csv_association_type_import:
+    label: Импорт типов ассоциаций из CSV
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  csv_family_import:
+    label: Импорт семейств из CSV
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  csv_group_import:
+    label: Импорт группы из CSV
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  csv_variant_group_import:
+    label: Импорт группы вариантов в CSV
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
+  csv_channel_import:
+    validation.label: Проверка файла
+  csv_locale_import:
+    validation.label: Проверка файла
+  csv_attribute_group_import:
+    validation.label: Проверка файла
+  csv_currency_import:
+    validation.label: Проверка файла
+  csv_group_type_import:
+    validation.label: Проверка файла
+  xlsx_category_import:
+    label: Импорт категорий из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  xlsx_association_type_import:
+    label: Импорт типов ассоциаций из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  xlsx_attribute_import:
+    label: Импорт атрибутов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  xlsx_attribute_option_import:
+    label: Импорт элементов списочных атрибутов из XLSX
+    validation.label: Проверка файла
+  xlsx_family_import:
+    label: Импорт семейств из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  xlsx_product_export:
+    label: Экспорт продуктов в XLSX
+    export.label: Экспорт продуктов
+  xlsx_product_import:
+    label: Импорт продуктов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_group_export:
+    label: Экспорт групп в XLSX
+    export.label: Экспорт групп
+  xlsx_variant_group_export:
+    label: Экспорт групп вариантов в XLSX
+    export.label: Экспорт групп вариантов
+  xlsx_group_import:
+    label: Импорт групп из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  xlsx_variant_group_import:
+    label: Импорт групп вариантов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
+  xlsx_family_export:
+    label: Экспорт семейств в XLSX
+    export.label: Экспорт семейств
+  xlsx_category_export:
+    label: Экспорт категорий в XLSX
+    export.label: Экспорт категорий
+  xlsx_attribute_export:
+    label: Экспорт атрибутов в XLSX
+    export.label: Экспорт атрибутов в XLSX
+  xlsx_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в XLSX
+    export.label: Экспорт элементов списочных атрибутов в XLSX
+  xlsx_association_type_export:
+    label: Экспорт типов ассоциаций в XLSX
+    export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_import:
+    validation.label: Проверка файла
+  xlsx_locale_import:
+    validation.label: Проверка файла
+  xlsx_attribute_group_import:
+    validation.label: Проверка файла
+  xlsx_currency_import:
+    validation.label: Проверка файла
+  xlsx_group_type_import:
+    validation.label: Проверка файла
 pim_menu:
   tab:
-    collect: Собрать данные
-    enrich: Дополнить данные
+    dashboard: Панель управления
+    products: Продукты
     settings: Настройки
     system: Система
-    spread: Распространить данные
   item:
     association_type: Типы ассоциаций
     attribute: Атрибуты
@@ -819,9 +1006,9 @@ pim_menu:
     user_role: Роли
     info: Информация о системе
     job_tracker: Трекер процессов
-pim_header:
   user:
     logout: Выйти
     user_account: Мой аккаунт
 pim_notification:
   mark_all_as_read: Пометить все как прочитанное
+  loading: Загрузка...

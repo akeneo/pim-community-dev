@@ -141,8 +141,7 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Vous ne pouvez pas grouper les produits suivants, car ils font déjà partie d'un groupe de variantes ou ne possèdent pas l'axe de variation du groupe.
       no_variant_group: Aucun groupe de variantes pour l'instant. Veuillez commencer par créer un groupe de variantes.
       no_valid_variant_group: Aucun groupe de variantes ne partage des attributs avec les produits sélectionnés.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+      some_variant_groups_are_skipped: 'Les groupes variant suivants ont été ignorés parce qu’ils ne partagent des attributs avec des produits sélectionnés : %groups%'
       launched_flash: L'action de masse "ajout au groupe de variantes" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     set-attribute-requirements:
       label: Choisir les attributs requis
@@ -344,7 +343,6 @@ btn:
     drag_or_upload: Glisser et déposer pour télécharger ou cliquer ici
   edit: Modifier
   save: Enregistrer
-  save and back: Enregistrer et revenir à la grille
   save and create: Sauver et créer un nouveau
   save and next: Enregistrer et passer au suivant
   save and finish: Enregistrer et terminer
@@ -413,7 +411,6 @@ flash:
     updated: Devise mise à jour avec succès
     error.linked_to_channel: Vous ne pouvez pas désactiver une devise liée à un canal.
   family:
-    created: Famille créée avec succès
     updated: Famille mise à jour avec succès
     removed: Famille supprimée avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être retiré d'une famille
@@ -432,7 +429,6 @@ flash:
     enabled: Produit activé
     disabled: Produit désactivé
   group:
-    created: Groupe créé avec succès
     updated: Groupe mis à jour avec succès
     removed: Groupe supprimé avec succès
   variant group:
@@ -736,9 +732,7 @@ pane.accordion:
   group_values: Valeurs du groupe
 popin.create:
   association_type.title: Créer un nouveau type d'association
-  family.title: Créer une nouvelle famille
   group.title: Créer un nouveau groupe
-  group_type.title: Créer un nouveau type de groupe
   product.title: Créer un nouveau produit
   variant_group.title: Créer un nouveau groupe de variants
   option.title: Créer une nouvelle option

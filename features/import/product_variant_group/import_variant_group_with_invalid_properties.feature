@@ -25,7 +25,7 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Status: FAILED"
+    Then I should see the text "Status: FAILED"
     And I should see:
     """
     Field "code" is expected, provided fields are "type, name-en_US, axis, description-en_US-tablet, color"
@@ -42,9 +42,9 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Property \"axes\" cannot be modified, \"manufacturer,size\" given."
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Property \"axes\" cannot be modified, \"manufacturer,size\" given."
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |
@@ -61,9 +61,9 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Property \"axes\" cannot be modified, \"color\" given."
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Property \"axes\" cannot be modified, \"color\" given."
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |
@@ -80,9 +80,9 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"NO_AXIS\" must be defined with at least one axis"
-    And I should see "read lines 1"
-    And I should see "Skipped 1"
+    Then I should see the text "Variant group \"NO_AXIS\" must be defined with at least one axis"
+    And I should see the text "read lines 1"
+    And I should see the text "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL | Sandal      |             | color,size | VARIANT |

@@ -56,7 +56,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
-            - '@pim_internal_api_serializer'
+            - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.localization.localizer.registry'
             - '@pim_enrich.filter.product_values_edit_data'

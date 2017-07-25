@@ -46,6 +46,7 @@ JSON;
             'code'                   => 'new_family_incompleted',
             'attributes'             => ['sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['sku'],
                 'ecommerce_china' => ['sku'],
@@ -68,8 +69,9 @@ JSON;
 <<<JSON
     {
         "code": "complete_family_creation",
-        "attributes": ["an_image", "a_metric", "a_price"],
+        "attributes": ["an_image", "a_metric", "a_price", "an_image"],
         "attribute_as_label": "sku",
+        "attribute_as_image": "an_image",
         "attribute_requirements": {
             "ecommerce": ["sku", "a_metric"],
             "tablet": ["sku", "a_price"]
@@ -87,6 +89,7 @@ JSON;
             'code'                   => 'complete_family_creation',
             'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => 'an_image',
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -193,11 +196,11 @@ JSON;
         },
         {
             "property":"attribute_as_label",
-            "message":"Property 'attribute_as_label' must belong to the family"
+            "message":"Property \"attribute_as_label\" must belong to the family"
         },
         {
             "property":"attribute_as_label",
-            "message":"Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family"
+            "message":"Property \"attribute_as_label\" only supports \"pim_catalog_text\" and \"pim_catalog_identifier\" attribute types for the family"
         },
         {
             "property":"code",

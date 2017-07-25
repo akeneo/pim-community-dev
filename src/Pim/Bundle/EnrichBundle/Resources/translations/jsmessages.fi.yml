@@ -130,24 +130,25 @@ pim_enrich:
     info:
       update_failed: Päivitys epäonnistui
       update_successful: Päivitys onnistui
+    create_popin:
+      code: Koodi
+      label: Nimike
+      labels:
+        save: Tallenna
+        cancel: Peruuta
     product:
       title: tuote
       btn:
-        enable: Ota käyttöön
         enabled: Käytössä
-        disable: Poista käytöstä
         disabled: Poistettu käytöstä
         download_pdf: PDF
         compare_translate: Vertaa / Käännä
         delete: Poista
         save: Tallenna
-        save_and_back: Tallenna ja takaisin ruudukkoon
       history:
         version: Versio
         author: Tekijä
         logged_at: Kirjautunut
-        more: Lisää
-        less: Vähemmän
         from: Lähettäjä
         modified: Muutettu
         property: Ominaisuus
@@ -178,6 +179,7 @@ pim_enrich:
             group_label: Nimike
             more_products: '{{ count }} lisää tuotteita...'
             close: Sulje
+        status: Status
       copy:
         select: Valitse
         all: Kaikki
@@ -203,14 +205,10 @@ pim_enrich:
           family: Valitse perhe
           save: Tallenna
           cancel: Peruuta
-    attribute:
-      scopable: Scopable
-      global: Globaali
+      message:
+        created: Tuote luotu
+      completeness: Valmis
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - kentät
       meta:
         created: Luotu
         created_by: Luoja
@@ -219,11 +217,11 @@ pim_enrich:
       btn:
         save: Tallenna
       title: sidoksen tyyppi
+      create_popin:
+        title: Luo uusi määritetyyppi
+      message:
+        created: Sidostyyppi luotu onnistuneesti
     group_type:
-      info:
-        field_not_ready:
-          The group type cannot be saved right now. The following fields are not ready:
-            - kentät
       meta:
         created: Luotu
         created_by: Luoja
@@ -232,12 +230,12 @@ pim_enrich:
       btn:
         save: Tallenna
       title: ryhmän tyyppi
+      create_popin:
+        title: Luo uusi ryhmätyyppi
+      message:
+        created: Ryhmätyyppi lisätty onnistuneesti
     channel:
       title: kanava
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - kentät
       meta:
         created: Luotu
         created_by: Luoja
@@ -254,21 +252,10 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
-    attribute_label:
-      pim_catalog_identifier: Tunniste
-      pim_catalog_text: Teksti
-      pim_catalog_textarea: Tekstialue
-      pim_catalog_number: Numero
-      pim_catalog_price_collection: Hinta
-      pim_catalog_multiselect: Monivalinta
-      pim_catalog_simpleselect: Yksinkertainen valinta
-      pim_catalog_file: Tiedosto
-      pim_catalog_image: Kuva
-      pim_catalog_boolean: "Kyllä/ei"
-      pim_catalog_date: Päivämäärä
-      pim_catalog_metric: Metriikka
-      pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
-      pim_reference_data_multiselect: Viitetiedot monivalinta
+      create_popin:
+        title: Luo uusi tuoteperhe
+      message:
+        created: Tuoteperhe luotu
     attribute_option:
       code: Koodi
       label: Nimike
@@ -280,9 +267,6 @@ pim_enrich:
         deletion_failed: Tuotevariaatioryhmää ei voitu poistaa.
         update_successful: Tuotevariaatioryhmä päivitetty onnistuneesti.
         update_failed: Tuotevariaatioryhmää ei voitu päivittää.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - kentät
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
         no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
       btn:
@@ -293,12 +277,12 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+      create_popin:
+        title: Luo uusi tuotevariaatioryhmä
+      message:
+        created: Tuotevariaatioryhmä poistettu onnistuneesti
     group:
       title: Ryhmä
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - kentät
       btn:
         save: Tallenna
       meta:
@@ -307,6 +291,31 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+      create_popin:
+        title: Luo uusi ryhmä
+      message:
+        created: Ryhmä luotu onnistuneesti
+    attribute:
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: Tunniste
+        pim_catalog_text: Teksti
+        pim_catalog_textarea: Tekstialue
+        pim_catalog_number: Numero
+        pim_catalog_price_collection: Hinta
+        pim_catalog_multiselect: Monivalinta
+        pim_catalog_simpleselect: Yksinkertainen valinta
+        pim_catalog_file: Tiedosto
+        pim_catalog_image: Kuva
+        pim_catalog_boolean: "Kyllä/ei"
+        pim_catalog_date: Päivämäärä
+        pim_catalog_metric: Metriikka
+        pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
+        pim_reference_data_multiselect: Viitetiedot monivalinta
+      validation_rule:
+        email: Sähköposti
+        regexp: Tavallinen virke
+        url: URL-osoite
     attribute_group:
       info:
         update_successful: Attribuuttiryhmän päivittäminen onnistui
@@ -345,6 +354,7 @@ pim_enrich:
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
+          attribute_group_selector: Attribuuttiryhmä
         categories:
           title: Kategoriat
       panel:
@@ -419,6 +429,7 @@ pim_enrich:
           general: Yleinen
           code: Koodi
           attribute_as_label: Attribuutti käytössä otsikkona
+          empty_attribute_as_image: Ei ole valittu
           label_translations: Nimikkeiden käännökset
         attributes:
           title: Attribuutit
@@ -577,6 +588,47 @@ pim_enrich:
             help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
         history:
           title: Historia
+      file_path: Tiedostopolku
+    attribute:
+      meta:
+        created: Luotu
+        updated: Viimeisin päivitys
+      tab:
+        properties:
+          title: Ominaisuudet
+          section:
+            common: Yleiset parametrit
+            validation: Validaatioparametrit
+          label:
+            allowed_extensions: Sallitut laajennukset
+            available_locales: Saatavilla olevat alueet
+            code: Koodi
+            date_max: Max päivämäärä
+            date_min: Min päivämäärä
+            default_metric_unit: Metrinen oletusyksikkö
+            group: Attribuuttiryhmä
+            is_locale_specific: Aluespesifi
+            max_characters: Maksimimerkkimäärä
+            max_file_size: Suurin tiedostokoko (Mt)
+            metric_family: Metrinen perhe
+            number_max: Max numero
+            number_min: Min numero
+            type: Tyyppi
+            unique: Yksilöllinen arvo
+            useable_as_grid_filter: Käytettävissä ruudukossa
+            validation_regexp: Tavallinen virke
+            validation_rule: Kelpoisuussääntö
+          default_label:
+            default_metric_unit: Valitse yksikkö
+            group: Valitse attribuuttiryhmä
+            metric_family: Valitse perhe
+            reference_data_name: Valitse viite-datatyyppi
+        labels:
+          title: Nimikkeiden käännökset
+        choices:
+          title: Vaihtoehdot
+        history:
+          title: Historia
     mass_edit:
       family:
         attributes:
@@ -723,8 +775,15 @@ pim_enrich:
     edit_common_attributes:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
   index:
+    import_profiles:
+      list: Valitse työ
+      create_popin:
+        title: Luo uusi tuontiprofiili
     group:
       create_btn: Luo ryhmä
+    export_profiles:
+      create_popin:
+        title: Luo uusi vientiprofiili
     user:
       title: Käyttäjä
       create_btn: Luo käyttäjä
@@ -784,13 +843,146 @@ batch_jobs:
     label: Lisää tuotevariaatioryhmään
     perform:
       label: Lisää tuotevariaatioryhmään
+  csv_product_export:
+    label: Tuotteiden vienti CSV-muodossa
+    export.label: Tuotteiden vienti
+  csv_category_export:
+    label: Kategorian vienti CSV-muodossa
+    export.label: Kategorian vienti
+  csv_attribute_export:
+    label: Attribuuttien vienti CSV-muodossa
+    export.label: Attribuuttien vienti
+  csv_attribute_option_export:
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
+  csv_association_type_export:
+    label: Liitännäistyyppien vienti CSV-muodossa
+    export.label: Liitännäistyyppien vienti
+  csv_group_export:
+    label: Ryhmän vienti CSV-muodossa
+    export.label: Ryhmän vienti
+  csv_variant_group_export:
+    label: Muuttujaryhmien vienti CSV-muodossa
+    export.label: Muutujaryhmien vienti
+  csv_family_export:
+    label: Ryhmän tuonti CSV-tiedostona
+    export.label: Ryhmän vienti
+  csv_product_import:
+    label: Tuotteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  csv_category_import:
+    label: Kategorioiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  csv_attribute_import:
+    label: Attribuuttien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  csv_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  csv_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  csv_family_import:
+    label: Ryhmän tuonti CSV-tiedostona
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  csv_group_import:
+    label: Ryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  csv_variant_group_import:
+    label: Muuttujaryhmien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muutujaryhmien tuonti
+  csv_channel_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_locale_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_attribute_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_currency_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_group_type_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_category_import:
+    label: Kategorioiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Kategorioiden tuonti
+  xlsx_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Liitännäistyyppien tuonti
+  xlsx_attribute_import:
+    label: Attribuuttien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien tuonti
+  xlsx_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttien määritteiden tuonti
+  xlsx_family_import:
+    label: Perheiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätuonti
+  xlsx_product_export:
+    label: Tuotteiden vienti XLSX-muodossa
+    export.label: Tuotteiden vienti
+  xlsx_product_import:
+    label: Tuotteiden tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_group_export:
+    label: Ryhmävienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_variant_group_export:
+    label: Muuttujaryhmien vienti XLSX-muodossa
+    export.label: Muutujaryhmien vienti
+  xlsx_group_import:
+    label: Ryhmätuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmien tuonti
+  xlsx_variant_group_import:
+    label: Muuttujaryhmien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Muuttujaryhmien tuonti
+  xlsx_family_export:
+    label: Perhevienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_category_export:
+    label: Kategoriavienti XLSX-muodossa
+    export.label: Kategorian vienti
+  xlsx_attribute_export:
+    label: Attribuuttivienti XLSX-muodossa
+    export.label: Attribuuttivienti XLSX-muodossa
+  xlsx_attribute_option_export:
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
+  xlsx_association_type_export:
+    label: Liitännäistyyppien vienti XLSX-muodossa
+    export.label: Liitännäistyyppien vienti XLSX-muodossa
+  xlsx_channel_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_locale_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_attribute_group_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_currency_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_group_type_import:
+    validation.label: Tiedostojen tarkistaminen
 pim_menu:
   tab:
-    collect: Kerää
-    enrich: Rikastuta
+    dashboard: Ohjauspaneeli
+    products: Tuotteet
     settings: Asetukset
     system: Järjestelmä
-    spread: Levitä
   item:
     association_type: Määritetyypit
     attribute: Attribuutit
@@ -815,9 +1007,9 @@ pim_menu:
     user_role: Roolit
     info: Järjestelmätiedot
     job_tracker: Prosessiseurain
-pim_header:
   user:
     logout: Kirjaudu ulos
     user_account: Oma tili
 pim_notification:
   mark_all_as_read: Merkitse kaikki luetuiksi
+  loading: Ladataan...

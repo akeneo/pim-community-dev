@@ -16,17 +16,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class VersionManagerSpec extends ObjectBehavior
 {
     function let(
-        SmartManagerRegistry $registry,
         VersionBuilder $builder,
         ObjectManager $om,
         VersionRepositoryInterface $versionRepository,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($registry, $builder, $versionContext, $eventDispatcher);
+        $this->beConstructedWith($om, $builder, $versionContext, $eventDispatcher);
 
-        $registry->getManagerForClass(Argument::any())->willReturn($om);
-        $registry->getRepository(Argument::any())->willReturn($versionRepository);
+        $om->getRepository(Argument::any())->willReturn($versionRepository);
         $versionRepository->findBy(Argument::cetera())->willReturn([]);
         $versionRepository->getNewestLogEntry(Argument::cetera())->willReturn(null);
     }
@@ -38,17 +36,20 @@ class VersionManagerSpec extends ObjectBehavior
         $this->isRealTimeVersioning()->shouldReturn(false);
     }
 
-    function it_uses_version_builder_to_build_versions($builder, ProductInterface $product)
+    function it_uses_version_builder_to_build_versions($builder, $om, ProductInterface $product)
     {
+        $om->refresh($product)->shouldBeCalled();
+
         $this->setUsername('julia');
         $this->buildVersion($product);
 
         $builder->buildVersion($product, 'julia', null, null)->shouldHaveBeenCalled();
     }
 
-    function it_builds_versions_for_versionable_entities(ProductInterface $product, $builder)
+    function it_builds_versions_for_versionable_entities($om, ProductInterface $product, $builder)
     {
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('foo', 1, 'bar'));
+        $om->refresh($product)->shouldBeCalled();
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
@@ -67,7 +68,7 @@ class VersionManagerSpec extends ObjectBehavior
         $version->isPending()->shouldReturn(true);
     }
 
-    function it_builds_pending_versions_and_last_version_when_versioning_an_entity(ProductInterface $product, $builder, $versionRepository)
+    function it_builds_pending_versions_and_last_version_when_versioning_an_entity($om, ProductInterface $product, $builder, $versionRepository)
     {
         $product->getId()->willReturn(1);
 
@@ -80,6 +81,9 @@ class VersionManagerSpec extends ObjectBehavior
         $builder->buildPendingVersion($pending1, null)->willReturn($pending1)->shouldBeCalled();
         $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2)->shouldBeCalled();
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('Product', 1, 'julia'))->shouldBeCalled();
+
+        $om->refresh($product)->shouldBeCalled();
+        $om->detach($pending2)->shouldBeCalled();
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(3);

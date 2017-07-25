@@ -24,7 +24,7 @@ class FamilyNormalizer implements NormalizerInterface
     protected $familyNormalizer;
 
     /** @var NormalizerInterface */
-    protected $translationNormalizer;
+    protected $attributeNormalizer;
 
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
@@ -40,7 +40,7 @@ class FamilyNormalizer implements NormalizerInterface
 
     /**
      * @param NormalizerInterface          $familyNormalizer
-     * @param NormalizerInterface          $translationNormalizer
+     * @param NormalizerInterface          $attributeNormalizer
      * @param CollectionFilterInterface    $collectionFilter
      * @param AttributeRepositoryInterface $attributeRepository
      * @param VersionManager               $versionManager
@@ -48,14 +48,14 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function __construct(
         NormalizerInterface $familyNormalizer,
-        NormalizerInterface $translationNormalizer,
+        NormalizerInterface $attributeNormalizer,
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer
     ) {
         $this->familyNormalizer = $familyNormalizer;
-        $this->translationNormalizer = $translationNormalizer;
+        $this->attributeNormalizer = $attributeNormalizer;
         $this->collectionFilter = $collectionFilter;
         $this->attributeRepository = $attributeRepository;
         $this->versionManager = $versionManager;
@@ -76,7 +76,7 @@ class FamilyNormalizer implements NormalizerInterface
             $context
         );
 
-        $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $applyFilters);
+        $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $applyFilters, $context);
 
         $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
             $normalizedFamily['attribute_requirements'],
@@ -87,9 +87,9 @@ class FamilyNormalizer implements NormalizerInterface
         $lastVersion = $this->versionManager->getNewestLogEntry($family);
 
         $created = null === $firstVersion ? null :
-            $this->versionNormalizer->normalize($firstVersion, 'internal_api');
+            $this->versionNormalizer->normalize($firstVersion, 'internal_api', $context);
         $updated = null === $lastVersion ? null :
-            $this->versionNormalizer->normalize($lastVersion, 'internal_api');
+            $this->versionNormalizer->normalize($lastVersion, 'internal_api', $context);
 
         $normalizedFamily['meta'] = [
             'id'      => $family->getId(),
@@ -115,10 +115,11 @@ class FamilyNormalizer implements NormalizerInterface
      *
      * @param FamilyInterface $family
      * @param boolean         $applyFilters
+     * @param array           $context
      *
      * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family, $applyFilters)
+    protected function normalizeAttributes(FamilyInterface $family, $applyFilters, $context)
     {
         $attributes = $this->attributeRepository->findAttributesByFamily($family);
 
@@ -131,13 +132,7 @@ class FamilyNormalizer implements NormalizerInterface
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
-            $normalizedAttributes[] = [
-                'code' => $attribute->getCode(),
-                'type' => $attribute->getType(),
-                'group_code' => $attribute->getGroup()->getCode(),
-                'labels' => $this->translationNormalizer->normalize($attribute, 'standard', []),
-                'sort_order' => $attribute->getSortOrder(),
-            ];
+            $normalizedAttributes[] = $this->attributeNormalizer->normalize($attribute, 'internal_api', $context);
         }
 
         return $normalizedAttributes;
