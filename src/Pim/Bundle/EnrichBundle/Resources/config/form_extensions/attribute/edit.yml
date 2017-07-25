@@ -2,6 +2,14 @@ extensions:
     pim-attribute-edit-form:
         module: pim/attribute-edit-form
 
+    pim-attribute-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute
+
     pim-attribute-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-attribute-edit-form
@@ -13,11 +21,17 @@ extensions:
         targetZone: title
         position: 90
 
-    pim-attribute-edit-form-delete:
-        module: pim/attribute-edit-form/delete
+    pim-attribute-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-attribute-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-attribute-edit-form-delete:
+        module: pim/attribute-edit-form/delete
+        parent: pim-attribute-edit-form-secondary-actions
         position: 100
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_attribute_remove
         config:
             trans:
