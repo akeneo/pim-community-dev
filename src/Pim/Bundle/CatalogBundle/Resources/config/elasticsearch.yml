@@ -6,5 +6,5 @@ services:
         class: '%pim_catalog.elasticsearch.product_indexer.class%'
         arguments:
             - '@pim_serializer'
-            - '@akeneo_elasticsearch.client'
+            - '@akeneo_elasticsearch.client.product'
             - 'pim_catalog_product'

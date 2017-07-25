@@ -313,13 +313,10 @@ class HookContext extends PimContext
      */
     private function resetElasticsearchIndex()
     {
-        $esClient = $this->getService('akeneo_elasticsearch.client');
-        $conf = $this->getService('akeneo_elasticsearch.index_configuration.loader')->load();
+        $esClientProduct = $this->getService('akeneo_elasticsearch.client.product');
+        $esClientProduct->resetIndex();
 
-        if ($esClient->hasIndex()) {
-            $esClient->deleteIndex();
-        }
-
-        $esClient->createIndex($conf->buildAggregated());
+        $esClientProductAndModel = $this->getService('akeneo_elasticsearch.client.product_and_product_model');
+        $esClientProductAndModel->resetIndex();
     }
 }

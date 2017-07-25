@@ -120,7 +120,7 @@ class CatalogConfigurationContext extends PimContext
             $referenceDataLoader->load($this->getEntityManager());
         }
 
-        $this->getElasticsearchClient()->refreshIndex();
+        $this->getElasticsearchProductClient()->refreshIndex();
     }
 
     /**
@@ -134,9 +134,9 @@ class CatalogConfigurationContext extends PimContext
     /**
      * @return Client
      */
-    protected function getElasticsearchClient()
+    protected function getElasticsearchProductClient()
     {
-        return $this->getContainer()->get('akeneo_elasticsearch.client');
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
     }
 
     /**

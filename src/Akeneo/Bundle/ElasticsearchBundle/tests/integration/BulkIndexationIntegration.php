@@ -22,7 +22,7 @@ class BulkIndexationIntegration extends TestCase
             $products[] = ['identifier' => 'product_' . $i];
         }
 
-        $indexedProducts = $this->esClient->bulkIndexes(self::DOCUMENT_TYPE, $products, 'identifier');
+        $indexedProducts = $this->esProductClient->bulkIndexes(self::DOCUMENT_TYPE, $products, 'identifier');
         $this->assertFalse($indexedProducts['errors']);
         $this->assertCount($count, $indexedProducts['items']);
 
@@ -69,9 +69,9 @@ class BulkIndexationIntegration extends TestCase
     private function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
         }
 
-        $this->esClient->refreshIndex();
+        $this->esProductClient->refreshIndex();
     }
 }

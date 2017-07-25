@@ -47,7 +47,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->esClient->refreshIndex();
+        $this->esProductClient->refreshIndex();
     }
 
     /**
