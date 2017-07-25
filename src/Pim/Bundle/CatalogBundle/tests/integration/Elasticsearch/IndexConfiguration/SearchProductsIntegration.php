@@ -7,10 +7,10 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  *
  * The search is performed independently from the family variants.
  *
- * The search takes advantage of the following properties to elaborate concise but powerful requests that retrieves
+ * The search takes advantage of the following properties to elaborate concise but powerful requests that retrieve
  * only products and product variants.
  *
- * - Each document (e.g: products, product variants or models) has all the properties of it's associated parent model
+ * - Each document (e.g: products, product variants or models) has all the properties of its associated parent model
  *   and grand parent models.
  *
  * - Each document has a property 'product_type' which gives an hint about the level in the family variant the document

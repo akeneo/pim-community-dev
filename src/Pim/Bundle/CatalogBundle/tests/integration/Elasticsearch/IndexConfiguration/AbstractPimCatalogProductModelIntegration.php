@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
- * Dataset used to test the search of :
+ * Dataset used to test the search of:
  * - products only (export builder use case)
  * - products and product models (Datagrid use case aka smart search)
  *

@@ -17,6 +17,7 @@ use Akeneo\Test\Integration\TestCase;
 abstract class AbstractPimCatalogTestCase extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
+    private const PAGE_SIZE = 100;
 
     /**
      * {@inheritdoc}
@@ -69,7 +70,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     {
         $identifiers = [];
 
-        $query['size'] = 100;
+        $query['size'] = self::PAGE_SIZE;
         $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
@@ -90,6 +91,6 @@ abstract class AbstractPimCatalogTestCase extends TestCase
         sort($actualProductIdentifiers);
         sort($expectedProductIdentifiers);
 
-        $this->assertSame($actualProductIdentifiers, $expectedProductIdentifiers);
+        $this->assertSame($expectedProductIdentifiers, $actualProductIdentifiers);
     }
 }
