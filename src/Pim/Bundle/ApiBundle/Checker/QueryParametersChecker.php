@@ -42,15 +42,18 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
      */
     public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null)
     {
+        $localeCodes = array_map('trim', $localeCodes);
         $errors = [];
-        foreach ($localeCodes as $locale) {
-            if (null === $this->localeRepository->findOneByIdentifier($locale)) {
-                $errors[] = $locale;
+        foreach ($localeCodes as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            if (null === $locale || !$locale->isActivated()) {
+                $errors[] = $localeCode;
             }
         }
 
         if (!empty($errors)) {
-            $plural = count($errors) > 1 ? 'Locales "%s" do not exist.' : 'Locale "%s" does not exist.';
+            $plural = count($errors) > 1 ?
+                'Locales "%s" do not exist or are not activated.' : 'Locale "%s" does not exist or is not activated.';
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
         }
 
@@ -72,6 +75,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     {
         $errors = [];
         foreach ($attributeCodes as $attributeCode) {
+            $attributeCode = trim($attributeCode);
             if (null === $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $errors[] = $attributeCode;
             }
@@ -90,9 +94,10 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     {
         $errors = [];
         foreach ($categories as $category) {
-            foreach ($category['value'] as $value) {
-                if (null === $this->categoryRepository->findOneByIdentifier($value)) {
-                    $errors[] = $value;
+            foreach ($category['value'] as $categoryCode) {
+                $categoryCode = trim($categoryCode);
+                if (null === $this->categoryRepository->findOneByIdentifier($categoryCode)) {
+                    $errors[] = $categoryCode;
                 }
             }
         }

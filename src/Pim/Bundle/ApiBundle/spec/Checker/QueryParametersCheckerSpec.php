@@ -39,11 +39,22 @@ class QueryParametersCheckerSpec extends ObjectBehavior
     function it_raises_an_exception_if_a_locale_does_not_exist($localeRepository, LocaleInterface $enUsLocale)
     {
         $localeCodes = ['de_DE', 'en_US'];
-
+        $enUsLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('de_DE')->willReturn(null);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enUsLocale);
 
-        $this->shouldThrow(new UnprocessableEntityHttpException('Locale "de_DE" does not exist.'))
+        $this->shouldThrow(new UnprocessableEntityHttpException('Locale "de_DE" does not exist or is not activated.'))
+            ->during('checkLocalesParameters', [$localeCodes, null]);
+    }
+
+    function it_raises_an_exception_if_a_locale_is_not_activated($localeRepository, LocaleInterface $enUsLocale)
+    {
+        $localeCodes = ['de_DE', 'en_US'];
+        $enUsLocale->isActivated()->willReturn(false);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn(null);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUsLocale);
+
+        $this->shouldThrow(new UnprocessableEntityHttpException('Locales "de_DE, en_US" do not exist or are not activated.'))
             ->during('checkLocalesParameters', [$localeCodes, null]);
     }
 
@@ -53,7 +64,7 @@ class QueryParametersCheckerSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('de_DE')->willReturn(null);
         $localeRepository->findOneByIdentifier('en_US')->willReturn(null);
 
-        $this->shouldThrow(new UnprocessableEntityHttpException('Locales "de_DE, en_US" do not exist.'))
+        $this->shouldThrow(new UnprocessableEntityHttpException('Locales "de_DE, en_US" do not exist or are not activated.'))
             ->during('checkLocalesParameters', [$localeCodes, null]);
     }
 
