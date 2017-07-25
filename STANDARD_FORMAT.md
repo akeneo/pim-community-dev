@@ -822,7 +822,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
             ]
           ]
         ]
-  
+
 | type                   | data structure | data example                                                                                               | notes                                                                                                   |
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the variant group                                                                |
