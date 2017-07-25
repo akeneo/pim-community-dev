@@ -24,7 +24,7 @@ mappings:
                 normalizer: 'identifier_normalizer'
             product_type:
                 type: 'keyword'
-            owned_attributes:
+            attributes_for_this_level:
                 type: 'keyword'
         dynamic_templates:
             -

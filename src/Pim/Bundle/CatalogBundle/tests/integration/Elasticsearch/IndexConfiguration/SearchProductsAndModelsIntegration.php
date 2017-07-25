@@ -13,7 +13,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  * - Each document (e.g: products, product variants or models) has all the properties of it's associated parent model
  *   and grand parent models.
  *
- * - Each documents has an 'owned_attributes' property which is a list of the attribute codes that belong to the
+ * - Each documents has an 'attributes_for_this_level' property which is a list of the attribute codes that belong to the
  *   document (following the family variant settings and levels definition).
  *
  * - Each document has a property 'product_type' which gives an hint about the level in the family variant the document
@@ -76,7 +76,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             ],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['description']],
+                            'terms' => ['attributes_for_this_level' => ['description']],
                         ],
                     ],
                 ],
@@ -95,6 +95,15 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
         );
     }
 
+    /**
+     * Simple search request that will return a mixed results of:
+     * - ProductVariants (running-shoes-*)
+     * - SubProductModel (model-tshirt-red)
+     * - RootProductModel (model-tshirt-unique-color)
+     *
+     * This mixed result is explained by the fact that the attribute "color" is not set at the same level within those 3
+     * family variants.
+     */
     public function testSearchColorRed()
     {
         $query = [
@@ -105,7 +114,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color']],
+                            'terms' => ['attributes_for_this_level' => ['color']],
                         ],
                     ],
                 ],
@@ -137,7 +146,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color']],
+                            'terms' => ['attributes_for_this_level' => ['color']],
                         ],
                     ],
                 ],
@@ -159,7 +168,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['blue']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color']],
+                            'terms' => ['attributes_for_this_level' => ['color']],
                         ],
                     ],
                 ],
@@ -191,7 +200,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['size']],
+                            'terms' => ['attributes_for_this_level' => ['size']],
                         ],
                     ],
                 ],
@@ -224,7 +233,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['size']],
+                            'terms' => ['attributes_for_this_level' => ['size']],
                         ],
                     ],
                 ],
@@ -248,6 +257,20 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
         );
     }
 
+    /**
+     * Search request with 2 different attributes.
+     *
+     * Given those 2 attributes and a family variant (tree),
+     * the search should return the documents which:
+     * - level is the lowest between the levels set of those attributes
+     * - and satisfy both conditions of the search.
+     *
+     * Ex: when searching for color=grey and size=s,
+     *
+     * We can see that the only products that satisfy those conditions are:
+     *
+     *
+     */
     public function testSearchColorGreyAndSizeS()
     {
         $query = [
@@ -261,7 +284,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color', 'size']],
+                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
                         ],
                     ],
                 ],
@@ -286,7 +309,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color', 'size']],
+                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
                         ],
                     ],
                 ],
@@ -314,7 +337,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color', 'description']],
+                            'terms' => ['attributes_for_this_level' => ['color', 'description']],
                         ],
                     ],
                 ],
@@ -336,7 +359,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['cotton']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['material']],
+                            'terms' => ['attributes_for_this_level' => ['material']],
                         ],
                     ],
                 ],
@@ -366,7 +389,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['leather']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['material']],
+                            'terms' => ['attributes_for_this_level' => ['material']],
                         ],
                     ],
                 ],
@@ -397,7 +420,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['white']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['size', 'color']],
+                            'terms' => ['attributes_for_this_level' => ['size', 'color']],
                         ],
                     ],
                 ],
@@ -422,7 +445,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                     ],
                     'filter'   => [
                         [
-                            'terms' => ['owned_attributes' => ['color']],
+                            'terms' => ['attributes_for_this_level' => ['color']],
                         ],
                         [
                             'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
@@ -471,7 +494,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color', 'material']],
+                            'terms' => ['attributes_for_this_level' => ['color', 'material']],
                         ],
                     ],
                 ],
@@ -505,7 +528,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
                         [
-                            'terms' => ['owned_attributes' => ['color', 'size']],
+                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
                         ],
                         [
                             'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
@@ -547,7 +570,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                     ],
                     'filter'   => [
                         [
-                            'terms' => ['owned_attributes' => ['color', 'size']],
+                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
                         ],
                         [
                             'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
