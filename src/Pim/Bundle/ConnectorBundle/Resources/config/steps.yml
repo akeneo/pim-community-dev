@@ -394,6 +394,17 @@ services:
             - '@pim_connector.writer.database.product'
             - '%pim_connector.step.product.import.bulk_size%'
 
+#    pim_connector.step.xlsx_product_model.import:
+#        class: '%pim_connector.step.item_step.class%'
+#        arguments:
+#            - 'import'
+#            - '@event_dispatcher'
+#            - '@akeneo_batch.job_repository'
+#            - '@pim_connector.reader.file.xlsx_product_model'
+#            - '@pim_connector.processor.denormalization.product'
+#            - '@pim_connector.writer.database.product'
+#            - '%pim_connector.step.product.import.bulk_size%'
+
     pim_connector.step.xlsx_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
         arguments:
