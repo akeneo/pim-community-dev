@@ -42,6 +42,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var string */
     protected $attributeClass;
 
+    /** @var int */
+    protected $commitBatchSize;
+
     /**
      * Constructor
      *
@@ -49,14 +52,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * @param string                 $productClass
      * @param string                 $productValueClass
      * @param string                 $attributeClass
+     * @param int                    $commitBatchSize
      */
-    public function __construct(EntityManagerInterface $manager, $productClass, $productValueClass, $attributeClass)
-    {
+    public function __construct(
+        EntityManagerInterface $manager,
+        $productClass,
+        $productValueClass,
+        $attributeClass,
+        $commitBatchSize = 1000
+    ) {
         $this->manager = $manager;
         $this->connection = $manager->getConnection();
         $this->productClass = $productClass;
         $this->productValueClass = $productValueClass;
         $this->attributeClass = $attributeClass;
+        $this->commitBatchSize = $commitBatchSize;
     }
 
     /**
@@ -103,14 +113,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $this->prepareMissingCompletenesses($criteria);
         }
 
-        $sql = $this->getInsertCompletenessSQL($criteria);
-
-        $stmt = $this->connection->prepare($sql);
-
-        foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
-        }
-        $stmt->execute();
+        $this->insertCompleteness($criteria);
     }
 
     /**
@@ -128,22 +131,58 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
+        $tempTableName = self::COMPLETE_PRICES_TABLE;
+        $createSQL = <<<SQL
+    CREATE TEMPORARY TABLE {$tempTableName}
+    (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id))
+SQL;
+
+        $createSQL = $this->applyTableNames($createSQL);
+        $tempTableStmt = $this->connection->prepare($createSQL);
+        $tempTableStmt->execute();
+
         $sql = $this->getCompletePricesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
-
-        $sql = 'CREATE TEMPORARY TABLE ' .
-            self::COMPLETE_PRICES_TABLE .
-            ' (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ' .
-            $sql;
-
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->connection->prepare($sql);
-
+        $fetchStmt = $this->connection->prepare($sql);
         foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
+            $fetchStmt->bindValue($placeholder, $value);
         }
-        $stmt->execute();
+        $fetchStmt->execute();
+
+        $insertSql = <<<SQL
+    INSERT INTO {$tempTableName} (locale_id, channel_id, value_id) 
+    VALUES (:locale_id, :channel_id, :value_id)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
+
+        try {
+            while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->bindValue('value_id', $completeness['value_id']);
+                $insertStmt->execute();
+                $count++;
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
+            }
+
+            if ($count > 0) {
+                $this->connection->commit();
+            }
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -158,22 +197,57 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
+        $tempTableName = self::MISSING_TABLE;
+        $createSql = <<<SQL
+    CREATE TEMPORARY TABLE {$tempTableName} (locale_id int, channel_id int, product_id int)
+SQL;
+
+        $createSql = $this->applyTableNames($createSql);
+        $tempTableStmt = $this->connection->prepare($createSql);
+        $tempTableStmt->execute();
+
         $sql = $this->getMissingCompletenessesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
-
-        $sql = 'CREATE TEMPORARY TABLE ' .
-            self::MISSING_TABLE .
-            ' (locale_id int, channel_id int, product_id int)'
-            . $sql;
-
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->connection->prepare($sql);
-
+        $fetchStmt = $this->connection->prepare($sql);
         foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
+            $fetchStmt->bindValue($placeholder, $value);
         }
-        $stmt->execute();
+        $fetchStmt->execute();
+
+        $insertSql = <<<SQL
+    INSERT INTO {$tempTableName} (locale_id, channel_id, product_id) 
+    VALUES (:locale_id, :channel_id, :product_id)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
+
+        try {
+            while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->bindValue('product_id', $completeness['product_id']);
+                $insertStmt->execute();
+                $count++;
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
+            }
+
+            if ($count > 0) {
+                $this->connection->commit();
+            }
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -270,13 +344,11 @@ MISSING_SQL;
     }
 
     /**
-     * Get the sql query to insert completeness
+     * Insert completeness in DB
      *
      * @param array $criteria
-     *
-     * @return string
      */
-    protected function getInsertCompletenessSQL(array $criteria)
+    protected function insertCompleteness(array $criteria)
     {
         $sql = $this->getMainSqlPart();
 
@@ -284,7 +356,47 @@ MISSING_SQL;
         $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyTableNames($sql);
 
-        return $sql;
+        $fetchStmt = $this->connection->prepare($sql);
+        foreach ($criteria as $placeholder => $value) {
+            $fetchStmt->bindValue($placeholder, $value);
+        }
+        $fetchStmt->execute();
+
+        $insertSql = <<<SQL
+    REPLACE pim_catalog_completeness (locale_id, channel_id, product_id, ratio, missing_count, required_count) 
+    VALUES (:locale_id, :channel_id, :product_id, :ratio, :missing_count, :required_count)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
+
+        try {
+            while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->bindValue('product_id', $completeness['product_id']);
+                $insertStmt->bindValue('ratio', $completeness['ratio']);
+                $insertStmt->bindValue('missing_count', $completeness['missing_count']);
+                $insertStmt->bindValue('required_count', $completeness['required_count']);
+                $insertStmt->execute();
+                $count++;
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
+            }
+
+            if ($count > 0) {
+                $this->connection->commit();
+            }
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -295,9 +407,6 @@ MISSING_SQL;
     protected function getMainSqlPart()
     {
         return <<<MAIN_SQL
-    REPLACE pim_catalog_completeness (
-        locale_id, channel_id, product_id, ratio, missing_count, required_count
-    )
     SELECT
         locale_id,
         channel_id,
