@@ -49,57 +49,39 @@ class CompletenessContext extends PimContext
      * @param string $code
      * @param string $label
      *
-     * @Then /^The label for the "([^"]*)" channel for "([^"]*)" locale should be "([^"]*)"$/
+     * @Then /^The label for the "([^"]*)" channel should be "([^"]*)"$/
      */
-    public function theCurrentLocaleChannelLabelShouldBe($code, $locale, $label)
+    public function theCurrentLocaleChannelLabelShouldBe($code, $label)
     {
         $completeness = $this->getElementOnCurrentPage('Completeness');
 
-        $this->spin(function () use ($code, $locale, $label, $completeness) {
+        $this->spin(function () use ($code, $label, $completeness) {
             $data = $completeness->getCompletenessData();
-            $channelLabel = $data[$locale]['data'][$code]['label'];
+            $channelLabel = $data[$code]['label'];
 
-            return $channelLabel === $label;
+            return strtolower($channelLabel) === strtolower($label);
         }, sprintf('"%s" does not have the label "%s".', $code, $label));
     }
 
     /**
-     * @param string $localeCode en_US, fr_FR, etc.
+     * @param string $channelCode ecommerce, mobile...
      * @param int    $position
      *
      * @Given /^I should see the "([^"]*)" completeness in position ([0-9]+)$/
      */
-    public function iShouldSeeTheCompletenessInPositionNth($localeCode, $position)
+    public function iShouldSeeTheCompletenessInPositionNth($channelCode, $position)
     {
         $completeness = $this->getElementOnCurrentPage('Completeness');
 
-        $this->spin(function () use ($localeCode, $position, $completeness) {
+        $this->spin(function () use ($channelCode, $position, $completeness) {
             $completenessData = $completeness->getCompletenessData();
 
-            return (int) $position === $completenessData[$localeCode]['position'];
+            return (int) $position === $completenessData[$channelCode]['position'];
         }, sprintf(
             '"%s" completeness not found in position %s in tab.',
-            $localeCode,
+            $channelCode,
             $position
         ));
-    }
-
-    /**
-     * @param string $localeCode
-     *
-     * @Given /^The completeness "([^"]*)" should be (closed|opened)$/
-     */
-    public function theCompletenessShouldBeOpenedOrClosed($localeCode, $state)
-    {
-        $isOpened = ('opened' === $state);
-
-        $completeness = $this->getElementOnCurrentPage('Completeness');
-
-        $this->spin(function () use ($localeCode, $isOpened, $completeness) {
-            $completenessData = $completeness->getCompletenessData();
-
-            return $isOpened === $completenessData[$localeCode]['opened'];
-        }, sprintf('Expected to see "%s" completeness %s. But it was not', $localeCode, $state));
     }
 
     /**
@@ -119,13 +101,6 @@ class CompletenessContext extends PimContext
             $completenessData = $this->convertStructuredToFlat($completeness->getCompletenessData());
 
             foreach ($table as $index => $expected) {
-                if (isset($expected['missing_values'])) {
-                    // Expected missing values need to be converted to array to be compared
-                    $expected['missing_values'] = '' !== $expected['missing_values'] ?
-                        explode(', ', $expected['missing_values']) :
-                        [];
-                }
-
                 // This allows to omit columns in the table
                 $expected = array_merge($completenessData[$index], $expected);
 
@@ -200,14 +175,14 @@ class CompletenessContext extends PimContext
     protected function convertStructuredToFlat(array $structuredCompleteness)
     {
         $flatCompleteness = [];
-        foreach ($structuredCompleteness as $localeCode => $localeBlock) {
-            foreach ($localeBlock['data'] as $scopeCode => $scopeBlock) {
+        foreach ($structuredCompleteness as $scopeCode => $scopeBlock) {
+            foreach ($scopeBlock['data'] as $localeCode => $localeBlock) {
                 $flatCompleteness[] = [
                     'channel'        => $scopeCode,
                     'locale'         => $localeCode,
-                    'state'          => $scopeBlock['state'],
-                    'missing_values' => array_values($scopeBlock['missing_values']),
-                    'ratio'          => $scopeBlock['ratio']
+                    'state'          => $localeBlock['state'],
+                    'missing_values' => $localeBlock['missing_values'],
+                    'ratio'          => $localeBlock['ratio']
                 ];
             }
         }

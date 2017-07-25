@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -37,7 +38,10 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      * [
      *     [
      *         'channel'  => 'ecommerce',
-     *         'label'    => 'Ecommerce',
+     *         'labels'   => [
+     *             'en_US' => 'Ecommerce',
+     *             'fr_FR' => 'E-commerce',
+     *         ],
      *         'stats'    => [
      *             'total'    => 3,
      *             'complete' => 0,
@@ -72,11 +76,17 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         $normalizedCompletenesses = [];
         $sortedCompletenesses = [];
         $channels = [];
+        $locales = [];
 
         foreach ($completenesses as $completeness) {
             $channel = $completeness->getChannel();
             if (!in_array($channel, $channels)) {
                 $channels[] = $channel;
+            }
+
+            $locale = $completeness->getLocale();
+            if (!in_array($locale, $locales)) {
+                $locales[] = $locale;
             }
 
             $sortedCompletenesses[$channel->getCode()][$completeness->getLocale()->getCode()] = $completeness;
@@ -85,7 +95,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         foreach ($sortedCompletenesses as $channelCode => $localeCompletenesses) {
             $normalizedCompletenesses[] = [
                 'channel'   => $channelCode,
-                'label'     => $this->getChannelLabel($channels, $channelCode),
+                'labels'    => $this->getChannelLabels($channels, $locales, $channelCode),
                 'stats'    => [
                     'total'    => count($localeCompletenesses),
                     'complete' => $this->countComplete($localeCompletenesses),
@@ -179,18 +189,22 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
 
     /**
      * @param ChannelInterface[] $channels
+     * @param LocaleInterface[]  $locales
      * @param string             $channelCode
      *
-     * @return string
+     * @return string[]
      */
-    protected function getChannelLabel(array $channels, $channelCode)
+    protected function getChannelLabels(array $channels, array $locales, $channelCode)
     {
         $matchingChannels = array_filter($channels, function (ChannelInterface $channel) use ($channelCode) {
             return $channel->getCode() === $channelCode;
         });
-
         $channel = array_shift($matchingChannels);
 
-        return $channel->getLabel();
+        return array_reduce($locales, function ($result, LocaleInterface $locale) use ($channel) {
+            $result[$locale->getCode()] = $channel->getTranslation($locale->getCode())->getLabel();
+
+            return $result;
+        }, []);
     }
 }

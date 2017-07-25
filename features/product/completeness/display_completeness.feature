@@ -26,15 +26,13 @@ Feature: Display the completeness of a product
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
-    Then I should see the "en_US" completeness in position 1
-    And The completeness "fr_FR" should be closed
-    And The completeness "en_US" should be opened
+    Then I should see the "tablet" completeness in position 1
     And I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 88%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 77%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 1              | 88%   |
+      | tablet  | fr_FR  | warning | 2              | 77%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
     When I am on the products page
     Then I am on the "sandals" product page
     And I visit the "Attributes" column tab
@@ -43,21 +41,15 @@ Feature: Display the completeness of a product
     And the Product information, Marketing, Sizes, Media groups should be highlighted
     And the Colors group should not be highlighted
     And I visit the "Completeness" column tab
-    Then I should see the "en_US" completeness in position 1
-    And The completeness "fr_FR" should be closed
-    And The completeness "en_US" should be opened
     And I visit the "Attributes" column tab
     When I switch the locale to "fr_FR"
     And I visit the "Completeness" column tab
-    Then I should see the "fr_FR" completeness in position 1
-    And The completeness "en_US" should be closed
-    And The completeness "fr_FR" should be opened
     And I should see the completeness:
-      | channel | locale | state   | missing_values                                                | ratio |
-      | mobile  | fr_FR  | warning | [price], [size]                                               | 60%   |
-      | tablet  | fr_FR  | warning | [price], [rating], [side_view], [size]                        | 50%   |
-      | mobile  | en_US  | warning | [name], [price], [size]                                       | 40%   |
-      | tablet  | en_US  | warning | [name], [description], [price], [rating], [side_view], [size] | 25%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 6              | 25%   |
+      | tablet  | fr_FR  | warning | 4              | 50%   |
+      | mobile  | en_US  | warning | 3              | 40%   |
+      | mobile  | fr_FR  | warning | 2              | 60%   |
 
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products page
@@ -142,20 +134,13 @@ Feature: Display the completeness of a product
     And I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
     And I should not see "No family defined. Please define a family to calculate the completeness of this product."
 
-  Scenario: Quickly jump to a field from completeness panel
-    Given I am on the "sneakers" product page
-    When I visit the "Completeness" column tab
-    And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
-    Then I should see the text "Attribute group: Media"
-
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel
     Given I am on the "sneakers" product page
     And I switch the locale to "fr_FR"
     When I visit the "Completeness" column tab
-    Then I should see the "fr_FR" completeness in position 1
-    And The completeness "en_US" should be closed
-    Then The label for the "tablet" channel for "fr_FR" locale should be "Tablette"
+    Then I should see the "tablet" completeness in position 1
+    Then The label for the "tablet" channel should be "Tablette"
     When I am on the "tablet" channel page
     Then I fill in the following information:
       | French (France) |  |
@@ -165,4 +150,4 @@ Feature: Display the completeness of a product
     When I visit the "Attributes" column tab
     And I switch the locale to "fr_FR"
     And I visit the "Completeness" column tab
-    Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"
+    Then The label for the "tablet" channel should be "[tablet]"

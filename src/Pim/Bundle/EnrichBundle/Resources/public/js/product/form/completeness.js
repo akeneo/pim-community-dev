@@ -69,6 +69,8 @@ define(
                             this.initialFamily = this.getFormData().family;
                         }
 
+                        console.log(this.sortCompleteness(this.getFormData().meta.completenesses));
+
                         this.$el.html(
                             this.template({
                                 __: __,
@@ -77,7 +79,6 @@ define(
                                 i18n: i18n,
                                 channels: channels,
                                 locales: locales,
-                                uiLocale: UserContext.get('uiLocale'),
                                 catalogLocale: UserContext.get('catalogLocale'),
                                 hasFamilyChanged: this.getFormData().family !== this.initialFamily,
                                 missingValuesKey: 'pim_enrich.form.product.panel.completeness.missing_values',

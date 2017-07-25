@@ -7,7 +7,9 @@
         <% var ratio = (channel['stats']['complete'] / channel['stats']['total']) * 100; %>
         <div class="AknCompletenessPanel-block completeness-block">
             <header class="AknCompletenessPanel-header">
-                <span class="AknCompletenessPanel-headerLocale channel" data-channel="<%- channel.channel %>"><%- channel.label %></span>
+                <span class="AknCompletenessPanel-headerLocale channel" data-channel="<%- channel.channel %>">
+                    <%- (null !== channel.labels[catalogLocale]) ? channel.labels[catalogLocale] : ('[' + channel.channel + ']') %>
+                </span>
                 <span class="AknCompletenessPanel-headerStats stats">
                     <%- Math.round(ratio) %>%
                 </span>
@@ -17,7 +19,7 @@
                     <% if (localeCompleteness.completeness) { %>
                         <div class="AknCompletenessPanel-channel">
                             <div class="AknCompletenessPanel-progressContainer">
-                                <span class="AknCompletenessPanel-channelTitle channel" data-locale="<%- localeCompleteness.completeness.locale %>">
+                                <span class="AknCompletenessPanel-channelTitle locale" data-locale="<%- localeCompleteness.completeness.locale %>">
                                     <%- localeCompleteness.label %>
                                 </span>
                                 <span class="AknCompletenessPanel-progressRatio literal-progress"><%- localeCompleteness.completeness.ratio %>%</span>
