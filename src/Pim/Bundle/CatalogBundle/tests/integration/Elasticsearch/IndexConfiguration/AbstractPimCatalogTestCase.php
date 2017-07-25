@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -19,6 +17,7 @@ use Akeneo\Test\Integration\TestCase;
 abstract class AbstractPimCatalogTestCase extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
+    private const PAGE_SIZE = 100;
 
     /**
      * {@inheritdoc}
@@ -70,6 +69,8 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     protected function getSearchQueryResults(array $query)
     {
         $identifiers = [];
+
+        $query['size'] = self::PAGE_SIZE;
         $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
@@ -90,6 +91,6 @@ abstract class AbstractPimCatalogTestCase extends TestCase
         sort($actualProductIdentifiers);
         sort($expectedProductIdentifiers);
 
-        $this->assertSame($actualProductIdentifiers, $expectedProductIdentifiers);
+        $this->assertSame($expectedProductIdentifiers, $actualProductIdentifiers);
     }
 }
