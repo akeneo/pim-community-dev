@@ -1035,7 +1035,6 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media        = $productValue->getData();
