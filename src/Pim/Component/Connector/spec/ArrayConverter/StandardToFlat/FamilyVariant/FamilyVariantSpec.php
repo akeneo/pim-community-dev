@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat;
+namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\FamilyVariant;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\StandardToFlat\FamilyVariant;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\FamilyVariant\FamilyVariant;
 
 class FamilyVariantSpec extends ObjectBehavior
 {

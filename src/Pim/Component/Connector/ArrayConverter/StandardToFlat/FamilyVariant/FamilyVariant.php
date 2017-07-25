@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat;
+namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\FamilyVariant;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)

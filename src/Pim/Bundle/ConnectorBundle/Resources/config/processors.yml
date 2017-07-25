@@ -223,6 +223,12 @@ services:
             - '@pim_catalog.normalizer.standard.family'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.processor.normalization.family_variant:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family_variant'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     pim_connector.processor.normalization.category:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
