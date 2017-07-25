@@ -26,6 +26,7 @@ services:
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
             - '@event_dispatcher'
+            - '%pim_enrich.form.type.product_grid_filter_choice.class%'
         tags:
             - { name: form.type, alias: pim_user_user }
 
