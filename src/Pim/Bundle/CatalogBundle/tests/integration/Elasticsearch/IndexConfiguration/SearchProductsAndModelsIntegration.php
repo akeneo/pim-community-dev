@@ -268,8 +268,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
      * Ex: when searching for color=grey and size=s,
      *
      * We can see that the only products that satisfy those conditions are:
-     *
-     *
+     * - The tshirt products and tshirt models with color grey and size s
+     * - In the "clothing_color_size" family variant, size is defined at the product leve while color is defined at the
+     *   subProductModel level. So we show the documents that belongs to the lowest involved. here level products.
      */
     public function testSearchColorGreyAndSizeS()
     {
