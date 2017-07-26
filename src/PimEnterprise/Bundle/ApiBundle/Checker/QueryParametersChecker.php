@@ -64,6 +64,8 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
      */
     public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null)
     {
+        $localeCodes = array_map('trim', $localeCodes);
+
         $this->queryParametersChecker->checkLocalesParameters($localeCodes, $channel);
 
         $errors = [];
@@ -76,7 +78,8 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
         }
 
         if (!empty($errors)) {
-            $plural = count($errors) > 1 ? 'Locales "%s" do not exist.' : 'Locale "%s" does not exist.';
+            $plural = count($errors) > 1 ?
+                'Locales "%s" do not exist or are not activated.' : 'Locale "%s" does not exist or is not activated.';
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
         }
     }
@@ -90,6 +93,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
 
         $errors = [];
         foreach ($attributeCodes as $attributeCode) {
+            $attributeCode = trim($attributeCode);
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             $group = $attribute->getGroup();
@@ -111,10 +115,12 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     public function checkCategoriesParameters(array $categories)
     {
         $this->queryParametersChecker->checkCategoriesParameters($categories);
+
         $errors = [];
         foreach ($categories as $category) {
-            foreach ($category['value'] as $value) {
-                $category = $this->categoryRepository->findOneByIdentifier($value);
+            foreach ($category['value'] as $categoryCode) {
+                $categoryCode = trim($categoryCode);
+                $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
 
                 if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                     $errors[] = $category->getCode();

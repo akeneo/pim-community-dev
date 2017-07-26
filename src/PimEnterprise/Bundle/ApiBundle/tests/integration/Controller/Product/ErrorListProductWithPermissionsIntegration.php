@@ -36,7 +36,7 @@ class ErrorListProductWithPermissionsIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', 'api/rest/v1/products?locales=de_DE');
-        $this->assert($client, 'Locale "de_DE" does not exist.');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
     }
 
     public function testProductOneLocaleNotViewableByRedactor()
@@ -44,7 +44,7 @@ class ErrorListProductWithPermissionsIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', 'api/rest/v1/products?locales=de_DE,en_US');
-        $this->assert($client, 'Locale "de_DE" does not exist.');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
     }
 
     public function testProductSearchCategoryNotViewableByRedactor()
@@ -76,7 +76,7 @@ class ErrorListProductWithPermissionsIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', '/api/rest/v1/products?search_locale=de_DE&search={"a_localized_and_scopable_text_area":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Locale "de_DE" does not exist.');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
     }
 
     public function testProductSearchOneLocaleNotViewableByRedactor()
@@ -84,7 +84,23 @@ class ErrorListProductWithPermissionsIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', '/api/rest/v1/products?search_locale=de_DE,fr_FR&search={"a_localized_and_scopable_text_area":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Locale "de_DE" does not exist.');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
+    }
+
+    public function testProductSearchOneLocalesNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER OR EQUALS THAN ON ALL LOCALES","value":40,"locales":["de_DE"],"scope":"ecommerce"}]}');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
+    }
+
+    public function testProductSearchLocalesNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER OR EQUALS THAN ON ALL LOCALES","value":40,"locales":["fr_FR","de_DE"],"scope":"ecommerce"}]}');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
     }
 
     /**
@@ -94,12 +110,10 @@ class ErrorListProductWithPermissionsIntegration extends AbstractProductTestCase
     private function assert(Client $client, $message)
     {
         $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
+
+        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertCount(2, $content);
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
-
-        $this->assertSame($message, $content['message']);
+        $this->assertSame($expected, $response->getContent());
     }
 }

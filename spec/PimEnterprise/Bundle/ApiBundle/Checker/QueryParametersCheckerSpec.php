@@ -57,7 +57,7 @@ class QueryParametersCheckerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUsLocale)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $deDeLocale)->willReturn(false);
 
-        $this->shouldThrow(new UnprocessableEntityHttpException('Locale "de_DE" does not exist.'))
+        $this->shouldThrow(new UnprocessableEntityHttpException('Locale "de_DE" does not exist or is not activated.'))
             ->during('checkLocalesParameters', [$localeCodes, null]);
     }
 
@@ -76,7 +76,7 @@ class QueryParametersCheckerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUsLocale)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $deDeLocale)->willReturn(false);
 
-        $this->shouldThrow(new UnprocessableEntityHttpException('Locales "de_DE, en_US" do not exist.'))
+        $this->shouldThrow(new UnprocessableEntityHttpException('Locales "de_DE, en_US" do not exist or are not activated.'))
             ->during('checkLocalesParameters', [$localeCodes, null]);
     }
 
