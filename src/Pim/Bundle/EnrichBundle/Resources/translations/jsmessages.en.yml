@@ -685,6 +685,8 @@ pim_enrich:
                     real_time_versioning:
                         title: Real time history update
                         help: Means that the product history is automatically updated, can be switched off to improve performances
+                    family_variant_column:
+                        title: Family variant
                 history:
                     title: History
             file_path: File path
@@ -1135,6 +1137,8 @@ batch_jobs:
         validation.label: File validation
         import.label: Product import
         import_associations.label: Association import
+    csv_product_model_import:
+        label: Product model import in CSV
     csv_category_import:
         label: Category import in CSV
         validation.label: File validation
@@ -1234,6 +1238,8 @@ batch_jobs:
         validation.label: File validation
         import.label: Product import
         import_associations.label: Association import
+    xlsx_product_model_import:
+        label: Product model import in XSLX
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export

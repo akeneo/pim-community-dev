@@ -40,6 +40,7 @@ class ProductModelCsvImport implements DefaultValuesProviderInterface
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['enabled'] = true;
         $parameters['categoriesColumn'] = 'categories';
+        $parameters['familyVariantColumn'] = 'family_variant';
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
 
