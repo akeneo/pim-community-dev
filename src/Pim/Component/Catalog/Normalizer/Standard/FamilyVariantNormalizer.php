@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class FamilyVariantNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
-    protected $translationNormalizer;
+    private $translationNormalizer;
 
     /**
      * @param NormalizerInterface $translationNormalizer
@@ -32,7 +32,6 @@ class FamilyVariantNormalizer implements NormalizerInterface
      */
     public function normalize($familyVariant, $format = null, array $context = []): array
     {
-        /** @var FamilyVariantInterface $familyVariant */
         return [
             'code' => $familyVariant->getCode(),
             'labels' => $this->translationNormalizer->normalize($familyVariant, 'standard', $context),
@@ -71,7 +70,7 @@ class FamilyVariantNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeVariantAttributeSets(Collection $variantAttributeSets): array
+    private function normalizeVariantAttributeSets(Collection $variantAttributeSets): array
     {
         return $variantAttributeSets->map(function (VariantAttributeSetInterface $variantAttributeSet) {
             return [
@@ -89,7 +88,7 @@ class FamilyVariantNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeAttributes(Collection $attributes): array
+    private function normalizeAttributes(Collection $attributes): array
     {
         return $attributes->map(function (AttributeInterface $attribute) {
             return $attribute->getCode();

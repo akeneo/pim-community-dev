@@ -827,8 +827,8 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the variant group                                                                |
 | family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
-| labels                 | string[]       | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| variant_attribute_sets | string[]       | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
+| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
 
 
 ### Variant group
