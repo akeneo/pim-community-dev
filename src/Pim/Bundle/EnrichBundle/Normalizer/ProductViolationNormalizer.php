@@ -61,10 +61,13 @@ class ProductViolationNormalizer implements NormalizerInterface
                 return [];
             }
 
+            $channel = $attribute[1] ?? null;
+            $locale = $attribute[2] ?? null;
+
             return [
                 'attribute' => $attributeCode,
-                'locale'    => '<all_locales>' === $attribute[2] ? null : $attribute[2],
-                'scope'     => '<all_channels>' === $attribute[1] ? null : $attribute[1],
+                'locale'    => '<all_locales>' === $locale ? null : $locale,
+                'scope'     => '<all_channels>' === $channel ? null : $channel,
                 'message'   => $violation->getMessage(),
             ];
         }
