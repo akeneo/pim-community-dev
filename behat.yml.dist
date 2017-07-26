@@ -65,6 +65,8 @@ default:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\Storage\ProductModelStorage:
+                    - 'Context\FeatureContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
