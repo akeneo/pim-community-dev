@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedHttpException;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -87,7 +87,7 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $categories->remove(2)->shouldBeCalled();
 
         $this->shouldThrow(
-            new ResourceAccessDeniedHttpException(
+            new ResourceAccessDeniedException(
                 $product->getWrappedObject(),
                 'Product "product_a" cannot be viewed, it is only classified in categories on which you do not have a view permission.'
             )

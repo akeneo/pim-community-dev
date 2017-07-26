@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedHttpException;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -54,7 +54,7 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
                 if ($associatedProductId['association_id'] === $association->getId()) {
                     try {
                         $this->productRepository->find($associatedProductId['product_id']);
-                    } catch (ResourceAccessDeniedHttpException $e) {
+                    } catch (ResourceAccessDeniedException $e) {
                         $association->removeProduct($e->getResource());
                     }
                 }

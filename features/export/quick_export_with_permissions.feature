@@ -7,6 +7,11 @@ Feature: Quick export products with user permissions applied
   Scenario: Restrict localizable product data in quick export according to locales and attribute groups permissions
     Given a "clothing" catalog configuration
     And I am logged in as "Mary"
+    And the following "sleeve_color" attribute reference data: black, green
+    And the following products:
+      | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
+      | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
+      | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | green        |
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
@@ -17,11 +22,6 @@ Feature: Quick export products with user permissions applied
     And I fill in the following information:
       | Allowed to view attributes | IT support |
     And I save the attribute group
-    And the following "sleeve_color" attribute reference data: black, green
-    And the following products:
-      | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
-      | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
-      | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | green        |
     When I am on the products page
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
@@ -36,6 +36,11 @@ Feature: Quick export products with user permissions applied
   Scenario: Restrict published product data in quick export according to locales and attribute groups permissions
     Given a "clothing" catalog configuration
     And I am logged in as "Mary"
+    And the following "sleeve_color" attribute reference data: black, green
+    And the following published products:
+      | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
+      | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
+      | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | green        |
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
@@ -46,11 +51,6 @@ Feature: Quick export products with user permissions applied
     And I fill in the following information:
       | Allowed to view attributes | IT support |
     And I save the attribute group
-    And the following "sleeve_color" attribute reference data: black, green
-    And the following published products:
-      | sku         | family  | name-en_US   | name-de_DE       | sleeve_color |
-      | blackhoodie | hoodies | Black hoodie | Schwarzer Hoodie | black        |
-      | greenhoodie | hoodies | Green hoodie | Grüner Hoodie    | green        |
     When I am on the published products page
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
@@ -65,19 +65,19 @@ Feature: Quick export products with user permissions applied
   Scenario: Restrict locale specific product data in quick export according to locales permissions
     Given a "clothing" catalog configuration
     And I am logged in as "Mary"
+    And the following "sleeve_color" attribute reference data: black, green
+    And the following attributes:
+      | code                      | type             | available_locales | group |
+      | locale_specific_attribute | pim_catalog_text | de_DE             | other |
+    And the following products:
+      | sku         | family  | locale_specific_attribute        | sleeve_color |
+      | blackhoodie | hoodies | German specific stuff            | black        |
+      | greenhoodie | hoodies | Some other German specific stuff | green        |
     And I am on the "de_DE" locale page
     And I visit the "Permissions" tab
     And I fill in the following information:
       | Allowed to view product information | IT support |
     And I save the locale
-    And the following attributes:
-      | code                      | type             | available_locales | group |
-      | locale_specific_attribute | pim_catalog_text | de_DE             | other |
-    And the following "sleeve_color" attribute reference data: black, green
-    And the following products:
-      | sku         | family  | locale_specific_attribute        | sleeve_color |
-      | blackhoodie | hoodies | German specific stuff            | black        |
-      | greenhoodie | hoodies | Some other German specific stuff | green        |
     When I am on the products page
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button

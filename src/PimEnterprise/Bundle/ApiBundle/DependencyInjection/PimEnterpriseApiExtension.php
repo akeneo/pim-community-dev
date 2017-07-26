@@ -35,5 +35,6 @@ class PimEnterpriseApiExtension extends Extension
         $loader->load('checkers.yml');
         $loader->load('controllers.yml');
         $loader->load('normalizers.yml');
+        $loader->load('security.yml');
     }
 }

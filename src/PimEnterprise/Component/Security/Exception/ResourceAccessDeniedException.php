@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Component\Security\Exception;
 
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Access denied for a resource.
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ResourceAccessDeniedHttpException extends AccessDeniedHttpException
+class ResourceAccessDeniedException extends AccessDeniedException
 {
     /** @var mixed */
     private $resource;
@@ -26,12 +26,11 @@ class ResourceAccessDeniedHttpException extends AccessDeniedHttpException
     /**
      * @param mixed           $resource
      * @param string          $message
-     * @param int             $code
      * @param \Exception|null $exception
      */
-    public function __construct($resource, $message = '', $code = 403, \Exception $exception = null)
+    public function __construct($resource, $message = '', \Exception $exception = null)
     {
-        parent::__construct($message, $exception, $code);
+        parent::__construct($message, $exception);
 
         $this->resource = $resource;
     }

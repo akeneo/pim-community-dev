@@ -9,13 +9,13 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And the following family:
       | code       | attributes                                     |
       | high_heels | sku,name,manufacturer,description,price,rating |
+    And the following product:
+      | sku       | family     | rating |
+      | highheels | high_heels | 2      |
     And the following attribute group accesses:
       | attribute group | user group | access |
       | info            | Manager    | edit   |
       | marketing       | Manager    | view   |
-    And the following product:
-      | sku       | family     | rating |
-      | highheels | high_heels | 2      |
     And I am logged in as "Julia"
     And I am on the products page
 

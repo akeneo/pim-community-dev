@@ -265,4 +265,41 @@ JSON;
 
         return $standardizedProducts;
     }
+
+    /**
+     * @param Response $response
+     * @param string   $message
+     */
+    protected function assertError422(Response $response, $message)
+    {
+        $expected = <<<JSON
+{
+  "code": 422,
+  "message": "{$message}. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_products"
+    }
+  }
+}
+JSON;
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    /**
+     * @param array  $expectedProduct normalized data of the product that should be created
+     * @param string $identifier      identifier of the product that should be created
+     */
+    protected function assertSameProducts(array $expectedProduct, $identifier)
+    {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+
+        NormalizedProductCleaner::clean($standardizedProduct);
+        NormalizedProductCleaner::clean($expectedProduct);
+
+        $this->assertSame($expectedProduct, $standardizedProduct);
+    }
 }
