@@ -22,28 +22,6 @@
             {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
         </div>
     </div>
-
-    <script>
-        require(
-            [
-                'pim/fetcher-registry',
-                'pim/form-builder'
-            ],
-            function(
-                FetcherRegistry,
-                FormBuilder
-            ) {
-                $(function() {
-                    FetcherRegistry.initialize().done(function () {
-                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                            form.setElement('.user-menu').render();
-                        }.bind(this));
-                    });
-                });
-            }
-        );
-    </script>
-
     <script>
         require(
             [
