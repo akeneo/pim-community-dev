@@ -19,7 +19,11 @@ build/
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 vendor
-/bin
+bin/*
+!/bin/docker
+/bin/docker/*
+!/bin/docker/pim-initialize.sh
+!/bin/docker/pim-front.sh
 behat.yml
 .phpspec/*.tpl
 composer.phar
