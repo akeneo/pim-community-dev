@@ -4,6 +4,14 @@ extensions:
         config:
             title: pimee_catalog_rule.overview
 
+    pim-rule_index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-rule-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-enrich-rule
+
     pim-rule-index-grid:
         module: pim/form/common/index/grid
         parent: pim-rule-index
