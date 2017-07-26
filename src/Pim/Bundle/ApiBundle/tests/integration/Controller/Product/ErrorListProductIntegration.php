@@ -29,15 +29,15 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?locales=not_found');
-        $this->assert($client, 'Locale "not_found" does not exist.');
+        $this->assert($client, 'Locale "not_found" does not exist or is not activated.');
     }
 
     public function testNotFoundLocales()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?locales=not_found,jambon');
-        $this->assert($client, 'Locales "not_found, jambon" do not exist.');
+        $client->request('GET', 'api/rest/v1/products?locales=not_found, jambon');
+        $this->assert($client, 'Locales "not_found, jambon" do not exist or are not activated.');
     }
 
     public function testInactiveLocale()
@@ -52,7 +52,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=de_DE,fr_FR');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=de_DE, fr_FR');
         $this->assert($client, 'Locales "de_DE, fr_FR" are not activated for the scope "ecommerce".');
     }
 
@@ -160,7 +160,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         );
         $this->assert(
             $client,
-            'Attribute "a_localizable_image" expects an existing and activated locale, "not_found" given.'
+            'Locale "not_found" does not exist or is not activated.'
         );
 
         $client->request(
@@ -169,7 +169,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         );
         $this->assert(
             $client,
-            'Attribute "a_localizable_image" expects an existing and activated locale, "not_found" given.'
+            'Locale "not_found" does not exist or is not activated.'
         );
     }
 
@@ -177,8 +177,8 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', '/api/rest/v1/products?search_locale=ar_TN&search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_localizable_image" expects an existing and activated locale, "ar_TN" given.');
+        $client->request('GET', '/api/rest/v1/products?search_locale=zh_HK&search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
+        $this->assert($client, 'Locale "zh_HK" does not exist or is not activated.');
     }
 
     public function testSearchWithNotFoundScope()
@@ -197,7 +197,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"categories":[{"operator":"IN","value":["not_found"]}]}');
-        $this->assert($client, 'Object "category" with code "not_found" does not exist');
+        $this->assert($client, 'Category "not_found" does not exist.');
     }
 
     public function testSearchIsNotAnArray()
@@ -222,13 +222,9 @@ class ErrorListProductIntegration extends AbstractProductTestCase
      */
     private function assert(Client $client, $message)
     {
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
+        $expected = sprintf('{"code":%s,"message":"%s"}', Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertCount(2, $content);
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
-        $this->assertSame($message, $content['message']);
+        $this->assertSame($expected, $client->getResponse()->getContent());
     }
 
     /**

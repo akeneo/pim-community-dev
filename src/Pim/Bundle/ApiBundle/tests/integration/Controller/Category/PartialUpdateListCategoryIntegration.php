@@ -14,13 +14,13 @@ class PartialUpdateListCategoryIntegration extends ApiTestCase
         $data =
 <<<JSON
     {"code": "categoryA2","labels":{"en_US":"category A2"}}
-    {"code": "categoryC","parent":"master"}
+    {"code": "categoryD","parent":"master"}
 JSON;
 
         $expectedContent =
 <<<JSON
 {"line":1,"code":"categoryA2","status_code":204}
-{"line":2,"code":"categoryC","status_code":201}
+{"line":2,"code":"categoryD","status_code":201}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
@@ -39,29 +39,29 @@ JSON;
                     'en_US' => 'category A2'
                 ]
             ],
-            'categoryC' => [
-                'code'   => 'categoryC',
+            'categoryD' => [
+                'code'   => 'categoryD',
                 'parent' => 'master',
                 'labels' => []
             ]
         ];
 
         $this->assertSameCategories($expectedCategories['categoryA2'], 'categoryA2');
-        $this->assertSameCategories($expectedCategories['categoryC'], 'categoryC');
+        $this->assertSameCategories($expectedCategories['categoryD'], 'categoryD');
     }
 
     public function testCreateAndUpdateSameCategory()
     {
         $data =
 <<<JSON
-    {"code": "categoryC"}
-    {"code": "categoryC"}
+    {"code": "categoryD"}
+    {"code": "categoryD"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"categoryC","status_code":201}
-{"line":2,"code":"categoryC","status_code":204}
+{"line":1,"code":"categoryD","status_code":201}
+{"line":2,"code":"categoryD","status_code":204}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
