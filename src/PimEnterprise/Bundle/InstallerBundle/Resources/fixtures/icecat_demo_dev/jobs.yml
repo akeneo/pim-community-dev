@@ -481,6 +481,17 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_family_variant_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_variant_import
+        label:     Demo CSV family variant import
+        type:      import
+        configuration:
+            filePath:      /tmp/family_variant.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     csv_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
@@ -491,6 +502,16 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/family.csv
+    csv_family_variant_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_variant_export
+        label:     Demo CSV family variant export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/family_variant.csv
     xlsx_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
@@ -655,6 +676,13 @@ jobs:
         type:      import
         configuration:
             filePath:      /tmp/family.xlsx
+    xlsx_family_variant_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_variant_import
+        label:     Demo XLSX family variant import
+        type:      import
+        configuration:
+            filePath:      /tmp/family_variant.xlsx
     xlsx_asset_import:
         connector: Akeneo Product Asset Connector
         alias:     xlsx_asset_import
@@ -714,6 +742,15 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath: /tmp/family.xlsx
+    xlsx_family_variant_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_variant_export
+        label:     Demo XLSX family variant export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath: /tmp/family_variant.xlsx
     xlsx_category_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_export

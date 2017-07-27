@@ -1,5 +1,6 @@
 job_profile;execute_job_profile;edit_job_profile;
 csv_catalog_modeling_family_variant_import;All;All;
+csv_catalog_modeling_family_variant_export;All;All;
 add_product_value;All;
 add_product_value_with_permission;All;
 add_product_value_with_permission_and_rules;All;
@@ -21,6 +22,7 @@ csv_product_quick_export;All;
 csv_published_product_quick_export;All;
 rule_impacted_product_count;All;
 xlsx_catalog_modeling_family_variant_import;All;All;
+xlsx_catalog_modeling_family_variant_export;All;All;
 xlsx_product_quick_export;All;
 xlsx_published_product_quick_export;All;
 csv_product_grid_context_quick_export;All;
