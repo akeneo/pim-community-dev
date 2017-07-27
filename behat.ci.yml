@@ -6,7 +6,7 @@ default:
                 - Context\FeatureContext:
                     - 'Context\FeatureContext'
                     -
-                        base_url: 'http://akeneo/'
+                        base_url: 'http://127.0.0.1/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -76,8 +76,8 @@ default:
                     symfony2: ~
                 selenium2:
                     selenium2:
-                        wd_host: 'http://selenium:4444/wd/hub'
-            base_url: 'http://akeneo/'
+                        wd_host: 'http://127.0.0.1:4444/wd/hub'
+            base_url: 'http://127.0.0.1/'
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
@@ -88,9 +88,5 @@ default:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: 'http://akeneo/'
+                    base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
-
-    formatters:
-        pim:
-            output_path: app/build/logs/behat/
