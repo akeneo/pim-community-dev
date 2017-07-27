@@ -31,9 +31,8 @@ Akeneo\Component\Versioning\Model\Version:
             type: string
             column: resource_name
         resourceId:
-            type: string
+            type: uuid_binary
             column: resource_id
-            length: 24
         snapshot:
             type: array
             nullable: true
