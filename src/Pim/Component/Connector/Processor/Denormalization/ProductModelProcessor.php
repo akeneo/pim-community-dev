@@ -76,10 +76,10 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $productModel = $this->findOrCreateProductModel($flatProductModel['identifier']);
 
         $jobParameters = $this->stepExecution->getJobParameters();
-        if ($jobParameters->get('enabledComparison')) {
+        if ($jobParameters->get('enabledComparison') && null !== $productModel->getId()) {
             $flatProductModel = $this->productModelFilter->filter($productModel, $flatProductModel);
 
-            if (empty($flatProductModel) && null !== $productModel->getId()) {
+            if (empty($flatProductModel)) {
                 $this->objectDetacher->detach($productModel);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 

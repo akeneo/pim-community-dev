@@ -33,10 +33,14 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $familyVariantRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $productModelRepository;
+
     /**
      * @param PropertySetterInterface               $propertySetter
      * @param ObjectUpdaterInterface                $valuesUpdater
      * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param array                                 $supportedFields
      * @param array                                 $ignoredFields
      */
@@ -44,12 +48,14 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->valuesUpdater = $valuesUpdater;
         $this->familyVariantRepository = $familyVariantRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
     }
@@ -71,6 +77,20 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->valuesUpdater->update($productModel, $value, $options);
             } elseif ('identifier' === $code) {
                 $productModel->setIdentifier($value);
+            } elseif ('parent' === $code) {
+                if ('' !== $value) {
+                    if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
+                        throw InvalidPropertyException::validEntityCodeExpected(
+                            'family_variant',
+                            'family variant code',
+                            'The family variant does not exist',
+                            static::class,
+                            $value
+                        );
+                    }
+
+                    $productModel->setParent($parentProductModel);
+                }
             } elseif ('family_variant' === $code) {
                 if (null === $familyVariant = $this->familyVariantRepository->findOneByIdentifier($value)) {
                     throw InvalidPropertyException::validEntityCodeExpected(

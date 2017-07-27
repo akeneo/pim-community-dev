@@ -40,12 +40,6 @@ class FieldConverterSpec extends ObjectBehavior
         $this->convert('categories', 'dry,wet')->shouldBeLike([new ConvertedField('categories', ['dry', 'wet'])]);
     }
 
-    function it_converts_a_parent_identifier($assocFieldResolver)
-    {
-        $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
-        $this->convert('parent', '123')->shouldBeLike([new ConvertedField('parent', 123)]);
-    }
-
     function it_converts_other_field($assocFieldResolver)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn([]);

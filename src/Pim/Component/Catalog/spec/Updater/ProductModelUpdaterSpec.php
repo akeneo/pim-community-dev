@@ -19,12 +19,14 @@ class ProductModelUpdaterSpec extends ObjectBehavior
     function let(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
-        IdentifiableObjectRepositoryInterface $familyVariantRepository
+        IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $valuesUpdater,
             $familyVariantRepository,
+            $productModelRepository,
             ['categories'],
             ['identifier']
         );
@@ -42,13 +44,17 @@ class ProductModelUpdaterSpec extends ObjectBehavior
 
     function it_updates_a_product_model(
         $familyVariantRepository,
+        $productModelRepository,
         $propertySetter,
         $valuesUpdater,
         ProductModelInterface $productModel,
+        ProductModelInterface $parentProductModel,
         FamilyVariantInterface $familyVariant
     ) {
         $propertySetter->setData($productModel, 'categories', ['tshirt'])->shouldBeCalled();
         $productModel->setIdentifier('product_model_identifier')->shouldBeCalled();
+        $productModelRepository->findOneByIdentifier('product_model_parent')->willreturn($parentProductModel);
+        $productModel->setParent($parentProductModel)->shouldBeCalled();
 
         $familyVariantRepository->findOneByIdentifier('clothing_color_size')->willreturn($familyVariant);
         $productModel->setFamilyVariant($familyVariant)->shouldBeCalled();
@@ -82,6 +88,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
             ],
             'categories' => ['tshirt'],
             'family_variant' => 'clothing_color_size',
+            'parent' => 'product_model_parent'
         ])->shouldReturn($this);
     }
 

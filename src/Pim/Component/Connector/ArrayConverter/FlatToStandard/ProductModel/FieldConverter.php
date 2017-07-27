@@ -47,10 +47,6 @@ class FieldConverter
             return [new ConvertedField($fieldName, $categories)];
         }
 
-        if ('parent' === $fieldName) {
-            return [new ConvertedField($fieldName, (int) $value)];
-        }
-
         return [new ConvertedField($fieldName, $value)];
     }
 

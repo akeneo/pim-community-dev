@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -73,11 +74,11 @@ class EntityWithValuesWriter implements ItemWriterInterface, StepExecutionAwareI
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $entityWithValues
      */
-    protected function incrementCount(ProductInterface $product)
+    protected function incrementCount(EntityWithValuesInterface $entityWithValues)
     {
-        if ($product->getId()) {
+        if ($entityWithValues->getId()) {
             $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
