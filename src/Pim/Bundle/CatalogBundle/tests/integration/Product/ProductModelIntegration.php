@@ -19,14 +19,14 @@ class ProductModelIntegration extends TestCase
      */
     public function testTheProductModelCreation()
     {
-        $productModel = $this->createProductModelObject(
+        $productModel = $this->createProductModel(
             [
                 'identifier' => 'product_model_identifier',
                 'values' => [
-                    'name' => [
+                    'description' => [
                         [
                             'locale' => 'fr_FR',
-                            'scope' => null,
+                            'scope' => 'mobile',
                             'data' => 'T-shirt super beau',
                         ],
                     ],
@@ -50,7 +50,7 @@ class ProductModelIntegration extends TestCase
 
         $sku = $productModel->getValues()->first();
         $this->assertEquals($sku->getLocale(), 'fr_FR');
-        $this->assertEquals($sku->getScope(), null);
+        $this->assertEquals($sku->getScope(), 'mobile');
         $this->assertEquals($sku->getData(), 'T-shirt super beau');
     }
 
@@ -59,7 +59,7 @@ class ProductModelIntegration extends TestCase
      */
     public function testThatTheProductModelIdentifierMustNotBeEmpty()
     {
-        $productModel = $this->createProductModelObject(
+        $productModel = $this->createProductModel(
             [
                 'identifier' => '',
             ]
@@ -76,7 +76,7 @@ class ProductModelIntegration extends TestCase
      */
     public function testThatTheProductModelIdentifierMustBeValid()
     {
-        $productModel = $this->createProductModelObject(
+        $productModel = $this->createProductModel(
             [
                 'identifier' => 'product_model_identifier',
             ]
@@ -85,7 +85,7 @@ class ProductModelIntegration extends TestCase
         $this->get('validator')->validate($productModel);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $productModel = $this->createProductModelObject(
+        $productModel = $this->createProductModel(
             [
                 'identifier' => 'product_model_identifier',
             ]
@@ -108,7 +108,7 @@ class ProductModelIntegration extends TestCase
         $this->expectException(InvalidPropertyException::class);
         $this->expectExceptionMessage('Property "family_variant" expects a valid family variant code. The family variant does not exist, "" given.');
 
-        $this->createProductModelObject(
+        $this->createProductModel(
             [
                 'identifier' => 'product_model_identifier',
                 'values' => [
@@ -127,6 +127,144 @@ class ProductModelIntegration extends TestCase
     }
 
     /**
+     * Advanced validation, a product model axis must be filled
+     */
+    public function testTheProductModelAxisValueIsSet()
+    {
+        $productModelParent = $this->createProductModel(
+            [
+                'identifier' => 'product_model_parent_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+            ]
+        );
+
+        $errors = $this->get('validator')->validate($productModelParent);
+        $this->assertEquals(0, $errors->count());
+        $this->get('pim_catalog.saver.product_model')->save($productModelParent);
+
+        $productModel = $this->createProductModel(
+            [
+                'identifier' => 'product_model_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+            ]
+        );
+        $productModel->setParent($productModelParent);
+
+        $errors = $this->get('validator')->validate($productModel);
+        $this->assertEquals(
+            'Attribute "color" cannot be empty, as it is defined as an axis for this entity',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Advanced validation, we can't set extra attributes to a product model, other than the ones in the related
+     * Attribute Set
+     */
+    public function testTheProductModelAttributesAreInTheAttributeSet()
+    {
+        $productModelParent = $this->createProductModel(
+            [
+                'identifier' => 'product_model_parent_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+            ]
+        );
+
+        $errors = $this->get('validator')->validate($productModelParent);
+        $this->assertEquals(0, $errors->count());
+        $this->get('pim_catalog.saver.product_model')->save($productModelParent);
+
+        $productModel = $this->createProductModel(
+            [
+                'identifier' => 'product_model_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+                'values' => [
+                    'color' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'blue',
+                        ]
+                    ],
+                    'sku' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'pant',
+                        ],
+                    ],
+                ]
+            ]
+        );
+        $productModel->setParent($productModelParent);
+
+        $errors = $this->get('validator')->validate($productModel);
+        $this->assertEquals(
+            'Cannot set the property "sku" to this entity as it is not in the attribute set',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Advanced validation, we can't set the same value for axes, as axes values are unique
+     */
+    public function testTheProductModelAxesDontHaveDuplicateInTheFamilyVariant()
+    {
+        $productModelParent = $this->createProductModel(
+            [
+                'identifier' => 'product_model_parent_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+            ]
+        );
+
+        $errors = $this->get('validator')->validate($productModelParent);
+        $this->assertEquals(0, $errors->count());
+        $this->get('pim_catalog.saver.product_model')->save($productModelParent);
+
+        $productModel = $this->createProductModel(
+            [
+                'identifier' => 'product_model_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+                'values' => [
+                    'color' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'blue',
+                        ]
+                    ],
+                ]
+            ]
+        );
+        $productModel->setParent($productModelParent);
+        $errors = $this->get('validator')->validate($productModel);
+        $this->assertEquals(0, $errors->count());
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        $productModelDuplicate = $this->createProductModel(
+            [
+                'identifier' => 'product_model_duplicate_identifier',
+                'family_variant' => 'variant_clothing_color_and_size',
+                'values' => [
+                    'color' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'blue',
+                        ]
+                    ],
+                ]
+            ]
+        );
+        $productModelDuplicate->setParent($productModelParent);
+        $errors = $this->get('validator')->validate($productModelDuplicate);
+        $this->assertEquals(
+            'Cannot set value "[blue]" for the attribute axis "color", as another sibling entity already has this value',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
@@ -139,7 +277,7 @@ class ProductModelIntegration extends TestCase
      *
      * @return ProductModelInterface
      */
-    private function createProductModelObject(array $data): ProductModelInterface
+    private function createProductModel(array $data): ProductModelInterface
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);

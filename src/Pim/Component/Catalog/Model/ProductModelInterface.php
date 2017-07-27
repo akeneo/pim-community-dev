@@ -17,14 +17,15 @@ interface ProductModelInterface extends
     EntityWithValuesInterface,
     TimestampableInterface,
     VersionableInterface,
-    CategoryAwareInterface
+    CategoryAwareInterface,
+    CanHaveFamilyVariantInterface
 {
     /**
      * Gets the ID of the product model.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId(): int;
+    public function getId(): ?int;
 
     /**
      * Gets the identifier of the product model.
@@ -170,11 +171,6 @@ interface ProductModelInterface extends
      * @return Collection
      */
     public function getChildren(): Collection;
-
-    /**
-     * @return FamilyVariantInterface
-     */
-    public function getFamilyVariant(): FamilyVariantInterface;
 
     /**
      * @param FamilyVariantInterface $familyVariant
