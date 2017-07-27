@@ -87,7 +87,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
                 'show'            => !$editGranted,
                 'edit'            => $editGranted,
                 'edit_categories' => $ownershipGranted,
-                'delete'          => $editGranted,
+                'delete'          => $ownershipGranted,
                 'toggle_status'   => $ownershipGranted
             ];
         };
