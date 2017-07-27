@@ -1,20 +1,79 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ci-consumer
+  name: JOB_NAME
 spec:
-  completions: 5
+  parallelism: 0
   template:
-    metadata:
-      labels:
-        name: ci-consumer
     spec:
+      initContainers:
+        - name: sysctl
+          image: "busybox"
+          command: ["sysctl", "-w", "vm.max_map_count=262144"]
+          securityContext:
+            "privileged": true
+        - name: pim
+          image: PIM_IMAGE
+          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: pim
       containers:
-        - name: pull-messages
-          image: eu.gcr.io/akeneo-ci/pubsub:latest
-          command: ["php"]
-          args: ["pull-messages", "akeneo-ci-abo"]
+        - name: mysql
+          image: mysql:5.7
           env:
-          - name: PUBSUB_PROJECT_ID
-            value: akeneo-ci
-      restartPolicy: Never
+            - { name: MYSQL_ROOT_PASSWORD, value: root }
+            - { name: MYSQL_USER, value: akeneo_pim }
+            - { name: MYSQL_PASSWORD, value: akeneo_pim }
+            - { name: MYSQL_DATABASE, value: akeneo_pim }
+          readinessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 5
+            failureThreshold: 30
+            exec:
+              command: [ "/bin/sh", "-i", "-c", "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"]
+          livenessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 3306
+        - name: elasticsearch
+          image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
+          imagePullPolicy: Always
+          env:
+            - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+        - name: php
+          image: eu.gcr.io/akeneo-ci/php:7.1-fpm
+          workingDir: /home/jenkins/pim
+          imagePullPolicy: Always
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+        - name: httpd
+          image: eu.gcr.io/akeneo-ci/httpd:2.4
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: pim
+        - name: selenium
+          image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: pim
+        - name: pubsub
+          image: eu.gcr.io/akeneo-ci/gcloud:latest
+          imagePullPolicy: Always
+          command: ["gcloud.phar"]
+          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME"]
+          env:
+            - { name: DOCKER_API_VERSION, value: "1.23" }
+            - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+          volumeMounts:
+            - { name: docker, mountPath: /var/run/docker.sock }
+      volumes:
+        - name: pim
+          emptyDir: {}
+        - name: docker
+          hostPath:
+            path: /var/run/docker.sock
+      restartPolicy: OnFailure
