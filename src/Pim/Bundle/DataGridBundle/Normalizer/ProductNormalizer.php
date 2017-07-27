@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -43,15 +44,15 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $locale = current($context['locales']);
 
         $data['identifier'] = $product->getIdentifier();
-        $data['family'] = $this->getFamilyLabel($product, $locale);
-        $data['groups'] = $this->getGroupsLabels($product, $locale);
-        $data['enabled'] = (bool) $product->isEnabled();
+        $data['family'] = $product instanceof ProductInterface ? $this->getFamilyLabel($product, $locale) : '';
+        $data['groups'] = $product instanceof ProductInterface ? $this->getGroupsLabels($product, $locale) : '';
+        $data['enabled'] = $product instanceof ProductInterface ? (bool) $product->isEnabled() : false;
         $data['values'] = $this->normalizeValues($product->getValues(), $format, $context);
         $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
-        $data['label'] = $product->getLabel($locale);
+        $data['label'] = $product instanceof ProductInterface ? $product->getLabel($locale) : $product->getIdentifier();
         $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
-        $data['completeness'] = $this->getCompleteness($product, $context);
+        $data['completeness'] = $product instanceof ProductInterface ? $this->getCompleteness($product, $context) : '';
 
         return $data;
     }
@@ -61,7 +62,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'datagrid' === $format;
+        return ($data instanceof ProductInterface || $data instanceof ProductModelInterface) && 'datagrid' === $format;
     }
 
     /**

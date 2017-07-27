@@ -8,6 +8,8 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,14 +27,18 @@ class VariantGroupProductDatasource extends ProductDatasource
      * @param ProductQueryBuilderFactoryInterface $factory
      * @param NormalizerInterface                 $normalizer
      * @param GroupRepositoryInterface            $groupRepository
+     * @param ProductRepositoryInterface          $productRepository
+     * @param ProductModelRepositoryInterface     $productModelRepository
      */
     public function __construct(
         ObjectManager $om,
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $normalizer,
-        GroupRepositoryInterface $groupRepository
+        GroupRepositoryInterface $groupRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
-        parent::__construct($om, $factory, $normalizer);
+        parent::__construct($om, $factory, $normalizer, $productRepository, $productModelRepository);
 
         $this->groupRepository = $groupRepository;
     }
