@@ -223,7 +223,7 @@ class InvalidArgumentException extends \InvalidArgumentException
         return new self(
             $className,
             sprintf(
-                'Attribute or field "%s" expects an array with the key "%s" as data, "%s" given.',
+                'Attribute or field "%s" expects an array with the key "%s", "%s" given.',
                 $name,
                 $key,
                 $data
