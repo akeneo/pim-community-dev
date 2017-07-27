@@ -142,6 +142,14 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Property "completeness" expects an array of arrays as data.');
     }
 
+    public function testSearchWithEmptyLocales()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":""}]}');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales" as data.');
+    }
+
     public function testSearchWithMissingScope()
     {
         $client = $this->createAuthenticatedClient();
@@ -222,9 +230,12 @@ class ErrorListProductIntegration extends AbstractProductTestCase
      */
     private function assert(Client $client, $message)
     {
-        $expected = sprintf('{"code":%s,"message":"%s"}', Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
+        $response = $client->getResponse();
 
-        $this->assertSame($expected, $client->getResponse()->getContent());
+        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expected, $response->getContent());
     }
 
     /**

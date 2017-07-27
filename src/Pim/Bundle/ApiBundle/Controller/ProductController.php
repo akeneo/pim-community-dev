@@ -200,7 +200,7 @@ class ProductController
         $queryParameters = array_merge([
             'limit' => $this->apiConfiguration['pagination']['limit_by_default']
         ], $request->query->all());
-        $pqbOptions = ['limit' => (int)$queryParameters['limit']];
+        $pqbOptions = ['limit' => (int) $queryParameters['limit']];
 
         $searchParameter = null;
         if (isset($queryParameters['search_after'])) {
@@ -538,8 +538,12 @@ class ProductController
 
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
 
-                if (isset($filter['locales'])) {
+                if (isset($filter['locales']) && '' !== $filter['locales']) {
                     $context['locales'] = $filter['locales'];
+
+                    $this->queryParametersChecker->checkLocalesParameters(
+                        !is_array($context['locales']) ? [$context['locales']] : $context['locales']
+                    );
                 }
 
                 $value = isset($filter['value']) ? $filter['value'] : null;
