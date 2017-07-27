@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\Writer\File;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\FieldSplitter;
 
 class DefaultColumnSorterSpec extends ObjectBehavior
 {
@@ -22,8 +22,12 @@ class DefaultColumnSorterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Connector\Writer\File\ColumnSorterInterface');
     }
 
-    function it_sort_headers_columns()
+    function it_sort_headers_columns($fieldSplitter)
     {
+        $fieldSplitter->splitFieldName('code')->willReturn(['code']);
+        $fieldSplitter->splitFieldName('sort_order')->willReturn(['sort_order']);
+        $fieldSplitter->splitFieldName('label')->willReturn(['label']);
+
         $this->sort([
             'code',
             'sort_order',

@@ -33,9 +33,13 @@ class ProductColumnSorterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Connector\Writer\File\ColumnSorterInterface');
     }
 
-    function it_sort_headers_columns($attributeRepository)
+    function it_sort_headers_columns($attributeRepository, $fieldSplitter)
     {
         $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $fieldSplitter->splitFieldName('sku')->willReturn(['sku']);
+        $fieldSplitter->splitFieldName('code')->willReturn(['code']);
+        $fieldSplitter->splitFieldName('label')->willReturn(['label']);
 
         $this->sort([
             'sku',

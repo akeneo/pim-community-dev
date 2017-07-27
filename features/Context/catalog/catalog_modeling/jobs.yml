@@ -90,3 +90,22 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
+
+    csv_catalog_modeling_family_variant_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_variant_export
+        label:     CSV catalog modeling family variant export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/family_variant.csv
+    xlsx_catalog_modeling_family_variant_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_variant_export
+        label:     XLSX catalog modeling family variant export
+        type:      export
+        configuration:
+            withHeader: true
+            filePath:   /tmp/family_variant.xlsx

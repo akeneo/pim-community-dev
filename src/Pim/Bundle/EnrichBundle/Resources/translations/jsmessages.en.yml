@@ -1055,6 +1055,9 @@ batch_jobs:
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
+    csv_family_variant_export:
+        label: Family variant export in CSV
+        export.label: Family variant export
     csv_product_import:
         label: Product import in CSV
         validation.label: File validation
@@ -1176,6 +1179,9 @@ batch_jobs:
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export
+    xlsx_family_variant_export:
+        label: Family variant export in XLSX
+        export.label: Family variant export
     xlsx_category_export:
         label: Category export in XLSX
         export.label: Category export

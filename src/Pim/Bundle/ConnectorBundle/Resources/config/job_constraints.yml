@@ -23,6 +23,7 @@ services:
             -
                 - 'csv_attribute_export'
                 - 'csv_family_export'
+                - 'csv_family_variant_export'
                 - 'csv_group_export'
                 - 'csv_association_type_export'
                 - 'csv_attribute_option_export'
@@ -41,6 +42,7 @@ services:
             -
                 - 'xlsx_attribute_export'
                 - 'xlsx_family_export'
+                - 'xlsx_family_variant_export'
                 - 'xlsx_group_export'
                 - 'xlsx_association_type_export'
                 - 'xlsx_attribute_option_export'

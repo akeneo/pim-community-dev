@@ -40,6 +40,11 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
 
+    pim_connector.reader.database.family_variant:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+
     pim_connector.reader.database.attribute:
         class: '%pim_connector.reader.database.class%'
         arguments:
