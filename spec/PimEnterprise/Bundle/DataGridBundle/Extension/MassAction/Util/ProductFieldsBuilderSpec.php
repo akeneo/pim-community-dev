@@ -2,10 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -16,8 +14,8 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ProductFieldsBuilderSpec extends ObjectBehavior
 {
@@ -29,11 +27,11 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith(
@@ -44,7 +42,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
             $assocTypeRepo,
             $catalogContext,
             $accessRepository,
-            $securityContext
+            $tokenStorage
         );
     }
 
