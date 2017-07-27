@@ -76,7 +76,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -430,9 +430,9 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
-     * @return FamilyVariantInterface
+     * {@inheritdoc}
      */
-    public function getFamilyVariant(): FamilyVariantInterface
+    public function getFamilyVariant(): ?FamilyVariantInterface
     {
         return $this->familyVariant;
     }
@@ -443,5 +443,31 @@ class ProductModel implements ProductModelInterface
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
         $this->familyVariant = $familyVariant;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariationLevel(): int
+    {
+        $entity = $this;
+        $level = 0;
+
+        while (true) {
+            $entity = $entity->getParent();
+            if (null === $entity) {
+                return $level;
+            }
+
+            $level++;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRootVariation(): bool
+    {
+        return null === $this->parent;
     }
 }

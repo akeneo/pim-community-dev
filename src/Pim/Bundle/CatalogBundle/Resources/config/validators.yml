@@ -48,6 +48,9 @@ parameters:
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
     pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
+    pim_catalog.validator.constraint.only_expected_attributes.class:       Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator
+    pim_catalog.validator.constraint.sibling_unique_variant_axes.class:    Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator
+    pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
 
 services:
     # Helpers
@@ -74,6 +77,28 @@ services:
                 - 'pim_reference_data_simpleselect'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_variant }
+
+    pim_catalog.validator.constraint.only_expected_attributes:
+        class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.can_have_family_variant_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_only_expected_attributes }
+
+    pim_catalog.validator.constraint.sibling_unique_variant_axes:
+        class: '%pim_catalog.validator.constraint.sibling_unique_variant_axes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.can_have_family_variant_attributes'
+            - '@pim_catalog.repository.can_have_variant_family'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_sibling_unique_variant_axes_validator }
+
+    pim_catalog.validator.constraint.not_empty_variant_axes:
+        class: '%pim_catalog.validator.constraint.not_empty_variant_axes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.can_have_family_variant_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_not_empty_axes_validator }
 
     pim_catalog.validator.constraint.valid_metric:
         class: '%pim_catalog.validator.constraint.valid_metric.class%'

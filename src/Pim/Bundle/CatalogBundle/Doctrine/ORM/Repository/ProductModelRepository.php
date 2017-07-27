@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
@@ -40,5 +41,23 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     public function findOneByIdentifier($identifier): ?ProductModelInterface
     {
         return $this->findOneBy(['identifier' => $identifier]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findSiblingsProductModels(ProductModelInterface $productModel): array
+    {
+        $qb = $this
+            ->createQueryBuilder('pm')
+            ->where('pm.parent = :parent')
+            ->setParameter('parent', $productModel->getParent());
+
+        if (null !== $id = $productModel->getId()) {
+            $qb->andWhere('pm.id != :id')
+                ->setParameter('id', $id);
+        }
+
+        return $qb->getQuery()->execute();
     }
 }

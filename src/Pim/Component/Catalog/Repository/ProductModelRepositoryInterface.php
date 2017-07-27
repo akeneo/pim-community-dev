@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Repository;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -16,4 +17,12 @@ interface ProductModelRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
     CursorableRepositoryInterface
 {
+    /**
+     * Find product models with the same parent than the given $productModel
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return ProductModelInterface[]
+     */
+    public function findSiblingsProductModels(ProductModelInterface $productModel): array;
 }
