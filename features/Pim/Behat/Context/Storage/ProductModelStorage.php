@@ -2,34 +2,51 @@
 
 namespace Pim\Behat\Context\Storage;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Behat\Gherkin\Node\TableNode;
-use Pim\Behat\Context\PimContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
-class ProductModelStorage extends PimContext
+class ProductModelStorage extends RawMinkContext
 {
+    /** @var AttributeColumnInfoExtractor */
+    private $attributeColumnInfoExtractor;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $productModelRepository;
+
     /**
-     * @Then /^there should be the following (root product model|product model):$/
+     * @param AttributeColumnInfoExtractor          $attributeColumnInfoExtractor
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      */
-    public function theProductShouldNotHaveTheFollowingValues($identifier, TableNode $table)
+    public function __construct(
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        IdentifiableObjectRepositoryInterface $productModelRepository
+    ) {
+        $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
+        $this->productModelRepository = $productModelRepository;
+    }
+
+    /**
+     * @Then /^there should be the following (?:|root product model|product model):$/
+     */
+    public function theProductShouldNotHaveTheFollowingValues(TableNode $properties)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $product = $this->getFixturesContext()->getEntity('ProductModel', $identifier);
+        foreach ($properties->getHash() as $rawCode => $value) {
+            $product = $this->productModelRepository->findOneByIdentifier($value['identifier']);
+            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->extractColumnInfo($rawCode);
-
-            $attribute     = $infos['attribute'];
+            $attribute = $infos['attribute'];
             $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-            $productValue  = $product->getValue($attribute->getCode(), $infos['locale_code'], $infos['scope_code']);
+            $productValue = $product->getValue($attribute->getCode(), $infos['locale_code'], $infos['scope_code']);
 
             if ('' === $value) {
-                assertEmpty((string) $productValue);
+                assertEmpty((string)$productValue);
             } elseif ('media' === $attribute->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
                 if ('**empty**' === $value) {
-                    assertEmpty((string) $productValue);
+                    assertEmpty((string)$productValue);
                 } else {
                     assertTrue(
                         null !== $productValue->getData() &&
@@ -46,19 +63,8 @@ class ProductModelStorage extends PimContext
             } elseif ('date' === $attribute->getBackendType()) {
                 assertEquals($value, $productValue->getData()->format('Y-m-d'));
             } else {
-                assertEquals($value, (string) $productValue);
+                assertEquals($value, (string)$productValue);
             }
         }
-    }
-
-    /**
-     * @param string $rawCode
-     *
-     * @return array|null
-     */
-    private function extractColumnInfo(string $rawCode): ?array
-    {
-        return $this->getService('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor')
-            ->extractColumnInfo($rawCode);
     }
 }

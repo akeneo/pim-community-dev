@@ -3,12 +3,23 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ProductModelSpec extends ObjectBehavior
 {
+    function let(
+        ColumnsMapper $columnsMapper,
+        FieldConverter $fieldConverter,
+        ArrayConverterInterface $productValueConverter
+    ) {
+        $this->beConstructedWith($columnsMapper, $fieldConverter, $productValueConverter);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductModel::class);
@@ -19,18 +30,127 @@ class ProductModelSpec extends ObjectBehavior
         $this->shouldImplement(ArrayConverterInterface::class);
     }
 
-    function it_convert_flat_product_model_to_standard_format()
-    {
-        // Mapping (categories, family variant) (pas group et family)
+    function it_convert_flat_product_model_to_standard_format(
+        $columnsMapper,
+        $fieldConverter,
+        $productValueConverter,
+        ConvertedField $identifierConverter,
+        ConvertedField $parentConverter,
+        ConvertedField $familyVariantConverter,
+        ConvertedField $categoryConverter
+    ) {
+        $flatProductModel = [
+            'identifier' => 'identifier',
+            'parent' => '1234',
+            'family' => 'family_variant',
+            'categories' => 'tshirt,pull',
+            'name-en_US' => 'name',
+            'description-en_US-ecommerce' => 'description',
+        ];
+
+        $columnsMapper->map($flatProductModel, [
+            'family' => 'family_variant',
+        ])->willReturn([
+            'identifier' => 'identifier',
+            'parent' => '1234',
+            'family_variant' => 'family_variant',
+            'categories' => 'tshirt,pull',
+            'name-en_US' => 'name',
+            'description-en_US-ecommerce' => 'description',
+        ]);
 
         // Exclude association field (pas group)
 
         // Validation du tableau de données
 
-        $this->convert([
+        $fieldConverter->supportsColumn('identifier')->willreturn(true);
+        $fieldConverter->convert('identifier', 'identifier')->willreturn([$identifierConverter]);
+        $identifierConverter->appendTo([])->willReturn(['identifier' => 'identifier']);
 
+        $fieldConverter->supportsColumn('parent')->willreturn(1324);
+        $fieldConverter->convert('parent', '1234')->willreturn([$parentConverter]);
+        $parentConverter->appendTo(['identifier' => 'identifier'])->willReturn([
+            'identifier' => 'identifier',
+            'parent' => 1234,
+        ]);
+
+        $fieldConverter->supportsColumn('family_variant')->willreturn(true);
+        $fieldConverter->convert('family_variant', 'family_variant')->willreturn([$familyVariantConverter]);
+        $familyVariantConverter->appendTo([
+            'identifier' => 'identifier',
+            'parent' => 1234,
+        ])->willReturn([
+            'identifier' => 'identifier',
+            'parent' => 1234,
+            'family_variant' => 'family_variant'
+        ]);
+
+        $fieldConverter->supportsColumn('categories')->willreturn(true);
+        $fieldConverter->convert('categories', 'tshirt,pull')->willreturn([$categoryConverter]);
+        $categoryConverter->appendTo([
+            'identifier' => 'identifier',
+            'parent' => 1234,
+            'family_variant' => 'family_variant'
+        ])->willReturn([
+            'identifier' => 'identifier',
+            'parent' => 1234,
+            'family_variant' => 'family_variant',
+            'categories' => [
+                'tshirt',
+                'pull'
+            ]
+        ]);
+
+        $fieldConverter->supportsColumn('name-en_US')->willreturn(false);
+        $fieldConverter->supportsColumn('description-en_US-ecommerce')->willreturn(false);
+
+        $productValueConverter->convert(["name-en_US" => "name", "description-en_US-ecommerce" => "description"])
+            ->willReturn([
+                'name' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => null,
+                        'data' => 'name',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => 'description',
+                    ],
+                ]
+            ]
+        );
+
+        $this->convert($flatProductModel, [
+            'mapping' => [
+                'family' => 'family_variant',
+            ]
         ])->shouldReturn([
-
+            'identifier' => 'identifier',
+            'parent' => 1234,
+            'family_variant' => 'family_variant',
+            'categories' => [
+                'tshirt',
+                'pull'
+            ],
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => null,
+                        'data' => 'name',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'ecommerce',
+                        'data' => 'description',
+                    ],
+                ]
+            ]
         ]);
     }
 }

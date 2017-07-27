@@ -221,7 +221,7 @@ services:
         class: '%pim_connector.reader.file.csv_product_model.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_delocalized'
             - '@pim_connector.reader.file.media_path_transformer'
             - []
 
@@ -262,7 +262,7 @@ services:
        class: '%pim_connector.reader.file.xlsx_product_model.class%'
        arguments:
            - '@pim_connector.reader.file.xlsx_iterator_factory'
-           - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+           - '@pim_connector.array_converter.flat_to_standard.product_model_delocalized'
            - '@pim_connector.reader.file.media_path_transformer'
            - []
 

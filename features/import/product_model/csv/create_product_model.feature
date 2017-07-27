@@ -11,7 +11,7 @@ Feature: Create product through CSV import
   Scenario: Julia imports new root products models
     Given the following CSV file to import:
       """
-      identifier;parent;family_variant;categories;collection;description;erp_name;price;color;name;composition;size;EAN;sku;weight
+      identifier;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;EAN;sku;weight
       identifier-001;;variant_clothing_color_and_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
@@ -26,7 +26,7 @@ Feature: Create product through CSV import
   Scenario: Julia imports new products sub-models
     Given the following CSV file to import:
       """
-      identifier;parent;family_variant;categories;collection;description;erp_name;price;color;name;composition;size;EAN;sku;weight
+      identifier;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;EAN;sku;weight
       identifier-001;;variant_clothing_color_and_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       identifier-002;identifier-001;variant_clothing_color_and_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
