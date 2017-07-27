@@ -4,6 +4,8 @@ namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
@@ -18,9 +20,9 @@ class ClientSpec extends ObjectBehavior
         $this->shouldHaveType(Client::class);
     }
 
-    function let(NativeClient $client, ClientBuilder $clientBuilder)
+    function let(NativeClient $client, ClientBuilder $clientBuilder, Loader $indexConfigurationLoader)
     {
-        $this->beConstructedWith($clientBuilder, ['localhost:9200'], 'an_index_name');
+        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name');
         $clientBuilder->setHosts(Argument::any())->willReturn($clientBuilder);
         $clientBuilder->build()->willReturn($client);
     }
@@ -113,17 +115,24 @@ class ClientSpec extends ObjectBehavior
         $this->deleteIndex();
     }
 
-    public function it_creates_an_index($client, IndicesNamespace $indices)
-    {
+    public function it_creates_an_index(
+        $client,
+        $indexConfigurationLoader,
+        IndexConfiguration $indexConfiguration,
+        IndicesNamespace $indices
+    ) {
+        $indexConfigurationLoader->load()->willReturn($indexConfiguration);
+        $indexConfiguration->buildAggregated()->willReturn(['index configuration']);
+
         $client->indices()->willReturn($indices);
         $indices->create(
             [
                 'index' => 'an_index_name',
-                'body' => ['index configuration']
+                'body'  => ['index configuration'],
             ]
         )->shouldBeCalled();
 
-        $this->createIndex(['index configuration']);
+        $this->createIndex();
     }
 
     function it_checks_if_an_index_exists($client, IndicesNamespace $indices)

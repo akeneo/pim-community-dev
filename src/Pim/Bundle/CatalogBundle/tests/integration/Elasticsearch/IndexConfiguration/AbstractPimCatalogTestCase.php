@@ -34,9 +34,6 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->esClient = $this->get('akeneo_elasticsearch.client');
-        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
-
         $this->addProducts();
     }
 
@@ -53,10 +50,10 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     protected function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
         }
 
-        $this->esClient->refreshIndex();
+        $this->esProductClient->refreshIndex();
     }
 
     /**
@@ -71,7 +68,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
         $identifiers = [];
 
         $query['size'] = self::PAGE_SIZE;
-        $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
+        $response = $this->esProductClient->search(self::DOCUMENT_TYPE, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];

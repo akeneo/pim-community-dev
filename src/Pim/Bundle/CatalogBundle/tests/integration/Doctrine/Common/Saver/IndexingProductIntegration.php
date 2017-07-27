@@ -28,7 +28,7 @@ class IndexingProductIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->saveAll($products);
 
-        $indexedProductFoo = $this->esClient->search(self::DOCUMENT_TYPE, [
+        $indexedProductFoo = $this->esProductClient->search(self::DOCUMENT_TYPE, [
             'query' => [
                 'term' => [
                     'identifier' => 'foo'
@@ -37,7 +37,7 @@ class IndexingProductIntegration extends TestCase
         ]);
         $this->assertSame(1, $indexedProductFoo['hits']['total']);
 
-        $indexedProductBar = $this->esClient->search(self::DOCUMENT_TYPE, [
+        $indexedProductBar = $this->esProductClient->search(self::DOCUMENT_TYPE, [
             'query' => [
                 'term' => [
                     'identifier' => 'bar'
@@ -46,7 +46,7 @@ class IndexingProductIntegration extends TestCase
         ]);
         $this->assertSame(1, $indexedProductBar['hits']['total']);
 
-        $indexedProductBaz = $this->esClient->search(self::DOCUMENT_TYPE, [
+        $indexedProductBaz = $this->esProductClient->search(self::DOCUMENT_TYPE, [
             'query' => [
                 'term' => [
                     'identifier' => 'baz'
@@ -61,9 +61,9 @@ class IndexingProductIntegration extends TestCase
         $product = $this->productBuilder->createProduct('bat');
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->esClient->refreshIndex();
+        $this->esProductClient->refreshIndex();
 
-        $indexedProduct = $this->esClient->search(self::DOCUMENT_TYPE, [
+        $indexedProduct = $this->esProductClient->search(self::DOCUMENT_TYPE, [
             'query' => [
                 'term' => [
                     'identifier' => 'bat'

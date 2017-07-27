@@ -121,18 +121,10 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function resetElasticsearchIndex(OutputInterface $output)
     {
-        $output->writeln('<info>Reset elasticsearch index</info>');
+        $output->writeln('<info>Reset elasticsearch indexes</info>');
 
-        $esConfigurationLoader = $this->getContainer()->get('akeneo_elasticsearch.index_configuration.loader');
-        $esClient = $this->getContainer()->get('akeneo_elasticsearch.client');
-
-        $conf = $esConfigurationLoader->load();
-
-        if ($esClient->hasIndex()) {
-            $esClient->deleteIndex();
-        }
-
-        $esClient->createIndex($conf->buildAggregated());
+        $this->getContainer()->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
     }
 
     /**

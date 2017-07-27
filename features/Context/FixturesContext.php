@@ -126,7 +126,7 @@ class FixturesContext extends BaseFixturesContext
         $this->refresh($product);
         $this->buildProductHistory($product);
 
-        $this->getElasticsearchClient()->refreshIndex();
+        $this->getElasticsearchProductClient()->refreshIndex();
 
         return $product;
     }
@@ -2179,8 +2179,8 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @return Client
      */
-    protected function getElasticsearchClient()
+    protected function getElasticsearchProductClient()
     {
-        return $this->getContainer()->get('akeneo_elasticsearch.client');
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
     }
 }
