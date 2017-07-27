@@ -160,7 +160,9 @@ class ProductRepository extends EntityRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
-        $productIdsAsBytes = array_map(function (UuidInterface $productId) { return $productId->getBytes(); }, $productIds);
+        $productIdsAsBytes = array_map(function (UuidInterface $productId) {
+            return $productId->getBytes();
+        }, $productIds);
 
         $qb = $this->createQueryBuilder('p');
         $qb
