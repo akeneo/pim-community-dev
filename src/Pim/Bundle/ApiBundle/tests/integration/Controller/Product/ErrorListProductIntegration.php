@@ -131,7 +131,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales" as data.');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
     }
 
     public function testSearchWithLocalesAsAString()
@@ -147,7 +147,15 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":""}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales" as data.');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
+    }
+
+    public function testSearchWithEmptyLocaleAsArray()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locale":["fr_FR"]}]}');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
     }
 
     public function testSearchWithMissingScope()
