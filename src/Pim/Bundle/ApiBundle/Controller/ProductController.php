@@ -531,7 +531,7 @@ class ProductController
                 $searchLocale = $request->query->get('search_locale');
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocale;
 
-                if (null !== $context['locale']) {
+                if (null !== $context['locale'] && is_string($context['locale'])) {
                     $locales = explode(',', $context['locale']);
                     $this->queryParametersChecker->checkLocalesParameters($locales);
                 }
