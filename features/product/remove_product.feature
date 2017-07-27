@@ -53,6 +53,17 @@ Feature: Remove a product
     When I am on the products page
     Then I should see product jean
 
+  Scenario: Not being able to delete a product from the edit form without having sufficient permissions
+    Given the following products:
+      | sku       | categories |
+      | edit_only | tees       |
+      | view_only | pants      |
+    And I am logged in as "Mary"
+    When I am on the "edit_only" product page
+    Then I should not see the secondary action "Delete"
+    When I am on the "view_only" product page
+    Then I should not see the secondary action "Delete"
+
   Scenario: Not being able to delete a product from the grid without having sufficient permissions
     Given the following products:
       | sku       | categories |
