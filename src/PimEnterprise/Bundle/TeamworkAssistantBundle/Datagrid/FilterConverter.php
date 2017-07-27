@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,12 +25,19 @@ class FilterConverter
     /** @var OroToPimGridFilterAdapter */
     protected $oroToPimGridFilterAdapter;
 
+    /** @var MassActionParametersParser */
+    protected $parameterParser;
+
     /**
-     * @param OroToPimGridFilterAdapter $oroToPimGridFilterAdapter
+     * @param OroToPimGridFilterAdapter  $oroToPimGridFilterAdapter
+     * @param MassActionParametersParser $parameterParser
      */
-    public function __construct(OroToPimGridFilterAdapter $oroToPimGridFilterAdapter)
-    {
+    public function __construct(
+        OroToPimGridFilterAdapter $oroToPimGridFilterAdapter,
+        MassActionParametersParser $parameterParser
+    ) {
         $this->oroToPimGridFilterAdapter = $oroToPimGridFilterAdapter;
+        $this->parameterParser           = $parameterParser;
     }
 
     /**
@@ -45,12 +53,13 @@ class FilterConverter
         $request->query->add(
             [
                 'gridName'   => OroToPimGridFilterAdapter::PRODUCT_GRID_NAME,
-                'actionName' => 'mass_edit', //Fake mass action, needed for the grid filter adapter.
+                'actionName' => 'product_edit', //Fake mass action, needed for the grid filter adapter.
                 'inset'      => false,
                 'filters'    => $filters,
             ]
         );
+        $parameters = $this->parameterParser->parse($request);
 
-        return $this->oroToPimGridFilterAdapter->adapt($request);
+        return $this->oroToPimGridFilterAdapter->adapt($parameters);
     }
 }

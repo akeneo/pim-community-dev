@@ -31,8 +31,8 @@ Feature: Publish many products at once
     When I select rows unionjack, jackadi and teafortwo
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Publish products" operation
-    And I move on to the next step
-    And I wait for the "publish" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "publish_product" job to finish
     Then I should see the text "You're not the owner of the product, you can't publish it"
     And I should see the text "skipped products 1"
     When I am on the published products page
@@ -44,8 +44,8 @@ Feature: Publish many products at once
     And I select rows unionjack, jackadi and teafortwo
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
-    And I move on to the next step
-    And I wait for the "publish" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "publish_product" job to finish
     Then I should see the text "You're not the owner of the product, you can't publish it"
     And I should see the text "skipped products 3"
     When I am on the published products page

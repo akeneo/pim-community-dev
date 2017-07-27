@@ -5,8 +5,6 @@ parameters:
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
     pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
 
-    pim_enrich.controller.rest.product_category.class: PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
-
 services:
     # overriden to add security checks and use a smarter product saver which update draft or working copy
     pim_enrich.controller.product:
@@ -105,13 +103,6 @@ services:
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
             - '@pim_internal_api_serializer'
-
-    pim_enrich.controller.rest.product_category:
-        class: '%pim_enrich.controller.rest.product_category.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_category'
-            - '@pimee_catalog.filter.category'
 
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'

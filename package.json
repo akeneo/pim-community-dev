@@ -12,6 +12,5 @@
     "lint-fix": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet --fix"
   },
   "dependencies": {
-    "pim-community-dev": "file:vendor/akeneo/pim-community-dev"
   }
 }

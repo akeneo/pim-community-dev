@@ -5,7 +5,6 @@ parameters:
     pimee_workflow.controller.product_draft_rest.class:     PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
     pimee_workflow.controller.completeness_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\CompletenessController
     pimee_workflow.controller.rest.product.class:           PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductController
-    pimee_workflow.controller.published.mass_edit_action.class: PimEnterprise\Bundle\WorkflowBundle\Controller\MassEdit\PublishedController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -24,6 +23,7 @@ services:
             - '@security.authorization_checker'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_catalog.filter.chained'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_workflow.controller.published_product:
         class: '%pimee_workflow.controller.published_product.class%'
@@ -70,7 +70,3 @@ services:
             - '@pim_internal_api_serializer'
             - '@security.token_storage'
             - '@pim_catalog.filter.chained'
-
-    pimee_workflow.controller.published.mass_edit_action:
-        class: '%pimee_workflow.controller.published.mass_edit_action.class%'
-        parent: pim_enrich.controller.mass_edit.abtsract

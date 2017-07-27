@@ -66,15 +66,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = json_encode($values);
 
         $configuration = [
             'filters' => [],
-            'actions' => [
-                'normalized_values' => $normalizedValues,
+            'actions' => [[
+                'normalized_values' => $values,
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US'
-            ]
+            ]]
         ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
@@ -121,15 +120,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = json_encode($values);
 
         $configuration = [
             'filters' => [],
-            'actions' => [
-                'normalized_values' => $normalizedValues,
+            'actions' => [[
+                'normalized_values' => $values,
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US'
-            ]
+            ]]
         ];
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -175,13 +173,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $normalizedValues = json_encode($values);
         $configuration = [
             'filters' => [],
-            'actions' => [
-                'normalized_values' => $normalizedValues,
+            'actions' => [[
+                'normalized_values' => $values,
                 'current_locale'    => 'en_US'
-            ]
+            ]]
         ];
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
