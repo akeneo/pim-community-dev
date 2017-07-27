@@ -83,8 +83,8 @@ class GridHelperSpec extends ObjectBehavior
         ]);
 
         $this->getProductChoices()->shouldReturn([
-            '144' => 'Ice sword',
-            '42'  => 'Warblade'
+            'Warblade' => 42,
+            'Ice sword' => 144
         ]);
     }
 

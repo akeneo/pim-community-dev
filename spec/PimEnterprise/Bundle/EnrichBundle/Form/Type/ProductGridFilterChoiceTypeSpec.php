@@ -15,7 +15,7 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
     {
         $this->beConstructedWith($attributeProvider, $manager, 'product-grid', ['scope', 'locale']);
     }
-    
+
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType');
@@ -49,8 +49,8 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
         $resolver->setDefaults([
             'choices' => [
                 'System' => [
-                    'family' => 'My family',
-                    'permissions' => 'pimee_workflow.product.permission.label',
+                    'My family' => 'family',
+                    'pimee_workflow.product.permission.label' => 'permissions',
                 ],
                 'Other' => ['sku' => 'SKU'],
             ],

@@ -116,7 +116,7 @@ class GridHelper
 
         foreach ($proposals as $proposal) {
             $product = $proposal->getProduct();
-            $choices[$product->getId()] = $product->getLabel();
+            $choices[$product->getLabel()] = $product->getId();
         }
         asort($choices);
 
