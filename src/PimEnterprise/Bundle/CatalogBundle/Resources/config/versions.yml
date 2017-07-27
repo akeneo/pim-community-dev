@@ -3,6 +3,6 @@ parameters:
 
 services:
     pim_catalog.version_provider:
-        class: %pim_catalog.version_provider.class%
+        class: '%pim_catalog.version_provider.class%'
         arguments:
             - '%pimee_catalog.version.class%'

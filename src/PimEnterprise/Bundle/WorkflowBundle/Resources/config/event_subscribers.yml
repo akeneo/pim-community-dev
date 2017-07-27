@@ -106,7 +106,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.subscriber.product_draft.exclude_deleted_attribute:
-        class: %pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class%
+        class: '%pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class%'
         arguments:
             - '%pim_catalog.entity.attribute.class%'
         tags:

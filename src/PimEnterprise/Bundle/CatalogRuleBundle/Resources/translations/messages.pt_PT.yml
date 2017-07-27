@@ -32,8 +32,8 @@ pimee_catalog_rule:
       BETWEEN: entre
       NOT BETWEEN: não está entre
       =: igual
-      >: maior que
-      >=: igual ou maior que
+      ">": maior que
+      ">=": igual ou maior que
       <: menor que
       <=: igual ou menor que
   acl_group:
