@@ -55,7 +55,7 @@ Feature: Edit common attributes of many products at once
     When I remove the "Name" attribute
     Then I should not see the "Name" field
     And I should not see a remove link next to the "Name" field
-    And I move on to the next step
+    And I confirm mass edit
 
   Scenario: Successfully update many text values at once
     Given I am on the products page
@@ -65,8 +65,8 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     Then I should see a remove link next to the "Name" field
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the english localizable value name of "boots" should be "boots"
     And the english localizable value name of "sandals" should be "boots"
     And the english localizable value name of "sneakers" should be "boots"
@@ -78,8 +78,8 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
@@ -94,8 +94,8 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the english localizable value name of "pump" should be "boots"
     And the english localizable value name of "sneakers" should be "boots"
 
@@ -115,8 +115,8 @@ Feature: Edit common attributes of many products at once
     And I display the Price attribute
     And I change the "Price" to "100 USD"
     And I change the "Price" to "150 EUR"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the prices "Price" of products Shoes should be:
       | amount | currency |
       | 100    | USD      |
@@ -133,8 +133,8 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
@@ -170,8 +170,8 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Heel Height attribute
     And I change the "Heel Height" to "3"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the metric "heel_height" of products highheels, blue_highheels should be "12"
     And the metric "heel_height" of products sandals should be "3"
 
@@ -184,8 +184,8 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
     And I change the Description to "&$@(B°ar'<"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the english tablet Description of "boots" should be "&$@(B°ar'<"
     And the english tablet Description of "pump" should be "&$@(B°ar'<"
 
@@ -213,8 +213,8 @@ Feature: Edit common attributes of many products at once
     And I change the "Price" to "150 EUR"
     Then I visit the "Sizes" group
     And I change the "Size" to "37"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then I am on the products page
     And I should see the text "44"
     And I should see the text "50"
@@ -257,8 +257,8 @@ Feature: Edit common attributes of many products at once
     And I change the "Description" to ";`echo \"SHELL_INJECTION\"`"
     And I visit the "Other" group
     And I change the "Comment" to "$(echo "shell_injection" > shell_injection.txt)"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the english localizable value name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
     And the english localizable value name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
     And the english localizable value name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
@@ -312,7 +312,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move to the confirm page
-    Then The available attributes button should be disabled
+    Then I should not see the text "Add Attribute"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6271
   Scenario: Successfully keep mass edit form fields disabled after switching groups

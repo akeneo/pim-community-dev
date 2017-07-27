@@ -47,8 +47,8 @@ Feature: Edit common attributes of many products at once
     And I change the "Weather condition" to "Cold, Wet"
     And I change the "Name" to "Product"
     And I should see the text "Product"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the product "boots" should have the following values:
       | name-en_US         | Product       |
       | weather_conditions | [cold], [wet] |
@@ -72,8 +72,8 @@ Feature: Edit common attributes of many products at once
     And I display the Price attribute
     And I change the "Price" to "100 USD"
     And I change the "Price" to "150 EUR"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the prices "Price" of products boots and sandals should be:
       | amount | currency |
       | 100    | USD      |

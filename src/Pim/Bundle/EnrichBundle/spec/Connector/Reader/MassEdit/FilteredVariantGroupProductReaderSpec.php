@@ -75,9 +75,9 @@ class FilteredVariantGroupProductReaderSpec extends ObjectBehavior
                     'value'    => [12, 13]
                 ],
             ],
-            'actions' => [
+            'actions' => [[
                 'value' => 'variantGroupCode',
-            ]
+            ]]
         ];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);

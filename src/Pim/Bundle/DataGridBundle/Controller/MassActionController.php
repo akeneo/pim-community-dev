@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Mass action controller for edit and delete actions
@@ -15,24 +16,24 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class MassActionController
 {
-    /** @var RequestStack $requestStack */
-    protected $requestStack;
-
-    /**
-     * @var MassActionDispatcher
-     */
+    /** @var MassActionDispatcher */
     protected $massActionDispatcher;
+
+    /** @var MassActionParametersParser */
+    protected $parameterParser;
 
     /**
      * Constructor
      *
-     * @param RequestStack         $requestStack
-     * @param MassActionDispatcher $massActionDispatcher
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param MassActionParametersParser $parameterParser
      */
-    public function __construct(RequestStack $requestStack, MassActionDispatcher $massActionDispatcher)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+        MassActionDispatcher $massActionDispatcher,
+        MassActionParametersParser $parameterParser
+    ) {
         $this->massActionDispatcher = $massActionDispatcher;
+        $this->parameterParser      = $parameterParser;
     }
 
     /**
@@ -40,9 +41,10 @@ class MassActionController
      *
      * @return JsonResponse
      */
-    public function massActionAction()
+    public function massActionAction(Request $request)
     {
-        $response = $this->massActionDispatcher->dispatch($this->requestStack->getCurrentRequest());
+        $parameters = $this->parameterParser->parse($request);
+        $response = $this->massActionDispatcher->dispatch($parameters);
 
         $data = [
             'successful' => $response->isSuccessful(),

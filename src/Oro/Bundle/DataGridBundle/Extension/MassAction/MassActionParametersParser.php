@@ -29,10 +29,17 @@ class MassActionParametersParser
             $filters = [];
         }
 
+        $actionName = $request->get('actionName');
+        $gridName = $request->get('gridName');
+        $dataLocale = $request->query->get('dataLocale');
+
         return [
-            'inset'   => $inset,
-            'values'  => $values,
-            'filters' => $filters,
+            'inset'      => $inset,
+            'values'     => $values,
+            'filters'    => $filters,
+            'actionName' => $actionName,
+            'gridName'   => $gridName,
+            'dataLocale' => $dataLocale,
         ];
     }
 }

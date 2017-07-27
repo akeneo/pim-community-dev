@@ -25,7 +25,7 @@ class Operation extends Wizard
         'Set attribute requirements'       => 'Batch SetAttributeRequirements',
         'Classify products in categories'  => 'Batch Classify',
         'Move products to categories'      => 'Batch Classify',
-        'Remove products from categories'  => 'Batch Classify',
+        'Remove products from categories'  => 'Batch Classify'
     );
 
     /**
@@ -48,12 +48,7 @@ class Operation extends Wizard
             );
         }
 
-        $driver = $this->getSession()->getDriver();
-        if ($driver instanceof BrowserKitDriver) {
-            $this->selectFieldOption('pim_enrich_mass_edit_action[operationAlias]', $choice->getAttribute('value'));
-        } else {
-            $driver->click($choice->getXpath());
-        }
+        $this->getSession()->getDriver()->click($choice->getXpath());
 
         $this->currentStep = $this->getStep($operation);
 

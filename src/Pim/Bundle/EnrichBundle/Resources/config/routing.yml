@@ -6,6 +6,14 @@ attribute_group_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute_group/rest.yml'
     prefix: /rest/attribute-group
 
+mass_edit_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/mass_edit/rest.yml'
+    prefix: /rest/mass_edit
+
+product_template_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/product_template/rest.yml'
+    prefix: /rest/product_template
+
 channel:
     resource: '@PimEnrichBundle/Resources/config/routing/channel.yml'
     prefix: /configuration/channel
