@@ -45,7 +45,7 @@ services:
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.context.catalog'
           - '@pim_user.context.user'
+          - false
+          - '@request_stack'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.published-product-grid, method: onBuildAfter }
-        calls:
-            - [setRequest, ['@?request=']]
