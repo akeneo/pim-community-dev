@@ -61,6 +61,18 @@ class PimRequirements extends OroRequirements
             'Extension bcmath should be installed',
             'Install and enable <strong>bcmath</strong> extension'
         );
+        
+        $this->addPimRequirement(
+            (extension_loaded('gd') && function_exists('gd_info')),
+            'Extension bcmath should be installed',
+            'Install and enable <strong>gd</strong> extension'
+        );
+
+        $this->addPimRequirement(
+            (extension_loaded('soap') && class_exists('SoapClient')),
+            'Extension bcmath should be installed',
+            'Install and enable <strong>soap</strong> extension'
+        );
 
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
