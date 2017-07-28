@@ -16,10 +16,10 @@ interface FilterInterface
     /**
      * Filter product's values to have only updated or new values
      *
-     * @param EntityWithValuesInterface $product
+     * @param EntityWithValuesInterface $entity
      * @param array                     $newValues
      *
      * @return array
      */
-    public function filter(EntityWithValuesInterface $product, array $newValues): array;
+    public function filter(EntityWithValuesInterface $entity, array $newValues): array;
 }

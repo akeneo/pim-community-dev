@@ -9,13 +9,13 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Filter product's values to have only updated or new values
+ * Filter entitiy's values to have only updated or new values
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFilter implements FilterInterface
+class EntityWithValuesFilter implements FilterInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -27,7 +27,7 @@ class ProductFilter implements FilterInterface
     protected $attributeRepository;
 
     /** @var array */
-    protected $productFields;
+    protected $entityFields;
 
     /** @var array[] */
     protected $attributeTypeByCodes;
@@ -36,32 +36,32 @@ class ProductFilter implements FilterInterface
      * @param NormalizerInterface          $normalizer
      * @param ComparatorRegistry           $comparatorRegistry
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param array                        $productFields
+     * @param array                        $entityFields
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
-        array $productFields
+        array $entityFields
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
-        $this->productFields = $productFields;
+        $this->entityFields = $entityFields;
         $this->attributeTypeByCodes = [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function filter(EntityWithValuesInterface $product, array $newProduct): array
+    public function filter(EntityWithValuesInterface $entity, array $newEntity): array
     {
-        $originalValues = $this->getOriginalProduct($product);
+        $originalValues = $this->getOriginalEntity($entity);
         $result = [];
-        foreach ($newProduct as $code => $value) {
+        foreach ($newEntity as $code => $value) {
             if ('values' === $code) {
                 $data = $this->compareAttribute($originalValues, $value);
-            } elseif (in_array($code, $this->productFields)) {
+            } elseif (in_array($code, $this->entityFields)) {
                 $data = $this->compareField($originalValues, $value, $code);
             } else {
                 throw new \LogicException(sprintf('Cannot filter value of field "%s"', $code));
@@ -76,7 +76,7 @@ class ProductFilter implements FilterInterface
     }
 
     /**
-     * Compare product's field
+     * Compare entity's field
      *
      * @param array  $originalValues
      * @param mixed  $field
@@ -99,7 +99,7 @@ class ProductFilter implements FilterInterface
     }
 
     /**
-     * Compare product's values
+     * Compare entity's values
      *
      * @param array $originalValues
      * @param array $values
@@ -158,41 +158,41 @@ class ProductFilter implements FilterInterface
     }
 
     /**
-     * Normalize original product
+     * Normalize original entity
      *
-     * @param EntityWithValuesInterface $product
+     * @param EntityWithValuesInterface $entity
      *
      * @return array
      */
-    protected function getOriginalProduct(EntityWithValuesInterface $product): array
+    protected function getOriginalEntity(EntityWithValuesInterface $entity): array
     {
-        $originalProduct = $this->normalizer->normalize($product, 'standard');
+        $originalEntity = $this->normalizer->normalize($entity, 'standard');
 
-        return $this->flatProductValues($originalProduct);
+        return $this->flatEntityValues($originalEntity);
     }
 
     /**
-     * Flat product values to have keys formatted like that: $code-$locale-$scope.
+     * Flat entity values to have keys formatted like that: $code-$locale-$scope.
      * That simplifies the search when we compare two arrays
      *
-     * @param array $product
+     * @param array $entity
      *
      * @return array
      */
-    protected function flatProductValues(array $product): array
+    protected function flatEntityValues(array $entity): array
     {
-        if (isset($product['values'])) {
-            $values = $product['values'];
-            unset($product['values']);
+        if (isset($entity['values'])) {
+            $values = $entity['values'];
+            unset($entity['values']);
 
             foreach ($values as $code => $value) {
                 foreach ($value as $data) {
-                    $product['values'][$this->buildKey($data, $code)] = $data;
+                    $entity['values'][$this->buildKey($data, $code)] = $data;
                 }
             }
         }
 
-        return $product;
+        return $entity;
     }
 
     /**

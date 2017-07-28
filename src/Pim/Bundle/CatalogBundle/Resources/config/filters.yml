@@ -2,7 +2,7 @@ parameters:
     pim_catalog.filter.chained.class:                        Pim\Bundle\CatalogBundle\Filter\ChainedFilter
     pim_enrich.filter.product_value.locale.class:            Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter
     pim_enrich.filter.product_value.channel.class:           Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter
-    pim_catalog.comparator.filter.entity_with_value.class:   Pim\Component\Catalog\Comparator\Filter\ProductFilter
+    pim_catalog.comparator.filter.entity_with_value.class:   Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter
     pim_catalog.comparator.filter.product_association.class: Pim\Component\Catalog\Comparator\Filter\ProductAssociationFilter
 
 services:

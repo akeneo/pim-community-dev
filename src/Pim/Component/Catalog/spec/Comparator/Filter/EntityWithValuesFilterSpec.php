@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductFilterSpec extends ObjectBehavior
+class EntityWithValuesFilterSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
