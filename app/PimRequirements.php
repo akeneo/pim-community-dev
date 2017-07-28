@@ -62,6 +62,13 @@ class PimRequirements extends OroRequirements
             'Install and enable <strong>bcmath</strong> extension'
         );
 
+        $this->addPimRequirement(
+            class_exists("Imagick"),
+            'Extension imagick should be installed',
+            'Install and enable <strong>imagick</strong> extension'
+        );
+
+
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
             $this->addPimRequirement(
