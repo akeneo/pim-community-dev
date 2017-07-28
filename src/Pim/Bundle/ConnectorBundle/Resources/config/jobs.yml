@@ -496,7 +496,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.charset_validator'
-                # - '@pim_connector.step.xlsx_product_model.import' TODO PIM-6333
+                - '@pim_connector.step.xlsx_product_model.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 

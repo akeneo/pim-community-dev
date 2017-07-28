@@ -67,7 +67,7 @@ class ProductModelReader extends Reader implements
         return [
             // for the array converters
             'mapping' => [
-                $jobParameters->get('familyVariantColumn') => 'familyVariant',
+                $jobParameters->get('familyVariantColumn') => 'family_variant',
                 $jobParameters->get('categoriesColumn') => 'categories',
             ],
             'with_associations' => false,

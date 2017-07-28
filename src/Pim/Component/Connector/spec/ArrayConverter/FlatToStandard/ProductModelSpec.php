@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

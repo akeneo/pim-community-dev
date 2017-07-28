@@ -34,7 +34,7 @@ class ProductModelCsvImportSpec extends ObjectBehavior
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf(Collection::class);
         $fields = $collection->fields;
-        $fields->shouldHaveCount(7);
+        $fields->shouldHaveCount(8);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
         $fields->shouldHaveKey('enabled');
@@ -42,6 +42,7 @@ class ProductModelCsvImportSpec extends ObjectBehavior
         $fields->shouldHaveKey('enabledComparison');
         $fields->shouldHaveKey('realTimeVersioning');
         $fields->shouldHaveKey('invalid_items_file_format');
+        $fields->shouldHaveKey('familyVariantColumn');
     }
 
     function it_supports_a_job(JobInterface $job)

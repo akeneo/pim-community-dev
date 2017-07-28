@@ -67,9 +67,9 @@ class ProductModelReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
         $item = [
-            'sku'          => 'SKU-001',
-            'name'         => 'door',
-            'view'         => 'fixtures/sku-001.jpg',
+            'sku' => 'SKU-001',
+            'name' => 'door',
+            'view' => 'fixtures/sku-001.jpg',
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
         $convertedItem = [
@@ -77,34 +77,34 @@ class ProductModelReaderSpec extends ObjectBehavior
             'values' => [
                 'sku' => [
                     'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'SKU-001',
+                    'scope' => null,
+                    'data' => 'SKU-001',
                 ],
                 'name' => [
                     'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'door',
+                    'scope' => null,
+                    'data' => 'door',
                 ],
                 'view' => [
                     'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'fixtures/sku-001.jpg',
+                    'scope' => null,
+                    'data' => 'fixtures/sku-001.jpg',
                 ],
                 'manual' => [
                     'locale' => 'fr_FR',
-                    'scope'  => null,
-                    'data'   => 'fixtures/sku-001.txt',
+                    'scope' => null,
+                    'data' => 'fixtures/sku-001.txt',
                 ],
-            ]
+            ],
         ];
         $converterOptions = [
             'mapping' => [
-                'familyVariant'     => 'familyVariant',
+                'familyVariant' => 'family_variant',
                 'categories' => 'categories',
             ],
             'with_associations' => false,
             'decimal_separator' => '.',
-            'date_format'       => 'YYYY-mm-dd',
+            'date_format' => 'YYYY-mm-dd',
         ];
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);

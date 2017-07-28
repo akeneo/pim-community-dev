@@ -30,12 +30,13 @@ class ProductModelCsvImportSpec extends ObjectBehavior
         $decoratedProvider->getDefaultValues()->willReturn(['decoratedParam' => true]);
         $this->getDefaultValues()->shouldReturn(
             [
-                'decoratedParam'     => true,
-                'decimalSeparator'   => ".",
-                'dateFormat'         => "yyyy-MM-dd",
-                'enabled'            => true,
-                'categoriesColumn'   => "categories",
-                'enabledComparison'  => true,
+                'decoratedParam' => true,
+                'decimalSeparator' => ".",
+                'dateFormat' => "yyyy-MM-dd",
+                'enabled' => true,
+                'categoriesColumn' => "categories",
+                'familyVariantColumn' => 'family_variant',
+                'enabledComparison' => true,
                 'realTimeVersioning' => true,
             ]
         );

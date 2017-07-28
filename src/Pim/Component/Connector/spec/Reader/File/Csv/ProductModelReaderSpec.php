@@ -66,18 +66,21 @@ class ProductModelReaderSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('YYYY-mm-dd');
 
         $data = [
-            'sku'          => 'SKU-001',
-            'name'         => 'door',
-            'view'         => 'fixtures/sku-001.jpg',
+            'sku' => 'SKU-001',
+            'name' => 'door',
+            'view' => 'fixtures/sku-001.jpg',
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
-        $fileIteratorFactory->create($filePath, [
-            'reader_options' => [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
+        $fileIteratorFactory->create(
+            $filePath,
+            [
+                'reader_options' => [
+                    'fieldDelimiter' => ';',
+                    'fieldEnclosure' => '"',
+                ],
             ]
-        ])->willReturn($fileIterator);
+        )->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);
         $fileIterator->rewind()->shouldBeCalled();
@@ -86,9 +89,9 @@ class ProductModelReaderSpec extends ObjectBehavior
         $fileIterator->valid()->willReturn(true);
 
         $absolutePath = [
-            'sku'          => 'SKU-001',
-            'name'         => 'door',
-            'view'         => 'fixtures/sku-001.jpg',
+            'sku' => 'SKU-001',
+            'name' => 'door',
+            'view' => 'fixtures/sku-001.jpg',
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
@@ -98,15 +101,18 @@ class ProductModelReaderSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
-        $converter->convert($absolutePath, [
-            'mapping' => [
-                'familyVariant' => 'familyVariant',
-                'category' => 'categories',
-            ],
-            'with_associations' => false,
-            'decimal_separator' => '.',
-            'date_format'       => 'YYYY-mm-dd',
-        ])->willReturn($absolutePath);
+        $converter->convert(
+            $absolutePath,
+            [
+                'mapping' => [
+                    'familyVariant' => 'family_variant',
+                    'category' => 'categories',
+                ],
+                'with_associations' => false,
+                'decimal_separator' => '.',
+                'date_format' => 'YYYY-mm-dd',
+            ]
+        )->willReturn($absolutePath);
 
         $this->read()->shouldReturn($absolutePath);
     }

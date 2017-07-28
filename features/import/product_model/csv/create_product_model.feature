@@ -39,5 +39,5 @@ Feature: Create product through CSV import
       | identifier     | categories | family_variant                  | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | identifier-001 | master_men | variant_clothing_color_and_size | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
     And there should be the following product model:
-      | identifier     | color | name-en_US | composition |
-      | identifier-002 | blue  | Blazers    | composition |
+      | identifier     | color   | name-en_US | composition |
+      | identifier-002 | [blue]  | Blazers    | composition |
