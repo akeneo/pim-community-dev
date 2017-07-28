@@ -45,29 +45,29 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($stepExecution, $format = null, array $context = [])
     {
-        $normalizedWarnings = $this->normalizeWarnings($object->getWarnings(), $context);
+        $normalizedWarnings = $this->normalizeWarnings($stepExecution->getWarnings(), $context);
 
-        if (isset($context['limit_warnings']) && $object->getWarnings()->count() > 0) {
-            $object->addSummaryInfo('displayed', count($normalizedWarnings).'/'.$object->getWarnings()->count());
+        if (isset($context['limit_warnings']) && $stepExecution->getWarnings()->count() > 0) {
+            $stepExecution->addSummaryInfo('displayed', count($normalizedWarnings).'/'.$stepExecution->getWarnings()->count());
         }
 
         return [
             'label'     => $this->labelProvider->getStepLabel(
-                $object->getJobExecution()->getJobInstance()->getJobName(),
-                $object->getStepName()
+                $stepExecution->getJobExecution()->getJobInstance()->getJobName(),
+                $stepExecution->getStepName()
             ),
-            'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
-            'summary'   => $this->normalizeSummary($object->getSummary()),
-            'startedAt' => $this->presenter->present($object->getStartTime(), $context),
-            'endedAt'   => $this->presenter->present($object->getEndTime(), $context),
+            'status'    => $this->normalizeStatus($stepExecution->getStatus()->getValue()),
+            'summary'   => $this->normalizeSummary($stepExecution->getSummary()),
+            'startedAt' => $this->presenter->present($stepExecution->getStartTime(), $context),
+            'endedAt'   => $this->presenter->present($stepExecution->getEndTime(), $context),
             'warnings'  => $normalizedWarnings,
             'failures'  => array_map(
                 function ($failure) {
                     return $this->translator->trans($failure['message'], $failure['messageParameters']);
                 },
-                $object->getFailureExceptions()
+                $stepExecution->getFailureExceptions()
             ),
         ];
     }

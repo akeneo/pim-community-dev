@@ -54,8 +54,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
-        $jobParameters->get('actions')->willReturn([
-            'normalized_values' => json_encode([
+        $jobParameters->get('actions')->willReturn([[
+            'normalized_values' => [
                 'categories' => [
                     [
                         'scope' => null,
@@ -63,11 +63,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                         'data' => ['office', 'bedroom']
                     ]
                 ]
-            ]),
+            ],
             'ui_locale'         => 'en_US',
             'attribute_locale'  => 'en_US',
             'attribute_channel' => null
-        ]);
+        ]]);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
@@ -103,8 +103,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
-        $jobParameters->get('actions')->willReturn([
-                'normalized_values' => json_encode([
+        $jobParameters->get('actions')->willReturn([[
+                'normalized_values' => [
                     'number' => [
                         [
                             'scope' => null,
@@ -112,11 +112,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                             'data' => '2.5'
                         ]
                     ]
-                ]),
+                ],
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null
-            ]);
+            ]]);
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -155,8 +155,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
-        $jobParameters->get('actions')->willReturn([
-                'normalized_values' => json_encode([
+        $jobParameters->get('actions')->willReturn([[
+                'normalized_values' => [
                     'categories' => [
                         [
                             'scope' => null,
@@ -164,11 +164,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
                             'data' => ['office', 'bedroom']
                         ]
                     ]
-                ]),
+                ],
                 'ui_locale'         => 'fr_FR',
                 'attribute_locale'  => 'en_US',
                 'attribute_channel' => null
-            ]);
+            ]]);
 
         $validator->validate($product)->willReturn($violations);
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);

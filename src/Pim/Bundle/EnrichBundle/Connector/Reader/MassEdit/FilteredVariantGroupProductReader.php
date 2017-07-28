@@ -126,7 +126,8 @@ class FilteredVariantGroupProductReader extends ProductReader
      */
     public function clean(StepExecution $stepExecution, $filters, $actions)
     {
-        $variantGroupCode = $actions['value'];
+        $variantGroupCode = $actions[0]['value'];
+
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroupCode);
 
         $axisAttributeCodes = $this->getAxisAttributeCodes($variantGroup);

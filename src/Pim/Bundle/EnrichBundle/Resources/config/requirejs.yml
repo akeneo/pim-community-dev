@@ -307,14 +307,8 @@ config:
                     aclResourceId: pim_enrich_currency_toggle
                 pim_enrich_mass_edit_action_sequential_edit:
                     module: pim/controller/redirect
-                pim_enrich_mass_edit_product_action_choose:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit
-                pim_enrich_mass_edit_product_action_configure:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit
-                pim_enrich_mass_edit_product_action_perform:
-                    module: pim/controller/form
+                pim_enrich_mass_edit_action:
+                    module: pim/controller/mass-edit
                     aclResourceId: pim_enrich_mass_edit
                 pim_enrich_family_index:
                     module: pim/controller/common/index
@@ -324,12 +318,6 @@ config:
                 pim_enrich_family_edit:
                     module: pim/controller/family
                     aclResourceId: pim_enrich_family_index
-                pim_enrich_mass_edit_family_action_choose:
-                    module: pim/controller/form
-                pim_enrich_mass_edit_family_action_configure:
-                    module: pim/controller/form
-                pim_enrich_mass_edit_family_action_perform:
-                    module: pim/controller/form
                 oro_user_index:
                     module: pim/controller/common/index
                     config:
@@ -356,12 +344,6 @@ config:
                         entity: user-group
                 oro_user_group_update:
                     module: pim/controller/form
-                pim_enrich_mass_edit_action_choose:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit_action_choose
-                pim_enrich_mass_edit_action_configure:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit_action_configure
                 pim_importexport_import_profile_launch_upload:
                     module: pim/controller/redirect
                     aclResourceId: pim_importexport_import_profile_launch_upload
@@ -535,6 +517,7 @@ config:
         pim/controller/attribute-group/create: pimenrich/js/controller/attribute-group/create
         pim/controller/attribute/edit:         pimenrich/js/controller/attribute/edit
         pim/controller/attribute/create:       pimenrich/js/controller/attribute/create
+        pim/controller/mass-edit:              pimenrich/js/controller/mass-edit
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
@@ -559,6 +542,7 @@ config:
         translator:                         pimenrich/lib/translator
         oro/translator:                     pimenrich/js/translator
         pim/common/property:                pimenrich/js/common/property
+        pim/common/select2/family:          pimenrich/js/common/select2/family
 
         # Security
         pim/security-context: pimenrich/js/security-context
@@ -670,6 +654,7 @@ config:
         pim/product-edit-form/attributes/validation-error: pimenrich/js/product/form/attributes/validation-error
         pim/product-edit-form/attributes/variant-group:    pimenrich/js/product/form/attributes/variant-group
         pim/product-edit-form/attributes/locale-specific:  pimenrich/js/product/form/attributes/locale-specific
+        pim/product-edit-form/attributes/read-only-form:   pimenrich/js/product/form/attributes/read-only-form
         pim/product-edit-form/attributes/completeness:     pimenrich/js/product/form/attributes/completeness
         pim/product-edit-form/attributes/localizable:      pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                  pimenrich/js/product/form/categories
@@ -750,17 +735,29 @@ config:
         pim/filter/attribute/media:            pimenrich/js/filter/attribute/media
         pim/filter/attribute/date:             pimenrich/js/filter/attribute/date
 
+        # Mass edit
+        pim/mass-edit-form/form:                           pimenrich/js/mass-edit/form/form
+        pim/mass-edit-form/choose:                         pimenrich/js/mass-edit/form/choose
+        pim/mass-edit-form/product/operation:              pimenrich/js/mass-edit/form/product/operation
+        pim/mass-edit-form/product/change-status:          pimenrich/js/mass-edit/form/product/change-status
+        pim/mass-edit-form/product/edit-common-attributes: pimenrich/js/mass-edit/form/product/edit-common-attributes
+        pim/mass-edit-form/product/change-family:          pimenrich/js/mass-edit/form/product/change-family
+        pim/mass-edit-form/product/add-to-group:           pimenrich/js/mass-edit/form/product/add-to-group
+        pim/mass-edit-form/product/add-to-variant-group:   pimenrich/js/mass-edit/form/product/add-to-variant-group
+        pim/mass-edit-form/product/category:               pimenrich/js/mass-edit/form/product/category
+        pim/mass-edit-form/family/set-requirements:        pimenrich/js/mass-edit/form/family/set-requirements
+
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
         pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
 
         # Mass product edit form
-        pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
+        pim/mass-product-edit-form/form-model-updater: pimenrich/js/product/form/mass-edit/form-model-updater
         pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
 
         # Mass family edit
         pim/mass-family-edit-form/attributes:                   pimenrich/js/family/mass-edit/attributes
-        pim/mass-family-edit-form/hidden-field-updater:         pimenrich/js/family/mass-edit/hidden-field-updater
+        pim/mass-family-edit-form/form-model-updater:         pimenrich/js/family/mass-edit/form-model-updater
         pim/mass-family-edit-form/toolbar/add-select/attribute: pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select
 
         # Attribute option form
@@ -1001,6 +998,16 @@ config:
         pim/template/attribute-option/show:                  pimenrich/templates/attribute-option/show.html
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html
         pim/template/error/error:                            pimenrich/templates/error/error.html
+
+        pim/template/mass-edit/form:                           pimenrich/templates/mass-edit/form.html
+        pim/template/mass-edit/choose:                         pimenrich/templates/mass-edit/choose.html
+        pim/template/mass-edit/product/change-status:          pimenrich/templates/mass-edit/product/change-status.html
+        pim/template/mass-edit/product/edit-common-attributes: pimenrich/templates/mass-edit/product/edit-common-attributes.html
+        pim/template/mass-edit/product/change-family:          pimenrich/templates/mass-edit/product/change-family.html
+        pim/template/mass-edit/product/add-to-group:           pimenrich/templates/mass-edit/product/add-to-group.html
+        pim/template/mass-edit/product/add-to-variant-group:   pimenrich/templates/mass-edit/product/add-to-variant-group.html
+        pim/template/mass-edit/product/category:               pimenrich/templates/mass-edit/product/category.html
+        pim/template/mass-edit/family/set-requirements:        pimenrich/templates/mass-edit/family/set-requirements.html
 
         pim/template/menu/tab:                               pimenrich/templates/menu/tab.html
         pim/template/menu/menu:                              pimenrich/templates/menu/menu.html

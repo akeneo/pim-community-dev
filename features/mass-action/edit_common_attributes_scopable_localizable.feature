@@ -22,8 +22,8 @@ Feature: Edit common attributes of many products at once
     Then I should see the text "The selected product's attributes will be edited with the following data for the locale English (United States) and the channel Print, chosen in the products grid."
     When I display the Customer rating attribute
     And I change the "Customer rating" to "5"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the unlocalized ecommerce customer_rating of "black_jacket" should be "[1]"
     And the unlocalized ecommerce customer_rating of "white_jacket" should be "[3]"
     And the unlocalized print customer_rating of "black_jacket" should be "[5]"
@@ -39,8 +39,8 @@ Feature: Edit common attributes of many products at once
     Then I should see the text "The selected product's attributes will be edited with the following data for the locale Deutsch (Deutschland) and the channel Ecommerce, chosen in the products grid."
     When I display the Name attribute
     And I change the "Name" to "Une veste"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the german localizable value name of "black_jacket" should be "Une veste"
     And the german localizable value name of "white_jacket" should be "Une veste"
     And the english localizable value name of "black_jacket" should be "A black jacket"

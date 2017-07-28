@@ -92,14 +92,14 @@ datagrid:
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label
         mass_actions:
-            mass_edit:
+            product_edit:
                 type: edit
                 acl_resource: pim_enrich_mass_edit
                 label: pim.grid.mass_action.mass_edit
                 handler: product_mass_edit
-                route: pim_enrich_mass_edit_product_action_choose
+                route: pim_enrich_mass_edit_action
                 route_parameters:
-                    operationGroup: mass-edit
+                    actionName: product-edit
                 launcherOptions:
                     group: bulk_actions
             sequential_edit:
@@ -108,16 +108,6 @@ datagrid:
                 label: pim.grid.mass_action.sequential_edit
                 handler: sequential_edit
                 route: pim_enrich_mass_edit_action_sequential_edit
-                launcherOptions:
-                    group: bulk_actions
-            category_edit:
-                type: edit
-                acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.category_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_product_action_choose
-                route_parameters:
-                    operationGroup: category-edit
                 launcherOptions:
                     group: bulk_actions
             delete:
