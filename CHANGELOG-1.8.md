@@ -221,6 +221,7 @@
 - PIM-6333: Rename `Pim\Component\Connector\Writer\Database\ProductWriter` to `Pim\Component\Connector\Writer\Database\EntityWithValuesWriter`
 - PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface` to `Pim\Component\Catalog\Comparator\Filter\FilterInterface`
 - PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilter` to `Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter`
+- PIM-6333: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized`
 
 ### Constructors
 
@@ -451,6 +452,7 @@
 - Remove several UI related classes for attributes: `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeType`
 - Remove services `pim_enrich.form.subscriber.attribute`, `pim_enrich.form.type.attribute`, `pim_enrich.form.type.available_locales`, `pim_enrich.form.type.options`, `pim_enrich.form.attribute`, `pim_enrich.form.handler.attribute`
 - Add subscriber to lock/unlock batch job commands thanks to @bOnepain
+- Rename class `pim_connector.array_converter.flat_to_standard.product_delocalized.class` to `pim_connector.array_converter.flat_to_standard.entity_with_values_delocalized.class`
 
 ## Requirements
 

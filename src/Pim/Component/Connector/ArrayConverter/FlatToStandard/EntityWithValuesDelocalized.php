@@ -7,15 +7,13 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 
 /**
- * Convert a Product from Flat to Standard format with delocalized values.
+ * Convert an entity with values from Flat to Standard format with delocalized values.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * Rename ?
  */
-class ProductDelocalized implements ArrayConverterInterface
+class EntityWithValuesDelocalized implements ArrayConverterInterface
 {
     /** @var ArrayConverterInterface */
     protected $converter;
@@ -51,7 +49,7 @@ class ProductDelocalized implements ArrayConverterInterface
 
         if ($violations->count() > 0) {
             throw new DataArrayConversionException(
-                'An error occurred during the delocalization of the product.',
+                'An error occurred during the delocalization of the entity with values.',
                 0,
                 null,
                 $violations
