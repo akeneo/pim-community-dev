@@ -30,16 +30,16 @@ Feature: Classify many products at once for the tree I have access
 
   Scenario: Add several products to categories at once
     Given I select rows rangers and loafer
-    And I press "Move products in categories" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Classify products in categories" operation
-    Then I should not see "Boots"
-    And I should not see "Master catalog"
+    Then I should not see the text "Boots"
+    And I should not see the text "Master catalog"
     When I select the "Shoes" tree
     And I expand the "shoes" category
     And I click on the "vintage" category
     And I click on the "classy" category
-    And I move on to the next step
-    And I wait for the "classify-add" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "add_product_value" job to finish
     And I am on the products page
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (2)"
@@ -48,7 +48,7 @@ Feature: Classify many products at once for the tree I have access
 
   Scenario: Move several products to categories at once
     Given I select rows rangers and loafer
-    And I press "Move products in categories" on the "Bulk Actions" dropdown button
+    And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Move products to categories" operation
     Then I should not see "Boots"
     And I should not see "Master catalog"
@@ -56,8 +56,8 @@ Feature: Classify many products at once for the tree I have access
     And I expand the "shoes" category
     And I click on the "vintage" category
     And I click on the "classy" category
-    And I move on to the next step
-    And I wait for the "classify-move" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "update_product_value" job to finish
     And I am on the products page
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (0)"

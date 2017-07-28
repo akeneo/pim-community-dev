@@ -9,3 +9,4 @@ services:
             - '@security.token_storage'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.parameters_parser'

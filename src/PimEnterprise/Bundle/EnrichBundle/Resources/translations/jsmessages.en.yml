@@ -29,6 +29,11 @@ pim_enrich:
                     label:
                         is_read_only: Read only
 
+pim:
+    grid:
+        mass_action:
+            asset_edit: Mass edit assets
+
 pimee_enrich:
     form:
         job_instance:
@@ -161,6 +166,42 @@ pimee_enrich:
             options:
                 width: %value%px width
                 height: %value%px height
+    mass_edit:
+        next: Next
+        previous: Back
+        cancel: Cancel
+        confirm: Confirm
+        product:
+            operation:
+                publish:
+                    label: Publish products
+                    description: The products will be published
+                    warning: The {{ itemsCount }} selected products will be published.
+                unpublish:
+                    label: Unpublish products
+                    description: The products will be unpublished
+                    warning: The {{ itemsCount }} selected products will be unpublished.
+        asset:
+            title: Asset / Mass Edit ({{ itemsCount }} assets)
+            step:
+                select:
+                    label: Choose assets
+                choose:
+                    label: Choose operation
+                    title: Mass edit ({{ itemsCount }} assets)
+                configure:
+                    label: Configure
+                confirm:
+                    label: Confirm
+            operation:
+                add_tag:
+                    label: Add tags to assets
+                    description: Tags will be added to the assets.
+                    field: Tags
+                add_to_category:
+                    label: Classify assets in categories
+                    description: The assets will be positioned into following categories, the existing placement is kept.
+                    field: Categories
 
 pim_menu:
     tab:

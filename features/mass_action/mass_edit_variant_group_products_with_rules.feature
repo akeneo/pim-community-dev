@@ -22,14 +22,14 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
-    And I move on to the next step
-    And I wait for the "add-to-variant-group" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                |
-      | success | Mass add products to variant group & rules application |
+      | type    | message                            |
+      | success | Mass add products to variant group |
     And I am on the "caterpillar_boots" variant group page
     And I should see the text "Products: 4"
 
@@ -48,14 +48,15 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
-    And I move on to the next step
-    And I wait for the "add-to-variant-group" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots"
+    And I am on the dashboard page
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                                |
-      | warning | Mass add products to variant group & rules application |
-    Then I go on the last executed job resume of "add_to_variant_group_with_rules"
+      | type    | message                            |
+      | warning | Mass add products to variant group |
+    Then I go on the last executed job resume of "add_to_variant_group"
     And I should see the text "skipped products 2"
     And I should see the text "first warnings displayed 2/2"
     And I should see the text "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
@@ -69,14 +70,15 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
-    And I move on to the next step
-    And I wait for the "add-to-variant-group" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "add_to_variant_group" job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots"
+    And I am on the dashboard page
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                                |
-      | warning | Mass add products to variant group & rules application |
-    Then I go on the last executed job resume of "add_to_variant_group_with_rules"
+      | type    | message                            |
+      | warning | Mass add products to variant group |
+    Then I go on the last executed job resume of "add_to_variant_group"
     And I should see the text "skipped products 2"
     And I should see the text "first warnings displayed 2/2"
     And I should see the text "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"

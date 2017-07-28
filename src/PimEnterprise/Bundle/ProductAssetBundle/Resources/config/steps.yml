@@ -162,7 +162,7 @@ services:
     pimee_product_asset.step.classify_assets.perform:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'mass_edit'
+            - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.mass_edit_asset'
@@ -172,7 +172,7 @@ services:
     pimee_product_asset.step.add_tags_to_assets.perform:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'mass_edit'
+            - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_product_asset.reader.database.mass_edit_asset'
