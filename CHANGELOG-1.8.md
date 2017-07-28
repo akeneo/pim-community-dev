@@ -401,8 +401,13 @@
 - Remove OroNavigationBundle
 - Remove OroNotificationBundle
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+<<<<<<< HEAD
 - Remove unused `Pim\Component\Catalog\Manager\AttributeGroupManager`
 - Remove unused `Pim\Bundle\CatalogBundle\ProductQueryUtility`
+=======
+- Split `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` in two. The original service name (`pim_enrich.normalizer.attribute`) points now to `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`
+    The arguments of the old normalizer are now divided between both normalizers, also `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` is injected into `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`.
+>>>>>>> 324196e162... PIM-6670: Split enrich attribute normalizer in two
 
 ### Methods
 
