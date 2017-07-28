@@ -56,6 +56,12 @@ class PimRequirements extends OroRequirements
             'Install and enable <strong>php5-apcu</strong>'
         );
 
+        $this->addPimRequirement(
+            (extension_loaded('gd') && function_exists('gd_info')),
+            'Extension bcmath should be installed',
+            'Install and enable <strong>gd</strong> extension'
+        );       
+    
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
             $this->addPimRequirement(
