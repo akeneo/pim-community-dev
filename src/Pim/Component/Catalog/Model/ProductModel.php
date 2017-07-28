@@ -57,7 +57,7 @@ class ProductModel implements ProductModelInterface
     protected $parent;
 
     /** @var Collection */
-    protected $children;
+    protected $productModels;
 
     /** @var FamilyVariantInterface */
     protected $familyVariant;
@@ -70,7 +70,7 @@ class ProductModel implements ProductModelInterface
         $this->values = new ValueCollection();
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
-        $this->children = new ArrayCollection();
+        $this->productModels = new ArrayCollection();
     }
 
     /**
@@ -396,9 +396,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addChild(ProductModelInterface $child): ProductModelInterface
+    public function addProductModel(ProductModelInterface $child): ProductModelInterface
     {
-        $this->children->add($child);
+        $this->productModels->add($child);
 
         return $this;
     }
@@ -406,9 +406,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeChild(ProductModelInterface $children): ProductModelInterface
+    public function removeProductModel(ProductModelInterface $children): ProductModelInterface
     {
-        $this->children->removeElement($children);
+        $this->productModels->removeElement($children);
 
         return $this;
     }
@@ -416,17 +416,17 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function hasChildren(): bool
+    public function hasProductModels(): bool
     {
-        return false === $this->getChildren()->isEmpty();
+        return false === $this->getProductModels()->isEmpty();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChildren(): Collection
+    public function getProductModels(): Collection
     {
-        return $this->children;
+        return $this->productModels;
     }
 
     /**
