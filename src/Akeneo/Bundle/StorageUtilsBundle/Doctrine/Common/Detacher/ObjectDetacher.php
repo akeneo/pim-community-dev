@@ -62,6 +62,49 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         foreach ($objects as $object) {
             $this->detach($object);
         }
+
+    }
+
+    public function getPrivateProperty($object, $property)
+    {
+        $value = \Closure::bind(function() use ($property) {
+            return $this->$property;
+        }, $object, $object)->__invoke();
+
+        return $value;
+    }
+
+    public function cleanupKeys($array, $objectIds)
+    {
+        $objectIdsToUnset = array_diff(array_keys($array), $objectIds);
+
+        foreach ($objectIdsToUnset as $id) {
+            unset($array[$id]);
+        }
+    }
+
+    public function cleanupData()
+    {
+        $objectManager = $this->managerRegistry->getManagerForClass('Pim\Component\Catalog\Model\Product');
+        $uow = $objectManager->getUnitOfWork();
+        $identityMapObjectIds = $uow->getIdentityMap();
+        $objectIds = [];
+
+        foreach ($identityMapObjectIds as $objects) {
+            foreach ($objects as $entity) {
+                $oid = spl_object_hash($entity);
+                $objectIds[] = $oid;
+            }
+        }
+
+        $originalDocumentData = $this->getPrivateProperty($uow, 'originalDocumentData');
+        $this->cleanupKeys($originalDocumentData, $objectIds);
+
+        $parentAssociations = $this->getPrivateProperty($uow, 'parentAssociations');
+        $this->cleanupKeys($parentAssociations, $objectIds);
+
+        $embeddedDocumentsRegistry = $this->getPrivateProperty($uow, 'embeddedDocumentsRegistry');
+        $this->cleanupKeys($embeddedDocumentsRegistry, $objectIds);
     }
 
     /**
@@ -171,6 +214,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     protected function doDetach($document, array &$visited)
     {
         $oid = spl_object_hash($document);
+
         if (isset($visited[$oid])) {
             return;
         }
@@ -191,6 +235,12 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
                 }
             }
         }
+    }
+
+    public function detachByClass($class)
+    {
+      $manager = $this->managerRegistry->getManagerForClass($class);
+      $manager->clear($class);
     }
 
     /**
