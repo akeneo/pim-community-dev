@@ -173,13 +173,7 @@ interface ProductModelInterface extends
     public function getProductModels(): Collection;
 
     /**
-     * @param FamilyVariantInterface $familyVariant
-     */
-    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
-
-    /**
      * @return bool
      */
     public function isRootProductModel(): bool;
 }
-

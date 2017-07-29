@@ -18,6 +18,11 @@ interface EntityWithFamilyVariantInterface extends EntityWithValuesInterface
      * @return FamilyVariantInterface|null
      */
     public function getFamilyVariant(): ?FamilyVariantInterface;
+    
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
 
     /**
      * Get the variation level of this entity, on a zero-based value.
