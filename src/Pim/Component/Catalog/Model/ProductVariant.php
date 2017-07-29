@@ -12,4 +12,49 @@ namespace Pim\Component\Catalog\Model;
  */
 class ProductVariant extends AbstractProduct implements ProductVariantInterface
 {
+    /** @var ProductModelInterface $productModel */
+    protected $productModel;
+
+    /** @var FamilyVariantInterface */
+    protected $familyVariant;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductModel(): ?ProductModelInterface
+    {
+        return $this->productModel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductModel(ProductModelInterface $productModel): void
+    {
+        $this->productModel = $productModel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyVariant(): ?FamilyVariantInterface
+    {
+        return $this->familyVariant;
+    }
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
+    {
+        $this->familyVariant = $familyVariant;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariationLevel(): int
+    {
+        return $this->getProductModel()->getVariationLevel() + 1;
+    }
 }

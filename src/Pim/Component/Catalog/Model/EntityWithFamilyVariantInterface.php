@@ -18,7 +18,7 @@ interface EntityWithFamilyVariantInterface extends EntityWithValuesInterface
      * @return FamilyVariantInterface|null
      */
     public function getFamilyVariant(): ?FamilyVariantInterface;
-    
+
     /**
      * @param FamilyVariantInterface $familyVariant
      */
