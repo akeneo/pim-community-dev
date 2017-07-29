@@ -271,18 +271,6 @@ interface ProductInterface extends
     public function setFamilyId($familyId);
 
     /**
-     * @return ProductModelInterface|null
-     */
-    public function getProductModel(): ?ProductModelInterface;
-
-    /**
-     * @param ProductModelInterface $productModel
-     *
-     * @return ProductInterface
-     */
-    public function setProductModel(ProductModelInterface $productModel): ProductInterface;
-
-    /**
      * @return ArrayCollection
      */
     public function getUniqueData();
