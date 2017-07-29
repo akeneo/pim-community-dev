@@ -27,10 +27,10 @@ class EntityWithFamilyVariantAttributesProvider
             return [];
         }
 
-        if ($entityWithFamilyVariant->isRootVariation()) {
+        $level = $entityWithFamilyVariant->getVariationLevel();
+        if (EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL === $level) {
             $attributes = $familyVariant->getCommonAttributes()->toArray();
         } else {
-            $level = $entityWithFamilyVariant->getVariationLevel();
             $attributes = $familyVariant
                 ->getVariantAttributeSet($level)
                 ->getAttributes()
@@ -49,11 +49,10 @@ class EntityWithFamilyVariantAttributesProvider
     {
         $familyVariant = $entityWithFamilyVariant->getFamilyVariant();
 
-        if (null === $familyVariant || $entityWithFamilyVariant->isRootVariation()) {
+        $level = $entityWithFamilyVariant->getVariationLevel();
+        if (null === $familyVariant || EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL === $level) {
             return [];
         }
-
-        $level = $entityWithFamilyVariant->getVariationLevel();
 
         return $entityWithFamilyVariant
             ->getFamilyVariant()

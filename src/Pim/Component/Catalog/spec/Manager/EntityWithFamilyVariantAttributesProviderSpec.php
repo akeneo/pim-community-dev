@@ -51,7 +51,6 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->isRootVariation()->willReturn(false);
         $entity->getVariationLevel()->willReturn(1);
 
         $this->getAttributes($entity)->shouldReturn([$name, $description, $color]);
@@ -63,7 +62,7 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->isRootVariation()->willReturn(true);
+        $entity->getVariationLevel()->willReturn(EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL);
 
         $this->getAttributes($entity)->shouldReturn([$price]);
     }
@@ -81,7 +80,6 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->isRootVariation()->willReturn(false);
         $entity->getVariationLevel()->willReturn(1);
 
         $this->getAxes($entity)->shouldReturn([$color]);
@@ -99,7 +97,7 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->isRootVariation()->willReturn(true);
+        $entity->getVariationLevel()->willReturn(EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL);
 
         $this->getAxes($entity)->shouldReturn([]);
     }

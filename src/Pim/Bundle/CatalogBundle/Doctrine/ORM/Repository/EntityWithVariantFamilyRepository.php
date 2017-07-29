@@ -33,7 +33,7 @@ class EntityWithVariantFamilyRepository implements EntityWithVariantFamilyReposi
     {
         $familyVariant = $entity->getFamilyVariant();
 
-        if (null === $familyVariant || (null !== $familyVariant && $entity->isRootVariation())) {
+        if (null === $familyVariant || ($entity instanceof ProductModelInterface && $entity->isRootProductModel())) {
             return [];
         }
 

@@ -466,7 +466,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function isRootVariation(): bool
+    public function isRootProductModel(): bool
     {
         return null === $this->parent;
     }

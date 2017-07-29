@@ -12,6 +12,8 @@ namespace Pim\Component\Catalog\Model;
  */
 interface EntityWithFamilyVariantInterface extends EntityWithValuesInterface
 {
+    public const ROOT_VARIATION_LEVEL = 0;
+
     /**
      * @return FamilyVariantInterface|null
      */
@@ -25,9 +27,4 @@ interface EntityWithFamilyVariantInterface extends EntityWithValuesInterface
      * @return int
      */
     public function getVariationLevel(): int;
-
-    /**
-     * @return bool
-     */
-    public function isRootVariation(): bool;
 }
