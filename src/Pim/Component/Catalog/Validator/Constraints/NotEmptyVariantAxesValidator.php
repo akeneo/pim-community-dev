@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,13 +15,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class NotEmptyVariantAxesValidator extends ConstraintValidator
 {
-    /** @var CanHaveFamilyVariantAttributesProvider */
+    /** @var EntityWithFamilyVariantAttributesProvider */
     private $axesProvider;
 
     /**
-     * @param CanHaveFamilyVariantAttributesProvider $axesProvider
+     * @param EntityWithFamilyVariantAttributesProvider $axesProvider
      */
-    public function __construct(CanHaveFamilyVariantAttributesProvider $axesProvider)
+    public function __construct(EntityWithFamilyVariantAttributesProvider $axesProvider)
     {
         $this->axesProvider = $axesProvider;
     }
@@ -31,8 +31,8 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if (!$entity instanceof CanHaveFamilyVariantInterface) {
-            throw new UnexpectedTypeException($constraint, CanHaveFamilyVariantInterface::class);
+        if (!$entity instanceof EntityWithFamilyVariantInterface) {
+            throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
         }
 
         if (!$constraint instanceof NotEmptyVariantAxes) {

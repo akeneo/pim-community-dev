@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\CanHaveVariantFamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\EntityWithVariantFamilyRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -19,19 +19,19 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class SiblingUniqueVariantAxesValidator extends ConstraintValidator
 {
-    /** @var CanHaveFamilyVariantAttributesProvider */
+    /** @var EntityWithFamilyVariantAttributesProvider */
     private $axesProvider;
 
-    /** @var CanHaveVariantFamilyRepositoryInterface */
+    /** @var EntityWithVariantFamilyRepositoryInterface */
     private $repository;
 
     /**
-     * @param CanHaveFamilyVariantAttributesProvider  $axesProvider
-     * @param CanHaveVariantFamilyRepositoryInterface $repository
+     * @param EntityWithFamilyVariantAttributesProvider  $axesProvider
+     * @param EntityWithVariantFamilyRepositoryInterface $repository
      */
     public function __construct(
-        CanHaveFamilyVariantAttributesProvider $axesProvider,
-        CanHaveVariantFamilyRepositoryInterface $repository
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        EntityWithVariantFamilyRepositoryInterface $repository
     ) {
         $this->axesProvider = $axesProvider;
         $this->repository = $repository;
@@ -42,8 +42,8 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if (!$entity instanceof CanHaveFamilyVariantInterface) {
-            throw new UnexpectedTypeException($constraint, CanHaveFamilyVariantInterface::class);
+        if (!$entity instanceof EntityWithFamilyVariantInterface) {
+            throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
         }
 
         if (!$constraint instanceof SiblingUniqueVariantAxes) {
@@ -111,7 +111,7 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      *
      * @return bool
      */
-    private function alreadyExists(CanHaveFamilyVariantInterface $entity): bool
+    private function alreadyExists(EntityWithFamilyVariantInterface $entity): bool
     {
         $brothers = $this->repository->findSiblings($entity);
 
@@ -139,11 +139,11 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      * This method returns TRUE if there is a duplicate value in an already parsed entity (so it has to be stateful),
      * FALSE otherwise
      *
-     * @param CanHaveFamilyVariantInterface $entity
+     * @param EntityWithFamilyVariantInterface $entity
      *
      * @return bool
      */
-    private function hasAlreadyValidatedTheSameValue(CanHaveFamilyVariantInterface $entity): bool
+    private function hasAlreadyValidatedTheSameValue(EntityWithFamilyVariantInterface $entity): bool
     {
         // TODO: this must be done in PIM-6333
 

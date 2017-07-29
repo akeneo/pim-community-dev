@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.family_variant.provider.can_have_family_variant_attributes.class: Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider
+    pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class: Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider
 
 services:
-    pim_catalog.family_variant.provider.can_have_family_variant_attributes:
-        class: '%pim_catalog.family_variant.provider.can_have_family_variant_attributes.class%'
+    pim_catalog.family_variant.provider.entity_with_family_variant_attributes:
+        class: '%pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class%'

@@ -3,10 +3,10 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CanHaveVariantFamilyRepository;
-use Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithVariantFamilyRepository;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes;
@@ -19,8 +19,8 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
 {
     function let(
-        CanHaveFamilyVariantAttributesProvider $axesProvider,
-        CanHaveVariantFamilyRepository $repository,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        EntityWithVariantFamilyRepository $repository,
         ExecutionContextInterface $context
     ) {
         $this->beConstructedWith($axesProvider, $repository);
@@ -40,7 +40,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_constraint_is_not_supported(
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         Constraint $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$entity, $constraint]);
@@ -48,7 +48,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
 
     function it_raises_no_violation_if_the_entity_has_no_family_variant(
         $context,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         SiblingUniqueVariantAxes $constraint
     ) {
         $entity->getFamilyVariant()->willReturn(null);
@@ -62,7 +62,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         $context,
         $repository,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         SiblingUniqueVariantAxes $constraint
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
@@ -78,8 +78,8 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         $repository,
         $axesProvider,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
-        CanHaveFamilyVariantInterface $sibling,
+        EntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $sibling,
         SiblingUniqueVariantAxes $constraint
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
@@ -96,9 +96,9 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         $repository,
         $axesProvider,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
-        CanHaveFamilyVariantInterface $sibling1,
-        CanHaveFamilyVariantInterface $sibling2,
+        EntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $sibling1,
+        EntityWithFamilyVariantInterface $sibling2,
         AttributeInterface $color,
         SiblingUniqueVariantAxes $constraint,
         ValueInterface $blue,
@@ -128,9 +128,9 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         $repository,
         $axesProvider,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
-        CanHaveFamilyVariantInterface $sibling1,
-        CanHaveFamilyVariantInterface $sibling2,
+        EntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $sibling1,
+        EntityWithFamilyVariantInterface $sibling2,
         AttributeInterface $color,
         SiblingUniqueVariantAxes $constraint,
         ValueInterface $blue,
@@ -167,9 +167,9 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         $repository,
         $axesProvider,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
-        CanHaveFamilyVariantInterface $sibling1,
-        CanHaveFamilyVariantInterface $sibling2,
+        EntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $sibling1,
+        EntityWithFamilyVariantInterface $sibling2,
         AttributeInterface $color,
         AttributeInterface $size,
         SiblingUniqueVariantAxes $constraint,

@@ -3,9 +3,9 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
 {
     function let(
-        CanHaveFamilyVariantAttributesProvider $axesProvider,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
         ExecutionContextInterface $context
     ) {
         $this->beConstructedWith($axesProvider);
@@ -38,7 +38,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_constraint_is_not_supported(
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         Constraint $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$entity, $constraint]);
@@ -46,7 +46,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
 
     function it_raises_no_violation_if_the_entity_has_no_family_variant(
         $context,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         NotEmptyVariantAxes $constraint
     ) {
         $entity->getFamilyVariant()->willReturn(null);
@@ -59,7 +59,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
     function it_raises_no_violation_if_the_entity_has_no_axis(
         $axesProvider,
         $context,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyVariantInterface $familyVariant,
         NotEmptyVariantAxes $constraint
     ) {
@@ -74,7 +74,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
     function it_raises_no_violation_if_the_entity_has_a_value_for_all_its_axes(
         $axesProvider,
         $context,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyVariantInterface $familyVariant,
         NotEmptyVariantAxes $constraint,
         AttributeInterface $color,
@@ -94,7 +94,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
     function it_raises_a_violation_if_the_entity_has_no_value_for_an_axis(
         $axesProvider,
         $context,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyVariantInterface $familyVariant,
         NotEmptyVariantAxes $constraint,
         AttributeInterface $color,

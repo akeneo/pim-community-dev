@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,13 +15,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class OnlyExpectedAttributesValidator extends ConstraintValidator
 {
-    /** @var CanHaveFamilyVariantAttributesProvider */
+    /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
     /**
-     * @param CanHaveFamilyVariantAttributesProvider $attributesProvider
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      */
-    public function __construct(CanHaveFamilyVariantAttributesProvider $attributesProvider)
+    public function __construct(EntityWithFamilyVariantAttributesProvider $attributesProvider)
     {
         $this->attributesProvider = $attributesProvider;
     }
@@ -31,8 +31,8 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint): void
     {
-        if (!$entity instanceof CanHaveFamilyVariantInterface) {
-            throw new UnexpectedTypeException($constraint, CanHaveFamilyVariantInterface::class);
+        if (!$entity instanceof EntityWithFamilyVariantInterface) {
+            throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
         }
 
         if (!$constraint instanceof OnlyExpectedAttributes) {

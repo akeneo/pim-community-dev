@@ -3,34 +3,34 @@
 namespace Pim\Component\Catalog\FamilyVariant;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 
 /**
- * Attributes and axes provider for CanHaveFamilyVariantInterface entities
+ * Attributes and axes provider for EntityWithFamilyVariantInterface entities
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CanHaveFamilyVariantAttributesProvider
+class EntityWithFamilyVariantAttributesProvider
 {
     /**
-     * @param CanHaveFamilyVariantInterface $canHaveFamilyVariant
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
      * @return AttributeInterface[]
      */
-    public function getAttributes(CanHaveFamilyVariantInterface $canHaveFamilyVariant): array
+    public function getAttributes(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
     {
-        $familyVariant = $canHaveFamilyVariant->getFamilyVariant();
+        $familyVariant = $entityWithFamilyVariant->getFamilyVariant();
 
         if (null === $familyVariant) {
             return [];
         }
 
-        if ($canHaveFamilyVariant->isRootVariation()) {
+        if ($entityWithFamilyVariant->isRootVariation()) {
             $attributes = $familyVariant->getCommonAttributes()->toArray();
         } else {
-            $level = $canHaveFamilyVariant->getVariationLevel();
+            $level = $entityWithFamilyVariant->getVariationLevel();
             $attributes = $familyVariant
                 ->getVariantAttributeSet($level)
                 ->getAttributes()
@@ -41,21 +41,21 @@ class CanHaveFamilyVariantAttributesProvider
     }
 
     /**
-     * @param CanHaveFamilyVariantInterface $canHaveFamilyVariant
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
      * @return AttributeInterface[]
      */
-    public function getAxes(CanHaveFamilyVariantInterface $canHaveFamilyVariant): array
+    public function getAxes(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
     {
-        $familyVariant = $canHaveFamilyVariant->getFamilyVariant();
+        $familyVariant = $entityWithFamilyVariant->getFamilyVariant();
 
-        if (null === $familyVariant || $canHaveFamilyVariant->isRootVariation()) {
+        if (null === $familyVariant || $entityWithFamilyVariant->isRootVariation()) {
             return [];
         }
 
-        $level = $canHaveFamilyVariant->getVariationLevel();
+        $level = $entityWithFamilyVariant->getVariationLevel();
 
-        return $canHaveFamilyVariant
+        return $entityWithFamilyVariant
             ->getFamilyVariant()
             ->getVariantAttributeSet($level)
             ->getAxes()
