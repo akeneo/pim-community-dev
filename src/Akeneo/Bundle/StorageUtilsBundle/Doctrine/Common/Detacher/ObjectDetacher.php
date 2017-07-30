@@ -280,6 +280,10 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         }
     }
 
+    /**
+     * Detach all entries by class
+     * @param  String $class The full name of the class
+     */
     public function detachByClass($class)
     {
         $manager = $this->managerRegistry->getManagerForClass($class);
