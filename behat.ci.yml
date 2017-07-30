@@ -89,7 +89,8 @@ default:
             factory:
                 page_parameters:
                     base_url: 'http://akeneo/'
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
 
     formatters:
-        junit:
+        pim:
             output_path: app/build/logs/behat/
