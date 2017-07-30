@@ -65,26 +65,60 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
     }
 
-    public function getPrivateProperty($object, $property)
+    /**
+     * originalDocumentData getter
+     *
+     * @param $uow
+     *
+     * @return array
+     */
+    protected function &getOriginalDocumentData($uow)
     {
-        $value = \Closure::bind(function() use ($property) {
-            return $this->$property;
-        }, $object, $object)->__invoke();
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->originalDocumentData;
+        }, null, $uow);
 
-        return $value;
+        return $closure($uow);
     }
 
-    public function cleanupKeys($array, $objectIds)
+    /**
+     * parentAssociations getter
+     *
+     * @param $uow
+     *
+     * @return array
+     */
+    protected function &getParentAssociations($uow)
     {
-        $objectIdsToUnset = array_diff(array_keys($array), $objectIds);
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->parentAssociations;
+        }, null, $uow);
 
-        foreach ($objectIdsToUnset as $id) {
-            unset($array[$id]);
-        }
+        return $closure($uow);
     }
 
+    /**
+     * embeddedDocumentsRegistry getter
+     *
+     * @param $uow
+     *
+     * @return array
+     */
+    protected function &getEmbeddedDocumentsRegistry($uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->embeddedDocumentsRegistry;
+        }, null, $uow);
+
+        return $closure($uow);
+    }
+
+    /**
+     * Cleans up data still in memory after detaching products
+     */
     public function cleanupData()
     {
+        $this->detachByClass('Akeneo\Component\Versioning\Model\Version');
         $objectManager = $this->managerRegistry->getManagerForClass('Pim\Component\Catalog\Model\Product');
         $uow = $objectManager->getUnitOfWork();
         $identityMapObjectIds = $uow->getIdentityMap();
@@ -97,14 +131,23 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
             }
         }
 
-        $originalDocumentData = $this->getPrivateProperty($uow, 'originalDocumentData');
-        $this->cleanupKeys($originalDocumentData, $objectIds);
+        // Unset originalDocumentData
+        $originalDocumentData = &$this->getOriginalDocumentData($uow);
+        foreach (array_diff(array_keys($originalDocumentData), $objectIds) as $id) {
+            unset($originalDocumentData[$id]);
+        }
 
-        $parentAssociations = $this->getPrivateProperty($uow, 'parentAssociations');
-        $this->cleanupKeys($parentAssociations, $objectIds);
+        // Unset parentAssociations
+        $parentAssociations = &$this->getParentAssociations($uow);
+        foreach (array_diff(array_keys($parentAssociations), $objectIds) as $id) {
+            unset($parentAssociations[$id]);
+        }
 
-        $embeddedDocumentsRegistry = $this->getPrivateProperty($uow, 'embeddedDocumentsRegistry');
-        $this->cleanupKeys($embeddedDocumentsRegistry, $objectIds);
+        // Unset embeddedDocumentsRegistry
+        $embeddedDocumentsRegistry = &$this->getEmbeddedDocumentsRegistry($uow);
+        foreach (array_diff(array_keys($embeddedDocumentsRegistry), $objectIds) as $id) {
+            unset($embeddedDocumentsRegistry[$id]);
+        }
     }
 
     /**
@@ -239,8 +282,8 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
     public function detachByClass($class)
     {
-      $manager = $this->managerRegistry->getManagerForClass($class);
-      $manager->clear($class);
+        $manager = $this->managerRegistry->getManagerForClass($class);
+        $manager->clear($class);
     }
 
     /**
