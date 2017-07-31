@@ -30,7 +30,8 @@ class ColorSpaceOptionsResolver implements TransformationOptionsResolverInterfac
         $this->resolver = new OptionsResolver();
         $this->resolver->setRequired(['colorspace']);
         $this->resolver->setAllowedTypes('colorspace', 'string');
-        $this->resolver->setAllowedValues('colorspace',
+        $this->resolver->setAllowedValues(
+            'colorspace',
             [
                 PaletteInterface::PALETTE_CMYK,
                 PaletteInterface::PALETTE_RGB,

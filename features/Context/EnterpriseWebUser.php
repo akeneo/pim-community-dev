@@ -329,7 +329,8 @@ class EnterpriseWebUser extends BaseWebUser
      */
     protected function getElementByDataAttribute($data, $context)
     {
-        $locator = sprintf('%s[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+        $locator = sprintf(
+            '%s[data-product="%s"][data-attribute="%s"][data-author="%s"]',
             $context,
             $data['product'],
             $data['attribute'],
