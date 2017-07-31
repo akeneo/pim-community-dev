@@ -58,7 +58,7 @@ class FieldConverter implements FieldConverterInterface
         } elseif (in_array($fieldName, ['groups'])) {
             return $this->extractVariantGroup($value);
         } elseif ('enabled' === $fieldName) {
-            return [new ConvertedField($fieldName, $value)];
+            return [new ConvertedField($fieldName, (bool) $value)];
         } elseif ('family' === $fieldName) {
             return [new ConvertedField($fieldName, $value)];
         }
@@ -89,23 +89,30 @@ class FieldConverter implements FieldConverterInterface
      */
     protected function extractVariantGroup($value): array
     {
-        $data = $variantGroups = [];
+        $data = $variantGroups = $productGroups = [];
         $groups = $this->fieldSplitter->splitCollection($value);
 
         foreach ($groups as $group) {
             $isVariant = $this->groupTypeRepository->getTypeByGroup($group);
             if ('1' === $isVariant) {
                 $variantGroups[] = $group;
-                $data[] = new ConvertedField('variant_group', $group);
             } else {
-                $data[] = new ConvertedField('groups', $group);
+                $productGroups[] = $group;
             }
         }
 
         if (1 < count($variantGroups)) {
             throw new \InvalidArgumentException(
-                sprintf('The product cannot belong to many variant groups: %s', implode(', ', $data['variant_group']))
+                sprintf('The product cannot belong to many variant groups: %s', implode(', ', $variantGroups))
             );
+        }
+
+        if (0 < count($variantGroups)) {
+            $data[] = new ConvertedField('variant_group', current($variantGroups));
+        }
+
+        if (0 < count($groups)) {
+            $data[] = new ConvertedField('groups', $productGroups);
         }
 
         return $data;

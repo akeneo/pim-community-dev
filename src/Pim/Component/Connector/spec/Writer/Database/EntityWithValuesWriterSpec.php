@@ -2,13 +2,16 @@
 
 namespace spec\Pim\Component\Connector\Writer\Database;
 
+use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\Writer\Database\EntityWithValuesWriter;
 
 class EntityWithValuesWriterSpec extends ObjectBehavior
 {
@@ -24,17 +27,17 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Writer\Database\EntityWithValuesWriter');
+        $this->shouldHaveType(EntityWithValuesWriter::class);
     }
 
     function it_is_an_item_writer()
     {
-        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldHaveType(ItemWriterInterface::class);
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType(StepExecutionAwareInterface::class);
     }
 
     function it_saves_items(

@@ -63,7 +63,6 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->objectDetacher = $objectDetacher;
     }
 
-
     /**
      * {@inheritdoc}
      */

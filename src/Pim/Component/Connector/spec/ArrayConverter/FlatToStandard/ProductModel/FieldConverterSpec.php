@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 
-use Pim\Component\Connector\ArrayConverter\FieldConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;

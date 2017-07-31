@@ -4,7 +4,8 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FieldConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
@@ -41,20 +42,22 @@ class FieldConverterSpec extends ObjectBehavior
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
 
-        $this->convert('enabled', 'true')->shouldReturn(['enabled' => true]);
-        $this->convert('enabled', true)->shouldReturn(['enabled' => true]);
+        $this->convert('enabled', 'true')->shouldBeLike([new ConvertedField('enabled', true)]);
+        $this->convert('enabled', true)->shouldBeLike([new ConvertedField('enabled', true)]);
 
         $fieldSplitter->splitCollection('dry,wet')->willReturn(['dry', 'wet']);
         $fieldSplitter->splitCollection('group1,group2')->willReturn(['group1', 'group2']);
         $fieldSplitter->splitCollection('value,test')->willReturn(['value', 'test']);
         $fieldSplitter->splitFieldName('X_SELL-groups')->willReturn(['X_SELL', 'groups']);
 
-        $this->convert('family', 'family_name')->shouldReturn(['family' => 'family_name']);
+        $this->convert('family', 'family_name')->shouldBeLike([new ConvertedField('family', 'family_name')]);
 
-        $this->convert('categories', 'dry,wet')->shouldReturn(['categories' => ['dry', 'wet']]);
-        $this->convert('groups', 'group1,group2')->shouldReturn(['groups' => ['group1', 'group2']]);
+        $this->convert('categories', 'dry,wet')->shouldBeLike([new ConvertedField('categories', ['dry', 'wet'])]);
+        $this->convert('groups', 'group1,group2')->shouldBeLike([new ConvertedField('groups', ['group1', 'group2'])]);
 
-        $this->convert('X_SELL-groups', 'value,test')->shouldReturn(['associations' => ['X_SELL' => ['groups' => ['value', 'test']]]]);
+        $this->convert('X_SELL-groups', 'value,test')->shouldBeLike([
+            new ConvertedField('associations', ['X_SELL' => ['groups' => ['value', 'test']]])
+        ]);
     }
 
     function it_extracts_variant_group_from_column_group($assocFieldResolver, $fieldSplitter, $groupTypeRepository)
@@ -69,9 +72,9 @@ class FieldConverterSpec extends ObjectBehavior
         $groupTypeRepository->getTypeByGroup('group1')->willReturn('0');
         $groupTypeRepository->getTypeByGroup('group2')->willReturn('0');
 
-        $this->convert('groups', 'group1,variant_group1,group2')->shouldReturn([
-            'groups'        => ['group1', 'group2'],
-            'variant_group' => 'variant_group1'
+        $this->convert('groups', 'group1,variant_group1,group2')->shouldBeLike([
+            new ConvertedField('variant_group', 'variant_group1'),
+            new ConvertedField('groups', ['group1', 'group2']),
         ]);
     }
 
