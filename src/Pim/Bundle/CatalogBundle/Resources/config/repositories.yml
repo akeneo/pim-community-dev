@@ -175,7 +175,7 @@ services:
     pim_catalog.repository.product:
         class: '%pim_catalog.repository.product.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['%pim_catalog.entity.product.class%']
+        arguments: ['%pim_catalog.entity.abstract_product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setGroupRepository, ['@pim_catalog.repository.group']]
