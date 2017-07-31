@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
@@ -12,7 +13,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FieldConverter
+class FieldConverter implements FieldConverterInterface
 {
     /** @var FieldSplitter */
     private $fieldSplitter;
@@ -30,7 +31,10 @@ class FieldConverter
         $this->assocFieldResolver = $assocFieldResolver;
     }
 
-    public function convert($fieldName, $value)
+    /**
+     * {@inheritdoc}
+     */
+    public function convert(string $fieldName, string $value): array
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 

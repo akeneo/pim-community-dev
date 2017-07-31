@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 /**
+ * Object that represent the converted field (family, category, etc.) from a flat file data (CSV, XLSX)
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

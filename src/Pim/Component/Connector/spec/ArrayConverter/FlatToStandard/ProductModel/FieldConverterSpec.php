@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 
+use Pim\Component\Connector\ArrayConverter\FieldConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
@@ -21,6 +22,11 @@ class FieldConverterSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(FieldConverter::class);
+    }
+
+    function it_is_a_field_converter()
+    {
+        $this->shouldImplement(FieldConverterInterface::class);
     }
 
     function it_converts_an_association($assocFieldResolver, $fieldSplitter)

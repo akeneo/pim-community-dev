@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FieldConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
@@ -15,6 +16,11 @@ class FieldConverterSpec extends ObjectBehavior
         GroupTypeRepositoryInterface $groupTypeRepository
     ) {
         $this->beConstructedWith($fieldSplitter, $assocFieldResolver, $groupTypeRepository);
+    }
+
+    function it_is_a_field_converter()
+    {
+        $this->shouldImplement(FieldConverterInterface::class);
     }
 
     function it_supports_converter_column($assocFieldResolver)
