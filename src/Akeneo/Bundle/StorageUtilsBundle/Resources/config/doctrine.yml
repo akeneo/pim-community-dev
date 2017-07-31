@@ -30,6 +30,7 @@ services:
         class: %akeneo_storage_utils.doctrine.object_detacher.class%
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '%pim_catalog.entity.product.class%'
 
     akeneo_storage_utils.doctrine.orm_mappings_override_configurator:
         class: %akeneo_storage_utils.doctrine.orm_mappings_override_configurator.class%

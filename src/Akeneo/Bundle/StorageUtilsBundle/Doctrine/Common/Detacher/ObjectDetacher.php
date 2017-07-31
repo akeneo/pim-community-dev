@@ -29,13 +29,17 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /** @var array */
     protected $scheduledForCheck;
 
+    /** @var string */
+    protected $productClass;
+
     /**
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, $productClass)
     {
         $this->managerRegistry = $registry;
         $this->scheduledForCheck = null;
+        $this->productClass = $productClass;
     }
 
     /**
@@ -71,7 +75,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      *
      * @return array
      */
-    protected function &getOriginalDocumentData(UnitOfWork $uow)
+    protected function &getOriginalDocumentData($uow)
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->originalDocumentData;
@@ -87,7 +91,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      *
      * @return array
      */
-    protected function &getParentAssociations(UnitOfWork $uow)
+    protected function &getParentAssociations($uow)
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->parentAssociations;
@@ -103,7 +107,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      *
      * @return array
      */
-    protected function &getEmbeddedDocumentsRegistry(UnitOfWork $uow)
+    protected function &getEmbeddedDocumentsRegistry($uow)
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->embeddedDocumentsRegistry;
@@ -117,10 +121,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      */
     public function cleanupData()
     {
-        $this->detachByClass('Akeneo\Component\Versioning\Model\Version');
-        $this->detachByClass('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct');
-
-        $objectManager = $this->managerRegistry->getManagerForClass('Pim\Component\Catalog\Model\Product');
+        $objectManager = $this->managerRegistry->getManagerForClass($this->productClass);
         $uow = $objectManager->getUnitOfWork();
         $identityMapObjectIds = $uow->getIdentityMap();
         $objectIds = [];
