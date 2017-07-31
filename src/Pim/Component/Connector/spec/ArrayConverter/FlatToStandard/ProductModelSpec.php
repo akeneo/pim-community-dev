@@ -3,8 +3,11 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 use PhpSpec\ObjectBehavior;
@@ -15,9 +18,19 @@ class ProductModelSpec extends ObjectBehavior
     function let(
         ColumnsMapper $columnsMapper,
         FieldConverter $fieldConverter,
-        ArrayConverterInterface $productValueConverter
+        ArrayConverterInterface $productValueConverter,
+        ColumnsMerger $columnsMerger,
+        AttributeColumnsResolver $attributeColumnsResolver,
+        FieldsRequirementChecker $fieldsRequirementChecker
     ) {
-        $this->beConstructedWith($columnsMapper, $fieldConverter, $productValueConverter);
+        $this->beConstructedWith(
+            $columnsMapper,
+            $fieldConverter,
+            $productValueConverter,
+            $columnsMerger,
+            $attributeColumnsResolver,
+            $fieldsRequirementChecker
+        );
     }
 
     function it_is_initializable()
@@ -34,6 +47,9 @@ class ProductModelSpec extends ObjectBehavior
         $columnsMapper,
         $fieldConverter,
         $productValueConverter,
+        $columnsMerger,
+        $fieldsRequirementChecker,
+        $attributeColumnsResolver,
         ConvertedField $identifierConverter,
         ConvertedField $parentConverter,
         ConvertedField $familyVariantConverter,
@@ -48,20 +64,23 @@ class ProductModelSpec extends ObjectBehavior
             'description-en_US-ecommerce' => 'description',
         ];
 
-        $columnsMapper->map($flatProductModel, [
-            'family' => 'family_variant',
-        ])->willReturn([
+        $mappedFlatProductModel = [
             'identifier' => 'identifier',
             'parent' => '1234',
             'family_variant' => 'family_variant',
             'categories' => 'tshirt,pull',
             'name-en_US' => 'name',
             'description-en_US-ecommerce' => 'description',
-        ]);
+        ];
 
-        // Exclude association field (pas group)
+        $columnsMapper->map($flatProductModel, [
+            'family' => 'family_variant',
+        ])->willReturn($mappedFlatProductModel);
 
-        // Validation du tableau de données
+        $columnsMerger->merge($mappedFlatProductModel)->willReturn($mappedFlatProductModel);
+
+        $attributeColumnsResolver->resolveIdentifierField()->willReturn(['identifier']);
+        $fieldsRequirementChecker->checkFieldsPresence($mappedFlatProductModel, 'identifier');
 
         $fieldConverter->supportsColumn('identifier')->willreturn(true);
         $fieldConverter->convert('identifier', 'identifier')->willreturn([$identifierConverter]);

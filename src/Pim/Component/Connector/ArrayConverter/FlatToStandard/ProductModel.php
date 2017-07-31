@@ -3,7 +3,10 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 
 /**
@@ -23,19 +26,37 @@ class ProductModel implements ArrayConverterInterface
     /** @var ArrayConverterInterface */
     private $productValueConverter;
 
+    /** @var ColumnsMerger */
+    private $columnsMerger;
+
+    /** @var AttributeColumnsResolver */
+    private $attributeColumnsResolver;
+
+    /** @var FieldsRequirementChecker */
+    private $fieldsRequirementChecker;
+
     /**
-     * @param ColumnsMapper           $columnsMapper
-     * @param FieldConverter          $fieldConverter
-     * @param ArrayConverterInterface $productValueConverter
+     * @param ColumnsMapper                   $columnsMapper
+     * @param FieldConverter                  $fieldConverter
+     * @param ArrayConverterInterface         $productValueConverter
+     * @param ColumnsMerger                  $columnsMerger
+     * @param AttributeColumnsResolver $attributeColumnsResolver ,
+     * @param FieldsRequirementChecker        $fieldsRequirementChecker
      */
     public function __construct(
         ColumnsMapper $columnsMapper,
         FieldConverter $fieldConverter,
-        ArrayConverterInterface $productValueConverter
+        ArrayConverterInterface $productValueConverter,
+        ColumnsMerger $columnsMerger,
+        AttributeColumnsResolver $attributeColumnsResolver,
+        FieldsRequirementChecker $fieldsRequirementChecker
     ) {
         $this->columnsMapper = $columnsMapper;
         $this->fieldConverter = $fieldConverter;
         $this->productValueConverter = $productValueConverter;
+        $this->columnsMerger = $columnsMerger;
+        $this->attributeColumnsResolver = $attributeColumnsResolver;
+        $this->fieldsRequirementChecker = $fieldsRequirementChecker;
     }
 
     /**
@@ -45,6 +66,10 @@ class ProductModel implements ArrayConverterInterface
     {
         $convertedValues = $convertedFlatProductModel = [];
         $flatProductModel = $this->columnsMapper->map($flatProductModel, $options['mapping']);
+        $flatProductModel = $this->columnsMerger->merge($flatProductModel);
+
+        $requiredField = $this->attributeColumnsResolver->resolveIdentifierField();
+        $this->fieldsRequirementChecker->checkFieldsPresence($flatProductModel, [$requiredField]);
 
         foreach ($flatProductModel as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
