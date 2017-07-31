@@ -119,9 +119,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     public function cleanupData()
     {
         $this->detachByClass('Akeneo\Component\Versioning\Model\Version');
-        $this->detachByClass('AcmeEnterprise\Bundle\AppBundle\Model\ProductValue');
         $this->detachByClass('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct');
-        $this->detachByClass('AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue');
 
         $objectManager = $this->managerRegistry->getManagerForClass('Pim\Component\Catalog\Model\Product');
         $uow = $objectManager->getUnitOfWork();
