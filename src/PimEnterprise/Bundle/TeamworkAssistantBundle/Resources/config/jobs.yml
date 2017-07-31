@@ -195,6 +195,7 @@ services:
             - '%pimee_teamwork_assistant.refresh_project_completeness_calculation.job_name%'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
+            - '%kernel.logs_dir%'
 
     ### Job Parameters
     pimee_teamwork_assistant.job.refresh_project_completeness_calculation_parameter:
