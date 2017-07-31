@@ -26,7 +26,7 @@ define(
             },
 
             /**
-             * {@inheritdoc}
+             * Update the root model after fake product save
              */
             triggerModelUpdate: function () {
                 var data = this.getFormData();

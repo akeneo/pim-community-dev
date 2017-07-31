@@ -57,7 +57,7 @@ define(
                 }
 
                 this.formPromise.then(function (form) {
-                    this.$el.html(this.template({}));
+                    this.$el.html(this.template());
                     form.setElement(this.$('.set-requirements')).render();
                     form.trigger('pim_enrich:form:update_read_only', this.readOnly);
                 }.bind(this));
@@ -90,7 +90,6 @@ define(
 
                     this.setValue(attributeRequirements);
                 }.bind(this));
-
             },
 
             /**

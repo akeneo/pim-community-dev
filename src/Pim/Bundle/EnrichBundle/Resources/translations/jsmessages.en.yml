@@ -966,6 +966,8 @@ pim_enrich:
                     label: Configure
                 confirm:
                     label: Confirm
+                launch_error:
+                    label: An error occured during the launching of the mass edit operation
                 launched:
                     label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
             operation:

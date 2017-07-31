@@ -30,6 +30,7 @@
 - PIM-6290: Update the main navigation design
 - PIM-6397: Enable Search filter on all grids
 - PIM-6406: Update job profile show page to include last executions
+- TIP-764: Mass edit has been redone
 
 ## Remove MongoDB product storage
 
@@ -208,6 +209,7 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue`
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
+- TIP-764: Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and all inherited classes
 
 ### Constructors
 
