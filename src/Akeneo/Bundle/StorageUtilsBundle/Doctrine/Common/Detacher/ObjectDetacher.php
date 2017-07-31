@@ -62,17 +62,16 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         foreach ($objects as $object) {
             $this->detach($object);
         }
-
     }
 
     /**
-     * originalDocumentData getter
+     * Get the private originalDocumentData from UoW
      *
-     * @param $uow
+     * @param UnitOfWork $uow
      *
      * @return array
      */
-    protected function &getOriginalDocumentData($uow)
+    protected function &getOriginalDocumentData(UnitOfWork $uow)
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->originalDocumentData;
@@ -82,13 +81,13 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     }
 
     /**
-     * parentAssociations getter
+     * Get the private parentAssociations from UoW
      *
-     * @param $uow
+     * @param UnitOfWork $uow
      *
      * @return array
      */
-    protected function &getParentAssociations($uow)
+    protected function &getParentAssociations(UnitOfWork $uow)
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->parentAssociations;
@@ -98,13 +97,13 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     }
 
     /**
-     * embeddedDocumentsRegistry getter
+     * Get the private parentAssociations from UoW
      *
-     * @param $uow
+     * @param UnitOfWork $uow
      *
      * @return array
      */
-    protected function &getEmbeddedDocumentsRegistry($uow)
+    protected function &getEmbeddedDocumentsRegistry(UnitOfWork $uow)
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->embeddedDocumentsRegistry;
@@ -133,19 +132,16 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
             }
         }
 
-        // Unset originalDocumentData
         $originalDocumentData = &$this->getOriginalDocumentData($uow);
         foreach (array_diff(array_keys($originalDocumentData), $objectIds) as $id) {
             unset($originalDocumentData[$id]);
         }
 
-        // Unset parentAssociations
         $parentAssociations = &$this->getParentAssociations($uow);
         foreach (array_diff(array_keys($parentAssociations), $objectIds) as $id) {
             unset($parentAssociations[$id]);
         }
 
-        // Unset embeddedDocumentsRegistry
         $embeddedDocumentsRegistry = &$this->getEmbeddedDocumentsRegistry($uow);
         foreach (array_diff(array_keys($embeddedDocumentsRegistry), $objectIds) as $id) {
             unset($embeddedDocumentsRegistry[$id]);
@@ -259,7 +255,6 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     protected function doDetach($document, array &$visited)
     {
         $oid = spl_object_hash($document);
-
         if (isset($visited[$oid])) {
             return;
         }
@@ -284,7 +279,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
     /**
      * Detach all entries by class
-     * @param  String $class The full name of the class
+     * @param string $class The full name of the class
      */
     public function detachByClass($class)
     {
