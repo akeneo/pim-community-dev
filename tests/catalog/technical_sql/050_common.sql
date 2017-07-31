@@ -203,6 +203,12 @@ INSERT INTO `pim_catalog_family_attribute` VALUES (466,2523),(466,2524),(466,252
 /*!40000 ALTER TABLE `pim_catalog_family_attribute` ENABLE KEYS */;
 
 
+/*!40000 ALTER TABLE `pim_catalog_family_variant` DISABLE KEYS */;
+DELETE FROM `pim_catalog_family_variant`;
+INSERT INTO `pim_catalog_family_variant` (`id`, `family_id`, `code`) VALUES
+(25,	466,	'familyVariantA1');
+/*!40000 ALTER TABLE `pim_catalog_family_variant` DISABLE KEYS */;
+
 --
 -- Dumping data for table `pim_catalog_group`
 --
