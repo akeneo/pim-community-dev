@@ -29,10 +29,16 @@ define(
                 'change .tags': 'updateModel'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             reset: function () {
                 this.setValue([]);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.html(this.template({
                     readOnly: this.readOnly,
@@ -47,10 +53,20 @@ define(
                 return this;
             },
 
+            /**
+             * Update the form model from a dom event
+             *
+             * @param {event} event
+             */
             updateModel: function (event) {
                 this.setValue(event.target.value.split(','));
             },
 
+            /**
+             * update the form model
+             *
+             * @param {string} family
+             */
             setValue: function (tags) {
                 var data = this.getFormData();
 
@@ -62,6 +78,11 @@ define(
                 this.setData(data);
             },
 
+            /**
+             * Get the current model value
+             *
+             * @return {string}
+             */
             getValue: function () {
                 var action = _.findWhere(this.getFormData().actions, {field: 'tags'})
 
