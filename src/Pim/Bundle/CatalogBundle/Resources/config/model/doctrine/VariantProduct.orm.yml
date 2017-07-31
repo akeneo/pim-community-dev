@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\ProductVariant:
+Pim\Component\Catalog\Model\VariantProduct:
     type: entity
     manyToOne:
         productModel:

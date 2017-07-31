@@ -522,11 +522,11 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
         ];
 
-        $productVariants = [
+        $variantProducts = [
             // tshirt variants (level 2: varying on color and size)
             [
                 'identifier'                => 'tshirt-grey-s',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -565,7 +565,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-grey-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -604,7 +604,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-grey-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -643,7 +643,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-grey-xl',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -683,7 +683,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'tshirt-blue-s',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -722,7 +722,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-blue-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -761,7 +761,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-blue-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -800,7 +800,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-blue-xl',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -840,7 +840,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'tshirt-red-s',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -879,7 +879,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-red-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -918,7 +918,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-red-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -957,7 +957,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-red-xl',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_color_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -998,7 +998,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // T-shirt: size
             [
                 'identifier'                => 'tshirt-unique-color-s',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -1037,7 +1037,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-unique-color-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -1076,7 +1076,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-unique-color-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -1115,7 +1115,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'tshirt-unique-color-xl',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_size',
                 'family'                    => [
                     'code'   => 'clothing_size',
@@ -1182,7 +1182,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Hats variants (varying on size)
             [
                 'identifier'                => 'hat-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'accessories_size',
                 'family'                    => [
                     'code'   => 'accessories',
@@ -1216,7 +1216,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'hat-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'accessories_size',
                 'family'                    => [
                     'code'   => 'accessories',
@@ -1252,7 +1252,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Tshirt unique size model
             [
                 'identifier'                => 'tshirt-unique-size-blue',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'level'                     => 0,
                 'family_variant'            => 'clothing_color',
                 'family'                    => [
@@ -1293,7 +1293,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'tshirt-unique-size-red',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'level'                     => 0,
                 'family_variant'            => 'clothing_color',
                 'family'                    => [
@@ -1334,7 +1334,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'tshirt-unique-size-yellow',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'level'                     => 0,
                 'family_variant'            => 'clothing_color',
                 'family'                    => [
@@ -1376,7 +1376,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Running shoes
             [
                 'identifier'                => 'running-shoes-s-white',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1411,7 +1411,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-s-blue',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1446,7 +1446,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-s-red',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1481,7 +1481,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-m-white',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1516,7 +1516,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-m-blue',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1551,7 +1551,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-m-red',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1586,7 +1586,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-l-white',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1621,7 +1621,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-l-blue',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1656,7 +1656,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'running-shoes-l-red',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1692,7 +1692,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             // Biker
             [
                 'identifier'                => 'biker-jacket-leather-s',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_material_size',
                 'family'                    => [
                     'code'   => 'clothing',
@@ -1726,7 +1726,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'biker-jacket-leather-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_material_size',
                 'family'                    => [
                     'code'   => 'clothing',
@@ -1760,7 +1760,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'biker-jacket-leather-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_material_size',
                 'family'                    => [
                     'code'   => 'clothing',
@@ -1795,7 +1795,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
 
             [
                 'identifier'                => 'biker-jacket-polyester-s',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_material_size',
                 'family'                    => [
                     'code'   => 'clothing',
@@ -1829,7 +1829,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'biker-jacket-polyester-m',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_material_size',
                 'family'                    => [
                     'code'   => 'clothing',
@@ -1863,7 +1863,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
             [
                 'identifier'                => 'biker-jacket-polyester-l',
-                'product_type'              => 'PimCatalogProductVariant',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'family_variant'            => 'clothing_material_size',
                 'family'                    => [
                     'code'   => 'clothing',
@@ -1897,6 +1897,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
         ];
 
-        $this->indexProducts(array_merge($rootProductModels, $subProductModels, $productVariants));
+        $this->indexProducts(array_merge($rootProductModels, $subProductModels, $variantProducts));
     }
 }

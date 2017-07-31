@@ -7,7 +7,7 @@ Pim\Component\Catalog\Model\AbstractProduct:
         type: string
     discriminatorMap:
         product: Product
-        product_variant: ProductVariant
+        variant_product: VariantProduct
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
     fields:

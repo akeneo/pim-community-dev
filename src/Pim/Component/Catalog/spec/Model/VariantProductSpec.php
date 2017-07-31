@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 
-class ProductVariantSpec extends ObjectBehavior
+class VariantProductSpec extends ObjectBehavior
 {
     function it_has_family(FamilyInterface $family)
     {
