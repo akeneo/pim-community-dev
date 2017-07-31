@@ -71,4 +71,4 @@ jobs:
         connector: teamwork assistant
         alias:     refresh_project_completeness_calculation
         label:     Refresh project completeness
-        type:      refresh_project_completeness_calculation
+        type: refresh_project_completeness_calculation
