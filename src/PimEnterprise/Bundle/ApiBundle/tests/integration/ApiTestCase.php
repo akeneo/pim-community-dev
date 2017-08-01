@@ -2,7 +2,9 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration;
 
-use Akeneo\TestEnterprise\Integration\PermissionCleaner;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\DatabaseSchemaHandler;
+use Akeneo\TestEnterprise\Integration\FixturesLoader;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase as BaseApiTestCase;
 
 abstract class ApiTestCase extends BaseApiTestCase
@@ -10,11 +12,8 @@ abstract class ApiTestCase extends BaseApiTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
     {
-        parent::setUp();
-
-        $permissionCleaner = new PermissionCleaner(static::$kernel);
-        $permissionCleaner->cleanPermission();
+        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
     }
 }
