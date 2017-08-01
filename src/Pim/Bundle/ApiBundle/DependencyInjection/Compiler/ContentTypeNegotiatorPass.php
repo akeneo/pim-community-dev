@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ApiBundle\DependencyInjection\Compiler;
 
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -65,7 +65,7 @@ class ContentTypeNegotiatorPass implements CompilerPassInterface
 
         if (!$container->hasDefinition($id)) {
             $container
-                ->setDefinition($id, new DefinitionDecorator('fos_rest.format_request_matcher'))
+                ->setDefinition($id, new ChildDefinition('fos_rest.format_request_matcher'))
                 ->setArguments($arguments);
         }
 
