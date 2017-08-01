@@ -217,6 +217,8 @@ void runIntegrationTest(String phpVersion, testFiles) {
 
                         sh "sed -i \"s#<file></file>#${testSuiteFiles}#\" app/phpunit.xml.dist"
 
+                        sh "sleep 20"
+
                         sh "php -d error_reporting='E_ALL' ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
