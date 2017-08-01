@@ -1,6 +1,7 @@
 parameters:
     pimee_api.controller.published_product.class: PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController
-    pimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftControllerpimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
+    pimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController
+    pimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
 
 services:
     pimee_api.controller.published_product:

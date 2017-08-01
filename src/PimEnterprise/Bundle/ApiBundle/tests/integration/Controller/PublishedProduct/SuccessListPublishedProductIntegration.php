@@ -36,7 +36,7 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
                 'a_localizable_image' => [
                     ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
                     ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null]
                 ]
             ]
         ]);
@@ -285,7 +285,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -312,7 +315,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -331,7 +337,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -377,6 +386,16 @@ JSON;
                 "values"        : {
                     "a_localizable_image" : [
                         {
+                            "data": "3/3/6/a/336af1d213f9953530b3a7c4b4aeaf57615dbaaf_akeneo.jpg",
+                            "locale": "de_DE",
+                            "scope": null,
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/media-files/3/3/6/a/336af1d213f9953530b3a7c4b4aeaf57615dbaaf_akeneo.jpg"
+                                }
+                            }
+                        },
+                        {
                             "locale" : "en_US",
                             "scope" : null,
                             "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
@@ -400,7 +419,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -427,7 +449,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -447,7 +472,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -506,7 +534,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -533,7 +564,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -552,7 +586,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -620,7 +657,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -656,7 +696,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -678,7 +721,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : [],
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category2']}
@@ -725,7 +771,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -740,7 +789,10 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -755,7 +807,10 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -770,7 +825,10 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -785,7 +843,10 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -800,7 +861,10 @@ JSON;
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -848,7 +912,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -863,7 +930,10 @@ JSON;
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -890,7 +960,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -909,7 +982,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -954,7 +1030,10 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links" : {
@@ -969,7 +1048,10 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -1051,7 +1133,10 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
+                "associations"  : {},
+                "metadata"      : {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }
@@ -1224,6 +1309,11 @@ JSON;
     "categories": ["master"],
     "enabled": true,
     "values": {
+        "a_text": [{
+            "locale": null,
+            "scope": null,
+            "data": "Text"
+        }],
         "a_metric": [{
             "locale": null,
             "scope": null,
@@ -1231,16 +1321,14 @@ JSON;
                 "amount": "10.0000",
                 "unit": "KILOWATT"
             }
-        }],
-        "a_text": [{
-            "locale": null,
-            "scope": null,
-            "data": "Text"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 
@@ -1259,6 +1347,15 @@ JSON;
     "enabled": true,
     "values": {
         "a_localizable_image": [{
+            "locale": "de_DE",
+            "scope": null,
+            "data": "8/8/c/2/88c252d871f39e9b7a8d02f7bdc8f810d5faca1a_akeneo.jpg",
+            "_links": {
+                "download": {
+                    "href": "http://localhost/api/rest/v1/media-files/8/8/c/2/88c252d871f39e9b7a8d02f7bdc8f810d5faca1a_akeneo.jpg/download"
+                }
+            }
+        }, {
             "locale": "en_US",
             "scope": null,
             "data": "7\/1\/e\/c\/71ec99d718e277bd6ec86023cbe2f02dd54218b4_akeneo.jpg",
@@ -1280,7 +1377,10 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 
@@ -1328,7 +1428,10 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 
@@ -1366,7 +1469,10 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 
@@ -1386,7 +1492,10 @@ JSON;
    "values": {},
    "created": "2017-03-11T10:39:38+01:00",
    "updated": "2017-03-11T10:39:38+01:00",
-   "associations": {}
+   "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 
@@ -1412,7 +1521,10 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 

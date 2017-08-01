@@ -106,7 +106,10 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        },
 		        "created": "2017-03-17T16:11:46+01:00",
 		        "updated": "2017-03-17T16:11:46+01:00",
-		        "associations": {}
+		        "associations": {},
+                "metadata": {
+                    "workflow_status": "working_copy"
+                }
 		    },
 		    {
 		        "_links": {
@@ -149,7 +152,10 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        },
                 "created": "2017-03-17T16:11:46+01:00",
                 "updated": "2017-03-17T16:11:46+01:00",
-                "associations": []
+                "associations": [],
+                "metadata": {
+                    "workflow_status": "working_copy"
+                }
 		    }
 		]
     }

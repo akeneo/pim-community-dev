@@ -28,7 +28,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/published-products?locales=not_found');
-        $this->assert($client, 'Locale "not_found" does not exist.');
+        $this->assert($client, 'Locale "not_found" does not exist or is not activated.');
     }
 
     public function testNotFoundLocales()
@@ -36,7 +36,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/published-products?locales=not_found,jambon');
-        $this->assert($client, 'Locales "not_found, jambon" do not exist.');
+        $this->assert($client, 'Locales "not_found, jambon" do not exist or are not activated.');
     }
 
     public function testInactiveLocale()
@@ -130,7 +130,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/published-products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales" as data.');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
     }
 
     public function testSearchWithLocalesAsAString()
@@ -159,7 +159,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         );
         $this->assert(
             $client,
-            'Locale "not_found" does not exist.'
+            'Locale "not_found" does not exist or is not activated.'
         );
 
         $client->request(
@@ -168,7 +168,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         );
         $this->assert(
             $client,
-            'Locale "not_found" does not exist.'
+            'Locale "not_found" does not exist or is not activated.'
         );
     }
 
@@ -177,7 +177,7 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/published-products?search_locale=ar_TN&search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Locale "ar_TN" does not exist.');
+        $this->assert($client, 'Locale "ar_TN" does not exist or is not activated.');
     }
 
     public function testSearchWithNotFoundScope()

@@ -92,7 +92,10 @@ JSON;
     "values": {},
     "created": "2017-05-12T16:46:14+02:00",
     "updated": "2017-05-12T16:46:14+02:00",
-    "associations": {}
+    "associations": {},
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
 }
 JSON;
 
