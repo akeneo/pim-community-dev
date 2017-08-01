@@ -108,7 +108,7 @@ TODO
 
 ## Migrate your custom code
 
-We extracted the "values" logic outside of products. It means that any entity having the `EntityWithValuesInterface` 
+We extracted the "values" logic outside of products. It means that any entity having the `EntityWithValuesInterface`
 would be able to be processed. As a reminder, a value is composed of an attribute, a locale, a scope, and a data. As values are not only
 for product anymore, we decided to rename `ProductValueInterface` to `ValueInterface`. This impacts a lot of classes too.
 
@@ -190,7 +190,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_reference_data\.product_val
 
 ## Building the front-end with webpack
 
-1. Install the node v6.11.0 and npm v5.0.3, you can follow the instructions here - https://nodejs.org/en/download/package-manager/ or install with homebrew - `brew install node@6` should install both these versions
+1. Install node >=6.11.0 and npm 5.0.3, you can follow the instructions here - https://nodejs.org/en/download/package-manager/ or install with homebrew - `brew install node@6` should install both these versions
 2. Run `php app/console pim:installer:dump-require-paths`
 3. Run `php app/console assets:install --symlink`
 4. Create a file in your project root called `package.json` with the following contents:
