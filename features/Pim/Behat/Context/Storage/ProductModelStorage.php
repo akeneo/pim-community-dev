@@ -40,16 +40,20 @@ class ProductModelStorage extends RawMinkContext
     }
 
     /**
-     * @param TableNode $properties
-     *
      * @Then /^there should be the following (?:|root product model|product model):$/
      */
     public function theProductShouldHaveTheFollowingValues(TableNode $properties)
     {
-        foreach ($properties->getHash() as $rawPoductModel) {
-            $productModel = $this->productModelRepository->findOneByIdentifier($rawPoductModel['identifier']);
+        foreach ($properties->getHash() as $rawProductModel) {
+            $productModel = $this->productModelRepository->findOneByIdentifier($rawProductModel['identifier']);
 
-            foreach ($rawPoductModel as $propertyName => $value) {
+            if (null === $productModel) {
+                throw new \Exception(
+                    sprintf('The model with the identifier "%s" does not exist', $rawProductModel['identifier'])
+                );
+            }
+
+            foreach ($rawProductModel as $propertyName => $value) {
                 if (in_array($propertyName, $this->productModelFields)) {
                     $this->checkProductModelField($productModel, $propertyName, $value);
                 } else {

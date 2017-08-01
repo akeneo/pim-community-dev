@@ -14,6 +14,12 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * Product model import processor, allows to,
+ *  - create / update
+ *  - convert localized attributes
+ *  - validate
+ *  - skip invalid ones and detach it
+ *  - return the valid ones
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -112,7 +118,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     private function findOrCreateProductModel(string $identifier): ProductModelInterface
     {
         $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
-        if (!$productModel) {
+        if (null === $productModel) {
             $productModel = $this->productModelFactory->create();
         }
 

@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 /**
- * Object that represent the converted field (family, category, etc.) from a flat file data (CSV, XLSX)
+ * Converts a flat field to a structured format
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,8 +12,11 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 interface FieldConverterInterface
 {
     /**
+     *
      * Convert a field from a flat file data (CSV or XLSX file for instance).
      * It guesses its names and its values depending on the data read from the data source.
+     *
+     * For instance, the category value "cat1,cat2" should be transformed in an array ['cat1', 'cat2']
      *
      * @param string $fieldName
      * @param string $value

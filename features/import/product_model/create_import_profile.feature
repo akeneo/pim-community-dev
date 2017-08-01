@@ -2,7 +2,7 @@
 Feature: Create product models through CSV import
   In order to setup my application
   As an administrator
-  I need to be able to import profil
+  I need to be able to import profiles
 
   Background:
     Given the "catalog_modeling" catalog configuration

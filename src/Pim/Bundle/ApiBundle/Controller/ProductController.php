@@ -110,7 +110,7 @@ class ProductController
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param ProductRepositoryInterface            $productRepository
-     * @param PaginatorInterface      $searchAfterPaginator
+     * @param PaginatorInterface                    $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
      * @param ValidatorInterface                    $productValidator
      * @param ProductBuilderInterface               $productBuilder

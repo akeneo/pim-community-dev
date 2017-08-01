@@ -8,6 +8,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationCol
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
+ * Converts a flat product model field to a structured format
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

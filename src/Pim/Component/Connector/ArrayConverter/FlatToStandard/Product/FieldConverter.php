@@ -7,7 +7,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 
 /**
- * Converts a flat field to a structured one
+ * Converts a flat product field to a structured format
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

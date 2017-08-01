@@ -78,7 +78,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             } elseif ('identifier' === $code) {
                 $productModel->setIdentifier($value);
             } elseif ('parent' === $code) {
-                if ('' !== $value) {
+                if (!empty($value)) {
                     if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
                         throw InvalidPropertyException::validEntityCodeExpected(
                             'family_variant',
