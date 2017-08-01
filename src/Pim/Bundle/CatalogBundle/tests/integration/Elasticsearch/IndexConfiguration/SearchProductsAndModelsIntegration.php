@@ -97,7 +97,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
     /**
      * Simple search request that will return a mixed results of:
-     * - ProductVariants (running-shoes-*)
+     * - VariantProducts (running-shoes-*)
      * - SubProductModel (model-tshirt-red)
      * - RootProductModel (model-tshirt-unique-color)
      *

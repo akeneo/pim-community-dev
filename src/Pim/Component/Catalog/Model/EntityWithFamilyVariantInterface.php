@@ -10,12 +10,19 @@ namespace Pim\Component\Catalog\Model;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CanHaveFamilyVariantInterface extends EntityWithValuesInterface
+interface EntityWithFamilyVariantInterface extends EntityWithValuesInterface
 {
+    public const ROOT_VARIATION_LEVEL = 0;
+
     /**
      * @return FamilyVariantInterface|null
      */
     public function getFamilyVariant(): ?FamilyVariantInterface;
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
 
     /**
      * Get the variation level of this entity, on a zero-based value.
@@ -25,9 +32,4 @@ interface CanHaveFamilyVariantInterface extends EntityWithValuesInterface
      * @return int
      */
     public function getVariationLevel(): int;
-
-    /**
-     * @return bool
-     */
-    public function isRootVariation(): bool;
 }

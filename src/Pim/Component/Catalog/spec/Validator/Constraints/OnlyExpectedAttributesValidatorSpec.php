@@ -3,9 +3,9 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\FamilyVariant\CanHaveFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes;
 use Prophecy\Argument;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
 {
     function let(
-        CanHaveFamilyVariantAttributesProvider $attributesProvider,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
         ExecutionContextInterface $context
     ) {
         $this->beConstructedWith($attributesProvider);
@@ -37,7 +37,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_constraint_is_not_supported(
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         Constraint $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$entity, $constraint]);
@@ -45,7 +45,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
 
     function it_raises_no_violation_if_the_entity_has_no_family_variant(
         $context,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         OnlyExpectedAttributes $constraint
     ) {
         $entity->getFamilyVariant()->willReturn(null);
@@ -59,7 +59,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         $context,
         $attributesProvider,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         OnlyExpectedAttributes $constraint,
         AttributeInterface $color
     ) {
@@ -76,7 +76,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         $context,
         $attributesProvider,
         FamilyVariantInterface $familyVariant,
-        CanHaveFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         OnlyExpectedAttributes $constraint,
         AttributeInterface $color,
         AttributeInterface $sku,

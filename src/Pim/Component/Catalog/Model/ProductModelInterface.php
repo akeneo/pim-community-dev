@@ -18,7 +18,7 @@ interface ProductModelInterface extends
     TimestampableInterface,
     VersionableInterface,
     CategoryAwareInterface,
-    CanHaveFamilyVariantInterface
+    EntityWithFamilyVariantInterface
 {
     /**
      * Gets the ID of the product model.
@@ -141,39 +141,39 @@ interface ProductModelInterface extends
     public function getParent(): ?ProductModelInterface;
 
     /**
-     * Adds a child to this product model.
+     * Adds a child product model to this product model.
      *
-     * @param ProductModelInterface $child
-     *
-     * @return ProductModelInterface
-     */
-    public function addChild(ProductModelInterface $child): ProductModelInterface;
-
-    /**
-     * Removes a child from this product model.
-     *
-     * @param ProductModelInterface $child
+     * @param ProductModelInterface $productModel
      *
      * @return ProductModelInterface
      */
-    public function removeChild(ProductModelInterface $child): ProductModelInterface;
+    public function addProductModel(ProductModelInterface $productModel): ProductModelInterface;
 
     /**
-     * Predicates to know if this product model has children.
+     * Removes a child product model from this product model.
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return ProductModelInterface
+     */
+    public function removeProductModel(ProductModelInterface $productModel): ProductModelInterface;
+
+    /**
+     * Predicates to know if this product model has children product models.
      *
      * @return bool
      */
-    public function hasChildren(): bool;
+    public function hasProductModels(): bool;
 
     /**
-     * Gets the children of this product model.
+     * Gets the children product model of this product model.
      *
      * @return Collection
      */
-    public function getChildren(): Collection;
+    public function getProductModels(): Collection;
 
     /**
-     * @param FamilyVariantInterface $familyVariant
+     * @return bool
      */
-    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void;
+    public function isRootProductModel(): bool;
 }

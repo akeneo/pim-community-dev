@@ -43,7 +43,7 @@
 - Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Product.mongodb.yml`
 - Remove model `src/Pim/Bundle/VersioningBundle/Resources/config/model/doctrine/Version.mongodb.yml`
 
-- Remove constants `DOCTRINE_ORM` and `` from `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
+- Remove constants `DOCTRINE_ORM` and `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
 
 - Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry`
 - Remove service `akeneo_storage_utils.doctrine.smart_manager_registry`
@@ -180,6 +180,10 @@
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
 
 ## BC breaks
+
+### Doctrine mapping
+
+- PIM-6448: `Pim\Component\Catalog\Model\AbstractProduct` becomes a Doctrine mapped superclass
 
 ### Classes
 

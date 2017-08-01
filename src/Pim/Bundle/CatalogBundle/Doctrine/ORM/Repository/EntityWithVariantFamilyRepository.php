@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Component\Catalog\Model\CanHaveFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Repository\CanHaveVariantFamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\EntityWithVariantFamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 /**
@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CanHaveVariantFamilyRepository implements CanHaveVariantFamilyRepositoryInterface
+class EntityWithVariantFamilyRepository implements EntityWithVariantFamilyRepositoryInterface
 {
     /** @var ProductModelRepositoryInterface */
     protected $productModelRepository;
@@ -29,11 +29,11 @@ class CanHaveVariantFamilyRepository implements CanHaveVariantFamilyRepositoryIn
     /**
      * {@inheritdoc}
      */
-    public function findSiblings(CanHaveFamilyVariantInterface $entity): array
+    public function findSiblings(EntityWithFamilyVariantInterface $entity): array
     {
         $familyVariant = $entity->getFamilyVariant();
 
-        if (null === $familyVariant || (null !== $familyVariant && $entity->isRootVariation())) {
+        if (null === $familyVariant || ($entity instanceof ProductModelInterface && $entity->isRootProductModel())) {
             return [];
         }
 
