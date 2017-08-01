@@ -118,7 +118,7 @@ class ProductSaverIntegration extends TestCase
     private function createVariantProduct(ProductModelInterface $productModel, string $productIdentifier, string $familyVariantCode): VariantProductInterface
     {
         $product = new VariantProduct();
-        $product->setProductModel($productModel);
+        $product->setParent($productModel);
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier($familyVariantCode);
         $product->setFamilyVariant($familyVariant);

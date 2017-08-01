@@ -13,12 +13,7 @@ namespace Pim\Component\Catalog\Model;
 interface VariantProductInterface extends ProductInterface, EntityWithFamilyVariantInterface
 {
     /**
-     * @return ProductModelInterface|null
+     * @param ProductModelInterface $parent
      */
-    public function getProductModel(): ?ProductModelInterface;
-
-    /**
-     * @param ProductModelInterface $productModel
-     */
-    public function setProductModel(ProductModelInterface $productModel): void;
+    public function setParent(ProductModelInterface $parent): void;
 }
