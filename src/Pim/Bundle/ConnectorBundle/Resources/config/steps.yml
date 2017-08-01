@@ -94,7 +94,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_product_model'
             - '@pim_connector.processor.denormalization.product_model'
-            - '@pim_connector.writer.database.product_model'
+            - '@pim_connector.writer.database.product'
             - '%pim_connector.step.product_model.import.bulk_size%'
 
     pim_connector.step.csv_product.import_associations:
@@ -402,7 +402,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.xlsx_product_model'
             - '@pim_connector.processor.denormalization.product_model'
-            - '@pim_connector.writer.database.product_model'
+            - '@pim_connector.writer.database.product'
             - '%pim_connector.step.product_model.import.bulk_size%'
 
     pim_connector.step.xlsx_product.import_associations:
