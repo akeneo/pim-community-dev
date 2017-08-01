@@ -29,17 +29,13 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /** @var array */
     protected $scheduledForCheck;
 
-    /** @var string */
-    protected $productClass;
-
     /**
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry, $productClass)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->managerRegistry = $registry;
         $this->scheduledForCheck = null;
-        $this->productClass = $productClass;
     }
 
     /**
@@ -65,87 +61,6 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     {
         foreach ($objects as $object) {
             $this->detach($object);
-        }
-    }
-
-    /**
-     * Get the private originalDocumentData from UoW
-     *
-     * @param UnitOfWork $uow
-     *
-     * @return array
-     */
-    protected function &getOriginalDocumentData($uow)
-    {
-        $closure = \Closure::bind(function &($uow) {
-            return $uow->originalDocumentData;
-        }, null, $uow);
-
-        return $closure($uow);
-    }
-
-    /**
-     * Get the private parentAssociations from UoW
-     *
-     * @param UnitOfWork $uow
-     *
-     * @return array
-     */
-    protected function &getParentAssociations($uow)
-    {
-        $closure = \Closure::bind(function &($uow) {
-            return $uow->parentAssociations;
-        }, null, $uow);
-
-        return $closure($uow);
-    }
-
-    /**
-     * Get the private parentAssociations from UoW
-     *
-     * @param UnitOfWork $uow
-     *
-     * @return array
-     */
-    protected function &getEmbeddedDocumentsRegistry($uow)
-    {
-        $closure = \Closure::bind(function &($uow) {
-            return $uow->embeddedDocumentsRegistry;
-        }, null, $uow);
-
-        return $closure($uow);
-    }
-
-    /**
-     * Cleans up data still in memory after detaching products
-     */
-    public function cleanupData()
-    {
-        $objectManager = $this->managerRegistry->getManagerForClass($this->productClass);
-        $uow = $objectManager->getUnitOfWork();
-        $identityMapObjectIds = $uow->getIdentityMap();
-        $objectIds = [];
-
-        foreach ($identityMapObjectIds as $objects) {
-            foreach ($objects as $entity) {
-                $oid = spl_object_hash($entity);
-                $objectIds[] = $oid;
-            }
-        }
-
-        $originalDocumentData = &$this->getOriginalDocumentData($uow);
-        foreach (array_diff(array_keys($originalDocumentData), $objectIds) as $id) {
-            unset($originalDocumentData[$id]);
-        }
-
-        $parentAssociations = &$this->getParentAssociations($uow);
-        foreach (array_diff(array_keys($parentAssociations), $objectIds) as $id) {
-            unset($parentAssociations[$id]);
-        }
-
-        $embeddedDocumentsRegistry = &$this->getEmbeddedDocumentsRegistry($uow);
-        foreach (array_diff(array_keys($embeddedDocumentsRegistry), $objectIds) as $id) {
-            unset($embeddedDocumentsRegistry[$id]);
         }
     }
 
@@ -276,16 +191,6 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
                 }
             }
         }
-    }
-
-    /**
-     * Detach all entries by class
-     * @param string $class The full name of the class
-     */
-    public function detachByClass($class)
-    {
-        $manager = $this->managerRegistry->getManagerForClass($class);
-        $manager->clear($class);
     }
 
     /**
