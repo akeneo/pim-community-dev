@@ -16,6 +16,7 @@
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 - TIP-730: Reworking of the creation popin for basic entities
 - TIP-732: Rework the attribute form using the PEF architecture
+- TIP-747: Migrate to Symfony 3.3
 
 ## UI\UX Refactoring
 
@@ -211,6 +212,12 @@
 
 ### Constructors
 
+- Change the constructor of `Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler` to add `Symfony\Component\HttpFoundation\RequestStack`
+- Change the constructor of `Oro\Bundle\DataGridBundle\Datagrid\RequestParameters` to add `Symfony\Component\HttpFoundation\RequestStack`
+- Change the constructor of `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
+- Change the constructor of `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\GroupColumnsConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
+- Change the constructor of `Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractor` to add `Symfony\Component\HttpFoundation\RequestStack`
+- Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\AddParametersToProductGridListener` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `Pim\Component\Catalog\Updater\AssociationTypeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Component\Catalog\Updater\ChannelUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ChannelController` to add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`,
