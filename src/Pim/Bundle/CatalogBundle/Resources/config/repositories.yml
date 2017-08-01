@@ -187,14 +187,14 @@ services:
         class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
 
     pim_catalog.repository.product_category:
         class:  '%pim_catalog.repository.product_category.class%'
         parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
             - '%pim_catalog.entity.category.class%'
 
     pim_catalog.repository.association:
@@ -208,7 +208,7 @@ services:
         class: '%pim_catalog.repository.completeness.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
 
     pim_catalog.repository.entity_with_variant_family:
         class: '%pim_catalog.repository.entity_with_variant_family.class%'
