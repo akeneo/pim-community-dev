@@ -60,6 +60,6 @@ class AkeneoMeasureExtension extends Extension
 
         $container
             ->getDefinition('akeneo_measure.manager')
-            ->addMethodCall('setMeasureConfig', $config);
+            ->addMethodCall('setMeasureConfig', [$config['measures_config']]);
     }
 }
