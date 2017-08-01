@@ -59,7 +59,7 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
 
         if (0 === $product->getCategories()->count()) {
             throw new ResourceAccessDeniedException($product, sprintf(
-                'Product "%s" cannot be viewed, it is only classified in categories on which you do not have a view permission.',
+                'You can neither view, nor update, nor delete the product "%s", as it is only categorized in categories on which you do not have a view permission.',
                 $product->getIdentifier()
             ));
         }

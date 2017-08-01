@@ -82,7 +82,7 @@ JSON;
     {
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"Product \"product_not_viewable_by_redactor\" cannot be viewed, it is only classified in categories on which you do not have a view permission."}
+{"code":403,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
 JSON;
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
