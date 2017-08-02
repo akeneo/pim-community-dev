@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
@@ -51,7 +53,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents() : array
     {
         return [
             StorageEvents::POST_SAVE     => 'indexProduct',
@@ -65,7 +67,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function indexProduct(GenericEvent $event)
+    public function indexProduct(GenericEvent $event) : void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {
@@ -84,7 +86,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function bulkIndexProducts(GenericEvent $event)
+    public function bulkIndexProducts(GenericEvent $event) : void
     {
         $products = $event->getSubject();
         if (!is_array($products)) {
@@ -103,7 +105,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
      *
      * @param RemoveEvent $event
      */
-    public function deleteProduct(RemoveEvent $event)
+    public function deleteProduct(RemoveEvent $event) : void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {

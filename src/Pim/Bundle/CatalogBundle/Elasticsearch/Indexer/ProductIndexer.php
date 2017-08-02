@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Indexer;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
@@ -57,7 +59,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      *
      * {@inheritdoc}
      */
-    public function index($object, array $options = [])
+    public function index($object, array $options = []) : void
     {
         $normalizedObject = $this->normalizer->normalize($object, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
         $this->validateObjectNormalization($normalizedObject);
@@ -76,7 +78,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      *
      * {@inheritdoc}
      */
-    public function indexAll(array $objects, array $options = [])
+    public function indexAll(array $objects, array $options = []) : void
     {
         if (empty($objects)) {
             return;
@@ -99,7 +101,8 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
             $this->validateObjectNormalization($normalizedObject);
             $normalizedObjects[] = $normalizedObject;
         }
-        $this->productAndProductModelClient->bulkIndexes($this->indexType, $normalizedObjects, 'id', Refresh::waitFor());
+        $this->productAndProductModelClient->bulkIndexes($this->indexType, $normalizedObjects, 'id',
+            Refresh::waitFor());
     }
 
     /**
@@ -107,7 +110,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      *
      * {@inheritdoc}
      */
-    public function remove($objectId, array $options = [])
+    public function remove($objectId, array $options = []) : void
     {
         $this->productClient->delete($this->indexType, $objectId);
         $this->productAndProductModelClient->delete($this->indexType, $objectId);
@@ -118,7 +121,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
      *
      * {@inheritdoc}
      */
-    public function removeAll(array $objects, array $options = [])
+    public function removeAll(array $objects, array $options = []) : void
     {
         $this->productClient->bulkDelete($this->indexType, $objects);
         $this->productAndProductModelClient->bulkDelete($this->indexType, $objects);
@@ -127,7 +130,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
     /**
      * {@inheritdoc}
      */
-    protected function validateObjectNormalization(array $normalization)
+    protected function validateObjectNormalization(array $normalization) : void
     {
         if (!isset($normalization['id'])) {
             throw new \InvalidArgumentException('Only products with an "id" property can be indexed in the search engine.');

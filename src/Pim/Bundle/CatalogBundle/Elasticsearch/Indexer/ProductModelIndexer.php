@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Indexer;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
@@ -49,7 +51,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
      *
      * {@inheritdoc}
      */
-    public function index($object, array $options = [])
+    public function index($object, array $options = []) : void
     {
         $normalizedObject = $this->normalizer->normalize(
             $object,
@@ -64,7 +66,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
      *
      * {@inheritdoc}
      */
-    public function indexAll(array $objects, array $options = [])
+    public function indexAll(array $objects, array $options = []) : void
     {
         if (empty($objects)) {
             return;
@@ -94,7 +96,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
      *
      * {@inheritdoc}
      */
-    public function remove($objectId, array $options = [])
+    public function remove($objectId, array $options = []) : void
     {
         $this->productAndProductModelClient->delete($this->indexType, $objectId);
     }
@@ -104,7 +106,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
      *
      * {@inheritdoc}
      */
-    public function removeAll(array $objects, array $options = [])
+    public function removeAll(array $objects, array $options = []) : void
     {
         $this->productAndProductModelClient->bulkDelete($this->indexType, $objects);
     }
@@ -112,7 +114,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
     /**
      * {@inheritdoc}
      */
-    protected function validateObjectNormalization(array $normalization)
+    protected function validateObjectNormalization(array $normalization) : void
     {
         if (!isset($normalization['id'])) {
             throw new \InvalidArgumentException(

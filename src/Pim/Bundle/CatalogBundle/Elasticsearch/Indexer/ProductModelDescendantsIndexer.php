@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Indexer;
 
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
@@ -62,7 +64,7 @@ class ProductModelDescendantsIndexer implements
      *
      * {@inheritdoc}
      */
-    public function index($object, array $options = [])
+    public function index($object, array $options = []) : void
     {
         if (!$object instanceof ProductModelInterface) {
             throw new \InvalidArgumentException(
@@ -84,7 +86,7 @@ class ProductModelDescendantsIndexer implements
      *
      * {@inheritdoc}
      */
-    public function indexAll(array $objects, array $options = [])
+    public function indexAll(array $objects, array $options = []) : void
     {
         if (empty($objects)) {
             return;
@@ -102,7 +104,7 @@ class ProductModelDescendantsIndexer implements
      *
      * {@inheritdoc}
      */
-    public function remove($object, array $options = [])
+    public function remove($object, array $options = []) : void
     {
         if (!$object instanceof ProductModelInterface) {
             throw new \InvalidArgumentException(
@@ -124,7 +126,7 @@ class ProductModelDescendantsIndexer implements
      *
      * {@inheritdoc}
      */
-    public function removeAll(array $objects, array $options = [])
+    public function removeAll(array $objects, array $options = []) : void
     {
         if (empty($objects)) {
             return;
@@ -141,7 +143,7 @@ class ProductModelDescendantsIndexer implements
      *
      * @param Collection $productModelChildren
      */
-    private function indexProductModelChildren(Collection $productModelChildren)
+    private function indexProductModelChildren(Collection $productModelChildren) : void
     {
         if ($productModelChildren->isEmpty()) {
             return;
@@ -165,7 +167,7 @@ class ProductModelDescendantsIndexer implements
      *
      * @param Collection $productModelChildren
      */
-    private function removeProductModelChildren(Collection $productModelChildren)
+    private function removeProductModelChildren(Collection $productModelChildren) : void
     {
         if ($productModelChildren->isEmpty()) {
             return;
