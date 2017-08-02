@@ -46,7 +46,6 @@ define(
                 });
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -122,19 +121,6 @@ define(
                         scope: event.currentTarget.dataset.channel
                     }
                 );
-            },
-
-            /**
-             * On family change listener
-             */
-            onChangeFamily: function () {
-                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
-                    var data = this.getFormData();
-                    data.meta.completenesses = [];
-                    this.setData(data);
-
-                    this.render();
-                }
             }
         });
     }
