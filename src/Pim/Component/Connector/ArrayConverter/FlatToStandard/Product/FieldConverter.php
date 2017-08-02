@@ -111,7 +111,7 @@ class FieldConverter implements FieldConverterInterface
             $data[] = new ConvertedField('variant_group', current($variantGroups));
         }
 
-        if (0 < count($groups)) {
+        if (0 < count($productGroups)) {
             $data[] = new ConvertedField('groups', $productGroups);
         }
 
