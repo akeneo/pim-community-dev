@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -81,6 +82,9 @@ class ProductDraftController
     /** @var SearchableRepositoryInterface */
     protected $attributeSearchableRepository;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
@@ -94,6 +98,7 @@ class ProductDraftController
      * @param UserContext                     $userContext
      * @param CollectionFilterInterface       $collectionFilter
      * @param SearchableRepositoryInterface   $attributeSearchableRepository
+     * @param ProductBuilderInterface         $productBuilder
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -107,7 +112,8 @@ class ProductDraftController
         LocaleRepositoryInterface $localeRepository,
         UserContext $userContext,
         CollectionFilterInterface $collectionFilter,
-        SearchableRepositoryInterface $attributeSearchableRepository
+        SearchableRepositoryInterface $attributeSearchableRepository,
+        ProductBuilderInterface $productBuilder
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository = $repository;
@@ -121,6 +127,7 @@ class ProductDraftController
         $this->userContext = $userContext;
         $this->collectionFilter = $collectionFilter;
         $this->attributeSearchableRepository = $attributeSearchableRepository;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -149,6 +156,9 @@ class ProductDraftController
             'filter_types'               => ['pim.internal_api.product_value.view'],
             'disable_grouping_separator' => true
         ];
+
+        $this->productBuilder->addMissingAssociations($product);
+        $this->productBuilder->addMissingProductValues($product);
 
         return new JsonResponse($this->normalizer->normalize(
             $product,
@@ -209,8 +219,12 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+        $product = $productDraft->getProduct();
+        $this->productBuilder->addMissingAssociations($product);
+        $this->productBuilder->addMissingProductValues($product);
+
         return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
+            $product,
             'internal_api',
             $normalizationContext
         ));
@@ -251,6 +265,10 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+        $product = $productDraft->getProduct();
+        $this->productBuilder->addMissingAssociations($product);
+        $this->productBuilder->addMissingProductValues($product);
+
         return new JsonResponse($this->normalizer->normalize(
             $productDraft->getProduct(),
             'internal_api',
@@ -286,8 +304,12 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+        $product = $productDraft->getProduct();
+        $this->productBuilder->addMissingAssociations($product);
+        $this->productBuilder->addMissingProductValues($product);
+
         return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
+            $product,
             'internal_api',
             $normalizationContext
         ));

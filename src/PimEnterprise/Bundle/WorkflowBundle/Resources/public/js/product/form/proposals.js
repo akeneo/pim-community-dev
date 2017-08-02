@@ -13,7 +13,6 @@ define(
         'oro/messenger',
         'oro/datagrid-builder',
         'pim/form',
-        'pim/product-manager',
         'pim/user-context',
         'pimee/template/product/tab/proposals',
         'require-context'
@@ -25,7 +24,6 @@ define(
         messenger,
         datagridBuilder,
         BaseForm,
-        ProductManager,
         UserContext,
         template,
         requireContext
@@ -72,16 +70,13 @@ define(
              * @param {Object} product
              */
             onPostApproveSuccess: function (product) {
-                ProductManager.generateMissing(product)
-                    .then(function (product) {
-                        this.setData(product);
-                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
+                this.setData(product);
+                this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
 
-                        messenger.notify(
-                            'success',
-                            _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
-                        );
-                    }.bind(this));
+                messenger.notify(
+                    'success',
+                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                );
             },
 
             /**

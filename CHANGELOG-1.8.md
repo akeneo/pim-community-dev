@@ -67,4 +67,5 @@
 - Remove method `build` from `PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle`
 - Remove method `detachSpecificValues` from `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber`
 - Remove service `pimee_product_asset.denormalizer.pim_assets_collection`
-- Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver`. Add `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`.
+- Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`.
+- Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
