@@ -25,6 +25,15 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
+    /** @var string */
+    protected $entityVersionClass;
+
+    /** @var string */
+    protected $publishedProductValueClass;
+
+    /** @var PublishProductMemoryCleaner */
+    protected $publishedProductMemoryCleaner;
+
     /**
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
@@ -34,6 +43,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
      * @param TokenStorageInterface               $tokenStorage
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param PublishProductMemoryCleaner         $publishedProductMemoryCleaner
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -43,7 +53,8 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PublishProductMemoryCleaner $publishedProductMemoryCleaner = null
     ) {
         parent::__construct(
             $manager,
@@ -54,8 +65,9 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
             $tokenStorage
         );
 
-        $this->authorizationChecker = $authorizationChecker;
-        $this->pqbFactory           = $pqbFactory;
+        $this->authorizationChecker          = $authorizationChecker;
+        $this->pqbFactory                    = $pqbFactory;
+        $this->publishedProductMemoryCleaner = $publishedProductMemoryCleaner;
     }
 
     /**
@@ -64,7 +76,6 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
     public function execute(array $configuration)
     {
         $this->initSecurityContext($this->stepExecution);
-
         $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
@@ -98,6 +109,10 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet
             $this->detachProducts($invalidProducts);
             $this->manager->publishAll($productsPage);
             $this->detachProducts($productsPage);
+
+            if (null !== $this->publishedProductMemoryCleaner) {
+                $this->publishedProductMemoryCleaner->cleanupMemory();
+            }
         }
     }
 
