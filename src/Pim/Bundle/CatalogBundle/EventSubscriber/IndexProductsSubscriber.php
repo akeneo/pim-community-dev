@@ -3,8 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -15,21 +18,34 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * This is not done directly in the product saver as it's only a technical
  * problem. The product saver only handles business stuff.
  *
- * @author    Julien Janvier <j.janvier@gmail.com>
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class IndexProductsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductIndexer */
-    protected $indexer;
+    /** @var IndexerInterface */
+    protected $productIndexer;
+
+    /** @var BulkIndexerInterface */
+    protected $productBulkIndexer;
+
+    /** @var RemoverInterface */
+    protected $productIndexRemover;
 
     /**
-     * @param ProductIndexer $indexer
+     * @param IndexerInterface     $productIndexer
+     * @param BulkIndexerInterface $productBulkIndexer
+     * @param RemoverInterface     $productIndexRemover
      */
-    public function __construct(ProductIndexer $indexer)
-    {
-        $this->indexer = $indexer;
+    public function __construct(
+        IndexerInterface $productIndexer,
+        BulkIndexerInterface $productBulkIndexer,
+        RemoverInterface $productIndexRemover
+    ) {
+        $this->productIndexer = $productIndexer;
+        $this->productBulkIndexer = $productBulkIndexer;
+        $this->productIndexRemover = $productIndexRemover;
     }
 
     /**
@@ -38,9 +54,9 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'indexProduct',
+            StorageEvents::POST_SAVE     => 'indexProduct',
             StorageEvents::POST_SAVE_ALL => 'bulkIndexProducts',
-            StorageEvents::POST_REMOVE => 'deleteProduct',
+            StorageEvents::POST_REMOVE   => 'deleteProduct',
         ];
     }
 
@@ -60,7 +76,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->indexer->index($product);
+        $this->productIndexer->index($product);
     }
 
     /**
@@ -79,7 +95,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->indexer->indexAll($products);
+        $this->productBulkIndexer->indexAll($products);
     }
 
     /**
@@ -94,6 +110,6 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->indexer->remove($event->getSubjectId());
+        $this->productIndexRemover->remove($event->getSubjectId());
     }
 }
