@@ -1,10 +1,9 @@
 'use strict';
 /**
- * Edit form
+ * Mass edit root form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
- * @author    Filips Alps <filips@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
@@ -54,9 +53,18 @@ define(
                     this.getChooseExtension() :
                     this.getOperationExtension(this.getCurrentOperation());
 
-                var currentStepNumber = 0;
-                currentStepNumber = 'configure' === this.currentStep ? 1 : currentStepNumber;
-                currentStepNumber = 'confirm' === this.currentStep ? 2 : currentStepNumber;
+                var currentStepNumber;
+                switch (this.currentStep) {
+                    case 'configure':
+                        currentStepNumber = 1;
+                        break;
+                    case 'confirm':
+                        currentStepNumber = 2;
+                        break;
+                    default:
+                        currentStepNumber = 0;
+                        break;
+                }
 
                 this.$el.html(this.template({
                     currentStep: this.currentStep,
@@ -139,7 +147,7 @@ define(
              */
             getOperationExtension: function (operationCode) {
                 return _.find(this.extensions, (extension) => {
-                    return extension.options.config.label !== undefined && extension.getCode() === operationCode;
+                    return typeof extension.getCode === 'function' && extension.getCode() === operationCode;
                 });
             },
 
@@ -204,6 +212,11 @@ define(
                                         operation: this.getOperationExtension(this.getCurrentOperation()).getLabel()
                                     }
                                 )
+                            );
+                        })
+                        .fail(() => {
+                            messenger.notify(
+                                'error', __(this.config.launchErrorLabel)
                             );
                         })
                         .always(() => {
