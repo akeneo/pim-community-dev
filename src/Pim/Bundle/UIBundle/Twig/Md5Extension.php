@@ -3,19 +3,17 @@
 namespace Pim\Bundle\UIBundle\Twig;
 
 use JMS\Serializer\Exception\RuntimeException;
-use JMS\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Md5Extension extends \Twig_Extension
 {
-    /**
-     * @var Serializer
-     */
+    /** @var SerializerInterface */
     protected $serializer = null;
 
     /**
-     * @param Serializer $serializer
+     * @param SerializerInterface $serializer
      */
-    public function __construct(Serializer $serializer)
+    public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
