@@ -222,6 +222,8 @@ define(
              * Add an attribute to the current attribute list
              *
              * @param {Event} event
+             *
+             * // TODO: Move this to product/form/mass-edit/attributes when the variant groups will be dropped.
              */
             addAttributes: function (event) {
                 var attributeCodes = event.codes;
@@ -260,6 +262,8 @@ define(
              * Remove an attribute from the collection
              *
              * @param {Event} event
+             *
+             * // TODO: Move this to product/form/mass-edit/attributes when the variant groups will be dropped.
              */
             removeAttribute: function (event) {
                 if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {

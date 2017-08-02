@@ -12,7 +12,6 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/product-manager',
         'pim/template/product/meta/change-family-modal',
         'pim/common/select2/family',
         'pim/initselect2',
@@ -23,7 +22,6 @@ define(
         _,
         Backbone,
         BaseForm,
-        ProductManager,
         modalTemplate,
         Select2Configurator,
         initSelect2

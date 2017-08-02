@@ -142,6 +142,7 @@ class ProductController
     {
         $product = $this->findProductOr404($id);
         $this->productBuilder->addMissingAssociations($product);
+        $this->productBuilder->addMissingProductValues($product);
 
         $normalizationContext = $this->userContext->toArray() + [
             'filter_types'               => ['pim.internal_api.product_value.view'],
@@ -180,6 +181,9 @@ class ProductController
                 'filter_types'               => ['pim.internal_api.product_value.view'],
                 'disable_grouping_separator' => true
             ];
+
+            $this->productBuilder->addMissingAssociations($product);
+            $this->productBuilder->addMissingProductValues($product);
 
             return new JsonResponse($this->normalizer->normalize(
                 $product,
@@ -233,6 +237,9 @@ class ProductController
                 'filter_types'               => ['pim.internal_api.product_value.view'],
                 'disable_grouping_separator' => true
             ];
+
+            $this->productBuilder->addMissingAssociations($product);
+            $this->productBuilder->addMissingProductValues($product);
 
             $normalizedProduct = $this->normalizer->normalize(
                 $product,

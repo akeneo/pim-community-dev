@@ -14,7 +14,6 @@ define(
         'oro/translator',
         'pim/form/common/save',
         'oro/messenger',
-        'pim/product-manager',
         'pim/saver/product',
         'pim/field-manager',
         'pim/i18n',
@@ -26,7 +25,6 @@ define(
         __,
         BaseSave,
         messenger,
-        ProductManager,
         ProductSaver,
         FieldManager,
         i18n,
@@ -70,7 +68,6 @@ define(
 
                 return ProductSaver
                     .save(productId, product)
-                    .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (data) {
                         this.postSave();
 

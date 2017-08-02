@@ -6,16 +6,14 @@ define(
         'backbone',
         'routing',
         'oro/mediator',
-        'pim/cache-invalidator',
-        'pim/product-manager'
+        'pim/cache-invalidator'
     ],
     function (
         $,
         Backbone,
         Routing,
         mediator,
-        CacheInvalidator,
-        ProductManager
+        CacheInvalidator
     ) {
         return Backbone.Model.extend({
             /**
@@ -38,9 +36,6 @@ define(
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(product);
 
-                        return ProductManager.generateMissing(product);
-                    }.bind(this))
-                    .then(function (product) {
                         mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;

@@ -38,25 +38,25 @@ define(
                         'pim-channel-create-form'
                     );
                 } else {
-                    return FetcherRegistry.getFetcher('channel').fetch(route.params.code, {
-                        cached: false,
-                        generateMissing: true
-                    }).then(function (channel) {
-                        var label = _.escape(
-                            i18n.getLabel(
-                                channel.labels,
-                                UserContext.get('catalogLocale'),
-                                channel.code
-                            )
-                        );
+                    return FetcherRegistry.getFetcher('channel')
+                        .fetch(route.params.code, { cached: false })
+                        .then(function (channel) {
+                            var label = _.escape(
+                                i18n.getLabel(
+                                    channel.labels,
+                                    UserContext.get('catalogLocale'),
+                                    channel.code
+                                )
+                            );
 
-                        return createForm.call(this, this.$el, channel, label, channel.meta.form);
-                    }.bind(this)).fail(function (response) {
-                        var message = response.responseJSON ? response.responseJSON.message : __('error.common');
+                            return createForm.call(this, this.$el, channel, label, channel.meta.form);
+                        }.bind(this))
+                        .fail(function (response) {
+                            var message = response.responseJSON ? response.responseJSON.message : __('error.common');
 
-                        var errorView = new Error(message, response.status);
-                        errorView.setElement(this.$el).render();
-                    });
+                            var errorView = new Error(message, response.status);
+                            errorView.setElement(this.$el).render();
+                        });
                 }
 
                 function createForm(domElement, channel, label, formExtension) {
