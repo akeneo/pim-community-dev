@@ -4,12 +4,13 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
- * Integration tests to verify data from database are well formatted in the "indexing_product" format
+ * Integration tests to verify data from database are well formatted in the "indexing_product_and_product_model" format
  */
-class ProductIndexingIntegration extends TestCase
+class ProductAndProductModelIndexingIntegration extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -21,7 +22,7 @@ class ProductIndexingIntegration extends TestCase
         );
     }
 
-    public function testEmptyDisabledProduct()
+    public function testRootProductModel()
     {
         $date = \DateTime::createFromFormat(
             'Y-m-d H:i:s',
@@ -30,63 +31,10 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'            => '47',
-            'identifier'    => 'bar',
-            'label'         => 'bar',
-            'created'       => $date->format('c'),
-            'updated'       => $date->format('c'),
-            'family'        => null,
-            'enabled'       => false,
-            'categories'    => [],
-            'groups'        => [],
-            'variant_group' => null,
-            'completeness'  => [],
-            'values'        => [],
-        ];
-
-        $this->assertIndexingFormat('bar', $expected);
-    }
-
-    public function testEmptyEnabledProduct()
-    {
-        $date = \DateTime::createFromFormat(
-            'Y-m-d H:i:s',
-            '2016-06-14 11:12:50',
-            new \DateTimeZone('UTC')
-        );
-
-        $expected = [
-            'id'            => '48',
-            'identifier'    => 'baz',
-            'label'         => 'baz',
-            'created'       => $date->format('c'),
-            'updated'       => $date->format('c'),
-            'family'        => null,
-            'enabled'       => true,
-            'categories'    => [],
-            'groups'        => [],
-            'variant_group' => null,
-            'completeness'  => [],
-            'values'        => [],
-        ];
-
-        $this->assertIndexingFormat('baz', $expected);
-    }
-
-    public function testProductWithAllAttributes()
-    {
-        $date = \DateTime::createFromFormat(
-            'Y-m-d H:i:s',
-            '2016-06-14 11:12:50',
-            new \DateTimeZone('UTC')
-        );
-
-        $expected = [
-            'id'            => '49',
-            'identifier'    => 'foo',
-            'label'         => 'foo',
-            'created'       => $date->format('c'),
-            'updated'       => $date->format('c'),
+            'id'             => '150',
+            'identifier'     => 'qux',
+            'created'        => $date->format('c'),
+            'updated'        => $date->format('c'),
             'family'        => [
                 'code'   => 'familyA',
                 'labels' => [
@@ -95,20 +43,172 @@ class ProductIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
-            'enabled'       => true,
-            'categories'    => ['categoryA1', 'categoryB'],
-            'groups'        => ['groupA', 'groupB', 'variantA'],
-            'variant_group' => 'variantA',
-            'in_group'      => [
+            'values'         => [
+                'a_text-text'            => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'this is a text',
+                    ],
+                ],
+            ],
+            'family_variant' => 'familyVariantA1',
+            'product_type' => 'PimCatalogRootProductModel',
+        ];
+
+        $this->assertProductModelIndexingFormat('quux', $expected);
+    }
+
+    public function testSubProductModel()
+    {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
+        $expected = [
+            'id'             => '151',
+            'identifier'     => 'quux',
+            'created'        => $date->format('c'),
+            'updated'        => $date->format('c'),
+            'family'        => [
+                'code'   => 'familyA',
+                'labels' => [
+                    'de_DE' => null,
+                    'en_US' => 'A family A',
+                    'fr_FR' => 'Une famille A',
+                ],
+            ],
+            'values'         => [
+                'a_text-text'            => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'this is a text',
+                    ],
+                ],
+                'a_simple_select-option' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'optionB',
+                    ],
+                ],
+            ],
+            'family_variant' => 'familyVariantA1',
+            'product_type' => 'PimCatalogSubProductModel',
+        ];
+
+        $this->assertProductModelIndexingFormat('quux', $expected);
+    }
+
+    public function testVariantProduct()
+    {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
+        $expected = [
+            'id'             => '50',
+            'identifier'     => 'qux',
+            'created'        => $date->format('c'),
+            'updated'        => $date->format('c'),
+            'family'         => [
+                'code'   => 'familyA',
+                'labels' => [
+                    'de_DE' => null,
+                    'en_US' => 'A family A',
+                    'fr_FR' => 'Une famille A',
+                ],
+            ],
+            'enabled'        => true,
+            'categories'     => [],
+            'groups'         => [],
+            'variant_group'  => null,
+            'completeness'   => [],
+            'values'         => [
+                'a_text-text'            => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'this is a text',
+                    ],
+                ],
+                'a_simple_select-option' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'optionB',
+                    ],
+                ],
+                'a_yes_no-boolean'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => true,
+                    ],
+                ],
+            ],
+            'family_variant' => 'familyVariantA1',
+            'product_type' => 'PimCatalogProductVariant',
+        ];
+
+        $this->assertProductIndexingFormat('bar', $expected);
+    }
+
+    public function testEmptyProduct()
+    {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
+        $expected = [
+            'id'             => '47',
+            'identifier'     => 'bar',
+            'created'        => $date->format('c'),
+            'updated'        => $date->format('c'),
+            'family'         => null,
+            'enabled'        => false,
+            'categories'     => [],
+            'groups'         => [],
+            'variant_group'  => null,
+            'completeness'   => [],
+            'values'         => [],
+            'family_variant' => null,
+            'product_type' => 'PimCatalogProduct',
+        ];
+
+        $this->assertProductIndexingFormat('bar', $expected);
+    }
+
+    public function testNonVariantProductWithAllAttributes()
+    {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
+        $expected = [
+            'id'             => '49',
+            'identifier'     => 'foo',
+            'created'        => $date->format('c'),
+            'updated'        => $date->format('c'),
+            'family'         => [
+                'code'   => 'familyA',
+                'labels' => [
+                    'de_DE' => null,
+                    'en_US' => 'A family A',
+                    'fr_FR' => 'Une famille A',
+                ],
+            ],
+            'enabled'        => true,
+            'categories'     => ['categoryA1', 'categoryB'],
+            'groups'         => ['groupA', 'groupB', 'variantA'],
+            'variant_group'  => 'variantA',
+            'in_group'       => [
                 'groupA'   => true,
                 'groupB'   => true,
                 'variantA' => true,
             ],
-            'completeness'  => [
+            'completeness'   => [
                 'ecommerce' => ['en_US' => 100],
                 'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],
             ],
-            'values'        => [
+            'values'         => [
                 'a_date-date'                                    => [
                     '<all_channels>' => [
                         '<all_locales>' => '2016-06-13',
@@ -307,22 +407,46 @@ class ProductIndexingIntegration extends TestCase
                     ],
                 ],
             ],
+            'family_variant' => null,
+            'product_type' => 'PimCatalogProduct',
         ];
 
-        $this->assertIndexingFormat('foo', $expected);
+        $this->assertProductIndexingFormat('foo', $expected);
+    }
+
+
+    /**
+     * @param string $identifier
+     * @param array  $expected
+     */
+    private function assertProductIndexingFormat($identifier, array $expected)
+    {
+        $repository = $this->get('pim_catalog.repository.product');
+        $product = $repository->findOneByIdentifier($identifier);
+
+        $this->assertIndexingFormat($product, $expected);
     }
 
     /**
      * @param string $identifier
      * @param array  $expected
      */
-    private function assertIndexingFormat($identifier, array $expected)
+    private function assertProductModelIndexingFormat($identifier, array $expected)
     {
-        $repository = $this->get('pim_catalog.repository.product');
-        $product = $repository->findOneByIdentifier($identifier);
+        $repository = $this->get('pim_catalog.repository.product_model');
+        $productModel = $repository->findOneByIdentifier($identifier);
 
+        $this->assertIndexingFormat($productModel, $expected);
+    }
+
+    /**
+     * @param mixed $entity
+     * @param array $expected
+     */
+    private function assertIndexingFormat($entity, array $expected)
+    {
         $serializer = $this->get('pim_serializer');
-        $actual = $serializer->normalize($product, 'indexing');
+        $actual = $serializer->normalize($entity, 'indexing_product_and_product_model');
 
         NormalizedProductCleaner::clean($actual);
         NormalizedProductCleaner::clean($expected);
