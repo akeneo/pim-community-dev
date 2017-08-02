@@ -42,7 +42,7 @@ class IndexProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $productRepository = $this->getContainer()->get('pim_catalog.repository.product');
-        $productIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.product_indexer');
+        $productIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product');
 
         $pageSize = $input->getOption('page-size');
         $totalElements = $productRepository->countAll();
