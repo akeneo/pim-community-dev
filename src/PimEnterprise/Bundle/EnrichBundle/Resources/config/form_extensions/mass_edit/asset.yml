@@ -8,6 +8,7 @@ extensions:
             configureLabel: pimee_enrich.mass_edit.asset.step.configure.label
             confirmLabel: pimee_enrich.mass_edit.asset.step.confirm.label
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
+            launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             title: pimee_enrich.mass_edit.asset.title
 
     pim-mass-asset-edit-choose:

@@ -22,6 +22,9 @@ define(
         return BaseOperation.extend({
             template: _.template(template),
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.html(this.template({
                     warning: __(this.config.warning, {itemsCount: this.getFormData().itemsCount})
