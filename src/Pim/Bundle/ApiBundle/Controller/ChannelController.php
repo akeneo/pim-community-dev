@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -352,7 +353,7 @@ class ChannelController
         $url = $this->router->generate(
             'pim_api_channel_get',
             ['code' => $channel->getCode()],
-            true
+            Router::ABSOLUTE_URL
         );
         $response->headers->set('Location', $url);
 

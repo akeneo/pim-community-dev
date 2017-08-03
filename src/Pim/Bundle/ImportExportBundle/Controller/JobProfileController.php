@@ -98,7 +98,7 @@ class JobProfileController
     public function createAction(Request $request)
     {
         $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
-        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
+        $form = $this->formFactory->create(get_class($this->jobInstanceFormType), $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);

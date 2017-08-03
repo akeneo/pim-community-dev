@@ -23,10 +23,10 @@ services:
           - '@oro_datagrid.datagrid.request_params'
           - '@pim_catalog.context.catalog'
           - '@pim_user.context.user'
+          - false
+          - '@request_stack'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
-        calls:
-            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.product_group_grid_before_listener:
         class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
@@ -46,10 +46,9 @@ services:
           - '@pim_catalog.context.catalog'
           - '@pim_user.context.user'
           - true
+          - '@request_stack'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
-        calls:
-            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.product_variant_group_grid_before_listener:
         class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
@@ -77,10 +76,9 @@ services:
           - '@pim_catalog.context.catalog'
           - '@pim_user.context.user'
           - true
+          - '@request_stack'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-variant-group-grid, method: onBuildAfter }
-        calls:
-            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.group_grid_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
@@ -116,10 +114,9 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
             - true
+            - '@request_stack'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-grid, method: onBuildAfter }
-        calls:
-            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.association_group_grid_after_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'

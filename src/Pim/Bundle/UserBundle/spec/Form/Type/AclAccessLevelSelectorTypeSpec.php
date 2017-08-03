@@ -31,7 +31,7 @@ class AclAccessLevelSelectorTypeSpec extends ObjectBehavior
                 ]
             )
             ->shouldBeCalled();
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 
     function it_adds_a_view_transformer_to_the_form(FormBuilderInterface $builder)

@@ -153,8 +153,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $translation->$method($content);
 
             $errors = $this->validator->validate(
-                $translation,
-                [$locale]
+                $translation
             );
 
             if (count($errors) > 0) {

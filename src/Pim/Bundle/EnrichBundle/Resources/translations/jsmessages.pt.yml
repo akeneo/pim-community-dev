@@ -340,7 +340,7 @@ pim_enrich:
         completeness:
           title: '% de Dados Completos'
           operators:
-            >=: Completo em pelo menos uma das linguagens selecionadas
+            ">=": Completo em pelo menos uma das linguagens selecionadas
             GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         identifier:

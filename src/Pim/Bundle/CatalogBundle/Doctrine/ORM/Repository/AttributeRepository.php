@@ -147,7 +147,7 @@ class AttributeRepository extends EntityRepository implements
 
         $axis = [];
         foreach ($query->getArrayResult() as $code) {
-            $axis[$code['id']] = $code['label'];
+            $axis[$code['label']] = $code['id'];
         }
 
         return $axis;

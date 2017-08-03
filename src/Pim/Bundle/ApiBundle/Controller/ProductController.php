@@ -37,6 +37,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -454,7 +455,11 @@ class ProductController
     protected function getResponse(ProductInterface $product, $status)
     {
         $response = new Response(null, $status);
-        $route = $this->router->generate('pim_api_product_get', ['code' => $product->getIdentifier()], true);
+        $route = $this->router->generate(
+            'pim_api_product_get',
+            ['code' => $product->getIdentifier()],
+            Router::ABSOLUTE_URL
+        );
         $response->headers->set('Location', $route);
 
         return $response;

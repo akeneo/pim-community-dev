@@ -12,7 +12,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = urlencode('{"enabled":[{"operator":"=","value":true}]}');
+        $searchString = rawurlencode('{"enabled":[{"operator":"=","value":true}]}');
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -70,7 +70,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = urlencode('{"enabled":[{"operator":"=","value":false}]}');
+        $searchString = rawurlencode('{"enabled":[{"operator":"=","value":false}]}');
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 

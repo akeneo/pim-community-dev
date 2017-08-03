@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -14,6 +13,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Context configurator for product grid, it allows to inject all dynamic configuration as user grid config,
@@ -55,8 +55,8 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var UserContext */
     protected $userContext;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -74,6 +74,7 @@ class ContextConfigurator implements ConfiguratorInterface
      * @param UserContext                  $userContext
      * @param ObjectManager                $objectManager
      * @param GroupRepositoryInterface     $productGroupRepository
+     * @param RequestStack                 $requestStack
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -81,7 +82,8 @@ class ContextConfigurator implements ConfiguratorInterface
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
-        GroupRepositoryInterface $productGroupRepository
+        GroupRepositoryInterface $productGroupRepository,
+        RequestStack $requestStack
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -89,6 +91,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->userContext = $userContext;
         $this->objectManager = $objectManager;
         $this->productGroupRepository = $productGroupRepository;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -111,11 +114,11 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * @param Request $request
+     * @return Request|null
      */
-    public function setRequest(Request $request = null)
+    protected function getRequest(): ?Request
     {
-        $this->request = $request;
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**
@@ -248,7 +251,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if ($repositoryParams) {
             $params = [];
             foreach ($repositoryParams as $paramName) {
-                $params[$paramName] = $this->requestParams->get($paramName, $this->request->get($paramName, null));
+                $params[$paramName] = $this->requestParams->get($paramName, $this->getRequest()->get($paramName, null));
             }
             $this->configuration->offsetSetByPath($path, $params);
         }
@@ -286,7 +289,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $dataLocale = $this->requestParams->get('dataLocale', null);
         if (!$dataLocale) {
-            $dataLocale = $this->request->get('dataLocale', null);
+            $dataLocale = $this->getRequest()->get('dataLocale', null);
         }
         if (!$dataLocale && $locale = $this->userContext->getUser()->getCatalogLocale()) {
             $dataLocale = $locale->getCode();
@@ -301,7 +304,7 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getProductGroupId()
     {
         $productGroupId = null;
-        if (null !== $productGroup = $this->request->get('group', null)) {
+        if (null !== $productGroup = $this->getRequest()->get('group', null)) {
             $productGroupId = $productGroup->getId();
         }
         if (null === $productGroupId) {
@@ -345,7 +348,7 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         if (null === $currentScopeCode) {
-            $requestFilters = $this->request->get('filters');
+            $requestFilters = $this->getRequest()->get('filters');
             if (isset($requestFilters['scope']['value'])) {
                 $currentScopeCode = $requestFilters['scope']['value'];
             }

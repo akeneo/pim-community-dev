@@ -70,7 +70,7 @@ class CategoryTypeSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 
     function it_adds_registered_event_subscribers($builder, EventSubscriberInterface $subscriber)

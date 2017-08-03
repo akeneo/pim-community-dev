@@ -56,9 +56,9 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
 
-        if (is_file($file = __DIR__.'/config/config_'.$this->getEnvironment().'_local.yml')) {
+        if (is_file($file = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '_local.yml')) {
             $loader->load($file);
         }
     }
@@ -171,5 +171,35 @@ class AppKernel extends Kernel
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootDir(): string
+    {
+        return __DIR__;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheDir(): string
+    {
+        return dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'var'
+            . DIRECTORY_SEPARATOR
+            . 'cache'
+            . DIRECTORY_SEPARATOR
+            . $this->getEnvironment();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogDir(): string
+    {
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'logs';
     }
 }

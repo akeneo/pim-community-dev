@@ -105,8 +105,7 @@ services:
     oro_user.form.handler.acl_role:
         class:                        '%oro_user.form.handler.acl_role.class%'
         shared:                       false
-        arguments:                    ["@form.factory", '%oro_user.privileges%']
+        arguments:                    ["@form.factory", '%oro_user.privileges%', '@request_stack']
         calls:
                     - [setAclManager, ["@oro_security.acl.manager"]]
                     - [setEntityManager, ["@doctrine.orm.entity_manager"]]
-                    - [setRequest, ["@=service('request_stack').getCurrentRequest()"]]

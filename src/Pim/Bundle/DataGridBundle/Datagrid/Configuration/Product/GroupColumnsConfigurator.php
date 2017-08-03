@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -20,34 +21,31 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
-    /**
-     * @param array
-     */
+    /** @param array */
     protected $axisColumns;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
-    /**
-     * @var RequestParameters
-     */
+    /** @var RequestParameters */
     protected $requestParams;
 
     /**
      * @param ConfigurationRegistry    $registry
      * @param RequestParameters        $requestParams
      * @param GroupRepositoryInterface $groupRepository
+     * @param RequestStack             $requestStack
      */
     public function __construct(
         ConfigurationRegistry $registry,
         RequestParameters $requestParams,
-        GroupRepositoryInterface $groupRepository
+        GroupRepositoryInterface $groupRepository,
+        RequestStack $requestStack
     ) {
         parent::__construct($registry);
         $this->requestParams = $requestParams;
         $this->groupRepository = $groupRepository;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -64,11 +62,11 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     }
 
     /**
-     * @param Request $request
+     * @return null|Request
      */
-    public function setRequest(Request $request = null)
+    protected function getRequest(): ?Request
     {
-        $this->request = $request;
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**
@@ -76,7 +74,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function getGroup()
     {
-        $groupId = $this->request->get('id', null);
+        $groupId = $this->getRequest()->get('id', null);
         if (!$groupId) {
             $groupId = $this->requestParams->get('currentGroup', null);
         }

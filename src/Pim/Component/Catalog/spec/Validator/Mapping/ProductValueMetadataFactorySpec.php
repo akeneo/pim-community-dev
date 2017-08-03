@@ -11,12 +11,13 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 class ProductValueMetadataFactorySpec extends ObjectBehavior
 {
     function it_is_a_validator_metadata_factory()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Validator\MetadataFactoryInterface');
+        $this->shouldBeAnInstanceOf(MetadataFactoryInterface::class);
     }
 
     function let(

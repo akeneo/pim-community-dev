@@ -8,17 +8,21 @@
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
 
-    <form action="{{ path('oro_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
-        <h2 class="title">{{ 'Password Reset'|trans }}</h2>
-        <fieldset>
-            {{ form_errors(form) }}
-            {{ form_widget(form.plainPassword) }}
-            {{ form_widget(form._token) }}
-            <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
-                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
-            </div>
-        </fieldset>
-    </form>
+    {{ form_start(form, {
+        'action': path('oro_user_reset_reset', {token: token}),
+        'method': 'post',
+        'class': 'form-signin'
+    }) }}
+    <h2 class="title">{{ 'Password Reset'|trans }}</h2>
+    <fieldset>
+        {{ form_errors(form) }}
+        {{ form_widget(form.plainPassword) }}
+        {{ form_widget(form._token) }}
+        <div class="form-row">
+            <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
+            <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
+        </div>
+    </fieldset>
+    {{ form_end(form) }}
 </div>
 {% endblock %}

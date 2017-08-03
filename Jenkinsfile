@@ -56,8 +56,8 @@ stage("Checkout") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "app/console assets:install"
-                sh "app/console pim:installer:dump-require-paths"
+                sh "bin/console assets:install"
+                sh "bin/console pim:installer:dump-require-paths"
 
                 stash "pim_community_dev_full"
             }
@@ -101,8 +101,8 @@ stage("Checkout") {
                         sh "php -d memory_limit=-1 /usr/local/bin/composer run-script post-update-cmd"
                     }
 
-                    sh "app/console assets:install"
-                    sh "app/console pim:installer:dump-require-paths"
+                    sh "bin/console assets:install"
+                    sh "bin/console pim:installer:dump-require-paths"
 
                     stash "pim_enterprise_dev_full"
                 }
@@ -209,7 +209,7 @@ def runPhpUnitTest(phpVersion) {
 
                 sh "mkdir -p app/build/logs/"
 
-                sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
+                sh "./vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
@@ -275,7 +275,7 @@ void runIntegrationTest(String phpVersion, String edition, def testFiles) {
                         sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
 
-                        sh "./app/console --env=test pim:install --force"
+                        sh "./bin/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
 
@@ -288,7 +288,7 @@ void runIntegrationTest(String phpVersion, String edition, def testFiles) {
 
                         sh "sleep 20"
 
-                        sh "php -d error_reporting='E_ALL' ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                        sh "php -d error_reporting='E_ALL' ./vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
             }
@@ -314,7 +314,7 @@ def runPhpSpecTest(phpVersion) {
 
                 sh "mkdir -p app/build/logs/"
 
-                sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
+                sh "./vendor/bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
@@ -338,7 +338,7 @@ def runPhpCsFixerTest() {
 
                 sh "mkdir -p app/build/logs/"
 
-                sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
+                sh "./vendor/bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
@@ -366,6 +366,14 @@ def runBehatTest(edition, features, phpVersion) {
             }
 
             // Configure the PIM
+            dir("app") {
+                sh "ln -s ./../bin/console"
+            }
+
+            dir("bin") {
+                sh "ln -s ./../vendor/bin/behat"
+            }
+
             sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
             sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch: 9200'#g\" app/config/parameters_test.yml"
@@ -398,7 +406,7 @@ def runPhpCouplingDetectorTest() {
             docker.image("akeneo/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
                 unstash "pim_community_dev_full"
 
-                sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
+                sh "./vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
