@@ -37,7 +37,7 @@ define(
             /**
              * {@inheritDoc}
              */
-            render: function () {
+            render() {
                 this.$el.html(
                     this.template({
                         label: __('Search', {label: this.label})
@@ -48,7 +48,7 @@ define(
             /**
              * @inheritDoc
              */
-            _writeDOMValue: function (value) {
+            _writeDOMValue(value) {
                 this._setInputValue(this.inputValueSelector, value.value);
 
                 return this;
@@ -57,7 +57,7 @@ define(
             /**
              * @inheritDoc
              */
-            _readDOMValue: function () {
+            _readDOMValue() {
                 return {
                     value: this._getInputValue(this.inputValueSelector)
                 };
@@ -69,7 +69,7 @@ define(
              *
              * @param {Event} event
              */
-            runTimeout: function (event) {
+            runTimeout(event) {
                 if (null !== this.timer) {
                     clearTimeout(this.timer);
                 }
@@ -87,7 +87,7 @@ define(
             /**
              * Executes the search by setting the value.
              */
-            doSearch: function () {
+            doSearch() {
                 this.setValue(this._readDOMValue());
             }
         });

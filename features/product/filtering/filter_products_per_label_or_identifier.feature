@@ -1,6 +1,6 @@
 @javascript
-Feature: Filter products by text field
-  In order to filter products by text attributes in the catalog
+Feature: Filter products by label or identifier field
+  In order to filter products by label or identifier attributes in the catalog
   As a regular user
   I need to be able to filter products in the catalog
 
@@ -8,7 +8,7 @@ Feature: Filter products by text field
     Given the "default" catalog configuration
     And I am logged in as "Mary"
 
-  Scenario: Successfully filter products by empty value for scopable and localizable text attribute
+  Scenario: Successfully filter products on their label or identifier
     Given I add the "english" locale to the "mobile" channel
     And the following attributes:
       | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |

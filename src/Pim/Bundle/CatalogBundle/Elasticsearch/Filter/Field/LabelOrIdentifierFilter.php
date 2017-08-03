@@ -46,16 +46,20 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         $this->checkValue($operator, $value);
 
         $clause = [
-            ['query_string' => [
-                'default_field' => 'identifier',
-                'query'         => $this->escapeValue($value),
-            ]],
-            ['query_string' => [
-                'default_field' => 'label',
-                'query'         => $this->escapeValue($value),
-            ]]
+            'bool' => [
+                'should' => [
+                    ['query_string' => [
+                        'default_field' => 'identifier',
+                        'query'         => $this->escapeValue($value),
+                    ]],
+                    ['query_string' => [
+                        'default_field' => 'label',
+                        'query'         => $this->escapeValue($value),
+                    ]]
+                ]
+            ]
         ];
-        $this->searchQueryBuilder->addShould($clause);
+        $this->searchQueryBuilder->addFilter($clause);
 
         return $this;
     }
@@ -66,7 +70,7 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
      * @param string $operator
      * @param mixed  $value
      */
-    protected function checkValue($operator, $value)
+    protected function checkValue($operator, $value): void
     {
         FieldFilterHelper::checkString('label_or_identifier', $value, static::class);
 
