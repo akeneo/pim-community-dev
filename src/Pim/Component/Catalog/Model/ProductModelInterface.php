@@ -169,4 +169,20 @@ interface ProductModelInterface extends
      * @return bool
      */
     public function isRootProductModel(): bool;
+
+    /**
+     * Get product model label
+     *
+     * @param string|null $localeCode
+     *
+     * @return string
+     */
+    public function getLabel(?string $localeCode): string;
+
+    /**
+     * Get product model image
+     *
+     * @return ValueInterface|null
+     */
+    public function getImage(): ?ValueInterface;
 }

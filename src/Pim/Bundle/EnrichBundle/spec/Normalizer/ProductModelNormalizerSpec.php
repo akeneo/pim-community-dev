@@ -3,12 +3,15 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -17,18 +20,22 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
+        NormalizerInterface $fileNormalizer,
         VersionManager $versionManager,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
-        FormProviderInterface $formProvider
+        FormProviderInterface $formProvider,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->beConstructedWith(
             $normalizer,
             $versionNormalizer,
+            $fileNormalizer,
             $versionManager,
             $localizedConverter,
             $productValueConverter,
-            $formProvider
+            $formProvider,
+            $localeRepository
         );
     }
 
@@ -40,13 +47,16 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalize_products(
         $normalizer,
         $versionNormalizer,
+        $fileNormalizer,
         $versionManager,
         $localizedConverter,
         $productValueConverter,
         $formProvider,
+        $localeRepository,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        FamilyInterface $family
+        FamilyInterface $family,
+        ValueInterface $picture
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -75,6 +85,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'variant_attribute_sets' => []
         ];
 
+        $fileNormalized = [
+            'filePath' => 'a/b/c/my_picture.jpg',
+            'originalFilename' => 'my_picture.jpg'
+        ];
+
         $valuesLocalized = [
             'normalized_property' => [['data' => 'a nice normalized property', 'locale' => null, 'scope' => null]],
             'number'              => [['data' => '12,5000', 'locale' => null, 'scope' => null]],
@@ -90,13 +105,19 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $valuesConverted = $valuesLocalized;
         $valuesConverted['picture'] = [
             [
-                'data' => [
-                    'filePath' => 'a/b/c/my_picture.jpg', 'originalFilename' => 'my_picture.jpg'
-                ],
+                'data' => $fileNormalized,
                 'locale' => null,
                 'scope' => null
             ]
         ];
+
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
+        $productModel->getLabel('en_US')->willReturn('Tshirt blue');
+        $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
+
+        $productModel->getImage()->willReturn($picture);
+        $picture->getData()->willReturn('IMAGE_DATA');
+        $fileNormalizer->normalize('IMAGE_DATA', 'internal_api', $options)->willReturn($fileNormalized);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
@@ -128,8 +149,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'created'        => 'normalized_create_version',
                     'updated'        => 'normalized_update_version',
                     'model_type'     => 'product_model',
+                    'image'          => $fileNormalized,
                     'label'          => [
-                        'en_US' => 'tshirt_blue'
+                        'en_US' => 'Tshirt blue',
+                        'fr_FR' => 'Tshirt bleu',
                     ]
                 ]
             ]

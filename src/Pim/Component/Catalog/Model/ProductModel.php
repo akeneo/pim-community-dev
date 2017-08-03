@@ -470,4 +470,46 @@ class ProductModel implements ProductModelInterface
     {
         return null === $this->parent;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel(?string $localeCode): string
+    {
+        $identifier = (string) $this->getIdentifier();
+        $attributeAsLabel = $this->familyVariant->getFamily()->getAttributeAsLabel();
+
+        if (null === $attributeAsLabel) {
+            return $identifier;
+        }
+
+        $localeCode = $attributeAsLabel->isLocalizable() ? $localeCode : null;
+        $value = $this->getValue($attributeAsLabel->getCode(), $localeCode);
+
+        if (null === $value) {
+            return $identifier;
+        }
+
+        $data = $value->getData();
+
+        if (empty($data)) {
+            return $identifier;
+        }
+
+        return (string) $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getImage(): ?ValueInterface
+    {
+        $attributeAsImage = $this->familyVariant->getFamily()->getAttributeAsImage();
+
+        if (null === $attributeAsImage) {
+            return null;
+        }
+
+        return $this->getValue($attributeAsImage->getCode());
+    }
 }

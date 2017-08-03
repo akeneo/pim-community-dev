@@ -71,10 +71,12 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
+            - '@pim_enrich.normalizer.file'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
             - '@pim_enrich.provider.form.product_model'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
