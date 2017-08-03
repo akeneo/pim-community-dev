@@ -12,8 +12,8 @@ namespace Pim\Component\Catalog\Model;
  */
 class VariantProduct extends AbstractProduct implements VariantProductInterface
 {
-    /** @var ProductModelInterface $productModel */
-    protected $productModel;
+    /** @var ProductModelInterface $parent */
+    protected $parent;
 
     /** @var FamilyVariantInterface */
     protected $familyVariant;
@@ -21,17 +21,17 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getProductModel(): ?ProductModelInterface
+    public function getParent(): ?ProductModelInterface
     {
-        return $this->productModel;
+        return $this->parent;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setProductModel(ProductModelInterface $productModel): void
+    public function setParent(ProductModelInterface $parent): void
     {
-        $this->productModel = $productModel;
+        $this->parent = $parent;
     }
 
     /**
@@ -55,6 +55,6 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
      */
     public function getVariationLevel(): int
     {
-        return $this->getProductModel()->getVariationLevel() + 1;
+        return $this->getParent()->getVariationLevel() + 1;
     }
 }

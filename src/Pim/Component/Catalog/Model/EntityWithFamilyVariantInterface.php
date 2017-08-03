@@ -32,4 +32,9 @@ interface EntityWithFamilyVariantInterface extends EntityWithValuesInterface
      * @return int
      */
     public function getVariationLevel(): int;
+
+    /**
+     * @return ProductModelInterface|null
+     */
+    public function getParent(): ?ProductModelInterface;
 }

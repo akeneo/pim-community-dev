@@ -28,15 +28,15 @@ class VariantProductSpec extends ObjectBehavior
 
     function it_has_a_variation_level(ProductModelInterface $productModel)
     {
-        $this->setProductModel($productModel);
+        $this->setParent($productModel);
         $productModel->getVariationLevel()->willReturn(7);
         $this->getVariationLevel()->shouldReturn(8);
     }
 
     function it_has_a_product_model(ProductModelInterface $productModel)
     {
-        $this->setProductModel($productModel);
-        $this->getProductModel()->shouldReturn($productModel);
+        $this->setParent($productModel);
+        $this->getParent()->shouldReturn($productModel);
     }
 
     function it_has_a_family_variant(FamilyVariantInterface $familyVariant)

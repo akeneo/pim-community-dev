@@ -16,6 +16,13 @@ namespace Pim\Component\Catalog\Model;
 interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface, \Countable, \IteratorAggregate
 {
     /**
+     * @param ValueCollectionInterface $collection
+     *
+     * @return ValueCollectionInterface
+     */
+    public static function fromCollection(ValueCollectionInterface $collection): ValueCollectionInterface;
+
+    /**
      * Adds a value at the end of the collection.
      *
      * @param ValueInterface $value The value to add.

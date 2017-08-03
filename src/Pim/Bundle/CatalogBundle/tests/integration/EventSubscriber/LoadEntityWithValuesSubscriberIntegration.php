@@ -16,7 +16,31 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
     public function testLoadValuesForProductWithAllAttributes()
     {
         $product = $this->findProductByIdentifier('foo');
-        $expectedValues = $this->getValuesForProductWithAllAttributes();
+        $expectedValues = $this->getValuesFromStandardValues(
+            $this->getStandardValuesWithAllAttributes()
+        );
+
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testLoadValuesForVariantProductWithFewAttributes()
+    {
+        $product = $this->findProductByIdentifier('qux');
+        $expectedValues = $this->getValuesFromStandardValues(
+            $this->getStandardValuesOfVariantProduct()
+        );
+
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testLoadValuesForVariantProductWithFewAttributesAfterASave()
+    {
+        $product = $this->findProductByIdentifier('qux');
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $expectedValues = $this->getValuesFromStandardValues(
+            $this->getStandardValuesOfVariantProduct()
+        );
 
         $this->assertProductHasValues($expectedValues, $product);
     }
@@ -97,14 +121,16 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @param array $standardValues
+     *
      * @return ValueInterface[]
+     * @throws \Exception
      */
-    private function getValuesForProductWithAllAttributes()
+    private function getValuesFromStandardValues(array $standardValues)
     {
         $values = [];
 
-        foreach ($this->getStandardValuesWithAllAttributes() as $attributeCode => $rawValues) {
+        foreach ($standardValues as $attributeCode => $rawValues) {
             $attribute = $this->findAttributeByIdentifier($attributeCode);
 
             if (null === $attribute) {
@@ -293,6 +319,31 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                     'data'   => 'une zone de texte pour les tablettes en français',
                 ],
             ]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getStandardValuesOfVariantProduct()
+    {
+        return [
+            'a_text'                             => [
+                [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'this is a text',
+                ],
+            ],
+            'a_simple_select'                    => [
+                ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+            ],
+            'sku'                                => [
+                ['locale' => null, 'scope' => null, 'data' => 'qux'],
+            ],
+            'a_yes_no'                           => [
+                ['locale' => null, 'scope' => null, 'data' => true],
+            ],
         ];
     }
 }

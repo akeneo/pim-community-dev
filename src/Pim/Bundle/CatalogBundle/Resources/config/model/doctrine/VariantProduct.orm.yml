@@ -1,7 +1,7 @@
 Pim\Component\Catalog\Model\VariantProduct:
     type: entity
     manyToOne:
-        productModel:
+        parent:
             targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
             joinColumns:
                 product_model_id:

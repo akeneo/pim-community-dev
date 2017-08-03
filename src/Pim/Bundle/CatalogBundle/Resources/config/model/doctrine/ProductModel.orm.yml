@@ -58,8 +58,8 @@ Pim\Component\Catalog\Model\ProductModel:
                         onDelete: CASCADE
     oneToMany:
         products:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
-            mappedBy: productModel
+            targetEntity: Pim\Component\Catalog\Model\VariantProductInterface
+            mappedBy: parent
         productModels:
             targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
             mappedBy: parent

@@ -134,13 +134,6 @@ interface ProductModelInterface extends
     public function setParent(ProductModelInterface $parent = null): ProductModelInterface;
 
     /**
-     * Gets the parent of this product model.
-     *
-     * @return ProductModelInterface|null
-     */
-    public function getParent(): ?ProductModelInterface;
-
-    /**
      * Adds a child product model to this product model.
      *
      * @param ProductModelInterface $productModel

@@ -45,6 +45,16 @@ class ValueCollection implements ValueCollectionInterface
     }
 
     /**
+     * @param ValueCollectionInterface $collection
+     *
+     * @return ValueCollectionInterface
+     */
+    public static function fromCollection(ValueCollectionInterface $collection): ValueCollectionInterface
+    {
+        return new static($collection->toArray());
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function toArray()
