@@ -14,6 +14,14 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
     - { resource: '@PimApiBundle/Resources/config/api.yml' }
 
+akeneo_storage_utils:
+    mapping_overrides: ~
+
+akeneo_elasticsearch:
+    index_name: "%index_name%"
+    hosts: "%index_hosts%"
+    configuration_files: "%elasticsearch_index_configuration_files%"
+
 services:
     oro.cache.abstract:
         abstract:  true

@@ -94,9 +94,9 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function createProduct($identifier = null, $familyCode = null)
+    public function createProduct($identifier = null, $familyCode = null, $id = null)
     {
-        $product = new $this->productClass();
+        $product = new $this->productClass($id);
 
         if (null !== $identifier) {
             $identifierAttribute = $this->attributeRepository->getIdentifier();

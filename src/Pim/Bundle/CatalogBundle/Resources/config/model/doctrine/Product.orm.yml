@@ -5,10 +5,10 @@ Pim\Component\Catalog\Model\Product:
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
     fields:
         id:
-            type: integer
+            type: uuid_binary
             id: true
             generator:
-                strategy: AUTO
+                strategy: NONE
         enabled:
             type: boolean
             column: is_enabled

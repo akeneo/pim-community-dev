@@ -6,28 +6,28 @@ pim_enrich_product_edit:
     path: /{id}
     defaults: { _controller: pim_enrich.controller.product:editAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [GET, POST]
 
 pim_enrich_product_toggle_status:
     path: /{id}/toggle-status
     defaults: { _controller: pim_enrich.controller.product:toggleStatusAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [GET, POST]
 
 pim_enrich_product_listcategories:
     path: /list-categories/product/{id}/parent/{categoryId}
     defaults: { _controller: pim_enrich.controller.product:listCategoriesAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
         categoryId: \d+
 
 pim_enrich_product_rest_get:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product:getAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [GET]
 
 pim_enrich_product_rest_create:
@@ -39,35 +39,35 @@ pim_enrich_product_rest_post:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product:postAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [POST]
 
 pim_enrich_product_rest_remove:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product:removeAction, _format: json }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [DELETE]
 
 pim_enrich_product_category_rest_list:
     path: /rest/{id}/categories
     defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [GET]
 
 pim_enrich_product_history_rest_get:
     path: /rest/{entityId}/history
     defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product }
     requirements:
-        entityId: '[0-9a-f]+'
+        entityId: '[0-9a-f\-]+'
     methods: [GET]
 
 pim_enrich_product_remove_attribute_rest:
     path: /rest/{id}/{attributeId}
     defaults: { _controller: pim_enrich.controller.rest.product:removeAttributeAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
         attributeId: '\d+'
     methods: [DELETE]
 
@@ -75,20 +75,20 @@ pim_enrich_product_comments_rest_get:
     path: /{id}/comments
     defaults: { _controller: pim_enrich.controller.rest.product_comment:getAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [GET]
 
 pim_enrich_product_comments_rest_post:
     path: /{id}/comments
     defaults: { _controller: pim_enrich.controller.rest.product_comment:postAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
     methods: [POST]
 
 pim_enrich_product_comment_reply_rest_post:
     path: /{id}/comments/{commentId}
     defaults: { _controller: pim_enrich.controller.rest.product_comment:postReplyAction }
     requirements:
-        id: '[0-9a-f]+'
+        id: '[0-9a-f\-]+'
         commentId: '[0-9a-f]+'
     methods: [POST]

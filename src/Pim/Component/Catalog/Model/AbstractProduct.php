@@ -6,6 +6,8 @@ use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInter
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Abstract product
@@ -16,7 +18,7 @@ use Pim\Component\Catalog\AttributeTypes;
  */
 abstract class AbstractProduct implements ProductInterface
 {
-    /** @var int|string */
+    /** @var UuidInterface */
     protected $id;
 
     /** @var array */
@@ -84,9 +86,14 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * Constructor
+     *
+     * @param string|null $id
      */
-    public function __construct()
+    public function __construct($id = null)
     {
+        $id = null === $id ? Uuid::uuid4() : Uuid::fromString($id);
+        $this->id = $id;
+
         $this->values = new ValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
@@ -101,16 +108,6 @@ abstract class AbstractProduct implements ProductInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**

@@ -9,6 +9,7 @@ use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product interface
@@ -30,18 +31,9 @@ interface ProductInterface extends
     /**
      * Get the ID of the product
      *
-     * @return int|string
+     * @return UuidInterface
      */
     public function getId();
-
-    /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return ProductInterface
-     */
-    public function setId($id);
 
     /**
      * Get the identifier of the product

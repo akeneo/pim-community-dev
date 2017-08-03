@@ -30,7 +30,7 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'            => '47',
+            'id'            => '0c6ce103-532c-42bb-bd17-da6c964f40b2',
             'identifier'    => 'bar',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
@@ -55,7 +55,7 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'            => '48',
+            'id'            => 'baec7280-f317-46dd-980a-1566d6f47c9f',
             'identifier'    => 'baz',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
@@ -80,7 +80,7 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'            => '49',
+            'id'            => 'c5d506a7-e9a3-4361-bb98-7affc851fbbb',
             'identifier'    => 'foo',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),

@@ -18,6 +18,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\UuidInterface;
 
 class ProductRepositorySpec extends ObjectBehavior
 {
@@ -86,8 +87,10 @@ class ProductRepositorySpec extends ObjectBehavior
         $em,
         GroupRepositoryInterface $groupRepository,
         QueryBuilder $queryBuilder,
-        AbstractQuery $query
+        AbstractQuery $query,
+        UuidInterface $uuid
     ) {
+        $uuid->getBytes()->willReturn('foo');
         $this->setGroupRepository($groupRepository);
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
@@ -97,7 +100,7 @@ class ProductRepositorySpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.groups', 'g')->willReturn($queryBuilder);
         $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
         $queryBuilder->setParameters([
-            'id' => 10,
+            'id' => 'foo',
         ])->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);
@@ -108,15 +111,17 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $groupRepository->hasAttribute([1, 2], 'attribute_code')->willReturn(true);
 
-        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(true);
+        $this->hasAttributeInVariantGroup($uuid, 'attribute_code')->shouldReturn(true);
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_variant_group_but_it_has_not_group(
         $em,
         GroupRepositoryInterface $groupRepository,
         QueryBuilder $queryBuilder,
-        AbstractQuery $query
+        AbstractQuery $query,
+        UuidInterface $uuid
     ) {
+        $uuid->getBytes()->willReturn('foo');
         $this->setGroupRepository($groupRepository);
 
         $em->createQueryBuilder()->willReturn($queryBuilder);
@@ -126,7 +131,7 @@ class ProductRepositorySpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.groups', 'g')->willReturn($queryBuilder);
         $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
         $queryBuilder->setParameters([
-            'id' => 10,
+            'id' => 'foo',
         ])->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);
@@ -137,14 +142,17 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $groupRepository->hasAttribute(Argument::cetera())->shouldNotBeCalled();
 
-        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(false);
+        $this->hasAttributeInVariantGroup($uuid, 'attribute_code')->shouldReturn(false);
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_family(
         $em,
         QueryBuilder $queryBuilder,
-        AbstractQuery $query
+        AbstractQuery $query,
+        UuidInterface $uuid
     ) {
+        $uuid->getBytes()->willReturn('foo');
+
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('p')->willReturn($queryBuilder);
         $queryBuilder->from(Argument::type('string'), "p", null)->willReturn($queryBuilder);
@@ -154,17 +162,17 @@ class ProductRepositorySpec extends ObjectBehavior
         $queryBuilder->andWhere('a.code = :code')->willReturn($queryBuilder);
         $queryBuilder->setMaxResults(1)->willReturn($queryBuilder);
         $queryBuilder->setParameters([
-            'id' => 10,
+            'id' => 'foo',
             'code' => 'attribute_code',
         ])->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);
 
         $query->getArrayResult()->willReturn(['id' => 10]);
-        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(true);
+        $this->hasAttributeInFamily($uuid, 'attribute_code')->shouldReturn(true);
 
         $query->getArrayResult()->willReturn([]);
-        $this->hasAttributeInFamily(10, 'attribute_code')->shouldReturn(false);
+        $this->hasAttributeInFamily($uuid, 'attribute_code')->shouldReturn(false);
     }
 
     function it_count_all_products($em, QueryBuilder $queryBuilder, AbstractQuery $query)

@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -45,12 +46,13 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        UuidInterface $uuid
     ) {
         $this->setStepExecution($stepExecution);
 
         $product->getIdentifier()->shouldBeCalled()->willReturn('a_sku');
-        $product->getId()->willReturn(10);
+        $product->getId()->willReturn($uuid);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);
@@ -82,8 +84,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInFamily($uuid, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup($uuid, 'categories')->shouldBeCalled()->willReturn(true);
         $productUpdater->update($product, Argument::any())->shouldNotBeCalled();
 
         $this->process($product)->shouldReturn(null);
@@ -96,7 +98,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        UuidInterface $uuid
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -120,10 +123,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
+        $product->getId()->willReturn($uuid);
 
-        $productRepository->hasAttributeInFamily(10, 'number')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup(10, 'number')->shouldBeCalled()->willReturn(false);
+        $productRepository->hasAttributeInFamily($uuid, 'number')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup($uuid, 'number')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, [
             'values' => [
@@ -148,7 +151,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        UuidInterface $uuid
     ) {
         $this->setStepExecution($stepExecution);
 
@@ -175,9 +179,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $product->getId()->willReturn(10);
-        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
-        $productRepository->hasAttributeInVariantGroup(10, 'categories')->shouldBeCalled()->willReturn(false);
+        $product->getId()->willReturn($uuid);
+        $productRepository->hasAttributeInFamily($uuid, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInVariantGroup($uuid, 'categories')->shouldBeCalled()->willReturn(false);
 
         $productUpdater->update($product, [
             'values' => [
