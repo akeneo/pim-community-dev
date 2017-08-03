@@ -18,7 +18,7 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher('product').fetch(route.params.id, {cached: false})
+                return FetcherRegistry.getFetcher(this.options.config.entity).fetch(route.params.id, {cached: false})
                     .then(function (product) {
                         if (!this.active) {
                             return;

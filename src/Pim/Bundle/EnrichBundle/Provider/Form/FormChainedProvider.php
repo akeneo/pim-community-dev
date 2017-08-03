@@ -17,7 +17,7 @@ class FormChainedProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getForm($element)
+    public function getForm($element): string
     {
         foreach ($this->providers as $provider) {
             if ($provider->supports($element)) {
@@ -31,7 +31,7 @@ class FormChainedProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         foreach ($this->providers as $provider) {
             if ($provider->supports($element)) {
@@ -47,7 +47,7 @@ class FormChainedProvider implements FormProviderInterface
      *
      * @param FormProviderInterface $provider
      */
-    public function addProvider(FormProviderInterface $provider)
+    public function addProvider(FormProviderInterface $provider): void
     {
         $this->providers[] = $provider;
     }
