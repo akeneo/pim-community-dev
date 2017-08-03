@@ -1,5 +1,9 @@
 # 1.5.x
 
+## Bug fixes
+
+- PIM-6657: Memory leak on Mass publication
+
 # 1.5.25 (2017-06-30)
 
 ## Bug fixes
