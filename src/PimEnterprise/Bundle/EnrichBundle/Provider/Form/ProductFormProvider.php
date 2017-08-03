@@ -37,7 +37,7 @@ class ProductFormProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getForm($product)
+    public function getForm($product): string
     {
         return $this->authorizationChecker->isGranted(Attributes::EDIT, $product) ?
             'pim-product-edit-form' :
@@ -47,7 +47,7 @@ class ProductFormProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         return $element instanceof ProductInterface;
     }
