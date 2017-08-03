@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductModelNormalizer implements NormalizerInterface
 {
-    const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_model';
+    public const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_model';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
@@ -43,6 +43,6 @@ class ProductModelNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'indexing' === $format;
+        return $data instanceof ProductInterface && self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
     }
 }

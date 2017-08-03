@@ -56,7 +56,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren->toArray()->willReturn([$childProduct1, $childProduct2]);
         $productIndexer->indexAll([$childProduct1, $childProduct2])->shouldBeCalled();
 
-        $productModel->getChildren()->willReturn($productModelChildren);
+        $productModel->getProductModels()->willReturn($productModelChildren);
         $productModelChildren->isEmpty()->willReturn(true);
         $productModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
@@ -83,7 +83,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $emptyProductsChildren->isEmpty()->willReturn(true);
 
         // Starting second recursion
-        $rootProductModel->getChildren()->willReturn($rootProductModelChildren);
+        $rootProductModel->getProductModels()->willReturn($rootProductModelChildren);
 
         // Second recursion - first round
         $rootProductModelChildren->isEmpty()->willReturn(false);
@@ -98,11 +98,11 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $rootProductModelChildrenIterator->current()->willReturn($childProductModel);
         $rootProductModelChildrenIterator->next()->shouldBeCalled();
 
-        $childProductModel->getChildren()->willReturn($emptyChildProductModelChildren);
+        $childProductModel->getProductModels()->willReturn($emptyChildProductModelChildren);
         $emptyChildProductModelChildren->isEmpty()->willReturn(true);
 
         // Second recursion - starting the second round
-        $childProductModel->getChildren()->willReturn($emptyChildProductModelChildren);
+        $childProductModel->getProductModels()->willReturn($emptyChildProductModelChildren);
         $childProductModel->getProducts()->willReturn($productVariantsChildren);
 
         // Second recursion - second round - empty product models
@@ -149,7 +149,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren1->toArray()->willReturn([$childProduct1, $childProduct2]);
         $productIndexer->indexAll([$childProduct1, $childProduct2])->shouldBeCalled();
 
-        $productModel1->getChildren()->willReturn($productModelChildren1);
+        $productModel1->getProductModels()->willReturn($productModelChildren1);
         $productModelChildren1->isEmpty()->willReturn(true);
         $productModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
@@ -159,7 +159,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren2->toArray()->willReturn([$childProduct3, $childProduct4]);
         $productIndexer->indexAll([$childProduct3, $childProduct4])->shouldBeCalled();
 
-        $productModel2->getChildren()->willReturn($productModelChildren2);
+        $productModel2->getProductModels()->willReturn($productModelChildren2);
         $productModelChildren2->isEmpty()->willReturn(true);
         $productModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
@@ -204,7 +204,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren->toArray()->willReturn([$childProduct1, $childProduct2]);
         $productRemover->removeAll([$childProduct1, $childProduct2])->shouldBeCalled();
 
-        $productModel->getChildren()->willReturn($productModelChildren);
+        $productModel->getProductModels()->willReturn($productModelChildren);
         $productModelChildren->isEmpty()->willReturn(true);
         $productModelRemover->removeAll(Argument::cetera())->shouldNotBeCalled();
 
@@ -231,7 +231,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $emptyProductsChildren->isEmpty()->willReturn(true);
 
         // Starting second recursion
-        $rootProductModel->getChildren()->willReturn($rootProductModelChildren);
+        $rootProductModel->getProductModels()->willReturn($rootProductModelChildren);
 
         // Second recursion - first round
         $rootProductModelChildren->isEmpty()->willReturn(false);
@@ -246,11 +246,11 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $rootProductModelChildrenIterator->current()->willReturn($childProductModel);
         $rootProductModelChildrenIterator->next()->shouldBeCalled();
 
-        $childProductModel->getChildren()->willReturn($emptyChildProductModelChildren);
+        $childProductModel->getProductModels()->willReturn($emptyChildProductModelChildren);
         $emptyChildProductModelChildren->isEmpty()->willReturn(true);
 
         // Second recursion - starting the second round
-        $childProductModel->getChildren()->willReturn($emptyChildProductModelChildren);
+        $childProductModel->getProductModels()->willReturn($emptyChildProductModelChildren);
         $childProductModel->getProducts()->willReturn($productVariantsChildren);
 
         // Second recursion - second round - empty product models
@@ -286,7 +286,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren1->toArray()->willReturn([$childProduct1, $childProduct2]);
         $productRemover->removeAll([$childProduct1, $childProduct2])->shouldBeCalled();
 
-        $productModel1->getChildren()->willReturn($productModelChildren1);
+        $productModel1->getProductModels()->willReturn($productModelChildren1);
         $productModelChildren1->isEmpty()->willReturn(true);
         $productModelRemover->removeAll(Argument::cetera())->shouldNotBeCalled();
 
@@ -296,7 +296,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren2->toArray()->willReturn([$childProduct3, $childProduct4]);
         $productRemover->removeAll([$childProduct3, $childProduct4])->shouldBeCalled();
 
-        $productModel2->getChildren()->willReturn($productModelChildren2);
+        $productModel2->getProductModels()->willReturn($productModelChildren2);
         $productModelChildren2->isEmpty()->willReturn(true);
         $productModelRemover->removeAll(Argument::cetera())->shouldNotBeCalled();
 

@@ -76,7 +76,7 @@ class ProductModelDescendantsIndexer implements
             );
         }
 
-        $this->indexProductModelChildren($object->getChildren());
+        $this->indexProductModelChildren($object->getProductModels());
         $this->indexProductModelChildren($object->getProducts());
     }
 
@@ -116,7 +116,7 @@ class ProductModelDescendantsIndexer implements
             );
         }
 
-        $this->removeProductModelChildren($object->getChildren());
+        $this->removeProductModelChildren($object->getProductModels());
         $this->removeProductModelChildren($object->getProducts());
     }
 
@@ -157,7 +157,7 @@ class ProductModelDescendantsIndexer implements
         $this->productModelIndexer->indexAll($productModelChildren->toArray());
 
         foreach ($productModelChildren as $productModelChild) {
-            $this->indexProductModelChildren($productModelChild->getChildren());
+            $this->indexProductModelChildren($productModelChild->getProductModels());
             $this->indexProductModelChildren($productModelChild->getProducts());
         }
     }
@@ -181,7 +181,7 @@ class ProductModelDescendantsIndexer implements
         $this->productModelRemover->removeAll($productModelChildren->toArray());
 
         foreach ($productModelChildren as $productModelChild) {
-            $this->removeProductModelChildren($productModelChild->getChildren());
+            $this->removeProductModelChildren($productModelChild->getProductModels());
             $this->removeProductModelChildren($productModelChild->getProducts());
         }
     }

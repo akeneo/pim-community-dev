@@ -65,16 +65,15 @@ class ProductIndexerSpec extends ObjectBehavior
     ) {
         $normalizer->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(['id' => 'baz']);
+        $normalizer->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'baz']);
+
         $normalizer->normalize($aWrongProduct, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn([]);
-
-        $productIndexer->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
-
-        $normalizer->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldNotBeCalled();
         $normalizer->normalize($aWrongProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldNotBeCalled();
 
+        $productIndexer->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
         $productModelIndexer->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('indexAll', [[$product, $aWrongProduct]]);

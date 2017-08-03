@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductNormalizer implements NormalizerInterface
 {
-    public const INDEXING_FORMAT_PRODUCT_INDEX = 'indexing';
+    public const INDEXING_FORMAT_PRODUCT_INDEX = 'indexing_product';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
