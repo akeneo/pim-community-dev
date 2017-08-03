@@ -65,7 +65,9 @@ class GroupFieldSetter extends AbstractFieldSetter
 
         $oldGroups = $product->getGroups();
         foreach ($oldGroups as $group) {
-            $product->removeGroup($group);
+            if (!$group->getType()->isVariant()) {
+                $product->removeGroup($group);
+            }
         }
 
         foreach ($groups as $group) {
