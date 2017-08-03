@@ -21,7 +21,8 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
 
         $launcher = new CommandLauncher(
             $this->getContainer()->getParameter('kernel.root_dir'),
-            $this->getContainer()->getParameter('kernel.environment')
+            $this->getContainer()->getParameter('kernel.environment'),
+            $this->getContainer()->getParameter('kernel.logs_dir')
         );
         $launcher->executeForeground('pimee:installer:clean-category-accesses');
         $launcher->executeForeground('pimee:installer:clean-attribute-group-accesses');

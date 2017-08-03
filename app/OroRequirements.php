@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/SymfonyRequirements.php';
+require_once __DIR__ . '/../var/SymfonyRequirements.php';
 
 use Symfony\Component\Intl\Intl;
 
@@ -96,11 +96,11 @@ class OroRequirements extends SymfonyRequirements
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "256M".'
         );
 
-        $directories = array(
+        $directories = [
             'web/bundles',
-            'app/cache',
-            'app/logs',
-        );
+            'var/cache',
+            'var/logs'
+        ];
         foreach ($directories as $directory) {
             $this->addOroRequirement(
                 is_writable($baseDir.'/'.$directory),

@@ -14,9 +14,8 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.repository.group'
+            - '@request_stack'
             - '@pimee_security.repository.attribute_group_access'
-        calls:
-            - [setRequest, ['@?request=']]
 
     pim_datagrid.datagrid.configuration.product.filters_configurator:
         class: '%pim_datagrid.datagrid.configuration.product.filters_configurator.class%'
@@ -31,8 +30,7 @@ services:
         arguments:
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
-        calls:
-            - [setRequest, ['@?request=']]
+            - '@request_stack'
 
     pimee_datagrid.datagrid.configuration.product.row_actions_configurator:
         class: '%pimee_datagrid.datagrid.configuration.product.row_actions_configurator.class%'

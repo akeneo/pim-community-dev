@@ -42,7 +42,7 @@ class AttributeGroupPermissionsTypeSpec extends ObjectBehavior
 
     function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver, []);
+        $this->configureOptions($resolver, []);
 
         $resolver->setDefaults(['mapped' => false])->shouldHaveBeenCalled();
     }

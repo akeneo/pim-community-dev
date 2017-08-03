@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Job;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
@@ -12,7 +11,7 @@ class RefreshProjectCompletenessJobLauncherSpec extends ObjectBehavior
 {
     function let(JobInstanceRepository $jobInstanceRepository)
     {
-        $this->beConstructedWith($jobInstanceRepository, 'job_name', '/tmp', 'prod');
+        $this->beConstructedWith($jobInstanceRepository, 'job_name', '/tmp', 'prod', '/logs');
     }
 
     function it_is_initializable()

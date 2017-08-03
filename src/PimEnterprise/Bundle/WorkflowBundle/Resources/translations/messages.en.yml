@@ -28,15 +28,15 @@ pimee_workflow:
             partial_approve: Approve changes on attribute %attribute% of the product %product%
             partial_reject: Reject changes on attribute %attribute% of the product %product%
         notification:
-            partial_approve: %owner% has accepted value(s) for %attributes% for the product %product%
-            partial_approve_number: %owner% has accepted values for %attributes_count% attributes for the product %product%
-            partial_reject: %owner% has rejected value(s) for %attributes% for the product %product%
-            partial_reject_number: %owner% has rejected values for %attributes_count% attributes for the product %product%
-            partial_remove: %owner% has deleted value(s) for %attributes% for the product %product%
-            partial_remove_number: %owner% has deleted values for %attributes_count% attributes for the product %product%
-            approve: %owner% has accepted your proposal for the product %product%
-            refuse: %owner% has rejected your proposal for the product %product%
-            remove: %owner% has deleted your proposal for the product %product%
+            partial_approve: '%owner% has accepted value(s) for %attributes% for the product %product%'
+            partial_approve_number: '%owner% has accepted values for %attributes_count% attributes for the product %product%'
+            partial_reject: '%owner% has rejected value(s) for %attributes% for the product %product%'
+            partial_reject_number: '%owner% has rejected values for %attributes_count% attributes for the product %product%'
+            partial_remove: '%owner% has deleted value(s) for %attributes% for the product %product%'
+            partial_remove_number: '%owner% has deleted values for %attributes_count% attributes for the product %product%'
+            approve: '%owner% has accepted your proposal for the product %product%'
+            refuse: '%owner% has rejected your proposal for the product %product%'
+            remove: '%owner% has deleted your proposal for the product %product%'
         mass_review_action:
             approve: Approve all selected
             refuse:  Reject all selected
@@ -46,8 +46,8 @@ pimee_workflow:
                 cannot_edit_attributes: You can't edit the attributes modified by this proposal
                 invalid_draft: This proposal can't be applied due to the following error. %error%
     proposal:
-        to_review: %author.firstname% %author.lastname% has sent a proposal to review for the product %product.label%
-        individual_import: %author.firstname% %author.lastname% has sent proposals to review from job import
+        to_review: '%author.firstname% %author.lastname% has sent a proposal to review for the product %product.label%'
+        individual_import: '%author.firstname% %author.lastname% has sent proposals to review from job import'
         generic_import: You have proposals to review from job import
         original_value: Original
         new_value: New

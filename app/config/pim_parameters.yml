@@ -16,10 +16,10 @@ parameters:
 
     session_handler:      ~
 
-    upload_dir:           %kernel.root_dir%/uploads/product
-    archive_dir:          %kernel.root_dir%/archive
-    catalog_storage_dir:  %kernel.root_dir%/file_storage/catalog
-    asset_storage_dir:    %kernel.root_dir%/file_storage/asset
+    upload_dir:           '%kernel.root_dir%/uploads/product'
+    archive_dir:          '%kernel.root_dir%/archive'
+    catalog_storage_dir:  '%kernel.root_dir%/file_storage/catalog'
+    asset_storage_dir:    '%kernel.root_dir%/file_storage/asset'
     tmp_storage_dir:      /tmp/pim/file_storage
 
     installed:            ~
@@ -36,7 +36,7 @@ parameters:
     pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
     pim_catalog_file_allowed_extensions: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
 
-    doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
+    doctrine_migrations_dir: '%kernel.root_dir%/../upgrades/schema'
 
     pim_analytics_update_server_url: https://updates.akeneo.com
 

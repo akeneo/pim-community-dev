@@ -6,8 +6,10 @@ web/dist/*
 web/cache/*
 app/archive/*
 app/cache/*
+var/cache/*
 app/config/parameters.yml
 app/logs/*
+var/logs/*
 app/import/*
 app/export/*
 app/emails/*
@@ -15,6 +17,7 @@ app/uploads/*
 app/uploads/product/*
 app/file_storage/*
 app/bootstrap.php.cache
+var/bootstrap.php.cache
 app/phpunit.xml
 build/
 vendor
@@ -23,6 +26,7 @@ vendor
 /bin/docker/*
 !/bin/docker/pim-initialize.sh
 !/bin/docker/pim-front.sh
+!bin/console
 behat.yml
 .phpspec/*.tpl
 composer.phar

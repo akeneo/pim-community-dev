@@ -120,9 +120,9 @@ class FiltersConfigurator extends BaseFiltersConfigurator
                 'field_options' => [
                     'multiple' => false,
                     'choices'  => [
-                        PermissionFilter::OWN  => 'pimee_workflow.product.permission.own',
-                        PermissionFilter::EDIT => 'pimee_workflow.product.permission.edit',
-                        PermissionFilter::VIEW => 'pimee_workflow.product.permission.view',
+                        'pimee_workflow.product.permission.own' => PermissionFilter::OWN,
+                        'pimee_workflow.product.permission.edit' => PermissionFilter::EDIT,
+                        'pimee_workflow.product.permission.view' => PermissionFilter::VIEW,
                     ]
                 ]
             ]
@@ -147,15 +147,15 @@ class FiltersConfigurator extends BaseFiltersConfigurator
         }
 
         $choices = [
-            ProjectCompletenessFilter::CONTRIBUTOR_TODO        => 'teamwork_assistant.datagrid.contributor_todo',
-            ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS => 'teamwork_assistant.datagrid.contributor_in_progress',
-            ProjectCompletenessFilter::CONTRIBUTOR_DONE        => 'teamwork_assistant.datagrid.contributor_done',
+            'teamwork_assistant.datagrid.contributor_todo'        => ProjectCompletenessFilter::CONTRIBUTOR_TODO,
+            'teamwork_assistant.datagrid.contributor_in_progress' => ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS,
+            'teamwork_assistant.datagrid.contributor_done'        => ProjectCompletenessFilter::CONTRIBUTOR_DONE,
         ];
 
         if ($this->isProjectOwner) {
-            $choices[ProjectCompletenessFilter::OWNER_TODO] = 'teamwork_assistant.datagrid.owner_todo';
-            $choices[ProjectCompletenessFilter::OWNER_IN_PROGRESS] = 'teamwork_assistant.datagrid.owner_in_progress';
-            $choices[ProjectCompletenessFilter::OWNER_DONE] = 'teamwork_assistant.datagrid.owner_done';
+            $choices['teamwork_assistant.datagrid.owner_todo'] = ProjectCompletenessFilter::OWNER_TODO;
+            $choices['teamwork_assistant.datagrid.owner_in_progress'] = ProjectCompletenessFilter::OWNER_IN_PROGRESS;
+            $choices['teamwork_assistant.datagrid.owner_done'] = ProjectCompletenessFilter::OWNER_DONE;
         }
 
         $filter = [
