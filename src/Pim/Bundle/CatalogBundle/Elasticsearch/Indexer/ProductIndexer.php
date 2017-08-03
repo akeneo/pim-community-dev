@@ -84,25 +84,31 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
             return;
         }
 
-        $normalizedObjects = [];
+        $normalizedProducts = [];
+        $normalizedProductModels = [];
         foreach ($objects as $object) {
-            $normalizedObject = $this->normalizer->normalize($object, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
-            $this->validateObjectNormalization($normalizedObject);
-            $normalizedObjects[] = $normalizedObject;
-        }
-        $this->productClient->bulkIndexes($this->indexType, $normalizedObjects, 'id', Refresh::waitFor());
+            $normalizedProduct = $this->normalizer->normalize(
+                $object,
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+            );
+            $this->validateObjectNormalization($normalizedProduct);
+            $normalizedProducts[] = $normalizedProduct;
 
-        $normalizedObjects = [];
-        foreach ($objects as $object) {
-            $normalizedObject = $this->normalizer->normalize(
+            $normalizedProductModel = $this->normalizer->normalize(
                 $object,
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
-            $this->validateObjectNormalization($normalizedObject);
-            $normalizedObjects[] = $normalizedObject;
+            $this->validateObjectNormalization($normalizedProductModel);
+            $normalizedProductModels[] = $normalizedProductModel;
         }
-        $this->productAndProductModelClient->bulkIndexes($this->indexType, $normalizedObjects, 'id',
-            Refresh::waitFor());
+
+        $this->productClient->bulkIndexes($this->indexType, $normalizedProducts, 'id', Refresh::waitFor());
+        $this->productAndProductModelClient->bulkIndexes(
+            $this->indexType,
+            $normalizedProducts,
+            'id',
+            Refresh::waitFor()
+        );
     }
 
     /**

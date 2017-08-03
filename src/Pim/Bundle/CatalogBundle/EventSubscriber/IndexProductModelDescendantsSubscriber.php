@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Index product models descendance in the search engine.
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -65,8 +65,8 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
      */
     public function indexProductModelDescendants(GenericEvent $event) : void
     {
-        $product = $event->getSubject();
-        if (!$product instanceof ProductModelInterface) {
+        $productModel = $event->getSubject();
+        if (!$productModel instanceof ProductModelInterface) {
             return;
         }
 
@@ -74,7 +74,7 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelDescendantsIndexer->index($product);
+        $this->productModelDescendantsIndexer->index($productModel);
     }
 
     /**
@@ -84,16 +84,16 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
      */
     public function bulkIndexProductModelsDescendants(GenericEvent $event) : void
     {
-        $products = $event->getSubject();
-        if (!is_array($products)) {
+        $productModels = $event->getSubject();
+        if (!is_array($productModels)) {
             return;
         }
 
-        if (!current($products) instanceof ProductModelInterface) {
+        if (!current($productModels) instanceof ProductModelInterface) {
             return;
         }
 
-        $this->productModelDescendantsBulkIndexer->indexAll($products);
+        $this->productModelDescendantsBulkIndexer->indexAll($productModels);
     }
 
     /**
@@ -103,11 +103,11 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
      */
     public function deleteProductModelDescendants(RemoveEvent $event) : void
     {
-        $product = $event->getSubject();
-        if (!$product instanceof ProductModelInterface) {
+        $productModel = $event->getSubject();
+        if (!$productModel instanceof ProductModelInterface) {
             return;
         }
 
-        $this->productModelDescendantsRemover->remove($product);
+        $this->productModelDescendantsRemover->remove($productModel);
     }
 }

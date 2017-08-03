@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
- * Indexer responsible for the indexing of all product model children (the subtree made of product variants and product
+ * Indexer responsible for the indexing of all product model children (the subtree made of variant products and product
  * models).
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
