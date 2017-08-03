@@ -21,7 +21,7 @@ interface FormProviderInterface
      *
      * @return string
      */
-    public function getForm($element);
+    public function getForm($element): string;
 
     /**
      * Does the Form provider support the element
@@ -30,5 +30,5 @@ interface FormProviderInterface
      *
      * @return bool
      */
-    public function supports($element);
+    public function supports($element): bool;
 }

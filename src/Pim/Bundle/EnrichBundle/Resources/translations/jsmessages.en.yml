@@ -196,6 +196,9 @@ pim_enrich:
                 family:
                     title: Family
                     none: None
+                family_variant:
+                    title: Variant
+                    none: None
                 groups:
                     title: Groups
                     modal:

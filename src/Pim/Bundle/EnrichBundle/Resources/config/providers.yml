@@ -9,6 +9,7 @@ parameters:
     pim_enrich.provider.empty_value.base.class:    Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
+    pim_enrich.provider.form.product_model.class:  Pim\Bundle\EnrichBundle\Provider\Form\ProductModelFormProvider
     pim_enrich.provider.form.job_instance.class:   Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
     pim_enrich.provider.form.attribute.class:      Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
@@ -56,6 +57,11 @@ services:
 
     pim_enrich.provider.form.product:
         class: '%pim_enrich.provider.form.product.class%'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.form.product_model:
+        class: '%pim_enrich.provider.form.product_model.class%'
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
