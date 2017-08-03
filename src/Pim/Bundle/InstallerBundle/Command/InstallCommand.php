@@ -58,7 +58,7 @@ class InstallCommand extends ContainerAwareCommand
         if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
             && !$forceInstall
         ) {
-            throw new \RuntimeException('Oro Application already installed.');
+            throw new \RuntimeException('Akeneo PIM is already installed.');
         } elseif ($forceInstall) {
             // if --force option we have to clear cache and set installed to false
             $this->updateInstalledFlag($output, false);
