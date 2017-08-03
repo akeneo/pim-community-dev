@@ -12,7 +12,7 @@ Pim\Component\Catalog\Model\ProductModel:
             id: true
             generator:
                 strategy: AUTO
-        identifier:
+        code:
             type: string
             length: 255
             unique: true

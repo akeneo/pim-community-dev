@@ -21,7 +21,7 @@ class ProductModelIntegration extends TestCase
     {
         $productModel = $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
                 'values' => [
                     'description' => [
                         [
@@ -43,7 +43,7 @@ class ProductModelIntegration extends TestCase
 
         $this->assertNotNull(
             $productModel,
-            'The product model with the identifier "product_model_identifier" does not exist'
+            'The product model with the code "product_model_code" does not exist'
         );
 
         $this->assertEquals($productModel->getCategoryCodes(), ['tshirts']);
@@ -55,30 +55,30 @@ class ProductModelIntegration extends TestCase
     }
 
     /**
-     * Basic validation, a product model identifier must not be empty
+     * Basic validation, a product model code must not be empty
      */
-    public function testThatTheProductModelIdentifierMustNotBeEmpty()
+    public function testThatTheProductModelcodeMustNotBeEmpty()
     {
         $productModel = $this->createProductModel(
             [
-                'identifier' => '',
+                'code' => '',
             ]
         );
 
         $errors = $this->get('validator')->validate($productModel);
 
-        $this->assertEquals('The product model identifier must not be empty.', $errors->get(0)->getMessage());
-        $this->assertEquals('identifier', $errors->get(0)->getPropertyPath());
+        $this->assertEquals('The product model code must not be empty.', $errors->get(0)->getMessage());
+        $this->assertEquals('code', $errors->get(0)->getPropertyPath());
     }
 
     /**
-     * Basic validation, a product model identifier must be valid
+     * Basic validation, a product model code must be valid
      */
-    public function testThatTheProductModelIdentifierMustBeValid()
+    public function testThatTheProductModelCodeMustBeValid()
     {
         $productModel = $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
             ]
         );
 
@@ -87,17 +87,17 @@ class ProductModelIntegration extends TestCase
 
         $productModel = $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
             ]
         );
 
         $errors = $this->get('validator')->validate($productModel);
 
         $this->assertEquals(
-            'The same identifier is already set on another product model.',
+            'The same code is already set on another product model.',
             $errors->get(0)->getMessage()
         );
-        $this->assertEquals('identifier', $errors->get(0)->getPropertyPath());
+        $this->assertEquals('code', $errors->get(0)->getPropertyPath());
     }
 
     /**
@@ -110,7 +110,7 @@ class ProductModelIntegration extends TestCase
 
         $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
                 'values' => [
                     'name' => [
                         [
@@ -133,7 +133,7 @@ class ProductModelIntegration extends TestCase
     {
         $productModelParent = $this->createProductModel(
             [
-                'identifier' => 'product_model_parent_identifier',
+                'code' => 'product_model_parent_code',
                 'family_variant' => 'variant_clothing_color_and_size',
             ]
         );
@@ -144,7 +144,7 @@ class ProductModelIntegration extends TestCase
 
         $productModel = $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
                 'family_variant' => 'variant_clothing_color_and_size',
             ]
         );
@@ -165,7 +165,7 @@ class ProductModelIntegration extends TestCase
     {
         $productModelParent = $this->createProductModel(
             [
-                'identifier' => 'product_model_parent_identifier',
+                'code' => 'product_model_parent_code',
                 'family_variant' => 'variant_clothing_color_and_size',
             ]
         );
@@ -176,7 +176,7 @@ class ProductModelIntegration extends TestCase
 
         $productModel = $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
                 'family_variant' => 'variant_clothing_color_and_size',
                 'values' => [
                     'color' => [
@@ -212,7 +212,7 @@ class ProductModelIntegration extends TestCase
     {
         $productModelParent = $this->createProductModel(
             [
-                'identifier' => 'product_model_parent_identifier',
+                'code' => 'product_model_parent_code',
                 'family_variant' => 'variant_clothing_color_and_size',
             ]
         );
@@ -223,7 +223,7 @@ class ProductModelIntegration extends TestCase
 
         $productModel = $this->createProductModel(
             [
-                'identifier' => 'product_model_identifier',
+                'code' => 'product_model_code',
                 'family_variant' => 'variant_clothing_color_and_size',
                 'values' => [
                     'color' => [
@@ -243,7 +243,7 @@ class ProductModelIntegration extends TestCase
 
         $productModelDuplicate = $this->createProductModel(
             [
-                'identifier' => 'product_model_duplicate_identifier',
+                'code' => 'product_model_duplicate_code',
                 'family_variant' => 'variant_clothing_color_and_size',
                 'values' => [
                     'color' => [

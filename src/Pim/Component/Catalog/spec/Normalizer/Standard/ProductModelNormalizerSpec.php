@@ -37,7 +37,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     ) {
         $this->setSerializer($normalizer);
 
-        $productModel->getIdentifier()->willReturn( 'identifier');
+        $productModel->getCode()->willReturn( 'identifier');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getCode()->willReturn('family_variant');
 

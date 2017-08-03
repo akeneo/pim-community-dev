@@ -21,8 +21,8 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     {
         $qb = $this
             ->createQueryBuilder('pm')
-            ->where('pm.identifier IN (:identifiers)')
-            ->setParameter('identifiers', $identifiers);
+            ->where('pm.code IN (:codes)')
+            ->setParameter('codes', $identifiers);
 
         return $qb->getQuery()->execute();
     }
@@ -32,7 +32,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function getIdentifierProperties(): array
     {
-        return ['identifier'];
+        return ['code'];
     }
 
     /**
@@ -40,7 +40,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function findOneByIdentifier($identifier): ?ProductModelInterface
     {
-        return $this->findOneBy(['identifier' => $identifier]);
+        return $this->findOneBy(['code' => $identifier]);
     }
 
     /**

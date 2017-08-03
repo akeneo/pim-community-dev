@@ -32,14 +32,14 @@ interface ProductModelInterface extends
      *
      * @return string
      */
-    public function getIdentifier(): string;
+    public function getCode(): string;
 
     /**
      * Sets the product model identifier.
      *
      * @param string $identifier
      */
-    public function setIdentifier(string $identifier): void;
+    public function setCode(string $identifier): void;
 
     /**
      * Gets the products of the product model.

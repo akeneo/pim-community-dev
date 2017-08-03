@@ -17,7 +17,7 @@ class ProductModel implements ProductModelInterface
     protected $id;
 
     /** @var string */
-    protected $identifier;
+    protected $code;
 
     /** @var array */
     protected $rawValues;
@@ -84,17 +84,17 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier(): string
+    public function getCode(): string
     {
-        return $this->identifier;
+        return $this->code;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setIdentifier(string $identifier): void
+    public function setCode(string $identifier): void
     {
-        $this->identifier = $identifier;
+        $this->code = $identifier;
     }
 
     /**

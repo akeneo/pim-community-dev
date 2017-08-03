@@ -28,7 +28,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
             $familyVariantRepository,
             $productModelRepository,
             ['categories'],
-            ['identifier']
+            ['code']
         );
     }
 
@@ -52,7 +52,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant
     ) {
         $propertySetter->setData($productModel, 'categories', ['tshirt'])->shouldBeCalled();
-        $productModel->setIdentifier('product_model_identifier')->shouldBeCalled();
+        $productModel->setCode('product_model_code')->shouldBeCalled();
         $productModelRepository->findOneByIdentifier('product_model_parent')->willreturn($parentProductModel);
         $productModel->setParent($parentProductModel)->shouldBeCalled();
 
@@ -73,7 +73,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ], [])->shouldBeCalled();
 
         $this->update($productModel, [
-            'identifier' => 'product_model_identifier',
+            'code' => 'product_model_code',
             'values' => [
                 'name' => [
                     'locale' => 'fr_FR',

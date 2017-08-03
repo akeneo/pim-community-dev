@@ -75,8 +75,8 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         foreach ($data as $code => $value) {
             if ('values' === $code) {
                 $this->valuesUpdater->update($productModel, $value, $options);
-            } elseif ('identifier' === $code) {
-                $productModel->setIdentifier($value);
+            } elseif ('code' === $code) {
+                $productModel->setCode($value);
             } elseif ('parent' === $code) {
                 if (!empty($value)) {
                     if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
