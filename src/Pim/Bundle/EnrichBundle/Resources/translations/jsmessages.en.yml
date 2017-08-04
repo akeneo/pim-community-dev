@@ -949,6 +949,8 @@ pim_enrich:
         attribute_group:
             title:       Attribute group overview
             create_btn:  Create
+        api_connection:
+            title:       API connections
     mass_edit:
         next: Next
         previous: Back
@@ -1059,6 +1061,7 @@ page_title:
     pim_enrich_mass_edit_action_perform:   Mass Edit | Perform
     pim_enrich_job_tracker_index:          Process tracker
     pim_enrich_job_tracker_show:           Process tracker | Show job
+    pim_enrich_api_connection_index:       API connections
 
 # Batch job labels
 batch_jobs:
@@ -1326,6 +1329,7 @@ pim_menu:
         user_role: Roles
         info: System information
         job_tracker: Process tracker
+        api_connection: API connections
 
     navigation:
         system: System navigation

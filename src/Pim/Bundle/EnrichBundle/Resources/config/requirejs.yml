@@ -270,11 +270,6 @@ config:
                 pim_enrich_variant_group_edit:
                     module: pim/controller/variant-group
                     aclResourceId: pim_enrich_variant_group_edit
-                pim_enrich_channel_index:
-                    module: pim/controller/common/index
-                    aclResourceId: pim_enrich_channel_index
-                    config:
-                        entity: channel
                 pim_importexport_export_profile_index:
                     module: pim/controller/common/index
                     aclResourceId: pim_importexport_export_profile_index
@@ -444,6 +439,11 @@ config:
                     module: pim/controller/job-execution
                 oro_config_configuration_system:
                     module: pim/controller/system
+                pim_enrich_api_connection_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_api_connection_manage
+                    config:
+                        entity: api-connection
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
                 pim_catalog_date:
@@ -1100,8 +1100,8 @@ config:
         pim/form: pimenrich/js/product/form
 
         # Alias overrides
-        pimcommunity/product-manager:         pimenrich/js/manager/product-manager
-        pimcommunity/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch
+        pimcommunity/product-manager:             pimenrich/js/manager/product-manager
+        pimcommunity/job/common/edit/launch:      pimenrich/js/job/common/edit/launch
         pimcommunity/grid/view-selector/selector: pimenrich/js/grid/view-selector
-        pimcommunity/grid/view-selector/line: pimenrich/js/grid/view-selector-line
-        pimcommunity/grid/view-selector/current: pimenrich/js/grid/view-selector-current
+        pimcommunity/grid/view-selector/line:     pimenrich/js/grid/view-selector-line
+        pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current

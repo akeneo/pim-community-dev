@@ -63,6 +63,7 @@ config:
         oro/datagrid/enabled-cell:              pimdatagrid/js/datagrid/cell/enabled-cell
         oro/datagrid/image-cell:                pimdatagrid/js/datagrid/cell/image-cell
         oro/datagrid/boolean-label-cell:        pimdatagrid/js/datagrid/cell/boolean-label-cell
+        oro/datagrid/credentials-cell:          pimdatagrid/js/datagrid/cell/credentials-cell
         oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
         oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
         oro/datagrid/header-cell:               pimdatagrid/js/datagrid/header-cell/header-cell

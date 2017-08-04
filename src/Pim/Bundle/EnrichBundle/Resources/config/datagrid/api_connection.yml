@@ -1,0 +1,28 @@
+datagrid:
+    api-connection-grid:
+        options:
+            manageFilters: false
+            entityHint: api connection
+        source:
+            type: pim_datasource_api_connection
+            acl_resource: pim_enrich_api_connection_manage
+        columns:
+            label:
+                label: Label
+                data_name: label
+            credentials:
+                label: Credentials
+                data_name: credentials
+                frontend_type: credentials
+        sorters:
+            columns:
+                label:
+                    data_name: cl.label
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                label:
+                    type: search
+                    label: Label
+                    data_name: cl.label

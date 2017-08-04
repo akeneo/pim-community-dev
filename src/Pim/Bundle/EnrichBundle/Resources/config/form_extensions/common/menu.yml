@@ -240,6 +240,14 @@ extensions:
             title: pim_menu.item.job_tracker
             to: pim_enrich_job_tracker_index
 
+    pim-menu-system-api-connection:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        position: 120
+        config:
+            title: pim_menu.item.api_connection
+            to: pim_enrich_api_connection_index
+
     pim-menu-user-navigation-block:
         module: pim/menu/navigation-block
         parent: pim-menu-system-column
