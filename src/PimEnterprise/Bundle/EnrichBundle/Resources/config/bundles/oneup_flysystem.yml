@@ -2,16 +2,16 @@ oneup_flysystem:
     adapters:
         asset_storage_adapter:
             local:
-                directory: %asset_storage_dir%
+                directory: '%asset_storage_dir%'
         catalog_storage_adapter:
             local:
-                directory: %catalog_storage_dir%
+                directory: '%catalog_storage_dir%'
         tmp_storage_adapter:
             local:
-                directory: %tmp_storage_dir%
+                directory: '%tmp_storage_dir%'
         archivist_adapter:
             local:
-                directory: %archive_dir%
+                directory: '%archive_dir%'
     filesystems:
         asset_storage:
             adapter: asset_storage_adapter

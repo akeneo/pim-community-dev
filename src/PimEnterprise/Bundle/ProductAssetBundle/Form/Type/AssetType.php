@@ -57,7 +57,9 @@ class AssetType extends AbstractType
             'code',
             TextType::class,
             [
-                'read_only' => true,
+                'attr' => [
+                    'read_only' => true,
+                ],
                 'label'     => 'pimee_product_asset.enrich_asset.view.code',
             ]
         );

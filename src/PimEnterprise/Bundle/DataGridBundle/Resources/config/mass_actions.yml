@@ -1,7 +1,7 @@
 parameters:
-    pim_datagrid.extension.mass_action.util.product_fields_builder.class:    PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
-    pim_datagrid.extension.mass_action.handler.mass_approve.class:           PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
-    pim_datagrid.extension.mass_action.handler.mass_refuse.class:            PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler
+    pim_datagrid.extension.mass_action.util.product_fields_builder.class:         PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
+    pim_datagrid.extension.mass_action.handler.mass_approve.class:                PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
+    pim_datagrid.extension.mass_action.handler.mass_refuse.class:                 PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler
     pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler
 
 services:

@@ -34,7 +34,11 @@ class AclRoleHandler extends OroAclRoleHandler
                 ->getPrivilegeRepository()->getPermissionNames($config['types']);
         }
 
-        $this->form = $this->formFactory->create(new AclRoleType($this->privilegeConfig), $role);
+        $this->form = $this->formFactory->create(
+            AclRoleType::class,
+            $role,
+            ['privilegeConfigOption' => $this->privilegeConfig]
+        );
 
         return $this->form;
     }

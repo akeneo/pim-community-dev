@@ -28,9 +28,9 @@ class ScaleOptionsResolver implements TransformationOptionsResolverInterface
     {
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefined(['ratio', 'width', 'height']);
-        $this->resolver->setAllowedTypes(
-            ['ratio' => ['int', 'null'], 'width' => ['int', 'null'], 'height' => ['int', 'null']]
-        );
+        $this->resolver->setAllowedTypes('ratio', ['int', 'null']);
+        $this->resolver->setAllowedTypes('width', ['int', 'null']);
+        $this->resolver->setAllowedTypes('height', ['int', 'null']);
         $this->resolver->setDefaults(['ratio' => null, 'width' => null, 'height' => null]);
     }
 

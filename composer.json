@@ -20,7 +20,8 @@
             "Akeneo\\TestEnterprise\\Integration\\": "tests/",
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
-        }
+        },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "autoload-dev": {
         "files": [
@@ -69,7 +70,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php app/console fos:js-routing:dump --target=web/js/routes.js"
+            "php bin/console fos:js-routing:dump --target=web/js/routes.js"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
@@ -78,12 +79,11 @@
             "@symfony-scripts"
         ]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {

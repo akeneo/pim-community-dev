@@ -52,7 +52,7 @@ class LocaleController
     {
         $form = $this->formFactory->create(LocaleType::class, $locale);
         if ($request->isMethod('POST')) {
-            $form->submit($request);
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $request->getSession()->getFlashBag()->add('success', new Message('flash.locale.updated'));
 

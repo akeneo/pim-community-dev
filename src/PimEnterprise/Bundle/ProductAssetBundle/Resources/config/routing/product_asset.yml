@@ -67,7 +67,7 @@ pimee_product_asset_rest_verify_upload:
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:verifyAction, _format: json }
     methods: [GET]
     requirements:
-        filename: "['\s\w._-]+\.[a-zA-Z0-9]+"
+        filename: '[''\s\w._-]+\.[a-zA-Z0-9]+'
 
 pimee_product_asset_mass_upload:
     path: /mass-upload
