@@ -240,7 +240,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function normalizeImage(?ValueInterface $data, $format, $context = [])
     {
-        if (null === $data) {
+        if (null === $data || null === $data->getData()) {
             return null;
         }
 
