@@ -55,7 +55,7 @@ class WebUser extends PimContext
         $this->spin(function () use ($entity) {
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
-            return true;
+            return null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
         }, sprintf('Cannot create a new %s', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
@@ -1275,6 +1275,16 @@ class WebUser extends PimContext
     }
 
     /**
+     * @Then /^the attribute options order should be (.+)$/
+     */
+    public function theAttributeOptionsOrderShouldBe($optionCodes)
+    {
+        $expected = $this->listToArray($optionCodes);
+
+        $this->getCurrentPage()->checkOptionsOrder($expected);
+    }
+
+    /**
      * @param string $attributes
      * TODO: use something more generic
      * @Then /^eligible attributes as label should be (.*)$/
@@ -1720,15 +1730,15 @@ class WebUser extends PimContext
      */
     public function iSwitchTheSubCategoriesInclusion($status)
     {
-        $switch = $this->spin(function () {
-            return $this->getCurrentPage()->findById('nested_switch_input');
-        }, 'Cannot find the switch button to include sub categories');
+        $this->spin(function () use ($status) {
+            $switch = $this->getCurrentPage()->findById('nested_switch_input');
 
-        $on = 'en' === $status;
-        if ($switch->isChecked() !== $on) {
-            $switch->getParent()->find('css', 'label')->click();
-        }
-        $this->wait();
+            if (('en' === $status) !== $switch->isChecked()) {
+                $switch->getParent()->find('css', 'label')->click();
+            }
+
+            return true;
+        }, sprintf('Cannot %sable the inclusion of sub-categories', $status));
     }
 
     /**

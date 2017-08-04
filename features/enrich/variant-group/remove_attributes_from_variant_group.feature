@@ -11,6 +11,7 @@ Feature: Remove an attribute from a variant group
       | boot | caterpillar_boots | foo     | black | 40   |
     And I am logged in as "Julia"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Successfully remove an attribute from a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -29,7 +30,7 @@ Feature: Remove an attribute from a variant group
     Then I should see the flash message "Attribute successfully removed from the variant group"
     And I should see available attribute Comment in group "Other"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3697
+  @skip @info Will be removed in PIM-6444 @jira https://akeneo.atlassian.net/browse/PIM-3697
   Scenario: Successfully remove an attribute from a variant group and ensure the field is enabled back
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab

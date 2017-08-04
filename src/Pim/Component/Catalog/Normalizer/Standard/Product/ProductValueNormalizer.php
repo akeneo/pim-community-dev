@@ -80,7 +80,13 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             } else {
                 $data[] = $this->serializer->normalize($item, $format, $context);
             }
+        }
 
+        if (AttributeTypes::PRICE_COLLECTION === $attributeType) {
+            usort($data, function ($a, $b) {
+                return strnatcasecmp($a['currency'], $b['currency']);
+            });
+        } else {
             sort($data);
         }
 

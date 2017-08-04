@@ -257,7 +257,9 @@ class ProductBuilder implements ProductBuilderInterface
                         $prices[] = ['amount' => null, 'currency' => $currencyCode];
                     }
                 }
-
+                usort($prices, function ($a, $b) {
+                    return strnatcasecmp($a['currency'], $b['currency']);
+                });
                 $this->addOrReplaceValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
             }
         }

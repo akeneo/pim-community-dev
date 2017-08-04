@@ -37,16 +37,3 @@ Feature: Save only filled fields after a save
     But I should see the Price and Rating fields
     When I visit the "Product information" group
     Then I should see the Name, Description, Manufacturer fields
-
-  Scenario: Successfully save only filled optional attributes on PEF
-    Given I am on the "summer-sneaker" product page
-    When I add available attributes Length, Weight
-    And I fill in the following information:
-      | Length | 30 Centimeter |
-      | Weight |               |
-    And I save the product
-    Then the product "summer-sneaker" should have the following values:
-      | length | 30.0000 CENTIMETER |
-    But the product "summer-sneaker" should not have the following values:
-      | weight |
-    And I should not see the Weight field

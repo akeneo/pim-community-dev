@@ -35,6 +35,7 @@ Feature: Add attributes to a variant group
     And I should not see available attribute Name in group "Product information"
     And I should not see available attribute Price in group "Marketing"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Update values of products in a variant group only after saving the group (not immediately after adding a new attribute)
     Given the following product:
       | sku  | groups            | name-en_US | color | size |
@@ -48,6 +49,7 @@ Feature: Add attributes to a variant group
     When I am on the "boot" product page
     Then the field Name should contain ""
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Update products when values are changed on the variant group page
     Given the following products:
       | sku  | groups            | color | size |

@@ -11,6 +11,7 @@ Feature: Execute an import with scopable or localizable data
       | SANDAL | Sandal      | size,color | VARIANT |
     And I am logged in as "Julia"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Avoid data loss when importing variant group localizable/scopable values
     Given I am on the "SANDAL" variant group page
     And I visit the "Attributes" tab
