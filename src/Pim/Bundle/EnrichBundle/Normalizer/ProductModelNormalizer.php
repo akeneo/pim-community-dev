@@ -6,6 +6,8 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
@@ -26,6 +28,9 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $versionNormalizer;
 
+    /** @var NormalizerInterface */
+    private $fileNormalizer;
+
     /** @var VersionManager */
     private $versionManager;
 
@@ -38,28 +43,37 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var FormProviderInterface */
     private $formProvider;
 
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
     /**
      * @param NormalizerInterface         $normalizer
      * @param NormalizerInterface         $versionNormalizer
+     * @param NormalizerInterface              $fileNormalizer
      * @param VersionManager              $versionManager
      * @param AttributeConverterInterface $localizedConverter
      * @param ConverterInterface          $productValueConverter
      * @param FormProviderInterface       $formProvider
+     * @param LocaleRepositoryInterface   $localeRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
+        NormalizerInterface $fileNormalizer,
         VersionManager $versionManager,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
-        FormProviderInterface $formProvider
+        FormProviderInterface $formProvider,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->normalizer            = $normalizer;
+        $this->versionNormalizer     = $versionNormalizer;
+        $this->fileNormalizer        = $fileNormalizer;
         $this->versionManager        = $versionManager;
         $this->localizedConverter    = $localizedConverter;
         $this->productValueConverter = $productValueConverter;
         $this->formProvider          = $formProvider;
-        $this->versionNormalizer     = $versionNormalizer;
+        $this->localeRepository      = $localeRepository;
     }
 
     /**
@@ -90,7 +104,8 @@ class ProductModelNormalizer implements NormalizerInterface
                 'id'             => $productModel->getId(),
                 'created'        => $created,
                 'updated'        => $updated,
-                'model_type'     => 'product_model'
+                'model_type'     => 'product_model',
+                'image'          => $this->normalizeImage($productModel->getImage(), $format, $context),
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;
@@ -111,8 +126,28 @@ class ProductModelNormalizer implements NormalizerInterface
      */
     private function getLabels(ProductModelInterface $productModel): array
     {
-        // TODO: in PIM-6669, we'll have to handle labels coming from parent(s)
+        $labels = [];
 
-        return ['label' => ['en_US' => $productModel->getIdentifier()]];
+        foreach ($this->localeRepository->getActivatedLocaleCodes() as $localeCode) {
+            $labels[$localeCode] = $productModel->getLabel($localeCode);
+        }
+
+        return ['label' => $labels];
+    }
+
+    /**
+     * @param ValueInterface|null $data
+     * @param string              $format
+     * @param array               $context
+     *
+     * @return array|null
+     */
+    private function normalizeImage(?ValueInterface $data, string $format, array $context = []): ?array
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
     }
 }
