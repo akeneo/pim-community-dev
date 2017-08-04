@@ -51,7 +51,7 @@ class AttributeOptionTypeSpec extends ObjectBehavior
 
     function it_sets_default_option(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver, []);
+        $this->configureOptions($resolver);
 
         $resolver->setDefaults(
             [

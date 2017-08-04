@@ -1,8 +1,6 @@
 twig:
     exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
-    form:
-        resources:
-            - 'PimUIBundle:Form:pim-fields.html.twig'
+    form_theme: ['PimUIBundle:Form:pim-fields.html.twig']
     globals:
         ws:
             port:        '%websocket_port%'

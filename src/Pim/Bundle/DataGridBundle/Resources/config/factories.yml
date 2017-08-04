@@ -2,4 +2,4 @@ services:
     pim_datagrid.factory.datagrid_view:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - %pim_datagrid.entity.datagrid_view.class%
+            - '%pim_datagrid.entity.datagrid_view.class%'

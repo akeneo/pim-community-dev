@@ -277,7 +277,7 @@ class CategoryTreeController extends Controller
         $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
-            $form->submit($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
@@ -326,7 +326,7 @@ class CategoryTreeController extends Controller
         $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
-            $form->submit($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);

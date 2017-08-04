@@ -63,7 +63,7 @@ class MetadataExtension extends Twig_Extension
      */
     public function getGridData(\Twig_Environment $twig, $name, $params = [])
     {
-        return $twig->getExtension('actions')->renderUri($this->generateUrl($name, $params, true));
+        return $this->container->get('fragment.handler')->render($this->generateUrl($name, $params, true));
     }
 
     /**

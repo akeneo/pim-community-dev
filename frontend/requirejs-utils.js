@@ -54,7 +54,7 @@ const utils = {
 
         if (!existsSync(sourcePath)) {
             throw new Error(`The web/js/require-paths.js module does not exist - You need to run
-            "app/console pim:install" or "app/console pim:installer:dump-require-paths" before
+            "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
             running webpack \n`.red)
         }
 

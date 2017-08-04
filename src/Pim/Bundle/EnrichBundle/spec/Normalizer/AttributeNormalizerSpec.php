@@ -155,7 +155,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
     ) {
         $normalizer->normalize($price, 'standard', Argument::any())->willReturn(
             [
-                'code' => 'price',
+                'code'                   => 'price',
                 'type'                   => 'pim_catalog_price_collection',
                 'group'                  => 'marketing',
                 'unique'                 => false,

@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -323,7 +324,12 @@ class CategoryController
     protected function getResponse(CategoryInterface $category, $status)
     {
         $response = new Response(null, $status);
-        $route = $this->router->generate('pim_api_category_get', ['code' => $category->getCode()], true);
+        $route = $this->router->generate(
+            'pim_api_category_get',
+            ['code' => $category->getCode()],
+            Router::ABSOLUTE_URL
+        );
+
         $response->headers->set('Location', $route);
 
         return $response;

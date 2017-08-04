@@ -7,6 +7,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -94,7 +95,7 @@ class TranslatableFieldType extends AbstractType
                 'field'             => false,
                 'locales'           => $this->userContext->getUserLocaleCodes(),
                 'required_locale'   => [],
-                'widget'            => 'text'
+                'widget'            => TextType::class
             ]
         );
     }

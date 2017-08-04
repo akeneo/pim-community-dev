@@ -22,6 +22,8 @@ class MassEditOperation implements BatchableOperationInterface
 
     /**
      * @param string $jobInstanceCode
+     * @param array  $filters
+     * @param array  $actions
      */
     public function __construct($jobInstanceCode, $filters, $actions)
     {
@@ -33,7 +35,7 @@ class MassEditOperation implements BatchableOperationInterface
     /**
      * {@inheritdoc}
      */
-    public function getBatchConfig()
+    public function getBatchConfig(): array
     {
         return [
             'filters' => $this->filters,
@@ -44,7 +46,7 @@ class MassEditOperation implements BatchableOperationInterface
     /**
      * {@inheritdoc}
      */
-    public function getJobInstanceCode()
+    public function getJobInstanceCode(): string
     {
         return $this->jobInstanceCode;
     }

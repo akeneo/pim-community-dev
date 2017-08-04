@@ -1,10 +1,9 @@
 'use strict';
 /**
- * Edit form
+ * Choose extension for mass edit
  *
  * @author    Julien Sanchez <julien@akeneo.com>
- * @author    Filips Alps <filips@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(

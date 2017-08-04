@@ -56,6 +56,6 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
                 'excluded_attributes' => [],
             ]
         )->shouldBeCalled();
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 }

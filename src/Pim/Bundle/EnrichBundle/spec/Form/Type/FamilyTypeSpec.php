@@ -47,6 +47,6 @@ class FamilyTypeSpec extends ObjectBehavior
     function it_sets_the_default_form_data_class(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['data_class' => Family::class])->shouldBeCalled();
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 }

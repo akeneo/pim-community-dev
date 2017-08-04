@@ -4,6 +4,7 @@ namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -94,7 +95,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
      */
     protected function renderTable(array $collection, $header, OutputInterface $output)
     {
-        $table = $this->getHelperSet()->get('table');
+        $table = new Table($output);
 
         $table
             ->setHeaders(['Check  ', $header])
@@ -113,7 +114,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             }
         }
 
-        $table->render($output);
+        $table->render();
     }
 
     /**

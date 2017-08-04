@@ -508,7 +508,7 @@ info:
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
-        number of associations:  %productCount% products and %groupCount% groups
+        number of associations:  '%productCount% products and %groupCount% groups'
         enable:                  Enable
         enabled:                 Enabled
         disable:                 Disable
@@ -518,7 +518,7 @@ info:
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
         no group types:      No group types exist, click here to create one
-        more products:       %count% more products...
+        more products:       '%count% more products...'
     association type:
         show products:        Show products
         show groups:          Show groups

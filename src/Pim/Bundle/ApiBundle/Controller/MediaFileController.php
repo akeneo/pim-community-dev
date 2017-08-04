@@ -30,6 +30,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -263,7 +264,12 @@ class MediaFileController
         $this->linkFileToProduct($fileInfo, $product, $productInfos);
 
         $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_media_file_get', ['code' => $fileInfo->getKey()], true);
+        $route = $this->router->generate(
+            'pim_api_media_file_get',
+            ['code' => $fileInfo->getKey()],
+            Router::ABSOLUTE_URL
+        );
+
         $response->headers->set('Location', $route);
 
         return $response;

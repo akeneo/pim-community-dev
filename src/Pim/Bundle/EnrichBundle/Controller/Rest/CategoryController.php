@@ -89,7 +89,7 @@ class CategoryController
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $categories = $this->repository->findBy(
             [
