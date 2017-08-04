@@ -187,11 +187,13 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     {
         $resolver
             ->setRequired(['field', 'operator', 'value'])
-            ->setDefined(['context'])
+            ->setDefined(['context', 'type'])
             ->setDefaults([
-                'context'  => [],
+                'context' => [],
+                'type' => '',
             ])
             ->setAllowedTypes('context', 'array')
+            ->setAllowedTypes('type', 'string')
         ;
     }
 }

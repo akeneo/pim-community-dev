@@ -12,12 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var Client */
-    protected $esProductClient;
-
-    /** @var Client */
-    protected $esProductAndProductModelClient;
-
     /**
      * @return Configuration
      */
@@ -32,24 +26,13 @@ abstract class TestCase extends KernelTestCase
 
         $configuration = $this->getConfiguration();
 
-        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
-        $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
-
         $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
 
         $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
         $fixturesLoader->load();
 
-        $this->esProductClient->resetIndex();
-        $this->esProductAndProductModelClient->resetIndex();
-
-        $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
-
-        // TODO: Reindex all product models and their children (see PIM-6646)
-        // for instance:
-        // $models = $this->get('pim_catalog.repository.product')->findAll();
-        // $this->get('pim_catalog.elasticsearch.product_model_indexer')->indexAll($models);
+        $this->indexProductModels();
+        $this->indexProducts();
     }
 
     /**
@@ -131,5 +114,22 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    protected function indexProducts()
+    {
+        $this->get('akeneo_elasticsearch.client.product')->resetIndex();
+
+        $products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+    }
+
+    protected function indexProductModels()
+    {
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+
+        $productModels = $this->get('pim_catalog.repository.product_model')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
+        $this->get('pim_catalog.elasticsearch.indexer.product_model_descendance')->indexAll($productModels);
     }
 }

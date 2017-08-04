@@ -269,7 +269,7 @@ class ProductModelIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getFunctionalCatalog('catalog_modeling')]);
+        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
     }
 
     /**

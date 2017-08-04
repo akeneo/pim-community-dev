@@ -21,7 +21,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  * | clothing    | description, color, image_1, material, size | clothing_material_size | description                           | material (axis), image_1, color | size (axis)                    |
  * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  *
- * And here are the products linked to those family variants:
+ * And here are the products and product models linked to those family variants:
  *
  * |------------------------------------------------------------------------------------------------------------------------------------|
  * | Label                        | Color  | Size | Material  | Completeness | Complete products | Family      | Family variant         |

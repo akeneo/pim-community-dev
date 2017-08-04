@@ -127,8 +127,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         if (null !== $attribute) {
+            $filterType = 'attribute';
             $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
         } else {
+            $filterType = 'field';
             $filter = $this->filterRegistry->getFieldFilter($field, $operator);
         }
 
@@ -151,7 +153,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             'field'    => $field,
             'operator' => $operator,
             'value'    => $value,
-            'context'  => $context
+            'context'  => $context,
+            'type'     => $filterType
         ];
 
         return $this;
