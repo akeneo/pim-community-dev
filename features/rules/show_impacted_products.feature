@@ -29,7 +29,7 @@ Feature: Browse products selected in rules datagrid
         priority: 10
         conditions:
           - field: weight
-            operator: >=
+            operator: ">="
             value:
               amount: 750
               unit: GRAM

@@ -31,7 +31,7 @@ class AddTags extends Form
                 'Choose'                    => ['css' => '.AknButton[data-action-target="choose"]'],
                 'Configure'                 => ['css' => '.AknButton[data-action-target="configure"]'],
                 'Confirm'                   => ['css' => '.AknButton[data-action-target="confirm"]'],
-                'Validate'                   => ['css' => '.AknButton[data-action-target="validate"]'],
+                'Validate'                  => ['css' => '.AknButton[data-action-target="validate"]'],
             ]
         );
     }

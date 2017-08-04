@@ -30,14 +30,14 @@ class ResolutionOptionsResolver implements TransformationOptionsResolverInterfac
         $this->resolver = new OptionsResolver();
         $this->resolver->setRequired(['resolution']);
         $this->resolver->setDefined(['resolution-unit']);
-        $this->resolver->setAllowedTypes(['resolution' => 'int', 'resolution-unit' => 'string']);
+        $this->resolver->setAllowedTypes('resolution', 'int');
+        $this->resolver->setAllowedTypes('resolution-unit', 'string');
         $this->resolver->setDefaults(['resolution-unit' => ImageInterface::RESOLUTION_PIXELSPERINCH]);
         $this->resolver->setAllowedValues(
+            'resolution-unit',
             [
-                'resolution-unit' => [
-                    ImageInterface::RESOLUTION_PIXELSPERCENTIMETER,
-                    ImageInterface::RESOLUTION_PIXELSPERINCH
-                ]
+                ImageInterface::RESOLUTION_PIXELSPERCENTIMETER,
+                ImageInterface::RESOLUTION_PIXELSPERINCH
             ]
         );
     }
