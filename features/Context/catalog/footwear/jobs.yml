@@ -374,35 +374,6 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   ,
             filePath:           /tmp/footwear_products-fr.xlsx
-    xlsx_footwear_product_import:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_product_import
-        label:     XLSX footwear product import
-        type:      import
-        configuration:
-            uploadAllowed:      true
-            enabled:            true
-            categoriesColumn:   categories
-            familyColumn:       family
-            groupsColumn:       groups
-            realTimeVersioning: true
-            decimalSeparator:   .
-            dateFormat:         yyyy-MM-dd
-            filePath:           /tmp/footwear_products.xlsx
-    xlsx_footwear_product_model_import:
-        connector: Akeneo XLSX Connector
-        alias: xlsx_product_model_import
-        label: Demo XLSX product model import
-        type: import
-        configuration:
-            filePath: /tmp/product_model.xlsx
-            uploadAllowed: true
-            enabled: true
-            categoriesColumn: categories
-            familyVariantColumn: family_variant
-            realTimeVersioning: true
-            decimalSeparator: .
-            dateFormat: yyyy-MM-dd
     xlsx_footwear_category_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_import
