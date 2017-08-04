@@ -25,7 +25,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
 
     function it_is_a_serializer_aware_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer');
+        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 

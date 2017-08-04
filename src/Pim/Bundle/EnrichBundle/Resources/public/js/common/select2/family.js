@@ -22,6 +22,12 @@ define(
         Routing
     ) {
         return {
+            /**
+             * Provide the config for a family select2 field
+             *
+             * @param {string} initialValue
+             * @return {object}
+             */
             getConfig: function (initialValue) {
                 return {
                     allowClear: true,

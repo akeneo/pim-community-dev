@@ -38,7 +38,6 @@ services:
 
     pim_enrich.form.type.attribute_option:
         class: '%pim_enrich.form.type.attribute_option.class%'
-
         arguments:
             - '%pim_catalog.entity.attribute_option.class%'
         tags:

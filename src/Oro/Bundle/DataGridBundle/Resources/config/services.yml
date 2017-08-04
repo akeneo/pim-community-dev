@@ -29,8 +29,8 @@ services:
 
     oro_datagrid.datagrid.request_params:
         class: '%oro_datagrid.datagrid.request_params.class%'
-        calls:
-            - [setRequest, ['@?request=']]
+        arguments:
+            - '@request_stack'
 
     oro_datagrid.provider.resolver:
         class: '%oro_datagrid.provider.resolver.class%'

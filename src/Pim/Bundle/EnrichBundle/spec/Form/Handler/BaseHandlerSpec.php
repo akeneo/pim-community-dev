@@ -30,7 +30,7 @@ class BaseHandlerSpec extends ObjectBehavior
         $requestStack->getCurrentRequest()->willReturn($request);
         $form->setData($entity)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
         $saver->save($entity)->shouldBeCalled();
 
@@ -47,7 +47,7 @@ class BaseHandlerSpec extends ObjectBehavior
         $requestStack->getCurrentRequest()->willReturn($request);
         $form->setData($entity)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(false);
         $saver->save($entity)->shouldNotBeCalled();
 

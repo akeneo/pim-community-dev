@@ -130,7 +130,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
         $channels = $qb->getQuery()->getArrayResult();
         $choices = [];
         foreach ($channels as $channel) {
-            $choices[$channel['code']] = null !== $channel['label'] ? $channel['label'] : '[' . $channel['code'] . ']';
+            $choices[null !== $channel['label'] ? $channel['label'] : '[' . $channel['code'] . ']'] = $channel['code'];
         }
 
         return $choices;

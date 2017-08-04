@@ -45,7 +45,7 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
             $standardizedProducts[] = $this->getStandardizedProduct($product->getIdentifier());
         }
         $standardizedProducts = implode(',', $standardizedProducts);
-        $lastEncryptedId = urlencode($this->getEncryptedId(end($this->products)));
+        $lastEncryptedId = rawurlencode($this->getEncryptedId(end($this->products)));
 
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products?limit=100');

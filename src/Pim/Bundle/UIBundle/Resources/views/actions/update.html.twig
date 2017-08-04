@@ -4,7 +4,11 @@
 {% block page_container %}
     {% block content %}
     <div class="AknDefault-mainContent">
-        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }} method="post" class="unspaced">
+        {{ form_start(form, {
+            'action': formAction,
+            'method': 'post',
+            'id': form.vars.name
+        }) }}
 
             {% block pageHeader %}
                 {% set buttons %}
@@ -44,7 +48,7 @@
                     {{ UI.scrollData(id, data, form) }}
                 {% endblock content_data %}
             </div>
-        </form>
+        {{ form_end(form) }}
     </div>
     {% endblock content %}
 {% endblock %}

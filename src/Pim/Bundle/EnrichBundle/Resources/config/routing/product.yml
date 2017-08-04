@@ -18,7 +18,7 @@ pim_enrich_product_toggle_status:
 
 pim_enrich_product_listcategories:
     path: /list-categories/product/{id}/parent/{categoryId}
-    defaults: { _controller: pim_enrich.controller.product:listCategoriesAction }
+    defaults: { _controller: pim_enrich.controller.product:listCategoriesAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
         categoryId: \d+

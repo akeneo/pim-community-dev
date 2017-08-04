@@ -119,6 +119,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
                     // Unwrap for the foreach below
                     $relatedEntities = $relatedEntities->unwrap();
 
+                    // no break
                 case ($relatedEntities instanceof Collection):
                 case (is_array($relatedEntities)):
                     foreach ($relatedEntities as $relatedEntity) {

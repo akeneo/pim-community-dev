@@ -18,7 +18,6 @@ framework:
         enabled: true
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
-    trusted_proxies: ~
     session:
         name:                 BAPID
         handler_id:           session.handler.pdo
@@ -35,7 +34,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        uservoice_key: %uservoice_key%
+        uservoice_key: "%uservoice_key%"
 
 # Assetic Configuration
 assetic:

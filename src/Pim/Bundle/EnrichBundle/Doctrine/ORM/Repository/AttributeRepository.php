@@ -61,7 +61,7 @@ class AttributeRepository extends EntityRepository implements
 
         $choices = [];
         foreach ($queryBuilder->getQuery()->getArrayResult() as $attribute) {
-            $choices[$attribute['group_label']][$attribute['code']] = $attribute['attribute_label'];
+            $choices[$attribute['group_label']][$attribute['attribute_label']] = $attribute['code'];
         }
 
         return $choices;

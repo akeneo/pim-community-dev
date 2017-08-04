@@ -84,8 +84,8 @@ datagrid:
                     options:
                         field_options:
                             choices:
-                                1: Enabled
-                                0: Disabled
+                                Enabled: 1
+                                Disabled: 0
                 completeness:
                     type:      product_completeness
                     label:     Complete

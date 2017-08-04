@@ -81,4 +81,4 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:
-                                0: pim_import_export.status.0
+                                pim_import_export.status.0: 0

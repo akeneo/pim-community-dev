@@ -9,7 +9,7 @@ services:
       - elasticsearch
       - selenium
     environment:
-      BEHAT_TMPDIR: /srv/pim/app/cache/tmp
+      BEHAT_TMPDIR: /srv/pim/var/cache/tmp
       COMPOSER_HOME: /home/docker/.composer
       PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       PHP_XDEBUG_ENABLED: 0

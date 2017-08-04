@@ -2116,7 +2116,6 @@ class WebUser extends PimContext
     public function iMoveOnToTheNextStep()
     {
         $this->iMoveToTheConfirmPage();
-        sleep(2);
     }
 
     /**
@@ -2126,7 +2125,6 @@ class WebUser extends PimContext
     {
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->cancel();
-        sleep(2);
     }
 
     /**
@@ -2136,7 +2134,6 @@ class WebUser extends PimContext
     {
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->select();
-        sleep(2);
     }
 
     /**
@@ -2147,7 +2144,6 @@ class WebUser extends PimContext
         $this->iMoveToTheConfirmPage();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
-        sleep(2);
     }
 
     /**

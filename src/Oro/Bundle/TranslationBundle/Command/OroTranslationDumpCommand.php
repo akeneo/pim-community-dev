@@ -20,7 +20,7 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
             ->setDescription('Dumps oro js-translations')
             ->addArgument(
                 'locale',
-                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                InputArgument::OPTIONAL,
                 'List of locales, whose translations should to be dumped'
             )
             ->addOption(
@@ -38,9 +38,7 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $locales = $input->getArgument('locale');
-        if (empty($locales)) {
-            $locales[] = $this->getContainer()->getParameter('kernel.default_locale');
-        }
+        $locales = null === $locales ? [$this->getContainer()->getParameter('kernel.default_locale')] : explode(', ', $locales);
 
         $domains = $this->getContainer()->getParameter('oro_translation.js_translation.domains');
         $targetPattern = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web')

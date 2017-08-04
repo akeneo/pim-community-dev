@@ -56,8 +56,8 @@ class SelectRowFilterType extends AbstractChoiceType
                 'field_type'    => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
-                        self::NOT_SELECTED_VALUE => $this->translator->trans('oro.filter.form.label_not_selected'),
-                        self::SELECTED_VALUE     => $this->translator->trans('oro.filter.form.label_selected')
+                        $this->translator->trans('oro.filter.form.label_not_selected') => self::NOT_SELECTED_VALUE,
+                        $this->translator->trans('oro.filter.form.label_selected') => self::SELECTED_VALUE
                     ]
                 ],
             ]

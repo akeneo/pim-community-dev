@@ -82,11 +82,11 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             EntityType::class,
             [
                 'class'         => 'PimCatalogBundle:Locale',
-                'property'      => 'code',
+                'choice_label'  => 'code',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getActivatedLocalesQB();
-                }
+                },
             ]
         );
     }
@@ -100,9 +100,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'catalogScope',
             EntityType::class,
             [
-                'class'    => 'PimCatalogBundle:Channel',
-                'property' => 'label',
-                'select2'  => true
+                'class'        => 'PimCatalogBundle:Channel',
+                'choice_label' => 'label',
+                'select2'      => true
             ]
         );
     }
@@ -133,7 +133,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             EntityType::class,
             [
                 'class'         => 'PimCatalogBundle:Locale',
-                'property'      => 'getName',
+                'choice_label'  => 'getName',
                 'select2'       => true,
                 'query_builder' => function (LocaleRepository $repository) use ($localeProvider) {
                     $locales = $localeProvider->getLocales();

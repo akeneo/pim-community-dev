@@ -43,15 +43,15 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
                 'label' => 'Locale',
             ]
         ]);
-        
+
         $attributeProvider->findTranslatedLabels(['useable_as_grid_filter' => true])->willReturn([
-            'Other' => ['sku' => 'SKU'],
+            'Other' => ['SKU' => 'sku'],
         ]);
-        
+
         $resolver->setDefaults([
             'choices' => [
-                'System' => ['family' => 'My family'],
-                'Other' => ['sku' => 'SKU'],
+                'System' => ['My family' => 'family'],
+                'Other' => ['SKU' => 'sku'],
             ],
         ])->shouldBeCalled();
 

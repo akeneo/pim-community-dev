@@ -48,7 +48,7 @@ class GroupRepository extends EntityRepository implements
 
         $choices = [];
         foreach ($queryBuilder->getArrayResult() as $code) {
-            $choices[$code['id']] = $code['label'];
+            $choices[$code['label']] = $code['id'];
         }
 
         return $choices;

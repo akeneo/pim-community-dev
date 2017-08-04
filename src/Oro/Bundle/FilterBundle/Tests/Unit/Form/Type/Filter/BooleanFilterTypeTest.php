@@ -19,8 +19,8 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
      * @var array
      */
     protected $booleanChoices = [
-        BooleanFilterType::TYPE_YES => 'oro.filter.form.label_type_yes',
-        BooleanFilterType::TYPE_NO  => 'oro.filter.form.label_type_no',
+        'oro.filter.form.label_type_yes' => BooleanFilterType::TYPE_YES,
+        'oro.filter.form.label_type_no' => BooleanFilterType::TYPE_NO,
     ];
 
     protected function setUp()
