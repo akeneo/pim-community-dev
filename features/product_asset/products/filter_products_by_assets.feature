@@ -7,12 +7,12 @@ Feature: Filter products by assets
   Background:
     Given the "clothing" catalog configuration
     And the following products:
-      | sku   |
-      | shirt |
-      | vest  |
+      | sku   | family |
+      | shirt | tees   |
+      | vest  |        |
     And I am logged in as "Julia"
     And I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I check the row "paint"
     And I confirm the asset modification

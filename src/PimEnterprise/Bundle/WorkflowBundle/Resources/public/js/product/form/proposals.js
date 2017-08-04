@@ -9,6 +9,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'routing',
         'oro/messenger',
         'oro/datagrid-builder',
@@ -20,6 +21,7 @@ define(
     function (
         $,
         _,
+        __,
         Routing,
         messenger,
         datagridBuilder,
@@ -53,7 +55,7 @@ define(
                             false
                         );
                     }.bind(this),
-                    label: _.__('pimee_enrich.entity.product.tab.proposals.title')
+                    label: __('pimee_enrich.entity.product.tab.proposals.title')
                 });
 
                 this.datagrid = {
@@ -75,7 +77,7 @@ define(
 
                 messenger.notify(
                     'success',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
                 );
             },
 
@@ -87,7 +89,7 @@ define(
             onPostApproveError: function (message) {
                 messenger.notify(
                     'error',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
+                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
                 );
             },
 
@@ -97,7 +99,7 @@ define(
             onPostRejectSuccess: function () {
                 messenger.notify(
                     'success',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                    __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
                 );
             },
 
@@ -107,7 +109,7 @@ define(
             onPostRemoveSuccess: function () {
                 messenger.notify(
                     'success',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
+                    __('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
                 );
             },
 

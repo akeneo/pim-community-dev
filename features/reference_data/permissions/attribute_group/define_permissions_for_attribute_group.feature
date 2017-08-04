@@ -18,12 +18,6 @@ Feature: Define permissions for an attribute group with reference data
     And I visit the "Other" group
     And I should see the Sole color, Sole fabric fields
 
-  Scenario: Successfully add a reference data attribute
-    Given I am logged in as "Mary"
-    And I edit the "foo" product
-    And I visit the "Other" group
-    And I should see available attributes Cap color in group "Other"
-
   Scenario: Successfully forbidden editable fields for an attribute group which contains references data
     Given I am logged in as "Peter"
     And I am on the "Other" attribute group page
@@ -36,8 +30,6 @@ Feature: Define permissions for an attribute group with reference data
     And I am logged in as "Mary"
     And I edit the "foo" product
     And I visit the "Other" group
-    Then I should not see available attributes sole_color in group "Other"
-    And I should not see available attributes sole_fabric in group "Other"
     But I should see the Sole color and Sole fabric fields
 
   Scenario: Successfully disable read-only fields for an attribute group which contains references data
@@ -51,6 +43,4 @@ Feature: Define permissions for an attribute group with reference data
     When I logout
     And I am logged in as "Mary"
     And I edit the "foo" product
-    Then I should not see available attributes sole_color in group "Other"
-    And I should not see available attributes sole_fabric in group "Other"
     And I should not see the sole_color and sole_fabric fields

@@ -19,22 +19,22 @@ Feature: Display assets thumbnails
     And I upload the reference file chicagoskyline-en.jpg
     And I save the asset
     And the following products:
-      | sku       |
-      | pineapple |
-      | potatoe   |
+      | sku       | family |
+      | pineapple | tees   |
+      | potatoe   | tees   |
     And I logout
     And I am logged in as "Julia"
 
   Scenario: Successfully display thumbnails of assets linked to products in products grid
     Given I am on the "pineapple" product page
-    And I add available attribute Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I check the row "paint"
     And I check the row "chicagoskyline"
     And I confirm the asset modification
     And I save the product
     And I am on the "potatoe" product page
-    And I add available attribute Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I check the row "chicagoskyline"
     And I confirm the asset modification

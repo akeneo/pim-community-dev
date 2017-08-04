@@ -33,10 +33,9 @@ Feature: Revert product attributes to a previous version
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |
-      | family | Tees    |
+      | family | Jackets |
     And I press the "Save" button in the popin
     And I wait to be on the "t-shirt" product page
-    And I add available attributes Number in stock
     And I visit the "Marketing" group
     And I switch the scope to "tablet"
     And I change the "Number in stock" to "42"

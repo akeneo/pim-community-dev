@@ -47,12 +47,11 @@ Feature: Revert product attributes to a previous version
     When I am on the products page
     And I create a new product
     And I fill in the following information in the popin:
-      | SKU    | marcel |
-      | family | Tees   |
+      | SKU    | marcel  |
+      | family | Jackets |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
     And I visit the "Attributes" column tab
-    And I add available attributes Weather conditions
     And I change the "Weather conditions" to "Hot, Wet"
     And I save the product
     And I should not see the text "There are unsaved changes"
@@ -63,7 +62,7 @@ Feature: Revert product attributes to a previous version
       | version | property           | value   |
       | 2       | Weather conditions | wet,hot |
       | 1       | SKU                | marcel  |
-      | 1       | family             | tees    |
+      | 1       | family             | jackets |
       | 1       | enabled            | 1       |
     When I revert the product version number 1
     Then I should see 3 versions in the history
@@ -72,7 +71,7 @@ Feature: Revert product attributes to a previous version
       | 3       | Weather conditions |         |
       | 2       | Weather conditions | wet,hot |
       | 1       | SKU                | marcel  |
-      | 1       | family             | tees    |
+      | 1       | family             | jackets |
       | 1       | enabled            | 1       |
     And the product "marcel" should have the following values:
     | weather_conditions |  |

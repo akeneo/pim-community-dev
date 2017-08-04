@@ -148,6 +148,18 @@ JSON;
                     "X_SELL": {
                         "products": ["product_viewable_by_everybody_2"],
                         "groups": []
+                    },
+                    "PACK": {
+                        "products": [],
+                        "groups": []
+                    },
+                    "UPSELL": {
+                        "products": [],
+                        "groups": []
+                    },
+                    "SUBSTITUTION": {
+                        "products": [],
+                        "groups": []
                     }
                 },
                 "metadata": {

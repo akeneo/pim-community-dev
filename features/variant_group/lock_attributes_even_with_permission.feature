@@ -11,7 +11,8 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
       | star_wars_jacket | hm_jackets | XS   | blue       |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4477
+
+  @skip @info Will be removed in PIM-6444 @jira https://akeneo.atlassian.net/browse/PIM-4477
   Scenario: I'm not able to remove a media if I have no permission on this attribute group
     Given the following attribute group accesses:
       | attribute group | user group | access |
@@ -29,7 +30,8 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
     And I visit the "Media" group
     Then I should not be able to remove the file of "Side view"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4477
+
+  @skip @info Will be removed in PIM-6444 @jira https://akeneo.atlassian.net/browse/PIM-4477
   Scenario: I'm not able to remove a media even if I have permission on this attribute group
     Given the following attribute group accesses:
       | attribute group | user group | access |
