@@ -113,7 +113,7 @@ pim_connector:
       help: O Arquivo CSV a ser importado
     yamlFilePath:
       label: Arquivo
-      help: O ficheiro YAML para importar
+      help: O arquivo YAML a ser importado
     uploadAllowed:
       label: Permitir envio de arquivos
       help: Permitir ou não o upload direto do arquivo
