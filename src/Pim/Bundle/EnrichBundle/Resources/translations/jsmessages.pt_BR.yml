@@ -341,6 +341,7 @@ pim_enrich:
           operators:
             IN: Na lista
             "NOT IN": Não está na lista
+          empty_selection: Nenhuma condição sobre as famílias
         updated:
           title: Condição temporal
           operators:
