@@ -428,7 +428,7 @@ info:
     select products: Selecteer alstublieft de producten die behoren tot deze groep.
     selectable products: De volgende selecteerbare producten hebben een gedefinieerde waarde voor elke as.
     no group types: Er bestaan geen groepstypen, klik hier om er een aan te maken
-    more products: Nog %count% producten...
+    more products: 'Nog %count% producten...'
   association type:
     show products: Toon producten
     show groups: Toon groepen

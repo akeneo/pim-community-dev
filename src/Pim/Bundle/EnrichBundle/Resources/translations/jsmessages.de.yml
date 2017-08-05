@@ -183,6 +183,8 @@ pim_enrich:
             more_products: '{{ count }} weitere Produkte...'
             close: Schließen
         status: Status
+        scope: Ausgabekanal
+        locale: Gebietsschema
       copy:
         select: Auswählen
         all: Alle
@@ -886,6 +888,62 @@ pim_enrich:
       modal_title: Wählen Sie den Attributtyp aus
     attribute_group:
       create_btn: Anlegen
+  mass_edit:
+    next: Vor
+    cancel: Abbrechen
+    confirm: Bestätigen
+    product:
+      step:
+        select:
+          label: Produkte auswählen
+        choose:
+          label: Aktion auswählen
+        configure:
+          label: Konfigurieren
+        confirm:
+          label: Bestätigen
+      operation:
+        change_status:
+          label: Status ändern (aktivieren / deaktivieren)
+          description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
+          field: Aktivieren
+        edit_common:
+          label: Gemeinsame Attribute bearbeiten
+        change_family:
+          label: Produktfamilie der Produkte ändern
+          description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
+          field: Produktfamilie
+        add_to_group:
+          label: Zu Gruppen hinzufügen
+          description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
+          field: Gruppen
+        add_to_variant_group:
+          label: Zu einer Variantengruppe hinzufügen
+          description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
+          field: Gruppe
+        add_to_category:
+          label: Zuordnung von Produkten in Kategorien
+          description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+        move_to_category:
+          label: Produkte in Kategorien verschieben
+          description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
+        remove_from_category:
+          label: Produkte aus Kategorien entfernen
+          description: Die Produkte werden aus den folgenden Kategorien entfernt.
+    family:
+      step:
+        select:
+          label: Produktfamilien auswählen
+        choose:
+          label: Aktion auswählen
+        configure:
+          label: Konfigurieren
+        confirm:
+          label: Bestätigen
+      operation:
+        set_requirements:
+          label: Benötigte Attribute auswählen
+          description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
