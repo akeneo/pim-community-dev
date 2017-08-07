@@ -660,7 +660,6 @@ config:
 
         # Product
         pim/product-edit-form/product-label:               pimenrich/js/product/form/product-label
-        pim/product-edit-form/product-model-label:         pimenrich/js/product/form/product-model-label
         pim/product-edit-form/product-completeness:        pimenrich/js/product/form/product-completeness
         pim/product-edit-form/attributes/validation:       pimenrich/js/product/form/attributes/validation
         pim/product-edit-form/attributes/validation-error: pimenrich/js/product/form/attributes/validation-error
@@ -680,7 +679,6 @@ config:
         pim/product-edit-form/sequential-edit:             pimenrich/js/product/form/sequential-edit
         pim/product-edit-form/delete:                      pimenrich/js/product/form/delete
         pim/product-edit-form/meta/family:                 pimenrich/js/product/form/meta/family
-        pim/product-edit-form/meta/family-variant:         pimenrich/js/product/form/meta/family-variant
         pim/product-edit-form/meta/change-family:          pimenrich/js/product/form/meta/change-family
         pim/product-edit-form/meta/created:                pimenrich/js/product/form/meta/created
         pim/product-edit-form/meta/updated:                pimenrich/js/product/form/meta/updated
@@ -689,6 +687,10 @@ config:
         pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
         pim/product-edit-form/creation/identifier:         pimenrich/js/product/form/creation/identifier
+
+        # Product model
+        pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
+        pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
