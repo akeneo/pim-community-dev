@@ -152,7 +152,7 @@ class NormalizedProductCleaner
      *
      * @return array
      */
-    private function sanitizeMediaAttributeData(array &$data)
+    private static function sanitizeMediaAttributeData(array &$data)
     {
         if (!isset($data['values'])) {
             return $data;
