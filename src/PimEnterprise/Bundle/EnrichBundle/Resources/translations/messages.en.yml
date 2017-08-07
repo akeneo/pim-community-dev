@@ -116,28 +116,28 @@ pimee_enrich:
         colorspace:
             title: Colorspace
             options:
-                colorspace: %value% colorspace
+                colorspace: '%value% colorspace'
         resize:
             title: Resize
             options:
-                width: %value%px width
-                height: %value%px height
+                width: '%value%px width'
+                height: '%value%px height'
         resolution:
             title: Resolution
             options:
-                resolution: %value%
-                resolution-unit: %value%
+                resolution: '%value%'
+                resolution-unit: '%value%'
         scale:
             title: Scale
             options:
-                width: %value%px width
-                height: %value%px height
-                ratio: %value%% ratio
+                width: '%value%px width'
+                height: '%value%px height'
+                ratio: '%value%% ratio'
         thumbnail:
             title: Thumbnail
             options:
-                width: %value%px width
-                height: %value%px height
+                width: '%value%px width'
+                height: '%value%px height'
 
 add_product_value_with_permission_and_rules:
     steps.perform: Add product value

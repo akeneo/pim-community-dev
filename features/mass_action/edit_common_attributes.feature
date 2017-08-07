@@ -29,9 +29,10 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And the fields Price and Rating should be disabled
     And I visit the "Product information" group
     And I change the "Name" to "My product"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    And I should see the text "Clean temporary files"
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
+    And I go on the last executed job resume of "edit_common_attributes"
+    And I should see the text "Clean files for common attributes"
     And I edit the "highheels" product
     And I visit the "Marketing" group
     Then I should see the text "2 stars"

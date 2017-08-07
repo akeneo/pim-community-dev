@@ -7,10 +7,7 @@ assetic:
         - PimEnterpriseEnrichBundle
 
 twig:
-    form:
-        resources:
-            - 'PimEnterpriseUIBundle:Form:pimee-fields.html.twig'
-            - 'PimEnterpriseProductAssetBundle:Form:pimee-fields.html.twig'
+    form_theme: ['PimEnterpriseUIBundle:Form:pimee-fields.html.twig', 'PimEnterpriseProductAssetBundle:Form:pimee-fields.html.twig']
 
 fos_rest:
     exception:
@@ -20,9 +17,9 @@ fos_rest:
             PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: true
 
 doctrine_migrations:
-    dir_name: %doctrine_migrations_dir%
+    dir_name: '%doctrine_migrations_dir%'
     namespace: Pim\Upgrade\Schema
     name: PIM Enterprise Migrations
 
 pim_enrich:
-    max_products_category_removal: %max_products_category_removal%
+    max_products_category_removal: '%max_products_category_removal%'

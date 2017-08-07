@@ -34,22 +34,28 @@ class RefreshProjectCompletenessJobLauncher
     /** @var string */
     protected $environment;
 
+    /** @var string */
+    protected $logsDir;
+
     /**
      * @param JobInstanceRepository $jobInstanceRepository
-     * @param string                $JobName
+     * @param string                $jobName
      * @param string                $rootDirectory
      * @param string                $environment
+     * @param string                $logsDir
      */
     public function __construct(
         JobInstanceRepository $jobInstanceRepository,
-        $JobName,
-        $rootDirectory,
-        $environment
+        string $jobName,
+        string $rootDirectory,
+        string $environment,
+        string $logsDir
     ) {
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobName = $JobName;
+        $this->jobName = $jobName;
         $this->rootDirectory = $rootDirectory;
         $this->environment = $environment;
+        $this->logsDir = $logsDir;
     }
 
     /**
@@ -73,13 +79,17 @@ class RefreshProjectCompletenessJobLauncher
 
         $pathFinder = new PhpExecutableFinder();
         $command = sprintf(
-            '%s %s/console akeneo:batch:job --env=%s %s %s >> %s/logs/batch_execute.log 2>&1 &',
+            '%s %s%s..%sbin%sconsole akeneo:batch:job --env=%s %s %s >> %s%sbatch_execute.log 2>&1 &',
             $pathFinder->find(),
             $this->rootDirectory,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
             $this->environment,
             escapeshellarg($jobInstance->getCode()),
             sprintf('--config=%s', escapeshellarg($encodedConfiguration)),
-            $this->rootDirectory
+            $this->logsDir,
+            DIRECTORY_SEPARATOR
         );
 
         exec($command);

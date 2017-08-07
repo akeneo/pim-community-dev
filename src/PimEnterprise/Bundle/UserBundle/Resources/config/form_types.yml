@@ -19,3 +19,10 @@ services:
             - '@pimee_enrich.repository.asset_category_choices'
         tags:
             - { name: form.type, alias: pim_user_user }
+
+    pim_user.form.type.acl_role:
+        class: '%oro_user.form.type.acl_role_type.class%'
+        arguments:
+            - []
+        tags:
+            - { name: form.type, alias: pim_user_acl_role }

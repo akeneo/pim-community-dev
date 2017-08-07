@@ -75,7 +75,9 @@ class WidgetContext extends PimContext
                     throw new ExpectationException(
                         sprintf(
                             'Expected "%s:%s" for completeness and "%s" found.',
-                            $field, $expectedValue, $completeness[$field]
+                            $field,
+                            $expectedValue,
+                            $completeness[$field]
                         ),
                         $this->getSession()
                     );

@@ -53,13 +53,11 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('filters.yml');
         $loader->load('finders.yml');
-        $loader->load('form_types.yml');
         $loader->load('forms.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('managers.yml');
-        $loader->load('mass_actions.yml');
-        $loader->load('mass-uploader.yml');
+        $loader->load('mass_uploader.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');

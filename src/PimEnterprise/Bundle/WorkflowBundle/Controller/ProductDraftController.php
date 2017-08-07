@@ -87,6 +87,9 @@ class ProductDraftController
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
+    /** @var MassActionParametersParser */
+    protected $parameterParser;
+
     /**
      * @param RequestStack                          $requestStack
      * @param RouterInterface                       $router
@@ -101,6 +104,7 @@ class ProductDraftController
      * @param AuthorizationCheckerInterface         $authorizationChecker
      * @param OroToPimGridFilterAdapter             $gridFilterAdapter
      * @param CollectionFilterInterface             $collectionFilter
+     * @param MassActionParametersParser            $parameterParser
      */
     public function __construct(
         RequestStack $requestStack,
@@ -115,7 +119,8 @@ class ProductDraftController
         MassActionParametersParser $gridParameterParser,
         AuthorizationCheckerInterface $authorizationChecker,
         OroToPimGridFilterAdapter $gridFilterAdapter,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        MassActionParametersParser $parameterParser
     ) {
         $this->requestStack = $requestStack;
         $this->router = $router;
@@ -130,6 +135,7 @@ class ProductDraftController
         $this->authorizationChecker = $authorizationChecker;
         $this->gridFilterAdapter = $gridFilterAdapter;
         $this->collectionFilter = $collectionFilter;
+        $this->parameterParser = $parameterParser;
     }
 
     /**
@@ -184,10 +190,11 @@ class ProductDraftController
     public function massApproveAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove']);
-        $params = $this->gridFilterAdapter->adapt($request);
+        $parameters = $this->parameterParser->parse($request);
+        $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
         $configuration = [
-            'draftIds' => $params['values'],
+            'draftIds' => $filters['values'],
             'comment'  => $request->get('comment'),
         ];
 
@@ -212,10 +219,11 @@ class ProductDraftController
     public function massRefuseAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove']);
-        $params = $this->gridFilterAdapter->adapt($request);
+        $parameters = $this->parameterParser->parse($request);
+        $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
         $configuration = [
-            'draftIds' => $params['values'],
+            'draftIds' => $filters['values'],
             'comment'  => $request->get('comment'),
         ];
 

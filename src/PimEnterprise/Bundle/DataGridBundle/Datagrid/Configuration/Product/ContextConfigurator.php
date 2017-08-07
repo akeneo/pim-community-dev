@@ -21,6 +21,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Override context configurator to apply permissions on attribute groups
@@ -46,8 +47,10 @@ class ContextConfigurator extends BaseContextConfigurator
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param RequestParameters              $requestParams
      * @param UserContext                    $userContext
-     * @param AttributeGroupAccessRepository $accessRepository
      * @param ObjectManager                  $objectManager
+     * @param GroupRepositoryInterface       $productGroupRepository
+     * @param RequestStack                   $requestStack
+     * @param AttributeGroupAccessRepository $accessRepository
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -56,6 +59,7 @@ class ContextConfigurator extends BaseContextConfigurator
         UserContext $userContext,
         ObjectManager $objectManager,
         GroupRepositoryInterface $productGroupRepository,
+        RequestStack $requestStack,
         AttributeGroupAccessRepository $accessRepository
     ) {
         parent::__construct(
@@ -64,7 +68,8 @@ class ContextConfigurator extends BaseContextConfigurator
             $requestParams,
             $userContext,
             $objectManager,
-            $productGroupRepository
+            $productGroupRepository,
+            $requestStack
         );
 
         $this->accessRepository = $accessRepository;

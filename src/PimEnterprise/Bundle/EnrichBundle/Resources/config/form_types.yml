@@ -3,9 +3,6 @@ parameters:
     pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
     pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pimee_enrich.form.type.locale_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocalePermissionsType
-    pimee_enrich.form.type.publish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType
-    pimee_enrich.form.type.classify.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
-    pimee_enrich.form.type.unpublish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType
     pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
     pimee_enrich.form.type.product_grid_filter_choice.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
@@ -45,32 +42,6 @@ services:
         class: '%pimee_enrich.form.type.category_permissions.class%'
         tags:
             - { name: form.type, alias: pimee_enrich_category_permissions }
-
-    # Override of the ClassifyType
-    pim_enrich.form.type.classify:
-        class: '%pimee_enrich.form.type.classify.class%'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.manager.category'
-            - '@security.token_storage'
-            - '%pim_enrich.mass_edit_action.classify.class%'
-            - '%pimee_enrich.form.type.classify.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_classify }
-
-    pimee_enrich.form.type.publish:
-        class: '%pimee_enrich.form.type.publish.class%'
-        arguments:
-            - '%pimee_enrich.mass_edit_action.publish.class%'
-        tags:
-            - { name: form.type, alias: pimee_enrich_mass_publish }
-
-    pimee_enrich.form.type.unpublish:
-        class: '%pimee_enrich.form.type.unpublish.class%'
-        arguments:
-            - '%pimee_enrich.mass_edit_action.unpublish.class%'
-        tags:
-            - { name: form.type, alias: pimee_enrich_mass_unpublish }
 
     pimee_enrich.form.type.locale:
         class: '%pimee_enrich.form.type.locale.class%'

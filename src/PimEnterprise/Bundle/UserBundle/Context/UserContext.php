@@ -183,4 +183,16 @@ class UserContext extends BaseUserContext
 
         return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
     }
+
+    /**
+     * Get user product category tree
+     *
+     * @return CategoryInterface
+     */
+    public function getUserProductCategoryTree()
+    {
+        $defaultTree = $this->getUserOption($this->treeOptionKey);
+
+        return $defaultTree ?: current($this->categoryRepository->getTrees());
+    }
 }

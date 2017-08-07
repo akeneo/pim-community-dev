@@ -14,11 +14,9 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
         $this->beConstructedWith($massActionDispatcher);
     }
 
-    function it_returns_raw_filters($massActionDispatcher, Request $request)
+    function it_returns_raw_filters($massActionDispatcher)
     {
-        $request->get('gridName')->willReturn('product-grid');
-
-        $massActionDispatcher->getRawFilters($request)->willReturn([
+        $massActionDispatcher->getRawFilters(['gridName' => 'product-grid'])->willReturn([
             [
                 'field'    => 'sku',
                 'operator' => 'CONTAINS',
@@ -31,7 +29,7 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
             ]
         ]);
 
-        $this->adapt($request)->shouldReturn([
+        $this->adapt(['gridName' => 'product-grid'])->shouldReturn([
             [
                 'field'    => 'sku',
                 'operator' => 'CONTAINS',
@@ -47,33 +45,29 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 
     function it_returns_filters_on_family_grid(
         $massActionDispatcher,
-        Request $request,
         FamilyInterface $family1,
         FamilyInterface $family2
     ) {
-        $request->get('gridName')->willReturn('family-grid');
-
-        $massActionDispatcher->dispatch($request)->willReturn([$family1, $family2]);
+        $massActionDispatcher->dispatch(['gridName' => 'family-grid'])->willReturn([$family1, $family2]);
         $family1->getId()->willReturn(45);
         $family2->getId()->willReturn(70);
 
-        $massActionDispatcher->getRawFilters($request)->shouldNotBeCalled();
+        $massActionDispatcher->getRawFilters(['gridName' => 'family-grid'])->shouldNotBeCalled();
 
-        $this->adapt($request)->shouldReturn([[
+        $this->adapt(['gridName' => 'family-grid'])->shouldReturn([[
             'field'    => 'id',
             'operator' => 'IN',
             'value'    => [45, 70],
         ]]);
     }
 
-    function it_returns_object_ids_on_approve_grid($massActionDispatcher, Request $request)
+    function it_returns_object_ids_on_approve_grid($massActionDispatcher)
     {
-        $request->get('gridName')->willReturn('proposal-grid');
-        $massActionDispatcher->dispatch($request)->willReturn([1, 2, 5]);
-        $massActionDispatcher->getRawFilters($request)->shouldNotBeCalled();
+        $massActionDispatcher->dispatch(['gridName' => 'proposal-grid'])->willReturn([1, 2, 5]);
+        $massActionDispatcher->getRawFilters(['gridName' => 'proposal-grid'])->shouldNotBeCalled();
 
         $result = ['values' => [1, 2, 5]];
 
-        $this->adapt($request)->shouldReturn($result);
+        $this->adapt(['gridName' => 'proposal-grid'])->shouldReturn($result);
     }
 }

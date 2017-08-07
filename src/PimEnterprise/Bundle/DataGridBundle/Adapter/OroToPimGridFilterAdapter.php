@@ -39,30 +39,14 @@ class OroToPimGridFilterAdapter extends BaseAdapter
     /**
      * {@inheritdoc}
      */
-    public function adapt(Request $request)
+    public function adapt(array $parameters)
     {
-        if (in_array($request->get('gridName'), [self::PRODUCT_GRID_NAME, self::PUBLISHED_PRODUCT_GRID_NAME])) {
-            $filters = $this->massActionDispatcher->getRawFilters($request);
-        } elseif (in_array($request->get('gridName'), [self::APPROVE_GRID_NAME, self::RULE_GRID_NAME])) {
-            return ['values' => $this->massActionDispatcher->dispatch($request)];
+        if (in_array($parameters['gridName'], [self::PRODUCT_GRID_NAME, self::PUBLISHED_PRODUCT_GRID_NAME])) {
+            $filters = $this->massActionDispatcher->getRawFilters($parameters);
+        } elseif (in_array($parameters['gridName'], [self::APPROVE_GRID_NAME, self::RULE_GRID_NAME])) {
+            return ['values' => $this->massActionDispatcher->dispatch($parameters)];
         } else {
-            $items = $this->massActionDispatcher->dispatch($request);
-
-            foreach ($items as &$object) {
-                if (is_array($object)) {
-                    $object = $object[0];
-                }
-            }
-
-            $itemIds = [];
-
-            foreach ($items as $item) {
-                $itemIds[] = $item->getId();
-            }
-
-            $filters = [
-                ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
-            ];
+            $filters = $this->adaptDefaultGrid($parameters);
         }
 
         return $filters;

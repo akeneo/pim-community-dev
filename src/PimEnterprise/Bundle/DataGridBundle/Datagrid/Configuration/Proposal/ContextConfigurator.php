@@ -16,6 +16,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Proposal grid context configurator
@@ -36,16 +37,22 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var Request */
     protected $request;
 
+    /** @var RequestStack */
+    protected $requestStack;
+
     /**
      * @param RequestParameters $requestParams
      * @param UserContext       $userContext
+     * @param RequestStack      $requestStack
      */
     public function __construct(
         RequestParameters $requestParams,
-        UserContext $userContext
+        UserContext $userContext,
+        RequestStack $requestStack
     ) {
         $this->requestParams = $requestParams;
         $this->userContext = $userContext;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -64,7 +71,7 @@ class ContextConfigurator implements ConfiguratorInterface
                 if ('currentUser' === $paramName) {
                     $params[$paramName] = $this->userContext->getUser();
                 } else {
-                    $params[$paramName] = $this->requestParams->get($paramName, $this->request->get($paramName, null));
+                    $params[$paramName] = $this->requestParams->get($paramName, $this->getRequest()->get($paramName, null));
                 }
             }
             $this->configuration->offsetSetByPath($path, $params);
@@ -72,10 +79,10 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * @param Request $request
+     * @return Request|null
      */
-    public function setRequest(Request $request = null)
+    protected function getRequest(): ?Request
     {
-        $this->request = $request;
+        return $this->requestStack->getCurrentRequest();
     }
 }

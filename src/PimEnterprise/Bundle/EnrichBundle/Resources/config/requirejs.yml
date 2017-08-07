@@ -21,11 +21,6 @@ config:
                         warmup: false
                         urls:
                             list: pimee_security_permissions_rest
-                channel-tranformation:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            get: pimee_enrich_channel_asset_transformation
         pim/controller-registry:
             defaultController:
                 module: pim/controller/template
@@ -36,15 +31,6 @@ config:
                 pimee_product_asset_edit:
                     module: pim/controller/form
                     aclResourceId: pimee_product_asset_index
-                pimee_product_asset_mass_edit_asset_action_choose:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit
-                pimee_product_asset_mass_edit_asset_action_configure:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit
-                pimee_product_asset_mass_edit_asset_action_perform:
-                    module: pim/controller/form
-                    aclResourceId: pim_enrich_mass_edit
                 pimee_product_asset_reference_delete:
                     module: pim/controller/redirect
                 pimee_product_asset_variation_delete:
@@ -66,12 +52,6 @@ config:
                     module: pim/controller/redirect
                 pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect
-                pimee_workflow_mass_edit_published_action_choose:
-                    module: pim/controller/form
-                pimee_workflow_mass_edit_published_action_configure:
-                    module: pim/controller/form
-                pimee_workflow_mass_edit_published_action_perform:
-                    module: pim/controller/form
                 teamwork_assistant_project_show:
                     module: pim/controller/template
                 pimee_workflow_proposal_index:
@@ -119,6 +99,10 @@ config:
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseenrich/js/product/form/meta/status-switcher
         pim/common/tab/asset-transformation:                          pimenterpriseenrich/js/channel/tab/asset-transformation
 
+        pimee/mass-edit-form/product/publish:                         pimenterpriseenrich/js/mass-edit/form/product/publish
+        pimee/mass-edit-form/asset/add-tag:                           pimenterpriseenrich/js/mass-edit/form/asset/add-tag
+        pimee/common/select2/asset-tag:                               pimenterpriseenrich/js/common/select2/asset-tag
+
         # Common
         pimee/common/tab/permission:       pimenterpriseenrich/js/form/common/tab/permission
         pimee/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
@@ -135,3 +119,6 @@ config:
         pimee/template/product/tab/attribute/smart-attribute: pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
         pimee/template/form/tab/permission:                   pimenterpriseenrich/templates/form/tab/permission.html
         pimee/template/channel/tab/asset-transformation:      pimenterpriseenrich/templates/channel/tab/asset-transformation.html
+
+        pimee/template/mass-edit/product/publish:             pimenterpriseenrich/templates/mass-edit/product/publish.html
+        pimee/template/mass-edit/asset/add-tag:               pimenterpriseenrich/templates/mass-edit/asset/add-tag.html

@@ -88,8 +88,8 @@ Feature: Revert a product to a previous version
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change the family of products" operation
     And I change the Family to "Jackets"
-    And I move on to the next step
-    And I wait for the "change-family" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "update_product_value" job to finish
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page
     And the history of the product "jean" has been built
@@ -106,13 +106,13 @@ Feature: Revert a product to a previous version
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
     And I visit the "Categories" column tab
-    And I visit the "2014 collection" tree
+    And I visit the "2014 collection" tab
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I visit the "Categories" column tab
-    And I visit the "2014 collection" tree
+    And I visit the "2014 collection" tab
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
     And I click on the "summer_collection" category

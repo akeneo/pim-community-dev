@@ -26,7 +26,7 @@ class GroupsTypeSpec extends ObjectBehavior
 
     function it_configures_the_form_type_to_provide_available_user_groups(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver, []);
+        $this->configureOptions($resolver, []);
 
         $resolver
             ->setDefaults(

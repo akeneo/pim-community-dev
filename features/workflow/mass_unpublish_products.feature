@@ -20,8 +20,8 @@ Feature: Unpublish many products at once
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
     Then I should see the text "The 2 selected products will be unpublished"
-    And I move on to the next step
-    And I wait for the "unpublish" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "unpublish_product" job to finish
     And I am on the published products page
     Then I should not see products unionjack and jackadi
 
@@ -32,8 +32,8 @@ Feature: Unpublish many products at once
     And I select rows unionjack, jackadi and teafortwo
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
-    And I move on to the next step
-    And I wait for the "unpublish" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "unpublish_product" job to finish
     Then I should see the text "You're not the owner of the product, you can't unpublish it"
     And I should see the text "skipped products 1"
     When I am on the published products page
@@ -46,8 +46,8 @@ Feature: Unpublish many products at once
     And I select rows unionjack, jackadi and teafortwo
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation
-    And I move on to the next step
-    And I wait for the "unpublish" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "unpublish_product" job to finish
     Then I should see the text "You're not the owner of the product, you can't unpublish it"
     And I should see the text "skipped products 3"
     When I am on the published products page

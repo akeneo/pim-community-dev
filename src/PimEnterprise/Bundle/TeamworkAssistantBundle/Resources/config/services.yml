@@ -123,6 +123,7 @@ services:
         class: '%pimee_teamwork_assistant.converter.filter.class%'
         arguments:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pimee_teamwork_assistant.event_subscriber.catalog_updates:
         class: '%pimee_teamwork_assistant.event_subscriber.catalog_updates.class%'

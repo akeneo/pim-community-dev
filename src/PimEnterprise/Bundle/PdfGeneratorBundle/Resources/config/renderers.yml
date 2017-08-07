@@ -12,7 +12,7 @@ services:
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
             - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
-            - %upload_dir%
+            - '%upload_dir%'
             - '%pim_pdf_generator_font%'
         tags:
             - { name: pim_pdf_generator.renderer, priority: 100 }

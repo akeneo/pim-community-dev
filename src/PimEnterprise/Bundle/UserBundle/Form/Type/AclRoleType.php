@@ -45,16 +45,16 @@ class AclRoleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->privilegeConfig as $fieldName => $config) {
+        foreach ($options['privilegeConfigOption'] as $fieldName => $config) {
             $builder->add($fieldName, PrivilegeCollectionType::class, [
-                'entry_type'    => new AclPrivilegeType(),
-                'allow_add'    => true,
-                'prototype'    => false,
-                'allow_delete' => false,
-                'mapped'       => false,
-                'options'      => [
+                'entry_type'    => AclPrivilegeType::class,
+                'allow_add'     => true,
+                'prototype'     => false,
+                'allow_delete'  => false,
+                'mapped'        => false,
+                'entry_options' => [
                     'privileges_config' => $config,
-                ]
+                ],
             ]);
         }
 
@@ -83,8 +83,9 @@ class AclRoleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Role::class,
-            'intention'  => 'role',
+            'data_class'            => Role::class,
+            'intention'             => 'role',
+            'privilegeConfigOption' => [],
         ]);
     }
 

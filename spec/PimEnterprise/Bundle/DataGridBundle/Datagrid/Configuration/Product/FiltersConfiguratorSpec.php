@@ -100,9 +100,9 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'field_options' => [
                     'multiple' => false,
                     'choices'  => [
-                        3 => 'pimee_workflow.product.permission.own',
-                        2 => 'pimee_workflow.product.permission.edit',
-                        1 => 'pimee_workflow.product.permission.view',
+                        'pimee_workflow.product.permission.own' => 3,
+                        'pimee_workflow.product.permission.edit' => 2,
+                        'pimee_workflow.product.permission.view' => 1,
                     ]
                 ]
             ]

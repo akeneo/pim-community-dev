@@ -37,8 +37,8 @@ Feature: Apply rules after a mass edit have run
     And I display the Name attribute
     And I visit the "Product information" group
     And I change the "Name" to "tshirt"
-    When I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    When I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the product "tshirt-github" should have the following values:
       | name-en_US               | tshirt          |
       | description-en_US-mobile | Generic t-shirt |
