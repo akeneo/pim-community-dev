@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Check requirements command
@@ -34,6 +35,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
 
+        $this->prepareRequirementsDirectories();
         $this->renderRequirements($input, $output, $this->getRequirements());
     }
 
@@ -122,5 +124,20 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function getDirectoriesContainer()
     {
         return $this->getContainer()->get('pim_installer.directories_registry');
+    }
+
+    protected function prepareRequirementsDirectories(): void
+    {
+        foreach ($this->getDirectoriesContainer()->getDirectories() as $directory) {
+            $this->prepareDirectory($directory);
+        }
+    }
+
+    protected function prepareDirectory(string $directory): void
+    {
+        $filesystem = new Filesystem();
+        if (!$filesystem->exists($directory)) {
+            $filesystem->mkdir($directory);
+        }
     }
 }
