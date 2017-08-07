@@ -5,6 +5,7 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -59,6 +60,35 @@ class ProductModelStorage extends RawMinkContext
                 } else {
                     $this->checkProductModelValue($productModel, $propertyName, $value);
                 }
+            }
+        }
+    }
+
+    /**
+     * @Given the product model :identifier should not have the following values :attributesCode
+     */
+    public function theProductShouldNotHaveTheFollowingValues($identifier, $attributesCodes)
+    {
+        $attributesCodes = explode(',', $attributesCodes);
+        $attributesCodes = array_map('trim', $attributesCodes);
+
+        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
+
+        if (null === $productModel) {
+            throw new \Exception(
+                sprintf('The model with the identifier "%s" does not exist', $identifier)
+            );
+        }
+        foreach ($attributesCodes as $propertyName => $value) {
+            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($propertyName);
+            /** @var AttributeInterface $attribute */
+            $attribute = $infos['attribute'];
+            $productValue = $productModel->getValue($attribute->getCode(), $infos['locale_code'], $infos['scope_code']);
+
+            if (null !== $productValue) {
+                throw new \Exception(
+                    sprintf('Product model value for product "%s" exists', $identifier)
+                );
             }
         }
     }
