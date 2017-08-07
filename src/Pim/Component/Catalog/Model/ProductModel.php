@@ -92,9 +92,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode(string $identifier): void
+    public function setCode(string $code): void
     {
-        $this->code = $identifier;
+        $this->code = $code;
     }
 
     /**
