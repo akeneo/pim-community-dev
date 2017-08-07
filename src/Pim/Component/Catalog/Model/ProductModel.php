@@ -476,24 +476,24 @@ class ProductModel implements ProductModelInterface
      */
     public function getLabel(?string $localeCode): string
     {
-        $identifier = (string) $this->getIdentifier();
+        $code = (string) $this->getCode();
         $attributeAsLabel = $this->familyVariant->getFamily()->getAttributeAsLabel();
 
         if (null === $attributeAsLabel) {
-            return $identifier;
+            return $code;
         }
 
         $localeCode = $attributeAsLabel->isLocalizable() ? $localeCode : null;
         $value = $this->getValue($attributeAsLabel->getCode(), $localeCode);
 
         if (null === $value) {
-            return $identifier;
+            return $code;
         }
 
         $data = $value->getData();
 
         if (empty($data)) {
-            return $identifier;
+            return $code;
         }
 
         return (string) $data;

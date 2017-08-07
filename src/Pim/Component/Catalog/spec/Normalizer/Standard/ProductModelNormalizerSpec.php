@@ -37,7 +37,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     ) {
         $this->setSerializer($normalizer);
 
-        $productModel->getCode()->willReturn( 'identifier');
+        $productModel->getCode()->willReturn('code');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getCode()->willReturn('family_variant');
 
@@ -58,7 +58,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'standard', [])->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($productModel, 'standard')->shouldReturn([
-            'identifier' => 'identifier',
+            'code' => 'code',
             'family_variant' => 'family_variant',
             'categories' => ['tshirt'],
             'values' => [

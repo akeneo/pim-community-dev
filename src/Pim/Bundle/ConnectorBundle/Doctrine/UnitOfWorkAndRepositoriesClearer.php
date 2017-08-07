@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * Clear Doctrine's Unit of Work and all cached repositories registered here.
  * This is only used by bulk operations.
  *
- * For instance {@see \Pim\Component\Connector\Writer\Database\EntityWithValuesWriter} for more information.
+ * For instance {@see \Pim\Component\Connector\Writer\Database\ProductWriter} for more information.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

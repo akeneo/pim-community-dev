@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class EntityWithValuesWriterSpec extends ObjectBehavior
+class ProductWriterSpec extends ObjectBehavior
 {
     function let(
         VersionManager $versionManager,
@@ -24,7 +24,7 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Writer\Database\EntityWithValuesWriter');
+        $this->shouldHaveType('\Pim\Component\Connector\Writer\Database\ProductWriter');
     }
 
     function it_is_an_item_writer()
