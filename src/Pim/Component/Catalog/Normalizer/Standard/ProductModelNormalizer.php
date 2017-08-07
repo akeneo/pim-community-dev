@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  */
 class ProductModelNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
-    private const FIELD_IDENTIFIER = 'identifier';
+    private const FIELD_CODE = 'code';
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_CATEGORIES = 'categories';
     private const FIELD_VALUES = 'values';
@@ -32,7 +32,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $data[self::FIELD_IDENTIFIER] = $productModel->getIdentifier();
+        $data[self::FIELD_CODE] = $productModel->getCode();
         $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
         $data[self::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
         $data[self::FIELD_VALUES] = $this->serializer->normalize($productModel->getValues(), $format, $context);

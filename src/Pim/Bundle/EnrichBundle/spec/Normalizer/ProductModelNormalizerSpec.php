@@ -64,7 +64,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ];
 
         $productModelNormalized = [
-            'identifier'     => 'tshirt_blue',
+            'code'           => 'tshirt_blue',
             'family_variant' => 'tshirts_color',
             'family'         => 'tshirts',
             'categories'     => ['summer'],
@@ -122,7 +122,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
         $productModel->getId()->willReturn(12);
-        $productModel->getIdentifier()->willReturn('tshirt_blue');
+        $productModel->getCode()->willReturn('tshirt_blue');
         $versionManager->getOldestLogEntry($productModel)->willReturn('create_version');
         $versionNormalizer->normalize('create_version', 'internal_api')->willReturn('normalized_create_version');
         $versionManager->getNewestLogEntry($productModel)->willReturn('update_version');
@@ -137,7 +137,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
-                'identifier'     => 'tshirt_blue',
+                'code'           => 'tshirt_blue',
                 'family_variant' => 'tshirts_color',
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],

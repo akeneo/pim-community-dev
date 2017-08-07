@@ -13,7 +13,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 class ProductModelStorage extends RawMinkContext
 {
     /** @var array */
-    private $productModelFields = ['identifier', 'parent', 'categories', 'family_variant'];
+    private $productModelFields = ['code', 'parent', 'categories', 'family_variant'];
 
     /** @var AttributeColumnInfoExtractor */
     private $attributeColumnInfoExtractor;
@@ -45,11 +45,11 @@ class ProductModelStorage extends RawMinkContext
     public function theProductShouldHaveTheFollowingValues(TableNode $properties)
     {
         foreach ($properties->getHash() as $rawProductModel) {
-            $productModel = $this->productModelRepository->findOneByIdentifier($rawProductModel['identifier']);
+            $productModel = $this->productModelRepository->findOneByIdentifier($rawProductModel['code']);
 
             if (null === $productModel) {
                 throw new \Exception(
-                    sprintf('The model with the identifier "%s" does not exist', $rawProductModel['identifier'])
+                    sprintf('The model with the code "%s" does not exist', $rawProductModel['code'])
                 );
             }
 

@@ -107,12 +107,12 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
+        $this->setCode('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('Petit outil agricole authentique');
     }
 
-    function it_gets_the_identifier_as_label_if_there_is_no_attribute_as_label(
+    function it_gets_the_code_as_label_if_there_is_no_attribute_as_label(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         ValueCollectionInterface $values
@@ -122,12 +122,12 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
+        $this->setCode('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
 
-    function it_gets_the_identifier_as_label_if_the_label_value_is_null(
+    function it_gets_the_code_as_label_if_the_label_value_is_null(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
@@ -142,12 +142,12 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
+        $this->setCode('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
 
-    function it_gets_the_identifier_as_label_if_the_label_value_data_is_empty(
+    function it_gets_the_code_as_label_if_the_label_value_data_is_empty(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
@@ -164,7 +164,7 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
+        $this->setCode('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }

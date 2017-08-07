@@ -66,7 +66,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $constraintViolationList
     ) {
         $productModelData = [
-            'identifier' => 'product_model_identifier',
+            'code' => 'product_model_code',
             'family_variant' => 'tshirt',
             'values' => [
                 'name' => [
@@ -85,7 +85,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
-        $productModelRepository->findOneByIdentifier('product_model_identifier')->willReturn(null);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $productModelFactory->create()->willReturn($productModel);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -111,7 +111,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $constraintViolationList
     ) {
         $productModelData = [
-            'identifier' => 'product_model_identifier',
+            'code' => 'product_model_code',
             'family_variant' => 'tshirt',
             'values' => [
                 'name' => [
@@ -130,14 +130,14 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
-        $productModelRepository->findOneByIdentifier('product_model_identifier')->willReturn(null);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $productModelFactory->create()->willReturn($productModel);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
 
         $filteredData = [
-            'identifier' => 'product_model_identifier',
+            'code' => 'product_model_code',
             'family_variant' => 'tshirt',
             'values' => [
                 'name' => [
@@ -171,7 +171,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $productModelData = [
-            'identifier' => 'product_model_identifier',
+            'code' => 'product_model_code',
             'family_variant' => 'tshirt',
             'values' => [
                 'name' => [
@@ -190,7 +190,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
-        $productModelRepository->findOneByIdentifier('product_model_identifier')->willReturn(null);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $productModelFactory->create()->willReturn($productModel);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -220,7 +220,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
     ) {
         $this->setStepExecution($stepExecution);
 
-        $productModelRepository->findOneByIdentifier('product_model_identifier')->willReturn(null);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $productModelFactory->create()->willReturn($productModel);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -238,17 +238,17 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $objectDetacher->detach($productModel)->shouldBeCalled();
 
         $this->shouldThrow(InvalidItemException::class)->during('process', [[
-            'identifier' => 'product_model_identifier',
+            'code' => 'product_model_code',
         ]]);
     }
 
-    function it_skips_the_product_model_is_it_does_not_have_identifier(
+    function it_skips_the_product_model_is_it_does_not_have_code(
         $productModelRepository,
         StepExecution $stepExecution
     ) {
         $this->setStepExecution($stepExecution);
 
-        $productModelRepository->findOneByIdentifier('product_model_identifier')->willReturn(null);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();

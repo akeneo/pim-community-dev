@@ -58,7 +58,7 @@ class FieldConverterSpec extends ObjectBehavior
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['upsell']);
 
         $this->supportsColumn('parent')->shouldReturn(true);
-        $this->supportsColumn('identifier')->shouldReturn(true);
+        $this->supportsColumn('code')->shouldReturn(true);
         $this->supportsColumn('family_variant')->shouldReturn(true);
         $this->supportsColumn('upsell')->shouldReturn(true);
         $this->supportsColumn('other')->shouldReturn(false);

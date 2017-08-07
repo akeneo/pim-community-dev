@@ -48,7 +48,7 @@ class ProductModelRepositorySpec extends ObjectBehavior
 
     function it_returns_the_product_model_identifier_property()
     {
-        $this->getIdentifierProperties()->shouldReturn(['identifier']);
+        $this->getIdentifierProperties()->shouldReturn(['code']);
     }
 
     function it_finds_a_product_model_by_its_identifier(
@@ -57,10 +57,10 @@ class ProductModelRepositorySpec extends ObjectBehavior
         UnitOfWork $uow,
         EntityPersister $persister
     ) {
-        $productModel->getIdentifier()->willReturn('foobar');
+        $productModel->getCode()->willReturn('foobar');
         $em->getUnitOfWork()->willReturn($uow);
         $uow->getEntityPersister(ProductModel::class)->willReturn($persister);
-        $persister->load(['identifier' => 'foobar'], null, null, array(), null, 1, null)->willReturn($productModel);
+        $persister->load(['code' => 'foobar'], null, null, array(), null, 1, null)->willReturn($productModel);
 
         $this->findOneByIdentifier('foobar')->shouldReturn($productModel);
     }
@@ -72,14 +72,14 @@ class ProductModelRepositorySpec extends ObjectBehavior
         QueryBuilder $qb,
         AbstractQuery $query
     ) {
-        $fooModel->getIdentifier()->willReturn('foo');
-        $barModel->getIdentifier()->willReturn('bar');
+        $fooModel->getCode()->willReturn('foo');
+        $barModel->getCode()->willReturn('bar');
 
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('pm')->willReturn($qb);
         $qb->from(ProductModel::class, 'pm', null)->willReturn($qb);
-        $qb->where('pm.identifier IN (:identifiers)')->willReturn($qb);
-        $qb->setParameter('identifiers', ['foo', 'bar'])->willReturn($qb);
+        $qb->where('pm.code IN (:codes)')->willReturn($qb);
+        $qb->setParameter('codes', ['foo', 'bar'])->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
         $query->execute()->willReturn([$fooModel, $barModel]);
