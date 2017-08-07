@@ -67,7 +67,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $product = $this->updateProduct($product, $actions);
+        $product = $this->updateProduct($product, $actions[0]);
         if (null !== $product && !$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->productDetacher->detach($product);
@@ -112,7 +112,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {
-        $normalizedValues = json_decode($actions['normalized_values'], true);
+        $normalizedValues = $actions['normalized_values'];
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {

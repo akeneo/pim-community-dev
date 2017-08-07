@@ -1,0 +1,23 @@
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label control-label AknFieldContainer-label required">
+                <%- label %>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <% _.each(groups, function (group) { %>
+            <input
+                id="pim_enrich_mass_edit_add_to_group_<%- group.code %>"
+                type="checkbox"
+                name="pim_enrich_mass_edit_add_to_group"
+                value="<%- group.code %>"
+                class="group"
+                <%- readOnly ? 'readonly disabled' : '' %>
+                <%- _.contains(value, group.code) ? 'checked' : '' %>
+            />
+            <label for="pim_enrich_mass_edit_add_to_group_<%- group.code %>"><%- i18n.getLabel(group.labels, locale, group.code) %></label>
+            <% }) %>
+        </div>
+    </div>
+</div>

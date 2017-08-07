@@ -47,7 +47,7 @@ class AddProductToVariantGroupProcessor extends AbstractProcessor
     public function process($product)
     {
         $actions = $this->getConfiguredActions();
-        $variantGroup = $actions['value'];
+        $variantGroup = $actions[0]['value'];
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
 
         $variantGroup->addProduct($product);

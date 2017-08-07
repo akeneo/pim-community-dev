@@ -36,7 +36,7 @@ TODO
 
 ```bash
 export PIM_DIR=/path/to/your/pim/installation
-cp app/SymfonyRequirements.php $PIM_DIR/app
+cp var/SymfonyRequirements.php $PIM_DIR/app
 cp app/PimRequirements.php $PIM_DIR/app
 
 mv $PIM_DIR/app/config/pim_parameters.yml $PIM_DIR/app/config/pim_parameters.yml.bak
@@ -96,8 +96,8 @@ In this case, go to the chapter "Migrate your custom code" before running the da
 6. Then you can migrate your database using:
 
 ```bash
-rm -rf app/cache
-php app/console doctrine:migration:migrate --env=prod
+rm -rf var/cache
+php bin/console doctrine:migration:migrate --env=prod
 ```
 
 7. Then, generate JS translations and re-generate the PIM assets:
@@ -108,7 +108,7 @@ TODO
 
 ## Migrate your custom code
 
-We extracted the "values" logic outside of products. It means that any entity having the `EntityWithValuesInterface` 
+We extracted the "values" logic outside of products. It means that any entity having the `EntityWithValuesInterface`
 would be able to be processed. As a reminder, a value is composed of an attribute, a locale, a scope, and a data. As values are not only
 for product anymore, we decided to rename `ProductValueInterface` to `ValueInterface`. This impacts a lot of classes too.
 
@@ -190,9 +190,9 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_reference_data\.product_val
 
 ## Building the front-end with webpack
 
-1. Install the node v6.11.0 and npm v5.0.3, you can follow the instructions here - https://nodejs.org/en/download/package-manager/ or install with homebrew - `brew install node@6` should install both these versions
-2. Run `php app/console pim:installer:dump-require-paths`
-3. Run `php app/console assets:install --symlink`
+1. Install nodejs (tested with >=6.11.0 until 8.2.1) and npm 5.0.3, you can follow the instructions here - https://nodejs.org/en/download/package-manager/ or install with homebrew - `brew install node@6` should install both these versions.
+2. Run `php bin/console pim:installer:dump-require-paths`
+3. Run `php bin/console assets:install --symlink`
 4. Create a file in your project root called `package.json` with the following contents:
 
 ```json
@@ -210,7 +210,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_reference_data\.product_val
 
 5. Run `npm install` inside your project root
 6. Run `npm run webpack`
-7. Run `php app/console cache:clear`
+7. Run `php bin/console cache:clear`
 8. Add to your .gitignore the following lines:
 
 ```
@@ -222,7 +222,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_reference_data\.product_val
 
 If you have any custom Javascript you will need to make the following changes:
 
-When you require a html template, you no longer have to use the `text!` prefix.
+When you require a html template inside a module, you no longer have to use the `text!` prefix. This is handled in [webpack.config.js](https://github.com/akeneo/pim-community-dev/blob/master/webpack.config.js#L78).
 
 Before:
 
@@ -253,4 +253,4 @@ After:
 
 You can now write custom Javascript using es2017 (es2015 and above) syntax. We use babel to transpile the JS during the webpack build step. Check out the full guide here - https://babeljs.io/learn-es2015/
 
-While you are developing custom Javscript, you can run `npm run webpack-watch` to automatically compile and refresh your changes. Otherwise, you can run `npm run webpack` without refresh to see your changes.
+While you are developing custom Javscript, you can run `npm run webpack-watch` to automatically compile and refresh your changes. Otherwise, you can run `npm run webpack` without refresh to see your changes. This command will also minify your code. 

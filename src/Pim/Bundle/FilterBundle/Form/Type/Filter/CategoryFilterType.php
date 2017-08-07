@@ -54,7 +54,7 @@ class CategoryFilterType extends NumberFilterType
             [
                 'field_type'        => CategoryType::class,
                 'operator_choices'  => $choices,
-                'empty_value'       => self::EXCLUDE_SUB,
+                'placeholder'       => self::EXCLUDE_SUB,
                 'data_type'         => self::DATA_INTEGER,
                 'formatter_options' => []
             ]

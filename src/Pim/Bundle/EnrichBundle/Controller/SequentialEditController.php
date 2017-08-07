@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -38,18 +39,19 @@ class SequentialEditController
     /** @var SaverInterface */
     protected $saver;
 
-    /** @var array */
-    protected $objects;
+    /** @var MassActionParametersParser */
+    protected $parameterParser;
 
     /**
      * Constructor
      *
-     * @param RouterInterface       $router
-     * @param MassActionDispatcher  $massActionDispatcher
-     * @param SequentialEditManager $seqEditManager
-     * @param UserContext           $userContext
-     * @param NormalizerInterface   $normalizer
-     * @param SaverInterface        $saver
+     * @param RouterInterface            $router
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param SequentialEditManager      $seqEditManager
+     * @param UserContext                $userContext
+     * @param NormalizerInterface        $normalizer
+     * @param SaverInterface             $saver
+     * @param MassActionParametersParser $parameterParser
      */
     public function __construct(
         RouterInterface $router,
@@ -57,14 +59,16 @@ class SequentialEditController
         SequentialEditManager $seqEditManager,
         UserContext $userContext,
         NormalizerInterface $normalizer,
-        SaverInterface $saver
+        SaverInterface $saver,
+        MassActionParametersParser $parameterParser
     ) {
-        $this->router = $router;
+        $this->router               = $router;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->seqEditManager = $seqEditManager;
-        $this->userContext = $userContext;
-        $this->normalizer = $normalizer;
-        $this->saver = $saver;
+        $this->seqEditManager       = $seqEditManager;
+        $this->userContext          = $userContext;
+        $this->normalizer           = $normalizer;
+        $this->saver                = $saver;
+        $this->parameterParser      = $parameterParser;
     }
 
     /**
@@ -85,8 +89,10 @@ class SequentialEditController
             );
         }
 
+        $parameters = $this->parameterParser->parse($request);
+
         $sequentialEdit = $this->seqEditManager->createEntity(
-            $this->getObjects($request),
+            $this->massActionDispatcher->dispatch($parameters),
             $this->userContext->getUser()
         );
 
@@ -111,31 +117,5 @@ class SequentialEditController
         $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());
 
         return new JsonResponse($this->normalizer->normalize($sequentialEdit, 'internal_api'));
-    }
-
-    /**
-     * Get products to mass edit
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    protected function getObjects(Request $request)
-    {
-        if ($this->objects === null) {
-            $this->dispatchMassAction($request);
-        }
-
-        return $this->objects;
-    }
-
-    /**
-     * Dispatch mass action
-     *
-     * @param Request $request
-     */
-    protected function dispatchMassAction(Request $request)
-    {
-        $this->objects = $this->massActionDispatcher->dispatch($request);
     }
 }

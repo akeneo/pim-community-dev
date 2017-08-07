@@ -48,7 +48,7 @@ class BaseHandler implements HandlerInterface
     {
         $this->form->setData($entity);
         if ($this->requestStack->getCurrentRequest()->isMethod('POST')) {
-            $this->form->submit($this->requestStack->getCurrentRequest());
+            $this->form->handleRequest($this->requestStack->getCurrentRequest());
             if ($this->form->isValid()) {
                 $this->saver->save($entity);
 

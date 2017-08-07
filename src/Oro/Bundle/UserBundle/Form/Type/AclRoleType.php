@@ -87,8 +87,9 @@ class AclRoleType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Role::class,
-                'intention'  => 'role',
+                'data_class'            => Role::class,
+                'intention'             => 'role',
+                'privilegeConfigOption' => [],
             ]
         );
     }

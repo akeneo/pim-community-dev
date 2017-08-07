@@ -49,7 +49,7 @@ class BatchCommand extends ContainerAwareCommand
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'Override job configuration (formatted as json. ie: ' .
-                'php app/console akeneo:batch:job -c "{\"filePath\":\"/tmp/foo.csv\"}" acme_product_import)'
+                'php bin/console akeneo:batch:job -c "{\"filePath\":\"/tmp/foo.csv\"}" acme_product_import)'
             )
             ->addOption(
                 'email',
@@ -112,7 +112,7 @@ class BatchCommand extends ContainerAwareCommand
 
         // Override mail notifier recipient email
         if ($email = $input->getOption('email')) {
-            $errors = $validator->validateValue($email, new Assert\Email());
+            $errors = $validator->validate($email, new Assert\Email());
             if (count($errors) > 0) {
                 throw new \RuntimeException(
                     sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))

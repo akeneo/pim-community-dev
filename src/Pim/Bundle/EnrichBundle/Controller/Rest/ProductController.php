@@ -215,14 +215,12 @@ class ProductController
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
-
         $data = json_decode($request->getContent(), true);
         try {
             $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }
-
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);

@@ -4,11 +4,13 @@ Feature: Well display navigation titles
   As an administrator
   I need to be able to see title depending of the catalog page
 
-  Scenario Outline: Successfully display the page titles
+  Background:
     Given a "footwear" catalog configuration
     And a "sandals" product
     And a "'quote'" product
     And I am logged in as "Peter"
+
+  Scenario Outline: Successfully display the page titles
     When I am on the <page> page
     Then I should see the title "<title>"
 
@@ -46,4 +48,4 @@ Feature: Well display navigation titles
       | export executions                             | Export executions history                           |
       | variant groups                                | Variant groups                                      |
       | "sandals" product                             | Products sandals \| Edit                            |
-      | "'quote'" product                             | Products 'quote' \| Edit                             |
+      | "'quote'" product                             | Products 'quote' \| Edit                            |

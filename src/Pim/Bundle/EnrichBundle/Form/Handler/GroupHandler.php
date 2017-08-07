@@ -64,7 +64,7 @@ class GroupHandler implements HandlerInterface
         $this->form->setData($group);
 
         if ($this->requestStack->getCurrentRequest()->isMethod('POST')) {
-            $this->form->submit($this->requestStack->getCurrentRequest());
+            $this->form->handleRequest($this->requestStack->getCurrentRequest());
             if ($this->form->isValid()) {
                 $this->onSuccess($group);
 

@@ -46,16 +46,16 @@ Feature: Validate editing common numeric attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Length attribute
     And I change the Length to "10"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the metric "Length" of products boots and sneakers should be "10"
     When I am on the products page
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Length attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the metric "Length" of products boots, sandals and sneakers should be ""
     When I am on the products page
     And I select rows boots, sandals and sneakers
@@ -73,8 +73,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Number in stock attribute
     And I change the "Number in stock" to "10"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute number_in_stock of "boots" should be "10"
     And attribute number_in_stock of "sneakers" should be "10"
     When I am on the products page
@@ -82,8 +82,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Number in stock attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then attribute number_in_stock of "boots" should be ""
     And attribute number_in_stock of "sandals" should be ""
     And attribute number_in_stock of "sneakers" should be ""
@@ -106,8 +106,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Price attribute
     And I change the "Price" to "10 USD"
     And I change the "Price" to "15 EUR"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the prices "Price" of products boots and sneakers should be:
       | amount | currency |
       | 10     | USD      |
@@ -117,8 +117,8 @@ Feature: Validate editing common numeric attributes of multiple products
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the prices "Price" of products boots, sandals and sneakers should be:
       | amount | currency |
       |        | USD      |

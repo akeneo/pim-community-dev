@@ -95,6 +95,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                 // with class as param
                 $class = $this->container->getParameter($match[1]);
                 // fall-through
+                // no break
             case preg_match(static::STATIC_METHOD_CLEAN_REGEX, $val, $match):
                 // with class real name
                 $class = isset($class) ? $class : $match[1];

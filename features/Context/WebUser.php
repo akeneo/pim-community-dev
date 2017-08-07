@@ -1688,7 +1688,7 @@ class WebUser extends PimContext
     {
         $status = $action === 'enable' ? true : false;
         $this->getCurrentPage()->toggleSwitch('To enable', $status);
-        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->configure();
         $this->getCurrentPage()->confirm();
         $this->wait();
     }
@@ -1888,38 +1888,10 @@ class WebUser extends PimContext
         $this->wait();
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
 
-    /**
-     * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
-     *
-     * @param string $operationAlias
-     *
-     * @throws ExpectationException
-     */
-    public function iWaitForTheMassEditJobToFinish($operationAlias)
-    {
-        $operationRegistry = $this->getMainContext()
-            ->getContainer()
-            ->get('pim_enrich.mass_edit_action.operation.registry');
-
-        $operation = $operationRegistry->get($operationAlias);
-
-        if (null === $operation) {
-            throw $this->createExpectationException(
-                sprintf('Operation with alias "%s" doesn\'t exist', $operationAlias)
-            );
-        }
-
-        if (!$operation instanceof BatchableOperationInterface) {
-            throw $this->createExpectationException(
-                sprintf('Can\'t get the job code from the "%s" operation', $operationAlias)
-            );
-        }
-
-        $code = $operation->getJobInstanceCode();
-
-        $this->waitForMassEditJobToFinish($code);
+        return [
+            new Step\Then(sprintf('I go on the last executed job resume of "%s"', $code))
+        ];
     }
 
     /**
@@ -2120,7 +2092,7 @@ class WebUser extends PimContext
         $this->getNavigationContext()->currentPage = $this
             ->getPage('Batch Operation')
             ->chooseOperation($operation)
-            ->next();
+            ->choose();
 
         $this->wait();
     }
@@ -2137,16 +2109,39 @@ class WebUser extends PimContext
     }
 
     /**
-     * TODO This step should be renamed to "I confirm the mass edit"
-     *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
     {
         $this->iMoveToTheConfirmPage();
+    }
+
+    /**
+     * @Given /^I click on the cancel button of the mass edit$/
+     */
+    public function iCancelTheMassEdit()
+    {
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->cancel();
+    }
+
+    /**
+     * @Given /^I move on to the choose step$/
+     */
+    public function iMoveOnToTheChooseStep()
+    {
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->select();
+    }
+
+    /**
+     * @Given /^I confirm mass edit$/
+     */
+    public function iConfirmTheMassEdit()
+    {
+        $this->iMoveToTheConfirmPage();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
-        $this->wait();
     }
 
     /**
@@ -2155,10 +2150,7 @@ class WebUser extends PimContext
     public function iMoveToTheConfirmPage()
     {
         $this->scrollContainerTo(900);
-        $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.next');
-        }, 'Could not find next button');
-        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->configure();
     }
 
     /**

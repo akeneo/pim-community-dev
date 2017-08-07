@@ -23,7 +23,6 @@ class PimEnrichBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass(new ReferenceFactory()))
             ->addCompilerPass(new Compiler\RegisterViewElementsPass(new ReferenceFactory()))
             ->addCompilerPass(new Compiler\RegisterFormExtensionsPass())
             ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'field'))

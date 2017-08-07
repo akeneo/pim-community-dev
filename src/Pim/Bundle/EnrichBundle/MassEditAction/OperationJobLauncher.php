@@ -59,11 +59,8 @@ class OperationJobLauncher
             throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
         }
 
-        if ($operation instanceof ConfigurableOperationInterface) {
-            $operation->finalize();
-        }
-
         $configuration = $operation->getBatchConfig();
+
         $this->jobLauncher->launch(
             $jobInstance,
             $this->tokenStorage->getToken()->getUser(),

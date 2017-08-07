@@ -38,7 +38,7 @@ Feature: Update product history when mass editing products
   Scenario: Display history when changing product status
     Given I choose the "Change status (enable / disable)" operation
     And I disable the products
-    And I wait for the "change-status" mass-edit job to finish
+    And I wait for the "update_product_value" job to finish
     When I edit the "boots" product
     And I visit the "History" column tab
     Then there should be 2 updates

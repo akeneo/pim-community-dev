@@ -46,8 +46,8 @@ Feature: Validate editing common select attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
@@ -57,8 +57,8 @@ Feature: Validate editing common select attributes of multiple products
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       |       |
@@ -69,14 +69,14 @@ Feature: Validate editing common select attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
     And I change the "Manufacturer" to "Converse"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the option "manufacturer" of products boots and sneakers should be "Converse"
     When I am on the products page
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the option "manufacturer" of products boots, sandals and sneakers should be ""

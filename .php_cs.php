@@ -5,6 +5,9 @@ return PhpCsFixer\Config::create()
         '@PSR2' => true,
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
+        'method_argument_space' => [
+            'ensure_fully_multiline' => false
+        ],
     ))
     ->setFinder(
         PhpCsFixer\Finder::create()

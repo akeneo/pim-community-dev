@@ -10,6 +10,6 @@ datagrid_view:
     resource: '@PimDataGridBundle/Resources/config/routing/datagrid_view.yml'
     prefix: /datagrid_view
 
-datagrid_mass_action:
-    resource: '@PimDataGridBundle/Resources/config/routing/mass_actions.yml'
-    prefix: /datagrid
+pim_datagrid_mass_action:
+    path: /datagrid/{gridName}/massAction/{actionName}
+    defaults: { _controller: pim_datagrid.controller.mass_action:massActionAction }

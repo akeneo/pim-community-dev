@@ -12,6 +12,10 @@ define(
     function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';
 
+        if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
+            sessionStorage.setItem('notificationRefreshLocked', 'available');
+        }
+
         return Backbone.View.extend({
             options: {
                 imgUrl:                 '',
@@ -26,8 +30,6 @@ define(
             freezeCount: false,
 
             refreshTimeout: null,
-
-            refreshLocked: false,
 
             template: _.template(notificationTpl),
 
@@ -100,7 +102,7 @@ define(
             },
 
             scheduleRefresh: function () {
-                if (this.refreshLocked) {
+                if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
                     return;
                 }
                 if (null !== this.refreshTimeout) {
@@ -111,10 +113,13 @@ define(
             },
 
             refresh: function () {
-                this.refreshLocked = true;
+                if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
+                    return;
+                }
+                sessionStorage.setItem('notificationRefreshLocked', 'locked');
                 $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
                     .then(_.bind(function (count) {
-                        this.refreshLocked = false;
+                        sessionStorage.setItem('notificationRefreshLocked', 'available');
                         this.collection.trigger('load:unreadCount', count, true);
                     }, this));
             },

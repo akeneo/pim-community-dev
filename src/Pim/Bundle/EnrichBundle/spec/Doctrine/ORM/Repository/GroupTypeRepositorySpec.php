@@ -55,8 +55,9 @@ class GroupTypeRepositorySpec extends ObjectBehavior
         ]);
 
         $this->findTranslatedLabels()->shouldReturn([
-            10 => 'group en',
-            11 => '[group_other_code]',
+            'group fr' => 10,
+            'group en' => 10,
+            '[group_other_code]' => 11,
         ]);
     }
 }

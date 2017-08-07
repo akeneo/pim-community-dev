@@ -9,7 +9,15 @@ extensions:
         config:
             tab: pim-menu-products
 
-    pim-product-edit-form-mainImage:
+    pim-product-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-product-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-product-edit-form-main-image:
         module: pim/form/common/main-image
         parent: pim-product-edit-form
         targetZone: main-image

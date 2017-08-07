@@ -6,6 +6,7 @@ use Pim\Bundle\DataGridBundle\DataTransformer\DefaultViewDataTransformer;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -72,7 +73,7 @@ class DefaultViewSubscriber implements EventSubscriberInterface
             $alias = $type['datagridAlias'];
             $form->add(
                 'default_' . str_replace('-', '_', $alias) . '_view',
-                'entity',
+                EntityType::class,
                 [
                     'class'         => 'PimDataGridBundle:DatagridView',
                     'choice_label'  => 'label',

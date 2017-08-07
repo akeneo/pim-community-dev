@@ -5,7 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -15,8 +16,10 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    use SerializerAwareTrait;
+
     /** @var TranslatorInterface */
     protected $translator;
 

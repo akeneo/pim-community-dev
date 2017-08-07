@@ -57,7 +57,6 @@ class ProductFilter implements ProductFilterInterface
     public function filter(ProductInterface $product, array $newProduct)
     {
         $originalValues = $this->getOriginalProduct($product);
-
         $result = [];
         foreach ($newProduct as $code => $value) {
             if ('values' === $code) {
