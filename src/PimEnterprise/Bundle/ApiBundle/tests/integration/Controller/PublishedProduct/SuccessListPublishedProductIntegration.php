@@ -1293,7 +1293,7 @@ JSON;
     /**
      * @return array
      */
-    protected function getStandardizedPublishedProducts()
+    protected function getStandardizedPublishedProducts() : array
     {
         $standardizedPublishedProducts['simple'] = <<<JSON
 {

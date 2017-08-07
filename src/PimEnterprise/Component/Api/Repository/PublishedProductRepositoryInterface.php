@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -25,5 +27,5 @@ interface PublishedProductRepositoryInterface
      *
      * @return mixed
      */
-    public function findOneByIdentifier($identifier);
+    public function findOneByIdentifier(string $identifier);
 }

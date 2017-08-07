@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
 
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -17,7 +19,7 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
      *
      * @return PublishedProductInterface
      */
-    protected function publishProduct(ProductInterface $product)
+    protected function publishProduct(ProductInterface $product): PublishedProductInterface
     {
         $published = $this->get('pimee_workflow.manager.published_product')->publish($product);
 
@@ -29,7 +31,7 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     /**
      * @return array
      */
-    protected function getStandardizedPublishedProducts()
+    protected function getStandardizedPublishedProducts(): array
     {
         $standardizedPublishedProducts['product_viewable_by_everybody_1'] = <<<JSON
 {
@@ -179,20 +181,20 @@ JSON;
     }
 
     /**
-     * @param string $productIdentifier
+     * @param string $publishedProductIdentifier
      *
      * @return string
      */
-    protected function getEncryptedId($productIdentifier)
+    protected function getEncryptedId(string $publishedProductIdentifier): string
     {
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $productRepository = $this->get('pimee_api.repository.published_product');
+        $publishedProductRepository = $this->get('pimee_api.repository.published_product');
 
-        $product = $productRepository->findOneByIdentifier($productIdentifier);
+        $product = $publishedProductRepository->findOneByIdentifier($publishedProductIdentifier);
 
         return $encrypter->encrypt($product->getId());
     }

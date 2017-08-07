@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -29,8 +31,11 @@ class PublishedProductRepository extends EntityRepository implements PublishedPr
      * @param string                             $className
      * @param WorkflowProductRepositoryInterface $publishedProductRepository
      */
-    public function __construct(EntityManager $em, $className, WorkflowProductRepositoryInterface $publishedProductRepository)
-    {
+    public function __construct(
+        EntityManager $em,
+        string $className,
+        WorkflowProductRepositoryInterface $publishedProductRepository
+    ) {
         parent::__construct($em, $em->getClassMetadata($className));
 
         $this->publishedProductRepository = $publishedProductRepository;
@@ -39,7 +44,7 @@ class PublishedProductRepository extends EntityRepository implements PublishedPr
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->publishedProductRepository->findOneByIdentifier($identifier);
     }

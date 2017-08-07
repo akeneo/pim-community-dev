@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -119,7 +121,7 @@ class PublishedProductController
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $pagination = $request->query->has('pagination_type') &&
@@ -151,14 +153,14 @@ class PublishedProductController
         ], $request->query->all());
         $pqbOptions = ['limit' => (int) $queryParameters['limit']];
 
-        $searchParameter = null;
+        $searchParameter = '';
         if (isset($queryParameters['search_after'])) {
             $searchParameter = $queryParameters['search_after'];
         } elseif (isset($queryParameters['search_before']) && '' !== $queryParameters['search_before']) {
             $searchParameter = $queryParameters['search_before'];
         }
 
-        if (null !== $searchParameter) {
+        if ('' !== $searchParameter) {
             $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($searchParameter);
             $pqbOptions['search_after_unique_key'] = $searchParameterDecrypted;
             $pqbOptions['search_after'] = [$searchParameterDecrypted];
@@ -168,17 +170,22 @@ class PublishedProductController
 
         try {
             $this->setPQBFilters($pqb, $request, $channel);
-        } catch (PropertyException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        } catch (UnsupportedFilterException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        } catch (InvalidOperatorException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        } catch (ObjectNotFoundException $e) {
+        } catch (
+            UnsupportedFilterException
+            | PropertyException
+            | InvalidOperatorException
+            | ObjectNotFoundException
+            $e
+        ) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $paginatedPublishedProducts = $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions, $searchParameter);
+        $paginatedPublishedProducts = $this->searchAfterIdentifier(
+            $pqb,
+            $queryParameters,
+            $normalizerOptions,
+            $searchParameter
+        );
 
         return new JsonResponse($paginatedPublishedProducts);
     }
@@ -190,11 +197,11 @@ class PublishedProductController
      *
      * @return JsonResponse
      */
-    public function getAction($code)
+    public function getAction(string $code): JsonResponse
     {
         $product = $this->publishedProductRepository->findOneByIdentifier($code);
         if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Published product "%s" does not exist.', $code));
         }
 
         $productApi = $this->normalizer->normalize($product, 'external_api');
@@ -208,7 +215,7 @@ class PublishedProductController
      *
      * @return array
      */
-    protected function getNormalizerOptions(Request $request, ChannelInterface $channel = null)
+    protected function getNormalizerOptions(Request $request, ChannelInterface $channel = null): array
     {
         $normalizerOptions = [];
 
@@ -259,8 +266,8 @@ class PublishedProductController
         ProductQueryBuilderInterface $pqb,
         array $queryParameters,
         array $normalizerOptions,
-        $searchParameter
-    ) {
+        string $searchParameter
+    ): array {
         $direction = isset($queryParameters['search_before']) ? Directions::DESCENDING : Directions::ASCENDING;
         $pqb->addSorter('id', $direction);
 
@@ -308,7 +315,7 @@ class PublishedProductController
         ProductQueryBuilderInterface $pqb,
         Request $request,
         ChannelInterface $channel = null
-    ) {
+    ): void {
         $search = [];
 
         if ($request->query->has('search')) {

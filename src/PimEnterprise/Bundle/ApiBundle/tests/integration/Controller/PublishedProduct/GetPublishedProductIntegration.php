@@ -34,19 +34,24 @@ class GetPublishedProductIntegration extends AbstractPublishedProductTestCase
 
         $client->request('GET', 'api/rest/v1/published-products/not_found');
 
+        $expectedContent =
+            <<<JSON
+    {
+        "code": 404,
+        "message": "Published product \"not_found\" does not exist."
+    }
+JSON;
+
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $content = json_decode($response->getContent(), true);
-        $this->assertCount(2, $content, 'response contains 2 items');
-        $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame('Product "not_found" does not exist.', $content['message']);
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     /**
      * @param Response $response
      * @param string   $expected
      */
-    private function assertResponse(Response $response, $expected)
+    private function assertResponse(Response $response, string $expected)
     {
         $result = json_decode($response->getContent(), true);
         $expected = json_decode($expected, true);
