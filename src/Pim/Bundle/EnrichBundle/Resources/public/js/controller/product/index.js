@@ -1,21 +1,29 @@
 define(
     [
+        'underscore',
+        'jquery',
         'pim/controller/base',
         'pim/form-builder'
     ],
-    function (BaseController, FormBuilder) {
+    function (_, $, BaseController, FormBuilder) {
         return BaseController.extend({
-
             /**
             * {@inheritdoc}
             */
-            renderRoute() {
-                console.log('Render the parent product index');
+            renderRoute(route, path) {
+                return FormBuilder.build('pim-product-index').then(function (form) {
+                    // return $.get(path)
+                    // .then(this.renderTemplate.bind(this))
+                    // .promise();
+                    form.setElement(this.$el).render();
+                }.bind(this));
+            },
+            renderTemplate: function (content) {
+                if (!this.active) {
+                    return;
+                }
 
-                return FormBuilder.build('pim-product-index')
-                    .then(function (form) {
-                        form.setElement(this.$el).render();
-                    }.bind(this));
+                this.$el.html(content);
             }
         });
     }

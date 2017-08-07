@@ -1,5 +1,28 @@
 extensions:
     pim-product-index:
-       module: pim/grid
-       config:
+        module: pim/grid
+        config:
           title: Products
+
+    pim-product-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-product-index
+        targetZone: buttons-right
+        config:
+           title:     Create product
+           modalForm: pim-product-create-modal
+
+    # @TODO - Create a new locale-switcher
+    # pim-product-index-locale-switcher:
+    #     module: pim/product-edit-form/locale-switcher
+    #     parent: pim-product-index
+    #     targetZone: title-buttons
+    #     config:
+    #         context: base_product
+
+    # @TODO - Pass the config correctly
+    pim-product-index-grid:
+        module: pim/grid/table
+        parent: pim-product-index
+        targetZone: grid
+

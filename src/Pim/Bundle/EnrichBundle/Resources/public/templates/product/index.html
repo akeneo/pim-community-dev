@@ -1,0 +1,116 @@
+<script type="text/javascript">
+require(['jquery', 'pim/user-context'], function ($, UserContext) {
+    'use strict';
+    UserContext.set('catalogLocale', 'en_US');
+});
+
+sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
+</script>
+
+<div class="AknDefault-mainContent">
+    <header class="AknTitleContainer navigation">
+        <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
+        <div class="AknTitleContainer-mainContainer">
+            <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+            <div class="AknTitleContainer-title" data-drop-zone="title"><%- title %></div>
+        </div>
+        <div class="AknTitleContainer-buttonsContainer">
+            <div class="AknTitleContainer-userMenu user-menu"></div>
+            <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+                <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons" data-drop-zone="buttons-right"></div>
+                <script type="text/javascript">
+                require(['jquery', 'pim/form-builder', 'oro/mediator'], function ($, FormBuilder, mediator) {
+                    $('.create-product').on('click', function () {
+                        mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-products' });
+                    });
+                });
+                </script>
+            </div>
+            <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons">
+                <div id="locale-switcher" class="AknDropdownButton AknDropdown AknButtonList-item locale-switcher">
+                    <div class="AknDropdownButton-button" data-toggle="dropdown">
+                        <span class="flag-language">
+                            <i class="flag flag-us"></i>
+                            <span class="language">en</span>
+                        </span>
+                        <div class="AknDropdownButton-caretContainer">
+                            <i class="AknCaret AknCaret--big"></i>
+                        </div>
+                    </div>
+                    <ul class="AknDropdown-menu">
+                        <li>
+                            <a class="AknDropdown-menuLink "
+                                href="#/enrich/product/?dataLocale=de_DE"
+                                title="German (Germany)"
+                                data-locale="de_DE">
+                                <span class="flag-language">
+                                    <i class="flag flag-de"></i>
+                                    <span class="language">de</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="AknDropdown-menuLink AknDropdown-menuLink--active"
+                                href="#/enrich/product/?dataLocale=en_US"
+                                title="English (United States)"
+                                data-locale="en_US">
+                                <span class="flag-language">
+                                    <i class="flag flag-us"></i>
+                                    <span class="language">en</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="AknDropdown-menuLink "
+                                href="#/enrich/product/?dataLocale=fr_FR"
+                                title="French (France)"
+                                data-locale="fr_FR">
+                                <span class="flag-language">
+                                    <i class="flag flag-fr"></i>
+                                    <span class="language">fr</span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="view-selector" class="pull-right"></div>
+
+                <script>
+                    require(
+                    [
+                        'jquery',
+                        'pim/fetcher-registry',
+                        'pim/form-builder'
+                    ],
+                    function(
+                        $,
+                        FetcherRegistry,
+                        FormBuilder
+                    ) {
+                        $(function() {
+                            FetcherRegistry.initialize().done(function () {
+                                FormBuilder.buildForm('pim-grid-view-selector').then(function (form) {
+                                    return form.configure('product-grid').then(function () {
+                                        form.setElement('#view-selector').render();
+                                    });
+                                }.bind(this));
+                            });
+                        });
+                    }
+                    );
+                </script>
+            </div>
+            <div class="AknTitleContainer-state state" data-drop-zone="state"> </div>
+        </div>
+        </header>
+
+
+
+    <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
+        <div id="tree" data-datalocale="en_US" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
+        <div id="product-grid" style="flex-grow: 1;" data-drop-zone="grid">
+            <div id="grid-product-grid" data-type="datagrid" ></div>
+        </div>
+    </div>
+</div>

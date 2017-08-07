@@ -45,6 +45,7 @@
 
     {{ elements.page_header(title, buttons, titleButtons) }}
 
+    {# Get the defaultColumns and defaultFilters from the REST endpoint #}
     {% if app.user.getDefaultGridView(gridAlias) is not null %}
         {% set defaultView = {
             'id' : app.user.getDefaultGridView(gridAlias).id,
@@ -55,6 +56,7 @@
         {% set defaultView = {} %}
     {% endif %}
 
+    {# get the access grant from REST endpoint #}
     {% if resource_granted('pim_enrich_product_category_list') %}
         {# This style is temporary and will be dropped on PEFization of this screen #}
         <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
