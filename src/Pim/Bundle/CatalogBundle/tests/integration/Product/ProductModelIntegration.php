@@ -57,7 +57,7 @@ class ProductModelIntegration extends TestCase
     /**
      * Basic validation, a product model code must not be empty
      */
-    public function testThatTheProductModelcodeMustNotBeEmpty()
+    public function testThatTheProductModelCodeMustNotBeEmpty()
     {
         $productModel = $this->createProductModel(
             [

@@ -27,8 +27,8 @@ The attribute "%attributeCode%" does not exist.: The attribute "%attributeCode%"
 The attribute "%attributeCode%" is not a metric attribute.: The attribute "%attributeCode%" is not a metric attribute.
 The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".: The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".
 The currency "%currency%" has to be activated.: The currency "%currency%" has to be activated.
-product_model.identifier.not_blank.message: The product model identifier must not be empty.
-product_model.identifier.unique.message: The same identifier is already set on another product model.
+product_model.code.not_blank.message: The product model code must not be empty.
+product_model.code.unique.message: The same code is already set on another product model.
 product_model.family_variant.not_blank.message: The product model family variant must not be empty.
 
 pim_catalog:

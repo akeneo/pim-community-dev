@@ -5,11 +5,11 @@ Pim\Component\Catalog\Model\ProductModel:
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: ['code']
-            message: 'product_model.identifier.unique.message'
+            message: 'product_model.code.unique.message'
     properties:
         code:
             - NotBlank:
-                message: 'product_model.identifier.not_blank.message'
+                message: 'product_model.code.not_blank.message'
             - Regex:
                 pattern: '/^[^,;]+$/'
                 message: 'regex.comma_or_semicolon.message'
