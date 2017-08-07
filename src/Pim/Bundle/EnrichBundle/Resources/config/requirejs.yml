@@ -378,7 +378,7 @@ config:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_attribute_remove
                 pim_enrich_product_index:
-                    module: pim/controller/product/index
+                    module: pim/controller/template
                     aclResourceId: pim_enrich_product_index
                 pim_enrich_product_create:
                     module: pim/controller/template
@@ -499,9 +499,7 @@ config:
         pim/controller/base:                   pimenrich/js/controller/base
         pim/controller/template:               pimenrich/js/controller/template
         pim/controller/form:                   pimenrich/js/controller/form
-        # @TODO - Rename this to pimenrich/js/controller/product/edit and move the file
         pim/controller/product:                pimenrich/js/controller/product
-        pim/controller/product/index:                pimenrich/js/controller/product/index
         pim/controller/family:                 pimenrich/js/controller/family
         pim/controller/channel/edit:           pimenrich/js/controller/channel/edit
         pim/controller/common/index:           pimenrich/js/controller/common/index
@@ -887,7 +885,6 @@ config:
         pim/formatter/date: pimenrich/js/formatter/date-formatter
 
         # Grid view selector
-        pim/grid: pimenrich/js/product/grid
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
         pim/grid/view-selector/create-view: pimenrich/js/grid/view-selector-create-view

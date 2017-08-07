@@ -1,5 +1,0 @@
-extensions:
-    pim-product-index:
-       module: pim/grid
-       config:
-          title: Products
