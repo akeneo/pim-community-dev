@@ -52,7 +52,7 @@ services:
             - true
             - null
             - false
-            - '%kernel.logs_dir%/batch'
+            - '%logs_dir%/batch'
 
     akeneo_batch.set_job_execution_log_file_subscriber:
         class: '%akeneo_batch.set_job_execution_log_file_subscriber.class%'
@@ -74,4 +74,4 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
-            - '%kernel.logs_dir%'
+            - '%logs_dir%'
