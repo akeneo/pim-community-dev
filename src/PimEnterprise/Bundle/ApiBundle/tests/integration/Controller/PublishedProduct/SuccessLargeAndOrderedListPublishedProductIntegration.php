@@ -44,7 +44,7 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
             $standardizedPublishedProducts[] = $this->getStandardizedPublishedProduct($publishedProduct->getIdentifier());
         }
         $standardizedPublishedProducts = implode(',', $standardizedPublishedProducts);
-        $lastEncryptedId = urlencode($this->getEncryptedId(end($this->publishedProducts)->getIdentifier()));
+        $lastEncryptedId = rawurlencode($this->getEncryptedId(end($this->publishedProducts)->getIdentifier()));
 
         $client = $this->createAuthenticatedClient();
 
