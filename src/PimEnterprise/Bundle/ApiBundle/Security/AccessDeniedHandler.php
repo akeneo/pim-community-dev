@@ -27,19 +27,27 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     /** @var AccessDeniedHandlerInterface */
     private $accessDeniedHandler;
 
+    /**
+     * @param AccessDeniedHandlerInterface $accessDeniedHandler
+     */
     public function __construct(AccessDeniedHandlerInterface $accessDeniedHandler)
     {
         $this->accessDeniedHandler = $accessDeniedHandler;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function handle(Request $request, AccessDeniedException $accessDeniedException): Response
     {
         if ($accessDeniedException instanceof ResourceAccessDeniedException) {
-            $response = new Response(json_encode(
-                [
-                    'code'    => Response::HTTP_FORBIDDEN,
-                    'message' => $accessDeniedException->getMessage()
-                ]),
+            $response = new Response(
+                json_encode(
+                    [
+                        'code'    => Response::HTTP_FORBIDDEN,
+                        'message' => $accessDeniedException->getMessage(),
+                    ]
+                ),
                 Response::HTTP_FORBIDDEN
             );
 

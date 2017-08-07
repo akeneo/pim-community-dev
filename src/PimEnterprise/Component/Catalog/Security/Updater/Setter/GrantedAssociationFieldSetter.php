@@ -15,7 +15,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Check if product associated is at least "viewable" to be associated to a product
@@ -48,7 +47,9 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
             $this->associationFieldSetter->setFieldData($product, $field, $data, $options);
         } catch (ResourceAccessDeniedException $e) {
             throw new ResourceAccessDeniedException(
-                $e->getResource(), 'You cannot associate a product on which you have not a view permission.', $e
+                $e->getResource(),
+                'You cannot associate a product on which you have not a view permission.',
+                $e
             );
         }
     }
