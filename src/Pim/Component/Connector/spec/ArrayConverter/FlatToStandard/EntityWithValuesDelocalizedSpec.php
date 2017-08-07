@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ProductDelocalizedSpec extends ObjectBehavior
+class EntityWithValuesDelocalizedSpec extends ObjectBehavior
 {
     function let(ArrayConverterInterface $converter, AttributeConverterInterface $delocalizer)
     {

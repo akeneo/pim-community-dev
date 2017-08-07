@@ -4,18 +4,18 @@ namespace Pim\Component\Catalog\Comparator\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Filter product's values to have only updated or new values
+ * Filter entitiy's values to have only updated or new values
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFilter implements ProductFilterInterface
+class EntityWithValuesFilter implements FilterInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -27,7 +27,7 @@ class ProductFilter implements ProductFilterInterface
     protected $attributeRepository;
 
     /** @var array */
-    protected $productFields;
+    protected $entityFields;
 
     /** @var array[] */
     protected $attributeTypeByCodes;
@@ -36,32 +36,32 @@ class ProductFilter implements ProductFilterInterface
      * @param NormalizerInterface          $normalizer
      * @param ComparatorRegistry           $comparatorRegistry
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param array                        $productFields
+     * @param array                        $entityFields
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
-        array $productFields
+        array $entityFields
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
-        $this->productFields = $productFields;
+        $this->entityFields = $entityFields;
         $this->attributeTypeByCodes = [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function filter(ProductInterface $product, array $newProduct)
+    public function filter(EntityWithValuesInterface $entity, array $newEntity): array
     {
-        $originalValues = $this->getOriginalProduct($product);
+        $originalValues = $this->getOriginalEntity($entity);
         $result = [];
-        foreach ($newProduct as $code => $value) {
+        foreach ($newEntity as $code => $value) {
             if ('values' === $code) {
                 $data = $this->compareAttribute($originalValues, $value);
-            } elseif (in_array($code, $this->productFields)) {
+            } elseif (in_array($code, $this->entityFields)) {
                 $data = $this->compareField($originalValues, $value, $code);
             } else {
                 throw new \LogicException(sprintf('Cannot filter value of field "%s"', $code));
@@ -76,7 +76,7 @@ class ProductFilter implements ProductFilterInterface
     }
 
     /**
-     * Compare product's field
+     * Compare entity's field
      *
      * @param array  $originalValues
      * @param mixed  $field
@@ -86,7 +86,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array|null
      */
-    protected function compareField(array $originalValues, $field, $code)
+    protected function compareField(array $originalValues, $field, $code): ?array
     {
         $comparator = $this->comparatorRegistry->getFieldComparator($code);
         $diff = $comparator->compare($field, $this->getOriginalField($originalValues, $code));
@@ -99,7 +99,7 @@ class ProductFilter implements ProductFilterInterface
     }
 
     /**
-     * Compare product's values
+     * Compare entity's values
      *
      * @param array $originalValues
      * @param array $values
@@ -108,7 +108,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array|null
      */
-    protected function compareAttribute(array $originalValues, array $values)
+    protected function compareAttribute(array $originalValues, array $values): ?array
     {
         $this->cacheAttributeTypeByCodes(array_keys($values));
 
@@ -150,7 +150,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array
      */
-    protected function getOriginalAttribute(array $originalValues, array $attribute, $code)
+    protected function getOriginalAttribute(array $originalValues, array $attribute, $code): array
     {
         $key = $this->buildKey($attribute, $code);
 
@@ -158,41 +158,41 @@ class ProductFilter implements ProductFilterInterface
     }
 
     /**
-     * Normalize original product
+     * Normalize original entity
      *
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $entity
      *
      * @return array
      */
-    protected function getOriginalProduct(ProductInterface $product)
+    protected function getOriginalEntity(EntityWithValuesInterface $entity): array
     {
-        $originalProduct = $this->normalizer->normalize($product, 'standard');
+        $originalEntity = $this->normalizer->normalize($entity, 'standard');
 
-        return $this->flatProductValues($originalProduct);
+        return $this->flatEntityValues($originalEntity);
     }
 
     /**
-     * Flat product values to have keys formatted like that: $code-$locale-$scope.
+     * Flat entity values to have keys formatted like that: $code-$locale-$scope.
      * That simplifies the search when we compare two arrays
      *
-     * @param array $product
+     * @param array $entity
      *
      * @return array
      */
-    protected function flatProductValues(array $product)
+    protected function flatEntityValues(array $entity): array
     {
-        if (isset($product['values'])) {
-            $values = $product['values'];
-            unset($product['values']);
+        if (isset($entity['values'])) {
+            $values = $entity['values'];
+            unset($entity['values']);
 
             foreach ($values as $code => $value) {
                 foreach ($value as $data) {
-                    $product['values'][$this->buildKey($data, $code)] = $data;
+                    $entity['values'][$this->buildKey($data, $code)] = $data;
                 }
             }
         }
 
-        return $product;
+        return $entity;
     }
 
     /**
@@ -201,7 +201,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return array
      */
-    protected function mergeValueToResult(array $collection, array $value)
+    protected function mergeValueToResult(array $collection, array $value): array
     {
         foreach ($value as $code => $data) {
             if (array_key_exists($code, $collection)) {
@@ -220,7 +220,7 @@ class ProductFilter implements ProductFilterInterface
      *
      * @return string
      */
-    protected function buildKey(array $data, $code)
+    protected function buildKey(array $data, $code): string
     {
         return sprintf('%s-%s-%s', $code, $data['locale'], $data['scope']);
     }
@@ -228,7 +228,7 @@ class ProductFilter implements ProductFilterInterface
     /**
      * @param array $codes
      */
-    private function cacheAttributeTypeByCodes(array $codes)
+    private function cacheAttributeTypeByCodes(array $codes): void
     {
         $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
 

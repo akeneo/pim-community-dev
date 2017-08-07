@@ -110,6 +110,7 @@ services:
                 csv_group_type_import: pim-job-instance-csv-base-import
                 csv_locale_import: pim-job-instance-csv-base-import
                 csv_product_import: pim-job-instance-csv-product-import
+                csv_product_model_import: pim-job-instance-csv-product-model-import
                 csv_variant_group_import: pim-job-instance-csv-base-import
                 xlsx_association_type_import: pim-job-instance-xlsx-base-import
                 xlsx_attribute_import: pim-job-instance-xlsx-base-import
@@ -124,6 +125,7 @@ services:
                 xlsx_group_type_import: pim-job-instance-xlsx-base-import
                 xlsx_locale_import: pim-job-instance-xlsx-base-import
                 xlsx_product_import: pim-job-instance-xlsx-product-import
+                xlsx_product_model_import: pim-job-instance-xlsx-product-model-import
                 xlsx_variant_group_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }

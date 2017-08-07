@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Product filter interface
@@ -11,15 +11,15 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductFilterInterface
+interface FilterInterface
 {
     /**
      * Filter product's values to have only updated or new values
      *
-     * @param ProductInterface $product
-     * @param array            $newValues
+     * @param EntityWithValuesInterface $entity
+     * @param array                     $newValues
      *
      * @return array
      */
-    public function filter(ProductInterface $product, array $newValues);
+    public function filter(EntityWithValuesInterface $entity, array $newValues): array;
 }
