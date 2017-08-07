@@ -24,3 +24,5 @@ classify_assets;All;
 add_tags_to_assets;All;
 project_calculation;All;All
 refresh_project_completeness_calculation;All;
+csv_catalog_modeling_product_model_import;All;All;
+xlsx_catalog_modeling_product_model_import;All;All;
