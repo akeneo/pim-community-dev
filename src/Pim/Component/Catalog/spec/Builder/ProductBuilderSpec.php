@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
-use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -15,7 +15,6 @@ use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductEvents;
-use Pim\Component\Catalog\Value\ScalarProductValue;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -34,7 +33,7 @@ class ProductBuilderSpec extends ObjectBehavior
         CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
-        AttributeValuesResolver $valuesResolver,
+        AttributeValuesResolverInterface $valuesResolver,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         ValueFactory $productValueFactory
     ) {

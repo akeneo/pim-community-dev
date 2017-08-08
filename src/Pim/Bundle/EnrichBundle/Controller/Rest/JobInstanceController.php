@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -63,7 +64,7 @@ class JobInstanceController
     protected $jobParamsFactory;
 
     /** @var JobLauncherInterface */
-    protected $simpleJobLauncher;
+    protected $jobLauncher;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -93,7 +94,7 @@ class JobInstanceController
      * @param ValidatorInterface                    $validator
      * @param JobParametersValidator                $jobParameterValidator
      * @param JobParametersFactory                  $jobParamsFactory
-     * @param JobLauncherInterface                  $simpleJobLauncher
+     * @param JobLauncherInterface                  $jobLauncher
      * @param TokenStorageInterface                 $tokenStorage
      * @param RouterInterface                       $router
      * @param FormProviderInterface                 $formProvider
@@ -111,7 +112,7 @@ class JobInstanceController
         ValidatorInterface $validator,
         JobParametersValidator $jobParameterValidator,
         JobParametersFactory $jobParamsFactory,
-        JobLauncherInterface $simpleJobLauncher,
+        JobLauncherInterface $jobLauncher,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
         FormProviderInterface $formProvider,
@@ -128,7 +129,7 @@ class JobInstanceController
         $this->validator             = $validator;
         $this->jobParameterValidator = $jobParameterValidator;
         $this->jobParamsFactory      = $jobParamsFactory;
-        $this->simpleJobLauncher     = $simpleJobLauncher;
+        $this->jobLauncher           = $jobLauncher;
         $this->tokenStorage          = $tokenStorage;
         $this->router                = $router;
         $this->formProvider          = $formProvider;
@@ -483,14 +484,14 @@ class JobInstanceController
      *
      * @param JobInstance $jobInstance
      *
-     * @return JobInstance
+     * @return JobExecution
      */
-    protected function launchJob(JobInstance $jobInstance)
+    protected function launchJob(JobInstance $jobInstance) : JobExecution
     {
         $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
 
-        return $this->simpleJobLauncher
+        return $this->jobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
     }
 
