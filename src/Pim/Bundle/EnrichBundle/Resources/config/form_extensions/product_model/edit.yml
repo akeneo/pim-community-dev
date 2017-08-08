@@ -90,7 +90,7 @@ extensions:
         position: 120
 
     pim-product-model-edit-form-save:
-        module: pim/product-edit-form/save
+        module: pim/product-model-edit-form/save
         parent: pim-product-model-edit-form
         targetZone: buttons
         position: 0

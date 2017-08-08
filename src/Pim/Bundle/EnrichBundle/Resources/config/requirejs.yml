@@ -68,6 +68,8 @@ config:
             url: pim_enrich_variant_group_rest_post
         pim/saver/product:
             url: pim_enrich_product_rest_post
+        pim/saver/product-model:
+            url: pim_enrich_product_model_rest_post
         pim/saver/group:
             url: pim_enrich_group_rest_post
         pim/saver/job-instance-import:
@@ -594,6 +596,7 @@ config:
         pim/saver/channel:             pimenrich/js/saver/channel
         pim/saver/family:              pimenrich/js/saver/family
         pim/saver/product:             pimenrich/js/saver/product-saver
+        pim/saver/product-model:       pimenrich/js/saver/product-model-saver
         pim/saver/variant-group:       pimenrich/js/saver/variant-group-saver
         pim/saver/group:               pimenrich/js/saver/group-saver
         pim/saver/job-instance-export: pimenrich/js/saver/job-instance-export-saver
@@ -691,6 +694,7 @@ config:
         # Product model
         pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
         pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
+        pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
