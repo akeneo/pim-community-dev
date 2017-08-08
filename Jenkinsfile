@@ -32,7 +32,7 @@ stage("Checkout") {
     }
     milestone 2
 
-    node {
+    node('docker') {
         deleteDir()
         checkout scm
         stash "pim_community_dev"
