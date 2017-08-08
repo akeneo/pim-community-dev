@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior

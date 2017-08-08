@@ -11,7 +11,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
