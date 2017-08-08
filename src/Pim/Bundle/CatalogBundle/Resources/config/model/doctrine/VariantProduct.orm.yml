@@ -7,3 +7,8 @@ Pim\Component\Catalog\Model\VariantProduct:
                 product_model_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
+        familyVariant:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id
