@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -30,7 +31,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
         $this->supportsNormalization($product, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($product, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(true);
     }
 
     function it_normalizes_product_properties_with_empty_fields_and_values(

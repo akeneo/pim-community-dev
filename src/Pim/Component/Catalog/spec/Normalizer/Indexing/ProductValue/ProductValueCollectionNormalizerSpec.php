@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\ProductValueCollectionNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -28,9 +30,16 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
     function it_support_product_value_collection($valueCollection)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization($valueCollection, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($valueCollection, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(true);
+
+        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
     }
 
     function it_normalizes_product_value_collection(
@@ -55,7 +64,7 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
         $attribute1->getType()->willReturn('pim_catalog_number');
         $attribute2->getType()->willReturn('pim_catalog_text');
 
-        $serializer->normalize($value1, 'indexing', [])->willReturn(
+        $serializer->normalize($value1, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [
                 'box_quantity-decimal' => [
                     '<all_channels>' => [
@@ -65,7 +74,7 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $serializer->normalize($value2, 'indexing', [])->willReturn(
+        $serializer->normalize($value2, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [
                 'description-textarea' => [
                     '<all_channels>' => [
@@ -75,7 +84,7 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $this->normalize($valueCollection, 'indexing',[])->shouldReturn(
+        $this->normalize($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,[])->shouldReturn(
             [
                 'box_quantity-decimal' => [
                     '<all_channels>' => [

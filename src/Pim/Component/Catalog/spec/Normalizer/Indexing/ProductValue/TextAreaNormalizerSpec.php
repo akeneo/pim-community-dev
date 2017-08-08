@@ -5,6 +5,8 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\TextAreaNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -32,12 +34,22 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaAttribute->getBackendType()->willReturn('textarea');
         $numberAttribute->getBackendType()->willReturn('decimal');
 
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textAreaValue, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(true);
         $this->supportsNormalization($numberValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($numberValue, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($numberValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
+
+        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($textAreaValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
+        $this->supportsNormalization($numberValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
     }
 
     function it_normalizes_a_simple_text_area(
@@ -52,7 +64,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -73,7 +85,7 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
@@ -95,7 +107,7 @@ description\r\n");
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -116,7 +128,7 @@ description\r\n");
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -138,7 +150,7 @@ description\r\n");
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a product description'
@@ -159,7 +171,7 @@ description\r\n");
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
                     'fr_FR' => 'a product description'
@@ -180,7 +192,7 @@ description\r\n");
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 'ecommerce' => [
                     '<all_locales>' => 'a product description'
@@ -201,7 +213,7 @@ description\r\n");
         $textAreaAttribute->getCode()->willReturn('description');
         $textAreaAttribute->getBackendType()->willReturn('textarea');
 
-        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+        $this->normalize($textAreaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'description-textarea' => [
                 'ecommerce' => [
                     'fr_FR' => 'a product description'

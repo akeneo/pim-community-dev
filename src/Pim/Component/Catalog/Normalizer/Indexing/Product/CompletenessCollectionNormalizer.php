@@ -37,7 +37,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return
-            'indexing' === $format &&
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format &&
             $data instanceof Collection &&
             !$data->isEmpty() &&
             $data->first() instanceof CompletenessInterface

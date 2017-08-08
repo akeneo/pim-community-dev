@@ -4,6 +4,8 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,8 +23,10 @@ class DateNormalizer extends AbstractProductValueNormalizer implements Normalize
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ValueInterface &&
-            AttributeTypes::BACKEND_TYPE_DATE === $data->getAttribute()->getBackendType() &&
-            'indexing' === $format;
+            AttributeTypes::BACKEND_TYPE_DATE === $data->getAttribute()->getBackendType() && (
+                $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
+                $format === ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            );
     }
 
     /**

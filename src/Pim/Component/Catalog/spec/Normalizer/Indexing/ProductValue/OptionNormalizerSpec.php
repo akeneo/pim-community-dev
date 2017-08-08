@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionNormalizer;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,12 +36,21 @@ class OptionNormalizerSpec extends ObjectBehavior
         $optionAttribute->getBackendType()->willReturn('option');
         $textAttribute->getBackendType()->willReturn('text');
 
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($optionValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($optionValue, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(true);
+
+        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($optionValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
     }
 
     function it_normalize_an_empty_option_product_value(
@@ -56,7 +67,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionValue->getData()->willReturn(null);
 
-        $this->normalize($optionValue, 'indexing')->shouldReturn(
+        $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     '<all_channels>' => [
@@ -83,7 +94,7 @@ class OptionNormalizerSpec extends ObjectBehavior
         $optionValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($optionValue, 'indexing')->shouldReturn(
+        $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     '<all_channels>' => [
@@ -110,7 +121,7 @@ class OptionNormalizerSpec extends ObjectBehavior
         $optionValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($optionValue, 'indexing')->shouldReturn(
+        $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     '<all_channels>' => [
@@ -137,7 +148,7 @@ class OptionNormalizerSpec extends ObjectBehavior
         $optionValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($optionValue, 'indexing')->shouldReturn(
+        $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     'ecommerce' => [
@@ -164,7 +175,7 @@ class OptionNormalizerSpec extends ObjectBehavior
         $optionValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($optionValue, 'indexing')->shouldReturn(
+        $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-option' => [
                     'ecommerce' => [

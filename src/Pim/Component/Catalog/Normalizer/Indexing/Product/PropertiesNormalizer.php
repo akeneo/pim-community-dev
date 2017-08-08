@@ -76,6 +76,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'indexing' === $format;
+        return $data instanceof ProductInterface && ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format;
     }
 }

@@ -20,7 +20,10 @@ class DummyNormalizer extends AbstractProductValueNormalizer implements Normaliz
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ValueInterface && 'indexing' === $format;
+        return $data instanceof ValueInterface && (
+                $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
+                $format === ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            );
     }
 
     /**

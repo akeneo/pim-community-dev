@@ -5,6 +5,8 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionsNormalizer;
 use Pim\Component\Catalog\Value\OptionsValue;
 use Pim\Component\Catalog\Value\OptionsValueInterface;
@@ -34,12 +36,21 @@ class OptionsNormalizerSpec extends ObjectBehavior
         $optionAttribute->getBackendType()->willReturn('options');
         $textAttribute->getBackendType()->willReturn('text');
 
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($optionsValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($optionsValue, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(true);
+
+        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($optionsValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
     }
 
     function it_normalize_an_empty_options_product_value(
@@ -56,7 +67,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn([]);
 
-        $this->normalize($optionsValue, 'indexing')->shouldReturn(
+        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -81,7 +92,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, 'indexing')->shouldReturn(
+        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -109,7 +120,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, 'indexing')->shouldReturn(
+        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     '<all_channels>' => [
@@ -137,7 +148,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, 'indexing')->shouldReturn(
+        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     'ecommerce' => [
@@ -165,7 +176,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 
         $optionsValue->getOptionCodes()->willReturn(['tagA', 'tagB']);
 
-        $this->normalize($optionsValue, 'indexing')->shouldReturn(
+        $this->normalize($optionsValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'tags-options' => [
                     'ecommerce' => [

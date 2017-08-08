@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Prophecy\Argument;
 
 class CompletenessCollectionNormalizerSpec extends ObjectBehavior
@@ -17,20 +18,22 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(CompletenessCollectionNormalizer::class);
     }
 
-    function it_supports_only_indexing_format_for_completenesses(\stdClass $toNormalize)
+    function it_supports_only_indexing_formats_for_completenesses(\stdClass $toNormalize)
     {
         $this->supportsNormalization(Argument::any(), 'foo')->shouldReturn(false);
-        $this->supportsNormalization($toNormalize, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($toNormalize, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
     }
 
-    function it_supports_completenesses_for_indexing_format(
+    function it_supports_completenesses_for_indexing_formats(
         Collection $completenesses,
         CompletenessInterface $completeness
     ) {
         $completenesses->isEmpty()->willReturn(false);
         $completenesses->first()->willReturn($completeness);
 
-        $this->supportsNormalization($completenesses, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(true);
     }
 
     function it_normalizes_completenesses(

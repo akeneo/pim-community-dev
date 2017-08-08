@@ -5,6 +5,8 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\BooleanNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,7 +22,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_support_boolean_product_value(
+    function it_support_boolean_product_value_for_both_indexing_formats(
         ValueInterface $textValue,
         ValueInterface $booleanValue,
         AttributeInterface $textAttribute,
@@ -32,12 +34,21 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $booleanValue->getAttribute()->willReturn($booleanAttribute);
         $booleanAttribute->getBackendType()->willReturn('boolean');
 
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($booleanValue, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($booleanValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(true);
         $this->supportsNormalization($textValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($textValue, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
+
+        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization($booleanValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
+        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
     }
 
     function it_normalizes_a_boolean_product_value_with_no_locale_and_no_channel(
@@ -52,7 +63,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getCode()->willReturn('a_yes_no');
         $mediaAttribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($mediaValue, 'indexing')->shouldReturn([
+        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => true
@@ -73,7 +84,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getCode()->willReturn('a_yes_no');
         $mediaAttribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($mediaValue, 'indexing')->shouldReturn([
+        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     'fr_FR' => true
@@ -94,7 +105,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getCode()->willReturn('a_yes_no');
         $mediaAttribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($mediaValue, 'indexing')->shouldReturn([
+        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 'ecommerce' => [
                     '<all_locales>' => true
@@ -115,7 +126,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getCode()->willReturn('a_yes_no');
         $mediaAttribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($mediaValue, 'indexing')->shouldReturn([
+        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 'ecommerce' => [
                     'fr_FR' => true
@@ -136,7 +147,7 @@ class BooleanNormalizerSpec extends ObjectBehavior
         $mediaAttribute->getCode()->willReturn('a_yes_no');
         $mediaAttribute->getBackendType()->willReturn('boolean');
 
-        $this->normalize($mediaValue, 'indexing')->shouldReturn([
+        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => null
