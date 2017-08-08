@@ -31,7 +31,7 @@ class ProductModelIntegration extends TestCase
                         ],
                     ],
                 ],
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
                 'categories' => ['tshirts'],
             ]
         );
@@ -134,7 +134,7 @@ class ProductModelIntegration extends TestCase
         $productModelParent = $this->createProductModel(
             [
                 'code' => 'product_model_parent_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
             ]
         );
 
@@ -145,7 +145,7 @@ class ProductModelIntegration extends TestCase
         $productModel = $this->createProductModel(
             [
                 'code' => 'product_model_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
             ]
         );
         $productModel->setParent($productModelParent);
@@ -166,7 +166,7 @@ class ProductModelIntegration extends TestCase
         $productModelParent = $this->createProductModel(
             [
                 'code' => 'product_model_parent_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
             ]
         );
 
@@ -177,7 +177,7 @@ class ProductModelIntegration extends TestCase
         $productModel = $this->createProductModel(
             [
                 'code' => 'product_model_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
                 'values' => [
                     'color' => [
                         [
@@ -213,7 +213,7 @@ class ProductModelIntegration extends TestCase
         $productModelParent = $this->createProductModel(
             [
                 'code' => 'product_model_parent_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
             ]
         );
 
@@ -224,7 +224,7 @@ class ProductModelIntegration extends TestCase
         $productModel = $this->createProductModel(
             [
                 'code' => 'product_model_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
                 'values' => [
                     'color' => [
                         [
@@ -244,7 +244,7 @@ class ProductModelIntegration extends TestCase
         $productModelDuplicate = $this->createProductModel(
             [
                 'code' => 'product_model_duplicate_code',
-                'family_variant' => 'variant_clothing_color_and_size',
+                'family_variant' => 'clothing_color_size',
                 'values' => [
                     'color' => [
                         [
