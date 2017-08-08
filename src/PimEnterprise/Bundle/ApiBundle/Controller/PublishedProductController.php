@@ -16,6 +16,9 @@ namespace PimEnterprise\Bundle\ApiBundle\Controller;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
+use Pim\Bundle\ApiBundle\Validator\SearchCriteriasValidator;
+use Pim\Component\Api\Exception\PaginationParametersException;
+use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
@@ -73,6 +76,9 @@ class PublishedProductController
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
 
+    /** @var SearchCriteriasValidator */
+    protected $searchCriteriasValidator;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $publishedPqbFactory
      * @param QueryParametersCheckerInterface       $queryParametersChecker
@@ -84,6 +90,7 @@ class PublishedProductController
      * @param PaginatorInterface                    $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
+     * @param SearchCriteriasValidator              $searchCriteriasValidator
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -97,6 +104,7 @@ class PublishedProductController
         PaginatorInterface $searchAfterPaginator,
         ParameterValidatorInterface $parameterValidator,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
+        SearchCriteriasValidator $searchCriteriasValidator,
         array $apiConfiguration
     ) {
         $this->publishedPqbFactory = $publishedPqbFactory;
@@ -110,6 +118,7 @@ class PublishedProductController
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->apiConfiguration = $apiConfiguration;
         $this->queryParametersChecker = $queryParametersChecker;
+        $this->searchCriteriasValidator = $searchCriteriasValidator;
     }
 
     /**
@@ -302,27 +311,19 @@ class PublishedProductController
         Request $request,
         ChannelInterface $channel = null
     ): void {
-        $search = [];
+        $searchParameters = [];
 
         if ($request->query->has('search')) {
-            $search = json_decode($request->query->get('search'), true);
-            if (null === $search) {
-                throw new UnprocessableEntityHttpException('Search query parameter should be valid JSON.');
-            }
+            $searchString = $request->query->get('search', '');
+            $searchParameters = $this->searchCriteriasValidator->validate($searchString);
 
-            if (!is_array($search)) {
-                throw new UnprocessableEntityHttpException(
-                    sprintf('Search query parameter has to be an array, "%s" given.', gettype($search))
-                );
-            }
-
-            if (isset($search['categories'])) {
-                $this->queryParametersChecker->checkCategoriesParameters($search['categories']);
+            if (isset($searchParameters['categories'])) {
+                $this->queryParametersChecker->checkCategoriesParameters($searchParameters['categories']);
             }
         }
 
-        if (null !== $channel && !isset($search['categories'])) {
-            $search['categories'] = [
+        if (null !== $channel && !isset($searchParameters['categories'])) {
+            $searchParameters['categories'] = [
                 [
                     'operator' => Operators::IN_CHILDREN_LIST,
                     'value'    => [$channel->getCategory()->getCode()]
@@ -330,24 +331,8 @@ class PublishedProductController
             ];
         }
 
-        foreach ($search as $propertyCode => $filters) {
-            if (!is_array($filters) || !isset($filters[0])) {
-                throw new UnprocessableEntityHttpException(
-                    sprintf(
-                        'Structure of filter "%s" should respect this structure: %s',
-                        $propertyCode,
-                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $propertyCode)
-                    )
-                );
-            }
-
+        foreach ($searchParameters as $propertyCode => $filters) {
             foreach ($filters as $filter) {
-                if (!isset($filter['operator'])) {
-                    throw new UnprocessableEntityHttpException(
-                        sprintf('Operator is missing for the property "%s".', $propertyCode)
-                    );
-                }
-
                 if (!is_string($filter['operator'])) {
                     throw new UnprocessableEntityHttpException(
                         sprintf('Operator has to be a string, "%s" given.', gettype($filter['operator']))

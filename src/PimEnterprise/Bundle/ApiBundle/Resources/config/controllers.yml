@@ -17,6 +17,7 @@ services:
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.security.primary_key_encrypter'
+            - '@pim_api.validator.search_criterias'
             - '%pim_api.configuration%'
 
     pimee_api.controller.product_draft:
