@@ -22,6 +22,7 @@ parameters:
     catalog_storage_dir:  '%kernel.root_dir%/file_storage/catalog'
     asset_storage_dir:    '%kernel.root_dir%/file_storage/asset'
     tmp_storage_dir:      '/tmp/pim/file_storage'
+    upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'
 
     installed:            ~
 
