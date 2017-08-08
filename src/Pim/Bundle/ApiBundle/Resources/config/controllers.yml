@@ -113,6 +113,7 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.validator.search_criterias'
             - '%pim_api.configuration%'
 
     pim_api.controller.token:
@@ -140,6 +141,7 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_api.stream.product_partial_update_stream'
             - '@pim_api.security.primary_key_encrypter'
+            - '@pim_api.validator.search_criterias'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:

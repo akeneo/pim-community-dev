@@ -1,0 +1,6 @@
+parameters:
+    pim_api.validator.search_criterias.class: Pim\Bundle\ApiBundle\Validator\SearchCriteriasValidator
+
+services:
+    pim_api.validator.search_criterias:
+        class: '%pim_api.validator.search_criterias.class%'
