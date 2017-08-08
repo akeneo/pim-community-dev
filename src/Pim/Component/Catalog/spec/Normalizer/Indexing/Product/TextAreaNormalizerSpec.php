@@ -5,8 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\TextAreaNormalizer;
-use Prophecy\Argument;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\TextAreaNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TextAreaNormalizerSpec extends ObjectBehavior

@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\MediaNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\MediaNormalizer;
 use Pim\Component\Catalog\Value\MediaValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

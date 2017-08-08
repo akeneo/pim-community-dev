@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\DateNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\DateNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DateNormalizerSpec extends ObjectBehavior

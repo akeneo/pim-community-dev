@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\OptionsNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionsNormalizer;
 use Pim\Component\Catalog\Value\OptionsValue;
 use Pim\Component\Catalog\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

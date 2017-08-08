@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductPrice;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\FamilyNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\FamilyNormalizer;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\BooleanNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\BooleanNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BooleanNormalizerSpec extends ObjectBehavior

@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
+namespace Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalizer for a text area product value
+ * Normalizer for a date product value
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Anaël Chardan <anael.chardan@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class TextAreaNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
+class DateNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ValueInterface &&
-            AttributeTypes::BACKEND_TYPE_TEXTAREA === $data->getAttribute()->getBackendType() &&
+            AttributeTypes::BACKEND_TYPE_DATE === $data->getAttribute()->getBackendType() &&
             'indexing' === $format;
     }
 
@@ -30,15 +30,12 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
      */
     protected function getNormalizedData(ValueInterface $value)
     {
-        $textAreaValue = $value->getData();
+        $date = $value->getData();
 
-        if (null === $textAreaValue) {
-            return null;
+        if ($date instanceof \DateTimeInterface) {
+            return $date->format('Y-m-d');
         }
 
-        $cleanedData = str_replace(["\r", "\n"], "", $textAreaValue);
-        $cleanedData = strip_tags(html_entity_decode($cleanedData));
-
-        return $cleanedData;
+        return null;
     }
 }

@@ -1,21 +1,21 @@
 parameters:
     pim_catalog.normalizer.indexing.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer
-    pim_catalog.normalizer.indexing.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer
-    pim_catalog.normalizer.indexing.product.family.class: Pim\Component\Catalog\Normalizer\Indexing\Product\FamilyNormalizer
+    pim_catalog.normalizer.indexing.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\PropertiesNormalizer
+    pim_catalog.normalizer.indexing.product.family.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\FamilyNormalizer
     pim_catalog.normalizer.indexing.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
-    pim_catalog.normalizer.indexing.product.product_value_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\ProductValueCollectionNormalizer
-    pim_catalog.normalizer.indexing.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer
-    pim_catalog.normalizer.indexing.product.number.class: Pim\Component\Catalog\Normalizer\Indexing\Product\NumberNormalizer
-    pim_catalog.normalizer.indexing.product.option.class: Pim\Component\Catalog\Normalizer\Indexing\Product\OptionNormalizer
-    pim_catalog.normalizer.indexing.product.options.class: Pim\Component\Catalog\Normalizer\Indexing\Product\OptionsNormalizer
-    pim_catalog.normalizer.indexing.product.dummy.class: Pim\Component\Catalog\Normalizer\Indexing\Product\DummyNormalizer
-    pim_catalog.normalizer.indexing.date.class: Pim\Component\Catalog\Normalizer\Indexing\Product\DateNormalizer
-    pim_catalog.normalizer.indexing.product.text.class: Pim\Component\Catalog\Normalizer\Indexing\Product\TextNormalizer
-    pim_catalog.normalizer.indexing.product.text_area.class: Pim\Component\Catalog\Normalizer\Indexing\Product\TextAreaNormalizer
-    pim_catalog.normalizer.indexing.product.price_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PriceCollectionNormalizer
-    pim_catalog.normalizer.indexing.product.metric.class: Pim\Component\Catalog\Normalizer\Indexing\Product\MetricNormalizer
-    pim_catalog.normalizer.indexing.product.media.class: Pim\Component\Catalog\Normalizer\Indexing\Product\MediaNormalizer
-    pim_catalog.normalizer.indexing.product.boolean.class: Pim\Component\Catalog\Normalizer\Indexing\Product\BooleanNormalizer
+    pim_catalog.normalizer.indexing.product.product_value_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\ProductValueCollectionNormalizer
+    pim_catalog.normalizer.indexing.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\CompletenessCollectionNormalizer
+    pim_catalog.normalizer.indexing.product.number.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\NumberNormalizer
+    pim_catalog.normalizer.indexing.product.option.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionNormalizer
+    pim_catalog.normalizer.indexing.product.options.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionsNormalizer
+    pim_catalog.normalizer.indexing.product.dummy.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\DummyNormalizer
+    pim_catalog.normalizer.indexing.date.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\DateNormalizer
+    pim_catalog.normalizer.indexing.product.text.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\TextNormalizer
+    pim_catalog.normalizer.indexing.product.text_area.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\TextAreaNormalizer
+    pim_catalog.normalizer.indexing.product.price_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\PriceCollectionNormalizer
+    pim_catalog.normalizer.indexing.product.metric.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\MetricNormalizer
+    pim_catalog.normalizer.indexing.product.media.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\MediaNormalizer
+    pim_catalog.normalizer.indexing.product.boolean.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\BooleanNormalizer
 
 services:
     pim_catalog.normalizer.indexing.product:
