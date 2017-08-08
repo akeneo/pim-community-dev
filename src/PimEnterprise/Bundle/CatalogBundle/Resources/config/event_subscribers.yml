@@ -25,5 +25,6 @@ services:
         arguments:
             - '@pimee_catalog.security.merger.not_granted_category'
             - '@pimee_catalog.security.merger.not_granted_associated_product'
+            - '@pimee_catalog.security.merger.not_granted_values'
         tags:
             - { name: kernel.event_subscriber }

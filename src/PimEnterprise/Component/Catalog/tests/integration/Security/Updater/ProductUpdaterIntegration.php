@@ -221,6 +221,45 @@ class ProductUpdaterIntegration extends TestCase
     }
 
     /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
+     */
+    public function testUpdateAProductWithCategoryNotViewable()
+    {
+        $product = $this->saveProduct(['categories' => ['categoryA2']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => ['categoryB']]);
+    }
+
+    public function testUpdateAProductWithCategoryViewable()
+    {
+        $product = $this->saveProduct(['categories' => ['master']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => ['categoryA2', 'master']]);
+        $this->assertSame($product->getCategoryCodes(), ['categoryA2', 'master']);
+    }
+
+    public function testUpdateAProductWithCategoryEditable()
+    {
+        $product = $this->saveProduct(['categories' => ['master']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => ['categoryA', 'master']]);
+        $this->assertSame($product->getCategoryCodes(), ['categoryA', 'master']);
+    }
+
+    public function testUpdateAProductWithOwnCategory()
+    {
+        $product = $this->saveProduct(['categories' => ['master']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => ['master_china', 'master']]);
+        $this->assertSame($product->getCategoryCodes(), ['master', 'master_china']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
