@@ -19,6 +19,7 @@ parameters:
     logs_dir:             '%kernel.logs_dir%'
     catalog_storage_dir:  '%kernel.root_dir%/file_storage/catalog'
     tmp_storage_dir:      '/tmp/pim/file_storage'
+    upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'
 
     installed:            ~
 
