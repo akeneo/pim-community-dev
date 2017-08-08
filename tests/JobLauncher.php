@@ -10,6 +10,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 /**
  * Launch jobs for the integration tests.
@@ -20,6 +22,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class JobLauncher
 {
+    const EXPORT_DIRECTORY = 'pim-integration-tests-export';
+
+    const IMPORT_DIRECTORY = 'pim-integration-tests-import';
+
     /** @var KernelInterface */
     protected $kernel;
 
@@ -46,7 +52,7 @@ class JobLauncher
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. 'pim-integration-tests-export' . DIRECTORY_SEPARATOR . 'export.csv';
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -78,7 +84,62 @@ class JobLauncher
             throw new \Exception(sprintf('Exported file "%s" is not readable for the job "%s".', $filePath, $jobCode));
         }
 
-        return file_get_contents($filePath);
+        $content = file_get_contents($filePath);
+        unlink($filePath);
+
+        return $content;
+    }
+
+    /**
+     * Launch an export in a subprocess because it's not possible to launch two exports in the same process.
+     * The cause is that some services are stateful, such as the JSONFileBuffer that is not flushed after an export.
+     *
+     * TODO: fix  stateful services
+     *
+     * @param string      $command
+     * @param string      $jobCode
+     * @param string|null $username
+     * @param array       $config
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function launchSubProcessExport(string $command, string $jobCode, string $username = null, array $config = []) : string
+    {
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export_.csv';
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $config['filePath'] = $filePath;
+
+        $pathFinder = new PhpExecutableFinder();
+        $command = sprintf(
+            '%s %s/console %s --env=%s --config=\'%s\' -v %s',
+            $pathFinder->find(),
+             sprintf('%s/../bin', $this->kernel->getRootDir()),
+            $command,
+            $this->kernel->getEnvironment(),
+            json_encode($config, JSON_HEX_APOS),
+            $jobCode
+        );
+
+        $process = new Process($command);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \Exception(sprintf('Export failed, "%s".', $process->getOutput() . PHP_EOL . $process->getErrorOutput()));
+        }
+
+        if (!is_readable($filePath)) {
+            throw new \Exception(sprintf('Exported file "%s" is not readable for the job "%s".', $filePath, $jobCode));
+        }
+
+        $content = file_get_contents($filePath);
+        unlink($filePath);
+
+        return $content;
     }
 
     /**
@@ -97,12 +158,12 @@ class JobLauncher
         string $content,
         string $username = null,
         array $fixturePaths = [],
-        array $config = []) : void
-    {
+        array $config = []
+    ) : void {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. 'pim-integration-tests-import';
+        $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
 
