@@ -67,19 +67,19 @@ class ProductModelStorage extends RawMinkContext
     /**
      * @Given the product model :identifier should not have the following values :attributesCode
      */
-    public function theProductShouldNotHaveTheFollowingValues($identifier, $attributesCodes)
+    public function theProductShouldNotHaveTheFollowingValues($code, $attributesCodes)
     {
         $attributesCodes = explode(',', $attributesCodes);
         $attributesCodes = array_map('trim', $attributesCodes);
 
-        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
+        $productModel = $this->productModelRepository->findOneByIdentifier($code);
 
         if (null === $productModel) {
             throw new \Exception(
-                sprintf('The model with the identifier "%s" does not exist', $identifier)
+                sprintf('The model with the identifier "%s" does not exist', $code)
             );
         }
-        foreach ($attributesCodes as $propertyName => $value) {
+        foreach ($attributesCodes as $propertyName) {
             $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($propertyName);
             /** @var AttributeInterface $attribute */
             $attribute = $infos['attribute'];
@@ -87,7 +87,7 @@ class ProductModelStorage extends RawMinkContext
 
             if (null !== $productValue) {
                 throw new \Exception(
-                    sprintf('Product model value for product "%s" exists', $identifier)
+                    sprintf('The value "%s" for product model "%s" exists', $attribute->getCode(), $code)
                 );
             }
         }

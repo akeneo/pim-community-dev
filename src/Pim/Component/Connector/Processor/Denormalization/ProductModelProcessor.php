@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Connector\Processor\AttributeFilter;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -45,6 +46,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
+    /** @var AttributeFilter */
+    private $attributeFilter;
+
     /**
      * @param SimpleFactoryInterface                $productModelFactory
      * @param ObjectUpdaterInterface                $productModelUpdater
@@ -52,6 +56,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      * @param ValidatorInterface                    $validator
      * @param FilterInterface                       $productModelFilter
      * @param ObjectDetacherInterface               $objectDetacher
+     * @param AttributeFilter                       $attributeFilter
      */
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
@@ -59,7 +64,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        AttributeFilter $attributeFilter
     ) {
         $this->productModelFactory = $productModelFactory;
         $this->productModelUpdater = $productModelUpdater;
@@ -67,6 +73,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->validator = $validator;
         $this->productModelFilter = $productModelFilter;
         $this->objectDetacher = $objectDetacher;
+        $this->attributeFilter = $attributeFilter;
     }
 
     /**
@@ -78,11 +85,17 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             $this->skipItemWithMessage($flatProductModel, 'The code must be filled');
         }
 
+        $flatProductModel = $this->attributeFilter->filter($flatProductModel);
         $productModel = $this->findOrCreateProductModel($flatProductModel['code']);
 
         $jobParameters = $this->stepExecution->getJobParameters();
         if ($jobParameters->get('enabledComparison') && null !== $productModel->getId()) {
-            $flatProductModel = $this->productModelFilter->filter($productModel, $flatProductModel);
+            // We don't compare immutable fields
+            $flatProductModelToCompare = $flatProductModel;
+            unset($flatProductModelToCompare['code']);
+            unset($flatProductModelToCompare['parent']);
+
+            $flatProductModel = $this->productModelFilter->filter($productModel, $flatProductModelToCompare);
 
             if (empty($flatProductModel)) {
                 $this->objectDetacher->detach($productModel);

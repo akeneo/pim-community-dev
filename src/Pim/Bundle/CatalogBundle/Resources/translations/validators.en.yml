@@ -36,3 +36,5 @@ pim_catalog:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'
         can_have_family_variant_duplicate_axis_value: 'Cannot set value "%values%" for the attribute axis "%attributes%", as another sibling entity already has this value'
         can_have_family_variant_unexpected_attribute: 'Cannot set the property "%attribute%" to this entity as it is not in the attribute set'
+        has_a_root_product_model_as_parent: 'The sub product model parent must be a root product model'
+        attribute_does_not_belong_to_family: 'Attribute "%attribute%" does not belong to the family "%family%"'

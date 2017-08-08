@@ -1,5 +1,6 @@
 Pim\Component\Catalog\Model\ProductModel:
     constraints:
+        - Pim\Component\Catalog\Validator\Constraints\HasARootProductModelAsParent: ~
         - Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes: ~
         - Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~

@@ -13,6 +13,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Connector\Processor\AttributeFilter;
 use Pim\Component\Connector\Processor\Denormalization\ProductModelProcessor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -27,16 +28,17 @@ class ProductModelProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
-        ObjectDetacherInterface $objectDetacher
-    )
-    {
+        ObjectDetacherInterface $objectDetacher,
+        AttributeFilter $attributeFilter
+    ) {
         $this->beConstructedWith(
             $productModelFactory,
             $productModelUpdater,
             $productModelRepository,
             $validator,
             $productModelFilter,
-            $objectDetacher
+            $objectDetacher,
+            $attributeFilter
         );
     }
 
@@ -60,6 +62,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelUpdater,
         $productModelRepository,
         $validator,
+        $attributeFilter,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
@@ -83,6 +86,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
             'categories' => ['tshirt'],
         ];
 
+        $attributeFilter->filter($productModelData)->willReturn($productModelData);
+
         $this->setStepExecution($stepExecution);
 
         $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
@@ -91,7 +96,22 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
 
-        $productModelUpdater->update($productModel, $productModelData);
+        $productModelUpdater->update($productModel, [
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [
+                    'locale' => 'fr_FR',
+                    'scope' => 'null',
+                    'data' => 'T-shirt',
+                ],
+                'description' => [
+                    'locale' => 'fr_FR',
+                    'scope' => 'null',
+                    'data' => 'T-shirt super beau',
+                ]
+            ],
+            'categories' => ['tshirt'],
+        ]);
 
         $validator->validate($productModel)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
@@ -105,6 +125,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelFilter,
         $productModelRepository,
         $validator,
+        $attributeFilter,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
@@ -129,6 +150,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ];
 
         $this->setStepExecution($stepExecution);
+
+        $attributeFilter->filter($productModelData)->willReturn($productModelData);
 
         $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
@@ -150,7 +173,22 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ];
 
         $productModel->getId()->willReturn(40);
-        $productModelFilter->filter($productModel, $productModelData)->willReturn($filteredData);
+        $productModelFilter->filter($productModel, [
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [
+                    'locale' => 'fr_FR',
+                    'scope' => 'null',
+                    'data' => 'T-shirt',
+                ],
+                'description' => [
+                    'locale' => 'fr_FR',
+                    'scope' => 'null',
+                    'data' => 'T-shirt super beau',
+                ]
+            ],
+            'categories' => ['tshirt'],
+        ])->willReturn($filteredData);
 
         $productModelUpdater->update($productModel, $filteredData);
 
@@ -166,6 +204,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelFilter,
         $productModelRepository,
         $objectDetacher,
+        $attributeFilter,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters
@@ -190,6 +229,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
+        $attributeFilter->filter($productModelData)->willReturn($productModelData);
+
         $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $productModelFactory->create()->willReturn($productModel);
@@ -197,7 +238,22 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabledComparison')->willReturn(true);
 
         $productModel->getId()->willReturn(40);
-        $productModelFilter->filter($productModel, $productModelData)->willReturn([]);
+        $productModelFilter->filter($productModel, [
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [
+                    'locale' => 'fr_FR',
+                    'scope' => 'null',
+                    'data' => 'T-shirt',
+                ],
+                'description' => [
+                    'locale' => 'fr_FR',
+                    'scope' => 'null',
+                    'data' => 'T-shirt super beau',
+                ]
+            ],
+            'categories' => ['tshirt'],
+        ])->willReturn([]);
 
         $objectDetacher->detach($productModel)->shouldBeCalled();
 
@@ -213,12 +269,15 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelRepository,
         $validator,
         $objectDetacher,
+        $attributeFilter,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
         ConstraintViolationListInterface $constraintViolationList
     ) {
         $this->setStepExecution($stepExecution);
+
+        $attributeFilter->filter(['code' => 'product_model_code'])->willReturn(['code' => 'product_model_code']);
 
         $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 

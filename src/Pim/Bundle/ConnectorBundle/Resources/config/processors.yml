@@ -12,6 +12,8 @@ parameters:
     pim_connector.processor.normalization.variant_group.class: Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
 
     pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
+    pim_connector.processor.product_model.attribute_filter.class: Pim\Component\Connector\Processor\AttributeFilter
+
 
 services:
     # Dummy processor
@@ -66,6 +68,7 @@ services:
             - '@validator'
             - '@pim_catalog.comparator.filter.product_model'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.processor.product_model.attribute_filter'
 
     pim_connector.processor.denormalization.product_association:
         class: '%pim_connector.processor.denormalization.product_association.class%'
@@ -301,3 +304,9 @@ services:
             - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+
+    pim_connector.processor.product_model.attribute_filter:
+        class: '%pim_connector.processor.product_model.attribute_filter.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.product_model'

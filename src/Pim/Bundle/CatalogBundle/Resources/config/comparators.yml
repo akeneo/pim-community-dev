@@ -97,6 +97,6 @@ services:
     pim_catalog.comparator.field.scalar:
         class: '%pim_catalog.comparator.field.scalar.class%'
         arguments:
-            - ['family', 'variant_group']
+            - ['family', 'family_variant', 'variant_group']
         tags:
             - { name: pim_catalog.field.comparator, priority: -128 }

@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraint;
 class OnlyExpectedAttributes extends Constraint
 {
     public const ATTRIBUTE_UNEXPECTED = 'pim_catalog.constraint.can_have_family_variant_unexpected_attribute';
+    public const ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY = 'pim_catalog.constraint.attribute_does_not_belong_to_family';
+
     /**
      * {@inheritdoc}
      */
