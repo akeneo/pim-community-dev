@@ -1,4 +1,4 @@
-product:
+published_product:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/published_product.yml'
     prefix: /rest/v1
 

@@ -124,12 +124,8 @@ class PublishedProductController
     public function listAction(Request $request): JsonResponse
     {
         try {
-            $pagination = $request->query->has('pagination_type') &&
-                PaginationTypes::OFFSET === $request->query->get('pagination_type') ?
-                PaginationTypes::SEARCH_AFTER : $request->query->get('pagination_type');
-
             $this->parameterValidator->validate(
-                array_merge($request->query->all(), [$pagination]),
+                array_merge($request->query->all(), [PaginationTypes::SEARCH_AFTER]),
                 ['support_search_after' => true]
             );
         } catch (PaginationParametersException $e) {
@@ -215,7 +211,7 @@ class PublishedProductController
      *
      * @return array
      */
-    protected function getNormalizerOptions(Request $request, ChannelInterface $channel = null): array
+    protected function getNormalizerOptions(Request $request, ?ChannelInterface $channel): array
     {
         $normalizerOptions = [];
 

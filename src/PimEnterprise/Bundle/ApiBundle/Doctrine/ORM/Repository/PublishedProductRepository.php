@@ -44,8 +44,16 @@ class PublishedProductRepository extends EntityRepository implements PublishedPr
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier(string $identifier)
+    public function findOneByIdentifier($identifier)
     {
         return $this->publishedProductRepository->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['published_product'];
     }
 }
