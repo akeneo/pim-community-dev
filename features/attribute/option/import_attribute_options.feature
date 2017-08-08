@@ -6,13 +6,10 @@ Feature: Import attribute options
 
   Background:
     Given the "footwear" catalog configuration
+    And the following attributes:
+      | code  | type                     | localizable | scopable | group |
+      | fruit | pim_catalog_simpleselect | 0           | 0        | other |
     And I am logged in as "Julia"
-    And I am on the attributes page
-    And I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | fruit |
-      | Attribute group | Other |
-    And I save the attribute
 
   Scenario: Successfully show default translation when blank text
     Given the following CSV file to import:

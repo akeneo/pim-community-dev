@@ -73,7 +73,6 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     ) {
         $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
         $this->renderTable($collection->getPhpIniRequirements(), 'PHP requirements', $output);
-        $this->renderTable($collection->getOroRequirements(), 'Oro Platform requirements', $output);
         $this->renderTable($collection->getPimRequirements(), 'Pim requirements', $output);
         $this->renderTable($collection->getRecommendations(), 'Recommendations', $output);
 
