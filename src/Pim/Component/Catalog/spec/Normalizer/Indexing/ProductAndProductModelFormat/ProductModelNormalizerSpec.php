@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelF
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,11 +25,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_supports_indexing_normalization_only(ProductInterface $product)
+    function it_supports_indexing_normalization_only(ProductModelInterface $productModel)
     {
-        $this->supportsNormalization($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
-        $this->supportsNormalization($product, 'other_format')
+        $this->supportsNormalization($productModel, 'other_format')
             ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);

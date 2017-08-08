@@ -1,10 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\ReferenceData\Normalizer\Indexing\Product;
+namespace spec\Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Pim\Component\ReferenceData\Model\AbstractReferenceData;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataValue;
@@ -31,12 +33,19 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
         $referenceDataProductValue->getAttribute()->willReturn($referenceData);
         $textValue->getAttribute()->willReturn($textAttribute);
 
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
 
-        $this->supportsNormalization($textValue, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
+        $this->supportsNormalization($textValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
         $this->supportsNormalization($referenceDataProductValue, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($referenceDataProductValue, 'indexing')->shouldReturn(true);
+
+        $this->supportsNormalization($referenceDataProductValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(true);
+        $this->supportsNormalization($referenceDataProductValue, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(true);
     }
 
     function it_normalize_an_empty_reference_data_product_value(
@@ -53,7 +62,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
         $referenceDataValue->getData()->willReturn(null);
 
-        $this->normalize($referenceDataValue, 'indexing')->shouldReturn(
+        $this->normalize($referenceDataValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-reference_data_option' => [
                     '<all_channels>' => [
@@ -80,7 +89,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
         $referenceDataValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($referenceDataValue, 'indexing')->shouldReturn(
+        $this->normalize($referenceDataValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-reference_data_option' => [
                     '<all_channels>' => [
@@ -107,7 +116,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
         $referenceDataValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($referenceDataValue, 'indexing')->shouldReturn(
+        $this->normalize($referenceDataValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-reference_data_option' => [
                     '<all_channels>' => [
@@ -134,7 +143,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
         $referenceDataValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($referenceDataValue, 'indexing')->shouldReturn(
+        $this->normalize($referenceDataValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-reference_data_option' => [
                     'ecommerce' => [
@@ -161,7 +170,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
         $referenceDataValue->getData()->willReturn($color);
         $color->getCode()->willReturn('red');
 
-        $this->normalize($referenceDataValue, 'indexing')->shouldReturn(
+        $this->normalize($referenceDataValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'color-reference_data_option' => [
                     'ecommerce' => [
