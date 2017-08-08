@@ -890,6 +890,7 @@ config:
         pim/grid/table: pimenrich/js/product/grid/table
         pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
         pim/grid: pimenrich/js/product/grid
+        pim/grid/view-selector: pimenrich/js/product/grid/view-selector
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
         pim/grid/view-selector/create-view: pimenrich/js/grid/view-selector-create-view
@@ -964,6 +965,7 @@ config:
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
+        pim/template/product/grid/view-selector:             pimenrich/templates/product/grid/view-selector.html
 
         pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
