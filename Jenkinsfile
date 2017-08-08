@@ -34,14 +34,10 @@ stage("Checkout") {
     }
     milestone 2
 
-    node {
+    node('docker') {
         deleteDir()
         checkout scm
 
-        if ('akeneo' != ceOwner) {
-            sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
-        }
-        sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
 
         stash "project_files"
     }
@@ -50,6 +46,11 @@ stage("Checkout") {
         deleteDir()
         docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
             unstash "project_files"
+
+            if ('akeneo' != ceOwner) {
+                sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
+            }
+            sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
 
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
             sh "bin/console assets:install"
