@@ -17,7 +17,8 @@ extensions:
         parent: pim-product-index
         targetZone: title-buttons
         config:
-            context: base_product
+            routeName: pim_enrich_product_index
+            localeParamName: dataLocale
 
     # pim-product-index-view-selector:
     #     module: pim/grid/view-selector
