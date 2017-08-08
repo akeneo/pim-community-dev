@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
+namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

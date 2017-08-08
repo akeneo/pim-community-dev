@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
+namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;

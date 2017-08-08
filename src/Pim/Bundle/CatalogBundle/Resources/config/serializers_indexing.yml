@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.normalizer.indexing.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer
+    pim_catalog.normalizer.indexing.product.class: Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer
     pim_catalog.normalizer.indexing.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\PropertiesNormalizer
     pim_catalog.normalizer.indexing.product.family.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\FamilyNormalizer
     pim_catalog.normalizer.indexing.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
