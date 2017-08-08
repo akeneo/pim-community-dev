@@ -12,13 +12,34 @@ extensions:
            title:     Create product
            modalForm: pim-product-create-modal
 
-    # @TODO - Create a new locale-switcher
     # pim-product-index-locale-switcher:
-    #     module: pim/product-edit-form/locale-switcher
+    #     module: pim/grid/locale-switcher
     #     parent: pim-product-index
     #     targetZone: title-buttons
     #     config:
     #         context: base_product
+
+    # pim-product-index-view-selector:
+    #     module: pim/grid/view-selector
+    #     parent: pim-product-index
+    #     targetZone: title-buttons
+    #     config:
+    #         context: base_product
+
+    # pim-product-index-category-tree:
+    #     module: pim/grid/category-tree
+    #     parent: pim-product-index
+    #     targetZone: tree
+
+    # pim-product-index-grid-filters
+    #     module: pim/grid/filters
+    #     parent: pim-product-index
+    #     targetZone: grid
+    
+    # pim-product-index-grid-toolbar
+    #     module: pim/grid/toolbar
+    #     parent: pim-product-index
+    #     targetZone: grid
 
     # @TODO - Pass the config correctly
     pim-product-index-grid:
