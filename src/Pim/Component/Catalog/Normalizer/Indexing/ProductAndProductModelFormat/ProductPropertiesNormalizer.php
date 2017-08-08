@@ -2,14 +2,16 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
- * Transform the properties of a product model object (fields and product values)
- * to the indexing_product_and_model format.
+ * Transform the properties of a products and variant products object (fields and product values)
+ * to the "indexing_product_and_product_model" format.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -17,8 +19,10 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  */
 class ProductPropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
-    const FIELD_IN_GROUP = 'in_group';
-    const FIELD_ID = 'id';
+    protected const FIELD_COMPLETENESS = 'completeness';
+    protected const FIELD_FAMILY_VARIANT = 'family_variant';
+    protected const FIELD_IN_GROUP = 'in_group';
+    protected const FIELD_ID = 'id';
 
     /**
      * {@inheritdoc}
@@ -46,6 +50,13 @@ class ProductPropertiesNormalizer extends SerializerAwareNormalizer implements N
             $format
         );
 
+        $data[self::FIELD_FAMILY_VARIANT] = null;
+
+        if ($product instanceof VariantProductInterface) {
+            $familyVariant = $product->getFamilyVariant();
+            $data[self::FIELD_FAMILY_VARIANT] = null !== $familyVariant ? $familyVariant->getCode() : null;
+        }
+
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
 
@@ -54,6 +65,13 @@ class ProductPropertiesNormalizer extends SerializerAwareNormalizer implements N
         foreach ($product->getGroupCodes() as $groupCode) {
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
+
+        $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
+            ? $this->serializer->normalize(
+                $product->getCompletenesses(),
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                $context
+            ) : [];
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
             ? $this->serializer->normalize(

@@ -1,9 +1,11 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\ProductFormat;
+namespace Pim\Component\Catalog\Normalizer\Indexing;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\CompletenessInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -37,7 +39,10 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return
-            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format &&
+            (
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format ||
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
+            ) &&
             $data instanceof Collection &&
             !$data->isEmpty() &&
             $data->first() instanceof CompletenessInterface

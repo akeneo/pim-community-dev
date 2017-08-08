@@ -2,7 +2,9 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,6 +16,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductNormalizer implements NormalizerInterface
 {
+    private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
+    private const FIELD_PRODUCT_TYPE = 'product_type';
+
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
 
@@ -32,6 +37,10 @@ class ProductNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
+
+        $data[self::FIELD_PRODUCT_TYPE] = $this->getVariationLevelCode($product);
+        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = array_keys($product->getRawValues());
+
         return $data;
     }
 
@@ -42,5 +51,24 @@ class ProductNormalizer implements NormalizerInterface
     {
         return ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format &&
             $data instanceof ProductInterface;
+    }
+
+    private function getVariationLevelCode(ProductInterface $product): string
+    {
+        if (!$product instanceof EntityWithFamilyVariantInterface) {
+            return 'PimCatalogProduct';
+        }
+
+        $level = $product->getVariationLevel();
+        switch ($level) {
+            case 0:
+                return 'PimCatalogRootProductModel';
+            case 1:
+                return 'PimCatalogSubProductModel';
+            case 2:
+                return 'PimCatalogVariantProduct';
+            default:
+                throw new \LogicException(sprintf('Invalid variant level. %s given', $level));
+        }
     }
 }

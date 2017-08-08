@@ -4,7 +4,7 @@ parameters:
     pim_catalog.normalizer.indexing_product.product.family.class: Pim\Component\Catalog\Normalizer\Indexing\FamilyNormalizer
     pim_catalog.normalizer.indexing_product.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
     pim_catalog.normalizer.indexing_product.product.product_value_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\ProductValueCollectionNormalizer
-    pim_catalog.normalizer.indexing_product.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\CompletenessCollectionNormalizer
+    pim_catalog.normalizer.indexing_product.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer
     pim_catalog.normalizer.indexing_product.product.number.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\NumberNormalizer
     pim_catalog.normalizer.indexing_product.product.option.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionNormalizer
     pim_catalog.normalizer.indexing_product.product.options.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionsNormalizer
@@ -17,7 +17,7 @@ parameters:
     pim_catalog.normalizer.indexing_product.product.media.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\MediaNormalizer
     pim_catalog.normalizer.indexing_product.product.boolean.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\BooleanNormalizer
 
-    pim_catalog.normalizer.indexing_product_and_product_model.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer
+    pim_catalog.normalizer.indexing_product_and_product_model.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductPropertiesNormalizer
 
     pim_catalog.normalizer.indexing_product_and_product_model.product_model.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer

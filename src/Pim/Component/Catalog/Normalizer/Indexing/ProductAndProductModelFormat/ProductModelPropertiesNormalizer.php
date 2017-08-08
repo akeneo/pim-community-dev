@@ -18,8 +18,9 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  */
 class ProductModelPropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
-    const FIELD_IN_GROUP = 'in_group';
-    const FIELD_ID = 'id';
+    protected const FIELD_FAMILY_VARIANT = 'family_variant';
+    protected const FIELD_IN_GROUP = 'in_group';
+    protected const FIELD_ID = 'id';
 
     /**
      * {@inheritdoc}
@@ -46,15 +47,7 @@ class ProductModelPropertiesNormalizer extends SerializerAwareNormalizer impleme
             $productModel->getFamilyVariant()->getFamily(),
             $format
         );
-
-        $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $productModel->isEnabled();
-        $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
-
-        $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $productModel->getGroupCodes();
-
-        foreach ($productModel->getGroupCodes() as $groupCode) {
-            $data[self::FIELD_IN_GROUP][$groupCode] = true;
-        }
+        $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productModel->getValues()->isEmpty()
             ? $this->serializer->normalize(

@@ -4,7 +4,6 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
@@ -45,6 +44,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
+            'family_variant' => 'familyVariantA1',
             'values'         => [
                 'a_text-text'            => [
                     '<all_channels>' => [
@@ -52,11 +52,11 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'family_variant' => 'familyVariantA1',
             'product_type' => 'PimCatalogRootProductModel',
+            'attributes_for_this_level' => ['a_text']
         ];
 
-        $this->assertProductModelIndexingFormat('quux', $expected);
+        $this->assertProductModelIndexingFormat('qux', $expected);
     }
 
     public function testSubProductModel()
@@ -80,6 +80,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
+            'family_variant' => 'familyVariantA1',
             'values'         => [
                 'a_text-text'            => [
                     '<all_channels>' => [
@@ -92,8 +93,8 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'family_variant' => 'familyVariantA1',
             'product_type' => 'PimCatalogSubProductModel',
+            'attributes_for_this_level' => ['a_simple_select']
         ];
 
         $this->assertProductModelIndexingFormat('quux', $expected);
@@ -120,10 +121,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
+            'family_variant' => 'familyVariantA1',
             'enabled'        => true,
             'categories'     => [],
             'groups'         => [],
-            'variant_group'  => null,
             'completeness'   => [],
             'values'         => [
                 'a_text-text'            => [
@@ -142,11 +143,11 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'family_variant' => 'familyVariantA1',
-            'product_type' => 'PimCatalogProductVariant',
+            'product_type' => 'PimCatalogVariantProduct',
+            'attributes_for_this_level' => ['sku', 'a_yes_no']
         ];
 
-        $this->assertProductIndexingFormat('bar', $expected);
+        $this->assertProductIndexingFormat('qux', $expected);
     }
 
     public function testEmptyProduct()
@@ -158,19 +159,20 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'             => '47',
-            'identifier'     => 'bar',
-            'created'        => $date->format('c'),
-            'updated'        => $date->format('c'),
-            'family'         => null,
-            'enabled'        => false,
-            'categories'     => [],
-            'groups'         => [],
-            'variant_group'  => null,
-            'completeness'   => [],
-            'values'         => [],
-            'family_variant' => null,
-            'product_type' => 'PimCatalogProduct',
+            'id'                        => '47',
+            'identifier'                => 'bar',
+            'created'                   => $date->format('c'),
+            'updated'                   => $date->format('c'),
+            'family'                    => null,
+            'family_variant'            => null,
+            'enabled'                   => false,
+            'categories'                => [],
+            'groups'                    => [],
+            'completeness'              => [],
+            'values'                    => [],
+            'family_variant'            => null,
+            'product_type'              => 'PimCatalogProduct',
+            'attributes_for_this_level' => ['sku'],
         ];
 
         $this->assertProductIndexingFormat('bar', $expected);
@@ -197,10 +199,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
+            'family_variant' => null,
             'enabled'        => true,
             'categories'     => ['categoryA1', 'categoryB'],
             'groups'         => ['groupA', 'groupB', 'variantA'],
-            'variant_group'  => 'variantA',
             'in_group'       => [
                 'groupA'   => true,
                 'groupB'   => true,
@@ -409,8 +411,34 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'family_variant' => null,
             'product_type' => 'PimCatalogProduct',
+            'attributes_for_this_level' => [
+                123,
+                'sku',
+                'a_date',
+                'a_file',
+                'a_text',
+                'a_price',
+                'a_metric',
+                'a_yes_no',
+                'an_image',
+                'a_text_area',
+                'a_multi_select',
+                'a_number_float',
+                'a_simple_select',
+                'a_number_integer',
+                'a_scopable_price',
+                'a_metric_negative',
+                'a_localizable_image',
+                'a_number_float_negative',
+                'a_price_without_decimal',
+                'a_ref_data_multi_select',
+                'a_metric_without_decimal',
+                'a_ref_data_simple_select',
+                'a_number_integer_negative',
+                'a_metric_without_decimal_negative',
+                'a_localized_and_scopable_text_area',
+            ]
         ];
 
         $this->assertProductIndexingFormat('foo', $expected);

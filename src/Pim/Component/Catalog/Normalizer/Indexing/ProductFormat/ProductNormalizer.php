@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize product to the indexing format.
+ * Normalize product to the "indexing_product" format.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
