@@ -501,7 +501,7 @@ config:
         pim/controller/form:                   pimenrich/js/controller/form
         # @TODO - Rename this to pimenrich/js/controller/product/edit and move the file
         pim/controller/product:                pimenrich/js/controller/product
-        pim/controller/product/index:                pimenrich/js/controller/product/index
+        pim/controller/product/index:          pimenrich/js/controller/product/index
         pim/controller/family:                 pimenrich/js/controller/family
         pim/controller/channel/edit:           pimenrich/js/controller/channel/edit
         pim/controller/common/index:           pimenrich/js/controller/common/index
@@ -888,6 +888,7 @@ config:
 
         # Grid view selector
         pim/grid/table: pimenrich/js/product/grid/table
+        pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
         pim/grid: pimenrich/js/product/grid
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
@@ -960,6 +961,9 @@ config:
         pim/template/family/tab/general/attribute-as-label:  pimenrich/templates/family/tab/general/attribute-as-label.html
         pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
         pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
+
+        # Grid
+        pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
 
         pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html

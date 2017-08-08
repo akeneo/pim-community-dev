@@ -12,12 +12,12 @@ extensions:
            title:     Create product
            modalForm: pim-product-create-modal
 
-    # pim-product-index-locale-switcher:
-    #     module: pim/grid/locale-switcher
-    #     parent: pim-product-index
-    #     targetZone: title-buttons
-    #     config:
-    #         context: base_product
+    pim-product-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pim-product-index
+        targetZone: title-buttons
+        config:
+            context: base_product
 
     # pim-product-index-view-selector:
     #     module: pim/grid/view-selector
