@@ -74,11 +74,11 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      */
     public function process($flatProductModel): ?ProductModelInterface
     {
-        if (!isset($flatProductModel['identifier'])) {
-            $this->skipItemWithMessage($flatProductModel, 'The identifier must be filled');
+        if (!isset($flatProductModel['code'])) {
+            $this->skipItemWithMessage($flatProductModel, 'The code must be filled');
         }
 
-        $productModel = $this->findOrCreateProductModel($flatProductModel['identifier']);
+        $productModel = $this->findOrCreateProductModel($flatProductModel['code']);
 
         $jobParameters = $this->stepExecution->getJobParameters();
         if ($jobParameters->get('enabledComparison') && null !== $productModel->getId()) {
@@ -111,13 +111,13 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     }
 
     /**
-     * @param string $identifier
+     * @param string $code
      *
      * @return ProductModelInterface
      */
-    private function findOrCreateProductModel(string $identifier): ProductModelInterface
+    private function findOrCreateProductModel(string $code): ProductModelInterface
     {
-        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
+        $productModel = $this->productModelRepository->findOneByIdentifier($code);
         if (null === $productModel) {
             $productModel = $this->productModelFactory->create();
         }

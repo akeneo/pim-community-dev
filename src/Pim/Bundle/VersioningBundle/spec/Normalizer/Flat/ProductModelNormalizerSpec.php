@@ -48,7 +48,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     ) {
         $this->setSerializer($serializer);
 
-        $productModel->getIdentifier()->willReturn($sku);
+        $productModel->getCode()->willReturn($sku);
         $productModel->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $productModel->getValues()->willReturn($values);
 
