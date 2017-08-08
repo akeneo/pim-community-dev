@@ -1,0 +1,10 @@
+parameters:
+    pimee_api.repository.published_product.class: PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\PublishedProductRepository
+
+services:
+    pimee_api.repository.published_product:
+        class: '%pimee_api.repository.published_product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_workflow.entity.published_product.class%'
+            - '@pimee_workflow.repository.published_product'
