@@ -2,7 +2,7 @@ datagrid:
     api-connection-grid:
         options:
             manageFilters: false
-            entityHint: api connection
+            entityHint: api_connection
         source:
             type: pim_datasource_api_connection
             acl_resource: pim_enrich_api_connection_manage

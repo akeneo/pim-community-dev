@@ -36,6 +36,7 @@ parameters:
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
     pim_enrich.controller.rest.product_template.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
+    pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
 
 services:
     pim_enrich.controller.category_tree.product:
@@ -429,3 +430,10 @@ services:
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
             - '@pim_enrich.repository.job_execution'
+
+    pim_enrich.controller.rest.api_client:
+        class: '%pim_enrich.controller.rest.api_client.class%'
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'

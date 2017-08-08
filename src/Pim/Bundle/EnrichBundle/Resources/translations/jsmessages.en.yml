@@ -393,6 +393,11 @@ pim_enrich:
             info:
                 update_failed: Attribute group could not be updated
                 update_successful: Attribute group successfully updated
+        api_connection:
+            create_popin:
+                title: Create a new API connection
+            message:
+                created: API connection successfully created
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -951,6 +956,7 @@ pim_enrich:
             create_btn:  Create
         api_connection:
             title:       API connections
+            create_btn:  Create
     mass_edit:
         next: Next
         previous: Back
@@ -1062,6 +1068,7 @@ page_title:
     pim_enrich_job_tracker_index:          Process tracker
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_api_connection_index:       API connections
+    pim_enrich_api_connection_create:      API connections
 
 # Batch job labels
 batch_jobs:

@@ -19,3 +19,13 @@ extensions:
         targetZone: content
         config:
             alias: api-connection-grid
+
+    pim-api-connection-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-api-connection-index
+        targetZone: buttons
+        position: 100
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.api_connection.create_btn
+           modalForm: pim-api-connection-create-modal
