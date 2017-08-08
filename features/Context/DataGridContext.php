@@ -678,6 +678,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should see association (?:types? )?(.*)$/
      * @Then /^I should see users? (.*)$/
      * @Then /^I should see famil(?:y|ies) (.*)$/
+     * @Then /^I should see client(?:|s) (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
