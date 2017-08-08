@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
+namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\PropertiesNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 

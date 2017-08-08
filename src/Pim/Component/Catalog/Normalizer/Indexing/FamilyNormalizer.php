@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
+namespace Pim\Component\Catalog\Normalizer\Indexing;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;

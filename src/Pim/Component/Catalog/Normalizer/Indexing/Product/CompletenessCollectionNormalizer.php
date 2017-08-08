@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
+namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\CompletenessInterface;
