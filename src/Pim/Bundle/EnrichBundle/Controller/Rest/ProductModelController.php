@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
+use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -19,33 +26,75 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductModelController
 {
     /** @var NormalizerInterface */
-    protected $productModelNormalizer;
+    private $normalizer;
 
     /** @var UserContext */
-    protected $userContext;
+    private $userContext;
 
     /** @var ObjectFilterInterface */
-    protected $objectFilter;
+    private $objectFilter;
 
     /** @var ProductModelRepositoryInterface */
-    protected $productModelRepository;
+    private $productModelRepository;
+
+    /** @var AttributeConverterInterface */
+    private $localizedConverter;
+
+    /** @var EntityWithValuesFilter */
+    private $emptyValuesFilter;
+
+    /** @var ConverterInterface */
+    private $productValueConverter;
+
+    /** @var ObjectUpdaterInterface */
+    private $productModelUpdater;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var SaverInterface */
+    private $productModelSaver;
+
+    /** @var NormalizerInterface */
+    private $constraintViolationNormalizer;
 
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
-     * @param NormalizerInterface             $productModelNormalizer
+     * @param NormalizerInterface             $normalizer
      * @param UserContext                     $userContext
      * @param ObjectFilterInterface           $objectFilter
+     * @param AttributeConverterInterface     $localizedConverter
+     * @param EntityWithValuesFilter          $emptyValuesFilter
+     * @param ConverterInterface              $productValueConverter
+     * @param ObjectUpdaterInterface          $productModelUpdater
+     * @param ValidatorInterface              $validator
+     * @param SaverInterface                  $productModelSaver
+     * @param NormalizerInterface             $constraintViolationNormalizer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        NormalizerInterface $productModelNormalizer,
+        NormalizerInterface $normalizer,
         UserContext $userContext,
-        ObjectFilterInterface $objectFilter
+        ObjectFilterInterface $objectFilter,
+        AttributeConverterInterface $localizedConverter,
+        EntityWithValuesFilter $emptyValuesFilter,
+        ConverterInterface $productValueConverter,
+        ObjectUpdaterInterface $productModelUpdater,
+        ValidatorInterface $validator,
+        SaverInterface $productModelSaver,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->productModelNormalizer = $productModelNormalizer;
-        $this->userContext            = $userContext;
-        $this->objectFilter           = $objectFilter;
+        $this->productModelRepository        = $productModelRepository;
+        $this->normalizer                    = $normalizer;
+        $this->userContext                   = $userContext;
+        $this->objectFilter                  = $objectFilter;
+        $this->localizedConverter            = $localizedConverter;
+        $this->emptyValuesFilter             = $emptyValuesFilter;
+        $this->productValueConverter         = $productValueConverter;
+        $this->productModelUpdater           = $productModelUpdater;
+        $this->validator                     = $validator;
+        $this->productModelSaver             = $productModelSaver;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -71,12 +120,78 @@ class ProductModelController
             'disable_grouping_separator' => true
         ];
 
-        $normalizedProductModel = $this->productModelNormalizer->normalize(
+        $normalizedProductModel = $this->normalizer->normalize(
             $productModel,
             'internal_api',
             $normalizationContext
         );
 
         return new JsonResponse($normalizedProductModel);
+    }
+
+    /**
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return JsonResponse
+     */
+    public function postAction(Request $request, int $id): JsonResponse
+    {
+        $productModel = $this->productModelRepository->find($id);
+        $data = json_decode($request->getContent(), true);
+
+        $this->updateProductModel($productModel, $data);
+
+        $violations = $this->validator->validate($productModel);
+        $violations->addAll($this->localizedConverter->getViolations());
+
+        if (0 === $violations->count()) {
+            $this->productModelSaver->save($productModel);
+
+            $normalizationContext = $this->userContext->toArray() + ['disable_grouping_separator' => true];
+            $normalizedProduct = $this->normalizer->normalize(
+                $productModel,
+                'internal_api',
+                $normalizationContext
+            );
+
+            return new JsonResponse($normalizedProduct);
+        }
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['productModel' => $productModel]
+            );
+        }
+
+        return new JsonResponse(['values' => $normalizedViolations], 400);
+    }
+
+    /**
+     * Updates product with the provided request data
+     *
+     * @param ProductModelInterface $productModel
+     * @param array                 $data
+     */
+    private function updateProductModel(ProductModelInterface $productModel, array $data)
+    {
+        $values = $this->productValueConverter->convert($data['values']);
+
+        $values = $this->localizedConverter->convertToDefaultFormats($values, [
+            'locale' => $this->userContext->getUiLocale()->getCode()
+        ]);
+
+        $dataFiltered = $this->emptyValuesFilter->filter($productModel, ['values' => $values]);
+
+        if (!empty($dataFiltered)) {
+            $data = array_replace($data, $dataFiltered);
+        } else {
+            $data['values'] = [];
+        }
+
+        $this->productModelUpdater->update($productModel, $data);
     }
 }
