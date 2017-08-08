@@ -101,7 +101,7 @@ class ProductSaverIntegration extends TestCase
     private function createProductModel(string $identifier): ProductModelInterface
     {
         $model = new ProductModel();
-        $model->setIdentifier($identifier);
+        $model->setCode($identifier);
 
         return $model;
     }
