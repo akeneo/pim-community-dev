@@ -5,8 +5,8 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\TextAreaNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

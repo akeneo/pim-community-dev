@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
+namespace Pim\Component\Catalog\Normalizer\Indexing\ProductFormat;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -1,27 +1,26 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
+namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductFormat;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Prophecy\Argument;
 
 class CompletenessCollectionNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(CompletenessCollectionNormalizer::class);
+        $this->shouldHaveType(\Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\CompletenessCollectionNormalizer::class);
     }
 
     function it_supports_only_indexing_formats_for_completenesses(\stdClass $toNormalize)
     {
         $this->supportsNormalization(Argument::any(), 'foo')->shouldReturn(false);
-        $this->supportsNormalization($toNormalize, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+        $this->supportsNormalization($toNormalize, \Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(false);
     }
 

@@ -1,10 +1,9 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel;
+namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -17,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductModelPropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     const FIELD_IN_GROUP = 'in_group';
     const FIELD_ID = 'id';

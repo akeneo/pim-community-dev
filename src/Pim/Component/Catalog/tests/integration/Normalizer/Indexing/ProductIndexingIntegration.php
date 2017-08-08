@@ -4,6 +4,7 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
@@ -73,6 +74,7 @@ class ProductIndexingIntegration extends TestCase
         $this->assertIndexingFormat('baz', $expected);
     }
 
+    /** @group todo */
     public function testProductWithAllAttributes()
     {
         $date = \DateTime::createFromFormat(
@@ -322,7 +324,7 @@ class ProductIndexingIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
 
         $serializer = $this->get('pim_serializer');
-        $actual = $serializer->normalize($product, 'indexing');
+        $actual = $serializer->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
 
         NormalizedProductCleaner::clean($actual);
         NormalizedProductCleaner::clean($expected);

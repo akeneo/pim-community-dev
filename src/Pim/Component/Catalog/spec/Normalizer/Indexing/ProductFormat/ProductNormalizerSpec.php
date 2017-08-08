@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel;
+namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductFormat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductModelNormalizerSpec extends ObjectBehavior
+class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $propertiesNormalizer)
     {
@@ -16,7 +16,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductModelNormalizer::class);
+        $this->shouldHaveType(ProductNormalizer::class);
     }
 
     function it_is_a_normalizer()
@@ -26,11 +26,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
     function it_supports_indexing_normalization_only(ProductInterface $product)
     {
-        $this->supportsNormalization($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(true);
         $this->supportsNormalization($product, 'other_format')
             ->shouldReturn(false);
-        $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'other_format')
             ->shouldReturn(false);
@@ -40,10 +40,14 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $propertiesNormalizer,
         ProductInterface $product
     ) {
-        $propertiesNormalizer->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
-            ->willReturn(['properties' => 'properties are normalized here']);
+        $propertiesNormalizer->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
+            ['properties' => 'properties are normalized here']
+        );
 
-        $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
-            ->shouldReturn(['properties' => 'properties are normalized here']);
+        $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            [
+                'properties' => 'properties are normalized here',
+            ]
+        );
     }
 }

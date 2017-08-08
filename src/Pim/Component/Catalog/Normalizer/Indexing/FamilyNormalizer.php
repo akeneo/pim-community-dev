@@ -3,6 +3,8 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -39,12 +41,12 @@ class FamilyNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = [])
     {
         $context = array_merge($context, [
-            'locales' => $this->localeRepository->getActivatedLocaleCodes()
+            'locales' => $this->localeRepository->getActivatedLocaleCodes(),
         ]);
 
         return [
             'code'   => $object->getCode(),
-            'labels' => $this->translationNormalizer->normalize($object, $format, $context)
+            'labels' => $this->translationNormalizer->normalize($object, $format, $context),
         ];
     }
 
@@ -53,6 +55,9 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'indexing' === $format && $data instanceof FamilyInterface;
+        return (
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format ||
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
+            ) && $data instanceof FamilyInterface;
     }
 }

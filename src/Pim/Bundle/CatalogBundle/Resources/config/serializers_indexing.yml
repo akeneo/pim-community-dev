@@ -1,10 +1,10 @@
 parameters:
-    pim_catalog.normalizer.indexing_product.product.class: Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer
-    pim_catalog.normalizer.indexing_product.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer
+    pim_catalog.normalizer.indexing_product.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer
+    pim_catalog.normalizer.indexing_product.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\PropertiesNormalizer
     pim_catalog.normalizer.indexing_product.product.family.class: Pim\Component\Catalog\Normalizer\Indexing\FamilyNormalizer
     pim_catalog.normalizer.indexing_product.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
     pim_catalog.normalizer.indexing_product.product.product_value_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\ProductValueCollectionNormalizer
-    pim_catalog.normalizer.indexing_product.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer
+    pim_catalog.normalizer.indexing_product.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\CompletenessCollectionNormalizer
     pim_catalog.normalizer.indexing_product.product.number.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\NumberNormalizer
     pim_catalog.normalizer.indexing_product.product.option.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionNormalizer
     pim_catalog.normalizer.indexing_product.product.options.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\OptionsNormalizer
@@ -17,8 +17,11 @@ parameters:
     pim_catalog.normalizer.indexing_product.product.media.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\MediaNormalizer
     pim_catalog.normalizer.indexing_product.product.boolean.class: Pim\Component\Catalog\Normalizer\Indexing\ProductValue\BooleanNormalizer
 
-    pim_catalog.normalizer.indexing_product_and_product_model.product_model.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\ProductModelNormalizer
-    pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndModel\PropertiesNormalizer
+    pim_catalog.normalizer.indexing_product_and_product_model.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer
+    pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductPropertiesNormalizer
+
+    pim_catalog.normalizer.indexing_product_and_product_model.product_model.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer
+    pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelPropertiesNormalizer
 
 services:
     pim_catalog.normalizer.indexing_product.product:
@@ -126,3 +129,17 @@ services:
         class: '%pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.indexing_product_and_product_model.product:
+        class: '%pim_catalog.normalizer.indexing_product_and_product_model.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.indexing_product_and_product_model.product.properties'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product_and_product_model.product.properties:
+        class: '%pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+

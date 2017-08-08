@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
+namespace Pim\Component\Catalog\Normalizer\Indexing\ProductFormat;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
@@ -63,10 +63,18 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         }
 
         $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
-            ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];
+            ? $this->serializer->normalize(
+                $product->getCompletenesses(),
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                $context
+            ) : [];
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
-            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
+            ? $this->serializer->normalize(
+                $product->getValues(),
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                $context
+            ) : [];
 
         return $data;
     }

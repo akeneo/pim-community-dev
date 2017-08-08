@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductPrice;
 use Pim\Component\Catalog\Normalizer\Indexing\FamilyNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,10 +30,15 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_supports_families_in_indexing_format(FamilyInterface $family, ProductPrice $price)
     {
-        $this->supportsNormalization($family, 'indexing')->shouldReturn(true);
         $this->supportsNormalization($family, 'standard')->shouldReturn(false);
-        $this->supportsNormalization($price, 'indexing')->shouldReturn(false);
+        $this->supportsNormalization($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(true);
+        $this->supportsNormalization($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
+
         $this->supportsNormalization($price, 'standard')->shouldReturn(false);
+        $this->supportsNormalization($price, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
+        $this->supportsNormalization($price, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(false);
     }
 
     function it_normalizes_families($translationNormalizer, $localeRepository, FamilyInterface $family)
