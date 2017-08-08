@@ -25,12 +25,19 @@ class MergeNotGrantedProductDataSubscriber implements EventSubscriberInterface
     /** @var NotGrantedDataMergerInterface */
     private $categoryMerger;
 
+    /** @var NotGrantedDataMergerInterface */
+    private $associationMerger;
+
     /**
      * @param NotGrantedDataMergerInterface $categoryMerger
+     * @param NotGrantedDataMergerInterface $associationMerger
      */
-    public function __construct(NotGrantedDataMergerInterface $categoryMerger)
-    {
+    public function __construct(
+        NotGrantedDataMergerInterface $categoryMerger,
+        NotGrantedDataMergerInterface $associationMerger
+    ){
         $this->categoryMerger = $categoryMerger;
+        $this->associationMerger = $associationMerger;
     }
 
     /**
@@ -53,5 +60,6 @@ class MergeNotGrantedProductDataSubscriber implements EventSubscriberInterface
         }
 
         $this->categoryMerger->merge($product);
+        $this->associationMerger->merge($product);
     }
 }

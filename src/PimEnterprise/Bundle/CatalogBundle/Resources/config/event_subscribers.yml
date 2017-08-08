@@ -24,5 +24,6 @@ services:
         class: '%pimee_catalog.event_subscriber.merger_not_granted_product_data.class%'
         arguments:
             - '@pimee_catalog.security.merger.not_granted_category'
+            - '@pimee_catalog.security.merger.not_granted_associated_product'
         tags:
             - { name: kernel.event_subscriber }
