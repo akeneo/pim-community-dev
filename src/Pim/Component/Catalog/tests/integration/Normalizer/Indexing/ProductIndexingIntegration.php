@@ -74,7 +74,6 @@ class ProductIndexingIntegration extends TestCase
         $this->assertIndexingFormat('baz', $expected);
     }
 
-    /** @group todo */
     public function testProductWithAllAttributes()
     {
         $date = \DateTime::createFromFormat(

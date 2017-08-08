@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataCollectionNormalizer;
+use Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

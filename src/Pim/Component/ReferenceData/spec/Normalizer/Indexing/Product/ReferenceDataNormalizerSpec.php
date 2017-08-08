@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\AbstractReferenceData;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataNormalizer;
 use Pim\Component\ReferenceData\Value\ReferenceDataValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,7 +14,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReferenceDataNormalizer::class);
+        $this->shouldHaveType(\Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer::class);
     }
 
     function it_is_a_normalizer()

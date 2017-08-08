@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -42,6 +42,6 @@ class ProductModelNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
+        return $data instanceof ProductModelInterface && self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
     }
 }
