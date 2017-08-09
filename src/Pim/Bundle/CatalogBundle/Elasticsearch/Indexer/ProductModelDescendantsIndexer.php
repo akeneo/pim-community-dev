@@ -10,8 +10,8 @@ use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Indexer responsible for the indexing of all product model children (the subtree made of variant products and product
@@ -149,8 +149,9 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        if ($productModelChildren->first() instanceof ProductInterface) {
-            $this->productIndexer->indexAll($productModelChildren->toArray()) ;
+        if ($productModelChildren->first() instanceof VariantProductInterface) {
+            $this->productIndexer->indexAll($productModelChildren->toArray());
+
             return;
         }
 
@@ -173,8 +174,9 @@ class ProductModelDescendantsIndexer implements
             return;
         }
 
-        if ($productModelChildren->first() instanceof ProductInterface) {
-            $this->productRemover->removeAll($productModelChildren->toArray()) ;
+        if ($productModelChildren->first() instanceof VariantProductInterface) {
+            $this->productRemover->removeAll($productModelChildren->toArray());
+
             return;
         }
 

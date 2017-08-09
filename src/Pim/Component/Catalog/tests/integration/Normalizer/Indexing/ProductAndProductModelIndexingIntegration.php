@@ -4,7 +4,7 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
@@ -22,7 +22,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
     }
 
-    /** @group todo */
     public function testRootProductModel()
     {
         $date = \DateTime::createFromFormat(

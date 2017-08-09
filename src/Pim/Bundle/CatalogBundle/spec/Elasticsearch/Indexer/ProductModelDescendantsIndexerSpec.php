@@ -9,8 +9,8 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 
 class ProductModelDescendantsIndexerSpec extends ObjectBehavior
@@ -47,8 +47,8 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ArrayCollection $productChildren,
         ArrayCollection $productModelChildren,
-        ProductInterface $childProduct1,
-        ProductInterface $childProduct2
+        VariantProductInterface $childProduct1,
+        VariantProductInterface $childProduct2
     ) {
         $productModel->getProducts()->willReturn($productChildren);
         $productChildren->isEmpty()->willReturn(false);
@@ -68,8 +68,8 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelIndexer,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $childProductModel,
-        ProductInterface $childProductVariant1,
-        ProductInterface $childProductVariant2,
+        VariantProductInterface $childProductVariant1,
+        VariantProductInterface $childProductVariant2,
         ArrayCollection $emptyProductsChildren,
         ArrayCollection $rootProductModelChildren,
         ArrayCollection $emptyChildProductModelChildren,
@@ -134,10 +134,10 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelIndexer,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
-        ProductInterface $childProduct1,
-        ProductInterface $childProduct2,
-        ProductInterface $childProduct3,
-        ProductInterface $childProduct4,
+        VariantProductInterface $childProduct1,
+        VariantProductInterface $childProduct2,
+        VariantProductInterface $childProduct3,
+        VariantProductInterface $childProduct4,
         ArrayCollection $productChildren1,
         ArrayCollection $productModelChildren1,
         ArrayCollection $productChildren2,
@@ -195,8 +195,8 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ArrayCollection $productChildren,
         ArrayCollection $productModelChildren,
-        ProductInterface $childProduct1,
-        ProductInterface $childProduct2
+        VariantProductInterface $childProduct1,
+        VariantProductInterface $childProduct2
     ) {
         $productModel->getProducts()->willReturn($productChildren);
         $productChildren->isEmpty()->willReturn(false);
@@ -216,8 +216,8 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelRemover,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $childProductModel,
-        ProductInterface $childProductVariant1,
-        ProductInterface $childProductVariant2,
+        VariantProductInterface $childProductVariant1,
+        VariantProductInterface $childProductVariant2,
         ArrayCollection $emptyProductsChildren,
         ArrayCollection $rootProductModelChildren,
         ArrayCollection $emptyChildProductModelChildren,
@@ -271,10 +271,10 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelRemover,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
-        ProductInterface $childProduct1,
-        ProductInterface $childProduct2,
-        ProductInterface $childProduct3,
-        ProductInterface $childProduct4,
+        VariantProductInterface $childProduct1,
+        VariantProductInterface $childProduct2,
+        VariantProductInterface $childProduct3,
+        VariantProductInterface $childProduct4,
         ArrayCollection $productChildren1,
         ArrayCollection $productModelChildren1,
         ArrayCollection $productChildren2,

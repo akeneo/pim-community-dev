@@ -10,7 +10,7 @@ use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -114,7 +114,7 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
     /**
      * {@inheritdoc}
      */
-    protected function validateObjectNormalization(array $normalization) : void
+    private function validateObjectNormalization(array $normalization) : void
     {
         if (!isset($normalization['id'])) {
             throw new \InvalidArgumentException(

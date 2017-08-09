@@ -3,9 +3,8 @@
 namespace Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue;
 
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModelFormat\ProductModelNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductFormat\ProductNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductValue\AbstractProductValueNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 
 /**
@@ -13,7 +12,7 @@ use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataCollectionNormalizer extends AbstractProductValueNormalizer
+class ReferenceDataCollectionNormalizer extends \Pim\Component\Catalog\Normalizer\Indexing\Value\AbstractProductValueNormalizer
 {
     /**
      * {@inheritdoc}
