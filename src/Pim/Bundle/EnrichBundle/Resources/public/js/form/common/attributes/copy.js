@@ -311,7 +311,8 @@ define(
              * Mark all visible fields (from active attribute group) as selected
              */
             selectAllVisible: function () {
-                this.selectFields(FieldManager.getVisibleFields());
+                // TODO: use directly filters instead
+                //this.selectFields(FieldManager.getVisibleFields());
             },
 
             /**

@@ -16,9 +16,34 @@ define([
              * @param {Object} entity
              *
              * @return {Promise}
+             *
+             * TODO: drop this when optional attributes will be removed
              */
             getAttributes: function (entity) {
                 return $.Deferred().resolve(_.keys(entity.values));
+            },
+
+            /**
+             * Get all optional attributes available for a product
+             *
+             * @param {Object} product
+             *
+             * @return {Array}
+             */
+            getAvailableOptionalAttributes: function (product) {
+                return $.when(
+                    FetcherRegistry.getFetcher('attribute').fetchAll(),
+                    this.getAttributes(product)
+                ).then(function (attributes, productAttributes) {
+                    var optionalAttributes = _.map(
+                        _.difference(_.pluck(attributes, 'code'), productAttributes),
+                        function (attributeCode) {
+                            return _.findWhere(attributes, { code: attributeCode });
+                        }
+                    );
+
+                    return optionalAttributes;
+                });
             },
 
             /**

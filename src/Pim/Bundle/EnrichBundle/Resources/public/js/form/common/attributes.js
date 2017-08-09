@@ -111,38 +111,32 @@ define(
 
                 this.rendering = true;
                 this.$el.html(this.template({}));
-                this.getConfig().then(function () {
-                    var object = this.getFormData();
-                    AttributeManager.getValues(object)
-                        .then(function (values) {
-                            var attributeGroupValues = AttributeGroupManager.getAttributeGroupValues(
-                                values,
-                                this.getExtension('attribute-group-selector').getCurrentElement()
-                            );
 
-                            var fieldPromises = [];
-                            _.each(attributeGroupValues, function (value, attributeCode) {
-                                fieldPromises.push(this.renderField(object, attributeCode, value));
-                            }.bind(this));
-
-                            this.rendering = false;
-
-                            return $.when.apply($, fieldPromises);
-                        }.bind(this)).then(function () {
-                            return _.sortBy(arguments, function (field) {
-                                return field.attribute.sort_order;
-                            });
-                        }).then(function (fields) {
-                            var $valuesPanel = this.$('.object-values');
-                            $valuesPanel.empty();
-
-                            FieldManager.clearVisibleFields();
-                            _.each(fields, this.appendField.bind(this, $valuesPanel));
+                var data = this.getFormData();
+                AttributeManager.getValues(data)
+                    .then(function (values) {
+                        var fieldPromises = [];
+                        _.each(values, function (value, attributeCode) {
+                            fieldPromises.push(this.renderField(data, attributeCode, value));
                         }.bind(this));
-                    this.delegateEvents();
 
-                    this.renderExtensions();
-                }.bind(this));
+                        this.rendering = false;
+
+                        return $.when.apply($, fieldPromises);
+                    }.bind(this)).then(function () {
+                        return _.sortBy(arguments, function (field) {
+                            return field.attribute.sort_order;
+                        });
+                    }).then(function (fields) {
+                        var $valuesPanel = this.$('.object-values');
+                        $valuesPanel.empty();
+
+                        FieldManager.clearVisibleFields();
+                        _.each(fields, this.appendField.bind(this, $valuesPanel));
+                    }.bind(this));
+                this.delegateEvents();
+
+                this.renderExtensions();
 
                 return this;
             },
@@ -157,7 +151,6 @@ define(
             appendField: function (panel, field) {
                 if (field.canBeSeen()) {
                     field.render();
-                    FieldManager.addVisibleField(field.attribute.code);
                     panel.append(field.$el);
                 }
             },
@@ -195,26 +188,6 @@ define(
 
                     return field;
                 }.bind(this));
-            },
-
-            /**
-             * Get the configuration needed to load the attribute tab
-             *
-             * @return {Promise}
-             */
-            getConfig: function () {
-                var promises = [];
-                var object = this.getFormData();
-
-                promises.push(AttributeGroupManager.getAttributeGroupsForObject(object)
-                    .then(function (attributeGroups) {
-                        this.getExtension('attribute-group-selector').setElements(
-                            _.indexBy(_.sortBy(attributeGroups, 'sort_order'), 'code')
-                        );
-                    }.bind(this))
-                );
-
-                return $.when.apply($, promises).promise();
             },
 
             /**
@@ -436,6 +409,7 @@ define(
                         var displayedAttributes = FieldManager.getFields();
 
                         if (_.has(displayedAttributes, event.attribute)) {
+                            // TODO: the manager shouldn't be stateful, access the field by another way
                             displayedAttributes[event.attribute].setFocus();
                         }
                     }.bind(this));

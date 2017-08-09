@@ -27,29 +27,6 @@ define(
         },
 
         /**
-         * Get attribute group values filtered from the whole list
-         *
-         * @param {Object} values
-         * @param {String} attributeGroup
-         *
-         * @return {Object}
-         */
-        getAttributeGroupValues: function (values, attributeGroup) {
-            var matchingValues = {};
-            if (!attributeGroup) {
-                return matchingValues;
-            }
-
-            _.each(attributeGroup.attributes, function (attributeCode) {
-                if (values[attributeCode]) {
-                    matchingValues[attributeCode] = values[attributeCode];
-                }
-            });
-
-            return matchingValues;
-        },
-
-        /**
          * Get the attribute group for the given attribute
          *
          * @param {Array} attributeGroups

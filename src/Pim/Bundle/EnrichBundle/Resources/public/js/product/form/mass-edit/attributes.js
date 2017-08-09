@@ -57,7 +57,6 @@ define(
                 if (field.canBeSeen()) {
                     field.setLocked(this.locked);
                     field.render();
-                    FieldManager.addVisibleField(field.attribute.code);
                     panel.append(field.$el);
                 }
             },
@@ -133,6 +132,7 @@ define(
                 this.triggerExtensions('add-attribute:update:available-attributes');
 
                 delete product.values[attributeCode];
+                // TODO: the manager's internal state shouldn't be modified by reference
                 delete fields[attributeCode];
 
                 this.setData(product);
