@@ -139,6 +139,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.violation'
             - '@akeneo_batch.job_instance_factory'
+            - '%upload_tmp_dir%'
 
     pim_enrich.controller.rest.attribute_group:
         class: '%pim_enrich.controller.rest.attribute_group.class%'
