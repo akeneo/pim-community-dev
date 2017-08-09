@@ -1,5 +1,5 @@
  /**
- * Parent extension to render the child extensions for the category tree in the product grid index
+ * Extension to set up the category tree filter for the product grid
  *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -10,16 +10,18 @@ define(
         'underscore',
         'jquery',
         'pim/form-builder',
-        'pim/form'
+        'pim/form',
+        'oro/datafilter/product_category-filter'
     ],
     function(
         _,
         $,
         FormBuilder,
-        BaseForm
+        BaseForm,
+        CategoryFilter
     ) {
         return BaseForm.extend({
-            // The id is being used category filter view
+            // The id is being used inside product_category-filter
             id: 'tree',
             className: 'filter-item',
             attributes: {
@@ -41,13 +43,12 @@ define(
              * @TODO - Rewrite datagrid view to remove the need for the event listeners here
              */
             setupCategoryTree(urlParams) {
-                if (!urlParams) return;
-
-                FormBuilder.buildForm('pim-grid-category-tree').then(form => {
-                    return form.configure(urlParams).then(() => {
-                        form.setElement('.filter-item').render();
-                    });
-                });
+                return new CategoryFilter(
+                    urlParams,
+                    'product-grid',
+                    'pim_enrich_categorytree',
+                    '.filter-item'
+                );
             }
         });
     }

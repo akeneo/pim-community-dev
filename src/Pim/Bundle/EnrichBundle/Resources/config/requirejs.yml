@@ -891,7 +891,6 @@ config:
 
         # Category tree
         pim/grid/category-tree: pimenrich/js/product/grid/category-tree
-        pim/grid/category-tree/tree: pimenrich/js/category-tree/category-tree
 
         # Grid view selector
         pim/grid/view-selector: pimenrich/js/product/grid/view-selector
