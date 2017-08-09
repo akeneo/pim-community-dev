@@ -43,7 +43,7 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(true);
 
-        $productModel->getIdentifier()->willReturn('identifier');
+        $productModel->getCode()->willReturn('identifier');
 
         $indexer->index($productModel)->shouldBeCalled();
 
@@ -58,8 +58,8 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn([$productModel1, $productModel2]);
 
-        $productModel1->getIdentifier()->willReturn('identifier1');
-        $productModel2->getIdentifier()->willReturn('identifier2');
+        $productModel1->getCode()->willReturn('identifier1');
+        $productModel2->getCode()->willReturn('identifier2');
 
         $bulkIndexer->indexAll([$productModel1, $productModel2])->shouldBeCalled();
 

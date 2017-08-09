@@ -33,7 +33,7 @@ class ProductModelPropertiesNormalizer extends SerializerAwareNormalizer impleme
         $data = [];
 
         $data[self::FIELD_ID] = (string) $productModel->getId();
-        $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $productModel->getIdentifier();
+        $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $productModel->getCode();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productModel->getCreated(),
             $format

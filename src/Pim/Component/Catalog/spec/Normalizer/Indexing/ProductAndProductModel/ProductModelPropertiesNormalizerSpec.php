@@ -47,7 +47,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getId()->willReturn(67);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $productModel->getIdentifier()->willReturn('sku-001');
+        $productModel->getCode()->willReturn('sku-001');
         $productModel->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
@@ -94,7 +94,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $productModel->getId()->willReturn(67);
-        $productModel->getIdentifier()->willReturn('sku-001');
+        $productModel->getCode()->willReturn('sku-001');
 
         $productModel->getCreated()->willReturn($now);
         $serializer->normalize(
