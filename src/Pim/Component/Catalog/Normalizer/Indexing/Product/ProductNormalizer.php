@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -32,7 +30,7 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = []) : array
+    public function normalize($product, $format = null, array $context = [])
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
@@ -42,7 +40,7 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null) : bool
+    public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && self::INDEXING_FORMAT_PRODUCT_INDEX === $format;
     }

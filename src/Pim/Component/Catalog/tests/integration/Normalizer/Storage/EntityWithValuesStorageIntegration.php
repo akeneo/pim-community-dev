@@ -25,27 +25,27 @@ class EntityWithValuesStorageIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
-            'sku'                                => [
+            'sku' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'foo',
                 ],
             ],
-            'a_file'                             => [
+            'a_file' => [
                 '<all_channels>' => [
                     '<all_locales>' => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt'
                 ],
             ],
-            'an_image'                           => [
+            'an_image' => [
                 '<all_channels>' => [
                     '<all_locales>' => '3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg'
                 ],
             ],
-            'a_date'                             => [
+            'a_date' => [
                 '<all_channels>' => [
                     '<all_locales>' => '2016-06-13T00:00:00+02:00'
                 ],
             ],
-            'a_metric'                           => [
+            'a_metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         'amount'    => '987654321987.1234',
@@ -56,7 +56,7 @@ class EntityWithValuesStorageIntegration extends TestCase
                     ]
                 ],
             ],
-            'a_metric_without_decimal'           => [
+            'a_metric_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         'amount'    => 98,
@@ -67,7 +67,7 @@ class EntityWithValuesStorageIntegration extends TestCase
                     ],
                 ],
             ],
-            'a_metric_without_decimal_negative'  => [
+            'a_metric_without_decimal_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         'amount'    => -20,
@@ -78,7 +78,7 @@ class EntityWithValuesStorageIntegration extends TestCase
                     ],
                 ],
             ],
-            'a_metric_negative'                  => [
+            'a_metric_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         'amount'    => '-20.5000',
@@ -89,32 +89,32 @@ class EntityWithValuesStorageIntegration extends TestCase
                     ],
                 ],
             ],
-            'a_multi_select'                     => [
+            'a_multi_select' => [
                 '<all_channels>' => [
                     '<all_locales>' => ['optionA', 'optionB'],
                 ],
             ],
-            'a_number_float'                     => [
+            'a_number_float' => [
                 '<all_channels>' => [
                     '<all_locales>' => '12.5678',
                 ],
             ],
-            'a_number_float_negative'            => [
+            'a_number_float_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => '-99.8732',
                 ],
             ],
-            'a_number_integer'                   => [
+            'a_number_integer' => [
                 '<all_channels>' => [
                     '<all_locales>' => 42,
                 ],
             ],
-            'a_number_integer_negative'          => [
+            'a_number_integer_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => -42,
                 ],
             ],
-            'a_price'                            => [
+            'a_price' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         ['amount' => '45.00', 'currency' => 'USD'],
@@ -122,7 +122,7 @@ class EntityWithValuesStorageIntegration extends TestCase
                     ],
                 ],
             ],
-            'a_price_without_decimal'            => [
+            'a_price_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
                         ['amount' => -45, 'currency' => 'USD'],
@@ -135,50 +135,50 @@ class EntityWithValuesStorageIntegration extends TestCase
                     '<all_locales>' => ['fabricA', 'fabricB'],
                 ],
             ],
-            'a_ref_data_simple_select'           => [
+            'a_ref_data_simple_select' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'colorB',
                 ],
             ],
-            'a_simple_select'                    => [
+            'a_simple_select' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'optionB',
                 ],
             ],
-            'a_text'                             => [
+            'a_text' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'this is a text',
                 ],
             ],
-            '123'                                => [
+            '123' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'a text for an attribute with numerical code',
                 ],
             ],
-            'a_text_area'                        => [
+            'a_text_area' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'this is a very very very very very long  text',
                 ],
             ],
-            'a_yes_no'                           => [
+            'a_yes_no' => [
                 '<all_channels>' => [
                     '<all_locales>' => true,
                 ],
             ],
-            'a_localizable_image'                => [
+            'a_localizable_image' => [
                 '<all_channels>' => [
                     'en_US' => '7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg',
                     'fr_FR' => '0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg',
                 ],
             ],
-            'a_scopable_price'                   => [
+            'a_scopable_price' => [
                 'ecommerce' => [
                     '<all_locales>' => [
                         ['amount' => '15.00', 'currency' => 'EUR'],
                         ['amount' => '20.00', 'currency' => 'USD'],
                     ],
                 ],
-                'tablet'    => [
+                'tablet' => [
                     '<all_locales>' => [
                         ['amount' => '17.00', 'currency' => 'EUR'],
                         ['amount' => '24.00', 'currency' => 'USD'],
@@ -189,7 +189,7 @@ class EntityWithValuesStorageIntegration extends TestCase
                 'ecommerce' => [
                     'en_US' => 'a text area for ecommerce in English',
                 ],
-                'tablet'    => [
+                'tablet' => [
                     'en_US' => 'a text area for tablets in English',
                     'fr_FR' => 'une zone de texte pour les tablettes en français',
 

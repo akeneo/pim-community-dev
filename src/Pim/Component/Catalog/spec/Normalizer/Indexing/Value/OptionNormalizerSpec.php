@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Value\OptionNormalizer;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,7 +16,7 @@ class OptionNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\Normalizer\Indexing\Value\OptionNormalizer::class);
+        $this->shouldHaveType(OptionNormalizer::class);
     }
 
     function it_is_a_normalizer()

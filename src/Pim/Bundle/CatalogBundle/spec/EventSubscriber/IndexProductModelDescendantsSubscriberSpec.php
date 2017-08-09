@@ -33,7 +33,8 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([
             StorageEvents::POST_SAVE     => 'indexProductModelDescendants',
             StorageEvents::POST_SAVE_ALL => 'bulkIndexProductModelsDescendants',
-            StorageEvents::POST_REMOVE   => 'deleteProductModelDescendants',       ]);
+            StorageEvents::POST_REMOVE   => 'deleteProductModelDescendants',
+        ]);
     }
 
     function it_indexes_a_single_product_model_descendants($indexer, GenericEvent $event, ProductModelInterface $productModel)

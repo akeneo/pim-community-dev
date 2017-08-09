@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Prophecy\Argument;
@@ -15,7 +16,7 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer::class);
+        $this->shouldHaveType(CompletenessCollectionNormalizer::class);
     }
 
     function it_supports_only_indexing_formats_for_completenesses(\stdClass $toNormalize)

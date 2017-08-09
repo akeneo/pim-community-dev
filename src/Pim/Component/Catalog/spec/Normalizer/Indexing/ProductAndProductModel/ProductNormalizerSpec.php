@@ -26,7 +26,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_supports_product_and_variant_products(
+    function it_supports_products_and_variant_products(
         ProductInterface $product,
         VariantProductInterface $variantProduct
     ) {

@@ -7,13 +7,14 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Value\NumberNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class NumberNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\Normalizer\Indexing\Value\NumberNormalizer::class);
+        $this->shouldHaveType(NumberNormalizer::class);
     }
 
     function it_is_a_normalizer()

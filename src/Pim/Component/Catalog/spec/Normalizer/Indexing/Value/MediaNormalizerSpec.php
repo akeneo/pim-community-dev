@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Value\MediaNormalizer;
 use Pim\Component\Catalog\Value\MediaValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,7 +16,7 @@ class MediaNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\Normalizer\Indexing\Value\MediaNormalizer::class);
+        $this->shouldHaveType(MediaNormalizer::class);
     }
 
     function it_is_a_normalizer()

@@ -19,7 +19,6 @@ parameters:
 
     pim_catalog.normalizer.indexing_product_and_product_model.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer
-
     pim_catalog.normalizer.indexing_product_and_product_model.product_model.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product_model.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer
 

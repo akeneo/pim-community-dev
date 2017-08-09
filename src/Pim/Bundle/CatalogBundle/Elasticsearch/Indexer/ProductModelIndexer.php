@@ -123,4 +123,3 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
         }
     }
 }
-
