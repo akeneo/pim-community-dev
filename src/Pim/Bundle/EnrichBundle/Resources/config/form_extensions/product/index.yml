@@ -48,4 +48,8 @@ extensions:
         module: pim/grid/table
         parent: pim-product-index
         targetZone: grid
+        config:
+            gridName: 'product-grid'
+            localeParamName: dataLocale
+
 

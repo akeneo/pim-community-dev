@@ -23,7 +23,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
 
-            // The id is being used category filter, need to remove
+            // The id is being used category filter
             id: 'tree',
             className: 'filter-item',
             urlParams: {},

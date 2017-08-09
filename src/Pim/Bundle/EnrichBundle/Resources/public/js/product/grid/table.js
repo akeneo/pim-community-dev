@@ -21,41 +21,56 @@ define(
         requireContext,
         BaseForm
     ) {
-
+        // Copied from macros renderStatefulGrid
         // @TODO - Totally rewrite with proper functions
         return BaseForm.extend({
+            config: {},
+
+            initialize(options) {
+                this.config = options.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            getLocaleFromUrl() {
+                return window.location.hash.split(`?${this.config.localeParamName}=`)[1];
+            },
 
             render() {
+                // Put this stuff in initialize
+                const { localeParamName } = this.config;
+                const locale = this.getLocaleFromUrl();
+                const gridName = this.config.gridName;
                 const root = this.getRoot();
 
                 var defaultColumnsRoute = Routing.generate(
                     'pim_datagrid_view_rest_default_columns',
-                    {alias: 'product-grid' }
-                    );
+                    {
+                        alias: gridName
+                    }
+                );
 
                 $.get(defaultColumnsRoute, function (defaultColumns) {
                     initDatagrid(defaultColumns);
                 });
 
                 var initDatagrid = function (defaultColumns) {
-                    var urlParams    = {'dataLocale':'en_US'};
-                    urlParams.alias  = 'product-grid';
-                    urlParams.params = {'dataLocale':'en_US'};
+                    var urlParams    = {[ localeParamName ]: locale};
+                    urlParams.alias  = gridName;
+                    urlParams.params = {[ localeParamName ]: locale};
 
-                    var viewStored = DatagridState.get('product-grid', ['view']);
+                    var viewStored = DatagridState.get(gridName, ['view']);
                     if (!viewStored.view) {
-                        DatagridState.refreshFiltersFromUrl('product-grid');
+                        DatagridState.refreshFiltersFromUrl(gridName);
                     }
 
                     var hasDefaultView = false;
-                    var state          = DatagridState.get('product-grid', ['view', 'filters', 'columns']);
+                    var state          = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                     var applyView = function (viewId) {
-                        urlParams['product-grid[_parameters][view][id]'] = viewId;
+                        urlParams[`${gridName}[_parameters][view][id]`] = viewId;
 
-                        DatagridState.set('product-grid', {
-                            view: viewId
-                        });
+                        DatagridState.set(gridName, { view: viewId });
                     };
 
                     var applyFilters = function (rawFilters) {
@@ -71,24 +86,24 @@ define(
                         }
 
                         var collection = new PageableCollection(null, options);
-                        collection.processFiltersParams(urlParams, filters, 'product-grid[_filter]');
+                        collection.processFiltersParams(urlParams, filters, `${gridName}[_filter]`);
 
                         for (var column in filters.sorters) {
-                            urlParams['product-grid[_sort_by][' + column + ']'] =
+                            urlParams[`${gridName}[_sort_by][' + column + ']`] =
                                 1 === parseInt(filters.sorters[column]) ?
                                         'DESC' :
                                         'ASC';
                         }
 
                         if (undefined !== filters.pageSize) {
-                            urlParams['product-grid[_pager][_per_page]'] = filters.pageSize;
+                            urlParams[`${gridName}[_pager][_per_page]`] = filters.pageSize;
                         }
 
                         if (undefined !== filters.currentPage) {
-                            urlParams['product-grid[_pager][_page]'] = filters.currentPage;
+                            urlParams[`${gridName}[_pager][_page]`] = filters.currentPage;
                         }
 
-                        DatagridState.set('product-grid', {
+                        DatagridState.set(gridName, {
                             filters: rawFilters
                         });
                     };
@@ -97,9 +112,9 @@ define(
                         if (_.isArray(columns)) {
                             columns = columns.join();
                         }
-                        urlParams['product-grid[_parameters][view][columns]'] = columns;
+                        urlParams[`${gridName}[_parameters][view][columns]`] = columns;
 
-                        DatagridState.set('product-grid', {
+                        DatagridState.set(gridName, {
                             columns: columns
                         });
                     };
@@ -123,7 +138,7 @@ define(
 
                     root.trigger('datagrid:getParams', urlParams);
 
-                    state = DatagridState.get('product-grid', ['view', 'filters', 'columns']);
+                    state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
                         if (state.columns) {
@@ -135,7 +150,7 @@ define(
                             });
                         }
 
-                        $('#grid-product-grid').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
+                        $(`#grid-${gridName}`).data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                         var modules = resp.metadata.requireJSModules;
                         modules.push('pim/datagrid/state-listener');
