@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Extension to render a list of activated locales used for the product grid. 
+ * Extension to render a list of activated locales used for the product grid.
  *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

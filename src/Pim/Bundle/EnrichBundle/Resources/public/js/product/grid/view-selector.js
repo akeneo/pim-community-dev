@@ -1,26 +1,33 @@
- define(
+ /**
+ * Parent extension to render the child extensions for the view selector in the product grid index
+ *
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+define(
     [
         'underscore',
         'jquery',
         'pim/fetcher-registry',
         'pim/form-builder',
-        'pim/form',
-        'pim/template/product/grid/view-selector'
+        'pim/form'
     ],
     function(
         _,
         $,
         FetcherRegistry,
         FormBuilder,
-        BaseForm,
-        template
+        BaseForm
     ) {
         return BaseForm.extend({
-            template: _.template(template),
+            id: 'view-selector',
             className: 'pull-right',
-            render() {
-                this.$el.html(this.template({}));
 
+            /**
+             * {@inheritdoc}
+             */
+            render() {
                 FetcherRegistry.initialize().done(function () {
                     FormBuilder.buildForm('pim-grid-view-selector').then(function (form) {
                         return form.configure('product-grid').then(function () {

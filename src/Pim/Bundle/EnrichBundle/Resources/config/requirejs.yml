@@ -965,8 +965,6 @@ config:
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
-        pim/template/product/grid/view-selector:             pimenrich/templates/product/grid/view-selector.html
-
         pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html
