@@ -14,7 +14,7 @@ define([
         'pim/template/product/grid/locale-switcher',
         'pim/fetcher-registry',
         'pim/i18n',
-        'routing'
+        'pim/router'
     ],
     function (
         $,
@@ -23,11 +23,16 @@ define([
         template,
         FetcherRegistry,
         i18n,
-        Routing
+        router
     ) {
         return BaseForm.extend({
             template: _.template(template),
             config: {},
+            locales: [],
+
+            events: {
+                'click [data-locale]': 'changeLocale'
+            },
 
             /**
              * {@inheritdoc}
@@ -40,19 +45,23 @@ define([
 
             /**
              * {@inheritdoc}
+            */
+            configure() {
+                return this.fetchLocales().then(locales => this.locales = locales);
+            },
+
+            /**
+             * {@inheritdoc}
              */
             render() {
-                this.fetchLocales().then((locales) => {
-                    const currentLocaleCode = this.getCurrentLocale() || _.first(locales).code;
+                const currentLocaleCode = this.getCurrentLocale() || _.first(this.locales).code;
 
-                    this.$el.empty().append(this.template({
-                        locales,
-                        currentLocaleCode,
-                        i18n,
-                        getDisplayName: this.getDisplayName,
-                        generateUrl: this.generateUrl.bind(this)
-                    }));
-                });
+                this.$el.empty().append(this.template({
+                    locales: this.locales,
+                    currentLocaleCode,
+                    i18n,
+                    getDisplayName: this.getDisplayName
+                }));
             },
 
             /**
@@ -73,22 +82,21 @@ define([
             },
 
             /**
-             * Generates a product grid url with the locale code
-             * @param  {String} localeCode The locale code - e.g. en_US
-             * @return {String}        A url like #/enrich/product/?dataLocale=en_US
-             */
-            generateUrl(localeCode) {
-                const { localeParamName } = this.config;
-
-                return Routing.generate(this.config.routeName, { [localeParamName]: localeCode });
-            },
-
-            /**
              * @TODO - Get this information elsewhere
              * @return {String} Returns a string with the locale code e.g. en_US
              */
             getCurrentLocale() {
                 return window.location.hash.split(`?${this.config.localeParamName}=`)[1];
+            },
+
+            /**
+             * Switches locales by visiting the product grid route
+             * @param  {Event} event The click event coming from the locale dropdown list
+             */
+            changeLocale(event) {
+                const { localeParamName } = this.config;
+                const localeCode = this.$(event.currentTarget).attr('data-locale');
+                router.redirectToRoute(this.config.routeName, { [localeParamName]: localeCode });
             }
         });
     });

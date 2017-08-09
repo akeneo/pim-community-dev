@@ -9,32 +9,27 @@ define(
     [
         'underscore',
         'jquery',
-        'pim/fetcher-registry',
         'pim/form-builder',
         'pim/form'
     ],
     function(
         _,
         $,
-        FetcherRegistry,
         FormBuilder,
         BaseForm
     ) {
         return BaseForm.extend({
-            id: 'view-selector',
-            className: 'pull-right',
+            className: 'view-selector pull-right',
 
             /**
              * {@inheritdoc}
              */
             render() {
-                FetcherRegistry.initialize().done(function () {
-                    FormBuilder.buildForm('pim-grid-view-selector').then(function (form) {
-                        return form.configure('product-grid').then(function () {
-                            form.setElement('#view-selector').render();
-                        });
-                    }.bind(this));
-                });
+                FormBuilder.buildForm('pim-grid-view-selector').then(function (form) {
+                    return form.configure('product-grid').then(function () {
+                        form.setElement('.view-selector').render();
+                    });
+                }.bind(this));
             }
         });
     }
