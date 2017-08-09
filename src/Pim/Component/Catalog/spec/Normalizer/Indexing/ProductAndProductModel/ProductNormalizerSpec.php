@@ -3,11 +3,13 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductModelNormalizerSpec extends ObjectBehavior
+class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $propertiesNormalizer)
     {
@@ -16,7 +18,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductModelNormalizer::class);
+        $this->shouldHaveType(ProductNormalizer::class);
     }
 
     function it_is_a_normalizer()
@@ -24,82 +26,70 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_supports_indexing_normalization_only(ProductModelInterface $productModel)
-    {
-        $this->supportsNormalization($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+    function it_supports_product_and_variant_products(
+        ProductInterface $product,
+        VariantProductInterface $variantProduct
+    ) {
+        $this->supportsNormalization($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
-        $this->supportsNormalization($productModel, 'other_format')
+        $this->supportsNormalization($product, 'other_format')
             ->shouldReturn(false);
+
+        $this->supportsNormalization($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->shouldReturn(true);
+        $this->supportsNormalization($variantProduct, 'other_format')
+            ->shouldReturn(false);
+
         $this->supportsNormalization(new \stdClass(), ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'other_format')
             ->shouldReturn(false);
     }
 
-    function it_normalizes_a_root_product_model_in_indexing_format(
+    function it_normalizes_a_product_in_product_and_product_model_format(
         $propertiesNormalizer,
-        ProductModelInterface $productModel
+        ProductInterface $product
     ) {
-        $productModel->getVariationLevel()->willReturn(0);
-        $productModel->getRawValues()
+        $product->getRawValues()
             ->willReturn([
                 'property_1' => ['value_1'],
                 'property_2' => ['value_2'],
             ]);
         $propertiesNormalizer->normalize(
-            $productModel,
+            $product,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
         )->willReturn(['properties' => 'properties are normalized here']);
 
-        $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
-                'product_type'              => 'PimCatalogRootProductModel',
+                'product_type'              => 'PimCatalogProduct',
                 'attributes_for_this_level' => ['property_1', 'property_2'],
             ]);
     }
 
-    function it_normalizes_a_sub_product_model_in_indexing_format(
+    function it_normalizes_a_variant_product_in_product_and_product_model_format(
         $propertiesNormalizer,
-        ProductModelInterface $productModel
+        VariantProductInterface $variantProduct
     ) {
-        $productModel->getVariationLevel()->willReturn(1);
-        $productModel->getRawValues()
+        $variantProduct->getVariationLevel()->willReturn(0);
+        $variantProduct->getRawValues()
             ->willReturn([
                 'property_1' => ['value_1'],
                 'property_2' => ['value_2'],
             ]);
         $propertiesNormalizer->normalize(
-            $productModel,
+            $variantProduct,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
             []
         )->willReturn(['properties' => 'properties are normalized here']);
 
-        $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+        $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
-                'product_type'              => 'PimCatalogSubProductModel',
+                'product_type'              => 'PimCatalogVariantProduct',
                 'attributes_for_this_level' => ['property_1', 'property_2'],
             ]);
-    }
-
-    function it_normalizes_throws_if_the_variation_level_is_invalid(
-        $propertiesNormalizer,
-        ProductModelInterface $productModel
-    ) {
-        $productModel->getVariationLevel()->willReturn(-1);
-
-        $propertiesNormalizer->normalize(
-            $productModel,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-            []
-        )->willReturn(['properties' => 'properties are normalized here']);
-
-        $this->shouldThrow('\LogicException')
-            ->during(
-                'normalize',
-                [$productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX]
-            );
     }
 }

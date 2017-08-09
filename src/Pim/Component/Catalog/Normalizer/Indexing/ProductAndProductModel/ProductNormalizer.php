@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -56,7 +58,7 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @return string
      */
-    private function getVariationLevelCode(ProductInterface $product): string
+    private function getVariationLevelCode(ProductInterface $product) : string
     {
         if ($product instanceof VariantProductInterface) {
             return 'PimCatalogVariantProduct';
