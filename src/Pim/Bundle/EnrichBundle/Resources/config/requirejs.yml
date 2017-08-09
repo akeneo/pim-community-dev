@@ -886,10 +886,17 @@ config:
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
         pim/formatter/date: pimenrich/js/formatter/date-formatter
 
-        # Grid view selector
-        pim/grid/table: pimenrich/js/product/grid/table
         pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
         pim/grid: pimenrich/js/product/grid
+
+        # Category tree
+        pim/grid/category-tree: pimenrich/js/product/grid/category-tree
+        pim/grid/category-tree/tree: pimenrich/js/category-tree/category-tree
+        pim/grid/category-tree/select-catalog: pimenrich/js/category-tree/select-catalog
+        pim/grid/category-tree/list: pimenrich/js/category-tree/list
+        pim/grid/category-tree/switch: pimenrich/js/category-tree/switch
+
+        # Grid view selector
         pim/grid/view-selector: pimenrich/js/product/grid/view-selector
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
@@ -897,8 +904,15 @@ config:
         pim/grid/view-selector/save-view: pimenrich/js/grid/view-selector-save-view
         pim/grid/view-selector/remove-view: pimenrich/js/grid/view-selector-remove-view
         pim/grid/view-selector/current: pimenrich/js/grid/view-selector-current
+        pim/grid/table: pimenrich/js/product/grid/table
+        pim/grid/category-tree: pimenrich/js/product/grid/category-tree
 
         # Templates
+        pim/template/category-tree:                               pimenrich/templates/category-tree/category-tree.html
+        pim/template/category-tree/select-catalog:                pimenrich/templates/category-tree/select-catalog.html
+        pim/template/category-tree/list:                          pimenrich/templates/category-tree/list.html
+        pim/template/category-tree/switch:                        pimenrich/templates/category-tree/switch.html
+
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
         pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
 

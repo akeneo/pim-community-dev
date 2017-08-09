@@ -119,11 +119,13 @@ define(
                         }
                     }
 
+                    console.log(urlParams);
+
                     var categoryFilter = new CategoryFilter(
                     urlParams,
                     'product-grid',
                     'pim_enrich_categorytree',
-                    '#tree'
+                    '#tree-old'
                 );
 
                     state = DatagridState.get('product-grid', ['view', 'filters', 'columns']);

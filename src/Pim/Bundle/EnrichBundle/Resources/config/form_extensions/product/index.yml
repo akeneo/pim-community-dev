@@ -27,10 +27,11 @@ extensions:
         targetZone: title-buttons
         position: 20
 
-    # pim-product-index-category-tree:
-    #     module: pim/grid/category-tree
-    #     parent: pim-product-index
-    #     targetZone: tree
+    pim-product-index-category-tree:
+        module: pim/grid/category-tree
+        parent: pim-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
 
     # pim-product-index-grid-filters
     #     module: pim/grid/filters
