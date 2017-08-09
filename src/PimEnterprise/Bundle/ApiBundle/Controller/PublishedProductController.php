@@ -276,6 +276,7 @@ class PublishedProductController
         ];
 
         $parameters['search_after']['self'] = $searchParameter;
+        $parameters['current_page'] = false;
         $parameters['search_after']['next'] = !empty($publishedProducts) ? $this->primaryKeyEncrypter->encrypt(end($publishedProducts)->getId()) : '';
         $parameters['search_after']['previous'] = !empty($publishedProducts) ? $this->primaryKeyEncrypter->encrypt(reset($publishedProducts)->getId()) : '';
 

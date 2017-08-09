@@ -56,7 +56,6 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=100"},
         "next" : {"href": "http://localhost/api/rest/v1/published-products?limit=100&search_after={$lastEncryptedId}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedPublishedProducts}

@@ -118,7 +118,6 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=10"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=10"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedPublishedProducts['simple']},
@@ -150,7 +149,6 @@ JSON;
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true"},
         "next"  : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true&search_after={$nextId}"}
     },
-    "current_page" : null,
     "items_count"  : 6,
     "_embedded"    : {
 		"items": [
@@ -188,7 +186,6 @@ JSON;
         "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_after={$ids['scopable']}"},
         "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['localizable']}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['localizable']},
@@ -223,7 +220,6 @@ JSON;
         "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_after={$ids['product_without_category2']}"},
         "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['product_china']}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['product_china']},
@@ -255,7 +251,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=ecommerce"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=ecommerce"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -360,7 +355,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -486,7 +480,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -590,7 +583,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&locales=en_US%2Cfr_FR"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&locales=en_US%2Cfr_FR"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -711,7 +703,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&attributes=a_text"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&attributes=a_text"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -750,10 +741,7 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -834,7 +822,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -951,7 +938,6 @@ JSON;
         "previous" : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&with_count=false&search_before={$ids['product_china']}"},
         "next"     : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&search_after={$ids['product_without_category2']}&with_count=false"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -1006,7 +992,6 @@ JSON;
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&with_count=true"},
         "previous": {"href" : "http://localhost/api/rest/v1/published-products?limit=10&with_count=true&search_before="}
     },
-    "current_page" : null,
     "items_count"  : 6,
     "_embedded"    : {
         "items" : []
@@ -1030,7 +1015,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -1087,7 +1071,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : []
     }
@@ -1110,7 +1093,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : []
     }
@@ -1138,7 +1120,6 @@ JSON;
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=4"},
         "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=4&search_before={$ids['product_china']}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['product_china']},
@@ -1180,8 +1161,7 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']}
         ]
-    },
-    "current_page": null
+    }
 }
 JSON;
 
@@ -1202,7 +1182,7 @@ JSON;
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_after={$scopableEncryptedId}"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after"},
-        "previous"  : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
+        "previous" : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
     },
     "_embedded"    : {
         "items" : [
@@ -1210,8 +1190,7 @@ JSON;
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category2']}
         ]
-    },
-    "current_page": null
+    }
 }
 JSON;
 

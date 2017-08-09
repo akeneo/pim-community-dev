@@ -81,7 +81,6 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         "first": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
         "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}&search_after=${encryptedId}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
 		    {
