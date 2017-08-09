@@ -16,7 +16,7 @@
 
 {% block content %}
     <div class="AknDefault-mainContent">
-    {% set buttons %}
+{#     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
         <script type="text/javascript">
             require(['jquery', 'pim/form-builder', 'oro/mediator'], function ($, FormBuilder, mediator) {
@@ -30,16 +30,16 @@
                 });
             });
         </script>
-    {% endset %}
+    {% endset %} #}
 
     {% set gridAlias = 'product-grid' %}
 
     {% set titleButtons %}
-        {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
+{#         {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
             'locales':           locales,
             'currentLocaleCode': dataLocale.code,
             'routeName':         'pim_enrich_product_index'
-        } only %}
+        } only %} #}
         {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': gridAlias })) }}
     {% endset %}
 

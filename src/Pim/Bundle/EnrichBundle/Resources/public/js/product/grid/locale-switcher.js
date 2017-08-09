@@ -29,6 +29,9 @@ define([
             template: _.template(template),
             config: {},
 
+            /**
+             * {@inheritdoc}
+             */
             initialize(config) {
                 this.config = config.config;
 
