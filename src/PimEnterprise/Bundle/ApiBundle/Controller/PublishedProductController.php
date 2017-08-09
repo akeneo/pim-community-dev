@@ -123,15 +123,6 @@ class PublishedProductController
      */
     public function listAction(Request $request): JsonResponse
     {
-        try {
-            $this->parameterValidator->validate(
-                array_merge($request->query->all(), [PaginationTypes::SEARCH_AFTER]),
-                ['support_search_after' => true]
-            );
-        } catch (PaginationParametersException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
         $channel = null;
         if ($request->query->has('scope')) {
             $channel = $this->channelRepository->findOneByIdentifier($request->query->get('scope'));
@@ -195,12 +186,12 @@ class PublishedProductController
      */
     public function getAction(string $code): JsonResponse
     {
-        $product = $this->publishedProductRepository->findOneByIdentifier($code);
-        if (null === $product) {
+        $publishedProduct = $this->publishedProductRepository->findOneByIdentifier($code);
+        if (null === $publishedProduct) {
             throw new NotFoundHttpException(sprintf('Published product "%s" does not exist.', $code));
         }
 
-        $productApi = $this->normalizer->normalize($product, 'external_api');
+        $productApi = $this->normalizer->normalize($publishedProduct, 'external_api');
 
         return new JsonResponse($productApi);
     }

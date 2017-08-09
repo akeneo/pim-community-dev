@@ -140,7 +140,7 @@ JSON;
         $standardizedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $nextId = urlencode($this->getEncryptedId('scopable'));
+        $nextId = rawurlencode($this->getEncryptedId('scopable'));
 
         $client->request('GET', 'api/rest/v1/published-products?with_count=true&limit=3');
         $expected = <<<JSON
@@ -174,9 +174,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable'              => urlencode($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'scopable'                 => urlencode($this->getEncryptedId('scopable')),
+            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'scopable'                 => rawurlencode($this->getEncryptedId('scopable')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/published-products?search_before=%s&limit=2', $ids['localizable_and_scopable']));
@@ -210,8 +210,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'product_china'             => urlencode($this->getEncryptedId('product_china')),
-            'product_without_category2' => urlencode($this->getEncryptedId('product_without_category2'))
+            'product_china'             => rawurlencode($this->getEncryptedId('product_china')),
+            'product_without_category2' => rawurlencode($this->getEncryptedId('product_without_category2'))
         ];
 
         $client->request('GET', 'api/rest/v1/published-products?search_before=&limit=2');
@@ -285,10 +285,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -315,10 +312,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -337,10 +331,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -419,10 +410,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -449,10 +437,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -472,10 +457,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -534,10 +516,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -564,10 +543,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -586,10 +562,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -657,10 +630,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -696,10 +666,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -721,10 +688,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : [],
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : []
             },
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category2']}
@@ -771,10 +735,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -807,10 +768,7 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -825,10 +783,7 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -843,10 +798,7 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -861,10 +813,7 @@ JSON;
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -912,10 +861,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -930,10 +876,7 @@ JSON;
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -960,10 +903,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -982,10 +922,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -1000,9 +937,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'product_china'            => urlencode($this->getEncryptedId('product_china')),
-            'product_without_category2' => urlencode($this->getEncryptedId('product_without_category2')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
+            'product_without_category2' => rawurlencode($this->getEncryptedId('product_without_category2')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/published-products?attributes=a_text&search_after=%s&limit=2&with_count=false', $ids['localizable_and_scopable']));
@@ -1030,10 +967,7 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1048,10 +982,7 @@ JSON;
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -1133,10 +1064,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -1325,10 +1253,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1377,10 +1302,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1428,10 +1350,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1469,10 +1388,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1492,10 +1408,7 @@ JSON;
    "values": {},
    "created": "2017-03-11T10:39:38+01:00",
    "updated": "2017-03-11T10:39:38+01:00",
-   "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+   "associations": {}
 }
 JSON;
 
@@ -1521,10 +1434,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
