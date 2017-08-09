@@ -4,18 +4,37 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'pim/form'
+    'pim/form',
+    'oro/datafilter/product_category-filter'
 ], function (
     $,
     _,
     Backbone,
-    BaseForm
+    BaseForm,
+    CategoryFilter
 ) {
     return BaseForm.extend({
-        configure() {
-            console.log('configure parent category-tree');
+
+        /**
+         * @inheritDoc
+         */
+        configure(urlParams) {
+            this.urlParams = urlParams;
 
             return BaseForm.prototype.configure.apply(this, arguments);
+        },
+
+
+        /**
+         * @inheritDoc
+         */
+        render() {
+            return new CategoryFilter(
+                this.urlParams,
+                'product-grid',
+                'pim_enrich_categorytree',
+                '#tree'
+            );
         }
     });
 });

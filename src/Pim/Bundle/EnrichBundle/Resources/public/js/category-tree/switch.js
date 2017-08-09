@@ -16,8 +16,11 @@ define([
 
     return BaseForm.extend({
         template: _.template(template),
+
+        /**
+         * @inheritDoc
+         */
         render() {
-            console.log('render the switch')
             this.$el.html(this.template({}));
         }
     });

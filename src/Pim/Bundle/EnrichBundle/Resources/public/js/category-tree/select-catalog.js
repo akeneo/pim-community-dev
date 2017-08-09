@@ -16,6 +16,10 @@ define([
 
     return BaseForm.extend({
         template: _.template(template),
+
+        /**
+         * @inheritDoc
+         */
         render() {
             this.$el.html(this.template({}));
         }

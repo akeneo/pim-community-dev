@@ -22,12 +22,13 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            // Remove the id - check if it's being used
+
+            // The id is being used category filter, need to remove
             id: 'tree',
             className: 'filter-item',
+            urlParams: {},
 
             attributes: {
-                // Get the locale dynamically
                 'data-locale':  'en_US',
                 'data-name': 'category',
                 'data-type': 'tree',
@@ -35,13 +36,27 @@ define(
             },
 
             /**
+             * @inheritDoc
+             */
+            configure() {
+                this.listenTo(this.getRoot(), 'datagrid:getParams', (urlParams) => {
+                    this.urlParams = urlParams;
+                    this.render();
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(this.template({}));
+                if (!this.configured) return this;
+
+                this.$el.html(this.template());
 
                 FormBuilder.buildForm('pim-grid-category-tree').then(function (form) {
-                    return form.configure().then(function () {
+                    return form.configure(this.urlParams).then(() => {
                         form.setElement('.filter-item').render();
                     });
                 }.bind(this));

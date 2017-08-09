@@ -26,6 +26,8 @@ define(
         return BaseForm.extend({
 
             render() {
+                const root = this.getRoot();
+
                 var defaultColumnsRoute = Routing.generate(
                     'pim_datagrid_view_rest_default_columns',
                     {alias: 'product-grid' }
@@ -119,14 +121,7 @@ define(
                         }
                     }
 
-                    console.log(urlParams);
-
-                    var categoryFilter = new CategoryFilter(
-                    urlParams,
-                    'product-grid',
-                    'pim_enrich_categorytree',
-                    '#tree-old'
-                );
+                    root.trigger('datagrid:getParams', urlParams);
 
                     state = DatagridState.get('product-grid', ['view', 'filters', 'columns']);
 
