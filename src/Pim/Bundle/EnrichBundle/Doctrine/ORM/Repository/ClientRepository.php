@@ -16,8 +16,8 @@ use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterfac
 class ClientRepository extends EntityRepository implements DatagridRepositoryInterface
 {
     /**
-     * @param EntityManager                       $em
-     * @param string $class
+     * @param EntityManager $em
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
@@ -33,6 +33,7 @@ class ClientRepository extends EntityRepository implements DatagridRepositoryInt
 
         $qb->addSelect('cl.label as label');
         $qb->addSelect('CONCAT(cl.id, \'_\',cl.randomId, \'|\', cl.secret) as credentials');
+        $qb->addSelect('CONCAT(cl.id, \'_\',cl.randomId) as publicId');
 
         return $qb;
     }

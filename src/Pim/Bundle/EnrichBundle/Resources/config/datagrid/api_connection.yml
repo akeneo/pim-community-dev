@@ -14,6 +14,20 @@ datagrid:
                 label: Credentials
                 data_name: credentials
                 frontend_type: credentials
+        properties:
+            id: ~
+            delete_link:
+                type: url
+                route: pim_enrich_api_connection_rest_revoke
+                params:
+                    - publicId
+        actions:
+            revoke:
+                type:  revoke
+                label: Revoke
+                link:  delete_link
+                launcherOptions:
+                    className: 'AknButton AknButton--important'
         sorters:
             columns:
                 label:
