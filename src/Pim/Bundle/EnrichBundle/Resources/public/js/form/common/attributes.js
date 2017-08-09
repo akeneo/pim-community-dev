@@ -131,7 +131,7 @@ define(
                         var $valuesPanel = this.$('.object-values');
                         $valuesPanel.empty();
 
-                        FieldManager.clearVisibleFields();
+                        //FieldManager.clearVisibleFields();
                         _.each(fields, this.appendField.bind(this, $valuesPanel));
                     }.bind(this));
                 this.delegateEvents();

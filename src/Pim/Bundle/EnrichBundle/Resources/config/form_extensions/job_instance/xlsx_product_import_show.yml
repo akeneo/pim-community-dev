@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-xlsx-product-import-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-product-import-show-mainImage:
+    pim-job-instance-xlsx-product-import-show-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-xlsx-product-import-show
         targetZone: main-image
@@ -30,7 +30,7 @@ extensions:
         position: 40
         config:
             label: pim_enrich.form.job_instance.button.import.launch
-            
+
     pim-job-instance-xlsx-product-import-show-file-path:
         module: pim/job/common/file-path
         parent: pim-job-instance-xlsx-product-import-show-launch-switcher-item
@@ -70,7 +70,7 @@ extensions:
             identifier:
                 path: code
                 name: code
-                
+
     pim-job-instance-xlsx-product-import-show-subsection:
         module: pim/form/common/subsection
         parent: pim-job-instance-xlsx-product-import-show
