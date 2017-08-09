@@ -105,7 +105,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
         $this->productClient->bulkIndexes($this->indexType, $normalizedProducts, 'id', Refresh::waitFor());
         $this->productAndProductModelClient->bulkIndexes(
             $this->indexType,
-            $normalizedProducts,
+            $normalizedProductModels,
             'id',
             Refresh::waitFor()
         );

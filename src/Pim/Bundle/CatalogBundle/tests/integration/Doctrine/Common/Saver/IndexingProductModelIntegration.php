@@ -13,6 +13,7 @@ class IndexingProductModelIntegration extends TestCase
 {
     private const DOCUMENT_TYPE = 'pim_catalog_product';
 
+    /** @group todo */
     public function testIndexingProductsOnBulkSave()
     {
         $productModels = [];
@@ -22,13 +23,18 @@ class IndexingProductModelIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
 
-        $indexedProductFoo = $this->esClient->get(self::DOCUMENT_TYPE, 'foo');
+        $productModelRepository = $this->get('pim_catalog.repository.product_model');
+        $productFooId = $productModelRepository->findOneByIdentifier('foo')->getId();
+        $productBarId = $productModelRepository->findOneByIdentifier('bar')->getId();
+        $productBazId = $productModelRepository->findOneByIdentifier('baz')->getId();
+
+        $indexedProductFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productFooId);
         $this->assertTrue($indexedProductFoo['found']);
 
-        $indexedProductBar = $this->esClient->get(self::DOCUMENT_TYPE, 'bar');
+        $indexedProductBar = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productBarId);
         $this->assertTrue($indexedProductBar['found']);
 
-        $indexedProductBaz = $this->esClient->get(self::DOCUMENT_TYPE, 'baz');
+        $indexedProductBaz = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productBazId);
         $this->assertTrue($indexedProductBaz['found']);
     }
 
@@ -37,7 +43,7 @@ class IndexingProductModelIntegration extends TestCase
         $product = $this->createProductModel('bat');
         $this->get('pim_catalog.saver.product_model')->save($product);
 
-        $indexedProduct = $this->esClient->get(self::DOCUMENT_TYPE, 'bat');
+        $indexedProduct = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'bat');
         $this->assertTrue($indexedProduct['found']);
     }
 
@@ -46,7 +52,7 @@ class IndexingProductModelIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()], false);
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 
     /**
@@ -57,7 +63,13 @@ class IndexingProductModelIntegration extends TestCase
     private function createProductModel(string $identifier): ProductModelInterface
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
-        $this->get('pim_catalog.updater.product_model')->update($productModel, ['identifier' => $identifier]);
+        $this->get('pim_catalog.updater.product_model')->update(
+            $productModel,
+            [
+                'code' => $identifier,
+                'family_variant' => 'familyVariantA1'
+            ]
+        );
 
         return $productModel;
     }
