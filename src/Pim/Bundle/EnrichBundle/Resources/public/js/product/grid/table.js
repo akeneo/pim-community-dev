@@ -8,7 +8,8 @@ define(
         'pim/datagrid/state',
         'oro/datafilter/product_category-filter',
         'require-context',
-        'pim/form'
+        'pim/form',
+        'pim/user-context'
     ],
     function (
         _,
@@ -19,7 +20,8 @@ define(
         DatagridState,
         CategoryFilter,
         requireContext,
-        BaseForm
+        BaseForm,
+        UserContext
     ) {
         // Copied from macros renderStatefulGrid
         // @TODO - Totally rewrite with proper functions
@@ -34,7 +36,9 @@ define(
 
             // @TODO - get params from somewhere else
             getLocaleFromUrl() {
-                return window.location.hash.split(`?${this.config.localeParamName}=`)[1];
+                const urlLocale = window.location.hash.split(`?${this.config.localeParamName}=`)[1];
+
+                return urlLocale || UserContext.get('catalogLocale');
             },
 
             render() {

@@ -7,7 +7,8 @@ extensions:
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
         parent: pim-product-index
-        targetZone: buttons-right
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_create
         config:
            title:     Create product
            modalForm: pim-product-create-modal
