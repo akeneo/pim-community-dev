@@ -1,6 +1,6 @@
-<div class="AknMediaField <%- value.data && value.data.filePath ? 'has-file' : '' %>" >
-    <% if (!value.data || value.data.filePath === null) { %>
-        <input class="AknMediaField-fileUploaderInput" id="<%- fieldId %>" type="file" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+<div class="AknMediaField <%- value && value.data && value.data.filePath ? 'has-file' : '' %>" >
+    <% if (!value || !value.data || value.data.filePath === null) { %>
+        <input class="AknMediaField-fileUploaderInput" id="<%- fieldId %>" type="file" data-locale="<%- locale %>" data-scope="<%- scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
         <div class="AknMediaField-emptyContainer">
             <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="AknMediaField-uploadIcon"/>
             <span><%- _.__('pim_enrich.entity.product.media.upload')%></span>

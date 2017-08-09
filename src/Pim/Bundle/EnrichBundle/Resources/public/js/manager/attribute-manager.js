@@ -33,29 +33,6 @@ define([
             },
 
             /**
-             * Get all optional attributes available for a product
-             *
-             * @param {Object} product
-             *
-             * @return {Array}
-             */
-            getAvailableOptionalAttributes: function (product) {
-                return $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchAll(),
-                    this.getAttributes(product)
-                ).then(function (attributes, productAttributes) {
-                    var optionalAttributes = _.map(
-                        _.difference(_.pluck(attributes, 'code'), productAttributes),
-                        function (attributeCode) {
-                            return _.findWhere(attributes, { code: attributeCode });
-                        }
-                    );
-
-                    return optionalAttributes;
-                });
-            },
-
-            /**
              * Check if an attribute is optional
              *
              * @param {Object} attribute
@@ -191,20 +168,6 @@ define([
                 });
 
                 return _.sortBy(generatedPrices, 'currency');
-            },
-
-            /**
-             * Generate missing product associations
-             *
-             * @param {Array} values
-             *
-             * @return {Array}
-             */
-            generateMissingAssociations: function (values) {
-                values.products = _.result(values, 'products', []).sort();
-                values.groups = _.result(values, 'groups', []).sort();
-
-                return values;
             }
         };
     }
