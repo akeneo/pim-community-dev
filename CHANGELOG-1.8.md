@@ -35,6 +35,7 @@
 - PIM-6397: Enable Search filter on all grids
 - PIM-6406: Update job profile show page to include last executions
 - TIP-764: Mass edit has been redone
+- PIM-6621: Add the ability to search on label and identifier on the product grid
 
 ## Remove MongoDB product storage
 
@@ -302,6 +303,7 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer`
+- Change the constructor of `\Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
 
 ### Methods
 

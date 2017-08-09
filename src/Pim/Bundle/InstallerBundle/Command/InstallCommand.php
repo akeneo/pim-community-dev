@@ -58,7 +58,7 @@ class InstallCommand extends ContainerAwareCommand
         if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
             && !$forceInstall
         ) {
-            throw new \RuntimeException('Oro Application already installed.');
+            throw new \RuntimeException('Akeneo PIM is already installed.');
         } elseif ($forceInstall) {
             // if --force option we have to clear cache and set installed to false
             $this->updateInstalledFlag($output, false);
@@ -68,11 +68,8 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-            foreach ($this->getDirectoriesContainer()->getDirectories() as $directory) {
-                $this->cleanDirectory($directory);
-            }
-
             $this
+                ->prepareRequiredDirectoriesStep()
                 ->checkStep()
                 ->databaseStep()
                 ->assetsStep();
@@ -89,6 +86,20 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
 
         return 0;
+    }
+
+    /**
+     * Step where required directories are created.
+     *
+     * @throws \RuntimeException
+     *
+     * @return InstallCommand
+     */
+    protected function prepareRequiredDirectoriesStep(): InstallCommand
+    {
+        $this->commandExecutor->runCommand('pim:installer:prepare-required-directories');
+
+        return $this;
     }
 
     /**
@@ -147,27 +158,5 @@ class InstallCommand extends ContainerAwareCommand
         $dumper->dump($params);
 
         return $this;
-    }
-
-    /**
-     * Remove directory and all subcontent
-     *
-     * @param string $folder
-     */
-    protected function cleanDirectory($folder)
-    {
-        $filesystem = new Filesystem();
-        if ($filesystem->exists($folder)) {
-            $filesystem->remove($folder);
-        }
-        $filesystem->mkdir($folder);
-    }
-
-    /**
-     * @return PimDirectoriesRegistry
-     */
-    protected function getDirectoriesContainer()
-    {
-        return $this->getContainer()->get('pim_installer.directories_registry');
     }
 }

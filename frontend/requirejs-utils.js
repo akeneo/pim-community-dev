@@ -1,5 +1,4 @@
 /* eslint-env es6 */
-require('colors')
 const { assign } = Object
 const { values, get, mapValues } = require('lodash')
 const { resolve } = require('path')
@@ -55,7 +54,7 @@ const utils = {
         if (!existsSync(sourcePath)) {
             throw new Error(`The web/js/require-paths.js module does not exist - You need to run
             "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
-            running webpack \n`.red)
+            running webpack \n`)
         }
 
         // File dumped by the pim:installer:dump-require-paths command
