@@ -3,6 +3,9 @@ Akeneo\Component\Batch\Model\JobExecution:
     table: akeneo_batch_job_execution
     # TODO: should be like other entities
     #changeTrackingPolicy: DEFERRED_EXPLICIT
+    embedded:
+        jobParameters:
+            class: Akeneo\Component\Batch\Model\JobParameters
     fields:
         id:
             type: integer
