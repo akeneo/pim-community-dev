@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Archiver;
 
 use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Collections\ArrayCollection;

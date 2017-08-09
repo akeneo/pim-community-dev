@@ -212,6 +212,7 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 - TIP-764: Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and all inherited classes
+- API-334: Move `Akeneo\Component\Batch\Job\JobParameters` to `Akeneo\Component\Batch\Model\JobParameters`
 
 ### Constructors
 

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Component\Batch\Updater;
 
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;

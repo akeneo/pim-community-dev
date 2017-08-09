@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Reader\Database;
 
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;

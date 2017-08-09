@@ -2,7 +2,6 @@
 
 namespace Akeneo\Component\Batch\Model;
 
-use Akeneo\Component\Batch\Job\Job;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

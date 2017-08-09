@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
 
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
