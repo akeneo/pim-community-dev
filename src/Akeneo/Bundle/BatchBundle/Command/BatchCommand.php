@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Component\Batch\Event\BatchCommandEvent;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\ExecutionContext;
@@ -19,7 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Batch command
@@ -55,7 +58,8 @@ class BatchCommand extends ContainerAwareCommand
                 'email',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'The email to notify at the end of the job execution'
+                'The email to notify at the end of the job execution',
+                null
             )
             ->addOption(
                 'no-log',
@@ -76,7 +80,9 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $noLog = $input->getOption('no-log');
+        $code = $input->getArgument('code');
+
+        $noLog =$input->getOption('no-log');
 
         if (!$noLog) {
             $logger = $this->getContainer()->get('monolog.logger.batch');
@@ -84,12 +90,15 @@ class BatchCommand extends ContainerAwareCommand
             $logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
-        $code = $input->getArgument('code');
         $jobInstanceClass = $this->getContainer()->getParameter('akeneo_batch.entity.job_instance.class');
         $jobInstance = $this
             ->getJobManager()
             ->getRepository($jobInstanceClass)
             ->findOneByCode($code);
+
+        if (!$jobInstance) {
+            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
+        }
 
         $event = new BatchCommandEvent($this, $input, $output, $jobInstance);
         $this->getContainer()->get('event_dispatcher')->dispatch(EventInterface::BATCH_COMMAND_START, $event);
@@ -97,16 +106,21 @@ class BatchCommand extends ContainerAwareCommand
             return self::EXIT_ERROR_CODE;
         }
 
-        if (!$jobInstance) {
-            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
-        }
-
         $job = $this->getJobRegistry()->get($jobInstance->getJobName());
         $jobParamsFactory = $this->getJobParametersFactory();
         $rawParameters = $jobInstance->getRawParameters();
-        if ($config = $input->getOption('config')) {
-            $rawParameters = array_merge($rawParameters, $this->decodeConfiguration($config));
+
+        $config = [
+            'no_log'  => $input->hasOption('no-log'),
+            'no_lock' => $input->hasOption('no-lock'),
+            'email' => $input->getOption('email'),
+        ];
+        if ($input->hasOption('config')) {
+            $config = array_merge($config, $this->decodeConfiguration($input->getOption('config')));
         }
+
+        $rawParameters = array_merge($rawParameters, $this->decodeConfiguration($config));
+
         $jobParameters = $jobParamsFactory->create($job, $rawParameters);
         $validator = $this->getValidator();
 
@@ -237,7 +251,7 @@ class BatchCommand extends ContainerAwareCommand
      * @param array[]         $exceptions
      * @param boolean         $verbose
      */
-    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose)
+    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose) : void
     {
         foreach ($exceptions as $exception) {
             $output->write(
@@ -258,7 +272,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return EntityManager
      */
-    protected function getJobManager()
+    protected function getJobManager() : EntityManager
     {
         return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
     }
@@ -266,23 +280,23 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return EntityManager
      */
-    protected function getDefaultEntityManager()
+    protected function getDefaultEntityManager() : EntityManager
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
-     * @return Validator
+     * @return ValidatorInterface
      */
-    protected function getValidator()
+    protected function getValidator() : ValidatorInterface
     {
         return $this->getContainer()->get('validator');
     }
 
     /**
-     * @return Validator
+     * @return Notifier
      */
-    protected function getMailNotifier()
+    protected function getMailNotifier() : Notifier
     {
         return $this->getContainer()->get('akeneo_batch.mail_notifier');
     }
@@ -290,7 +304,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return JobRegistry
      */
-    protected function getJobRegistry()
+    protected function getJobRegistry() : JobRegistry
     {
         return $this->getContainer()->get('akeneo_batch.job.job_registry');
     }
@@ -298,7 +312,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return JobParametersFactory
      */
-    protected function getJobParametersFactory()
+    protected function getJobParametersFactory() : JobParametersFactory
     {
         return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
     }
@@ -306,7 +320,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return JobParametersValidator
      */
-    protected function getJobParametersValidator()
+    protected function getJobParametersValidator() : JobParametersValidator
     {
         return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
     }
@@ -316,7 +330,7 @@ class BatchCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    private function getErrorMessages(ConstraintViolationList $errors)
+    private function getErrorMessages(ConstraintViolationList $errors) : string
     {
         $errorsStr = '';
 
@@ -330,9 +344,11 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @param string $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
-    private function decodeConfiguration($data)
+    private function decodeConfiguration($data) : array
     {
         $config = json_decode($data, true);
 
