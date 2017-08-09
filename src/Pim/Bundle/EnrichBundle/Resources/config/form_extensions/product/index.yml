@@ -12,19 +12,20 @@ extensions:
            title:     Create product
            modalForm: pim-product-create-modal
 
-    # pim-product-index-locale-switcher:
-    #     module: pim/grid/locale-switcher
-    #     parent: pim-product-index
-    #     targetZone: title-buttons
-    #     config:
-    #         context: base_product
+    pim-product-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pim-product-index
+        targetZone: title-buttons
+        position: 10
+        config:
+            routeName: pim_enrich_product_index
+            localeParamName: dataLocale
 
-    # pim-product-index-view-selector:
-    #     module: pim/grid/view-selector
-    #     parent: pim-product-index
-    #     targetZone: title-buttons
-    #     config:
-    #         context: base_product
+    pim-product-index-view-selector:
+        module: pim/grid/view-selector
+        parent: pim-product-index
+        targetZone: title-buttons
+        position: 20
 
     # pim-product-index-category-tree:
     #     module: pim/grid/category-tree
@@ -35,7 +36,7 @@ extensions:
     #     module: pim/grid/filters
     #     parent: pim-product-index
     #     targetZone: grid
-    
+
     # pim-product-index-grid-toolbar
     #     module: pim/grid/toolbar
     #     parent: pim-product-index
