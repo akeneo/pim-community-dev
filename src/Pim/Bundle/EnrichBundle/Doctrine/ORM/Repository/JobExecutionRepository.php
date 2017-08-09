@@ -48,15 +48,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb->leftJoin('s.warnings', 'w');
         $qb->andWhere('j.type = :jobType');
 
-        $qb
-            ->groupBy('e')
-            ->addGroupBy('e.id')
-            ->addGroupBy('status')
-            ->addGroupBy('statusLabel')
-            ->addGroupBy('date')
-            ->addGroupBy('jobCode')
-            ->addGroupBy('jobLabel')
-            ->addGroupBy('jobName');
+        $qb->groupBy('e.id');
 
         return $qb;
     }

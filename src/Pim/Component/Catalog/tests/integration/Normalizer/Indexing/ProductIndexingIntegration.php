@@ -32,6 +32,7 @@ class ProductIndexingIntegration extends TestCase
         $expected = [
             'id'            => '47',
             'identifier'    => 'bar',
+            'label'         => 'bar',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
             'family'        => null,
@@ -57,6 +58,7 @@ class ProductIndexingIntegration extends TestCase
         $expected = [
             'id'            => '48',
             'identifier'    => 'baz',
+            'label'         => 'baz',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
             'family'        => null,
@@ -82,6 +84,7 @@ class ProductIndexingIntegration extends TestCase
         $expected = [
             'id'            => '49',
             'identifier'    => 'foo',
+            'label'         => 'foo',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
             'family'        => [

@@ -84,6 +84,9 @@ class JobInstanceController
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
 
+    /** @var string */
+    protected $uploadTmpDir;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -101,6 +104,7 @@ class JobInstanceController
      * @param ObjectFilterInterface                 $objectFilter
      * @param NormalizerInterface                   $constraintViolationNormalizer
      * @param JobInstanceFactory                    $jobInstanceFactory
+     * @param string                                $uploadTmpDir
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -118,7 +122,8 @@ class JobInstanceController
         FormProviderInterface $formProvider,
         ObjectFilterInterface $objectFilter,
         NormalizerInterface $constraintViolationNormalizer,
-        JobInstanceFactory $jobInstanceFactory
+        JobInstanceFactory $jobInstanceFactory,
+        string $uploadTmpDir
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -136,6 +141,7 @@ class JobInstanceController
         $this->objectFilter          = $objectFilter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->jobInstanceFactory    = $jobInstanceFactory;
+        $this->uploadTmpDir          = $uploadTmpDir;
     }
 
     /**
@@ -324,9 +330,11 @@ class JobInstanceController
      * @param Request $request
      * @param string  $code
      *
+     * @throws AccessDeniedHttpException
+     *
      * @return JsonResponse
      */
-    protected function launchAction(Request $request, $code)
+    protected function launchAction(Request $request, string $code) : JsonResponse
     {
         $jobInstance = $this->getJobInstance($code);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.execute')) {
@@ -349,7 +357,7 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
+            $file = $file->move($this->uploadTmpDir, $file->getClientOriginalName());
             $rawParameters = $jobInstance->getRawParameters();
             $rawParameters['filePath'] = $file->getRealPath();
             $jobInstance->setRawParameters($rawParameters);
