@@ -24,7 +24,6 @@ define([
             return BaseForm.prototype.configure.apply(this, arguments);
         },
 
-
         /**
          * @inheritDoc
          */

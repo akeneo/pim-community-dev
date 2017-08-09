@@ -32,6 +32,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            // @TODO - get params from somewhere else
             getLocaleFromUrl() {
                 return window.location.hash.split(`?${this.config.localeParamName}=`)[1];
             },

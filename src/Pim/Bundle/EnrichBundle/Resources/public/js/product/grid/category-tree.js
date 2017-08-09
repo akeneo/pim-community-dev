@@ -10,26 +10,19 @@ define(
         'underscore',
         'jquery',
         'pim/form-builder',
-        'pim/form',
-        'pim/template/category-tree'
+        'pim/form'
     ],
     function(
         _,
         $,
         FormBuilder,
-        BaseForm,
-        template
+        BaseForm
     ) {
         return BaseForm.extend({
-            template: _.template(template),
-
-            // The id is being used category filter
+            // The id is being used category filter view
             id: 'tree',
             className: 'filter-item',
-            urlParams: {},
-
             attributes: {
-                'data-locale':  'en_US',
                 'data-name': 'category',
                 'data-type': 'tree',
                 'data-relatedentity': 'product'
@@ -39,27 +32,22 @@ define(
              * @inheritDoc
              */
             configure() {
-                this.listenTo(this.getRoot(), 'datagrid:getParams', (urlParams) => {
-                    this.urlParams = urlParams;
-                    this.render();
-                });
-
-                return BaseForm.prototype.configure.apply(this, arguments);
+                this.listenTo(this.getRoot(), 'datagrid:getParams', this.setupCategoryTree);
+                BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
-             * {@inheritdoc}
+             * Render the category tree extensions when the datagrid is ready
+             * @TODO - Rewrite datagrid view to remove the need for the event listeners here
              */
-            render() {
-                if (!this.configured) return this;
+            setupCategoryTree(urlParams) {
+                if (!urlParams) return;
 
-                this.$el.html(this.template());
-
-                FormBuilder.buildForm('pim-grid-category-tree').then(function (form) {
-                    return form.configure(this.urlParams).then(() => {
+                FormBuilder.buildForm('pim-grid-category-tree').then(form => {
+                    return form.configure(urlParams).then(() => {
                         form.setElement('.filter-item').render();
                     });
-                }.bind(this));
+                });
             }
         });
     }
