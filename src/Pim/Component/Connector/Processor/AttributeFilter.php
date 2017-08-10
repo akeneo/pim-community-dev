@@ -54,7 +54,7 @@ class AttributeFilter
         /** @var FamilyVariantInterface $familyVariant */
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
         $parent = $flatProductModel['parent'] ?? '';
-        if (empty($parent)) {
+        if (empty($parent) && null !== $familyVariant) {
             return $this->removeUnknownAttributes($flatProductModel, $familyVariant->getCommonAttributes());
         }
 
