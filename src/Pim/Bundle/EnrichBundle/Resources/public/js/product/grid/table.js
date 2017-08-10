@@ -34,17 +34,10 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
-            // @TODO - get params from somewhere else
-            getLocaleFromUrl() {
-                const urlLocale = window.location.hash.split(`?${this.config.localeParamName}=`)[1];
-
-                return urlLocale || UserContext.get('catalogLocale');
-            },
-
             render() {
                 // Put this stuff in initialize
                 const { localeParamName } = this.config;
-                const locale = this.getLocaleFromUrl();
+                const locale = UserContext.get('catalogLocale');
                 const gridName = this.config.gridName;
                 const root = this.getRoot();
 
