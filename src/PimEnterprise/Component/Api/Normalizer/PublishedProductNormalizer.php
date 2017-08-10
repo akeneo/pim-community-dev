@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -38,7 +40,6 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function normalize($product, $format = null, array $context = [])
     {
         $normalizedPublishedProduct = $this->productNormalizer->normalize($product, $format, $context);
-
 
         if (array_key_exists('variant_group', $normalizedPublishedProduct)) {
             unset($normalizedPublishedProduct['variant_group']);
