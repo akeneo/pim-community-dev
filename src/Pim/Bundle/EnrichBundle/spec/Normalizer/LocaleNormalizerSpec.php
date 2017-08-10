@@ -22,13 +22,11 @@ class LocaleNormalizerSpec extends ObjectBehavior
     {
         $en->getCode()->willReturn('en_US');
         $localeHelper->getLocaleLabel('en_US')->willReturn('English (America)');
-        $localeHelper->getDisplayRegion('en_US')->willReturn('America');
-        $localeHelper->getDisplayLanguage('en_US')->willReturn('English');
 
         $this->normalize($en, 'internal_api')->shouldReturn([
             'code'     => 'en_US',
             'label'    => 'English (America)',
-            'region'   => 'America',
+            'region'   => 'United States',
             'language' => 'English'
         ]);
     }

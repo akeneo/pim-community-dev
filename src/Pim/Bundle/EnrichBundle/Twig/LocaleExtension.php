@@ -122,8 +122,8 @@ class LocaleExtension extends \Twig_Extension
             'PimEnrichBundle:Locale:_flag.html.twig',
             [
                 'label'    => $this->localeHelper->getLocaleLabel($code, $translateIn),
-                'region'   => $this->localeHelper->getRegion($code),
-                'language' => $this->localeHelper->getLanguage($code),
+                'region'   => \Locale::getRegion($code),
+                'language' => \Locale::getPrimaryLanguage($code),
                 'short'    => $short,
             ]
         );

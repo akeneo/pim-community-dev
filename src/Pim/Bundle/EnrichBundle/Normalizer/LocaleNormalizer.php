@@ -34,8 +34,8 @@ class LocaleNormalizer implements NormalizerInterface
         return [
             'code'     => $locale->getCode(),
             'label'    => $this->localeHelper->getLocaleLabel($locale->getCode()),
-            'region'   => $this->localeHelper->getDisplayRegion($locale->getCode()),
-            'language' => $this->localeHelper->getDisplayLanguage($locale->getCode()),
+            'region'   => \Locale::getDisplayRegion($locale->getCode()),
+            'language' => \Locale::getDisplayLanguage($locale->getCode()),
         ];
     }
 
