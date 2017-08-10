@@ -95,21 +95,6 @@ class LocaleHelper
     }
 
     /**
-     * Returns an array of all known currency names, indexed by code
-     *
-     * @param string $translateIn
-     *
-     * @return string[]
-     */
-    public function getCurrencyLabels($translateIn = null)
-    {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-        $language = \Locale::getPrimaryLanguage($translateIn);
-
-        return Intl\Intl::getCurrencyBundle()->getCurrencyNames($language);
-    }
-
-    /**
      * Get the language from a locale code
      *
      * @param string $code

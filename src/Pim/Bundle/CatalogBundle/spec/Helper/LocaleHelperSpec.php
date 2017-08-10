@@ -45,10 +45,4 @@ class LocaleHelperSpec extends ObjectBehavior
         $this->getCurrencyLabel('USD')->shouldReturn('US Dollar');
         $this->getCurrencyLabel('USD', 'fr_FR')->shouldReturn('dollar des États-Unis');
     }
-
-    function it_provides_a_list_of_available_currency_labels_for_the_specified_locale()
-    {
-        $this->getCurrencyLabels()->shouldReturn(Intl\Intl::getCurrencyBundle()->getCurrencyNames('en'));
-        $this->getCurrencyLabels('fr_FR')->shouldReturn(Intl\Intl::getCurrencyBundle()->getCurrencyNames('fr'));
-    }
 }
