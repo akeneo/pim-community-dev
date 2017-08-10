@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,7 +40,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
         $data = [];
 
-        $data[self::FIELD_ID] = (string) $product->getId();
+        $data[self::FIELD_ID] = 'product_' .(string) $product->getId();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $product->getCreated(),
@@ -77,21 +78,17 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 $context
             ) : [];
 
-        $data[self::FIELD_FAMILY_VARIANT] = null;
+        $familyVariantCode = null;
         $parentValues = [];
+
         if ($product instanceof VariantProductInterface) {
             $familyVariant = $product->getFamilyVariant();
-            $data[self::FIELD_FAMILY_VARIANT] = null !== $familyVariant ? $familyVariant->getCode() : null;
+            $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
 
-            if (null !== $product->getParent() && !$product->getParent()->getValues()->isEmpty()) {
-                $parentValues = $this->serializer->normalize(
-                    $product->getParent()->getValues(),
-                    ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-                    $context
-                );
-            }
+            $parentValues = $this->getAllParentsValues($product->getParent(), $context);
         }
 
+        $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = array_merge($productValues, $parentValues);
 
         return $data;
@@ -104,5 +101,31 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     {
         return ($data instanceof ProductInterface || $data instanceof VariantProductInterface)
             && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
+    }
+
+    /**
+     * Normalizes all the values of a product model and its parents.
+     *
+     * @param null|ProductModelInterface $productModel
+     * @param array                 $context
+     *
+     * @return mixed
+     */
+    private function getAllParentsValues($productModel, array $context) : array
+    {
+        if (null === $productModel || $productModel->getValues()->isEmpty()) {
+            return [];
+        }
+
+        $productModelNormalizedValues = $this->serializer->normalize(
+            $productModel->getValues(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            $context
+        );
+
+        return array_merge(
+            $productModelNormalizedValues,
+            $this->getAllParentsValues($productModel->getParent(), $context)
+        );
     }
 }

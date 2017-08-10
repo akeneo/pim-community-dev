@@ -23,28 +23,28 @@ class IndexingProductModelIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
 
         $productModelRepository = $this->get('pim_catalog.repository.product_model');
-        $productModelFooId = $productModelRepository->findOneByIdentifier('foo')->getId();
-        $productModelBarId = $productModelRepository->findOneByIdentifier('bar')->getId();
-        $productModelBazId = $productModelRepository->findOneByIdentifier('baz')->getId();
+        $productModelFooESId = 'product_model_' . $productModelRepository->findOneByIdentifier('foo')->getId();
+        $productModelBarESId = 'product_model_' . $productModelRepository->findOneByIdentifier('bar')->getId();
+        $productModelBazESId = 'product_model_' . $productModelRepository->findOneByIdentifier('baz')->getId();
 
-        $indexedProductModelFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelFooId);
+        $indexedProductModelFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelFooESId);
         $this->assertTrue($indexedProductModelFoo['found']);
 
-        $indexedProductModelBar = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelBarId);
+        $indexedProductModelBar = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelBarESId);
         $this->assertTrue($indexedProductModelBar['found']);
 
-        $indexedProductModelBaz = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelBazId);
+        $indexedProductModelBaz = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelBazESId);
         $this->assertTrue($indexedProductModelBaz['found']);
     }
 
     public function testIndexingProductModelOnUnitarySave()
     {
-        $product = $this->createProductModel('bat');
-        $this->get('pim_catalog.saver.product_model')->save($product);
+        $productModel = $this->createProductModel('bat');
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $productBatId = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('bat')->getId();
+        $productBatESId = 'product_model_' . $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('bat')->getId();
 
-        $indexedProduct = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productBatId);
+        $indexedProduct = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productBatESId);
         $this->assertTrue($indexedProduct['found']);
     }
 

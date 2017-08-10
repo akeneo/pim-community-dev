@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -85,17 +86,17 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'            => '67',
-                'identifier'    => 'sku-001',
-                'created'       => $now->format('c'),
-                'updated'       => $now->format('c'),
-                'family' => null,
+                'id'             => 'product_67',
+                'identifier'     => 'sku-001',
+                'created'        => $now->format('c'),
+                'updated'        => $now->format('c'),
+                'family'         => null,
+                'enabled'        => false,
+                'categories'     => [],
+                'groups'         => [],
+                'completeness'   => ['the completenesses'],
                 'family_variant' => null,
-                'enabled'       => false,
-                'categories'    => [],
-                'groups'        => [],
-                'completeness'  => ['the completenesses'],
-                'values'        => [],
+                'values'         => [],
             ]
         );
     }
@@ -173,7 +174,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'            => '67',
+                'id'            => 'product_67',
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
@@ -184,7 +185,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         'en_US' => 'A family',
                     ],
                 ],
-                'family_variant' => null,
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
                 'groups'        => ['first_group', 'second_group', 'a_variant_group'],
@@ -200,6 +200,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'family_variant' => null,
                 'values'        => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
@@ -214,7 +215,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_minimum_filled_fields_and_values(
         $serializer,
         VariantProductInterface $variantProduct,
-        ValueCollectionInterface $valueCollection,
+        ProductModelInterface $parentProductModel,
+        ValueCollectionInterface $valueCollection1,
+        ValueCollectionInterface $valueCollection2,
         Collection $completenesses,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -240,10 +243,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $variantProduct->getFamily()->willReturn($family);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->isEnabled()->willReturn(false);
-        $variantProduct->getValues()->willReturn($valueCollection);
+        $variantProduct->getValues()->willReturn($valueCollection1);
         $variantProduct->getGroupCodes()->willReturn([]);
         $variantProduct->getCategoryCodes()->willReturn([]);
-        $valueCollection->isEmpty()->willReturn(true);
+        $valueCollection1->isEmpty()->willReturn(true);
 
         $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
             [
@@ -260,8 +263,13 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(['the completenesses']);
 
+        $variantProduct->getParent()->willReturn($parentProductModel);
+        $parentProductModel->getValues()->willReturn($valueCollection2);
+        $valueCollection2->isEmpty()->willReturn(true);
+        $parentProductModel->getParent()->willReturn(null);
+
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-                'id'            => '67',
+                'id'            => 'product_67',
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
@@ -272,20 +280,24 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         'en_US' => 'A family',
                     ],
                 ],
-                'family_variant' => 'family_variant_A',
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
                 'completeness'  => ['the completenesses'],
+                'family_variant' => 'family_variant_A',
                 'values'        => [],
             ]
         );
     }
 
-    function it_normalizes_variant_product_properties_with_fields_and_values(
+    function it_normalizes_variant_product_properties_with_fields_and_values_and_its_parents_values(
         $serializer,
         VariantProductInterface $variantProduct,
-        ValueCollectionInterface $valueCollection,
+        ProductModelInterface $parentProductModel,
+        ProductModelInterface $grandParentProductModel,
+        ValueCollectionInterface $valueCollection1,
+        ValueCollectionInterface $valueCollection2,
+        ValueCollectionInterface $valueCollection3,
         Collection $completenesses,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -344,9 +356,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getValues()
             ->shouldBeCalledTimes(2)
-            ->willReturn($valueCollection);
-        $valueCollection->isEmpty()->willReturn(false);
-        $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn($valueCollection1);
+        $valueCollection1->isEmpty()->willReturn(false);
+        $serializer->normalize($valueCollection1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(
                 [
                     'a_size-decimal' => [
@@ -357,9 +369,42 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
+        $variantProduct->getParent()->willReturn($parentProductModel);
+        $parentProductModel->getValues()->willReturn($valueCollection2);
+        $valueCollection2->isEmpty()->willReturn(false);
+
+        $serializer->normalize($valueCollection2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(
+                [
+                    'a_date-date' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '2017-05-05',
+                        ],
+                    ],
+                ]
+            );
+
+        $parentProductModel->getParent()->willReturn($grandParentProductModel);
+
+        $grandParentProductModel->getValues()->willReturn($valueCollection3);
+        $valueCollection3->isEmpty()->willReturn(false);
+
+        $serializer->normalize($valueCollection3, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(
+                [
+                    'a_simple_select-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'OPTION_A',
+                        ],
+                    ],
+                ]
+            );
+
+        $grandParentProductModel->getParent()->willReturn(null);
+
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'            => '67',
+                'id'            => 'product_67',
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
@@ -370,7 +415,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         'en_US' => 'A family',
                     ],
                 ],
-                'family_variant' => 'family_variant_A',
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
                 'groups'        => ['first_group', 'second_group', 'a_variant_group'],
@@ -386,10 +430,21 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'family_variant' => 'family_variant_A',
                 'values'        => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
+                        ],
+                    ],
+                    'a_date-date' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '2017-05-05',
+                        ],
+                    ],
+                    'a_simple_select-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'OPTION_A',
                         ],
                     ],
                 ],

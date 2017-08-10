@@ -276,8 +276,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addProduct(ProductInterface $product): ProductModelInterface
+    public function addProduct(VariantProductInterface $product): ProductModelInterface
     {
+        $product->setParent($this);
         if (!$this->products->contains($product)) {
             $this->products->add($product);
         }
@@ -399,7 +400,9 @@ class ProductModel implements ProductModelInterface
     public function addProductModel(ProductModelInterface $child): ProductModelInterface
     {
         $child->setParent($this);
-        $this->productModels->add($child);
+        if (!$this->productModelss->contains($child)) {
+            $this->productModels->add($child);
+        }
 
         return $this;
     }

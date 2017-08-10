@@ -39,19 +39,19 @@ class IndexingProductIntegration extends TestCase
 
         $indexedProductModelFoo = $this->esProductAndProductModelClient->get(
             self::DOCUMENT_TYPE,
-            $productFooId
+            'product_' . $productFooId
         );
         $this->assertTrue($indexedProductModelFoo['found']);
 
         $indexedProductModelBar = $this->esProductAndProductModelClient->get(
             self::DOCUMENT_TYPE,
-            $productBarId
+            'product_' . $productBarId
         );
         $this->assertTrue($indexedProductModelBar['found']);
 
         $indexedProductModelBaz = $this->esProductAndProductModelClient->get(
             self::DOCUMENT_TYPE,
-            $productBazId
+            'product_' . $productBazId
         );
         $this->assertTrue($indexedProductModelBaz['found']);
     }
@@ -68,7 +68,7 @@ class IndexingProductIntegration extends TestCase
 
         $productInProductAndProductModelIndex = $this->esProductAndProductModelClient->get(
             self::DOCUMENT_TYPE,
-            $product->getId()
+            'product_' . $product->getId()
         );
         $this->assertTrue($productInProductAndProductModelIndex['found']);
     }
