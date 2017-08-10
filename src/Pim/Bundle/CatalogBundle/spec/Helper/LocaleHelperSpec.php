@@ -51,15 +51,4 @@ class LocaleHelperSpec extends ObjectBehavior
         $this->getCurrencyLabels()->shouldReturn(Intl\Intl::getCurrencyBundle()->getCurrencyNames('en'));
         $this->getCurrencyLabels('fr_FR')->shouldReturn(Intl\Intl::getCurrencyBundle()->getCurrencyNames('fr'));
     }
-
-    function it_provides_translated_locales_as_choice($localeRepository)
-    {
-        $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
-        $this->getActivatedLocaleChoices()->shouldReturn(
-            [
-                'fr_FR' => 'French (France)',
-                'en_US' => 'English (United States)'
-            ]
-        );
-    }
 }

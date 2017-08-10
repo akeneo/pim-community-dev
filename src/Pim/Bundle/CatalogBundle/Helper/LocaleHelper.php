@@ -156,22 +156,4 @@ class LocaleHelper
     {
         return \Locale::getDisplayRegion($code);
     }
-
-    /**
-     * Get activated locales as choices
-     *
-     * @return string[]
-     */
-    public function getActivatedLocaleChoices()
-    {
-        $translateIn = $this->getCurrentLocaleCode();
-        $activeCodes = $this->localeRepository->getActivatedLocaleCodes();
-
-        $results = [];
-        foreach ($activeCodes as $activeCode) {
-            $results[$activeCode] = $this->getLocaleLabel($activeCode, $translateIn);
-        }
-
-        return $results;
-    }
 }
