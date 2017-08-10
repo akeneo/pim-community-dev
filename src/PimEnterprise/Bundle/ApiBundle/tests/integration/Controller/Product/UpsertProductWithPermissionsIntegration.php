@@ -173,6 +173,23 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
+    public function testToUpdateAViewableProduct()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('PATCH', 'api/rest/v1/products/product_viewable_by_everybody_1', [], [], [], '{}');
+        $this->assertSame(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+
+        $expected = <<<JSON
+{
+  "code": 403,
+  "message": "Product \"product_viewable_by_everybody_1\" cannot be updated. It should be at least in an own category."
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
+    }
+
     /**
      * @param string $identifier                code of the product
      * @param string $data                      data submitted
