@@ -382,6 +382,7 @@
 - Remove OroNavigationBundle
 - Remove OroNotificationBundle
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+- Remove unused `Pim\Component\Catalog\Manager\AttributeGroupManager`
 
 ### Methods
 
