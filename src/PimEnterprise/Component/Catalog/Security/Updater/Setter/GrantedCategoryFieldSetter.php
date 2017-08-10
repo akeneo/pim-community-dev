@@ -17,6 +17,7 @@ use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
  * Check if category is at least "viewable" to be associated to a product
@@ -51,6 +52,8 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
+        $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $product);
+
         $this->categoryFieldSetter->setFieldData($product, $field, $data, $options);
 
         foreach ($product->getCategories() as $category) {
@@ -63,6 +66,12 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
                     $category->getCode()
                 );
             }
+        }
+
+        $isOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $product);
+
+        if ($wasOwner && !$isOwner && null !== $product->getId()) {
+            throw new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.');
         }
     }
 }

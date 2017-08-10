@@ -6,39 +6,69 @@ use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
- * |          |          Categories           |             Locales               |                   Attribute groups                  |
- * +  Roles   +-------------------------------+-----------------------------------+-----------------------------------------------------+
- * |          |   categoryA2  |   categoryB   |   en_US   |   fr_FR   |   de_DE   | attributeGroupA | attributeGroupB | attributeGroupC |
- * +==========+===============================+===================================+=====================================================+
- * | Redactor |      View     |       -       | View,Edit |    View   |     -     |    View,Edit    |      View       |        -        |
- * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit | View,Edit | View,Edit |    View,Edit    |    View,Edit    |    View,Edit    |
- * +================+===============================+===================================+===============================================+
+ * +----------+--------------------------------------------+-----------------------------------+-----------------------------------------------------+
+ * |          |                   Categories               |             Locales               |                   Attribute groups                  |
+ * +  Roles   +--------------------------------------------+-----------------------------------+-----------------------------------------------------+
+ * |          |    master     |   categoryA2  |  categoryB |   en_US   |   fr_FR   |   de_DE   | attributeGroupA | attributeGroupB | attributeGroupC |
+ * +==========+===============================+===================================+==================================================================+
+ * | Redactor | View,Edit,Own |     View      |       -    | View,Edit |    View   |     -     |    View,Edit    |      View       |        -        |
+ * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit  | View,Edit | View,Edit | View,Edit |    View,Edit    |    View,Edit    |                 |
+ * +================+===============================+================================+===============================================================+
  */
 class UpsertProductWithPermissionsIntegration extends AbstractProductTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->createProduct('product_editable_by_redactor', [
+            'categories'   => ['categoryB', 'master'],
+            'values'       => [
+                'a_localized_and_scopable_text_area' => [
+                    ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce']
+                ],
+                'a_multi_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
+                ]
+            ]
+        ]);
+    }
+
     public function testToMergeNotGrantedCategoryWithANewCategory()
     {
-        $data = '{"categories": ["categoryA1", "categoryA2"]}';
+        $data = '{"categories": ["categoryA1", "categoryA2", "master"]}';
 
         $expected = [
-            'identifier'    => 'product_viewable_by_everybody_2',
+            'identifier'    => 'product_editable_by_redactor',
             'family'        => null,
             'groups'        => [],
             'variant_group' => null,
             'enabled'       => true,
-            'categories'    => ['categoryA1', 'categoryA2', 'categoryB'],
+            'associations'  => [],
+            'categories'    => ['categoryA1', 'categoryA2', 'categoryB', 'master'],
             'created'       => '2017-08-08T19:28:43+02:00',
             'updated'       => '2017-08-08T19:28:43+02:00',
             'values'        => [
-                'sku' => [
-                    ['data' => 'product_viewable_by_everybody_2', 'locale' => null, 'scope' => null]
+                'a_localized_and_scopable_text_area' => [
+                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce'],
+                    ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+                'a_multi_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
+                ],
+                'sku'      => [
+                    ['locale' => null, 'scope' => null, 'data' => 'product_editable_by_redactor'],
                 ]
-            ],
-            'associations'  => []
+            ]
         ];
 
-        $this->assert('product_viewable_by_everybody_2', $data, $expected);
+        $this->assert('product_editable_by_redactor', $data, $expected);
     }
 
     public function testToMergeNotGrantedAssociationWithANewAssociation()
@@ -95,13 +125,13 @@ JSON;
 JSON;
 
         $expected = [
-            'identifier'    => 'product_viewable_by_everybody_1',
+            'identifier'    => 'product_editable_by_redactor',
             'family'        => null,
             'groups'        => [],
             'variant_group' => null,
             'enabled'       => true,
             'associations'  => [],
-            'categories'    => ['categoryA2'],
+            'categories'    => ['categoryB', 'master'],
             'created'       => '2017-08-08T19:28:43+02:00',
             'updated'       => '2017-08-08T19:28:43+02:00',
             'values'        => [
@@ -110,15 +140,6 @@ JSON;
                     ['data' => 'english', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                     ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
                 ],
-                'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
-                'a_localizable_image' => [
-                    ['data' => '4/7/c/4/47c44269d7379568daf03f85192b240199d82055_akeneo.jpg', 'locale' => 'de_DE', 'scope' => null],
-                    ['data' => '4/7/c/4/47c44269d7379568daf03f85192b240199d82055_akeneo.jpg', 'locale' => 'en_US', 'scope' => null],
-                    ['data' => '4/7/c/4/47c44269d7379568daf03f85192b240199d82055_akeneo.jpg', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-                'a_metric_without_decimal_negative' => [
-                    ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
-                ],
                 'a_multi_select' => [
                     ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
                 ],
@@ -126,12 +147,30 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'sku'      => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_viewable_by_everybody_1'],
+                    ['locale' => null, 'scope' => null, 'data' => 'product_editable_by_redactor'],
                 ]
             ]
         ];
 
-        $this->assert('product_viewable_by_everybody_1', $data, $expected);
+        $this->assert('product_editable_by_redactor', $data, $expected);
+    }
+
+    public function testToLostTheOwnershipOfAProduct()
+    {
+        $data = '{"categories": ["categoryA"]}';
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_editable_by_redactor', [], [], [], $data);
+
+        $expected = <<<JSON
+{
+  "code": 422,
+  "message": "You should at least keep your product in one category on which you have an own permission."
+}
+JSON;
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
     /**
