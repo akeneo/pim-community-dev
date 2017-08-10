@@ -27,5 +27,5 @@ print_shoes;Shoes;Shoes;Shoes;print
 suppliers;Suppliers;Suppliers;Suppliers;
 supplier_mongo;Mongo;Mongo;Mongo;suppliers
 supplier_zaro;Zaro;Zaro;Zaro;suppliers
-supplier_the_tootles;The Tootles;The Tootles;The Tootles;suppliers
+supplier_the_tootles;"The Tootles";"The Tootles";"The Tootles";suppliers
 supplier_abibas;Abibas;Abibas;Abibas;suppliers

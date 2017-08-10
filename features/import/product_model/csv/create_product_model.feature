@@ -11,8 +11,8 @@ Feature: Create product through CSV import
   Scenario: Julia imports new root products models
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;EAN;sku;weight
-      code-001;;variant_clothing_color_and_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
+      code-001;;clothing_colorsize;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
       | filePath | %file to import% |
@@ -21,14 +21,14 @@ Feature: Create product through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
       | code     | categories | family_variant                  | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
-      | code-001 | master_men | variant_clothing_color_and_size | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
+      | code-001 | master_men | clothing_colorsize | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
 
   Scenario: Julia imports new products sub-models
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;EAN;sku;weight
-      code-001;;variant_clothing_color_and_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
-      code-002;code-001;variant_clothing_color_and_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
+      code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
+      code-002;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
       | filePath | %file to import% |
@@ -37,7 +37,7 @@ Feature: Create product through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
       | code     | categories | family_variant                  | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
-      | code-001 | master_men | variant_clothing_color_and_size | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
+      | code-001 | master_men | clothing_color_size | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
     And there should be the following product model:
-      | code     | color   | name-en_US | composition |
-      | code-002 | [blue]  | Blazers    | composition |
+      | code     | color   | variation_name-en_US | composition |
+      | code-002 | [blue]  | Blazers               | composition |

@@ -8,9 +8,9 @@ Feature: Update variants of family through CSV import
     Given the "catalog_modeling" catalog configuration
     And the following family variants:
       | code                    | family   | label-en_US                | variant-axes_1 | variant-axes_2 | variant-attributes_1                      | variant-attributes_2 |
-      | clothing_color_and_size | clothing | Clothing by color and size | color          | size           | color,image_1,variation_image,composition | size,EAN,sku         |
-      | shoes_size              | shoes    | Shoes by size              | eu_shoes_size  |                |                                           |                      |
-      | clothing_color_size     | clothing | Clothing by color/size     | color,size     |                | name,image_1,variation_image              |                      |
+      | another_clothing_color_and_size | clothing | Clothing by color and size | color          | size           | color,image,variation_image,composition | size,ean,sku         |
+      | another_shoes_size              | shoes    | Shoes by size              | eu_shoes_size  |                |                                           |                      |
+      | another_clothing_color_size     | clothing | Clothing by color/size     | color,size     |                | name,image,variation_image              |                      |
     And I am logged in as "Peter"
     And I am on the imports page
 
@@ -18,9 +18,9 @@ Feature: Update variants of family through CSV import
     Given the following CSV file to import:
       """
       code;family;label-en_US;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
-      clothing_color_and_size;clothing;Clothing variant by color and size;color;size;color,name,image_1,variation_image,composition;size,EAN,sku,weight
-      shoes_size;shoes;Shoes variant by size;eu_shoes_size;;weight;
-      clothing_color_size;clothing;Clothing variant by color/size;color,size;;name,image_1,variation_image,composition;
+      another_clothing_color_and_size;clothing;Clothing variant by color and size;color;size;color,name,image,variation_image,composition;size,ean,sku,weight
+      another_shoes_size;shoes;Shoes variant by size;eu_shoes_size;;weight;
+      another_clothing_color_size;clothing;Clothing variant by color/size;color,size;;name,image,variation_image,composition;
       """
     And the following job "csv_catalog_modeling_family_variant_import" configuration:
       | filePath | %file to import% |
@@ -31,6 +31,6 @@ Feature: Update variants of family through CSV import
     And I should see the text "processed 3"
     And there should be the following family variants:
       | code                    | family   | label-en_US                        | variant-axes_1 | variant-axes_2 | variant-attributes_1                           | variant-attributes_2 |
-      | clothing_color_and_size | clothing | Clothing variant by color and size | color          | size           | color,name,image_1,variation_image,composition | size,EAN,sku,weight  |
-      | shoes_size              | shoes    | Shoes variant by size              | eu_shoes_size  |                | weight                                         |                      |
-      | clothing_color_size     | clothing | Clothing variant by color/size     | color,size     |                | name,image_1,variation_image,composition       |                      |
+      | another_clothing_color_and_size | clothing | Clothing variant by color and size | color          | size           | color,name,image,variation_image,composition | size,ean,sku,weight  |
+      | another_shoes_size              | shoes    | Shoes variant by size              | eu_shoes_size  |                | weight                                         |                      |
+      | another_clothing_color_size     | clothing | Clothing variant by color/size     | color,size     |                | name,image,variation_image,composition       |                      |

@@ -6,7 +6,7 @@ erp_name;ERP name;ERP-Produktname;Nom ERP;;;;;;;erp;1;;;;;;;;;0;10;pim_catalog_t
 meta_title;Meta title;Meta title;Meta titre;;;;;;;ecommerce;1;;;;;;;;;0;10;pim_catalog_text;0;1;;;
 meta_description;Meta description;Meta description;Meta description;;;;;;;ecommerce;1;;;;;;;;;0;10;pim_catalog_textarea;0;1;;;
 keywords;Keywords;Keywords;Mots clés;;;;;;;ecommerce;1;;;;;;;;;0;20;pim_catalog_textarea;0;1;;;
-image_1;Model picture;Model bild;Image du modèle;png,jpeg,jpg;;;;;;medias;0;;;;;;;;;0;11;pim_catalog_image;0;1;;;
+image;Model picture;Model bild;Image du modèle;png,jpeg,jpg;;;;;;medias;0;;;;;;;;;0;11;pim_catalog_image;0;1;;;
 notice;Notice;Notice;Notice;pdf;;;;;;medias;0;;;;;;;;;0;15;pim_catalog_file;0;1;;;
 weight;Weight;Gewicht;Poids;;;;;1;GRAM;product;0;;;Weight;;0;;;;0;0;pim_catalog_metric;0;1;;;
 price;Price;Preis;Prix;;;;;1;;erp;0;;;;;;;;;0;17;pim_catalog_price_collection;0;1;;;
@@ -23,5 +23,6 @@ eu_shoes_size;EU Shoes Size;EU Shoes Size;Taille chaussures EU;;;;;;;product;0;;
 sole_composition;Sole composition;Sole composition;Composition semelle;;;;;;;product;0;;;;;;;;;0;4;pim_catalog_text;0;1;;;
 top_composition;Top composition;Top composition;Composition dessus;;;;;;;product;0;;;;;;;;;0;8;pim_catalog_text;0;1;;;
 brand;Brand;Brand;Marque;;;;;;;marketing;0;;;;;;;;;0;3;pim_catalog_simpleselect;0;0;;;
-EAN;EAN;EAN;EAN;;;;;;;erp;0;;;;;;;;;0;0;pim_catalog_text;1;1;;;
+ean;EAN;EAN;EAN;;;;;;;erp;0;;;;;;;;;0;0;pim_catalog_text;1;1;;;
 supplier;Supplier;Lieferant;Fournisseur;;;;;;;erp;0;;;;;;;;;0;2;pim_catalog_simpleselect;0;1;;;
+material;Material;Material;Matière;;;;;;;product;0;;;;;;;;;0;22;pim_catalog_simpleselect;0;1;;;

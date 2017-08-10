@@ -22,7 +22,9 @@ class UpdateFamilyVariantIntegration extends TestCase
     public function testTheFamilyVariantUpdate()
     {
         $expectedCommonAttributes = [
+            'composition',
             'keywords',
+            'material',
             'meta_description',
             'meta_title',
             'name',
@@ -36,20 +38,33 @@ class UpdateFamilyVariantIntegration extends TestCase
             'variation_name',
         ];
 
-        $familyVariant = $this->getFamilyVariant('variant_shoes_size');
 
-        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
-            'label' => [
-                'en_US' => 'My family variant'
-            ],
-            'variant_attribute_sets' => [
-                [
-                    'axes' => ['eu_shoes_size'],
-                    'attributes' => ['EAN', 'brand', 'collection', 'color', 'description', 'erp_name', 'image_1'],
-                    'level'=> 1,
+        $familyVariant = $this->getFamilyVariant('shoes_size');
+
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'label'                  => [
+                    'en_US' => 'My family variant'
                 ],
-            ],
-        ]);
+                'variant_attribute_sets' => [
+                    [
+                        'axes'       => ['eu_shoes_size'],
+                        'attributes' => [
+                            'ean',
+                            'brand',
+                            'collection',
+                            'color',
+                            'description',
+                            'erp_name',
+                            'image',
+                            'weight'
+                        ],
+                        'level'      => 1,
+                    ],
+                ],
+            ]
+        );
 
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(0, $errors->count());
@@ -70,7 +85,7 @@ class UpdateFamilyVariantIntegration extends TestCase
             'Axis is invalid (level 1)'
         );
         $this->assertEquals(
-            ['EAN', 'brand', 'collection', 'color', 'description', 'erp_name', 'image_1', 'weight'],
+            ['brand', 'collection', 'color', 'description', 'ean', 'erp_name', 'image', 'size', 'weight'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
@@ -87,17 +102,20 @@ class UpdateFamilyVariantIntegration extends TestCase
      */
     public function testTheFamilyVariantAxesImmutability()
     {
-        $familyVariant = $this->getFamilyVariant('variant_shoes_size');
+        $familyVariant = $this->getFamilyVariant('shoes_size');
 
-        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
-            'variant_attribute_sets' => [
-                [
-                    'axes' => ['weight', 'brand'],
-                    'attributes' => ['EAN', 'collection', 'color', 'description', 'erp_name'],
-                    'level'=> 1,
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'axes'       => ['weight', 'brand'],
+                        'attributes' => ['ean', 'collection', 'color', 'description', 'erp_name'],
+                        'level'      => 1,
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(1, $errors->count());
@@ -112,22 +130,25 @@ class UpdateFamilyVariantIntegration extends TestCase
      */
     public function testTheFamilyVariantLevelNumberImmutability()
     {
-        $familyVariant = $this->getFamilyVariant('variant_shoes_size');
+        $familyVariant = $this->getFamilyVariant('shoes_size');
 
-        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
-            'variant_attribute_sets' => [
-                [
-                    'axes' => ['eu_shoes_size'],
-                    'attributes' => ['brand', 'collection', 'color', 'description', 'erp_name', 'image_1'],
-                    'level'=> 1,
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'axes'       => ['eu_shoes_size'],
+                        'attributes' => ['brand', 'collection', 'color', 'description', 'erp_name', 'image'],
+                        'level'      => 1,
+                    ],
+                    [
+                        'axes'       => ['supplier'],
+                        'attributes' => ['ean', 'name', 'notice', 'price', 'sku'],
+                        'level'      => 2,
+                    ],
                 ],
-                [
-                    'axes' => ['supplier'],
-                    'attributes' => ['EAN', 'name', 'notice', 'price', 'sku'],
-                    'level'=> 2,
-                ],
-            ],
-        ]);
+            ]
+        );
     }
 
     /**
@@ -135,20 +156,23 @@ class UpdateFamilyVariantIntegration extends TestCase
      */
     public function testMovingOfAnAttributeToLowerLevel()
     {
-        $familyVariant = $this->getFamilyVariant('variant_clothing_color_and_size');
+        $familyVariant = $this->getFamilyVariant('clothing_color_size');
 
-        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
-            'variant_attribute_sets' => [
-                [
-                    'attributes' => ['brand', 'variation_image'],
-                    'level'=> 2,
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'attributes' => ['brand'],
+                        'level'      => 2,
+                    ],
+                    [
+                        'attributes' => ['collection'],
+                        'level'      => 1,
+                    ],
                 ],
-                [
-                    'attributes' => ['collection'],
-                    'level'=> 1,
-                ],
-            ],
-        ]);
+            ]
+        );
 
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(0, $errors->count());
@@ -164,10 +188,10 @@ class UpdateFamilyVariantIntegration extends TestCase
                 'keywords',
                 'meta_description',
                 'meta_title',
+                'name',
                 'notice',
                 'price',
                 'supplier',
-                'variation_name',
                 'wash_temperature',
             ],
             $this->extractAttributeCode($familyVariant->getCommonAttributes()),
@@ -176,14 +200,14 @@ class UpdateFamilyVariantIntegration extends TestCase
 
         $variantAttributeSet1 = $familyVariant->getVariantAttributeSet(1);
         $this->assertEquals(
-            ['collection', 'color', 'composition', 'image_1', 'name'],
+            ['collection', 'color', 'composition', 'image', 'material', 'variation_image', 'variation_name'],
             $this->extractAttributeCode($variantAttributeSet1->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
 
         $variantAttributeSet2 = $familyVariant->getVariantAttributeSet(2);
         $this->assertEquals(
-            ['EAN', 'brand', 'size', 'sku', 'variation_image', 'weight'],
+            ['brand', 'ean', 'size', 'sku', 'weight'],
             $this->extractAttributeCode($variantAttributeSet2->getAttributes()),
             'Variant attribute are invalid (level 2)'
         );
@@ -194,7 +218,7 @@ class UpdateFamilyVariantIntegration extends TestCase
      */
     public function testMovingOfAnAttributeToUpperLevel()
     {
-        $familyVariant = $this->getFamilyVariant('variant_clothing_color_and_size');
+        $familyVariant = $this->getFamilyVariant('clothing_color_size');
 
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,

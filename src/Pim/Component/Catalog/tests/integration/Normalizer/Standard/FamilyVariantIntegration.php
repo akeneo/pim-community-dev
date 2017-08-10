@@ -15,7 +15,7 @@ class FamilyVariantIntegration extends TestCase
     public function testFamilyVariant()
     {
         $expected = [
-            'code' => 'variant_clothing_color_and_size',
+            'code' => 'clothing_color_size',
             'labels' => [
                 'de_DE' => 'Kleidung nach Farbe und Größe',
                 'en_US' => 'Clothing by color and size',
@@ -26,12 +26,12 @@ class FamilyVariantIntegration extends TestCase
                 [
                     'level' => 1,
                     'axes' => ['color'],
-                    'attributes' => ['name', 'image_1', 'variation_image', 'composition', 'color'],
+                    'attributes' => ['image', 'variation_name', 'variation_image', 'composition', 'color', 'material'],
                 ],
                 [
                     'level' => 2,
                     'axes' => ['size'],
-                    'attributes' => ['sku', 'weight', 'size', 'EAN'],
+                    'attributes' => ['sku', 'weight', 'size', 'ean'],
                 ],
             ],
         ];
@@ -40,7 +40,7 @@ class FamilyVariantIntegration extends TestCase
         $serializer = $this->get('pim_serializer');
 
         $result = $serializer->normalize(
-            $repository->findOneByIdentifier('variant_clothing_color_and_size'),
+            $repository->findOneByIdentifier('clothing_color_size'),
             'standard'
         );
 
