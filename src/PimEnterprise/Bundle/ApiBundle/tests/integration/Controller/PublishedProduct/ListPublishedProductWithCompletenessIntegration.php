@@ -92,7 +92,6 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        "identifier": "product_complete",
 		        "family": "familyA2",
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","categoryB","master"],
 		        "enabled": true,
 		        "values": {

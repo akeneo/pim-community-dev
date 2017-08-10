@@ -85,7 +85,6 @@ JSON;
     "identifier": "{$identifier}",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {},

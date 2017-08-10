@@ -261,7 +261,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -289,7 +288,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -316,7 +314,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -365,7 +362,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -413,7 +409,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -440,7 +435,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -490,7 +484,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -518,7 +511,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -545,7 +537,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -593,7 +584,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -631,7 +621,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -667,7 +656,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -712,7 +700,6 @@ JSON;
                 "identifier"    : "simple",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -735,7 +722,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {},
@@ -750,7 +736,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
@@ -765,7 +750,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -780,7 +764,6 @@ JSON;
                 "identifier"    : "product_china",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -795,7 +778,6 @@ JSON;
                 "identifier"    : "product_without_category2",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
                 "values"        : [],
@@ -831,7 +813,6 @@ JSON;
                 "identifier"    : "simple",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -857,7 +838,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : [],
@@ -872,7 +852,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -899,7 +878,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -947,7 +925,6 @@ JSON;
                 "identifier"    : "product_china",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -962,7 +939,6 @@ JSON;
                 "identifier"    : "product_without_category2",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
                 "values"        : {},
@@ -1024,7 +1000,6 @@ JSON;
                 "identifier"    : "simple",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -1212,7 +1187,6 @@ JSON;
     "identifier": "simple",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["master"],
     "enabled": true,
     "values": {
@@ -1246,7 +1220,6 @@ JSON;
     "identifier": "localizable",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryB"],
     "enabled": true,
     "values": {
@@ -1295,7 +1268,6 @@ JSON;
     "identifier": "scopable",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA1", "categoryA2"],
     "enabled": true,
     "values": {
@@ -1343,7 +1315,6 @@ JSON;
     "identifier": "localizable_and_scopable",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA", "master_china"],
     "enabled": true,
     "values": {
@@ -1381,7 +1352,6 @@ JSON;
    "identifier": "product_china",
    "family": null,
    "groups": [],
-   "variant_group": null,
    "categories": ["master_china"],
    "enabled": true,
    "values": {},
@@ -1401,7 +1371,6 @@ JSON;
     "identifier": "product_without_category2",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {

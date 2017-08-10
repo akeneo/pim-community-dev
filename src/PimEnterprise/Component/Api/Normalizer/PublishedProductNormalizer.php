@@ -39,6 +39,11 @@ class PublishedProductNormalizer implements NormalizerInterface
     {
         $normalizedPublishedProduct = $this->productNormalizer->normalize($product, $format, $context);
 
+
+        if (array_key_exists('variant_group', $normalizedPublishedProduct)) {
+            unset($normalizedPublishedProduct['variant_group']);
+        }
+
         return $normalizedPublishedProduct;
     }
 
