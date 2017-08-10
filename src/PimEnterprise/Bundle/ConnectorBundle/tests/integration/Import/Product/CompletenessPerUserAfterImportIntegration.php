@@ -99,7 +99,7 @@ CSV;
 
         $content = <<<CSV
 sku;categories;enabled;family;groups;a_localizable_image-en_US;a_localizable_image-fr_FR;a_localized_and_scopable_text_area-fr_FR-tablet;a_number_float
-product_viewable_by_everybody_1;categoryA2;1;my_family;;fixtures/akeneo.pdf;fixtures/akeneo.pdf;"EN tablet";12.0500
+product_viewable_by_everybody_1;master;1;my_family;;fixtures/akeneo.pdf;fixtures/akeneo.pdf;"EN tablet";12.0500
 CSV;
 
         $this->jobLauncher->launchImport('pim:batch:job', 'csv_product_import', $content, 'julia', [$this->getFixturePath('akeneo.pdf')]);
@@ -117,7 +117,7 @@ CSV;
 
         $content = <<<CSV
 sku;categories;enabled;family;groups;a_localized_and_scopable_text_area-en_US-tablet
-product_viewable_by_everybody_1;categoryA2;1;my_family;;"EN tablet"
+product_viewable_by_everybody_1;master;1;my_family;;"EN tablet"
 CSV;
 
         $this->jobLauncher->launchImport('pim:batch:job', 'csv_product_import', $content, 'mary');
