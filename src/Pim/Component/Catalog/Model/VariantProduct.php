@@ -57,4 +57,45 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     {
         return $this->getParent()->getVariationLevel() + 1;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValuesForVariation(): ValueCollectionInterface
+    {
+        return $this->values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValues(): ValueCollectionInterface
+    {
+        $values = ValueCollection::fromCollection($this->values);
+
+        return $this->getAllValues($this, $values);
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param ValueCollectionInterface         $valueCollection
+     *
+     * @return ValueCollectionInterface
+     */
+    private function getAllValues(
+        EntityWithFamilyVariantInterface $entity,
+        ValueCollectionInterface $valueCollection
+    ) {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $valueCollection;
+        }
+
+        foreach ($parent->getValuesForVariation() as $value) {
+            $valueCollection->add($value);
+        }
+
+        return $this->getAllValues($parent, $valueCollection);
+    }
 }

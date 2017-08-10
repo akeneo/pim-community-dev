@@ -106,13 +106,12 @@ Feature: Create product through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then the product model "code-001" should not have the following values "composition, name-en_US, color"
 
-  @skip
   Scenario: Only the attributes with values defined as variant attributes level 1 in the family variant are updated.
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
-      code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;blue;Blazers;composition;;;;
-      code-002;code-001;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;blue;Blazers;composition;;;;
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
+      code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
+      code-002;code-001;clothing_color_size;master_men_blazers;Spring2017;description;Blazers_1654;100 EUR;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
       | filePath | %file to import% |

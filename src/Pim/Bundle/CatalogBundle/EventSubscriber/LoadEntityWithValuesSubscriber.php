@@ -6,7 +6,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Pim\Component\Catalog\Factory\ValueCollectionFactory;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -70,12 +69,6 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
         }
 
         $rawValues = $entity->getRawValues();
-        if ($entity instanceof EntityWithFamilyVariantInterface) {
-            $ancestryRawValues = $this->getAncestryRawValues($entity);
-            foreach ($ancestryRawValues as $attributeCode => $value) {
-                $rawValues[$attributeCode] = $value;
-            }
-        }
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
         $entity->setValues($values);
@@ -91,24 +84,5 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
         }
 
         return $this->valueCollectionFactory;
-    }
-
-    /**
-     * Recursively get the raw values of all the parents of an entity.
-     *
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param array                            $ancestryRawValues
-     *
-     * @return array
-     */
-    private function getAncestryRawValues(EntityWithFamilyVariantInterface $entity, array $ancestryRawValues = []): array
-    {
-        $parent = $entity->getParent();
-
-        if (null === $parent) {
-            return $ancestryRawValues;
-        }
-
-        return $this->getAncestryRawValues($parent, array_merge($ancestryRawValues, $parent->getRawValues()));
     }
 }

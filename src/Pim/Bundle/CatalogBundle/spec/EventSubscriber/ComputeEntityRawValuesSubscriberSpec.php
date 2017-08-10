@@ -59,11 +59,9 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         $this->computeRawValues($event);
     }
 
-    function it_computes_raw_values_of_a_variant_product(
+    function it_computes_raw_values_of_an_entity_with_family_variant(
         $serializer,
         ProductModelInterface $rootProductModel,
-        ProductModelInterface $subProductModel,
-        VariantProductInterface $product,
         ValueCollectionInterface $values,
         ValueInterface $descriptionValue,
         ValueInterface $colorValue,
@@ -76,8 +74,8 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         AttributeInterface $attribute,
         GenericEvent $event
     ) {
-        $event->getSubject()->willReturn($product);
-        $product->getValues()->willReturn($values);
+        $event->getSubject()->willReturn($rootProductModel);
+        $rootProductModel->getValuesForVariation()->willReturn($values);
         $values->toArray()->willReturn([$descriptionValue, $colorValue, $imageValue, $value1, $value2]);
 
         $attribute->getCode()->willReturn('an_attribute');
@@ -104,16 +102,11 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         $imageValue->getScope()->willReturn(null);
         $imageValue->getLocale()->willReturn(null);
 
-        $rootProductModel->getParent()->willReturn(null);
-        $rootProductModel->getRawValues()->willReturn(['description' => 'a desc']);
-        $subProductModel->getParent()->willReturn($rootProductModel);
-        $subProductModel->getRawValues()->willReturn(['color' => 'red', 'image' => 'red.png']);
-        $product->getParent()->willReturn($subProductModel);
 
         $serializer->normalize(Argument::type(ValueCollectionInterface::class), 'storage')->willReturn(
             ['storage_value1' => 'data1', 'storage_value2' => 'data2']
         );
-        $product->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();
+        $rootProductModel->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();
 
         $this->computeRawValues($event);
     }

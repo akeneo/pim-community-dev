@@ -15,6 +15,9 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class VariantProductSpec extends ObjectBehavior
 {
@@ -170,5 +173,55 @@ class VariantProductSpec extends ObjectBehavior
     function it_is_attribute_removable(AttributeInterface $attribute)
     {
         $this->isAttributeRemovable($attribute)->shouldReturn(true);
+    }
+
+    function it_has_the_values_of_the_variation(
+        ValueCollectionInterface $valueCollection
+    ) {
+        $this->setValues($valueCollection);
+
+        $this->getValuesForVariation()->shouldBeLike($valueCollection);
+    }
+
+    function it_has_values(
+        ValueCollectionInterface $valueCollection,
+        ProductModelInterface $productModel,
+        ValueCollectionInterface $parentValuesCollection,
+        \Iterator $iterator,
+        ValueInterface $value,
+        AttributeInterface $valueAttribute,
+        ValueInterface $otherValue,
+        AttributeInterface $otherValueAttribute
+    ) {
+        $this->setValues($valueCollection);
+        $this->setParent($productModel);
+
+        $valueCollection->toArray()->willReturn([$value]);
+
+        $valueAttribute->getCode()->willReturn('value');
+        $valueAttribute->isUnique()->willReturn(false);
+        $value->getAttribute()->willReturn($valueAttribute);
+        $value->getScope()->willReturn(null);
+        $value->getLocale()->willReturn(null);
+
+        $otherValueAttribute->getCode()->willReturn('otherValue');
+        $otherValueAttribute->isUnique()->willReturn(false);
+        $otherValue->getAttribute()->willReturn($otherValueAttribute);
+        $otherValue->getScope()->willReturn(null);
+        $otherValue->getLocale()->willReturn(null);
+
+        $productModel->getParent()->willReturn(null);
+        $productModel->getValuesForVariation()->willReturn($parentValuesCollection);
+        $parentValuesCollection->getIterator()->willreturn($iterator);
+        $iterator->rewind()->shouldBeCalled();
+        $iterator->valid()->willReturn(true, false);
+        $iterator->current()->willReturn($otherValue);
+        $iterator->next()->shouldBeCalled();
+
+        $values = $this->getValues();
+        $values->toArray()->shouldBeLike([
+            'value-<all_channels>-<all_locales>' => $value,
+            'otherValue-<all_channels>-<all_locales>' => $otherValue
+        ]);
     }
 }

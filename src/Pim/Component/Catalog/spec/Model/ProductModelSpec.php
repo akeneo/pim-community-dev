@@ -101,8 +101,13 @@ class ProductModelSpec extends ObjectBehavior
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isUnique()->willReturn(false);
 
-        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
+
+        $nameValue->getAttribute()->willReturn($attributeAsLabel);
+        $nameValue->getScope()->willReturn(null);
+        $nameValue->getLocale()->willReturn('fr_FR');
         $nameValue->getData()->willReturn('Petit outil agricole authentique');
 
         $this->setFamilyVariant($familyVariant);
@@ -138,7 +143,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
 
-        $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
+        $values->toArray()->willreturn([]);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -158,8 +163,13 @@ class ProductModelSpec extends ObjectBehavior
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isUnique()->willReturn(false);
 
-        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
+
+        $nameValue->getAttribute()->willReturn($attributeAsLabel);
+        $nameValue->getScope()->willReturn(null);
+        $nameValue->getLocale()->willReturn('fr_FR');
         $nameValue->getData()->willReturn(null);
 
         $this->setFamilyVariant($familyVariant);
@@ -179,8 +189,13 @@ class ProductModelSpec extends ObjectBehavior
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $attributeAsImage->getCode()->willReturn('picture');
+        $attributeAsImage->isUnique()->willReturn(false);
 
-        $values->getByCodes('picture', null, null)->willReturn($pictureValue);
+        $values->toArray()->willreturn(['picture-<all_channels>-<all_locales>' => $pictureValue]);
+
+        $pictureValue->getAttribute()->willReturn($attributeAsImage);
+        $pictureValue->getScope()->willReturn(null);
+        $pictureValue->getLocale()->willReturn(null);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -212,11 +227,59 @@ class ProductModelSpec extends ObjectBehavior
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $attributeAsImage->getCode()->willReturn('picture');
 
-        $values->getByCodes('picture', null, null)->willReturn(null);
+        $values->toArray()->willreturn([]);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
 
         $this->getImage()->shouldReturn(null);
+    }
+
+    function it_has_the_values_of_the_variation(ValueCollectionInterface $valueCollection)
+    {
+        $this->setValues($valueCollection);
+        $this->getValuesForVariation()->shouldReturn($valueCollection);
+    }
+
+    function it_has_values(
+        ValueCollectionInterface $valueCollection,
+        ProductModelInterface $productModel,
+        ValueCollectionInterface $parentValuesCollection,
+        \Iterator $iterator,
+        ValueInterface $value,
+        AttributeInterface $valueAttribute,
+        ValueInterface $otherValue,
+        AttributeInterface $otherValueAttribute
+    ) {
+        $this->setValues($valueCollection);
+        $this->setParent($productModel);
+
+        $valueCollection->toArray()->willReturn([$value]);
+
+        $valueAttribute->getCode()->willReturn('value');
+        $valueAttribute->isUnique()->willReturn(false);
+        $value->getAttribute()->willReturn($valueAttribute);
+        $value->getScope()->willReturn(null);
+        $value->getLocale()->willReturn(null);
+
+        $otherValueAttribute->getCode()->willReturn('otherValue');
+        $otherValueAttribute->isUnique()->willReturn(false);
+        $otherValue->getAttribute()->willReturn($otherValueAttribute);
+        $otherValue->getScope()->willReturn(null);
+        $otherValue->getLocale()->willReturn(null);
+
+        $productModel->getParent()->willReturn(null);
+        $productModel->getValuesForVariation()->willReturn($parentValuesCollection);
+        $parentValuesCollection->getIterator()->willreturn($iterator);
+        $iterator->rewind()->shouldBeCalled();
+        $iterator->valid()->willReturn(true, false);
+        $iterator->current()->willReturn($otherValue);
+        $iterator->next()->shouldBeCalled();
+
+        $values = $this->getValues();
+        $values->toArray()->shouldBeLike([
+            'value-<all_channels>-<all_locales>' => $value,
+            'otherValue-<all_channels>-<all_locales>' => $otherValue
+        ]);
     }
 }

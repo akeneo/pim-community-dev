@@ -72,6 +72,7 @@ class ProductModelStorage extends RawMinkContext
         $attributesCodes = explode(',', $attributesCodes);
         $attributesCodes = array_map('trim', $attributesCodes);
 
+        /** @var ProductModelInterface $productModel */
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
 
         if (null === $productModel) {
@@ -83,7 +84,11 @@ class ProductModelStorage extends RawMinkContext
             $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($propertyName);
             /** @var AttributeInterface $attribute */
             $attribute = $infos['attribute'];
-            $productValue = $productModel->getValue($attribute->getCode(), $infos['locale_code'], $infos['scope_code']);
+            $productValue = $productModel->getValuesForVariation()->getByCodes(
+                $attribute->getCode(),
+                $infos['locale_code'],
+                $infos['scope_code']
+            );
 
             if (null !== $productValue) {
                 throw new \Exception(
