@@ -28,16 +28,16 @@ class ProductModelDescendantsIndexer implements
     BulkRemoverInterface
 {
     /** @var BulkIndexerInterface */
-    protected $productIndexer;
+    private $productIndexer;
 
     /** @var BulkRemoverInterface */
-    protected $productRemover;
+    private $productRemover;
 
     /** @var BulkIndexerInterface */
-    protected $productModelIndexer;
+    private $productModelIndexer;
 
     /** @var BulkRemoverInterface */
-    protected $productModelRemover;
+    private $productModelRemover;
 
     /**
      * @param BulkIndexerInterface $productIndexer

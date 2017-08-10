@@ -25,16 +25,16 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
 {
     /** @var NormalizerInterface */
-    protected $normalizer;
+    private $normalizer;
 
     /** @var Client */
-    protected $productClient;
+    private $productClient;
 
     /** @var Client */
-    protected $productAndProductModelClient;
+    private $productAndProductModelClient;
 
     /** @var string */
-    protected $indexType;
+    private $indexType;
 
     /**
      * @param NormalizerInterface $normalizer
@@ -134,7 +134,9 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
     }
 
     /**
-     * {@inheritdoc}
+     * Checks the normalized object has the minimum property needed for the indexation to work.
+     *
+     * @param array $normalization
      */
     protected function validateObjectNormalization(array $normalization) : void
     {

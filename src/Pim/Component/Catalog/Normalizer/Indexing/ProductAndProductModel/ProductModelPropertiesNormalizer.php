@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Transform the properties of a product model object (fields and product values)
@@ -15,11 +18,12 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelPropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductModelPropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    protected const FIELD_FAMILY_VARIANT = 'family_variant';
-    protected const FIELD_IN_GROUP = 'in_group';
-    protected const FIELD_ID = 'id';
+    use SerializerAwareTrait;
+
+    private const FIELD_FAMILY_VARIANT = 'family_variant';
+    private const FIELD_ID = 'id';
 
     /**
      * {@inheritdoc}

@@ -23,13 +23,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class IndexProductModelsSubscriber implements EventSubscriberInterface
 {
     /** @var IndexerInterface */
-    protected $productModelIndexer;
+    private $productModelIndexer;
 
     /** @var BulkIndexerInterface */
-    protected $productModelBulkIndexer;
+    private $productModelBulkIndexer;
 
     /** @var RemoverInterface */
-    protected $productModelIndexRemover;
+    private $productModelIndexRemover;
 
     /**
      * @param IndexerInterface     $productModelIndexer

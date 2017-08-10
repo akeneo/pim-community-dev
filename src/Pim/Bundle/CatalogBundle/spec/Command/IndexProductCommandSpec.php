@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Command;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;
@@ -31,6 +32,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         ContainerInterface $container,
         ProductRepository $productRepository,
         ProductIndexer $productIndexer,
+        ProductModelIndexer $productAndProductModelIndexer,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -39,6 +41,7 @@ class IndexProductCommandSpec extends ObjectBehavior
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
+        $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productAndProductModelIndexer);
 
         $productRepository->countAll()->willReturn(6);
         $productRepository->findAllWithOffsetAndSize(0, 5)->willReturn([]);

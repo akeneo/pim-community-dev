@@ -34,6 +34,8 @@ class ProductModelNormalizer implements NormalizerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function normalize($productModel, $format = null, array $context = [])
     {
@@ -56,11 +58,13 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * Returns the product_type of the given product model.
      *
-     * @param EntityWithFamilyVariantInterface $productModel
+     * @param ProductModelInterface $productModel
+     *
+     * @throws \LogicException
      *
      * @return string
      */
-    private function getVariationLevelCode(ProductModelInterface $productModel): string
+    private function getVariationLevelCode(ProductModelInterface $productModel) : string
     {
         $level = $productModel->getVariationLevel();
         switch ($level) {
