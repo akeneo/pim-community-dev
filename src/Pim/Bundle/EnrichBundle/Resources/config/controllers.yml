@@ -436,4 +436,4 @@ services:
         arguments:
             - '@fos_oauth_server.client_manager.default'
             - '@validator'
-            - '@pim_enrich.normalizer.violation'
+            - '@pim_internal_api_serializer'

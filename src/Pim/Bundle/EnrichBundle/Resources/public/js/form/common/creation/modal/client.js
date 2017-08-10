@@ -18,7 +18,7 @@ define(
              * {@inheritdoc}
              */
             confirmModal(modal, deferred) {
-                this.save().done(entity => {
+                this.save().done(() => {
                     modal.close();
                     modal.remove();
                     deferred.resolve();

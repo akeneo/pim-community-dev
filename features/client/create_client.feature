@@ -16,7 +16,7 @@ Feature: Create an API connection
       | Label | Magento connector |
     And I press the "Save" button
     Then I should see the text "API connection successfully created"
-    Then the grid should contain 1 elements
+    And the grid should contain 1 elements
     And I should see client "Magento connector"
 
   Scenario: Fail to create an API connection with an empty

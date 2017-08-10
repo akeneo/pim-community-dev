@@ -15,7 +15,6 @@ datagrid:
                 data_name: credentials
                 frontend_type: credentials
         properties:
-            id: ~
             delete_link:
                 type: url
                 route: pim_enrich_api_connection_rest_revoke

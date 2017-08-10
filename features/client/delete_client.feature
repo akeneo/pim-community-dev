@@ -15,6 +15,6 @@ Feature: Revoke an API connection
   Scenario: Successfully delete an API connection from the grid
     When I click on the "Revoke" action of the row which contains "Magento Connector"
     And I confirm the deletion
-    Then I should see the text "API connection successfully deleted and revoked"
-    Then the grid should contain 0 elements
+    Then I should see the text "API connection successfully revoked"
+    And the grid should contain 0 elements
     And I should not see client Magento Connector

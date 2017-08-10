@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Context\Page\Client;
 
 use Context\Page\Base\Grid;

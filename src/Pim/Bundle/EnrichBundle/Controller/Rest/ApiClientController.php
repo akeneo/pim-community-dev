@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use FOS\OAuthServerBundle\Entity\ClientManager;
@@ -28,21 +30,21 @@ class ApiClientController
     protected $validator;
 
     /** @var NormalizerInterface */
-    protected $constraintViolationNormalizer;
+    protected $normalizer;
 
     /**
      * @param ClientManager       $clientManager
      * @param ValidatorInterface  $validator
-     * @param NormalizerInterface $constraintViolationNormalizer
+     * @param NormalizerInterface $normalizer
      */
     public function __construct(
         ClientManager $clientManager,
         ValidatorInterface $validator,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $normalizer
     ) {
         $this->clientManager = $clientManager;
         $this->validator = $validator;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -52,7 +54,7 @@ class ApiClientController
      *
      * @AclAncestor("pim_enrich_api_connection_manage")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): JsonResponse
     {
         $client = $this->clientManager->createClient();
 
@@ -64,13 +66,10 @@ class ApiClientController
         $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]);
 
         $violations = $this->validator->validate($client);
-        $normalizedViolations = [];
-        foreach ($violations as $violation) {
-            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                $violation,
-                'internal_api'
-            );
-        }
+        $normalizedViolations = $this->normalizer->normalize(
+            $violations,
+            'internal_api'
+        );
 
         if (count($normalizedViolations) > 0) {
             return new JsonResponse(['values' => $normalizedViolations], 400);
@@ -83,22 +82,22 @@ class ApiClientController
 
     /**
      * @param Request $request
+     * @param string  $publicId
      *
      * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_api_connection_manage")
      */
-    public function revokeAction(Request $request, $publicId)
+    public function revokeAction(Request $request, string $publicId): JsonResponse
     {
-        $clientManager = $this->clientManager;
-        $client = $clientManager->findClientByPublicId($publicId);
+        $client = $this->clientManager->findClientByPublicId($publicId);
 
         if (null === $client) {
             throw new NotFoundHttpException(
                 sprintf('Client with public id %s does not exist.', $publicId)
             );
         }
-        $clientManager->deleteClient($client);
+        $this->clientManager->deleteClient($client);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

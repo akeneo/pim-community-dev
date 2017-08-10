@@ -243,6 +243,7 @@ extensions:
     pim-menu-system-api-connection:
         module: pim/menu/item
         parent: pim-menu-system-navigation-block
+        aclResourceId: pim_enrich_api_connection_manage
         position: 120
         config:
             title: pim_menu.item.api_connection
