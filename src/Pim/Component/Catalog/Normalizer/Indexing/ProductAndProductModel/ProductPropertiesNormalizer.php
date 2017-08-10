@@ -54,13 +54,6 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $format
         );
 
-        $data[self::FIELD_FAMILY_VARIANT] = null;
-
-        if ($product instanceof VariantProductInterface) {
-            $familyVariant = $product->getFamilyVariant();
-            $data[self::FIELD_FAMILY_VARIANT] = null !== $familyVariant ? $familyVariant->getCode() : null;
-        }
-
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
 
@@ -77,12 +70,29 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 $context
             ) : [];
 
-        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
+        $productValues = !$product->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $product->getValues(),
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
+
+        $data[self::FIELD_FAMILY_VARIANT] = null;
+        $parentValues = [];
+        if ($product instanceof VariantProductInterface) {
+            $familyVariant = $product->getFamilyVariant();
+            $data[self::FIELD_FAMILY_VARIANT] = null !== $familyVariant ? $familyVariant->getCode() : null;
+
+            if (null !== $product->getParent() && !$product->getParent()->getValues()->isEmpty()) {
+                $parentValues = $this->serializer->normalize(
+                    $product->getParent()->getValues(),
+                    ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                    $context
+                );
+            }
+        }
+
+        $data[StandardPropertiesNormalizer::FIELD_VALUES] = array_merge($productValues, $parentValues);
 
         return $data;
     }

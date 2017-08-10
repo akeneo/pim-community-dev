@@ -50,14 +50,26 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
             $productModel->getFamilyVariant()->getFamily(),
             $format
         );
+
         $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
 
-        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productModel->getValues()->isEmpty()
+        $productModelValues = !$productModel->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $productModel->getValues(),
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
+
+        $parentValues = [];
+        if (null !== $productModel->getParent() && !$productModel->getParent()->getValues()->isEmpty()) {
+            $parentValues = $this->serializer->normalize(
+                $productModel->getParent()->getValues(),
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                $context
+            );
+        }
+
+        $data[StandardPropertiesNormalizer::FIELD_VALUES] = array_merge($productModelValues, $parentValues);
 
         return $data;
     }

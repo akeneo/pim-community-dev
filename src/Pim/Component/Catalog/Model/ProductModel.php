@@ -398,6 +398,7 @@ class ProductModel implements ProductModelInterface
      */
     public function addProductModel(ProductModelInterface $child): ProductModelInterface
     {
+        $child->setParent($this);
         $this->productModels->add($child);
 
         return $this;
