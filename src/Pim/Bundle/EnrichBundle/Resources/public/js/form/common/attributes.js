@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'oro/mediator',
         'routing',
@@ -22,6 +23,7 @@ define(
         'pim/user-context',
         'pim/security-context',
         'pim/template/form/tab/attributes',
+        'pim/template/form/tab/attribute/attribute-group',
         'pim/dialog',
         'oro/messenger',
         'pim/i18n'
@@ -29,6 +31,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         mediator,
         Routing,
@@ -40,12 +43,64 @@ define(
         UserContext,
         SecurityContext,
         formTemplate,
+        attributeGroupTemplate,
         Dialog,
         messenger,
         i18n
     ) {
+        /**
+         * Group field views by sections (attribute groups)
+         *
+         * @param {array} attributeGroups
+         *
+         * @return {object}
+         */
+        const groupFieldsBySection = (attributeGroups) => (fieldCollection, field) => {
+            const newFieldCollection = Object.assign({}, fieldCollection);
+            const attributeGroupCode = AttributeGroupManager.getAttributeGroupForAttribute(attributeGroups, field.attribute.code);
+
+            if (!newFieldCollection[attributeGroupCode]) {
+                newFieldCollection[attributeGroupCode] = {
+                    attributeGroup: attributeGroups[attributeGroupCode],
+                    fields: []
+                };
+            }
+
+            newFieldCollection[attributeGroupCode].fields.push(field);
+
+            return newFieldCollection;
+        };
+
+        /**
+         * Generate a section view for the given fields
+         *
+         * @param {object}   fieldCollection
+         * @param {function} template
+         * @param {string}   label
+         *
+         * @return {view}
+         */
+        const createSectionView = (fieldCollection, template, label) => {
+            const view = document.createElement('div');
+            view.innerHTML = template({
+                label
+            });
+
+            const container = fieldCollection.fields.reduce((container, field) => {
+                _.defer(field.render.bind(field));
+                container.appendChild(field.el);
+
+                return container;
+            }, document.createElement('div'));
+
+            view.appendChild(container);
+
+            return view;
+        };
+
         return BaseForm.extend({
             template: _.template(formTemplate),
+            attributeGroupTemplate: _.template(attributeGroupTemplate),
             className: 'tabbable object-attributes',
             events: {
                 'click .remove-attribute': 'removeAttribute'
@@ -67,7 +122,7 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: _.__(this.config.tabTitle)
+                    label: __(this.config.tabTitle)
                 });
 
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
@@ -77,22 +132,21 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (scopeEvent) {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', (scopeEvent) => {
                     if ('base_product' === scopeEvent.context) {
                         this.setScope(scopeEvent.scopeCode);
                     }
-                }.bind(this));
+                });
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (localeEvent) => {
                     if ('base_product' === localeEvent.context) {
                         this.setLocale(localeEvent.localeCode);
                     }
-                }.bind(this));
+                });
 
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
-                this.onExtensions('group:change', this.render.bind(this));
                 this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
@@ -114,45 +168,43 @@ define(
 
                 var data = this.getFormData();
                 AttributeManager.getValues(data)
-                    .then(function (values) {
-                        var fieldPromises = [];
-                        _.each(values, function (value, attributeCode) {
-                            fieldPromises.push(this.renderField(data, attributeCode, value));
-                        }.bind(this));
-
+                    .then((values) => {
+                        const fieldPromises = Object.keys(values).map((attributeCode) => {
+                            return this.renderField(data, attributeCode, values[attributeCode]);
+                        });
                         this.rendering = false;
 
                         return $.when.apply($, fieldPromises);
-                    }.bind(this)).then(function () {
-                        return _.sortBy(arguments, function (field) {
-                            return field.attribute.sort_order;
+                    }).then(function () {
+                        return Object.values(arguments).sort((firstField, secondField) => {
+                            firstField.attribute.sort_order > secondField.attribute.sort_order
                         });
                     }).then(function (fields) {
-                        var $valuesPanel = this.$('.object-values');
-                        $valuesPanel.empty();
+                        AttributeGroupManager.getAttributeGroupsForObject(data)
+                            .then((attributeGroups) => {
+                                const sections = Object.values(fields.reduce(groupFieldsBySection(attributeGroups), {}));
+                                const fieldView = document.createElement('div');
 
-                        //FieldManager.clearVisibleFields();
-                        _.each(fields, this.appendField.bind(this, $valuesPanel));
+                                for (const section of sections) {
+                                    fieldView.appendChild(createSectionView(
+                                        section,
+                                        this.attributeGroupTemplate,
+                                        i18n.getLabel(
+                                            section.attributeGroup.labels,
+                                            UserContext.get('uiLocale'),
+                                            section.attributeGroup.code
+                                        )
+                                    ));
+                                }
+
+                                this.$('.object-values').empty().append(fieldView);
+                            });
                     }.bind(this));
                 this.delegateEvents();
 
                 this.renderExtensions();
 
                 return this;
-            },
-
-            /**
-             * Append a field to the panel
-             *
-             * @param {jQueryElement} panel
-             * @param {Object} field
-             *
-             */
-            appendField: function (panel, field) {
-                if (field.canBeSeen()) {
-                    field.render();
-                    panel.append(field.$el);
-                }
             },
 
             /**
@@ -173,13 +225,13 @@ define(
                     );
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
-                    var catalogLocale = UserContext.get('catalogLocale');
+                    var locale = UserContext.get('catalogLocale');
 
                     field.setContext({
-                        locale: catalogLocale,
+                        locale,
                         scope: scope.code,
-                        scopeLabel: i18n.getLabel(scope.labels, catalogLocale, scope.code),
-                        uiLocale: catalogLocale,
+                        scopeLabel: i18n.getLabel(scope.labels, locale, scope.code),
+                        uiLocale: UserContext.get('uiLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
@@ -246,8 +298,8 @@ define(
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
-                    _.__('pim_enrich.confirmation.delete.attribute'),
-                    _.__('pim_enrich.confirmation.delete_item'),
+                    __('pim_enrich.confirmation.delete.attribute'),
+                    __('pim_enrich.confirmation.delete_item'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
@@ -268,7 +320,7 @@ define(
                             }.bind(this)).fail(function () {
                                 messenger.notify(
                                     'error',
-                                    _.__(this.config.deletionFailed)
+                                    __(this.config.deletionFailed)
                                 );
                             });
                         }.bind(this));
@@ -363,7 +415,7 @@ define(
              * Post save actions
              */
             postSave: function () {
-                FieldManager.fields = {};
+                FieldManager.clearFields();
                 this.render();
             },
 
@@ -373,46 +425,28 @@ define(
              * @param {Event} event
              */
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
-                    .then(function (attributeGroups) {
-                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
+                this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
-                        var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
-                            attributeGroups,
-                            event.attribute
-                        );
-                        var needRendering = false;
+                var needRendering = false;
+                if (event.scope) {
+                    this.setScope(event.scope, {silent: true});
+                    needRendering = true;
+                }
+                if (event.locale) {
+                    this.setLocale(event.locale, {silent: true});
+                    needRendering = true;
+                }
 
-                        if (!attributeGroup) {
-                            return;
-                        }
+                if (needRendering) {
+                    this.render();
+                }
 
-                        if (event.scope) {
-                            this.setScope(event.scope, {silent: true});
-                            needRendering = true;
-                        }
-                        if (event.locale) {
-                            this.setLocale(event.locale, {silent: true});
-                            needRendering = true;
-                        }
+                var displayedAttributes = FieldManager.getFields();
 
-                        var attributeGroupSelector = this.getExtension('attribute-group-selector');
-                        if (attributeGroup !== attributeGroupSelector.getCurrent()) {
-                            attributeGroupSelector.setCurrent(attributeGroup);
-                            needRendering = true;
-                        }
-
-                        if (needRendering) {
-                            this.render();
-                        }
-
-                        var displayedAttributes = FieldManager.getFields();
-
-                        if (_.has(displayedAttributes, event.attribute)) {
-                            // TODO: the manager shouldn't be stateful, access the field by another way
-                            displayedAttributes[event.attribute].setFocus();
-                        }
-                    }.bind(this));
+                if (_.has(displayedAttributes, event.attribute)) {
+                    // TODO: the manager shouldn't be stateful, access the field by another way
+                    displayedAttributes[event.attribute].setFocus();
+                }
             },
 
             /**

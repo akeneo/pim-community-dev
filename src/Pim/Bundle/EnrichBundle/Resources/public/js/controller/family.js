@@ -21,7 +21,7 @@ define(
             renderRoute: function (route) {
                 return FetcherRegistry.getFetcher('family').fetch(
                     route.params.code,
-                    {cached: false, apply_filters: false}
+                    {cached: false, full_attributes: false}
                 ).then(function (family) {
                         if (!this.active) {
                             return;

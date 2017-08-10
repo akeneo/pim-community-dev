@@ -16,6 +16,8 @@ define(
     ],
     function ($, _, mediator, attributeManager, fetcherRegistry) {
         return {
+            fieldsPromise: null,
+
             /**
              * Get list of fields that need to be filled to complete the product
              *
@@ -31,23 +33,31 @@ define(
                     {'filters': filterPromises}
                 );
 
-                return $.when.apply($, filterPromises).then(function () {
-                    return arguments;
-                }).then(function (filters) {
-                    return attributeManager.getAttributes(product)
-                        .then(function (attributeCodes) {
-                            return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes);
-                        })
-                        .then(function (attributesToFilter) {
-                            var filteredAttributes = _.reduce(filters, function (attributes, filter) {
-                                return filter(attributes);
-                            }, attributesToFilter);
+                if (null == this.fieldsPromise) {
+                    this.fieldsPromise = $.when.apply($, filterPromises).then(function () {
+                        return arguments;
+                    }).then(function (filters) {
+                        return attributeManager.getAttributes(product)
+                            .then(function (attributeCodes) {
+                                return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes);
+                            })
+                            .then(function (attributesToFilter) {
+                                var filteredAttributes = _.reduce(filters, function (attributes, filter) {
+                                    return filter(attributes);
+                                }, attributesToFilter);
 
-                            return _.map(filteredAttributes, function (attribute) {
-                                return attribute.code;
+                                return _.map(filteredAttributes, function (attribute) {
+                                    return attribute.code;
+                                });
                             });
-                        });
-                });
+                    });
+                }
+
+                return this.fieldsPromise
+            },
+
+            clear: function () {
+                this.fieldsPromise = null;
             }
         };
     }

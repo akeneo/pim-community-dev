@@ -33,8 +33,6 @@ define(
                                 });
                                 form.setData(product);
 
-                                form.trigger('pim_enrich:form:entity:post_fetch', product);
-
                                 form.setElement(this.$el).render();
                             }.bind(this));
                     }.bind(this))
