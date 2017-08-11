@@ -150,8 +150,28 @@ jobs:
         configuration:
             filePath: users.csv
 
-    fixtures_product_csv:
+    fixtures_product_model_csv:
         order: 80
+        connector: Data fixtures
+        alias:     fixtures_product_model_csv
+        label:     Product model data fixtures
+        type:      fixtures
+        configuration:
+            filePath: product_models.csv
+            withHeader: true
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
+            realTimeVersioning: true
+            enabledComparison: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+
+    fixtures_product_csv:
+        order: 85
         connector: Data fixtures
         alias:     fixtures_product_csv
         label:     Product data fixtures
