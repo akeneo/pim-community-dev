@@ -68,8 +68,7 @@ class ProductModel implements ArrayConverterInterface
         $flatProductModel = $this->columnsMapper->map($flatProductModel, $options['mapping']);
         $flatProductModel = $this->columnsMerger->merge($flatProductModel);
 
-        $requiredField = $this->attributeColumnsResolver->resolveIdentifierField();
-        $this->fieldsRequirementChecker->checkFieldsPresence($flatProductModel, [$requiredField]);
+        $this->fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code']);
 
         foreach ($flatProductModel as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
