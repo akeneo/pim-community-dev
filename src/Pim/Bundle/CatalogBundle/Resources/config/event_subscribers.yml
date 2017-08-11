@@ -13,6 +13,8 @@ parameters:
     pim_catalog.event_subscriber.compute_product_template_raw_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductTemplateRawValuesSubscriber
     pim_catalog.event_subscriber.load_product_template_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductTemplateValuesSubscriber
     pim_catalog.event_subscriber.index_products.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber
+    pim_catalog.event_subscriber.index_product_models.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelsSubscriber
+    pim_catalog.event_subscriber.index_product_models_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelDescendantsSubscriber
 
 services:
     # Subscribers
@@ -111,6 +113,26 @@ services:
     pim_catalog.event_subscriber.index_products:
         class: '%pim_catalog.event_subscriber.index_products.class%'
         arguments:
-            - '@pim_catalog.elasticsearch.product_indexer'
+              - '@pim_catalog.elasticsearch.indexer.product'
+              - '@pim_catalog.elasticsearch.indexer.product'
+              - '@pim_catalog.elasticsearch.indexer.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.index_product_models:
+        class: '%pim_catalog.event_subscriber.index_product_models.class%'
+        arguments:
+              - '@pim_catalog.elasticsearch.indexer.product_model'
+              - '@pim_catalog.elasticsearch.indexer.product_model'
+              - '@pim_catalog.elasticsearch.indexer.product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.index_product_models_descendants:
+        class: '%pim_catalog.event_subscriber.index_product_models_descendants.class%'
+        arguments:
+              - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
+              - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
+              - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
         tags:
             - { name: kernel.event_subscriber }

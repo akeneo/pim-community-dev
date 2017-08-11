@@ -57,7 +57,7 @@ interface ProductModelInterface extends
      *
      * @return ProductModelInterface
      */
-    public function addProduct(ProductInterface $product): ProductModelInterface;
+    public function addProduct(VariantProductInterface $product): ProductModelInterface;
 
     /**
      * Removes an product from the product model.

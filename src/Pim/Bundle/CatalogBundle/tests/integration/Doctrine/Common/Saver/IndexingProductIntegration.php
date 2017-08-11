@@ -2,87 +2,75 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Elasticsearch\Client;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 
+/**
+ * Test products have been correctly indexed after being saved.
+ * They should be indexed in 2 indexes:
+ *      - pim_catalog_product
+ *      - pim_catalog_product_and_product_model
+ */
 class IndexingProductIntegration extends TestCase
 {
-    const DOCUMENT_TYPE = 'pim_catalog_product';
-
-    /** @var ProductBuilderInterface */
-    private $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    private $productUpdater;
+    private const DOCUMENT_TYPE = 'pim_catalog_product';
 
     public function testIndexingProductsOnBulkSave()
     {
         $products = [];
         foreach (['foo', 'bar', 'baz'] as $identifier) {
-            $products[] = $this->productBuilder->createProduct($identifier);
+            $products[] = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         }
 
         $this->get('pim_catalog.saver.product')->saveAll($products);
 
-        $indexedProductFoo = $this->esProductClient->search(self::DOCUMENT_TYPE, [
-            'query' => [
-                'term' => [
-                    'identifier' => 'foo'
-                ]
-            ]
-        ]);
-        $this->assertSame(1, $indexedProductFoo['hits']['total']);
+        $productFooId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo')->getId();
+        $productBarId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar')->getId();
+        $productBazId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz')->getId();
 
-        $indexedProductBar = $this->esProductClient->search(self::DOCUMENT_TYPE, [
-            'query' => [
-                'term' => [
-                    'identifier' => 'bar'
-                ]
-            ]
-        ]);
-        $this->assertSame(1, $indexedProductBar['hits']['total']);
+        $indexedProductFoo = $this->esProductClient->get(self::DOCUMENT_TYPE, $productFooId);
+        $this->assertTrue($indexedProductFoo['found']);
 
-        $indexedProductBaz = $this->esProductClient->search(self::DOCUMENT_TYPE, [
-            'query' => [
-                'term' => [
-                    'identifier' => 'baz'
-                ]
-            ]
-        ]);
-        $this->assertSame(1, $indexedProductBaz['hits']['total']);
+        $indexedProductBar = $this->esProductClient->get(self::DOCUMENT_TYPE, $productBarId);
+        $this->assertTrue($indexedProductBar['found']);
+
+        $indexedProductBaz = $this->esProductClient->get(self::DOCUMENT_TYPE, $productBazId);
+        $this->assertTrue($indexedProductBaz['found']);
+
+        $indexedProductModelFoo = $this->esProductAndProductModelClient->get(
+            self::DOCUMENT_TYPE,
+            'product_' . $productFooId
+        );
+        $this->assertTrue($indexedProductModelFoo['found']);
+
+        $indexedProductModelBar = $this->esProductAndProductModelClient->get(
+            self::DOCUMENT_TYPE,
+            'product_' . $productBarId
+        );
+        $this->assertTrue($indexedProductModelBar['found']);
+
+        $indexedProductModelBaz = $this->esProductAndProductModelClient->get(
+            self::DOCUMENT_TYPE,
+            'product_' . $productBazId
+        );
+        $this->assertTrue($indexedProductModelBaz['found']);
     }
 
     public function testIndexingProductOnUnitarySave()
     {
-        $product = $this->productBuilder->createProduct('bat');
+        $product = $this->get('pim_catalog.builder.product')->createProduct('bat');
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->esProductClient->refreshIndex();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bat');
 
-        $indexedProduct = $this->esProductClient->search(self::DOCUMENT_TYPE, [
-            'query' => [
-                'term' => [
-                    'identifier' => 'bat'
-                ]
-            ]
-        ]);
+        $productInProductIndex = $this->esProductClient->get(self::DOCUMENT_TYPE, $product->getId());
+        $this->assertTrue($productInProductIndex['found']);
 
-        $this->assertSame(1, $indexedProduct['hits']['total']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->productBuilder = $this->get('pim_catalog.builder.product');
-        $this->productUpdater = $this->get('pim_catalog.updater.product');
+        $productInProductAndProductModelIndex = $this->esProductAndProductModelClient->get(
+            self::DOCUMENT_TYPE,
+            'product_' . $product->getId()
+        );
+        $this->assertTrue($productInProductAndProductModelIndex['found']);
     }
 
     /**

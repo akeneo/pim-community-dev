@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing;
 
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -42,6 +44,9 @@ class DateTimeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \DateTime && 'indexing' === $format;
+        return $data instanceof \DateTime && (
+                $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
+                $format === ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+            );
     }
 }

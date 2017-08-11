@@ -42,7 +42,8 @@ class IndexProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $productRepository = $this->getContainer()->get('pim_catalog.repository.product');
-        $productIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.product_indexer');
+        $productIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product');
+        $productAndProductModelIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product_model');
 
         $pageSize = $input->getOption('page-size');
         $totalElements = $productRepository->countAll();
@@ -61,6 +62,7 @@ class IndexProductCommand extends ContainerAwareCommand
             );
 
             $productIndexer->indexAll($productRepository->findAllWithOffsetAndSize($offset, $pageSize));
+            $productAndProductModelIndexer->indexAll($productRepository->findAllWithOffsetAndSize($offset, $pageSize));
         }
 
         $message = sprintf('<info>%d products indexed</info>', $totalElements);

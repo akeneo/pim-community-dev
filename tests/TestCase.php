@@ -44,7 +44,7 @@ abstract class TestCase extends KernelTestCase
         $this->esProductAndProductModelClient->resetIndex();
 
         $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.product_indexer')->indexAll($products);
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
 
         // TODO: Reindex all product models and their children (see PIM-6646)
         // for instance:

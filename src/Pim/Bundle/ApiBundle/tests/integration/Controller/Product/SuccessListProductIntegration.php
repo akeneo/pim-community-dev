@@ -1197,9 +1197,6 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    /**
-     * @group todo
-     */
     public function testSearchAfterPaginationListProductsWithNextLink()
     {
         $standardizedProducts = $this->getStandardizedProducts();

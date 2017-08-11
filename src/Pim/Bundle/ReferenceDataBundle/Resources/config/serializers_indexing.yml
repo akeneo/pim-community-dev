@@ -1,6 +1,6 @@
 parameters:
-    pim_reference_data.normalizer.indexing.product.reference_data.class: Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataNormalizer
-    pim_reference_data_collection.normalizer.indexing.product.reference_data.class: Pim\Component\ReferenceData\Normalizer\Indexing\Product\ReferenceDataCollectionNormalizer
+    pim_reference_data.normalizer.indexing.product.reference_data.class: Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer
+    pim_reference_data_collection.normalizer.indexing.product.reference_data.class: Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer
 
 services:
     pim_reference_data.normalizer.indexing.product.reference_data:
