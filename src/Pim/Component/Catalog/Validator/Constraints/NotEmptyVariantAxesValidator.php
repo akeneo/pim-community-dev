@@ -32,7 +32,7 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint)
     {
         if (!$entity instanceof EntityWithFamilyVariantInterface) {
-            throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
+            throw new UnexpectedTypeException($entity, EntityWithFamilyVariantInterface::class);
         }
 
         if (!$constraint instanceof NotEmptyVariantAxes) {

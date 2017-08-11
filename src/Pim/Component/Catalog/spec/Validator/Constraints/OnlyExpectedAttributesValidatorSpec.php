@@ -2,10 +2,12 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes;
 use Prophecy\Argument;
@@ -61,11 +63,17 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         EntityWithFamilyVariantInterface $entity,
         OnlyExpectedAttributes $constraint,
-        AttributeInterface $color
+        AttributeInterface $color,
+        FamilyInterface $family,
+        Collection $attributes
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getAttributes()->willReturn([]);
         $attributesProvider->getAttributes($entity)->willReturn([$color]);
+
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributes()->willReturn($attributes);
+        $attributes->contains($color)->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -80,12 +88,34 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         OnlyExpectedAttributes $constraint,
         AttributeInterface $color,
         AttributeInterface $sku,
-        ConstraintViolationBuilderInterface $violation
+        AttributeInterface $price,
+        ConstraintViolationBuilderInterface $violation,
+        FamilyInterface $family,
+        Collection $attributes
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getAttributes()->willReturn([$color, $sku]);
+        $entity->getAttributes()->willReturn([$color, $sku, $price]);
+
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributes()->willReturn($attributes);
+        $family->getCode()->willReturn('family');
+
+        $attributes->contains($color)->willReturn(true);
+        $attributes->contains($sku)->willReturn(true);
+        $attributes->contains($price)->willReturn(false);
+
         $attributesProvider->getAttributes($entity)->willReturn([$color]);
         $sku->getCode()->willReturn('sku');
+        $price->getCode()->willReturn('price');
+
+        $context
+            ->buildViolation(
+                OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY, [
+                    '%attribute%' => 'price',
+                    '%family%' => 'family'
+                ]
+            )
+            ->willReturn($violation);
 
         $context
             ->buildViolation(
@@ -94,7 +124,8 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
                 ]
             )
             ->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
+
+        $violation->addViolation()->shouldBeCalledTimes(2);
 
         $this->validate($entity, $constraint);
     }

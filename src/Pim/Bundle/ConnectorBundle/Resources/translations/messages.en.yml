@@ -85,6 +85,8 @@ batch_jobs:
         import_associations.label: Association import
     csv_product_model_import:
         label: Product model import in CSV
+        validation.label: File validation
+        import.label: Product model import
     csv_category_import:
         label: Category import in CSV
         validation.label: File validation
@@ -186,6 +188,8 @@ batch_jobs:
         import_associations.label: Association import
     xlsx_product_model_import:
         label: Product model import in XSLX
+        validation.label: File validation
+        import.label: Product model import
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export

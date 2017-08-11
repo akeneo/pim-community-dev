@@ -81,9 +81,9 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 if (!empty($value)) {
                     if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
                         throw InvalidPropertyException::validEntityCodeExpected(
-                            'family_variant',
-                            'family variant code',
-                            'The family variant does not exist',
+                            'parent',
+                            'parent code',
+                            'The product model does not exist',
                             static::class,
                             $value
                         );
