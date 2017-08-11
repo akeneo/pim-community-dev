@@ -686,7 +686,7 @@ pim_enrich:
                         title: Real time history update
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                     family_variant_column:
-                        title: Family variant
+                        title: Family variant column
                 history:
                     title: History
             file_path: File path
