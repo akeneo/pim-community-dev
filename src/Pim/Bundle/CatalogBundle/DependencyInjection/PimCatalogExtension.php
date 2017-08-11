@@ -41,7 +41,6 @@ class PimCatalogExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
         $loader->load('filters.yml');
-        $loader->load('helpers.yml');
         $loader->load('localization/factories.yml');
         $loader->load('localization/localizers.yml');
         $loader->load('localization/presenters.yml');
